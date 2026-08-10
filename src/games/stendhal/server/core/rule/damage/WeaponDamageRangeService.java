@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,6 +22,7 @@ import games.stendhal.server.entity.item.WeaponImpl;
  * opt-in override for exceptional weapons.
  */
 public final class WeaponDamageRangeService {
+	private static final String MISSILE_CLASS = "missile";
 	private static final double DEFAULT_SPREAD = 0.10;
 	private static final double DAGGER_SPREAD = 0.05;
 	private static final double AXE_SPREAD = 0.15;
@@ -143,8 +144,8 @@ public final class WeaponDamageRangeService {
 	}
 
 	private static boolean isEligibleWeapon(final Item item) {
-		return item != null && !(item instanceof StackableItem)
-				&& item instanceof WeaponImpl;
+		return item != null && !MISSILE_CLASS.equals(item.getItemClass())
+				&& !(item instanceof StackableItem) && item instanceof WeaponImpl;
 	}
 
 	private static int getStoredAttack(final Item item) {

@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -43,7 +43,7 @@ final class ItemRarityPresentation {
 	 * category. New clients should prefer ItemTooltip.CATEGORY. */
 	private static final Set<String> LEGACY_ARMOUR_CLASSES =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
-					"armor", "shield", "helmet", "cloak", "boots", "gloves",
+					"armor", "shield", "helmet", "cloak", "boots", "glove", "gloves",
 					"legs", "belt", "belts")));
 	private static final Set<String> LEGACY_ACCESSORY_CLASSES =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
@@ -102,6 +102,11 @@ final class ItemRarityPresentation {
 		}
 		appendCoreStats(tooltip, object, weapon);
 		appendBonuses(tooltip, object, weapon, armour);
+		final String legendaryAffix = LegendaryAffixPresentation.build(object);
+		if (!legendaryAffix.isEmpty()) {
+			appendDivider(tooltip);
+			tooltip.append(legendaryAffix);
+		}
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
 		return tooltip.toString();
@@ -350,6 +355,10 @@ final class ItemRarityPresentation {
 			}
 		}
 		appendIntegerBonus(coreBonuses, object, ItemTooltip.HEALTH, "zdrowia");
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_ATTACK_BONUS,
+				"ataku z affixu");
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_DEFENSE_BONUS,
+				"pancerza z affixu");
 
 		/* Resistances form their own visual block so the player can separate
 		 * elemental protection from the item's defining flat statistics. */
@@ -369,6 +378,31 @@ final class ItemRarityPresentation {
 				"bonusu precyzji", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
+		appendPercentageBonus(specialBonuses, object,
+				ItemTooltip.CRITICAL_DAMAGE_BONUS,
+				"obrażeń trafienia krytycznego", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.PARRY_CHANCE,
+				"szansy na parowanie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ARMOR_PENETRATION,
+				"penetracji pancerza", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.BLEED_ON_HIT,
+				"szansy na krwawienie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.EXECUTE_DAMAGE,
+				"obrażeń poniżej 25% PW celu", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.POISON_ON_HIT,
+				"szansy na zatrucie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.DISTANCE_DAMAGE,
+				"obrażeń z dystansu", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_POISONED,
+				"odporności na zatrucie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_BLEEDING,
+				"odporności na krwawienie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_SHOCKED,
+				"odporności na szok", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_CONFUSED,
+				"odporności na dezorientację", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_HEAVY,
+				"odporności na spowolnienie", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,

@@ -10,6 +10,7 @@
 		<attributes>
 			<atk value="185"/>
 			<def value="20"/>
+			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -47,6 +48,7 @@
 		<attributes>
 			<atk value="299"/>
 			<def value="19"/>
+			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -81,6 +83,7 @@
 		<attributes>
 			<atk value="205"/>
 			<def value="20"/>
+			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="0.4"/>
 			<size value="1,1"/>
@@ -118,6 +121,7 @@
 		<attributes>
 			<atk value="225"/>
 			<def value="29"/>
+			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -159,6 +163,7 @@
 		<attributes>
 			<atk value="185"/>
 			<def value="60"/>
+			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -195,6 +200,7 @@
 		<attributes>
 			<atk value="161"/>
 			<def value="34"/>
+			<armor value="light"/>
 			<hp value="83"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -238,6 +244,7 @@
 		<attributes>
 			<atk value="131"/>
 			<def value="30"/>
+			<armor value="light"/>
 			<hp value="83"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -275,6 +282,7 @@
 		<attributes>
 			<atk value="121"/>
 			<def value="25"/>
+			<armor value="light"/>
 			<hp value="89"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -317,6 +325,7 @@
 		<attributes>
 			<atk value="250"/>
 			<def value="49"/>
+			<armor value="light"/>
 			<hp value="290"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -346,6 +355,7 @@
 		<attributes>
 			<atk value="290"/>
 			<def value="52"/>
+			<armor value="light"/>
 			<hp value="333"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -374,6 +384,7 @@
 		<attributes>
 			<atk value="390"/>
 			<def value="53"/>
+			<armor value="light"/>
 			<hp value="309"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
@@ -403,6 +414,7 @@
 		<attributes>
 			<atk value="330"/>
 			<def value="54"/>
+			<armor value="light"/>
 			<hp value="345"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -434,6 +446,7 @@
 		<attributes>
 			<atk value="410"/>
 			<def value="51"/>
+			<armor value="light"/>
 			<hp value="290"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -464,6 +477,7 @@
 		<attributes>
 			<atk value="440"/>
 			<def value="58"/>
+			<armor value="light"/>
 			<hp value="490"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>

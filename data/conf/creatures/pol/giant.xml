@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="1884"/>
 			<def value="67"/>
+			<armor value="medium"/>
 			<hp value="4618"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -34,6 +35,7 @@
 			<profile name="perilous" params="5"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="patrolling"/>
 			<profile name="boss"/>
 		</ai>
@@ -45,6 +47,7 @@
 		<attributes>
 			<atk value="1483"/>
 			<def value="43"/>
+			<armor value="medium"/>
 			<hp value="2218"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
@@ -77,6 +80,7 @@
 		<attributes>
 			<atk value="1750"/>
 			<def value="120"/>
+			<armor value="medium"/>
 			<hp value="8000"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -101,6 +105,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="lifesteal" params="0.05"/>
 			<profile name="heal" params="35,50"/>
 			<profile name="patrolling"/>

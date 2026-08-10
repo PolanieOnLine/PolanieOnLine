@@ -28,6 +28,7 @@ import marauroa.common.game.RPAction;
  * Summon an entity.
  */
 class SummonAction implements SlashAction {
+	private static final String ELITE = "elite";
 
 	/**
 	 * Execute a chat command.
@@ -40,6 +41,7 @@ class SummonAction implements SlashAction {
 	 * 		/summon entity quantity
 	 *		/summon x y quantity entity
 	 *		/summon entity x y quantity
+	 *		/summon entity elite=true
 	 *
 	 * @param params
 	 *            The formal parameters.
@@ -61,6 +63,9 @@ class SummonAction implements SlashAction {
 			final String str = params[i];
 
 			if (str != null) {
+				if (copyEliteOption(str, summon)) {
+					continue;
+				}
 				if (ItemCreationCommandOptions.copyToAction(str, summon)) {
 					continue;
 				}
@@ -113,6 +118,15 @@ class SummonAction implements SlashAction {
 
 		ClientSingletonRepository.getClientFramework().send(summon);
 
+		return true;
+	}
+
+	private boolean copyEliteOption(final String token, final RPAction action) {
+		final int separator = token.indexOf('=');
+		if (separator <= 0 || !ELITE.equalsIgnoreCase(token.substring(0, separator))) {
+			return false;
+		}
+		action.put(ELITE, token.substring(separator + 1));
 		return true;
 	}
 

@@ -22,6 +22,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.rp.StendhalRPAction;
+import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.util.Observer;
 
@@ -260,6 +261,11 @@ public class CreatureRespawnPoint implements TurnListener {
 					newentity.getAtk() / 10));
 			newentity.setDef(Rand.randGaussian(newentity.getDef(),
 					newentity.getDef() / 10));
+
+			// Elite promotion is instance-local and happens only for normal map
+			// respawns. Quest/script-created creatures therefore keep their exact
+			// authored statistics unless they explicitly use a respawn point.
+			EliteCreatureService.maybePromote(newentity);
 
 			newentity.registerObjectsForNotification(observers);
 

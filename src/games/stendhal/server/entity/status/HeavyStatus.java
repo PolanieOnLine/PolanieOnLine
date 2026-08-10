@@ -15,11 +15,31 @@ package games.stendhal.server.entity.status;
  * A status ailment that causes the entity to move more slowly
  */
 public class HeavyStatus extends Status {
-	/**
-	 * Create the status
-	 */
+	private final Integer durationSeconds;
+
+	/** Creates the legacy heavy status with its normal random duration. */
 	public HeavyStatus() {
 		super("heavy");
+		this.durationSeconds = null;
+	}
+
+	/**
+	 * Creates a heavy status with a fixed duration. This is used by short combat
+	 * procs which must not inherit the legacy 30-second-to-five-minute duration.
+	 *
+	 * @param durationSeconds duration in seconds, must be positive
+	 */
+	public HeavyStatus(final int durationSeconds) {
+		super("heavy");
+		if (durationSeconds <= 0) {
+			throw new IllegalArgumentException("Heavy duration must be positive");
+		}
+		this.durationSeconds = Integer.valueOf(durationSeconds);
+	}
+
+	/** @return fixed duration in seconds, or {@code null} for legacy random timing */
+	public Integer getDurationSeconds() {
+		return durationSeconds;
 	}
 
 	/**

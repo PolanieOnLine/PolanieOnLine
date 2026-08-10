@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,6 +35,9 @@ public final class ItemCreationContext {
 	private final ItemRarity factoryRarity;
 	private final ItemRarityModifiers modifiers;
 	private final boolean randomizeModifiers;
+	private final boolean generateAffixes;
+	private final Long affixSeed;
+	private final int rarityRolls;
 	private final String profile;
 
 	private ItemCreationContext(final Builder builder) {
@@ -44,6 +47,9 @@ public final class ItemCreationContext {
 		this.factoryRarity = builder.factoryRarity;
 		this.modifiers = builder.modifiers;
 		this.randomizeModifiers = builder.randomizeModifiers;
+		this.generateAffixes = builder.generateAffixes;
+		this.affixSeed = builder.affixSeed;
+		this.rarityRolls = builder.rarityRolls;
 		this.profile = builder.profile;
 	}
 
@@ -114,6 +120,21 @@ public final class ItemCreationContext {
 		return randomizeModifiers;
 	}
 
+	/** @return whether fresh random affixes should be generated */
+	public boolean isGenerateAffixes() {
+		return generateAffixes;
+	}
+
+	/** @return deterministic affix seed, or {@code null} before generation */
+	public Long getAffixSeed() {
+		return affixSeed;
+	}
+
+	/** @return number of independent rarity rolls, keeping the highest tier */
+	public int getRarityRolls() {
+		return rarityRolls;
+	}
+
 	public String getProfile() {
 		return profile;
 	}
@@ -135,14 +156,18 @@ public final class ItemCreationContext {
 				&& questRarity == other.questRarity
 				&& factoryRarity == other.factoryRarity
 				&& randomizeModifiers == other.randomizeModifiers
+				&& generateAffixes == other.generateAffixes
+				&& rarityRolls == other.rarityRolls
 				&& Objects.equals(modifiers, other.modifiers)
+				&& Objects.equals(affixSeed, other.affixSeed)
 				&& profile.equals(other.profile);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(source, forcedRarity, questRarity, factoryRarity, modifiers,
-				Boolean.valueOf(randomizeModifiers), profile);
+				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes),
+				affixSeed, Integer.valueOf(rarityRolls), profile);
 	}
 
 	@Override
@@ -151,7 +176,9 @@ public final class ItemCreationContext {
 				+ forcedRarity + ", questRarity=" + questRarity
 				+ ", factoryRarity=" + factoryRarity
 				+ ", modifiers=" + modifiers + ", randomizeModifiers="
-				+ randomizeModifiers + ", profile=" + profile + "]";
+				+ randomizeModifiers + ", generateAffixes=" + generateAffixes
+				+ ", affixSeed=" + affixSeed + ", rarityRolls=" + rarityRolls
+				+ ", profile=" + profile + "]";
 	}
 
 	public static final class Builder {
@@ -161,6 +188,9 @@ public final class ItemCreationContext {
 		private ItemRarity factoryRarity;
 		private ItemRarityModifiers modifiers;
 		private boolean randomizeModifiers;
+		private boolean generateAffixes;
+		private Long affixSeed;
+		private int rarityRolls = 1;
 		private String profile = DEFAULT_PROFILE;
 
 		private Builder(final Source source) {
@@ -169,6 +199,7 @@ public final class ItemCreationContext {
 			}
 			this.source = source;
 			this.randomizeModifiers = source != Source.QUEST && source != Source.RESTORE;
+			this.generateAffixes = source == Source.DROP;
 		}
 
 		public Builder withRarity(final ItemRarity rarity) {
@@ -186,6 +217,9 @@ public final class ItemCreationContext {
 				throw new IllegalArgumentException("Forced rarity must not be null");
 			}
 			this.forcedRarity = rarity;
+			if (source == Source.ADMIN && rarity != ItemRarity.COMMON) {
+				this.generateAffixes = true;
+			}
 			return this;
 		}
 
@@ -218,6 +252,38 @@ public final class ItemCreationContext {
 			return this;
 		}
 
+		public Builder generateAffixes(final boolean generateAffixes) {
+			if (source == Source.RESTORE && generateAffixes) {
+				throw new IllegalArgumentException(
+						"Restore context must never generate new affixes");
+			}
+			if (source == Source.ADMIN && forcedRarity == ItemRarity.LEGENDARY
+					&& !generateAffixes) {
+				throw new IllegalArgumentException(
+						"Admin legendary context must generate affixes");
+			}
+			this.generateAffixes = generateAffixes;
+			return this;
+		}
+
+		public Builder withAffixSeed(final long affixSeed) {
+			if (source == Source.RESTORE) {
+				throw new IllegalArgumentException(
+						"Restore context must never seed affix generation");
+			}
+			this.affixSeed = Long.valueOf(affixSeed);
+			this.generateAffixes = true;
+			return this;
+		}
+
+		public Builder withRarityRolls(final int rarityRolls) {
+			if (rarityRolls < 1) {
+				throw new IllegalArgumentException("Rarity rolls must be positive");
+			}
+			this.rarityRolls = rarityRolls;
+			return this;
+		}
+
 		public Builder withProfile(final String profile) {
 			if (profile == null || profile.trim().length() == 0) {
 				throw new IllegalArgumentException("Rarity profile must not be empty");
@@ -227,6 +293,9 @@ public final class ItemCreationContext {
 		}
 
 		public ItemCreationContext build() {
+			if (source == Source.ADMIN && forcedRarity == ItemRarity.LEGENDARY) {
+				generateAffixes = true;
+			}
 			return new ItemCreationContext(this);
 		}
 	}

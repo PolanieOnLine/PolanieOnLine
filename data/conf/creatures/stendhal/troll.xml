@@ -10,6 +10,7 @@
 		<attributes>
 			<atk value="125"/>
 			<def value="26"/>
+			<armor value="medium"/>
 			<hp value="60"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -52,6 +53,7 @@
 		<attributes>
 			<atk value="135"/>
 			<def value="34"/>
+			<armor value="medium"/>
 			<hp value="60"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -87,6 +89,7 @@
 		<attributes>
 			<atk value="190"/>
 			<def value="34"/>
+			<armor value="medium"/>
 			<hp value="110"/>
 			<speed value="0.7"/>
 			<size value="1,1"/>
@@ -122,6 +125,7 @@
 		<attributes>
 			<atk value="474"/>
 			<def value="45"/>
+			<armor value="medium"/>
 			<hp value="1000"/>
 			<speed value="0.7"/>
 			<size value="2,2"/>
@@ -148,6 +152,7 @@
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
+			<profile name="status_attackers" params="StunnedStatus,8;"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>

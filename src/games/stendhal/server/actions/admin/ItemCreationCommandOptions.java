@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,6 +25,8 @@ import marauroa.common.game.RPAction;
 final class ItemCreationCommandOptions {
 	static final String RARITY = "rarity";
 	static final String RANDOMIZE_MODIFIERS = "randomize-modifiers";
+	static final String AFFIXES = "affixes";
+	static final String SEED = "seed";
 	static final String STAT_MULTIPLIER = "stat-multiplier";
 	static final String ATTACK_MULTIPLIER = "attack-multiplier";
 	static final String DEFENSE_MULTIPLIER = "defense-multiplier";
@@ -46,7 +48,8 @@ final class ItemCreationCommandOptions {
 	}
 
 	static boolean hasOptions(final RPAction action) {
-		if (action.has(RARITY) || action.has(RANDOMIZE_MODIFIERS)) {
+		if (action.has(RARITY) || action.has(RANDOMIZE_MODIFIERS)
+				|| action.has(AFFIXES) || action.has(SEED)) {
 			return true;
 		}
 		for (final String option : MODIFIER_OPTIONS) {
@@ -59,17 +62,18 @@ final class ItemCreationCommandOptions {
 
 	static ItemCreationContext fromAction(final RPAction action) {
 		final ItemCreationContext.Builder context = ItemCreationContext.builder(Source.ADMIN);
+		ItemRarity requestedRarity = null;
 		if (action.has(RARITY)) {
 			final String rawRarity = action.get(RARITY);
 			if (rawRarity == null || rawRarity.trim().isEmpty()) {
 				throw new IllegalArgumentException("Rarity nie może być puste.");
 			}
 			final String rarityId = rawRarity.trim().toLowerCase(Locale.ENGLISH);
-			final ItemRarity rarity = ItemRarity.fromId(rarityId);
-			if (rarity == null) {
+			requestedRarity = ItemRarity.fromId(rarityId);
+			if (requestedRarity == null) {
 				throw new IllegalArgumentException("Nieznana rzadkość przedmiotu: " + rarityId);
 			}
-			context.withRarity(rarity);
+			context.withRarity(requestedRarity);
 		}
 
 		Boolean randomizeModifiers = null;
@@ -113,7 +117,53 @@ final class ItemCreationCommandOptions {
 			context.randomizeModifiers(randomizeModifiers.booleanValue());
 		}
 
+		Boolean generateAffixes = null;
+		if (action.has(AFFIXES)) {
+			generateAffixes = parseAffixes(action.get(AFFIXES));
+		}
+		if (requestedRarity == ItemRarity.LEGENDARY
+				&& Boolean.FALSE.equals(generateAffixes)) {
+			throw new IllegalArgumentException(
+					"Legendarny przedmiot zawsze musi otrzymać legendarne afiksy.");
+		}
+		if (requestedRarity == ItemRarity.LEGENDARY) {
+			context.generateAffixes(true);
+		} else if (generateAffixes != null) {
+			context.generateAffixes(generateAffixes.booleanValue());
+		}
+
+		if (action.has(SEED)) {
+			if (Boolean.FALSE.equals(generateAffixes)) {
+				throw new IllegalArgumentException(
+						"seed nie może być użyty razem z affixes=none.");
+			}
+			context.withAffixSeed(parseSeed(action.get(SEED)));
+		}
+
 		return context.build();
+	}
+
+	private static Boolean parseAffixes(final String text) {
+		if ("random".equalsIgnoreCase(text) || "true".equalsIgnoreCase(text)) {
+			return Boolean.TRUE;
+		}
+		if ("none".equalsIgnoreCase(text) || "false".equalsIgnoreCase(text)) {
+			return Boolean.FALSE;
+		}
+		throw new IllegalArgumentException(
+				"affixes musi mieć wartość random albo none.");
+	}
+
+	private static long parseSeed(final String text) {
+		if (text == null || text.trim().isEmpty()) {
+			throw new IllegalArgumentException("Brak wartości seed.");
+		}
+		try {
+			return Long.parseLong(text.trim());
+		} catch (final NumberFormatException e) {
+			throw new IllegalArgumentException(
+					"seed musi być liczbą całkowitą typu long: " + text, e);
+		}
 	}
 
 	private static boolean parseBoolean(final String text, final String option) {

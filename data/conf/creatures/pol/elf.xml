@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="180"/>
 			<def value="17"/>
+			<armor value="none"/>
 			<hp value="120"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -40,6 +41,7 @@
 		<attributes>
 			<atk value="191"/>
 			<def value="24"/>
+			<armor value="none"/>
 			<hp value="150"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -71,6 +73,7 @@
 		<attributes>
 			<atk value="193"/>
 			<def value="26"/>
+			<armor value="none"/>
 			<hp value="155"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -101,6 +104,7 @@
 		<attributes>
 			<atk value="197"/>
 			<def value="28"/>
+			<armor value="medium"/>
 			<hp value="177"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -132,6 +136,7 @@
 		<attributes>
 			<atk value="205"/>
 			<def value="33"/>
+			<armor value="medium"/>
 			<hp value="176"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -164,6 +169,7 @@
 		<attributes>
 			<atk value="201"/>
 			<def value="31"/>
+			<armor value="medium"/>
 			<hp value="188"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -196,6 +202,7 @@
 		<attributes>
 			<atk value="207"/>
 			<def value="30"/>
+			<armor value="none"/>
 			<hp value="132"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -228,6 +235,7 @@
 		<attributes>
 			<atk value="200"/>
 			<def value="39"/>
+			<armor value="none"/>
 			<hp value="199"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -260,6 +268,7 @@
 		<attributes>
 			<atk value="201"/>
 			<def value="41"/>
+			<armor value="none"/>
 			<hp value="198"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
@@ -292,6 +301,7 @@
 		<attributes>
 			<atk value="210"/>
 			<def value="38"/>
+			<armor value="none"/>
 			<hp value="230"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -323,6 +333,7 @@
 		<attributes>
 			<atk value="220"/>
 			<def value="39"/>
+			<armor value="none"/>
 			<hp value="240"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -353,6 +364,7 @@
 		<attributes>
 			<atk value="250"/>
 			<def value="49"/>
+			<armor value="none"/>
 			<hp value="290"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>

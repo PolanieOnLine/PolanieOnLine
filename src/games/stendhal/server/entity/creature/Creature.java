@@ -35,6 +35,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
@@ -230,6 +231,9 @@ public class Creature extends NPC {
 			setDef(copy.getDef());
 			initHP(copy.getBaseHP());
 		}
+		if (copy.has("armor_type")) {
+			setArmorType(copy.get("armor_type"));
+		}
 		if (Occasion.MOREXP) {
 			setXP((int) (copy.getXP() * 1.5));
 		} else if (Occasion.SECOND_WORLD) {
@@ -401,6 +405,20 @@ public class Creature extends NPC {
 	 *
 	 * @return a new creature
 	 */
+	/** Sets the semantic armor type used by weapon matchups. */
+	public void setArmorType(final String armorType) {
+		if (armorType == null || "none".equals(armorType)) {
+			remove("armor_type");
+			return;
+		}
+		put("armor_type", armorType);
+	}
+
+	/** Returns the semantic armor type. Missing armor is explicitly none. */
+	public String getArmorType() {
+		return has("armor_type") ? get("armor_type") : "none";
+	}
+
 	public Creature getNewInstance() {
 		return new Creature(this);
 	}
@@ -516,6 +534,7 @@ public class Creature extends NPC {
 			npc.isA("npc");
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
+			npc.addAttribute("armor_type", Type.STRING, Definition.HIDDEN);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);
@@ -955,7 +974,8 @@ public class Creature extends NPC {
 	 * Kept as a small test seam so batch drops cannot regress to copy construction.
 	 */
 	protected Item createDroppedItem(final EntityManager entityManager, final String itemName) {
-		return entityManager.getItem(itemName, ItemCreationContext.drop());
+		return entityManager.getItem(itemName,
+				EliteCreatureService.getDropCreationContext(this));
 	}
 
 	private Player getKillerPlayer() {

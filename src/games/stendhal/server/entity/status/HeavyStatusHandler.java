@@ -45,10 +45,15 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 				/* slow the entity down to half walking speed */
 				entity.setBaseSpeed(entity.getBaseSpeed() / 2);
 
-				/* create random duration between 30 seconds and 5 minutes */
-				Double d_min = 3.3 * 30;
-				Double d_max = 3.3 * 300;
-				duration = Rand.randUniform(d_min.intValue(), d_max.intValue());
+				/* Legendary combat procs may request a short fixed duration. */
+				if (status.getDurationSeconds() != null) {
+					duration = status.getDurationSeconds().intValue();
+				} else {
+					/* preserve the legacy random timing exactly */
+					Double d_min = 3.3 * 30;
+					Double d_max = 3.3 * 300;
+					duration = Rand.randUniform(d_min.intValue(), d_max.intValue());
+				}
 
 				/* status was not inflicted by another entity */
 				if (attacker == null) {
@@ -88,7 +93,11 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 		/* replace the entity's original speed */
 		entity.setBaseSpeed(originalSpeed);
 		if (nextStatus != null) {
-			TurnNotifier.get().notifyInSeconds(duration, new StatusRemover(statusList, nextStatus));
+			final Integer fixedDuration = ((HeavyStatus) nextStatus).getDurationSeconds();
+			final int nextDuration = fixedDuration == null
+					? duration : fixedDuration.intValue();
+			TurnNotifier.get().notifyInSeconds(nextDuration,
+					new StatusRemover(statusList, nextStatus));
 		} else {
 			entity.remove("status_" + status.getName());
 			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Już nie jesteś przeciążony.");
