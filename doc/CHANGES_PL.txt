@@ -1,5 +1,38 @@
 Changelog
 ---------
+1.42
+*klient*
+- Przebudowano podpowiedzi ekwipunku, aby czytelniej prezentowały najważniejsze statystyki przedmiotów
+- Dodano wyświetlanie zakresu obrażeń, średnich obrażeń na sekundę oraz szybkości ataku dla broni
+- Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach
+- Dodano czytelniejszą prezentację pancerza, odporności, kradzieży życia, szansy na trafienie krytyczne oraz pozostałych bonusów przedmiotów
+- Dodano wizualizację statusu ogłuszenia w postaci animowanych gwiazdek nad postacią lub potworem
+- Dodano wizualne wyróżnienie elitarnych potworów złotą nazwą, koroną oraz subtelnym obrysem postaci
+
+*świat*
+- Wprowadzono system rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
+- Rzadkie, epickie i legendarne przedmioty mogą otrzymywać losowe, trwałe afiksy zwiększające ich statystyki lub dodające specjalne właściwości
+- Legendarne przedmioty otrzymują dodatkowo jeden specjalny legendarny afiks zależny od rodzaju wyposażenia
+- Dodano nowe efekty przedmiotów, m.in. krwawienie, przebicie pancerza, dodatkowe obrażenia, zwiększony zasięg, odporności na statusy oraz specjalne premie zależne od rodzaju broni
+- Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistych ataków
+- Wprowadzono klasy pancerza potworów: brak, lekki, średni oraz ciężki
+- Skuteczność sztyletów, mieczy, toporów i broni obuchowych zależy teraz od rodzaju pancerza przeciwnika
+- Dodano status Ogłuszenia, który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się
+- Wybrane potwory otrzymały możliwość ogłuszania gracza
+- Dodano losowe elitarne warianty potworów od 20 poziomu
+- Elitarne potwory posiadają zwiększone zdrowie, atak, obronę oraz przyznają więcej doświadczenia
+- Przedmioty wypadające z elitarnych potworów mają zwiększoną szansę na uzyskanie wyższej rzadkości
+- Bossowie oraz wybrane specjalne stworzenia są wyłączone z losowego systemu elit
+
+*kod*
+- Przebudowano system krwawienia do wersji Bleeding 2.0
+- Ujednolicono krwawienie zadawane przez potwory oraz efekty przedmiotów, aby korzystały ze wspólnego systemu obrażeń okresowych
+- Dodano obsługę kumulowania ran, odporności na krwawienie oraz nowych źródeł efektów statusowych
+- Usunięto pozostałości starego systemu krwawienia oraz stare profile potworów
+- Rozszerzono system generowania przedmiotów o trwałe rarity, afiksy oraz możliwość deterministycznego odtworzenia wylosowanych parametrów
+- Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rarity, afiksy oraz ich parametry
+
+
 1.41
 *klient*
 - Dodano i odświeżono grafiki nominałów monet (dukat, talar, miedziak (eksperymentalne, wyłączone na głównym serwerze))
