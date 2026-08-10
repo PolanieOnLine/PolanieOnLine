@@ -13,6 +13,7 @@
 package games.stendhal.client.gui.j2d.entity;
 
 
+import java.awt.Graphics2D;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,13 @@ class Creature2DView extends RPEntity2DView<Creature> {
 		ZoneInfo info = ZoneInfo.get();
 
 		return addShadow(SpriteStore.get().getModifiedSprite(translate(resource), info.getZoneColor(), info.getColorMethod()));
+	}
+
+	@Override
+	protected void drawTop(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		super.drawTop(g2d, x, y, width, height);
+		StunnedStarsRenderer.draw(entity, g2d, x, y, width);
 	}
 
 	//

@@ -82,6 +82,7 @@ public class LegendaryAffixPresentationTest {
 		final RPObject object = ItemTestHelper.createItem("legendary details");
 		put(object, ItemTooltip.LEGENDARY_DUEL_MASTER, "1.0");
 		put(object, ItemTooltip.LEGENDARY_STUNNING_FORCE, "1.0");
+		put(object, ItemTooltip.LEGENDARY_BINDING_STRIKE, "1.0");
 		put(object, ItemTooltip.LEGENDARY_MERCILESS_REACH, "1.0");
 		put(object, ItemTooltip.LEGENDARY_FALCON_EYE, "1.0");
 		put(object, ItemTooltip.LEGENDARY_FIRST_SALVO, "1.0");
@@ -93,6 +94,11 @@ public class LegendaryAffixPresentationTest {
 
 		assertTrue(html.contains("+5 pkt proc."));
 		assertTrue(html.contains("+30%"));
+		assertTrue(html.contains("ogłuszenie"));
+		assertTrue(html.contains("3 s"));
+		assertTrue(html.contains("4 s"));
+		assertTrue(html.contains("przeciw graczom"));
+		assertTrue(html.contains("ociężałości"));
 		assertTrue(html.contains("10 s"));
 		assertTrue(html.contains("+1 pole"));
 		assertTrue(html.contains("4 pól"));

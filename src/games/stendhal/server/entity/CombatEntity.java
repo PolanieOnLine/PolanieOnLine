@@ -114,6 +114,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("status_shock", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_zombie", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_heavy", Type.SHORT, Definition.VOLATILE);
+			rpclass.addAttribute("status_stunned", Type.SHORT, Definition.VOLATILE);
 
 			// status effects resistances
 			rpclass.addAttribute("resist_bleeding", Type.FLOAT, Definition.VOLATILE);
@@ -122,6 +123,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("resist_heavy", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_poisoned", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_shocked", Type.FLOAT, Definition.VOLATILE);
+			rpclass.addAttribute("resist_stunned", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_zombie", Type.FLOAT, Definition.VOLATILE);
 
 			// events

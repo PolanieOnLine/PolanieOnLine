@@ -93,6 +93,7 @@ class StatusIconPanel extends JComponent {
 		addStatusIndicator(StatusID.SHOCK, "shock", "Status: Porażenie");
 		addStatusIndicator(StatusID.ZOMBIE, "zombie", "Status: Przemiana w zombie");
 		addStatusIndicator(StatusID.HEAVY, "heavy", "Status: Przeciążenie");
+		addStatusIndicator(StatusID.STUNNED, "stunned", "Status: Ogłuszenie");
 		updatePanelTooltip();
 	}
 
@@ -251,7 +252,7 @@ class StatusIconPanel extends JComponent {
 	 */
 	void setStatus(final StatusID ID, final boolean visible) {
 		final JLabel status = statusIDMap.get(ID);
-		if (status.isVisible() != visible) {
+		if (status != null && status.isVisible() != visible) {
 			status.setVisible(visible);
 			updatePanelTooltip();
 		}
@@ -309,7 +310,7 @@ class StatusIconPanel extends JComponent {
 	}
 
 	/**
-	 * Set the grumpy status message. null value will hide the icon.
+	 * Set the grumpy status message. null hides the indicator
 	 *
 	 * @param message
 	 */

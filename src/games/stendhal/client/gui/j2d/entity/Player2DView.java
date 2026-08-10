@@ -275,6 +275,13 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 		}
 	}
 
+	@Override
+	protected void drawTop(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		super.drawTop(g2d, x, y, width, height);
+		StunnedStarsRenderer.draw(entity, g2d, x, y, width);
+	}
+
 	//
 	// EntityView
 	//

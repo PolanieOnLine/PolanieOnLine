@@ -30,6 +30,7 @@ public final class ItemAffixRegistry {
 					new StatusResistanceAffixDefinition(StatusType.SHOCKED),
 					new StatusResistanceAffixDefinition(StatusType.CONFUSED),
 					new StatusResistanceAffixDefinition(StatusType.HEAVY),
+					new StatusResistanceAffixDefinition(StatusType.STUNNED),
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
 					new AccuracyAffixDefinition(),

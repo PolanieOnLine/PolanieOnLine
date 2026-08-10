@@ -22,6 +22,7 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.HeavyStatus;
+import games.stendhal.server.entity.status.StunnedStatus;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
@@ -94,7 +95,15 @@ public class LegendaryWeaponSignatureCombatTest {
 	}
 
 	@Test
-	public void stunningAndBindingHeavySourcesShareGlobalProcCap() {
+	public void arcaneFocusRecognizesStunAsNegativeCombatStatus() {
+		final Player target = target(100, 100);
+		target.getStatusList().getStatuses().add(new StunnedStatus());
+
+		assertTrue(WeaponAffixCombatService.hasCombatStatus(target));
+	}
+
+	@Test
+	public void stunningForceAndBindingStrikeKeepSeparateStatusProcSources() {
 		final Item club = weapon("club", 20);
 		final Item whip = weapon("whip", 20);
 		club.put(WeaponAffixCombatService.LEGENDARY_STUNNING_FORCE_ATTRIBUTE, 1.0);
@@ -106,10 +115,13 @@ public class LegendaryWeaponSignatureCombatTest {
 		final double binding = WeaponAffixCombatService.combinedFixedProcChance(
 				Arrays.asList(club, whip),
 				WeaponAffixCombatService.LEGENDARY_BINDING_STRIKE_ATTRIBUTE, 0.15);
-		final double combined = Math.min(0.25,
-				1.0 - ((1.0 - stunning) * (1.0 - binding)));
 
-		assertEquals(0.25, combined, 0.0000001);
+		assertEquals(0.15, stunning, 0.0000001);
+		assertEquals(0.15, binding, 0.0000001);
+		assertTrue(WeaponAffixCombatService.rollChance(stunning, 1500));
+		assertFalse(WeaponAffixCombatService.rollChance(stunning, 1501));
+		assertTrue(WeaponAffixCombatService.rollChance(binding, 1500));
+		assertFalse(WeaponAffixCombatService.rollChance(binding, 1501));
 	}
 
 	private Creature creatureWithArmor(final String armorType) {
