@@ -49,6 +49,10 @@ public interface J2DClientGUI {
 	void resetClientDimensions();
 	void requestQuit(StendhalClient client);
 	void getVisibleRunicAltar();
+	void showChatOptionsDialog();
+	void refreshChatOptionsDialog();
+	void closeChatOptionsDialog();
+	boolean isChatOptionsDialogVisible();
 	void setChatLine(String text);
 	void setOffline(boolean offline);
 	void switchToSpellState(RPObject spell);
