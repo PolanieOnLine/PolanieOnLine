@@ -475,13 +475,7 @@ public final class ItemUpgradeService {
 					"Transakcja nie mogła zostać zakończona. Koszt nie został pobrany.");
 		case NPC_TOO_FAR:
 			return new ItemUpgradeResult(status,
-					"Musisz pozostać w zasięgu rozmowy z kowalem.");
-		case NPC_NOT_ATTENDING:
-			return new ItemUpgradeResult(status,
-					"Najpierw rozpocznij rozmowę z kowalem.");
-		case NPC_BUSY:
-			return new ItemUpgradeResult(status,
-					"Kowal rozmawia teraz z innym graczem.");
+					"Musisz pozostać w pobliżu kowala podczas ulepszania.");
 		case SELECT_ITEM:
 			return new ItemUpgradeResult(status,
 					"Przeciągnij przedmiot z ekwipunku do slotu ulepszania.");

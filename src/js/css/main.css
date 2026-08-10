@@ -226,6 +226,24 @@ div.itemSlot {
 .item-upgrade-slot > * { flex: 0 0 auto; }
 .item-upgrade-name { font-weight: bold; }
 .item-upgrade-dialog h4 { margin: 8px 0 3px; }
+.item-upgrade-materials {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 6px;
+}
+.item-upgrade-material {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2px;
+	padding: 4px 2px;
+	border: 1px solid currentColor;
+	text-align: center;
+}
+div.item-upgrade-material-slot {
+	float: none;
+	flex: 0 0 auto;
+}
 .item-upgrade-owned { color: #50bd62; }
 .item-upgrade-missing { color: #e75d50; }
 .item-upgrade-status { min-height: 1.4em; margin-top: 8px; }

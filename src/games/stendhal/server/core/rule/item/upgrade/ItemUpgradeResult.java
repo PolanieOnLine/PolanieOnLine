@@ -20,8 +20,6 @@ public final class ItemUpgradeResult {
 		TRANSACTION_FAILED,
 		SELECT_ITEM,
 		NO_UPGRADEABLE_ITEMS,
-		NPC_NOT_ATTENDING,
-		NPC_BUSY,
 		NPC_TOO_FAR
 	}
 

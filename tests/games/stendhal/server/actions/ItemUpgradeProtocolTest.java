@@ -63,6 +63,14 @@ public class ItemUpgradeProtocolTest {
 		zone.add(player);
 		final Item item = item("context item", 10);
 		player.equipToInventoryOnly(item);
+		final ItemUpgradeService service = ItemUpgradeService.getInstance();
+		PlayerTestHelper.equipWithMoney(player,
+				service.calculateUpgradeFee(player, item));
+		for (final Map.Entry<String, Integer> material
+				: service.getMaterialRequirements(1).entrySet()) {
+			PlayerTestHelper.equipWithStackableItem(player, material.getKey(),
+					material.getValue());
+		}
 
 		final ItemUpgradeNPC npc = new ItemUpgradeNPC("context smith");
 		npc.setPosition(5, 8);
@@ -84,6 +92,8 @@ public class ItemUpgradeProtocolTest {
 		assertEquals("SELECT_ITEM", openEvent.get("status"));
 		assertFalse(openEvent.has("selected_path"));
 
+		npc.endConversation();
+		assertNull(npc.getAttending());
 		player.clearEvents();
 		action.put(ItemUpgradeAction.COMMAND, ItemUpgradeAction.PREVIEW);
 		action.put(ItemUpgradeAction.TARGET_PATH,
@@ -93,6 +103,18 @@ public class ItemUpgradeProtocolTest {
 		assertEquals(ItemUpgradeEvent.PHASE_PREVIEW, previewEvent.get("phase"));
 		assertEquals(ItemUpgradeEvent.encodePath(item),
 				previewEvent.get("selected_path"));
+		assertEquals(1, previewEvent.getInt("can_upgrade"));
+
+		player.clearEvents();
+		action.put(ItemUpgradeAction.COMMAND, ItemUpgradeAction.UPGRADE);
+		action.put(ItemUpgradeAction.REQUEST_TOKEN,
+				previewEvent.get("request_token"));
+		new ItemUpgradeAction().onAction(player, action);
+		final RPEvent resultEvent = findUpgradeEvent(player);
+		assertEquals(ItemUpgradeEvent.PHASE_RESULT, resultEvent.get("phase"));
+		assertEquals(ItemUpgradeResult.Status.SUCCESS.name(),
+				resultEvent.get("status"));
+		assertEquals(1, item.getUpgradeLevel());
 	}
 
 	@Test
@@ -160,6 +182,12 @@ public class ItemUpgradeProtocolTest {
 				event.getList("current_stat_values").size());
 		assertEquals(event.getList("stat_names").size(),
 				event.getList("upgraded_stat_values").size());
+		assertEquals(event.getList("material_names").size(),
+				event.getList("material_classes").size());
+		assertEquals(event.getList("material_names").size(),
+				event.getList("material_subclasses").size());
+		assertEquals("resource", event.getList("material_classes").get(0));
+		assertEquals("wood", event.getList("material_subclasses").get(0));
 	}
 
 	@Test

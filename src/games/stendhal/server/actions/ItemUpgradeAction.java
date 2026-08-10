@@ -82,15 +82,7 @@ public final class ItemUpgradeAction implements ActionListener {
 			openFromContextMenu(player, npc);
 			return;
 		}
-		if (npc.getAttending() != player) {
-			SERVICE.clearPendingAttempt(player);
-			sendResult(player, action, npc,
-					SERVICE.resultForStatus(npc.getAttending() == null
-							? ItemUpgradeResult.Status.NPC_NOT_ATTENDING
-							: ItemUpgradeResult.Status.NPC_BUSY));
-			return;
-		}
-		if (!npc.inConversationRange()) {
+		if (!withinUpgradeRange(player, npc)) {
 			SERVICE.clearPendingAttempt(player);
 			sendResult(player, action, npc,
 					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
@@ -134,25 +126,17 @@ public final class ItemUpgradeAction implements ActionListener {
 
 	private void openFromContextMenu(final Player player,
 			final ItemUpgradeNPC npc) {
-		if (npc.getAttending() == null) {
-			if (!withinPerceptionRange(player, npc)) {
-				rejectOpen(player, ItemUpgradeResult.Status.NPC_TOO_FAR);
-				return;
-			}
-			npc.listenTo(player, "hi");
-		}
-		if (npc.getAttending() != player) {
-			rejectOpen(player, ItemUpgradeResult.Status.NPC_BUSY);
-			return;
-		}
-		if (!npc.inConversationRange()) {
+		if (!withinUpgradeRange(player, npc)) {
 			rejectOpen(player, ItemUpgradeResult.Status.NPC_TOO_FAR);
 			return;
+		}
+		if (npc.getAttending() == null) {
+			npc.listenTo(player, "hi");
 		}
 		openWindow(player, npc, null);
 	}
 
-	private boolean withinPerceptionRange(final Player player,
+	private boolean withinUpgradeRange(final Player player,
 			final ItemUpgradeNPC npc) {
 		final int range = npc.getPerceptionRange();
 		return player.squaredDistance(npc) <= range * range;

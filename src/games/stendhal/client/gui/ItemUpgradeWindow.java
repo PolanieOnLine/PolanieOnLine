@@ -17,11 +17,9 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,6 +34,7 @@ import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.constants.Actions;
 import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPAction;
@@ -66,7 +65,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private int npcId;
 	private String selectedPath;
 	private String requestToken;
-	private final Set<String> candidatePaths = new HashSet<String>();
 
 	private ItemUpgradeWindow() {
 		super("item-upgrade", "Ulepszanie przedmiotu");
@@ -102,7 +100,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private JComponent buildContent() {
 		final JPanel content = new JPanel(new BorderLayout(8, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(380, 400));
+		content.setPreferredSize(new Dimension(420, 460));
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
 		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
@@ -148,7 +146,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 3, 0);
 		center.add(sectionTitle("Materiały — posiadasz / wymagane"), constraints);
-		materials.setLayout(new GridLayout(0, 1, 2, 2));
 		materials.setBorder(cardBorder());
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 0, 0);
@@ -199,13 +196,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 		requestToken = event.has("request_token") ? event.get("request_token") : null;
 
-		if (event.has("candidate_paths")) {
-			candidatePaths.clear();
-			candidatePaths.addAll(list(event, "candidate_paths"));
-		} else if (!preservePreview) {
-			candidatePaths.clear();
-		}
-
 		if (event.has("name")) {
 			itemName.setText(colorName(event.get("name"),
 					event.has("rarity_id") ? event.get("rarity_id") : "common"));
@@ -233,7 +223,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final boolean canUpgrade = event.has("can_upgrade")
 				&& event.getInt("can_upgrade") == 1 && requestToken != null;
 		upgrade.setEnabled(canUpgrade);
-		refresh.setEnabled(selectedPath != null && !isInteractionStatus(state));
+		refresh.setEnabled(selectedPath != null);
 		final String message = event.has("message") ? event.get("message") : "";
 		status.setText(message.length() > 0 ? message : statusText(state));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
@@ -276,20 +266,51 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private void updateMaterials(final RPEvent event) {
 		materials.removeAll();
 		final List<String> names = list(event, "material_names");
+		final List<String> classes = list(event, "material_classes");
+		final List<String> subclasses = list(event, "material_subclasses");
 		final List<String> required = list(event, "material_values");
 		final List<String> owned = list(event, "owned_material_values");
+		if (names.isEmpty()) {
+			materials.setLayout(new BorderLayout());
+			materials.add(centered(
+					"Wymagania pojawią się po wybraniu przedmiotu."));
+			return;
+		}
+		materials.setLayout(new GridLayout(0, Math.min(3, names.size()), 6, 6));
 		for (int index = 0; index < names.size(); index++) {
 			final int have = index < owned.size() ? integer(owned.get(index)) : 0;
 			final int need = index < required.size() ? integer(required.get(index)) : 0;
-			final JLabel row = new JLabel((have >= need ? "✓ " : "✗ ")
-					+ names.get(index) + ": " + have + " / " + need);
-			row.setHorizontalAlignment(SwingConstants.CENTER);
-			row.setForeground(have >= need ? AVAILABLE : UNAVAILABLE);
-			materials.add(row);
+			materials.add(materialCard(names.get(index),
+					index < classes.size() ? classes.get(index) : null,
+					index < subclasses.size() ? subclasses.get(index) : null,
+					have, need));
 		}
-		if (names.isEmpty()) {
-			materials.add(centered("Wymagania pojawią się po wybraniu przedmiotu."));
-		}
+	}
+
+	private static JComponent materialCard(final String name,
+			final String itemClass, final String subclass, final int owned,
+			final int required) {
+		final boolean available = owned >= required;
+		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
+		final JPanel card = new JPanel(new BorderLayout(0, 2));
+		card.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(stateColor),
+				BorderFactory.createEmptyBorder(4, 3, 4, 3)));
+		final JPanel slot = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		slot.add(new MaterialIcon(itemClass, subclass, required, available));
+		card.add(slot, BorderLayout.NORTH);
+
+		final JPanel description = new JPanel(new GridLayout(0, 1, 0, 1));
+		description.add(centered(name));
+		final JLabel count = centered((available ? "✓ " : "✗ ")
+				+ owned + " / " + required);
+		count.setForeground(stateColor);
+		description.add(count);
+		card.add(description, BorderLayout.CENTER);
+		final String tooltip = name + ": posiadasz " + owned
+				+ ", wymagane " + required;
+		card.setToolTipText(tooltip);
+		return card;
 	}
 
 	private void send(final String command, final String path, final String token) {
@@ -385,18 +406,17 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		if ("READY".equals(state)) return "Wymagania są spełnione.";
 		if ("NOT_ENOUGH_MONEY".equals(state)) return "Brakuje pieniędzy.";
 		if ("MISSING_RESOURCES".equals(state)) return "Brakuje materiałów.";
+		if ("INVALID_ITEM".equals(state)) return "Tego przedmiotu nie można ulepszyć.";
+		if ("NOT_UPGRADEABLE".equals(state)) return "Tego przedmiotu nie można ulepszyć.";
 		if ("MAX_LEVEL".equals(state)) return "Osiągnięto maksymalny poziom.";
 		if ("STALE_PREVIEW".equals(state)) return "Podgląd wygasł — odświeżono stan.";
-		if ("NPC_BUSY".equals(state)) return "Kowal rozmawia teraz z innym graczem.";
-		if ("NPC_NOT_ATTENDING".equals(state)) return "Najpierw rozpocznij rozmowę z kowalem.";
-		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać w zasięgu rozmowy z kowalem.";
+		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać w pobliżu kowala.";
 		if ("FAILURE".equals(state)) return "Próba ulepszenia nie powiodła się.";
 		return "Nie można teraz ulepszyć przedmiotu.";
 	}
 
 	private static boolean isInteractionStatus(final String state) {
-		return "NPC_BUSY".equals(state) || "NPC_NOT_ATTENDING".equals(state)
-				|| "NPC_TOO_FAR".equals(state);
+		return "NPC_TOO_FAR".equals(state);
 	}
 
 	private static String colorName(final String name, final String rarityId) {
@@ -442,8 +462,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 		@Override
 		public boolean canAccept(final IEntity entity) {
-			return entity instanceof Item
-					&& candidatePaths.contains(encodePath(entity.getPath()));
+			return entity instanceof Item;
 		}
 
 		@Override
@@ -454,11 +473,52 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			}
 			selectedPath = encodePath(entity.getPath());
 			requestToken = null;
+			itemName.setText(entity.getName());
+			level.setText("Pobieranie aktualnego podglądu…");
+			icon.setItem(entity.getEntityClass(), entity.getEntitySubclass());
 			upgrade.setEnabled(false);
-			refresh.setEnabled(false);
+			refresh.setEnabled(true);
 			status.setForeground(ACCENT);
 			status.setText("Pobieranie podglądu z serwera…");
 			send("preview", selectedPath, null);
+		}
+	}
+
+	private static final class MaterialIcon extends JComponent {
+		private static final long serialVersionUID = 1L;
+		private final Sprite sprite;
+		private final Sprite quantity;
+		private final Color stateColor;
+
+		private MaterialIcon(final String itemClass, final String subclass,
+				final int required, final boolean available) {
+			setPreferredSize(new Dimension(40, 40));
+			setMinimumSize(new Dimension(40, 40));
+			sprite = itemClass == null || itemClass.length() == 0
+					|| subclass == null || subclass.length() == 0 ? null
+					: SpriteStore.get().getSprite("data/sprites/items/"
+							+ itemClass + "/" + subclass + ".png");
+			quantity = required > 1 ? TextSprite.createTextSprite(
+					Integer.toString(required), Color.WHITE) : null;
+			stateColor = available ? AVAILABLE : UNAVAILABLE;
+		}
+
+		@Override
+		protected void paintComponent(final Graphics graphics) {
+			super.paintComponent(graphics);
+			final int x = (getWidth() - SLOT_BACKGROUND.getWidth()) / 2;
+			final int y = (getHeight() - SLOT_BACKGROUND.getHeight()) / 2;
+			SLOT_BACKGROUND.draw(graphics, x, y);
+			if (sprite != null) {
+				sprite.draw(graphics, x, y);
+			}
+			if (quantity != null) {
+				quantity.draw(graphics,
+						x + SLOT_BACKGROUND.getWidth() - quantity.getWidth(), y);
+			}
+			graphics.setColor(stateColor);
+			graphics.drawRect(x, y, SLOT_BACKGROUND.getWidth() - 1,
+					SLOT_BACKGROUND.getHeight() - 1);
 		}
 	}
 }

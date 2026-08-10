@@ -30,7 +30,6 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private npcId = 0;
 	private selectedPath?: string;
 	private requestToken?: string;
-	private readonly candidatePaths = new Set<string>();
 
 	private constructor() {
 		super("empty-div-template");
@@ -114,15 +113,6 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		}
 		this.requestToken = data.request_token || undefined;
 
-		if (data.candidate_paths !== undefined) {
-			this.candidatePaths.clear();
-			this.list(data.candidate_paths).forEach((path) => {
-				this.candidatePaths.add(path);
-			});
-		} else if (!preservePreview) {
-			this.candidatePaths.clear();
-		}
-
 		if (data.name) {
 			this.icon.replaceChildren();
 			const sprite = singletons.getSpriteStore().get(Paths.sprites
@@ -154,7 +144,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		const canUpgrade = Number(data.can_upgrade || 0) === 1 && !!this.requestToken;
 		this.upgradeButton.disabled = !canUpgrade;
-		this.refreshButton.disabled = !this.selectedPath || this.isInteractionStatus(state);
+		this.refreshButton.disabled = !this.selectedPath;
 		this.status.textContent = data.message || this.statusText(state);
 		this.status.dataset.status = state.toLowerCase();
 		this.upgradeButton.title = canUpgrade ? "Wykonaj próbę ulepszenia"
@@ -194,16 +184,37 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private fillMaterials(data: UpgradeEventData): void {
 		this.materials.replaceChildren();
 		const names = this.list(data.material_names);
+		const classes = this.list(data.material_classes);
+		const subclasses = this.list(data.material_subclasses);
 		const required = this.list(data.material_values);
 		const owned = this.list(data.owned_material_values);
+		this.materials.className = names.length > 0
+				? "item-upgrade-materials" : "";
 		names.forEach((name, index) => {
 			const have = Number(owned[index] || 0);
 			const need = Number(required[index] || 0);
-			const row = document.createElement("div");
-			row.className = have >= need ? "item-upgrade-owned" : "item-upgrade-missing";
-			row.textContent = (have >= need ? "✓ " : "✗ ") + name + ": "
-					+ have + " / " + need;
-			this.materials.appendChild(row);
+			const available = have >= need;
+			const card = document.createElement("div");
+			card.className = "item-upgrade-material "
+					+ (available ? "item-upgrade-owned" : "item-upgrade-missing");
+			card.title = name + ": posiadasz " + have + ", wymagane " + need;
+
+			const slot = document.createElement("div");
+			slot.className = "itemSlot item-upgrade-material-slot";
+			if (classes[index] && subclasses[index]) {
+				slot.style.backgroundImage = "url(" + singletons.getSpriteStore()
+						.checkPath(Paths.sprites + "/items/" + classes[index]
+								+ "/" + subclasses[index] + ".png") + ")";
+				slot.style.backgroundPosition = "1px 1px";
+			}
+			slot.textContent = need > 1 ? String(need) : "";
+
+			const label = document.createElement("div");
+			label.textContent = name;
+			const count = document.createElement("div");
+			count.textContent = (available ? "✓ " : "✗ ") + have + " / " + need;
+			card.append(slot, label, count);
+			this.materials.appendChild(card);
 		});
 		if (names.length === 0) {
 			this.materials.textContent = "Wymagania pojawią się po wybraniu przedmiotu.";
@@ -245,8 +256,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	private canAcceptHeldItem(): boolean {
 		if (!stendhal.ui.heldObject || !stendhal.ui.heldObject.path) return false;
-		return this.candidatePaths.has(
-				this.normalizePath(stendhal.ui.heldObject.path));
+		const path = this.normalizePath(stendhal.ui.heldObject.path).split("/");
+		return path.length >= 3 && path[0] === String(marauroa.me["id"]);
 	}
 
 	private normalizePath(path: string): string {
@@ -305,18 +316,17 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			READY: "Wymagania są spełnione.",
 			NOT_ENOUGH_MONEY: "Brakuje pieniędzy.",
 			MISSING_RESOURCES: "Brakuje materiałów.",
+			INVALID_ITEM: "Tego przedmiotu nie można ulepszyć.",
+			NOT_UPGRADEABLE: "Tego przedmiotu nie można ulepszyć.",
 			MAX_LEVEL: "Osiągnięto maksymalny poziom.",
 			STALE_PREVIEW: "Podgląd wygasł — stan został odświeżony.",
-			NPC_BUSY: "Kowal rozmawia teraz z innym graczem.",
-			NPC_NOT_ATTENDING: "Najpierw rozpocznij rozmowę z kowalem.",
-			NPC_TOO_FAR: "Musisz pozostać w zasięgu rozmowy z kowalem.",
+			NPC_TOO_FAR: "Musisz pozostać w pobliżu kowala.",
 			FAILURE: "Próba ulepszenia nie powiodła się."
 		};
 		return messages[state] || "Nie można teraz ulepszyć przedmiotu.";
 	}
 
 	private isInteractionStatus(state: string): boolean {
-		return state === "NPC_BUSY" || state === "NPC_NOT_ATTENDING"
-				|| state === "NPC_TOO_FAR";
+		return state === "NPC_TOO_FAR";
 	}
 }

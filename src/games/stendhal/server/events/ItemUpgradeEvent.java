@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.constants.Events;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.item.upgrade.ItemUpgradePreview;
 import games.stendhal.server.core.rule.item.upgrade.ItemUpgradeRequirements;
 import games.stendhal.server.core.rule.item.upgrade.ItemUpgradeResult;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -52,6 +54,8 @@ public final class ItemUpgradeEvent extends RPEvent {
 		add(rpclass, "current_stat_values", Type.VERY_LONG_STRING);
 		add(rpclass, "upgraded_stat_values", Type.VERY_LONG_STRING);
 		add(rpclass, "material_names", Type.VERY_LONG_STRING);
+		add(rpclass, "material_classes", Type.VERY_LONG_STRING);
+		add(rpclass, "material_subclasses", Type.VERY_LONG_STRING);
 		add(rpclass, "material_values", Type.VERY_LONG_STRING);
 		add(rpclass, "owned_material_values", Type.VERY_LONG_STRING);
 	}
@@ -152,17 +156,25 @@ public final class ItemUpgradeEvent extends RPEvent {
 
 	private void putMaterials(final ItemUpgradeRequirements requirements) {
 		final List<String> names = new ArrayList<String>();
+		final List<String> classes = new ArrayList<String>();
+		final List<String> subclasses = new ArrayList<String>();
 		final List<String> required = new ArrayList<String>();
 		final List<String> owned = new ArrayList<String>();
 		for (final Map.Entry<String, Integer> entry
 				: requirements.getMaterials().entrySet()) {
 			names.add(entry.getKey());
+			final Item template = SingletonRepository.getEntityManager().getItem(
+					entry.getKey(), ItemCreationContext.restore());
+			classes.add(template == null ? "" : template.getItemClass());
+			subclasses.add(template == null ? "" : template.getItemSubclass());
 			required.add(Integer.toString(entry.getValue()));
 			owned.add(Integer.toString(
 					requirements.getOwnedMaterials().get(entry.getKey())));
 		}
 		if (!names.isEmpty()) {
 			put("material_names", names);
+			put("material_classes", classes);
+			put("material_subclasses", subclasses);
 			put("material_values", required);
 			put("owned_material_values", owned);
 		}

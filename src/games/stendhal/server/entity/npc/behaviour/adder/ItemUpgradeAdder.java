@@ -10,7 +10,6 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.actions.ItemUpgradeAction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.item.upgrade.ItemUpgradeService;
-import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -101,14 +100,6 @@ public final class ItemUpgradeAdder {
 	public static class ItemUpgradeNPC extends SpeakerNPC {
 		public ItemUpgradeNPC(final String name) {
 			super(name);
-		}
-
-		@Override
-		public void onGoodbye(final RPEntity attending) {
-			if (attending instanceof Player) {
-				ItemUpgradeService.getInstance()
-						.clearPendingAttempt((Player) attending);
-			}
 		}
 	}
 }
