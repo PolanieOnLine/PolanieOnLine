@@ -18,6 +18,7 @@ import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.maps.quests.GoodiesForRudolph;
 import games.stendhal.server.maps.quests.IQuest;
+import games.stendhal.server.maps.quests.MineTownRevivalWeeks;
 import games.stendhal.server.maps.zakopane.city.MariuszekNPC;
 import games.stendhal.server.util.ResetSpeakerNPC;
 
@@ -62,6 +63,13 @@ public final class SeasonalEventService {
 	}
 
 	/**
+	 * @return whether Mine Town Revival Weeks is currently enabled
+	 */
+	public boolean isMineTownEnabled() {
+		return System.getProperty(MineTownEventPlan.PROPERTY) != null;
+	}
+
+	/**
 	 * @return whether a seasonal transition is being prepared or applied
 	 */
 	public boolean isTransitionInProgress() {
@@ -83,25 +91,60 @@ public final class SeasonalEventService {
 
 		final boolean previous = isChristmasEnabled();
 		if (previous == enabled) {
-			transitionInProgress.set(false);
-			if (listener != null) {
-				listener.onResult(true, enabled
-						? "Event Christmas jest już aktywny."
-						: "Event Christmas jest już wyłączony.");
-			}
+			finishAlreadyInState(listener, enabled,
+					"Event Christmas jest już aktywny.",
+					"Event Christmas jest już wyłączony.");
 			return true;
 		}
 
 		worker.execute(new Runnable() {
 			@Override
 			public void run() {
-				prepareTransition(previous, enabled, listener);
+				prepareChristmasTransition(previous, enabled, listener);
 			}
 		});
 		return true;
 	}
 
-	private void prepareTransition(final boolean previous, final boolean enabled,
+	/**
+	 * Requests a Mine Town Revival Weeks state change.
+	 *
+	 * @param enabled target state
+	 * @param listener result callback executed on the RP thread
+	 * @return false when another transition is already in progress
+	 */
+	public boolean requestMineTown(final boolean enabled,
+			final ResultListener listener) {
+		if (!transitionInProgress.compareAndSet(false, true)) {
+			return false;
+		}
+
+		final boolean previous = isMineTownEnabled();
+		if (previous == enabled) {
+			finishAlreadyInState(listener, enabled,
+					"Event Mine Town Revival Weeks jest już aktywny.",
+					"Event Mine Town Revival Weeks jest już wyłączony.");
+			return true;
+		}
+
+		worker.execute(new Runnable() {
+			@Override
+			public void run() {
+				prepareMineTownTransition(previous, enabled, listener);
+			}
+		});
+		return true;
+	}
+
+	private void finishAlreadyInState(final ResultListener listener,
+			final boolean enabled, final String enabledMessage, final String disabledMessage) {
+		transitionInProgress.set(false);
+		if (listener != null) {
+			listener.onResult(true, enabled ? enabledMessage : disabledMessage);
+		}
+	}
+
+	private void prepareChristmasTransition(final boolean previous, final boolean enabled,
 			final ResultListener listener) {
 		try {
 			final ChristmasEventPlan target = ChristmasEventPlan.prepare(enabled);
@@ -109,7 +152,7 @@ public final class SeasonalEventService {
 			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
 				@Override
 				public void onTurnReached(final int currentTurn) {
-					applyTransition(previous, target, rollback, listener);
+					applyChristmasTransition(previous, target, rollback, listener);
 				}
 			});
 		} catch (final Exception e) {
@@ -119,13 +162,31 @@ public final class SeasonalEventService {
 		}
 	}
 
-	private void applyTransition(final boolean previous,
+	private void prepareMineTownTransition(final boolean previous, final boolean enabled,
+			final ResultListener listener) {
+		try {
+			final MineTownEventPlan target = MineTownEventPlan.prepare(enabled);
+			final MineTownEventPlan rollback = MineTownEventPlan.prepare(previous);
+			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
+				@Override
+				public void onTurnReached(final int currentTurn) {
+					applyMineTownTransition(previous, target, rollback, listener);
+				}
+			});
+		} catch (final Exception e) {
+			LOGGER.error("Nie udało się przygotować eventu Mine Town", e);
+			notifyFailure(listener, "Nie udało się przygotować eventu Mine Town: "
+					+ readableMessage(e));
+		}
+	}
+
+	private void applyChristmasTransition(final boolean previous,
 			final ChristmasEventPlan target,
 			final ChristmasEventPlan rollback,
 			final ResultListener listener) {
 		String stage = "ustawienie flagi stendhal.christmas";
 		try {
-			setChristmasProperty(target.isEnabled());
+			setSeasonalProperty(ChristmasEventPlan.PROPERTY, target.isEnabled());
 			stage = "zastosowanie przygotowanych zasobów świata";
 			target.apply();
 			stage = "synchronizacja questa Rudolfa";
@@ -143,7 +204,7 @@ public final class SeasonalEventService {
 			String rollbackFailure = null;
 			String rollbackStage = "przywrócenie flagi stendhal.christmas";
 			try {
-				setChristmasProperty(previous);
+				setSeasonalProperty(ChristmasEventPlan.PROPERTY, previous);
 				rollbackStage = "przywrócenie zasobów świata";
 				rollback.apply();
 				rollbackStage = "przywrócenie questa Rudolfa";
@@ -158,6 +219,61 @@ public final class SeasonalEventService {
 			}
 			if (listener != null) {
 				listener.onResult(false, "Nie udało się przełączyć eventu Christmas na etapie '"
+						+ stage + "': " + readableMessage(e)
+						+ (rollbackFailure == null ? "" : rollbackFailure));
+			}
+		} finally {
+			transitionInProgress.set(false);
+		}
+	}
+
+	private void applyMineTownTransition(final boolean previous,
+			final MineTownEventPlan target,
+			final MineTownEventPlan rollback,
+			final ResultListener listener) {
+		String stage = "ustawienie flagi stendhal.minetown";
+		try {
+			setSeasonalProperty(MineTownEventPlan.PROPERTY, target.isEnabled());
+			if (!target.isEnabled()) {
+				stage = "odłączenie Mine Town Revival Weeks";
+				synchronizeMineTownQuest(false);
+			}
+			stage = "zastosowanie przygotowanych zasobów Mine Town";
+			target.apply();
+			if (target.isEnabled()) {
+				stage = "uruchomienie Mine Town Revival Weeks";
+				synchronizeMineTownQuest(true);
+			}
+			if (listener != null) {
+				listener.onResult(true, target.isEnabled()
+						? "Event Mine Town Revival Weeks został aktywowany bez restartu serwera."
+						: "Event Mine Town Revival Weeks został wyłączony bez restartu serwera.");
+			}
+		} catch (final Exception e) {
+			LOGGER.error("Nie udało się zastosować eventu Mine Town na etapie: " + stage
+					+ "; przywracam poprzedni stan", e);
+			String rollbackFailure = null;
+			String rollbackStage = "przywrócenie flagi stendhal.minetown";
+			try {
+				setSeasonalProperty(MineTownEventPlan.PROPERTY, previous);
+				if (!previous) {
+					rollbackStage = "usunięcie częściowo uruchomionego questa Mine Town";
+					synchronizeMineTownQuest(false);
+				}
+				rollbackStage = "przywrócenie zasobów Mine Town";
+				rollback.apply();
+				if (previous) {
+					rollbackStage = "przywrócenie questa Mine Town";
+					synchronizeMineTownQuest(true);
+				}
+			} catch (final Exception rollbackException) {
+				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Mine Town na etapie: "
+						+ rollbackStage, rollbackException);
+				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage
+						+ "' zgłosił: " + readableMessage(rollbackException);
+			}
+			if (listener != null) {
+				listener.onResult(false, "Nie udało się przełączyć eventu Mine Town na etapie '"
 						+ stage + "': " + readableMessage(e)
 						+ (rollbackFailure == null ? "" : rollbackFailure));
 			}
@@ -181,11 +297,11 @@ public final class SeasonalEventService {
 		});
 	}
 
-	private static void setChristmasProperty(final boolean enabled) {
+	private static void setSeasonalProperty(final String property, final boolean enabled) {
 		if (enabled) {
-			System.setProperty(ChristmasEventPlan.PROPERTY, "true");
+			System.setProperty(property, "true");
 		} else {
-			System.clearProperty(ChristmasEventPlan.PROPERTY);
+			System.clearProperty(property);
 		}
 		Occasion.refresh();
 	}
@@ -219,6 +335,20 @@ public final class SeasonalEventService {
 		quests.loadQuest(new GoodiesForRudolph());
 		if (quests.getQuest(RUDOLPH_QUEST) == null) {
 			throw new IllegalStateException("Nie udało się ponownie załadować questa Rudolfa");
+		}
+	}
+
+	private static void synchronizeMineTownQuest(final boolean enabled) {
+		final StendhalQuestSystem quests = StendhalQuestSystem.get();
+		final IQuest current = quests.getQuest(MineTownRevivalWeeks.QUEST_NAME);
+		if (current != null && !quests.unloadQuest(current)) {
+			throw new IllegalStateException("Nie udało się odłączyć questa Mine Town Revival Weeks");
+		}
+		if (enabled) {
+			quests.loadQuest(new MineTownRevivalWeeks());
+			if (quests.getQuest(MineTownRevivalWeeks.QUEST_NAME) == null) {
+				throw new IllegalStateException("Nie udało się załadować questa Mine Town Revival Weeks");
+			}
 		}
 	}
 
