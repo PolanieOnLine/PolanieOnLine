@@ -124,6 +124,10 @@ public class PlayerTransformer implements Transformer {
 	 * @param player
 	 */
 	private void removeVolatile(final RPObject player) {
+		/* Events only describe one server turn. Older Marauroa versions can save
+		 * them when persistence runs before the turn cleanup. Never replay a UI or
+		 * notification event restored from the character database. */
+		player.clearEvents();
 		if (player.has(AWAY)) {
 			player.remove(AWAY);
 		}

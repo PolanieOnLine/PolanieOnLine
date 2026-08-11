@@ -84,6 +84,7 @@ import games.stendhal.server.events.GroupInviteEvent;
 import games.stendhal.server.events.HealedEvent;
 import games.stendhal.server.events.ImageEffectEvent;
 import games.stendhal.server.events.ItemLogEvent;
+import games.stendhal.server.events.ItemUpgradeEventCompatibility;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.events.PrivateTextEvent;
@@ -379,6 +380,8 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass(Events.ACHIEVEMENT_LOG)) {
 			AchievementLogEvent.generateRPClass();
 		}
+
+		ItemUpgradeEventCompatibility.generateRPClasses();
 
 		if (!RPClass.hasRPClass("action")) {
 			createActionRPClass();
