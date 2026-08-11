@@ -38,6 +38,7 @@ Changelog
 - Uporządkowano nazewnictwo systemu ulepszeń do wspólnej terminologii Item Upgrade oraz wydzielono reguły z obsługi dialogu NPC
 - Serwer ponownie weryfikuje przedmiot, jego położenie, pieniądze, materiały, karmę i odległość od NPC przy każdej próbie ulepszenia
 - Rozdzielono akcję klienta i event serwera systemu ulepszeń, zachowując odczyt historycznych zapisanych eventów
+- Rozszerzono komendę administratora /teleport o wariant /teleport <gracz> <inny gracz lub NPC>, zachowując teleportację do strefy i współrzędnych
 - Przebudowano system krwawienia do wersji Bleeding 2.0
 - Ujednolicono krwawienie zadawane przez potwory oraz efekty przedmiotów, aby korzystały ze wspólnego systemu obrażeń okresowych
 - Dodano obsługę kumulowania ran, odporności na krwawienie oraz nowych źródeł efektów statusowych
