@@ -16,8 +16,9 @@ import games.stendhal.server.entity.player.Player;
  * <pre>
  * /script SeasonalEvent.class christmas on
  * /script SeasonalEvent.class minetown on
- * /script SeasonalEvent.class minetown off
- * /script SeasonalEvent.class minetown status
+ * /script SeasonalEvent.class easter on
+ * /script SeasonalEvent.class easter off
+ * /script SeasonalEvent.class easter status
  * </pre>
  *
  * {@code xmas} is accepted as an alias for {@code christmas};
@@ -35,7 +36,7 @@ public class SeasonalEvent extends ScriptImpl {
 		final String action = args.get(1).trim().toLowerCase();
 		if (event == null) {
 			admin.sendPrivateText("Nieznany event: " + args.get(0)
-					+ ". Obsługiwane są christmas (xmas) oraz minetown (mine-town, revival).");
+					+ ". Obsługiwane są christmas (xmas), minetown (mine-town, revival) oraz easter.");
 			return;
 		}
 
@@ -46,11 +47,16 @@ public class SeasonalEvent extends ScriptImpl {
 						+ (service.isChristmasEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
 						+ transitionSuffix(service)
 						+ "; warunek: stendhal.christmas");
-			} else {
+			} else if ("minetown".equals(event)) {
 				admin.sendPrivateText("Mine Town Revival Weeks: "
 						+ (service.isMineTownEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
 						+ transitionSuffix(service)
 						+ "; warunek: stendhal.minetown");
+			} else {
+				admin.sendPrivateText("Easter: "
+						+ (service.isEasterEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
+						+ transitionSuffix(service)
+						+ "; warunek: stendhal.easter");
 			}
 			return;
 		}
@@ -72,8 +78,10 @@ public class SeasonalEvent extends ScriptImpl {
 		final boolean accepted;
 		if ("christmas".equals(event)) {
 			accepted = service.requestChristmas(target.booleanValue(), listener);
-		} else {
+		} else if ("minetown".equals(event)) {
 			accepted = service.requestMineTown(target.booleanValue(), listener);
+		} else {
+			accepted = service.requestEaster(target.booleanValue(), listener);
 		}
 		if (!accepted) {
 			admin.sendPrivateText("Inny event sezonowy jest właśnie przełączany. Spróbuj ponownie po zakończeniu operacji.");
@@ -95,6 +103,9 @@ public class SeasonalEvent extends ScriptImpl {
 				|| "revival".equals(event)) {
 			return "minetown";
 		}
+		if ("easter".equals(event)) {
+			return "easter";
+		}
 		return null;
 	}
 
@@ -115,6 +126,6 @@ public class SeasonalEvent extends ScriptImpl {
 	}
 
 	private static void usage(final Player admin) {
-		admin.sendPrivateText("Użycie: /script SeasonalEvent.class {christmas|xmas|minetown|mine-town|revival} {on|off|status}");
+		admin.sendPrivateText("Użycie: /script SeasonalEvent.class {christmas|xmas|minetown|mine-town|revival|easter} {on|off|status}");
 	}
 }

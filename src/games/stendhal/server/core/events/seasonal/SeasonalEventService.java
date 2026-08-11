@@ -16,6 +16,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.maps.quests.EasterGiftsForChildren;
 import games.stendhal.server.maps.quests.GoodiesForRudolph;
 import games.stendhal.server.maps.quests.IQuest;
 import games.stendhal.server.maps.quests.MineTownRevivalWeeks;
@@ -48,47 +49,31 @@ public final class SeasonalEventService {
 		});
 	}
 
-	/**
-	 * @return singleton event service
-	 */
 	public static SeasonalEventService get() {
 		return INSTANCE;
 	}
 
-	/**
-	 * @return whether Christmas is currently enabled
-	 */
 	public boolean isChristmasEnabled() {
 		return System.getProperty(ChristmasEventPlan.PROPERTY) != null;
 	}
 
-	/**
-	 * @return whether Mine Town Revival Weeks is currently enabled
-	 */
 	public boolean isMineTownEnabled() {
 		return System.getProperty(MineTownEventPlan.PROPERTY) != null;
 	}
 
-	/**
-	 * @return whether a seasonal transition is being prepared or applied
-	 */
+	public boolean isEasterEnabled() {
+		return System.getProperty(EasterEventPlan.PROPERTY) != null;
+	}
+
 	public boolean isTransitionInProgress() {
 		return transitionInProgress.get();
 	}
 
-	/**
-	 * Requests a Christmas state change.
-	 *
-	 * @param enabled target state
-	 * @param listener result callback executed on the RP thread
-	 * @return false when another transition is already in progress
-	 */
 	public boolean requestChristmas(final boolean enabled,
 			final ResultListener listener) {
 		if (!transitionInProgress.compareAndSet(false, true)) {
 			return false;
 		}
-
 		final boolean previous = isChristmasEnabled();
 		if (previous == enabled) {
 			finishAlreadyInState(listener, enabled,
@@ -96,7 +81,6 @@ public final class SeasonalEventService {
 					"Event Christmas jest już wyłączony.");
 			return true;
 		}
-
 		worker.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -106,19 +90,11 @@ public final class SeasonalEventService {
 		return true;
 	}
 
-	/**
-	 * Requests a Mine Town Revival Weeks state change.
-	 *
-	 * @param enabled target state
-	 * @param listener result callback executed on the RP thread
-	 * @return false when another transition is already in progress
-	 */
 	public boolean requestMineTown(final boolean enabled,
 			final ResultListener listener) {
 		if (!transitionInProgress.compareAndSet(false, true)) {
 			return false;
 		}
-
 		final boolean previous = isMineTownEnabled();
 		if (previous == enabled) {
 			finishAlreadyInState(listener, enabled,
@@ -126,11 +102,31 @@ public final class SeasonalEventService {
 					"Event Mine Town Revival Weeks jest już wyłączony.");
 			return true;
 		}
-
 		worker.execute(new Runnable() {
 			@Override
 			public void run() {
 				prepareMineTownTransition(previous, enabled, listener);
+			}
+		});
+		return true;
+	}
+
+	public boolean requestEaster(final boolean enabled,
+			final ResultListener listener) {
+		if (!transitionInProgress.compareAndSet(false, true)) {
+			return false;
+		}
+		final boolean previous = isEasterEnabled();
+		if (previous == enabled) {
+			finishAlreadyInState(listener, enabled,
+					"Event Easter jest już aktywny.",
+					"Event Easter jest już wyłączony.");
+			return true;
+		}
+		worker.execute(new Runnable() {
+			@Override
+			public void run() {
+				prepareEasterTransition(previous, enabled, listener);
 			}
 		});
 		return true;
@@ -176,6 +172,24 @@ public final class SeasonalEventService {
 		} catch (final Exception e) {
 			LOGGER.error("Nie udało się przygotować eventu Mine Town", e);
 			notifyFailure(listener, "Nie udało się przygotować eventu Mine Town: "
+					+ readableMessage(e));
+		}
+	}
+
+	private void prepareEasterTransition(final boolean previous, final boolean enabled,
+			final ResultListener listener) {
+		try {
+			final EasterEventPlan target = EasterEventPlan.prepare(enabled);
+			final EasterEventPlan rollback = EasterEventPlan.prepare(previous);
+			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
+				@Override
+				public void onTurnReached(final int currentTurn) {
+					applyEasterTransition(previous, target, rollback, listener);
+				}
+			});
+		} catch (final Exception e) {
+			LOGGER.error("Nie udało się przygotować eventu Easter", e);
+			notifyFailure(listener, "Nie udało się przygotować eventu Easter: "
 					+ readableMessage(e));
 		}
 	}
@@ -244,6 +258,8 @@ public final class SeasonalEventService {
 				stage = "uruchomienie Mine Town Revival Weeks";
 				synchronizeMineTownQuest(true);
 			}
+			stage = "ponowne podpięcie dialogu Easter do Caroline";
+			reattachEasterQuestToCurrentCaroline();
 			if (listener != null) {
 				listener.onResult(true, target.isEnabled()
 						? "Event Mine Town Revival Weeks został aktywowany bez restartu serwera."
@@ -266,6 +282,8 @@ public final class SeasonalEventService {
 					rollbackStage = "przywrócenie questa Mine Town";
 					synchronizeMineTownQuest(true);
 				}
+				rollbackStage = "ponowne podpięcie dialogu Easter do Caroline";
+				reattachEasterQuestToCurrentCaroline();
 			} catch (final Exception rollbackException) {
 				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Mine Town na etapie: "
 						+ rollbackStage, rollbackException);
@@ -274,6 +292,45 @@ public final class SeasonalEventService {
 			}
 			if (listener != null) {
 				listener.onResult(false, "Nie udało się przełączyć eventu Mine Town na etapie '"
+						+ stage + "': " + readableMessage(e)
+						+ (rollbackFailure == null ? "" : rollbackFailure));
+			}
+		} finally {
+			transitionInProgress.set(false);
+		}
+	}
+
+	private void applyEasterTransition(final boolean previous,
+			final EasterEventPlan target,
+			final EasterEventPlan rollback,
+			final ResultListener listener) {
+		String stage = "ustawienie flagi stendhal.easter";
+		try {
+			setSeasonalProperty(EasterEventPlan.PROPERTY, target.isEnabled());
+			stage = "zastosowanie przygotowanych zasobów Easter";
+			target.apply();
+			if (listener != null) {
+				listener.onResult(true, target.isEnabled()
+						? "Event Easter został aktywowany bez restartu serwera."
+						: "Event Easter został wyłączony bez restartu serwera.");
+			}
+		} catch (final Exception e) {
+			LOGGER.error("Nie udało się zastosować eventu Easter na etapie: " + stage
+					+ "; przywracam poprzedni stan", e);
+			String rollbackFailure = null;
+			String rollbackStage = "przywrócenie flagi stendhal.easter";
+			try {
+				setSeasonalProperty(EasterEventPlan.PROPERTY, previous);
+				rollbackStage = "przywrócenie zasobów Easter";
+				rollback.apply();
+			} catch (final Exception rollbackException) {
+				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Easter na etapie: "
+						+ rollbackStage, rollbackException);
+				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage
+						+ "' zgłosił: " + readableMessage(rollbackException);
+			}
+			if (listener != null) {
+				listener.onResult(false, "Nie udało się przełączyć eventu Easter na etapie '"
 						+ stage + "': " + readableMessage(e)
 						+ (rollbackFailure == null ? "" : rollbackFailure));
 			}
@@ -352,6 +409,23 @@ public final class SeasonalEventService {
 		}
 	}
 
+	/**
+	 * Mine Town replaces the Caroline object. Easter dialogue is dynamically
+	 * gated by Occasion.EASTER, but must be attached again to the newly created
+	 * NPC object after such a replacement. No NPC reset happens here.
+	 */
+	private static void reattachEasterQuestToCurrentCaroline() {
+		final StendhalQuestSystem quests = StendhalQuestSystem.get();
+		final IQuest current = quests.getQuest(EasterGiftsForChildren.QUEST_NAME);
+		if (current != null && !quests.unloadQuest(current)) {
+			throw new IllegalStateException("Nie udało się odłączyć definicji questa Easter");
+		}
+		quests.loadQuest(new EasterGiftsForChildren());
+		if (quests.getQuest(EasterGiftsForChildren.QUEST_NAME) == null) {
+			throw new IllegalStateException("Nie udało się ponownie podpiąć questa Easter do Caroline");
+		}
+	}
+
 	private static void refreshMariuszek() {
 		final SpeakerNPC mariuszek = SingletonRepository.getNPCList().get("Mariuszek");
 		if (mariuszek != null
@@ -391,14 +465,7 @@ public final class SeasonalEventService {
 		return result.toString();
 	}
 
-	/**
-	 * Callback for an asynchronous event transition result.
-	 */
 	public interface ResultListener {
-		/**
-		 * @param success whether the requested transition succeeded
-		 * @param message human readable result
-		 */
 		void onResult(boolean success, String message);
 	}
 }
