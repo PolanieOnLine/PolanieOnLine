@@ -1389,18 +1389,24 @@ export class SlashActionRepo {
 		execute: (type: string, params: string[], remainder: string): boolean => {
 			const action: Action = {
 				"type": "teleport",
-				"target": params[0],
-				"zone": params[1],
-				"x": params[2],
-				"y": params[3]
+				"target": params[0]
 			};
+			if (params.length === 4 && /^-?\d+$/.test(params[2])
+					&& /^-?\d+$/.test(params[3]) && remainder.length === 0) {
+				action["zone"] = params[1];
+				action["x"] = params[2];
+				action["y"] = params[3];
+			} else {
+				action["destination"] = params.slice(1).concat(remainder || []).join(" ");
+			}
 			this.sendAction(action);
 			return true;
 		},
-		minParams: 4,
+		minParams: 2,
 		maxParams: 4,
 		getHelp: function(): string[] {
-			return ["<gracz> <strefa> <x> <y>", "Teleportuj #gracza w podane miejsce."];
+			return ["<gracz> <gracz lub NPC> | <gracz> <strefa> <x> <y>",
+				"Teleportuj #gracza do wskazanego gracza/NPC albo w podane miejsce."];
 		}
 	};
 

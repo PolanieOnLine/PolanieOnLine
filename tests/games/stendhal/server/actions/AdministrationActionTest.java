@@ -280,6 +280,81 @@ public class AdministrationActionTest {
 		assertEquals("name must have changed, if action was executed", "hugo", bob.getName());
 	}
 
+	@Test
+	public final void testTeleportPlayerToAnotherPlayer() {
+		final StendhalRPZone destinationZone = new StendhalRPZone("teleportPlayerDestinationZone");
+		final Player admin = PlayerTestHelper.createPlayer("teleportAdmin");
+		final boolean[] teleported = {false};
+		final Player traveller = new Player(new RPObject()) {
+			@Override
+			public boolean teleport(final StendhalRPZone zone, final int x, final int y,
+					final Direction dir, final Player teleporter) {
+				assertEquals(destinationZone, zone);
+				assertEquals(12, x);
+				assertEquals(14, y);
+				assertEquals(admin, teleporter);
+				teleported[0] = true;
+				return true;
+			}
+		};
+		traveller.setName("traveller");
+		PlayerTestHelper.addEmptySlots(traveller);
+		final Player destination = PlayerTestHelper.createPlayer("destinationPlayer");
+		destination.setPosition(12, 14);
+		destinationZone.add(destination);
+
+		MockStendhalRPRuleProcessor.get().addPlayer(traveller);
+		MockStendhalRPRuleProcessor.get().addPlayer(destination);
+		admin.setAdminLevel(5000);
+
+		final RPAction action = new RPAction();
+		action.put("type", "teleport");
+		action.put("target", traveller.getName());
+		action.put("destination", destination.getName());
+		CommandCenter.execute(admin, action);
+
+		assertTrue(teleported[0]);
+	}
+
+	@Test
+	public final void testTeleportPlayerToNPC() {
+		final StendhalRPZone destinationZone = new StendhalRPZone("teleportNpcDestinationZone");
+		final Player admin = PlayerTestHelper.createPlayer("teleportAdmin");
+		final boolean[] teleported = {false};
+		final Player traveller = new Player(new RPObject()) {
+			@Override
+			public boolean teleport(final StendhalRPZone zone, final int x, final int y,
+					final Direction dir, final Player teleporter) {
+				assertEquals(destinationZone, zone);
+				assertEquals(7, x);
+				assertEquals(9, y);
+				assertEquals(admin, teleporter);
+				teleported[0] = true;
+				return true;
+			}
+		};
+		traveller.setName("traveller");
+		PlayerTestHelper.addEmptySlots(traveller);
+		final SpeakerNPC destination = SpeakerNPCTestHelper.createSpeakerNPC("Teleport Destination NPC");
+		destination.setPosition(7, 9);
+		destinationZone.add(destination);
+
+		try {
+			MockStendhalRPRuleProcessor.get().addPlayer(traveller);
+			admin.setAdminLevel(5000);
+
+			final RPAction action = new RPAction();
+			action.put("type", "teleport");
+			action.put("target", traveller.getName());
+			action.put("destination", destination.getName());
+			CommandCenter.execute(admin, action);
+
+			assertTrue(teleported[0]);
+		} finally {
+			SingletonRepository.getNPCList().remove(destination.getName());
+		}
+	}
+
 	/**
 	 * Tests for teleportToActionPlayerNotThere.
 	 */

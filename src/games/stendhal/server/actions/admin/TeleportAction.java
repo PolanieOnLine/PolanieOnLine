@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.actions.admin;
 
+import static games.stendhal.common.constants.Actions.DESTINATION;
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TELEPORT;
 import static games.stendhal.common.constants.Actions.X;
@@ -26,6 +27,7 @@ import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.IRPZone;
 import marauroa.common.game.RPAction;
@@ -37,6 +39,11 @@ public class TeleportAction extends AdministrationAction {
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
+		if (action.has(TARGET) && action.has(DESTINATION)) {
+			teleportToEntity(player, action.get(TARGET), action.get(DESTINATION));
+			return;
+		}
+
 		if (action.has(TARGET) && action.has(ZONE) && action.has(X)
 				&& action.has(Y)) {
 			final String name = action.get(TARGET);
@@ -89,7 +96,40 @@ public class TeleportAction extends AdministrationAction {
 			teleported.teleport(zone, x, y, null, player);
 
 			SingletonRepository.getJail().grantParoleIfPlayerWasAPrisoner(teleported);
+		} else {
+			player.sendPrivateText("Użyj: /teleport <wojownik> <gracz lub NPC> albo "
+					+ "/teleport <wojownik> <obszar> <x> <y>.");
 		}
+	}
+
+	private void teleportToEntity(final Player admin, final String playerName,
+			final String destinationName) {
+		final Player teleported = SingletonRepository.getRuleProcessor().getPlayer(playerName);
+		if (teleported == null) {
+			final String text = "Wojownik \"" + playerName + "\" nie został znaleziony.";
+			admin.sendPrivateText(text);
+			logger.debug(text);
+			return;
+		}
+
+		RPEntity destination = SingletonRepository.getRuleProcessor().getPlayer(destinationName);
+		if (destination == null) {
+			destination = SingletonRepository.getNPCList().get(destinationName);
+		}
+		if ((destination == null) || (destination.getZone() == null)) {
+			final String text = "Gracz lub NPC \"" + destinationName + "\" nie został znaleziony.";
+			admin.sendPrivateText(text);
+			logger.debug(text);
+			return;
+		}
+
+		final StendhalRPZone zone = destination.getZone();
+		final int x = destination.getX();
+		final int y = destination.getY();
+		new GameEvent(admin.getName(), TELEPORT, teleported.getName(), destination.getName(),
+				zone.getName(), Integer.toString(x), Integer.toString(y)).raise();
+		teleported.teleport(zone, x, y, null, admin);
+		SingletonRepository.getJail().grantParoleIfPlayerWasAPrisoner(teleported);
 	}
 
 }

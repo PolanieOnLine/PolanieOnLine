@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.actions;
 
+import static games.stendhal.common.constants.Actions.DESTINATION;
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TELEPORT;
 import static games.stendhal.common.constants.Actions.TYPE;
@@ -43,13 +44,36 @@ class TeleportAction implements SlashAction {
 
 		teleport.put(TYPE, TELEPORT);
 		teleport.put(TARGET, params[0]);
-		teleport.put(ZONE, params[1]);
-		teleport.put(X, params[2]);
-		teleport.put(Y, params[3]);
+		if (hasCoordinates(params, remainder)) {
+			teleport.put(ZONE, params[1]);
+			teleport.put(X, params[2]);
+			teleport.put(Y, params[3]);
+		} else {
+			teleport.put(DESTINATION, buildDestinationName(params, remainder));
+		}
 
 		ClientSingletonRepository.getClientFramework().send(teleport);
 
 		return true;
+	}
+
+	private boolean hasCoordinates(final String[] params, final String remainder) {
+		return (params[2] != null) && params[2].matches("-?\\d+")
+				&& (params[3] != null) && params[3].matches("-?\\d+")
+				&& remainder.isEmpty();
+	}
+
+	private String buildDestinationName(final String[] params, final String remainder) {
+		final StringBuilder destination = new StringBuilder(params[1]);
+		for (int i = 2; i < params.length; i++) {
+			if (params[i] != null) {
+				destination.append(' ').append(params[i]);
+			}
+		}
+		if (!remainder.isEmpty()) {
+			destination.append(' ').append(remainder);
+		}
+		return destination.toString();
 	}
 
 	/**
@@ -69,6 +93,6 @@ class TeleportAction implements SlashAction {
 	 */
 	@Override
 	public int getMinimumParameters() {
-		return 4;
+		return 2;
 	}
 }

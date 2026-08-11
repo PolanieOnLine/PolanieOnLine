@@ -40,11 +40,30 @@ public class TeleportActionTest {
 			@Override
 			public void send(final RPAction action) {
 				assertEquals("teleport", action.get("type"));
+				assertEquals("target", action.get("target"));
+				assertEquals("30", action.get("zone"));
+				assertEquals("3", action.get("x"));
+				assertEquals("4", action.get("y"));
 			}
 		};
 		final TeleportAction action = new TeleportAction();
 		String[] param = {"target", "30", "3", "4"};
-		assertTrue(action.execute(param, "reason"));
+		assertTrue(action.execute(param, ""));
+	}
+
+	@Test
+	public void testExecuteToNamedDestination() {
+		new MockStendhalClient() {
+			@Override
+			public void send(final RPAction action) {
+				assertEquals("teleport", action.get("type"));
+				assertEquals("target", action.get("target"));
+				assertEquals("Mr. Taxman", action.get("destination"));
+			}
+		};
+		final TeleportAction action = new TeleportAction();
+		String[] param = {"target", "Mr.", "Taxman", null};
+		assertTrue(action.execute(param, ""));
 	}
 
 	/**
@@ -62,7 +81,7 @@ public class TeleportActionTest {
 	@Test
 	public void testGetMinimumParameters() {
 		final TeleportAction action = new TeleportAction();
-		assertThat(action.getMinimumParameters(), is(4));
+		assertThat(action.getMinimumParameters(), is(2));
 	}
 
 }
