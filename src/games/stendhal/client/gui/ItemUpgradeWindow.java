@@ -16,16 +16,20 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -67,6 +71,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private int npcId;
 	private String selectedPath;
 	private String requestToken;
+	private boolean selectionCleared;
 
 	private ItemUpgradeWindow() {
 		super("item-upgrade", "Ulepszanie przedmiotu");
@@ -99,10 +104,33 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		});
 	}
 
+	/**
+	 * Check whether an inventory item can currently be selected from its
+	 * context menu.
+	 *
+	 * @return {@code true} when the upgrade window is open
+	 */
+	public static boolean isOpenForItemSelection() {
+		return instance != null && instance.isVisible();
+	}
+
+	/** Select an inventory item in the already open upgrade window. */
+	public static void selectItemForUpgrade(final Item item) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (isOpenForItemSelection() && item != null) {
+					instance.selectItem(item);
+					instance.raise();
+				}
+			}
+		});
+	}
+
 	private JComponent buildContent() {
 		final JPanel content = new JPanel(new BorderLayout(8, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(420, 450));
+		content.setPreferredSize(new Dimension(420, 480));
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
 		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
@@ -115,6 +143,16 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		names.add(itemName);
 		names.add(level);
 		identity.add(names, BorderLayout.CENTER);
+		final MousePopupAdapter selectionPopup = new MousePopupAdapter() {
+			@Override
+			protected void showPopup(final MouseEvent event) {
+				showSelectionPopup(event);
+			}
+		};
+		identity.addMouseListener(selectionPopup);
+		icon.addMouseListener(selectionPopup);
+		itemName.addMouseListener(selectionPopup);
+		level.addMouseListener(selectionPopup);
 		top.add(identity, BorderLayout.CENTER);
 		content.add(top, BorderLayout.NORTH);
 
@@ -126,37 +164,29 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.insets = new Insets(0, 0, 3, 0);
 
-		constraints.gridy = 0;
-		center.add(sectionTitle("Rezultat następnego ulepszenia"), constraints);
 		stats.setLayout(new GridLayout(0, 1, 2, 2));
 		stats.setBorder(cardBorder());
-		constraints.gridy++;
-		constraints.insets = new Insets(0, 0, 8, 0);
-		center.add(stats, constraints);
-
-		constraints.gridy++;
-		constraints.insets = new Insets(0, 0, 3, 0);
-		center.add(sectionTitle("Koszt i szansa"), constraints);
 		final JPanel requirements = new JPanel(new GridLayout(0, 1, 2, 2));
 		requirements.setBorder(cardBorder());
 		requirements.add(chance);
 		requirements.add(fee);
-		constraints.gridy++;
-		constraints.insets = new Insets(0, 0, 8, 0);
-		center.add(requirements, constraints);
-
-		constraints.gridy++;
-		constraints.insets = new Insets(0, 0, 3, 0);
-		center.add(sectionTitle("Materiały — posiadasz / wymagane"), constraints);
 		materials.setBorder(cardBorder());
+
+		constraints.gridy = 0;
+		constraints.insets = new Insets(0, 0, 8, 0);
+		center.add(sectionPanel("Rezultat następnego ulepszenia", stats),
+				constraints);
+		constraints.gridy++;
+		center.add(sectionPanel("Koszt i szansa", requirements), constraints);
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 0, 0);
-		center.add(materials, constraints);
+		center.add(sectionPanel("Materiały — posiadasz / wymagane", materials),
+				constraints);
 
 		constraints.gridy++;
 		constraints.weighty = 1.0;
 		constraints.fill = GridBagConstraints.BOTH;
-		center.add(new JPanel(), constraints);
+		center.add(Box.createVerticalGlue(), constraints);
 		content.add(center, BorderLayout.CENTER);
 
 		final JPanel bottom = new JPanel(new BorderLayout(4, 4));
@@ -184,7 +214,53 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return content;
 	}
 
+	private void showSelectionPopup(final MouseEvent event) {
+		if (selectedPath == null) {
+			return;
+		}
+		final JPopupMenu menu = new JPopupMenu();
+		final JMenuItem clear = new JMenuItem("Wyczyść");
+		clear.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent actionEvent) {
+				clearSelection();
+			}
+		});
+		menu.add(clear);
+		menu.show(event.getComponent(), event.getX(), event.getY());
+	}
+
+	private void clearSelection() {
+		selectionCleared = true;
+		selectedPath = null;
+		requestToken = null;
+		itemName.setText("Przeciągnij tutaj przedmiot");
+		level.setText("Przedmiot pozostanie w ekwipunku.");
+		icon.setItem(null, null);
+		icon.setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
+		stats.removeAll();
+		stats.add(centered(
+				"Po wybraniu przedmiotu zobaczysz zmianę statystyk."));
+		chance.setText(htmlValue("Szansa powodzenia", "—"));
+		fee.setText(htmlValue("Koszt", "—"));
+		showEmptyMaterials();
+		status.setForeground(ACCENT);
+		status.setText("Przeciągnij przedmiot z ekwipunku do slotu.");
+		refresh.setEnabled(false);
+		upgrade.setEnabled(false);
+		upgrade.setToolTipText("Najpierw wybierz przedmiot.");
+		revalidate();
+		repaint();
+	}
+
 	private void apply(final RPEvent event) {
+		final String phase = event.has("phase") ? event.get("phase") : "";
+		if (selectionCleared && !"open".equals(phase)) {
+			return;
+		}
+		if ("open".equals(phase)) {
+			selectionCleared = false;
+		}
 		if (event.has("npc_id")) {
 			npcId = event.getInt("npc_id");
 		}
@@ -204,12 +280,14 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			level.setText("Poziom ulepszenia: +" + event.getInt("upgrade_level")
 					+ " / +" + event.getInt("max_upgrade_level"));
 			icon.setItem(event.get("class"), event.get("subclass"));
+			icon.setToolTipText("Prawy przycisk myszy: wyczyść wybór.");
 		} else if (!preservePreview) {
 			itemName.setText("NO_UPGRADEABLE_ITEMS".equals(state)
 					? "Brak przedmiotu do ulepszenia"
 					: "Przeciągnij tutaj przedmiot");
 			level.setText("Przedmiot pozostanie w ekwipunku.");
 			icon.setItem(null, null);
+			icon.setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
 		}
 		if (event.has("name") || !preservePreview) {
 			updateStats(event);
@@ -273,11 +351,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final List<String> required = list(event, "material_values");
 		final List<String> owned = list(event, "owned_material_values");
 		if (names.isEmpty()) {
-			materials.setLayout(new BorderLayout());
-			final JLabel empty = centered(
-					"Wymagania pojawią się po wybraniu przedmiotu.");
-			materials.add(empty);
-			setMaterialPanelHeight(empty.getPreferredSize().height);
+			showEmptyMaterials();
 			return;
 		}
 		materials.setLayout(new FlowLayout(FlowLayout.CENTER, 4,
@@ -294,6 +368,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			rowHeight = Math.max(rowHeight, card.getPreferredSize().height);
 		}
 		setMaterialPanelHeight(rowHeight + MATERIAL_ROW_GAP * 2);
+	}
+
+	private void showEmptyMaterials() {
+		materials.removeAll();
+		materials.setLayout(new BorderLayout());
+		final JLabel empty = centered(
+				"Wymagania pojawią się po wybraniu przedmiotu.");
+		materials.add(empty);
+		setMaterialPanelHeight(empty.getPreferredSize().height);
 	}
 
 	private void setMaterialPanelHeight(final int contentHeight) {
@@ -374,6 +457,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return label;
 	}
 
+	private static JPanel sectionPanel(final String title,
+			final JComponent body) {
+		final JPanel section = new JPanel(new BorderLayout(0, 3));
+		section.setOpaque(false);
+		section.add(sectionTitle(title), BorderLayout.NORTH);
+		section.add(body, BorderLayout.CENTER);
+		return section;
+	}
+
 	private static javax.swing.border.Border cardBorder() {
 		return BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(PANEL_BORDER),
@@ -444,6 +536,21 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				+ name + "</font></b></html>";
 	}
 
+	private void selectItem(final Item item) {
+		selectionCleared = false;
+		selectedPath = encodePath(item.getPath());
+		requestToken = null;
+		itemName.setText(item.getName());
+		level.setText("Pobieranie aktualnego podglądu…");
+		icon.setItem(item.getEntityClass(), item.getEntitySubclass());
+		icon.setToolTipText("Prawy przycisk myszy: wyczyść wybór.");
+		upgrade.setEnabled(false);
+		refresh.setEnabled(true);
+		status.setForeground(ACCENT);
+		status.setText("Pobieranie podglądu z serwera…");
+		send("preview", selectedPath, null);
+	}
+
 	private final class ItemIcon extends JComponent implements DropTarget {
 		private static final long serialVersionUID = 1L;
 		private Sprite sprite;
@@ -490,16 +597,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			if (!canAccept(entity)) {
 				return;
 			}
-			selectedPath = encodePath(entity.getPath());
-			requestToken = null;
-			itemName.setText(entity.getName());
-			level.setText("Pobieranie aktualnego podglądu…");
-			icon.setItem(entity.getEntityClass(), entity.getEntitySubclass());
-			upgrade.setEnabled(false);
-			refresh.setEnabled(true);
-			status.setForeground(ACCENT);
-			status.setText("Pobieranie podglądu z serwera…");
-			send("preview", selectedPath, null);
+			selectItem((Item) entity);
 		}
 	}
 

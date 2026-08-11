@@ -16,6 +16,7 @@ import { ui } from "../UI";
 
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "../dialog/DropQuantitySelectorDialog";
+import { ItemUpgradeDialog } from "../dialog/ItemUpgradeDialog";
 import { Item } from "../../entity/Item";
 
 import { singletons } from "../../SingletonRepo";
@@ -392,6 +393,15 @@ export class ItemContainerImplementation {
 
 			if (this.isRightClick(event) || long_touch) {
 				const append = [];
+				const selectedItem = (event.target as any).dataItem as Item;
+				if (ItemUpgradeDialog.canSelectItem(selectedItem)) {
+					append.push({
+						title: "Ulepsz przedmiot",
+						action: (entity: Item) => {
+							ItemUpgradeDialog.selectItemForUpgrade(entity);
+						}
+					});
+				}
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?
 					const tmp = this;

@@ -5,8 +5,11 @@
 import { marauroa } from "marauroa";
 import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
+import { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 import { stendhal } from "../../stendhal";
+import { ui } from "../UI";
+import { ActionContextMenu } from "./ActionContextMenu";
 import { FloatingWindow } from "../toolkit/FloatingWindow";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 
@@ -30,6 +33,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private npcId = 0;
 	private selectedPath?: string;
 	private requestToken?: string;
+	private selectionCleared = false;
 
 	private constructor() {
 		super("empty-div-template");
@@ -54,6 +58,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		});
 		this.icon.addEventListener("touchend", (event: TouchEvent) => {
 			this.onDrop(event);
+		});
+		this.icon.addEventListener("contextmenu", (event: MouseEvent) => {
+			this.onIconContextMenu(event);
 		});
 		identity.appendChild(this.icon);
 		const identityText = document.createElement("div");
@@ -97,11 +104,24 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		ItemUpgradeDialog.active.apply(data);
 	}
 
+	public static canSelectItem(item: Item): boolean {
+		return !!ItemUpgradeDialog.active
+				&& ItemUpgradeDialog.active.isOwnedPath(item.getIdPath());
+	}
+
+	public static selectItemForUpgrade(item: Item): void {
+		if (ItemUpgradeDialog.canSelectItem(item)) {
+			ItemUpgradeDialog.active!.selectItemPath(item.getIdPath());
+		}
+	}
+
 	public override onParentClose(): void {
 		ItemUpgradeDialog.active = undefined;
 	}
 
 	private apply(data: UpgradeEventData): void {
+		if (this.selectionCleared && data.phase !== "open") return;
+		if (data.phase === "open") this.selectionCleared = false;
 		if (data.npc_id !== undefined) this.npcId = Number(data.npc_id || 0);
 		const state = String(data.status || "");
 		const preservePreview = !data.name && this.isInteractionStatus(state)
@@ -246,19 +266,45 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			this.status.dataset.status = "invalid_item";
 			return;
 		}
-		this.selectedPath = path;
+		this.selectItemPath(path);
+	}
+
+	private canAcceptHeldItem(): boolean {
+		if (!stendhal.ui.heldObject || !stendhal.ui.heldObject.path) return false;
+		return this.isOwnedPath(stendhal.ui.heldObject.path);
+	}
+
+	private isOwnedPath(path: string): boolean {
+		const parts = this.normalizePath(path).split("/");
+		return parts.length >= 3 && parts[0] === String(marauroa.me["id"]);
+	}
+
+	private selectItemPath(path: string): void {
+		const normalizedPath = this.normalizePath(path);
+		if (!this.isOwnedPath(normalizedPath)) return;
+		this.selectionCleared = false;
+		this.selectedPath = normalizedPath;
 		this.requestToken = undefined;
 		this.upgradeButton.disabled = true;
 		this.refreshButton.disabled = true;
 		this.status.textContent = "Pobieranie podglądu z serwera…";
 		this.status.dataset.status = "select_item";
-		this.send("preview", path);
+		this.send("preview", normalizedPath);
 	}
 
-	private canAcceptHeldItem(): boolean {
-		if (!stendhal.ui.heldObject || !stendhal.ui.heldObject.path) return false;
-		const path = this.normalizePath(stendhal.ui.heldObject.path).split("/");
-		return path.length >= 3 && path[0] === String(marauroa.me["id"]);
+	private onIconContextMenu(event: MouseEvent): void {
+		event.preventDefault();
+		if (!this.selectedPath) return;
+		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow(
+				"Czynności", new ActionContextMenu(undefined, [{
+					title: "Wyczyść",
+					action: () => this.clearSelection()
+				}]), event.pageX - 50, event.pageY - 5));
+	}
+
+	private clearSelection(): void {
+		this.apply({status: "SELECT_ITEM"});
+		this.selectionCleared = true;
 	}
 
 	private normalizePath(path: string): string {
