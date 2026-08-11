@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import games.stendhal.common.Constants;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
@@ -37,6 +38,8 @@ public final class ItemTooltipService {
 					"cloak", "boots", "glove", "gloves", "legs", "belt", "belts")));
 	private static final Set<String> ACCESSORY_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("ring", "necklace")));
+	private static final Set<String> EQUIPMENT_SLOTS = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList(Constants.EQUIPMENT_SLOTS)));
 
 	private ItemTooltipService() {
 		// utility class
@@ -52,6 +55,7 @@ public final class ItemTooltipService {
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
+		publishEquipmentSlots(item);
 		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
 				item.getAttributeWithUpgrade("ratk", 0));
@@ -167,6 +171,22 @@ public final class ItemTooltipService {
 		}
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
+		}
+	}
+
+	private static void publishEquipmentSlots(final Item item) {
+		final StringBuilder slots = new StringBuilder();
+		for (final String slot : item.getPossibleSlots()) {
+			if (!EQUIPMENT_SLOTS.contains(slot)) {
+				continue;
+			}
+			if (slots.length() > 0) {
+				slots.append(';');
+			}
+			slots.append(slot);
+		}
+		if (slots.length() > 0) {
+			put(item, ItemTooltip.EQUIPMENT_SLOTS, slots.toString());
 		}
 	}
 

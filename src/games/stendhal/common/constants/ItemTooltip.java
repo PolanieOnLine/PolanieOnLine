@@ -21,6 +21,7 @@ public final class ItemTooltip {
 	public static final String CATEGORY_ARMOUR = "armour";
 	public static final String CATEGORY_ACCESSORY = "accessory";
 	public static final String CATEGORY_OTHER = "other";
+	public static final String EQUIPMENT_SLOTS = "equipment_slots";
 
 	public static final String ATTACK = "atk";
 	public static final String RANGED_ATTACK = "ratk";

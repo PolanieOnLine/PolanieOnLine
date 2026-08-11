@@ -22,6 +22,8 @@ import utilities.RPClass.CreatureTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class RPEntityWeaponDamageRollTest {
+	private static final String OFFENSIVE_RUNE_SLOT = "offensive_rune";
+
 	@BeforeClass
 	public static void generateRPClasses() {
 		ItemTestHelper.generateRPClasses();
@@ -57,6 +59,28 @@ public class RPEntityWeaponDamageRollTest {
 		assertEquals(80.0f, attacker.getItemAtkForAttack(), 0.0001f);
 	}
 
+	@Test
+	public void glyphAttackPercentageFollowsActualModifiedWeaponRoll() {
+		final Weapon dagger = fixedWeapon("dagger", 20);
+		final Weapon axe = fixedWeapon("axe", 10);
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.<Item>asList(dagger, axe), 50, 10.0);
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+
+		// Stable equipment attack is 80, so the stable value is 88 with the
+		// +10% glyph. Against heavy armor the actual weapon contribution is
+		// 20*0.40 + 10*1.30 = 21. The percentage must follow that actual 21-point
+		// contribution: (50 + 21) * 1.10 = 78.1. Applying the glyph to the stable
+		// weapon value before substituting the roll would incorrectly produce 79.
+		final float expected = (50.0f + 20.0f * 0.40f + 10.0f * 1.30f) * 1.10f;
+		final float attack = attacker.getItemAtkForAttack(weapon ->
+				WeaponArmorInteractionService.getDamageMultiplier(
+						weapon, defender));
+
+		assertEquals(expected, attack, 0.0001f);
+	}
+
 	private static Weapon fixedWeapon(final String weaponClass,
 			final int damage) {
 		final Map<String, String> attributes = new HashMap<String, String>();
@@ -90,6 +114,35 @@ public class RPEntityWeaponDamageRollTest {
 				attack += weapon.getAverageDamage();
 			}
 			return attack;
+		}
+
+		@Override
+		protected void dropItemsOn(final Corpse corpse) {
+			// no items
+		}
+
+		@Override
+		public void logic() {
+			// no logic
+		}
+	}
+
+	private static final class TestDressedEntity extends DressedEntity {
+		private final List<Item> weapons;
+
+		private TestDressedEntity(final List<Item> weapons,
+				final int flatGlyphAttack, final double glyphAttackPercentage) {
+			this.weapons = weapons;
+			addSlot(OFFENSIVE_RUNE_SLOT);
+			final Item glyph = new Item("test attack glyph", "glyph", "test", null);
+			glyph.put("atk", flatGlyphAttack);
+			glyph.put("atk_additional_bonus", glyphAttackPercentage);
+			getSlot(OFFENSIVE_RUNE_SLOT).add(glyph);
+		}
+
+		@Override
+		public List<Item> getWeapons() {
+			return weapons;
 		}
 
 		@Override

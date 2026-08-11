@@ -14,6 +14,12 @@ public final class CriticalHitService {
 	public static final String CRITICAL_CHANCE_ATTRIBUTE = "critical_chance";
 	public static final String CRITICAL_DAMAGE_BONUS_ATTRIBUTE =
 			"critical_damage_bonus";
+	/**
+	 * Legacy glyph wire attribute. Unlike {@link #CRITICAL_DAMAGE_BONUS_ATTRIBUTE},
+	 * its value is stored in percentage points (25.0 means +25%).
+	 */
+	public static final String GLYPH_CRITICAL_DAMAGE_PERCENT_ATTRIBUTE =
+			"critical_additional_bonus";
 	public static final double BASE_CRITICAL_CHANCE = 10.0;
 	public static final double MAX_CRITICAL_CHANCE = 50.0;
 	public static final double BASE_CRITICAL_DAMAGE_MULTIPLIER = 2.0;
@@ -60,6 +66,9 @@ public final class CriticalHitService {
 	 * Returns the final critical damage multiplier. A weapon affix value of 0.20
 	 * raises a normal 2.00x critical to 2.20x. Dual-wield weapon bonuses are
 	 * weighted by average damage; jewellery contributes its own flat fractions.
+	 * Glyph critical-damage values use their historical percentage-point format,
+	 * so a glyph value of 25.0 contributes 0.25 to the multiplier. All sources
+	 * share the same +50% critical-damage cap.
 	 */
 	public static double getCriticalDamageMultiplier(final Player player) {
 		if (player == null) {
@@ -70,29 +79,21 @@ public final class CriticalHitService {
 		bonus += getFraction(player.getRing(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
 		bonus += getFraction(player.getRingB(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
 		bonus += getFraction(player.getNecklace(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
+		for (final Item glyph : player.getAllEquippedGlyphs()) {
+			bonus += getPercentagePointsAsFraction(glyph,
+					GLYPH_CRITICAL_DAMAGE_PERCENT_ATTRIBUTE);
+		}
 		bonus = Math.min(MAX_CRITICAL_DAMAGE_BONUS, Math.max(0.0, bonus));
 		return BASE_CRITICAL_DAMAGE_MULTIPLIER + bonus;
 	}
 
-	/**
-	 * Applies critical damage while preserving the existing flat
-	 * critical_additional_bonus supplied by equipped glyphs.
-	 */
+	/** Applies the final critical-damage multiplier to positive damage. */
 	public static int applyCriticalDamage(final Player player, final int damage) {
 		if (damage <= 0) {
 			return damage;
 		}
-		int result = (int) Math.round(damage * getCriticalDamageMultiplier(player));
-		if (player != null) {
-			double flatBonus = 0.0;
-			for (final Item glyph : player.getAllEquippedGlyphs()) {
-				if (glyph.has("critical_additional_bonus")) {
-					flatBonus += glyph.getDouble("critical_additional_bonus");
-				}
-			}
-			result += (int) flatBonus;
-		}
-		return Math.max(0, result);
+		return Math.max(0,
+				(int) Math.round(damage * getCriticalDamageMultiplier(player)));
 	}
 
 	/** Rolls one critical-hit attempt using the final percentage chance. */
@@ -152,5 +153,17 @@ public final class CriticalHitService {
 			return 0.0;
 		}
 		return Math.min(1.0, Math.max(0.0, value));
+	}
+
+	private static double getPercentagePointsAsFraction(final Item item,
+			final String attribute) {
+		if (item == null || attribute == null || !item.has(attribute)) {
+			return 0.0;
+		}
+		final double value = item.getDouble(attribute);
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		return Math.max(0.0, value) / 100.0;
 	}
 }

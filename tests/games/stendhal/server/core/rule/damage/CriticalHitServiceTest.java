@@ -142,13 +142,30 @@ public class CriticalHitServiceTest {
 	}
 
 	@Test
-	public void flatGlyphCriticalDamageBonusIsStillPreserved() {
+	public void glyphCriticalDamageBonusUsesPercentageSemantics() {
 		final Player player = player();
 		final Item glyph = new Item("critical damage glyph", "glyph", "test", null);
-		glyph.put("critical_additional_bonus", 7.0);
+		glyph.put(CriticalHitService.GLYPH_CRITICAL_DAMAGE_PERCENT_ATTRIBUTE, 25.0);
 		assertTrue(player.equip("offensive_rune", glyph));
 
-		assertEquals(207, CriticalHitService.applyCriticalDamage(player, 100));
+		assertEquals(2.25, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(225, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void glyphAndEquipmentCriticalDamageShareFiftyPercentCap() {
+		final Player player = player();
+		final Weapon weapon = weapon(0.0);
+		weapon.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.30);
+		final Item glyph = new Item("critical damage glyph", "glyph", "test", null);
+		glyph.put(CriticalHitService.GLYPH_CRITICAL_DAMAGE_PERCENT_ATTRIBUTE, 25.0);
+		assertTrue(player.equip("rhand", weapon));
+		assertTrue(player.equip("offensive_rune", glyph));
+
+		assertEquals(2.50, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(250, CriticalHitService.applyCriticalDamage(player, 100));
 	}
 
 	@Test

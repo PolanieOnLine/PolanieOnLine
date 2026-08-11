@@ -35,6 +35,8 @@ import marauroa.common.game.RPObject;
 final class ItemRarityPresentation {
 	private static final String FALLBACK_TEXT_COLOR = "#f3efe7";
 	private static final String FALLBACK_ACCENT_COLOR = "#a37861";
+	private static final String BETTER_COLOR = "#62d26f";
+	private static final String WORSE_COLOR = "#ef6a62";
 	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
@@ -63,6 +65,15 @@ final class ItemRarityPresentation {
 	}
 
 	static String buildItemToolTip(final IEntity entity) {
+		if (entity == null) {
+			return null;
+		}
+		return buildItemToolTip(entity,
+				EquipmentComparisonResolver.resolve(entity.getRPObject()));
+	}
+
+	static String buildItemToolTip(final IEntity entity,
+			final RPObject equippedItem) {
 		if (entity == null) {
 			return null;
 		}
@@ -95,13 +106,14 @@ final class ItemRarityPresentation {
 		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);
+		appendComparisonHeader(tooltip, equippedItem);
 		if (performance != null) {
-			appendWeaponPerformance(tooltip, object, performance);
+			appendWeaponPerformance(tooltip, object, performance, equippedItem);
 		} else if (armour) {
-			appendArmourPerformance(tooltip, object);
+			appendArmourPerformance(tooltip, object, equippedItem);
 		}
-		appendCoreStats(tooltip, object, weapon);
-		appendBonuses(tooltip, object, weapon, armour);
+		appendCoreStats(tooltip, object, equippedItem, weapon);
+		appendBonuses(tooltip, object, equippedItem, weapon, armour);
 		final String legendaryAffix = LegendaryAffixPresentation.build(object);
 		if (!legendaryAffix.isEmpty()) {
 			appendDivider(tooltip);
@@ -112,7 +124,7 @@ final class ItemRarityPresentation {
 		return tooltip.toString();
 	}
 
-	private static String resolveCategory(final RPObject object) {
+	static String resolveCategory(final RPObject object) {
 		final String published = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.CATEGORY);
 		if (ItemTooltip.CATEGORY_WEAPON.equals(published)
@@ -184,6 +196,20 @@ final class ItemRarityPresentation {
 		appendUpgrade(tooltip, object, rarity);
 	}
 
+	private static void appendComparisonHeader(final StringBuilder tooltip,
+			final RPObject equippedItem) {
+		if (equippedItem == null) {
+			return;
+		}
+		final String name = equippedItem.has("title") ? equippedItem.get("title")
+				: equippedItem.has("name") ? equippedItem.get("name") : null;
+		if (name != null && !name.isEmpty()) {
+			tooltip.append("<br><font size='-1' color='")
+					.append(getAccentColor()).append("'>Porównanie z: ")
+					.append(escapeHtml(name)).append("</font>");
+		}
+	}
+
 	private static void appendUpgrade(final StringBuilder tooltip,
 			final RPObject object, final ItemRarity rarity) {
 		final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
@@ -206,45 +232,56 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
-			final RPObject object, final WeaponPerformance performance) {
+			final RPObject object, final WeaponPerformance performance,
+			final RPObject equippedItem) {
+		final WeaponPerformance equipped = WeaponPerformanceCalculator.calculate(
+				equippedItem);
 		appendDivider(tooltip);
 		appendPrimaryValue(tooltip,
 				formatOneDecimal(performance.getBaseDps())
-						+ " pkt. obrażeń na sekundę", null);
+						+ " pkt. obrażeń na sekundę"
+						+ (equipped == null ? "" : delta(
+								performance.getBaseDps(), equipped.getBaseDps(), 1)), null);
 
 		tooltip.append("<table cellpadding='0' cellspacing='0'>");
 		appendTreeDetail(tooltip, true,
 				"[" + performance.getDamageMin() + "–"
 						+ performance.getDamageMax()
-						+ "] pkt. obrażeń za trafienie");
+						+ "] pkt. obrażeń za trafienie",
+				equipped == null ? "" : damageRangeDelta(performance, equipped));
 		appendTreeDetail(tooltip, false,
 				formatTwoDecimals(performance.getAttacksPerSecond())
 						+ " ataku na sekundę ("
-						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")");
+						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")",
+				equipped == null ? "" : delta(performance.getAttacksPerSecond(),
+						equipped.getAttacksPerSecond(), 2));
 		tooltip.append("</table>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.RANGE);
+		final int equippedRange = WeaponPerformanceCalculator.getInt(equippedItem,
 				ItemTooltip.RANGE);
 		final String damageType = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.DAMAGE_TYPE);
 		final String statuses = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.STATUS_ATTACK);
-		if (range > 0 || damageType != null
+		if (range > 0 || equippedRange > 0 || damageType != null
 				|| (statuses != null && !statuses.isEmpty())) {
 			tooltip.append("<div style='margin-top:3px'><font size='-1' color='")
 					.append(getTextColor()).append("'>");
-			if (range > 0) {
-				tooltip.append("Zasięg: ").append(range);
+			if (range > 0 || equippedRange > 0) {
+				tooltip.append("Zasięg: ").append(range)
+						.append(delta(range, equippedRange, 0));
 			}
 			if (damageType != null) {
-				if (range > 0) {
+				if (range > 0 || equippedRange > 0) {
 					tooltip.append("<br>");
 				}
 				tooltip.append("Typ obrażeń: ")
 						.append(escapeHtml(localizeDamageType(damageType)));
 			}
 			if (statuses != null && !statuses.isEmpty()) {
-				if (range > 0 || damageType != null) {
+				if (range > 0 || equippedRange > 0 || damageType != null) {
 					tooltip.append("<br>");
 				}
 				tooltip.append("Efekty trafienia: ")
@@ -255,14 +292,18 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendArmourPerformance(final StringBuilder tooltip,
-			final RPObject object) {
+			final RPObject object, final RPObject equippedItem) {
 		final int armour = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.DEFENSE);
 		if (armour <= 0) {
 			return;
 		}
 		appendDivider(tooltip);
-		appendPrimaryValue(tooltip, armour + " pkt. pancerza", null);
+		final int equippedArmour = WeaponPerformanceCalculator.getInt(equippedItem,
+				ItemTooltip.DEFENSE);
+		appendPrimaryValue(tooltip, armour + " pkt. pancerza"
+				+ (equippedItem == null ? ""
+						: delta(armour, equippedArmour, 0)), null);
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
@@ -278,7 +319,8 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendTreeDetail(final StringBuilder tooltip,
-			final boolean branchContinues, final String details) {
+			final boolean branchContinues, final String details,
+			final String comparison) {
 		tooltip.append("<tr><td valign='top'><font size='-1' color='")
 				.append(getAccentColor()).append("'>")
 				.append(branchContinues
@@ -286,6 +328,7 @@ final class ItemRarityPresentation {
 				.append("</font></td><td><font size='-1' color='")
 				.append(getTextColor()).append("'>")
 				.append(escapeHtml(details))
+				.append(comparison)
 				.append("</font></td></tr>");
 	}
 
@@ -313,15 +356,20 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendCoreStats(final StringBuilder tooltip,
-			final RPObject object, final boolean weapon) {
+			final RPObject object, final RPObject equippedItem,
+			final boolean weapon) {
 		final StringBuilder stats = new StringBuilder();
 		if (weapon) {
-			appendPlainStat(stats, "Pancerz", WeaponPerformanceCalculator.getInt(
-					object, ItemTooltip.DEFENSE));
+			appendPlainStat(stats, "Pancerz",
+					WeaponPerformanceCalculator.getInt(object, ItemTooltip.DEFENSE),
+					WeaponPerformanceCalculator.getInt(equippedItem,
+							ItemTooltip.DEFENSE), equippedItem != null);
 		}
 
-		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
-				object, ItemTooltip.SKILL_ATTACK));
+		appendPlainStat(stats, "Siła ataku",
+				WeaponPerformanceCalculator.getInt(object, ItemTooltip.SKILL_ATTACK),
+				WeaponPerformanceCalculator.getInt(equippedItem,
+						ItemTooltip.SKILL_ATTACK), equippedItem != null);
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1'>").append(stats).append("</font>");
@@ -329,7 +377,8 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
-			final RPObject object, final boolean weapon, final boolean armour) {
+			final RPObject object, final RPObject equippedItem,
+			final boolean weapon, final boolean armour) {
 		final StringBuilder coreBonuses = new StringBuilder();
 		final StringBuilder resistances = new StringBuilder();
 		final StringBuilder specialBonuses = new StringBuilder();
@@ -341,10 +390,13 @@ final class ItemRarityPresentation {
 					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
 					WeaponPerformanceCalculator.getInt(object,
 							ItemTooltip.RANGED_ATTACK));
-			if (attack != 0) {
-				appendBonusLine(coreBonuses,
-						signed(Integer.toString(attack)) + " ataku");
-			}
+			final int equippedAttack = Math.max(
+					WeaponPerformanceCalculator.getInt(equippedItem,
+							ItemTooltip.ATTACK),
+					WeaponPerformanceCalculator.getInt(equippedItem,
+							ItemTooltip.RANGED_ATTACK));
+			appendComparableBonusLine(coreBonuses, attack, equippedAttack,
+					"ataku", equippedItem != null);
 		}
 
 		/* Accessories and miscellaneous equipment keep DEF beside other bonuses.
@@ -352,68 +404,90 @@ final class ItemRarityPresentation {
 		if (!weapon && !armour) {
 			final int defense = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.DEFENSE);
-			if (defense != 0) {
-				appendBonusLine(coreBonuses,
-						signed(Integer.toString(defense)) + " pancerza");
-			}
+			appendComparableBonusLine(coreBonuses, defense,
+					WeaponPerformanceCalculator.getInt(equippedItem,
+							ItemTooltip.DEFENSE), "pancerza", equippedItem != null);
 		}
-		appendIntegerBonus(coreBonuses, object, ItemTooltip.HEALTH, "zdrowia");
-		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_ATTACK_BONUS,
+		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,
+				"zdrowia");
+		appendFlatAffixBonus(coreBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
+				ItemTooltip.FLAT_ATTACK_BONUS, "dodatkowego ataku",
 				"ataku z affixu");
-		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_DEFENSE_BONUS,
+		appendFlatAffixBonus(coreBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
+				ItemTooltip.FLAT_DEFENSE_BONUS, "dodatkowego pancerza",
 				"pancerza z affixu");
 
 		/* Resistances form their own visual block so the player can separate
 		 * elemental protection from the item's defining flat statistics. */
-		appendResistance(resistances, object, "light", "światło");
-		appendResistance(resistances, object, "dark", "mrok");
-		appendResistance(resistances, object, "fire", "ogień");
-		appendResistance(resistances, object, "ice", "lód");
-		appendResistance(resistances, object, "earth", "naturę");
-		appendResistance(resistances, object, "water", "wodę");
-		appendResistance(resistances, object, "cut", "obrażenia fizyczne");
+		appendResistance(resistances, object, equippedItem, "light", "światło");
+		appendResistance(resistances, object, equippedItem, "dark", "mrok");
+		appendResistance(resistances, object, equippedItem, "fire", "ogień");
+		appendResistance(resistances, object, equippedItem, "ice", "lód");
+		appendResistance(resistances, object, equippedItem, "earth", "naturę");
+		appendResistance(resistances, object, equippedItem, "water", "wodę");
+		appendResistance(resistances, object, equippedItem, "cut",
+				"obrażenia fizyczne");
 
 		/* Percentage and proc-like bonuses are the final detail layer and stay
 		 * visually separate from both flat stats and resistances. */
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.ATTACK_BONUS,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.ATTACK_BONUS,
 				"bonusu ataku", false);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.ACCURACY_BONUS,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.ACCURACY_BONUS,
 				"bonusu precyzji", false);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
-		appendPercentageBonus(specialBonuses, object,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.CRITICAL_DAMAGE_BONUS,
 				"obrażeń trafienia krytycznego", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.PARRY_CHANCE,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.PARRY_CHANCE,
 				"szansy na parowanie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.ARMOR_PENETRATION,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.ARMOR_PENETRATION,
 				"penetracji pancerza", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.BLEED_ON_HIT,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.BLEED_ON_HIT,
 				"szansy na krwawienie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.EXECUTE_DAMAGE,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.EXECUTE_DAMAGE,
 				"obrażeń poniżej 25% PW celu", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.POISON_ON_HIT,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.POISON_ON_HIT,
 				"szansy na zatrucie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.DISTANCE_DAMAGE,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.DISTANCE_DAMAGE,
 				"obrażeń z dystansu", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_POISONED,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_POISONED,
 				"odporności na zatrucie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_BLEEDING,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_BLEEDING,
 				"odporności na krwawienie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_SHOCKED,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_SHOCKED,
 				"odporności na szok", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_CONFUSED,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_CONFUSED,
 				"odporności na dezorientację", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_HEAVY,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_HEAVY,
 				"odporności na spowolnienie", true);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.LIFESTEAL,
 				"kradzieży życia", true);
-		appendPercentageBonus(specialBonuses, object,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
-		appendPercentageBonus(specialBonuses, object, ItemTooltip.DEFENSE_BONUS,
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
 
 		appendBonusSection(tooltip, coreBonuses);
@@ -431,69 +505,129 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendResistance(final StringBuilder bonuses,
-			final RPObject object, final String nature, final String label) {
-		final String value = WeaponPerformanceCalculator.getTooltipValue(object,
-				ItemTooltip.RESISTANCE_PREFIX + nature);
-		if (value == null) {
+			final RPObject object, final RPObject equippedItem,
+			final String nature, final String label) {
+		final Double modifier = getResistanceModifier(object, nature);
+		final Double equippedModifier = getResistanceModifier(equippedItem, nature);
+		if (modifier == null || (modifier.doubleValue() == 0.0
+				&& (equippedModifier == null
+						|| equippedModifier.doubleValue() == 0.0))) {
 			return;
 		}
-
-		try {
-			final double modifier = Double.parseDouble(value) - 100.0;
-			if (Math.abs(modifier) < 0.0000001) {
-				return;
-			}
-			appendBonusLine(bonuses, signed(formatCompact(modifier))
-					+ "% odporności na " + label);
-		} catch (final NumberFormatException ignored) {
-			// Invalid tooltip metadata must not break item hover rendering.
-		}
+		appendBonusLine(bonuses, signed(formatCompact(modifier.doubleValue()))
+				+ "% odporności na " + label,
+				equippedItem == null ? "" : delta(modifier.doubleValue(),
+						equippedModifier == null ? 0.0
+								: equippedModifier.doubleValue(), 1));
 	}
 
 	private static void appendPercentageBonus(final StringBuilder bonuses,
-			final RPObject object, final String attribute, final String label,
-			final boolean fraction) {
-		double value = WeaponPerformanceCalculator.getDouble(object, attribute);
-		if (value == 0.0) {
+			final RPObject object, final RPObject equippedItem,
+			final String attribute, final String label, final boolean fraction) {
+		final double value = percentageValue(object, attribute, fraction);
+		final double equippedValue = percentageValue(equippedItem, attribute,
+				fraction);
+		if (value == 0.0 && (equippedItem == null || equippedValue == 0.0)) {
 			return;
 		}
-		if (fraction && Math.abs(value) <= 1.0) {
-			value *= 100.0;
-		}
-		appendBonusLine(bonuses,
-				signed(formatCompact(value)) + "% " + label);
+		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + label,
+				equippedItem == null ? "" : delta(value, equippedValue, 1));
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,
-			final RPObject object, final String attribute, final String label) {
+			final RPObject object, final RPObject equippedItem,
+			final String attribute, final String label) {
 		final int value = WeaponPerformanceCalculator.getInt(object, attribute);
-		if (value != 0) {
-			appendBonusLine(bonuses,
-					signed(Integer.toString(value)) + " " + label);
-		}
+		final int equippedValue = WeaponPerformanceCalculator.getInt(equippedItem,
+				attribute);
+		appendComparableBonusLine(bonuses, value, equippedValue, label,
+				equippedItem != null);
+	}
+
+	private static void appendFlatAffixBonus(final StringBuilder bonuses,
+			final RPObject object, final RPObject equippedItem,
+			final String attribute, final String legacyAttribute,
+			final String label, final String legacyLabel) {
+		final boolean published = hasTooltipValue(object, attribute)
+				|| hasTooltipValue(equippedItem, attribute);
+		final int value = tooltipIntWithFallback(object, attribute,
+				legacyAttribute);
+		final int equippedValue = tooltipIntWithFallback(equippedItem, attribute,
+				legacyAttribute);
+		appendComparableBonusLine(bonuses, value, equippedValue,
+				published ? label : legacyLabel, equippedItem != null);
+	}
+
+	private static int tooltipIntWithFallback(final RPObject object,
+			final String attribute, final String fallback) {
+		return hasTooltipValue(object, attribute)
+				? WeaponPerformanceCalculator.getInt(object, attribute)
+				: WeaponPerformanceCalculator.getInt(object, fallback);
+	}
+
+	private static boolean hasTooltipValue(final RPObject object,
+			final String attribute) {
+		return WeaponPerformanceCalculator.getTooltipValue(object, attribute) != null;
 	}
 
 	private static void appendPlainStat(final StringBuilder stats,
-			final String label, final int value) {
-		if (value != 0) {
-			appendLine(stats, label + ": " + value);
+			final String label, final int value, final int equippedValue,
+			final boolean comparing) {
+		if (value != 0 || (comparing && equippedValue != 0)) {
+			if (stats.length() > 0) {
+				stats.append("<br>");
+			}
+			stats.append(escapeHtml(label + ": " + value));
+			if (comparing) {
+				stats.append(delta(value, equippedValue, 0));
+			}
 		}
 	}
 
-	private static void appendLine(final StringBuilder target,
-			final String line) {
-		if (target.length() > 0) {
-			target.append("<br>");
+	private static void appendComparableBonusLine(final StringBuilder bonuses,
+			final int value, final int equippedValue, final String label,
+			final boolean comparing) {
+		if (value == 0 && (!comparing || equippedValue == 0)) {
+			return;
 		}
-		target.append(escapeHtml(line));
+		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label,
+				comparing ? delta(value, equippedValue, 0) : "");
 	}
 
 	private static void appendBonusLine(final StringBuilder bonuses,
 			final String line) {
+		appendBonusLine(bonuses, line, "");
+	}
+
+	private static void appendBonusLine(final StringBuilder bonuses,
+			final String line, final String comparison) {
 		if (bonuses.length() > 0) {
 			bonuses.append("<br>");
 		}
-		bonuses.append("&#9670; ").append(escapeHtml(line));
+		bonuses.append("&#9670; ").append(escapeHtml(line)).append(comparison);
+	}
+
+	private static Double getResistanceModifier(final RPObject object,
+			final String nature) {
+		final String value = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.RESISTANCE_PREFIX + nature);
+		if (value == null) {
+			return Double.valueOf(0.0);
+		}
+		try {
+			return Double.valueOf(Double.parseDouble(value) - 100.0);
+		} catch (final NumberFormatException ignored) {
+			return null;
+		}
+	}
+
+	private static double percentageValue(final RPObject object,
+			final String attribute, final boolean fraction) {
+		double value = WeaponPerformanceCalculator.getDouble(object, attribute);
+		if (fraction && Math.abs(value) <= 1.0) {
+			value *= 100.0;
+		}
+		return value;
 	}
 
 	private static void appendFooter(final StringBuilder tooltip,
@@ -608,6 +742,50 @@ final class ItemRarityPresentation {
 			return "Fizyczne";
 		}
 		return value;
+	}
+
+	private static String damageRangeDelta(final WeaponPerformance current,
+			final WeaponPerformance equipped) {
+		final int minimum = current.getDamageMin() - equipped.getDamageMin();
+		final int maximum = current.getDamageMax() - equipped.getDamageMax();
+		if (minimum == 0 && maximum == 0) {
+			return "";
+		}
+		return " (" + coloredDeltaValue(minimum, 0) + "–"
+				+ coloredDeltaValue(maximum, 0) + ")";
+	}
+
+	private static String delta(final double current, final double equipped,
+			final int precision) {
+		final double difference = current - equipped;
+		if (isRoundedZero(difference, precision)) {
+			return "";
+		}
+		return " (" + coloredDeltaValue(difference, precision) + ")";
+	}
+
+	private static String coloredDeltaValue(final double difference,
+			final int precision) {
+		if (isRoundedZero(difference, precision)) {
+			return "0";
+		}
+		final String formatted;
+		if (precision == 0) {
+			formatted = Long.toString(Math.round(difference));
+		} else if (precision == 1) {
+			formatted = formatOneDecimal(difference);
+		} else {
+			formatted = formatTwoDecimals(difference);
+		}
+		return "<font color='" + (difference > 0.0 ? BETTER_COLOR : WORSE_COLOR)
+				+ "'>" + signed(formatted) + "</font>";
+	}
+
+	private static boolean isRoundedZero(final double value,
+			final int precision) {
+		final double threshold = precision == 0 ? 0.5
+				: precision == 1 ? 0.05 : 0.005;
+		return Math.abs(value) < threshold;
 	}
 
 	private static String signed(final String value) {
