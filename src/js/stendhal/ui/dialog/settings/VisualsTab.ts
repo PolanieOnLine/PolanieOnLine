@@ -51,6 +51,10 @@ export class VisualsTab extends AbstractSettingsTab {
 		parent.createCheckBox("chk_clickindicator", "click-indicator",
 				"Wyświetlanie kliknięć", "Brak wyświetlania kliknięć");
 
+		parent.createCheckBox("chk_itemtooltipcomparison", "item-tooltip.comparison",
+				"Porównywanie statystyk przedmiotów jest włączone",
+				"Porównywanie statystyk przedmiotów jest wyłączone");
+
 		const chkAnimate = new SettingsComponent("chk_animate", "Animacja wskaźnika aktywności");
 		chkAnimate.setConfigId("activity-indicator.animate");
 		chkAnimate.setEnabled(config.getBoolean("activity-indicator"));

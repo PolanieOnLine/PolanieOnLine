@@ -68,7 +68,7 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 		updateItemLoots(player, command.getDetails("item.set.wampirze"));
 		updateItemHarvest(player, command.getDetails("obtain.apple"));
 
-		updateItemImproves(player, command.getDetails("item.upgrade.sketch"));
+		updateItemUpgrades(player, command.getDetails("item.upgrade.sketch"));
 
 		// delete the entries. We don't need feedback
 		DBCommand deletecommand = new DeletePendingAchievementDetailsCommand(player);
@@ -160,7 +160,7 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 		}
 	}
 
-	private static void updateItemImproves(final Player player, final Map<String, Integer> details) {
+	private static void updateItemUpgrades(final Player player, final Map<String, Integer> details) {
 		// nothing to update
 		if (details == null) {
 			return;
@@ -168,7 +168,7 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 
 		// update player loots which have been stored as param (key) = itemname, count (value) = number of loots
 		for (Map.Entry<String, Integer> detail : details.entrySet()) {
-			player.incImprovedForItem(detail.getKey(), detail.getValue());
+			player.incUpgradedForItem(detail.getKey(), detail.getValue());
 		}
 	}
 }

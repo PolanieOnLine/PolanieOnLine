@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Testing;
+import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPObject;
@@ -32,9 +33,6 @@ import marauroa.common.game.SyntaxException;
  */
 public abstract class DressedEntity extends RPEntity {
 
-	private static final String GLYPH_ATTACK_BONUS_ATTRIBUTE =
-			"atk_additional_bonus";
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DressedEntity.class);
 
@@ -44,6 +42,32 @@ public abstract class DressedEntity extends RPEntity {
 
 	public DressedEntity(RPObject object) {
 		super(object);
+	}
+
+	/**
+	 * Returns attack skill including the flat bonus from currently equipped
+	 * glyphs. The stored/base ATK remains untouched so ATK XP calculations always
+	 * operate on the real trained value.
+	 */
+	@Override
+	public int getAtk() {
+		return applyGlyphSkillAttackBonus(super.getAtk());
+	}
+
+	/**
+	 * Returns capped attack skill including the same dynamic glyph bonus used by
+	 * {@link #getAtk()}.
+	 */
+	@Override
+	public int getCappedAtk() {
+		return applyGlyphSkillAttackBonus(super.getCappedAtk());
+	}
+
+	private int applyGlyphSkillAttackBonus(final int baseAttack) {
+		final long effectiveAttack = (long) baseAttack
+				+ GlyphEffectService.getSkillAttackBonus(this);
+		return (int) Math.max(Short.MIN_VALUE,
+				Math.min(Short.MAX_VALUE, effectiveAttack));
 	}
 
 	/**
@@ -60,7 +84,8 @@ public abstract class DressedEntity extends RPEntity {
 	@Override
 	public float getItemAtkForAttack(
 			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
-		final double glyphAttackBonus = getGlyphAttackBonusFraction();
+		final double glyphAttackBonus =
+				GlyphEffectService.getAttackPercentBonusFraction(this);
 		if (Double.compare(glyphAttackBonus, 0.0) == 0) {
 			return super.getItemAtkForAttack(damageMultiplier);
 		}
@@ -93,17 +118,33 @@ public abstract class DressedEntity extends RPEntity {
 	}
 
 	/**
-	 * Returns the combined glyph attack percentage as a fraction. A stored value
-	 * of 10.0 therefore contributes 0.10.
+	 * Applies glyph-granted lifesteal even when the hit was made without a held
+	 * weapon. The blood glyph is described as granting a percentage of lifesteal,
+	 * while the inherited implementation weights all player lifesteal against
+	 * held weapon ATK and therefore gives a glyph no effect when that sum is zero.
+	 *
+	 * Armed attacks keep using the inherited implementation unchanged so weapon,
+	 * glove and ring lifesteal weighting is not altered.
 	 */
-	private double getGlyphAttackBonusFraction() {
-		double bonus = 0.0;
-		for (final Item glyph : getAllEquippedGlyphs()) {
-			if (glyph.has(GLYPH_ATTACK_BONUS_ATTRIBUTE)) {
-				bonus += glyph.getDouble(GLYPH_ATTACK_BONUS_ATTRIBUTE) / 100.0;
-			}
+	@Override
+	public void handleLifesteal(final RPEntity attacker,
+			final List<Item> attackerWeapons, final int damage) {
+		final double glyphLifesteal =
+				GlyphEffectService.getLifestealBonusFraction(attacker);
+		if (!attackerWeapons.isEmpty()
+				|| Double.compare(glyphLifesteal, 0.0) == 0) {
+			super.handleLifesteal(attacker, attackerWeapons, damage);
+			return;
 		}
-		return bonus;
+
+		// Match the inherited lifesteal rounding and negative-value semantics.
+		final int lifesteal = (int) (damage * glyphLifesteal + 0.5f);
+		if (lifesteal >= 0) {
+			attacker.heal(lifesteal, true);
+		} else {
+			attacker.damage(-lifesteal, attacker);
+		}
+		attacker.notifyWorldAboutChanges();
 	}
 
 	public static void generateRPClass() {

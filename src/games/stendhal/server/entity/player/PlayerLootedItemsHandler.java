@@ -22,7 +22,7 @@ public class PlayerLootedItemsHandler {
 	private final Map<String, Integer> harvested;
 	private final Map<String, Integer> bought;
 	private final Map<String, Integer> sold;
-	private final Map<String, Integer> improved;
+	private final Map<String, Integer> upgraded;
 
 	/**
 	 * Create a new PlayerLootedItemsHandler for a player
@@ -39,7 +39,7 @@ public class PlayerLootedItemsHandler {
 		harvested = new HashMap<String, Integer>();
 		bought = new HashMap<String, Integer>();
 		sold = new HashMap<String, Integer>();
-		improved = new HashMap<String, Integer>();
+		upgraded = new HashMap<String, Integer>();
 		if(player.hasMap(LOOTED_ITEMS)) {
 			for(String item : player.getMap(LOOTED_ITEMS).keySet()) {
 				if(item.contains("produced.")) {
@@ -61,7 +61,8 @@ public class PlayerLootedItemsHandler {
 					sold.put(item.replace("sold.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
 				if(item.contains("improved.")) {
-					improved.put(item.replace("improved.", ""), player.getInt(LOOTED_ITEMS, item));
+					// "improved." is a legacy persistent prefix used by live saves.
+					upgraded.put(item.replace("improved.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
 				if(!item.contains("produced.") && !item.contains("obtained.") && !item.contains("mined.")
 						&& !item.contains("harvested.") && !item.contains("bought.") && !item.contains("sold.")
@@ -86,10 +87,10 @@ public class PlayerLootedItemsHandler {
 		return 0;
 	}
 
-	public int getNumberOfImprovedForItem(String item) {
-		Integer improvedNumber = improved.get(item);
-		if(improvedNumber != null) {
-			return improvedNumber.intValue();
+	public int getNumberOfUpgradesForItem(final String item) {
+		final Integer upgradeCount = upgraded.get(item);
+		if (upgradeCount != null) {
+			return upgradeCount.intValue();
 		}
 		return 0;
 	}
@@ -175,14 +176,14 @@ public class PlayerLootedItemsHandler {
 	}
 
 	/**
-	 * Retrieve the amount of much an item was improved by a player
+	 * Retrieve the number of upgrades performed for an item.
 	 *
 	 * @param item
-	 * @return the improves quantity
+	 * @return upgrade count
 	 */
-	public int getQuantityOfImprovedItems(final String entity) {
-		if (improved.containsKey(entity)) {
-			return improved.get(entity);
+	public int getQuantityOfUpgradedItems(final String entity) {
+		if (upgraded.containsKey(entity)) {
+			return upgraded.get(entity);
 		}
 		return 0;
 	}
@@ -270,13 +271,14 @@ public class PlayerLootedItemsHandler {
 	}
 
 	/**
-	 * Increases the quantity and item was improved by player
+	 * Increases the recorded item-upgrade count.
 	 *
 	 * @param item
 	 * @param count
 	 */
-	public void incImprovedForItem(String item, int count) {
-		handlePrefixedCounting(item, count, "improved.", improved);
+	public void incUpgradedForItem(final String item, final int count) {
+		// Keep the legacy persistent prefix for compatibility with existing saves.
+		handlePrefixedCounting(item, count, "improved.", upgraded);
 	}
 
 	/**

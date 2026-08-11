@@ -45,6 +45,10 @@ public class SettingsProperties {
 
 	public static final String FPS_COUNTER_PROPERTY = "ui.fps_counter";
 
+	/** Property for comparing item tooltip statistics with equipped items. */
+	public static final String ITEM_TOOLTIP_COMPARISON_PROPERTY =
+			"ui.item_tooltip_comparison";
+
 	public static final String UI_RENDERING = "ui.rendering";
 
 	public static final String DISPLAY_SIZE_PROPERTY = "ui.display_size";

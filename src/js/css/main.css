@@ -187,6 +187,71 @@ div.itemSlot {
 .item-rarity-epic { --item-rarity-color: #9b59b6; }
 .item-rarity-legendary { --item-rarity-color: #ff8c00; }
 
+.item-upgrade-dialog {
+	box-sizing: border-box;
+	min-width: 330px;
+	max-width: min(420px, calc(100vw - 40px));
+	padding: 10px;
+}
+
+.item-upgrade-identity {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 10px 0;
+}
+
+.item-upgrade-slot {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	overflow: hidden;
+	border: 1px solid #826a4b;
+	box-shadow: inset 0 0 6px #000;
+}
+
+.item-upgrade-slot:empty::before {
+	content: "+";
+	font-size: 28px;
+	color: #c9ae83;
+}
+
+.item-upgrade-slot--accept {
+	border-color: #50bd62;
+	box-shadow: inset 0 0 6px #000, 0 0 6px #50bd62;
+}
+
+.item-upgrade-slot > * { flex: 0 0 auto; }
+.item-upgrade-name { font-weight: bold; }
+.item-upgrade-dialog h4 { margin: 8px 0 3px; }
+.item-upgrade-materials {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 4px 8px;
+}
+.item-upgrade-material {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 0 0 66px;
+	gap: 1px;
+	text-align: center;
+}
+div.item-upgrade-material-slot {
+	float: none;
+	flex: 0 0 auto;
+}
+.item-upgrade-owned { color: #50bd62; }
+.item-upgrade-missing { color: #e75d50; }
+.item-upgrade-status { min-height: 1.4em; margin-top: 8px; }
+.item-upgrade-status[data-status="success"] { color: #50bd62; }
+.item-upgrade-status[data-status="select_item"] { color: #ffbe40; }
+.item-upgrade-status:not([data-status="ready"]):not([data-status="success"])
+		:not([data-status="select_item"]) { color: #e75d50; }
+
 div.itemSlot.item-rarity {
 	border-image: none;
 	border-color: var(--item-rarity-color);
@@ -217,6 +282,20 @@ div.itemSlot.item-rarity {
 	color: var(--text-color);
 	font-weight: normal;
 }
+
+.item-rarity-tooltip__comparison {
+	color: #c6a58f;
+	font-size: 12px;
+	margin: 2px 0 3px;
+}
+
+.item-tooltip-delta {
+	font-weight: bold;
+}
+
+.item-tooltip-delta--better { color: #62d26f; }
+.item-tooltip-delta--worse { color: #ef6a62; }
+.item-tooltip-delta--equal { color: var(--text-color); }
 
 div#equipmentborder { width: 147px; }
 

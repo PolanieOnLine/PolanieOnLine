@@ -6,6 +6,7 @@ package games.stendhal.server.entity.item;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -161,6 +162,16 @@ public class ItemTooltipServiceTest {
 	@Test
 	public void testUnknownClassIsOther() {
 		assertCategory("container", ItemTooltip.CATEGORY_OTHER);
+	}
+
+	@Test
+	public void testPublishesOnlyEquipmentSlotsInDefinitionOrder() {
+		final Item item = new Item("test sword", "sword", "test", null);
+		item.setEquipableSlots(Arrays.asList("bag", "lhand", "content", "rhand"));
+
+		ItemTooltipService.update(item);
+
+		assertEquals("lhand;rhand", stat(item, ItemTooltip.EQUIPMENT_SLOTS));
 	}
 
 	@Test

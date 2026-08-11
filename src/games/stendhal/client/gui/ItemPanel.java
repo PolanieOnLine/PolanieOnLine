@@ -450,16 +450,15 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		@SuppressWarnings("serial")
 		protected void onMouseRightClick(Point point) {
 			if (view != null) {
-				if (popupMenu == null) {
-					// create the context menu
-					popupMenu = new EntityViewCommandList(getName(), view.getActions(), view) {
-						@Override
-						protected void doAction(final String command) {
-							super.doAction(command);
-							setVisible(false);
-						}
-					};
-				}
+				// Rebuild the menu because some actions depend on currently open
+				// windows, for example selecting an item for an upgrade.
+				popupMenu = new EntityViewCommandList(getName(), view.getActions(), view) {
+					@Override
+					protected void doAction(final String command) {
+						super.doAction(command);
+						setVisible(false);
+					}
+				};
 				/*
 				 * Relocate under the cursor. Offset a bit so that the first
 				 * entry is under the mouse.
