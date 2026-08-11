@@ -20,6 +20,7 @@ import games.stendhal.server.entity.PassiveEntity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.ChestSlot;
+import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
@@ -75,6 +76,8 @@ public class Chest extends Entity implements UseListener {
 			chest.isA("entity");
 			chest.addAttribute("open", Type.FLAG);
 			chest.addAttribute("bank_slot", Type.STRING);
+			chest.addAttribute("#perception_key", Type.STRING, Definition.HIDDEN);
+			chest.addAttribute("#perception_value", Type.STRING, Definition.HIDDEN);
 			chest.addRPSlot("content", 36);
 		}
 	}

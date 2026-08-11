@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018-2021 - Stendhal                    *
+ *                   (C) Copyright 2018-2026 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,8 +20,11 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.events.ZoneEnterExitListener;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.mapstuff.chest.PlayerPrivateStoredChest;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -48,21 +51,42 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import marauroa.common.game.RPObject;
 import marauroa.common.game.SlotIsFullException;
 
 public class PrinceSupply extends AbstractQuest {
 	private static final Logger logger = Logger.getLogger(PrinceSupply.class);
 
 	public static final String QUEST_SLOT = "prince_supply";
+	private static final String ARMORY_ZONE = "int_warszawa_armory";
+	private static final int CHEST_X = 4;
+	private static final int CHEST_Y = 2;
+	private static final int REQUIRED_MINUTES = 1440;
+
 	private final SpeakerNPC npc = npcs.get("Książę");
 
-	private static final int REQUIRED_MINUTES = 1440;
+	private final ZoneEnterExitListener armoryListener = new ZoneEnterExitListener() {
+		@Override
+		public void onEntered(final RPObject object, final StendhalRPZone zone) {
+			if (object instanceof Player) {
+				final Player player = (Player) object;
+				if (player.isQuestInState(QUEST_SLOT, "start")) {
+					ensurePrivateChestForPlayer(player);
+				}
+			}
+		}
+
+		@Override
+		public void onExited(final RPObject object, final StendhalRPZone zone) {
+			// The chest is persistent and remains available for the quest owner.
+		}
+	};
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Buntownicy opanowali arsenał w Warszawie! Potrzebuję śmiałka, który odbierze im rycerski rynsztunek mojej armii. Pomożesz mi odzyskać te skarby?",
 			null);
 
@@ -75,7 +99,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationStates.QUEST_OFFERED,
 			"Moja armia musi być przygotowana na wygnanie buntowników z zamku! Pomożesz mi odzyskać te skarby?",
 			null);
-		
+
 		// player asks about quest which he has done already but it is not time to repeat it
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -98,7 +122,7 @@ public class PrinceSupply extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
-						PrinceSupply.prepareChest();
+						ensurePrivateChestForPlayer(player);
 					}
 				}));
 
@@ -123,7 +147,7 @@ public class PrinceSupply extends AbstractQuest {
 								new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Nie wracaj bez pełnego wyposażenia! Potrzebuję całego kompletu, inaczej rycerze nie będą gotowi do walki.",
 			null);
 
@@ -141,7 +165,7 @@ public class PrinceSupply extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					PrinceSupply.prepareChest();
+					removePrivateChest(player);
 				}
 			});
 
@@ -160,46 +184,93 @@ public class PrinceSupply extends AbstractQuest {
 			new MultipleActions(reward));
 	}
 
-	private static void prepareChest() {
-		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
+	static void ensurePrivateChestForPlayer(final Player player) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(ARMORY_ZONE);
+		removeLegacySharedChests(zone);
 
-		final StoredChest chest = new StoredChest();
-		chest.setPosition(4, 2);
-		zone.add(chest);
-
-		try {
-			Item item = SingletonRepository.getEntityManager().getItem(
-					"kolczuga", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem(
-					"zbroja płytowa", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem(
-					"spodnie kolcze", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem(
-					"hełm kolczy", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem(
-					"buty kolcze", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
-			chest.add(item);
-		} catch (SlotIsFullException e) {
-			logger.info("Could not add items to quest chest", e);
+		if (findPrivateChest(zone, player) != null) {
+			return;
 		}
+
+		final PlayerPrivateStoredChest chest = new PlayerPrivateStoredChest(player);
+		chest.setPosition(CHEST_X, CHEST_Y);
+		populateMissingQuestItems(player, chest);
+		zone.add(chest);
+		zone.storeToDatabase();
+	}
+
+	private static PlayerPrivateStoredChest findPrivateChest(final StendhalRPZone zone,
+			final Player player) {
+		for (final Entity entity : zone.getEntitiesOfClass(PlayerPrivateStoredChest.class)) {
+			final PlayerPrivateStoredChest chest = (PlayerPrivateStoredChest) entity;
+			if (chest.isOwnedBy(player)) {
+				return chest;
+			}
+		}
+		return null;
+	}
+
+	private static void removePrivateChest(final Player player) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(ARMORY_ZONE);
+		final List<Entity> chestsToRemove = new ArrayList<Entity>();
+		for (final Entity entity : zone.getEntitiesOfClass(PlayerPrivateStoredChest.class)) {
+			if (((PlayerPrivateStoredChest) entity).isOwnedBy(player)) {
+				chestsToRemove.add(entity);
+			}
+		}
+		for (final Entity chest : chestsToRemove) {
+			zone.remove(chest.getID());
+		}
+		if (!chestsToRemove.isEmpty()) {
+			zone.storeToDatabase();
+		}
+	}
+
+	private static void removeLegacySharedChests(final StendhalRPZone zone) {
+		final List<Entity> chestsToRemove = new ArrayList<Entity>();
+		for (final Entity entity : zone.getEntitiesOfClass(StoredChest.class)) {
+			if (!(entity instanceof PlayerPrivateStoredChest)
+					&& Math.round(entity.getX()) == CHEST_X
+					&& Math.round(entity.getY()) == CHEST_Y) {
+				chestsToRemove.add(entity);
+			}
+		}
+		for (final Entity chest : chestsToRemove) {
+			zone.remove(chest.getID());
+		}
+	}
+
+	private static void populateMissingQuestItems(final Player player,
+			final PlayerPrivateStoredChest chest) {
+		try {
+			addQuestItemIfMissing(player, chest, "kolczuga",
+					"Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
+			addQuestItemIfMissing(player, chest, "zbroja płytowa",
+					"Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
+			addQuestItemIfMissing(player, chest, "spodnie kolcze",
+					"Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
+			addQuestItemIfMissing(player, chest, "hełm kolczy",
+					"Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
+			addQuestItemIfMissing(player, chest, "buty kolcze",
+					"Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
+		} catch (SlotIsFullException e) {
+			logger.info("Could not add items to private PrinceSupply quest chest", e);
+		}
+	}
+
+	private static void addQuestItemIfMissing(final Player player,
+			final PlayerPrivateStoredChest chest, final String itemName,
+			final String description) {
+		if (new PlayerHasItemdataItemWithHimCondition(itemName, QUEST_SLOT)
+				.fire(player, null, null)) {
+			return;
+		}
+
+		final Item item = SingletonRepository.getEntityManager().getItem(
+				itemName, ItemCreationContext.quest());
+		item.setItemData(QUEST_SLOT);
+		item.setDescription(description);
+		chest.add(item);
 	}
 
 	@Override
@@ -210,6 +281,11 @@ public class PrinceSupply extends AbstractQuest {
 				false);
 		prepareRequestingStep();
 		prepareBringingStep();
+
+		final StendhalRPZone armory = SingletonRepository.getRPWorld().getZone(ARMORY_ZONE);
+		if (armory != null) {
+			armory.addZoneEnterExitListener(armoryListener);
+		}
 	}
 
 	@Override
