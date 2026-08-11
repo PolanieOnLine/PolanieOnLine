@@ -21,7 +21,9 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.SyntaxException;
 
@@ -29,6 +31,9 @@ import marauroa.common.game.SyntaxException;
  * Defines an entity whose appearance (outfit) can be changed.
  */
 public abstract class DressedEntity extends RPEntity {
+
+	private static final String GLYPH_ATTACK_BONUS_ATTRIBUTE =
+			"atk_additional_bonus";
 
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DressedEntity.class);
@@ -39,6 +44,66 @@ public abstract class DressedEntity extends RPEntity {
 
 	public DressedEntity(RPObject object) {
 		super(object);
+	}
+
+	/**
+	 * Resolves a real weapon roll while keeping percentage attack bonuses from
+	 * equipped glyphs attached to that real roll rather than to the weapon's
+	 * stable average damage.
+	 *
+	 * The inherited implementation first calculates the percentage-adjusted
+	 * stable equipment attack and then replaces only the unmodified stable weapon
+	 * component with the rolled one. With an attack glyph this leaves part of the
+	 * percentage bonus tied to the average weapon damage. When no percentage
+	 * attack glyph is equipped, the inherited path is used unchanged.
+	 */
+	@Override
+	public float getItemAtkForAttack(
+			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
+		final double glyphAttackBonus = getGlyphAttackBonusFraction();
+		if (Double.compare(glyphAttackBonus, 0.0) == 0) {
+			return super.getItemAtkForAttack(damageMultiplier);
+		}
+
+		final List<Item> weapons = getWeapons();
+		double weaponRollDelta = 0.0;
+		for (final Item weapon : weapons) {
+			double rolledDamage = weapon.rollDamage();
+			if (damageMultiplier != null) {
+				rolledDamage *= damageMultiplier.applyAsDouble(weapon);
+			}
+			weaponRollDelta += rolledDamage - weapon.getAverageDamage();
+		}
+
+		/* In legacy ATK combat, a wand without spell ammunition contributes only
+		 * 10% of its weapon value. The stable and rolled weapon components are both
+		 * scaled in the inherited calculation, so their delta must be scaled too. */
+		if (!Testing.COMBAT && !weapons.isEmpty()
+				&& weapons.get(0).isOfClass("wand")) {
+			final Item magic = getMagicSpells();
+			if (magic == null || magic.getAttack() == 0) {
+				weaponRollDelta *= 0.1;
+			}
+		}
+
+		final double glyphAttackMultiplier = 1.0 + glyphAttackBonus;
+		return Math.max(0.0f,
+				(float) (getItemAtk()
+						+ weaponRollDelta * glyphAttackMultiplier));
+	}
+
+	/**
+	 * Returns the combined glyph attack percentage as a fraction. A stored value
+	 * of 10.0 therefore contributes 0.10.
+	 */
+	private double getGlyphAttackBonusFraction() {
+		double bonus = 0.0;
+		for (final Item glyph : getAllEquippedGlyphs()) {
+			if (glyph.has(GLYPH_ATTACK_BONUS_ATTRIBUTE)) {
+				bonus += glyph.getDouble(GLYPH_ATTACK_BONUS_ATTRIBUTE) / 100.0;
+			}
+		}
+		return bonus;
 	}
 
 	public static void generateRPClass() {
@@ -206,7 +271,6 @@ public abstract class DressedEntity extends RPEntity {
 					if (has("outfit_colors", part)) {
 						remove("outfit_colors", part);
 					}
-				}
 			}
 		}
 
