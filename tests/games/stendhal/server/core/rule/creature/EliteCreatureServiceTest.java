@@ -103,6 +103,20 @@ public class EliteCreatureServiceTest {
 		assertEquals(1500, creature.getXP());
 	}
 
+	@Test
+	public void promotionKeepsCombatStatsInShortAttributeRange() {
+		final Creature creature = createCreature();
+		creature.setAtk(Short.MAX_VALUE);
+		creature.setRatk(Short.MAX_VALUE);
+		creature.setDef(Short.MAX_VALUE);
+
+		EliteCreatureService.promote(creature);
+
+		assertEquals(Short.MAX_VALUE, creature.getAtk());
+		assertEquals(Short.MAX_VALUE, creature.getRatk());
+		assertEquals(Short.MAX_VALUE, creature.getDef());
+	}
+
 	private Creature createCreature() {
 		final Creature creature = new Creature();
 		creature.setName("testowy potwór");

@@ -189,6 +189,21 @@ public class CreatureRespawnPoint implements TurnListener {
 	}
 
 	/**
+	 * Rolls a small per-spawn variation for a combat statistic.
+	 *
+	 * @param baseValue prototype statistic
+	 * @return randomized statistic before wire-range clamping
+	 */
+	int rollRespawnCombatStat(final int baseValue) {
+		return Rand.randGaussian(baseValue, baseValue / 10);
+	}
+
+	/** Keeps randomized creature statistics valid for SHORT RP attributes. */
+	static int clampRespawnCombatStat(final int value) {
+		return MathHelper.clamp(value, 0, Short.MAX_VALUE);
+	}
+
+	/**
 	 * Checks how many creatures which were spawned here are currently alive.
 	 *
 	 * @return amount of living creatures
@@ -257,10 +272,10 @@ public class CreatureRespawnPoint implements TurnListener {
 
 			// A bit of randomization to make Joan and Snaketails a bit happier.
 			// :)
-			newentity.setAtk(Rand.randGaussian(newentity.getAtk(),
-					newentity.getAtk() / 10));
-			newentity.setDef(Rand.randGaussian(newentity.getDef(),
-					newentity.getDef() / 10));
+			newentity.setAtk(clampRespawnCombatStat(
+					rollRespawnCombatStat(newentity.getAtk())));
+			newentity.setDef(clampRespawnCombatStat(
+					rollRespawnCombatStat(newentity.getDef())));
 
 			// Elite promotion is instance-local and happens only for normal map
 			// respawns. Quest/script-created creatures therefore keep their exact
