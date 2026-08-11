@@ -1445,7 +1445,20 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public boolean isUpgradeable() {
 		return hasUpgradeLimit() && getMaxUpgradeLevel() > 0
-				&& getMaxUpgradeLevel() > getUpgradeLevel();
+				&& getMaxUpgradeLevel() > getUpgradeLevel()
+				&& hasUpgradeableCombatStats();
+	}
+
+	/**
+	 * Checks whether an upgrade can affect a combat statistic of this item.
+	 * Utility and currency items must not become upgradeable merely because a
+	 * legacy save or malformed definition contains {@code max_improves}.
+	 *
+	 * @return {@code true} for offensive equipment and armour
+	 */
+	public boolean hasUpgradeableCombatStats() {
+		return has("atk") || has("ratk") || has("def")
+				|| has("damage_min") || has("damage_max");
 	}
 
 	/** Checks whether this item definition has an upgrade limit. */

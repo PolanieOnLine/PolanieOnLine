@@ -62,6 +62,24 @@ public class ItemUpgradeServiceTest {
 	}
 
 	@Test
+	public void utilityItemWithLegacyUpgradeLimitIsNotACandidate() {
+		final Player player = player("utility_item");
+		final Map<String, String> attributes = new LinkedHashMap<String, String>();
+		attributes.put(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE, "3");
+		final Item potion = new Item("test potion", "drink", "potion",
+				attributes);
+		potion.setEquipableSlots(Collections.singletonList("bag"));
+		player.equipToInventoryOnly(potion);
+
+		final ItemUpgradeService service = service(0);
+		assertFalse(potion.hasUpgradeableCombatStats());
+		assertFalse(potion.isUpgradeable());
+		assertFalse(service.findUpgradeCandidates(player).contains(potion));
+		assertSame(ItemUpgradeResult.Status.NOT_UPGRADEABLE,
+				service.createPreview(player, potion).getBlockingStatus());
+	}
+
+	@Test
 	public void previewUsesSameWeaponArmourAndRangedStatFunctionsAsItem() {
 		final Player player = player("statistics");
 		final Weapon weapon = weapon("range weapon", 12, 0, 3);

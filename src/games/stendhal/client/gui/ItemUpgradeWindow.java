@@ -18,9 +18,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -72,6 +74,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private String selectedPath;
 	private String requestToken;
 	private boolean selectionCleared;
+	private final Set<String> upgradeCandidatePaths = new HashSet<String>();
 
 	private ItemUpgradeWindow() {
 		super("item-upgrade", "Ulepszanie przedmiotu");
@@ -114,12 +117,19 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return instance != null && instance.isVisible();
 	}
 
+	/** Check whether the server listed this exact item as an upgrade candidate. */
+	public static boolean canSelectItemForUpgrade(final Item item) {
+		return isOpenForItemSelection() && item != null
+				&& instance.upgradeCandidatePaths.contains(
+						encodePath(item.getPath()));
+	}
+
 	/** Select an inventory item in the already open upgrade window. */
 	public static void selectItemForUpgrade(final Item item) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (isOpenForItemSelection() && item != null) {
+				if (canSelectItemForUpgrade(item)) {
 					instance.selectItem(item);
 					instance.raise();
 				}
@@ -255,6 +265,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	private void apply(final RPEvent event) {
 		final String phase = event.has("phase") ? event.get("phase") : "";
+		final String responsePath = event.has("selected_path")
+				? event.get("selected_path") : null;
+		if (!"open".equals(phase) && responsePath != null
+				&& selectedPath != null && !selectedPath.equals(responsePath)) {
+			return;
+		}
 		if (selectionCleared && !"open".equals(phase)) {
 			return;
 		}
@@ -264,6 +280,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		if (event.has("npc_id")) {
 			npcId = event.getInt("npc_id");
 		}
+		upgradeCandidatePaths.clear();
+		upgradeCandidatePaths.addAll(list(event, "candidate_paths"));
 		final String state = event.has("status") ? event.get("status") : "";
 		final boolean preservePreview = !event.has("name")
 				&& isInteractionStatus(state) && selectedPath != null;

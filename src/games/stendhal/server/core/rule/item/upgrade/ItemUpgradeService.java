@@ -92,7 +92,8 @@ public final class ItemUpgradeService {
 				continue;
 			}
 			final Item item = (Item) object;
-			if (item.hasUpgradeLimit() && item.getMaxUpgradeLevel() > 0) {
+			if (item.hasUpgradeLimit() && item.getMaxUpgradeLevel() > 0
+					&& item.hasUpgradeableCombatStats()) {
 				candidates.add(item);
 			}
 			for (final RPSlot child : item.slots()) {
@@ -317,6 +318,9 @@ public final class ItemUpgradeService {
 			return ItemUpgradeResult.Status.INVALID_ITEM;
 		}
 		if (!item.hasUpgradeLimit() || item.getMaxUpgradeLevel() <= 0) {
+			return ItemUpgradeResult.Status.NOT_UPGRADEABLE;
+		}
+		if (!item.hasUpgradeableCombatStats()) {
 			return ItemUpgradeResult.Status.NOT_UPGRADEABLE;
 		}
 		if (item.isAtMaxUpgradeLevel()) {

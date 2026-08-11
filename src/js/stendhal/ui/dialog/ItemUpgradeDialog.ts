@@ -34,6 +34,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private selectedPath?: string;
 	private requestToken?: string;
 	private selectionCleared = false;
+	private upgradeCandidatePaths = new Set<string>();
 
 	private constructor() {
 		super("empty-div-template");
@@ -106,7 +107,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	public static canSelectItem(item: Item): boolean {
 		return !!ItemUpgradeDialog.active
-				&& ItemUpgradeDialog.active.isOwnedPath(item.getIdPath());
+				&& ItemUpgradeDialog.active.upgradeCandidatePaths.has(
+						ItemUpgradeDialog.active.normalizePath(item.getIdPath()));
 	}
 
 	public static selectItemForUpgrade(item: Item): void {
@@ -120,9 +122,15 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	private apply(data: UpgradeEventData): void {
+		const responsePath = data.selected_path
+				? this.normalizePath(String(data.selected_path)) : undefined;
+		if (data.phase !== "open" && responsePath && this.selectedPath
+				&& responsePath !== this.selectedPath) return;
 		if (this.selectionCleared && data.phase !== "open") return;
 		if (data.phase === "open") this.selectionCleared = false;
 		if (data.npc_id !== undefined) this.npcId = Number(data.npc_id || 0);
+		this.upgradeCandidatePaths = new Set(this.list(data.candidate_paths)
+				.map(path => this.normalizePath(path)));
 		const state = String(data.status || "");
 		const preservePreview = !data.name && this.isInteractionStatus(state)
 				&& !!this.selectedPath;

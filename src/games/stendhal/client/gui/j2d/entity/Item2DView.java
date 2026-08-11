@@ -229,10 +229,10 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	@Override
 	protected void buildActions(final List<String> list) {
 		super.buildActions(list);
-		if (ItemUpgradeWindow.isOpenForItemSelection()
-				&& entity.getRPObject().isContained()
+		if (entity.getRPObject().isContained()
 				&& entity.getRPObject().getContainerBaseOwner()
-						.equals(User.get().getRPObject())) {
+						.equals(User.get().getRPObject())
+				&& ItemUpgradeWindow.canSelectItemForUpgrade(entity)) {
 			list.add(ActionType.ITEM_UPGRADE.getRepresentation());
 		}
 	}
@@ -290,7 +290,8 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	public void onAction(final ActionType at) {
 		switch (at) {
 		case ITEM_UPGRADE:
-			if (!isReleased() && ItemUpgradeWindow.isOpenForItemSelection()) {
+			if (!isReleased()
+					&& ItemUpgradeWindow.canSelectItemForUpgrade(entity)) {
 				ItemUpgradeWindow.selectItemForUpgrade(entity);
 			}
 			break;
