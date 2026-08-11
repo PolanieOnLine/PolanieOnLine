@@ -2,6 +2,7 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.Slots;
@@ -17,19 +18,15 @@ public class Glyph extends Item {
 		super(glyph);
 	}
 
-	private int getAttackBonus(final Item glyph) {
-		return glyph.has("skill_atk") ? glyph.getInt("skill_atk") : 0;
-	}
-
-	private int getHealthBonus(final Item glyph) {
-		return glyph.has("health") ? glyph.getInt("health") : 0;
-	}
-
 	@Override
 	public boolean onEquipped(final RPEntity entity, final String slot) {
 		if (entity instanceof Player && isGlyphSlot(slot)) {
-			entity.setAtk(entity.getAtk() + getAttackBonus(this));
-			entity.setBaseHP(entity.getBaseHP() + getHealthBonus(this));
+			/*
+			 * Maximum HP is still stateful because base_hp is a persisted player
+			 * attribute. skill_atk is intentionally not mutated here: DressedEntity
+			 * resolves it dynamically from the currently equipped glyphs.
+			 */
+			GlyphEffectService.applyHealthOnEquipped((Player) entity, this);
 		}
 
 		return super.onEquipped(entity, slot);
@@ -37,33 +34,19 @@ public class Glyph extends Item {
 
 	@Override
 	public boolean onUnequipped() {
-		RPObject entity = this.getBaseContainer();
+		final RPObject entity = getBaseContainer();
 		if (entity instanceof Player && isInGlyphSlot()) {
-			Player player = (Player) entity;
-			reduceAtk(player);
-			reduceHP(player);
+			GlyphEffectService.applyHealthOnUnequipped((Player) entity, this);
 		}
 		return super.onUnequipped();
 	}
 
-	private boolean isGlyphSlot(String slot) {
+	private boolean isGlyphSlot(final String slot) {
 		return slot != null && Slots.GLYPHS.getNames().contains(slot);
 	}
 
 	private boolean isInGlyphSlot() {
-		RPSlot slot = getContainerSlot();
+		final RPSlot slot = getContainerSlot();
 		return slot != null && isGlyphSlot(slot.getName());
-	}
-
-	private void reduceHP(Player player) {
-		int reduceHP = player.getBaseHP() - getHealthBonus(this);
-		if (player.getHP() == player.getBaseHP() || player.getHP() > reduceHP) {
-			player.setHP(reduceHP);
-		}
-		player.setBaseHP(reduceHP);
-	}
-
-	private void reduceAtk(Player player) {
-		player.setAtk(player.getAtk() - getAttackBonus(this));
 	}
 }

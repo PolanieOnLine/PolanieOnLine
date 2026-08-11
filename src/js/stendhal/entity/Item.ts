@@ -141,12 +141,21 @@ export class Item extends Entity {
 	public getToolTip(): string {
 		const lines: string[] = [];
 		const rarity = this.getRarity();
-		if (rarity) {
-			const title = this.getDisplayName();
+		const upgradeLevel = this.getUpgradeValue("improve");
+		const maxUpgradeLevel = this.getUpgradeValue("max_improves");
+		if (rarity || upgradeLevel > 0 || maxUpgradeLevel > 0) {
+			const title = this.getDisplayName()
+					+ (upgradeLevel > 0 ? " +" + upgradeLevel : "");
 			if (title) {
 				lines.push(title);
 			}
-			lines.push("Rzadkość: " + rarity.polishDisplayName);
+			if (rarity) {
+				lines.push("Rzadkość: " + rarity.polishDisplayName);
+			}
+			if (upgradeLevel > 0 || maxUpgradeLevel > 0) {
+				lines.push("Ulepszenie: +" + upgradeLevel
+						+ (maxUpgradeLevel > 0 ? " / +" + maxUpgradeLevel : ""));
+			}
 		}
 
 		if (this["class"] === "scroll" && this["dest"]) {
@@ -165,6 +174,14 @@ export class Item extends Entity {
 	public getDisplayName(): string {
 		const title = this["title"] || this["_name"] || this["name"];
 		return typeof title === "string" ? title : "";
+	}
+
+	private getUpgradeValue(key: string): number {
+		if (this[key] !== undefined) {
+			return Number(this[key]) || 0;
+		}
+		const stats = this["tooltip_stats"];
+		return stats && stats[key] !== undefined ? Number(stats[key]) || 0 : 0;
 	}
 
 	public isAnimated(): boolean {

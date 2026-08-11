@@ -64,6 +64,7 @@ export class ConfigManager {
 		// NOTE: quick-pickup has precedence over double-click in chests & corpses
 		"inventory.double-click": "false",
 		"inventory.quick-pickup": "true",
+		"item-tooltip.comparison": "true",
 		"joystick": "false",
 		"joystick.autoposition": "true",
 		"joystick.center.x": "264",

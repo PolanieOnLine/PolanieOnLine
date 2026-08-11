@@ -109,11 +109,11 @@ public final class EliteCreatureService {
 		final int eliteHP = scalePositive(creature.getBaseHP(), HP_MULTIPLIER);
 		creature.setBaseHP(eliteHP);
 		creature.setHP(eliteHP);
-		creature.setAtk(scalePositive(creature.getAtk(), ATTACK_MULTIPLIER));
+		creature.setAtk(scaleCombatStat(creature.getAtk(), ATTACK_MULTIPLIER));
 		if (creature.getRatk() > 0) {
-			creature.setRatk(scalePositive(creature.getRatk(), ATTACK_MULTIPLIER));
+			creature.setRatk(scaleCombatStat(creature.getRatk(), ATTACK_MULTIPLIER));
 		}
-		creature.setDef(scalePositive(creature.getDef(), DEFENSE_MULTIPLIER));
+		creature.setDef(scaleCombatStat(creature.getDef(), DEFENSE_MULTIPLIER));
 		creature.setXP(scalePositive(creature.getXP(), XP_MULTIPLIER));
 		return true;
 	}
@@ -124,5 +124,9 @@ public final class EliteCreatureService {
 		}
 		return Math.max(value + 1,
 				(int) Math.round(value * multiplier + 0.000000001));
+	}
+
+	private static int scaleCombatStat(final int value, final double multiplier) {
+		return Math.min(Short.MAX_VALUE, scalePositive(value, multiplier));
 	}
 }

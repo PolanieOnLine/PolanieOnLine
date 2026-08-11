@@ -120,6 +120,16 @@ public enum ActionType {
 			return rpaction;
 		}
 	},
+	ITEM_UPGRADE(Actions.ITEM_UPGRADE, "Ulepsz przedmiot") {
+		@Override
+		public RPAction fillTargetInfo(final IEntity entity) {
+			final RPAction action = new RPAction();
+			action.put(Actions.TYPE, Actions.ITEM_UPGRADE);
+			action.put("command", "open");
+			action.put("npc_id", entity.getID().getObjectID());
+			return action;
+		}
+	},
 	ADMIN_INSPECT("inspect", "(*)Zbadaj (inspect)") {
 		@Override
 		public RPAction fillTargetInfo(final IEntity entity) {

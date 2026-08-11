@@ -3226,7 +3226,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (rangeWeapon != null) {
 			int itemRange = rangeWeapon.getInt("range");
-			if (rangeWeapon.isMaxImproved()) {
+			if (rangeWeapon.isAtMaxUpgradeLevel()) {
 				itemRange += 1;
 			}
 			// long reaching melee weapons
@@ -3240,7 +3240,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 		if (wandWeapon != null && magicammo != null && magicammo.getQuantity() > 0) {
 			int itemRange = wandWeapon.getInt("range");
-			if (wandWeapon.isMaxImproved()) {
+			if (wandWeapon.isAtMaxUpgradeLevel()) {
 				itemRange += 1;
 			}
 			return itemRange + magicammo.getInt("range");

@@ -19,7 +19,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.player.Player;
 
-public class AlterImprove extends ScriptImpl {
+public class AlterItemUpgrade extends ScriptImpl {
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
@@ -60,9 +60,9 @@ public class AlterImprove extends ScriptImpl {
 			return;
 		}
 
-		final int diff = new_count - target.getNumberOfImprovedForItem(item);
-		target.incImprovedForItem(item, diff);
-		final int actual_count = target.getNumberOfImprovedForItem(item);
+		final int diff = new_count - target.getNumberOfUpgradesForItem(item);
+		target.incUpgradedForItem(item, diff);
+		final int actual_count = target.getNumberOfUpgradesForItem(item);
 
 		if (actual_count != new_count) {
 			admin.sendPrivateText(NotificationType.ERROR, "BŁĄD: Próbowano zmienić wartość ulepszeń dla " + item + " do " + Integer.toString(new_count) + "."
@@ -83,8 +83,8 @@ public class AlterImprove extends ScriptImpl {
 	private void showUsage(final Player admin) {
 		List<String> usage = Arrays.asList(
 				"\nUżyj:",
-				"    /script AlterImprove.class <gracz> <ilość> <przedmiot>",
-				"    /script AlterImprove.class !help",
+				"    /script AlterItemUpgrade.class <gracz> <ilość> <przedmiot>",
+				"    /script AlterItemUpgrade.class !help",
 				"Argumenty:",
 				"    gracz:\tGracz do modyfikacji.",
 				"    ilość:\tWartość do zmiany ile się zdobyło łupu.",

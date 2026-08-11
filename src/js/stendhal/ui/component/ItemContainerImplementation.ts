@@ -16,6 +16,7 @@ import { ui } from "../UI";
 
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "../dialog/DropQuantitySelectorDialog";
+import { ItemUpgradeDialog } from "../dialog/ItemUpgradeDialog";
 import { Item } from "../../entity/Item";
 
 import { singletons } from "../../SingletonRepo";
@@ -23,6 +24,11 @@ import { singletons } from "../../SingletonRepo";
 import { Point } from "../../util/Point";
 import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
+import {
+	buildStructuredItemTooltip,
+	hasStructuredItemTooltip,
+	ItemTooltipDelta
+} from "./ItemTooltipPresentation";
 
 
 /**
@@ -392,6 +398,15 @@ export class ItemContainerImplementation {
 
 			if (this.isRightClick(event) || long_touch) {
 				const append = [];
+				const selectedItem = (event.target as any).dataItem as Item;
+				if (ItemUpgradeDialog.canSelectItem(selectedItem)) {
+					append.push({
+						title: "Ulepsz przedmiot",
+						action: (entity: Item) => {
+							ItemUpgradeDialog.selectItemForUpgrade(entity);
+						}
+					});
+				}
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?
 					const tmp = this;
@@ -427,7 +442,7 @@ export class ItemContainerImplementation {
 	private onMouseEnter(evt: MouseEvent) {
 		const target = evt.currentTarget as HTMLElement;
 		const item = (target as any).dataItem as Item|undefined;
-		if (item?.getRarity()) {
+		if (item && (item.getRarity() || hasStructuredItemTooltip(item))) {
 			ItemContainerImplementation.showRarityToolTip(target, item, evt.clientX, evt.clientY);
 		}
 	}
@@ -523,7 +538,9 @@ export class ItemContainerImplementation {
 
 	private static showRarityToolTip(target: HTMLElement, item: Item, x: number, y: number) {
 		const rarity = item.getRarity();
-		if (!rarity) {
+		const structured = buildStructuredItemTooltip(item,
+				singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
+		if (!rarity && structured.lines.length === 0) {
 			return;
 		}
 
@@ -532,7 +549,12 @@ export class ItemContainerImplementation {
 
 		const toolTip = document.createElement("div");
 		toolTip.id = "item-rarity-tooltip";
-		toolTip.classList.add("item-rarity-tooltip", rarity.cssClass);
+		toolTip.classList.add("item-rarity-tooltip");
+		if (rarity) {
+			toolTip.classList.add(rarity.cssClass);
+		} else {
+			toolTip.style.setProperty("--item-rarity-color", "#a37861");
+		}
 		toolTip.setAttribute("role", "tooltip");
 
 		const name = document.createElement("div");
@@ -540,20 +562,50 @@ export class ItemContainerImplementation {
 		name.textContent = item.getDisplayName();
 		toolTip.appendChild(name);
 
-		const rarityLine = document.createElement("div");
-		rarityLine.className = "item-rarity-tooltip__detail";
-		rarityLine.textContent = "Rzadkość: " + rarity.polishDisplayName;
-		toolTip.appendChild(rarityLine);
+		if (rarity) {
+			const rarityLine = document.createElement("div");
+			rarityLine.className = "item-rarity-tooltip__detail";
+			rarityLine.textContent = "Rzadkość: " + rarity.polishDisplayName;
+			toolTip.appendChild(rarityLine);
+		}
 
-		const titleLines = item.getToolTip().split("\n");
-		const rarityLineIndex = titleLines.indexOf("Rzadkość: " + rarity.polishDisplayName);
-		for (const line of titleLines.slice(rarityLineIndex + 1)) {
-			if (line) {
-				const detail = document.createElement("div");
-				detail.className = "item-rarity-tooltip__detail";
-				detail.textContent = line;
-				toolTip.appendChild(detail);
+		if (structured.comparisonName) {
+			const comparison = document.createElement("div");
+			comparison.className = "item-rarity-tooltip__comparison";
+			comparison.textContent = "Porównanie z: " + structured.comparisonName;
+			toolTip.appendChild(comparison);
+		}
+
+		for (const line of structured.lines) {
+			const detail = document.createElement("div");
+			detail.className = "item-rarity-tooltip__detail";
+			detail.appendChild(document.createTextNode(line.text));
+			if (line.deltas?.length) {
+				detail.appendChild(document.createTextNode(" ("));
+				line.deltas.forEach((delta: ItemTooltipDelta, index: number) => {
+					if (index > 0) {
+						detail.appendChild(document.createTextNode("–"));
+					}
+					const value = document.createElement("span");
+					value.className = "item-tooltip-delta item-tooltip-delta--"
+							+ delta.direction;
+					value.textContent = delta.text;
+					detail.appendChild(value);
+				});
+				detail.appendChild(document.createTextNode(")"));
 			}
+			toolTip.appendChild(detail);
+		}
+
+		const rarityText = rarity ? "Rzadkość: " + rarity.polishDisplayName : "";
+		for (const line of item.getToolTip().split("\n")) {
+			if (!line || line === item.getDisplayName() || line === rarityText) {
+				continue;
+			}
+			const detail = document.createElement("div");
+			detail.className = "item-rarity-tooltip__detail";
+			detail.textContent = line;
+			toolTip.appendChild(detail);
 		}
 
 		document.body.appendChild(toolTip);

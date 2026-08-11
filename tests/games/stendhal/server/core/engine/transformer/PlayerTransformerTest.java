@@ -28,8 +28,10 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ItemUpgradeEventCompatibility;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPClass;
+import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -49,6 +51,7 @@ public class PlayerTransformerTest {
 		if (!RPClass.hasRPClass("player")){
 			Player.generateRPClass();
 		}
+		ItemUpgradeEventCompatibility.generateRPClasses();
 		MockStendlRPWorld.get();
 	}
 
@@ -127,5 +130,21 @@ public class PlayerTransformerTest {
 		RPSlot bag = transObj.getSlot("bag");
 		RPObject transItem = bag.getFirst();
 		assertFalse(((Item) transItem).isBound());
+	}
+
+	@Test
+	public void testPersistedEventsAreDiscardedDuringRestore() {
+		final RPObject object = new RPObject();
+		object.put("name", "bob");
+		object.setID(new RPObject.ID(1, "testzone"));
+		object.addEvent(new RPEvent(
+				ItemUpgradeEventCompatibility.CURRENT_EVENT));
+
+		final RPObject transformed = new PlayerTransformer().transform(object);
+
+		for (final RPEvent event : transformed.events()) {
+			assertFalse(ItemUpgradeEventCompatibility.CURRENT_EVENT.equals(
+					event.getName()));
+		}
 	}
 }
