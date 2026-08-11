@@ -110,7 +110,7 @@ export class GroupPanelComponent extends Panel {
 		this.child(".group-group")!.classList.remove("hidden");
 
 		this.child(".group-lootmode")!.innerText = stendhal.data.group.lootmode;
-		this.child(".group-expmode")!.innerText = stendhal.data.group.expmode;
+		this.child(".group-expmode")!.innerText = this.formatExpmode(stendhal.data.group.expmode);
 		this.child(".group-leader")!.innerText = stendhal.data.group.leader;
 		this.renderGroupMembers();
 	}
@@ -152,10 +152,9 @@ export class GroupPanelComponent extends Panel {
 	}
 
 	onExpmodeClick() {
-		let newMode = "standard";
-		if (stendhal.data.group.expmode === "standard") {
-			newMode = "lowest";
-		}
+		const modes = ["standard", "lowest", "equal"];
+		const currentIndex = modes.indexOf(stendhal.data.group.expmode);
+		const newMode = modes[(currentIndex + 1) % modes.length];
 		let action = {
 			"type": "group_management",
 			"action": "expmode",
@@ -163,6 +162,16 @@ export class GroupPanelComponent extends Panel {
 			"zone": marauroa.currentZoneName
 		};
 		marauroa.clientFramework.sendAction(action);
+	}
+
+	private formatExpmode(mode: string) {
+		if (mode === "lowest") {
+			return "najniższy poziom";
+		}
+		if (mode === "equal") {
+			return "równy podział";
+		}
+		return "standardowe";
 	}
 
 	onGroupChatButtonClick() {

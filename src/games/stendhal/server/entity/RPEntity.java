@@ -15,6 +15,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -42,6 +43,7 @@ import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.group.Group;
+import games.stendhal.server.core.rp.group.GroupExperienceDistributor;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.engine.dbcommand.LogKillEventCommand;
 import games.stendhal.server.core.events.TurnListener;
@@ -1621,6 +1623,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	protected void rewardKillers(final int oldXP) {
 		final int xpReward = (int) (oldXP * 0.05);
+		final List<EqualGroupExperiencePool> equalGroupPools = new LinkedList<EqualGroupExperiencePool>();
 
 		for (Entry<Entity, Integer> entry : damageReceived.entrySet()) {
 			final int damageDone = entry.getValue();
@@ -1661,18 +1664,22 @@ public abstract class RPEntity extends CombatEntity {
 				reward = 1;
 			}
 
-			Player expRecipient = killer;
 			Group group = SingletonRepository.getGroupManager().getGroup(killer.getName());
-			if ((group != null) && "lowest".equals(group.getExpmode())) {
-				Player lowestMember = group.getLowestLevelMember(killer);
-				if (lowestMember != null) {
-					expRecipient = lowestMember;
+			if ((group != null) && "equal".equals(group.getExpmode())) {
+				addEqualGroupReward(equalGroupPools, group, killer, reward);
+			} else {
+				Player expRecipient = killer;
+				if ((group != null) && "lowest".equals(group.getExpmode())) {
+					Player lowestMember = group.getLowestLevelMember(killer);
+					if (lowestMember != null) {
+						expRecipient = lowestMember;
+					}
 				}
-			}
 
-			expRecipient.addXP(reward);
-			if (expRecipient != killer) {
-				expRecipient.notifyWorldAboutChanges();
+				expRecipient.addXP(reward);
+				if (expRecipient != killer) {
+					expRecipient.notifyWorldAboutChanges();
+				}
 			}
 
 			// For some quests etc., it is required that the player kills a
@@ -1694,6 +1701,50 @@ public abstract class RPEntity extends CombatEntity {
 			SingletonRepository.getAchievementNotifier().onKill(killer);
 
 			killer.notifyWorldAboutChanges();
+		}
+
+		rewardEqualGroups(equalGroupPools);
+	}
+
+	private void addEqualGroupReward(final List<EqualGroupExperiencePool> pools,
+			final Group group, final Player reference, final int reward) {
+		for (EqualGroupExperiencePool pool : pools) {
+			if ((pool.group == group) && (pool.zone == reference.getZone())) {
+				pool.reward += reward;
+				return;
+			}
+		}
+		pools.add(new EqualGroupExperiencePool(group, reference, reward));
+	}
+
+	private void rewardEqualGroups(final List<EqualGroupExperiencePool> pools) {
+		for (EqualGroupExperiencePool pool : pools) {
+			final Map<Player, Integer> shares = GroupExperienceDistributor.splitEqually(
+					pool.group.getOnlineMembersInSameZone(pool.reference), pool.reward);
+			if (shares.isEmpty()) {
+				pool.reference.addXP(pool.reward);
+				pool.reference.notifyWorldAboutChanges();
+				continue;
+			}
+			for (Entry<Player, Integer> share : shares.entrySet()) {
+				share.getKey().addXP(share.getValue().intValue());
+				share.getKey().notifyWorldAboutChanges();
+			}
+		}
+	}
+
+	private static final class EqualGroupExperiencePool {
+		private final Group group;
+		private final StendhalRPZone zone;
+		private final Player reference;
+		private int reward;
+
+		private EqualGroupExperiencePool(final Group group, final Player reference,
+				final int reward) {
+			this.group = group;
+			this.zone = reference.getZone();
+			this.reference = reference;
+			this.reward = reward;
 		}
 	}
 
