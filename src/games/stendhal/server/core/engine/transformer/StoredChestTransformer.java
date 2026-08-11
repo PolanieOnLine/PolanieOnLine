@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine.transformer;
 
+import games.stendhal.server.entity.mapstuff.chest.PlayerPrivateStoredChest;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import marauroa.common.game.RPObject;
 
@@ -19,7 +20,11 @@ public class StoredChestTransformer implements Transformer {
 
 	@Override
 	public RPObject transform(final RPObject object) {
-				return new StoredChest(object);
+		if (object.has(PlayerPrivateStoredChest.PERCEPTION_KEY_ATTRIBUTE)
+				&& object.has(PlayerPrivateStoredChest.PERCEPTION_VALUE_ATTRIBUTE)) {
+			return new PlayerPrivateStoredChest(object);
+		}
+		return new StoredChest(object);
 	}
 
 }
