@@ -47,6 +47,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static final Color AVAILABLE = new Color(92, 190, 105);
 	private static final Color UNAVAILABLE = new Color(225, 90, 75);
 	private static final Color PANEL_BORDER = new Color(130, 106, 75);
+	private static final int MATERIAL_CARD_WIDTH = 70;
+	private static final int MATERIAL_ROW_GAP = 2;
 	private static final Sprite SLOT_BACKGROUND =
 			SpriteStore.get().getSprite("data/gui/slot.png");
 	private static ItemUpgradeWindow instance;
@@ -100,7 +102,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private JComponent buildContent() {
 		final JPanel content = new JPanel(new BorderLayout(8, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(420, 420));
+		content.setPreferredSize(new Dimension(420, 450));
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
 		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
@@ -272,19 +274,34 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final List<String> owned = list(event, "owned_material_values");
 		if (names.isEmpty()) {
 			materials.setLayout(new BorderLayout());
-			materials.add(centered(
-					"Wymagania pojawią się po wybraniu przedmiotu."));
+			final JLabel empty = centered(
+					"Wymagania pojawią się po wybraniu przedmiotu.");
+			materials.add(empty);
+			setMaterialPanelHeight(empty.getPreferredSize().height);
 			return;
 		}
-		materials.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 2));
+		materials.setLayout(new FlowLayout(FlowLayout.CENTER, 4,
+				MATERIAL_ROW_GAP));
+		int rowHeight = 0;
 		for (int index = 0; index < names.size(); index++) {
 			final int have = index < owned.size() ? integer(owned.get(index)) : 0;
 			final int need = index < required.size() ? integer(required.get(index)) : 0;
-			materials.add(materialCard(names.get(index),
+			final JComponent card = materialCard(names.get(index),
 					index < classes.size() ? classes.get(index) : null,
 					index < subclasses.size() ? subclasses.get(index) : null,
-					have, need));
+					have, need);
+			materials.add(card);
+			rowHeight = Math.max(rowHeight, card.getPreferredSize().height);
 		}
+		setMaterialPanelHeight(rowHeight + MATERIAL_ROW_GAP * 2);
+	}
+
+	private void setMaterialPanelHeight(final int contentHeight) {
+		final Insets insets = materials.getInsets();
+		final int height = contentHeight + insets.top + insets.bottom;
+		final Dimension size = new Dimension(1, height);
+		materials.setMinimumSize(size);
+		materials.setPreferredSize(size);
 	}
 
 	private static JComponent materialCard(final String name,
@@ -293,7 +310,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final boolean available = owned >= required;
 		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
 		final JPanel card = new JPanel(new BorderLayout(0, 1));
-		card.setPreferredSize(new Dimension(70, 72));
 		final JPanel slot = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		slot.add(new MaterialIcon(itemClass, subclass, required));
 		card.add(slot, BorderLayout.NORTH);
@@ -308,6 +324,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final String tooltip = name + ": posiadasz " + owned
 				+ ", wymagane " + required;
 		card.setToolTipText(tooltip);
+		final Dimension naturalSize = card.getPreferredSize();
+		final Dimension cardSize = new Dimension(MATERIAL_CARD_WIDTH,
+				naturalSize.height);
+		card.setMinimumSize(cardSize);
+		card.setPreferredSize(cardSize);
 		return card;
 	}
 
@@ -506,7 +527,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final int y = (getHeight() - SLOT_BACKGROUND.getHeight()) / 2;
 			SLOT_BACKGROUND.draw(graphics, x, y);
 			if (sprite != null) {
-				sprite.draw(graphics, x, y);
+				final int spriteX = x
+						+ (SLOT_BACKGROUND.getWidth() - sprite.getWidth()) / 2;
+				final int spriteY = y
+						+ (SLOT_BACKGROUND.getHeight() - sprite.getHeight()) / 2;
+				sprite.draw(graphics, spriteX, spriteY);
 			}
 			if (quantity != null) {
 				quantity.draw(graphics,
