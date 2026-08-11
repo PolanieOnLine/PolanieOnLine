@@ -17,4 +17,14 @@ public class ChristmasZonePlanTest {
 	public void preparesChristmasDisabledVariant() throws Exception {
 		assertNotNull(ChristmasZonePlan.prepare(false));
 	}
+
+	@Test
+	public void preparesMineTownEnabledVariant() throws Exception {
+		assertNotNull(ChristmasZonePlan.prepare(MineTownEventPlan.PROPERTY, true));
+	}
+
+	@Test
+	public void preparesMineTownDisabledVariant() throws Exception {
+		assertNotNull(ChristmasZonePlan.prepare(MineTownEventPlan.PROPERTY, false));
+	}
 }
