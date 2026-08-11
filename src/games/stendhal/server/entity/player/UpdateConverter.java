@@ -26,6 +26,7 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.item.HouseKey;
@@ -855,7 +856,8 @@ public abstract class UpdateConverter {
 			return;
 		}
 
-		final int expectedBaseHP = calculateBaseHP(player) + calculateGlyphHealthBonus(player);
+		final int expectedBaseHP = calculateBaseHP(player)
+				+ GlyphEffectService.getHealthBonus(player);
 
 		if (player.getBaseHP() != expectedBaseHP) {
 			player.setBaseHP(expectedBaseHP);
@@ -863,16 +865,6 @@ public abstract class UpdateConverter {
 				player.setHP(expectedBaseHP);
 			}
 		}
-	}
-
-	private static int calculateGlyphHealthBonus(final Player player) {
-		int bonus = 0;
-		for (final Item glyph : player.getAllEquippedGlyphs()) {
-			if (glyph.has("health")) {
-				bonus += glyph.getInt("health");
-			}
-		}
-		return bonus;
 	}
 
 	private static int calculateBaseHP(final Player player) {
