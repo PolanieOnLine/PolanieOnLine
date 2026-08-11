@@ -15,11 +15,13 @@ import games.stendhal.server.entity.player.Player;
  * Usage:
  * <pre>
  * /script SeasonalEvent.class christmas on
- * /script SeasonalEvent.class christmas off
- * /script SeasonalEvent.class christmas status
+ * /script SeasonalEvent.class minetown on
+ * /script SeasonalEvent.class minetown off
+ * /script SeasonalEvent.class minetown status
  * </pre>
  *
- * {@code xmas} is accepted as an alias for {@code christmas}.
+ * {@code xmas} is accepted as an alias for {@code christmas};
+ * {@code mine-town} and {@code revival} are aliases for {@code minetown}.
  */
 public class SeasonalEvent extends ScriptImpl {
 	@Override
@@ -29,20 +31,27 @@ public class SeasonalEvent extends ScriptImpl {
 			return;
 		}
 
-		final String event = args.get(0).trim().toLowerCase();
+		final String event = normalizeEvent(args.get(0));
 		final String action = args.get(1).trim().toLowerCase();
-		if (!("christmas".equals(event) || "xmas".equals(event))) {
+		if (event == null) {
 			admin.sendPrivateText("Nieznany event: " + args.get(0)
-					+ ". Obecnie obsługiwany jest christmas (alias: xmas).");
+					+ ". Obsługiwane są christmas (xmas) oraz minetown (mine-town, revival).");
 			return;
 		}
 
 		final SeasonalEventService service = SeasonalEventService.get();
 		if ("status".equals(action)) {
-			admin.sendPrivateText("Christmas: "
-					+ (service.isChristmasEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
-					+ (service.isTransitionInProgress() ? " (trwa przełączanie)" : "")
-					+ "; warunek: stendhal.christmas");
+			if ("christmas".equals(event)) {
+				admin.sendPrivateText("Christmas: "
+						+ (service.isChristmasEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
+						+ transitionSuffix(service)
+						+ "; warunek: stendhal.christmas");
+			} else {
+				admin.sendPrivateText("Mine Town Revival Weeks: "
+						+ (service.isMineTownEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
+						+ transitionSuffix(service)
+						+ "; warunek: stendhal.minetown");
+			}
 			return;
 		}
 
@@ -52,22 +61,45 @@ public class SeasonalEvent extends ScriptImpl {
 			return;
 		}
 
-		final boolean accepted = service.requestChristmas(target.booleanValue(),
+		final SeasonalEventService.ResultListener listener =
 				new SeasonalEventService.ResultListener() {
 					@Override
 					public void onResult(final boolean success, final String message) {
 						admin.sendPrivateText((success ? "[OK] " : "[BŁĄD] ") + message);
 					}
-				});
+				};
+
+		final boolean accepted;
+		if ("christmas".equals(event)) {
+			accepted = service.requestChristmas(target.booleanValue(), listener);
+		} else {
+			accepted = service.requestMineTown(target.booleanValue(), listener);
+		}
 		if (!accepted) {
 			admin.sendPrivateText("Inny event sezonowy jest właśnie przełączany. Spróbuj ponownie po zakończeniu operacji.");
 			return;
 		}
 
 		if (service.isTransitionInProgress()) {
-			admin.sendPrivateText("Przygotowuję wariant Christmas=" + target
+			admin.sendPrivateText("Przygotowuję wariant " + event + "=" + target
 					+ " poza wątkiem RP. Zmiana zostanie zastosowana po pełnej walidacji zasobów.");
 		}
+	}
+
+	private static String normalizeEvent(final String value) {
+		final String event = value.trim().toLowerCase();
+		if ("christmas".equals(event) || "xmas".equals(event)) {
+			return "christmas";
+		}
+		if ("minetown".equals(event) || "mine-town".equals(event)
+				|| "revival".equals(event)) {
+			return "minetown";
+		}
+		return null;
+	}
+
+	private static String transitionSuffix(final SeasonalEventService service) {
+		return service.isTransitionInProgress() ? " (trwa przełączanie)" : "";
 	}
 
 	private static Boolean parseState(final String value) {
@@ -83,6 +115,6 @@ public class SeasonalEvent extends ScriptImpl {
 	}
 
 	private static void usage(final Player admin) {
-		admin.sendPrivateText("Użycie: /script SeasonalEvent.class {christmas|xmas} {on|off|status}");
+		admin.sendPrivateText("Użycie: /script SeasonalEvent.class {christmas|xmas|minetown|mine-town|revival} {on|off|status}");
 	}
 }
