@@ -12,11 +12,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.LongSupplier;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.events.LogoutListener;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
@@ -28,29 +30,47 @@ import marauroa.common.game.RPSlot;
 /**
  * Single source of truth for item-upgrade preview, validation and execution.
  */
-public final class ItemUpgradeService {
+public final class ItemUpgradeService implements LogoutListener {
 	private static final Logger LOGGER =
 			Logger.getLogger(ItemUpgradeService.class);
 	private static final String DISCOUNT_QUEST = "ciupaga_trzy_wasy";
 	private static final double KARMA_LIMIT = 0.1;
 	private static final double KARMA_GRANULARITY = 0.01;
 	private static final double FAILURE_REFUND = 0.4;
+	static final long PREVIEW_TOKEN_TTL_MILLIS = 5L * 60L * 1000L;
 
 	private static final Map<Integer, Map<String, Integer>> MATERIALS_BY_LEVEL =
 			createMaterialRequirements();
 
 	private static final ItemUpgradeService INSTANCE =
 			new ItemUpgradeService(new Random());
+	static {
+		SingletonRepository.getLogoutNotifier().addListener(INSTANCE);
+	}
 
 	private final Random random;
+	private final LongSupplier clock;
 	private final Map<String, PendingAttempt> pendingAttempts =
 			new ConcurrentHashMap<String, PendingAttempt>();
 
 	public ItemUpgradeService(final Random random) {
+		this(random, new LongSupplier() {
+			@Override
+			public long getAsLong() {
+				return System.currentTimeMillis();
+			}
+		});
+	}
+
+	ItemUpgradeService(final Random random, final LongSupplier clock) {
 		if (random == null) {
 			throw new IllegalArgumentException("Random source must not be null");
 		}
+		if (clock == null) {
+			throw new IllegalArgumentException("Clock must not be null");
+		}
 		this.random = random;
+		this.clock = clock;
 	}
 
 	public static ItemUpgradeService getInstance() {
@@ -162,7 +182,8 @@ public final class ItemUpgradeService {
 			pendingAttempts.put(player.getName(), new PendingAttempt(token, item,
 					currentLevel, player.getKarma(), karmaModifier,
 					requirements.getFee(), item.isPersistent(),
-					snapshotContainment(item)));
+					snapshotContainment(item), clock.getAsLong()
+							+ PREVIEW_TOKEN_TTL_MILLIS));
 		} else {
 			clearPendingAttempt(player);
 		}
@@ -183,6 +204,9 @@ public final class ItemUpgradeService {
 		synchronized (player) {
 			final PendingAttempt pending = pendingAttempts.remove(player.getName());
 			if (pending == null || !requestToken.equals(pending.token)) {
+				return result(ItemUpgradeResult.Status.STALE_PREVIEW);
+			}
+			if (clock.getAsLong() >= pending.expiresAt) {
 				return result(ItemUpgradeResult.Status.STALE_PREVIEW);
 			}
 			if (pending.item != item) {
@@ -264,6 +288,11 @@ public final class ItemUpgradeService {
 		if (player != null && player.getName() != null) {
 			pendingAttempts.remove(player.getName());
 		}
+	}
+
+	@Override
+	public void onLoggedOut(final Player player) {
+		clearPendingAttempt(player);
 	}
 
 	public int calculateUpgradeFee(final Player player, final Item item) {
@@ -534,12 +563,14 @@ public final class ItemUpgradeService {
 		private final int fee;
 		private final boolean persistentSnapshot;
 		private final List<ContainmentStep> containmentSnapshot;
+		private final long expiresAt;
 
 		private PendingAttempt(final String token, final Item item,
 				final int upgradeLevel, final double karmaSnapshot,
 				final double karmaModifier, final int fee,
 				final boolean persistentSnapshot,
-				final List<ContainmentStep> containmentSnapshot) {
+				final List<ContainmentStep> containmentSnapshot,
+				final long expiresAt) {
 			this.token = token;
 			this.item = item;
 			this.upgradeLevel = upgradeLevel;
@@ -548,6 +579,7 @@ public final class ItemUpgradeService {
 			this.fee = fee;
 			this.persistentSnapshot = persistentSnapshot;
 			this.containmentSnapshot = containmentSnapshot;
+			this.expiresAt = expiresAt;
 		}
 	}
 

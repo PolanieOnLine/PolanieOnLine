@@ -83,6 +83,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		this.refreshButton = this.addButton("Odśwież", () => {
 			if (this.selectedPath) {
 				this.send("preview", this.selectedPath);
+			} else {
+				this.send("refresh");
 			}
 		});
 		this.upgradeButton = this.addButton("Ulepsz", () => {
@@ -118,6 +120,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	public override onParentClose(): void {
+		this.send("close");
 		ItemUpgradeDialog.active = undefined;
 	}
 
@@ -126,11 +129,15 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 				? this.normalizePath(String(data.selected_path)) : undefined;
 		if (data.phase !== "open" && responsePath && this.selectedPath
 				&& responsePath !== this.selectedPath) return;
-		if (this.selectionCleared && data.phase !== "open") return;
+		if (data.phase === "refresh" && this.selectedPath) return;
+		if (this.selectionCleared && data.phase !== "open"
+				&& data.phase !== "refresh") return;
 		if (data.phase === "open") this.selectionCleared = false;
 		if (data.npc_id !== undefined) this.npcId = Number(data.npc_id || 0);
-		this.upgradeCandidatePaths = new Set(this.list(data.candidate_paths)
-				.map(path => this.normalizePath(path)));
+		if (data.candidate_paths !== undefined) {
+			this.upgradeCandidatePaths = new Set(this.list(data.candidate_paths)
+					.map(path => this.normalizePath(path)));
+		}
 		const state = String(data.status || "");
 		const preservePreview = !data.name && this.isInteractionStatus(state)
 				&& !!this.selectedPath;
@@ -172,7 +179,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		const canUpgrade = Number(data.can_upgrade || 0) === 1 && !!this.requestToken;
 		this.upgradeButton.disabled = !canUpgrade;
-		this.refreshButton.disabled = !this.selectedPath;
+		this.refreshButton.disabled = !this.npcId;
 		this.status.textContent = data.message || this.statusText(state);
 		this.status.dataset.status = state.toLowerCase();
 		this.upgradeButton.title = canUpgrade ? "Wykonaj próbę ulepszenia"
@@ -311,6 +318,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	private clearSelection(): void {
+		this.send("clear");
 		this.apply({status: "SELECT_ITEM"});
 		this.selectionCleared = true;
 	}
@@ -341,14 +349,16 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		return result;
 	}
 
-	private send(command: string, path: string, token?: string): void {
-		if (!path || !this.npcId) return;
+	private send(command: string, path?: string, token?: string): void {
+		if (!this.npcId) return;
 		const action: {[key: string]: any} = {
 			type: "item_upgrade",
 			command,
-			npc_id: String(this.npcId),
-			target_path: "[" + path.split("/").join("\t") + "]"
+			npc_id: String(this.npcId)
 		};
+		if (path) {
+			action.target_path = "[" + path.split("/").join("\t") + "]";
+		}
 		if (token) action.request_token = token;
 		marauroa.clientFramework.sendAction(action);
 	}

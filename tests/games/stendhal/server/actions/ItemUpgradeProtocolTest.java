@@ -143,6 +143,61 @@ public class ItemUpgradeProtocolTest {
 	}
 
 	@Test
+	public void refreshWithoutSelectionUpdatesExactCandidatePaths() {
+		final StendhalRPZone zone = new StendhalRPZone(
+				"item_upgrade_protocol_refresh");
+		final Player player = PlayerTestHelper.createPlayer("protocol_refresh");
+		player.setPosition(5, 5);
+		zone.add(player);
+		final Item item = item("new candidate", 12);
+		player.equipToInventoryOnly(item);
+		final ItemUpgradeNPC npc = new ItemUpgradeNPC("refresh smith");
+		npc.setPosition(5, 8);
+		new ItemUpgradeAdder().add(npc);
+		zone.add(npc);
+
+		final RPAction action = new RPAction();
+		action.put(Actions.TYPE, Actions.ITEM_UPGRADE);
+		action.put(ItemUpgradeAction.COMMAND, ItemUpgradeAction.REFRESH);
+		action.put(ItemUpgradeAction.NPC_ID, npc.getID().getObjectID());
+		new ItemUpgradeAction().onAction(player, action);
+
+		final RPEvent event = findUpgradeEvent(player);
+		assertEquals(ItemUpgradeEvent.PHASE_REFRESH, event.get("phase"));
+		assertEquals(ItemUpgradeResult.Status.SELECT_ITEM.name(),
+				event.get("status"));
+		assertFalse(event.has("selected_path"));
+		assertEquals(Arrays.asList(ItemUpgradeEvent.encodePath(item)),
+				event.getList("candidate_paths"));
+		assertNull(npc.getAttending());
+	}
+
+	@Test
+	public void clearAndCloseCommandsInvalidatePreviewWithoutUiResponse() {
+		final Player player = PlayerTestHelper.createPlayer("protocol_lifecycle");
+		final Item item = item("lifecycle item", 14);
+		player.equipToInventoryOnly(item);
+		final ItemUpgradeService service = ItemUpgradeService.getInstance();
+		provideRequirements(player, item, service);
+
+		for (final String command : Arrays.asList(ItemUpgradeAction.CLEAR,
+				ItemUpgradeAction.CLOSE)) {
+			final ItemUpgradePreview preview = service.createPreview(player, item);
+			player.clearEvents();
+			final RPAction action = new RPAction();
+			action.put(Actions.TYPE, Actions.ITEM_UPGRADE);
+			action.put(ItemUpgradeAction.COMMAND, command);
+			new ItemUpgradeAction().onAction(player, action);
+
+			assertFalse(player.events().iterator().hasNext());
+			assertSame(ItemUpgradeResult.Status.STALE_PREVIEW,
+					service.performUpgrade(player, item,
+							preview.getRequestToken()).getStatus());
+		}
+		assertEquals(0, item.getUpgradeLevel());
+	}
+
+	@Test
 	public void clientRequestDoesNotUseTheServerEventRpClass()
 			throws IOException {
 		assertNotEquals(Actions.ITEM_UPGRADE, Events.ITEM_UPGRADE);
@@ -270,5 +325,16 @@ public class ItemUpgradeProtocolTest {
 		final Weapon item = new Weapon(name, "sword", "test", attributes);
 		item.setEquipableSlots(Arrays.asList("bag", "lhand"));
 		return item;
+	}
+
+	private static void provideRequirements(final Player player,
+			final Item item, final ItemUpgradeService service) {
+		PlayerTestHelper.equipWithMoney(player,
+				service.calculateUpgradeFee(player, item));
+		for (final Map.Entry<String, Integer> material
+				: service.getMaterialRequirements(1).entrySet()) {
+			PlayerTestHelper.equipWithStackableItem(player, material.getKey(),
+					material.getValue());
+		}
 	}
 }

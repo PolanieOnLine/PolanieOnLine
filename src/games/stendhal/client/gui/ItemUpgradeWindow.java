@@ -84,6 +84,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		addCloseListener(new CloseListener() {
 			@Override
 			public void windowClosed(final InternalWindow window) {
+				send("close", null, null);
 				instance = null;
 			}
 		});
@@ -207,7 +208,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				send("preview", selectedPath, null);
+				send(selectedPath == null ? "refresh" : "preview",
+						selectedPath, null);
 			}
 		});
 		upgrade.addActionListener(new ActionListener() {
@@ -241,6 +243,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private void clearSelection() {
+		send("clear", null, null);
 		selectionCleared = true;
 		selectedPath = null;
 		requestToken = null;
@@ -256,7 +259,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		showEmptyMaterials();
 		status.setForeground(ACCENT);
 		status.setText("Przeciągnij przedmiot z ekwipunku do slotu.");
-		refresh.setEnabled(false);
+		refresh.setEnabled(npcId != 0);
 		upgrade.setEnabled(false);
 		upgrade.setToolTipText("Najpierw wybierz przedmiot.");
 		revalidate();
@@ -271,7 +274,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				&& selectedPath != null && !selectedPath.equals(responsePath)) {
 			return;
 		}
-		if (selectionCleared && !"open".equals(phase)) {
+		if ("refresh".equals(phase) && selectedPath != null) {
+			return;
+		}
+		if (selectionCleared && !"open".equals(phase)
+				&& !"refresh".equals(phase)) {
 			return;
 		}
 		if ("open".equals(phase)) {
@@ -321,7 +328,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final boolean canUpgrade = event.has("can_upgrade")
 				&& event.getInt("can_upgrade") == 1 && requestToken != null;
 		upgrade.setEnabled(canUpgrade);
-		refresh.setEnabled(selectedPath != null);
+		refresh.setEnabled(npcId != 0);
 		final String message = event.has("message") ? event.get("message") : "";
 		status.setText(message.length() > 0 ? message : statusText(state));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
@@ -434,14 +441,16 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private void send(final String command, final String path, final String token) {
-		if (path == null || npcId == 0) {
+		if (npcId == 0) {
 			return;
 		}
 		final RPAction action = new RPAction();
 		action.put("type", Actions.ITEM_UPGRADE);
 		action.put("command", command);
 		action.put("npc_id", npcId);
-		action.put("target_path", decodePath(path));
+		if (path != null) {
+			action.put("target_path", decodePath(path));
+		}
 		if (token != null) {
 			action.put("request_token", token);
 		}

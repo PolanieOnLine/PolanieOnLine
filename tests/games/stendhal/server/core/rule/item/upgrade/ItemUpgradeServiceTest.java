@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.LongSupplier;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -316,6 +317,52 @@ public class ItemUpgradeServiceTest {
 		assertEquals(0, item.getUpgradeLevel());
 	}
 
+	@Test
+	public void previewTokenExpiresWithoutConsumingRequirements() {
+		final Player player = player("expired_preview");
+		final Weapon item = weapon("expiring target", 15, 0, 3);
+		player.equipToInventoryOnly(item);
+		final MutableClock clock = new MutableClock();
+		final ItemUpgradeService service = new ItemUpgradeService(
+				new FixedRandom(0), clock);
+		provideRequirements(player, item, service);
+		final ItemUpgradePreview preview = service.createPreview(player, item);
+		final int moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
+				.getTotalMoneyInCopper(player);
+
+		clock.advance(ItemUpgradeService.PREVIEW_TOKEN_TTL_MILLIS);
+
+		assertSame(ItemUpgradeResult.Status.STALE_PREVIEW,
+				service.performUpgrade(player, item,
+						preview.getRequestToken()).getStatus());
+		assertEquals(0, item.getUpgradeLevel());
+		assertEquals(moneyBefore,
+				games.stendhal.server.entity.item.money.MoneyUtils
+						.getTotalMoneyInCopper(player));
+		for (final Map.Entry<String, Integer> material
+				: service.getMaterialRequirements(1).entrySet()) {
+			assertEquals(material.getValue().intValue(),
+					player.getNumberOfEquipped(material.getKey()));
+		}
+	}
+
+	@Test
+	public void logoutClearsPendingPreviewToken() {
+		final Player player = player("logout_preview");
+		final Weapon item = weapon("logout target", 15, 0, 3);
+		player.equipToInventoryOnly(item);
+		final ItemUpgradeService service = service(0);
+		provideRequirements(player, item, service);
+		final ItemUpgradePreview preview = service.createPreview(player, item);
+
+		service.onLoggedOut(player);
+
+		assertSame(ItemUpgradeResult.Status.STALE_PREVIEW,
+				service.performUpgrade(player, item,
+						preview.getRequestToken()).getStatus());
+		assertEquals(0, item.getUpgradeLevel());
+	}
+
 	private static Player player(final String name) {
 		return PlayerTestHelper.createPlayer(name);
 	}
@@ -371,6 +418,19 @@ public class ItemUpgradeServiceTest {
 		@Override
 		public int nextInt(final int bound) {
 			return Math.min(value, bound - 1);
+		}
+	}
+
+	private static final class MutableClock implements LongSupplier {
+		private long now;
+
+		@Override
+		public long getAsLong() {
+			return now;
+		}
+
+		private void advance(final long milliseconds) {
+			now += milliseconds;
 		}
 	}
 }

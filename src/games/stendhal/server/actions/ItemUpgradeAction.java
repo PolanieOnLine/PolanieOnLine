@@ -26,8 +26,11 @@ import marauroa.common.game.RPObject;
 public final class ItemUpgradeAction implements ActionListener {
 	public static final String COMMAND = "command";
 	public static final String OPEN = "open";
+	public static final String REFRESH = "refresh";
 	public static final String PREVIEW = "preview";
 	public static final String UPGRADE = "upgrade";
+	public static final String CLEAR = "clear";
+	public static final String CLOSE = "close";
 	public static final String NPC_ID = "npc_id";
 	public static final String REQUEST_TOKEN = "request_token";
 	public static final String TARGET_PATH = "target_path";
@@ -65,6 +68,10 @@ public final class ItemUpgradeAction implements ActionListener {
 	@Override
 	public void onAction(final Player player, final RPAction action) {
 		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
+		if (CLEAR.equals(command) || CLOSE.equals(command)) {
+			SERVICE.clearPendingAttempt(player);
+			return;
+		}
 		final ItemUpgradeNPC npc = resolveNpc(player, action);
 		if (npc == null) {
 			SERVICE.clearPendingAttempt(player);
@@ -73,8 +80,13 @@ public final class ItemUpgradeAction implements ActionListener {
 						ItemUpgradeResult.Status.NPC_TOO_FAR).getMessage());
 				return;
 			}
-			sendResult(player, action, null,
-					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
+			final ItemUpgradeResult result = SERVICE.resultForStatus(
+					ItemUpgradeResult.Status.NPC_TOO_FAR);
+			if (REFRESH.equals(command)) {
+				sendRefresh(player, action, null, result);
+			} else {
+				sendResult(player, action, null, result);
+			}
 			return;
 		}
 
@@ -84,8 +96,18 @@ public final class ItemUpgradeAction implements ActionListener {
 		}
 		if (!withinUpgradeRange(player, npc)) {
 			SERVICE.clearPendingAttempt(player);
-			sendResult(player, action, npc,
-					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
+			final ItemUpgradeResult result = SERVICE.resultForStatus(
+					ItemUpgradeResult.Status.NPC_TOO_FAR);
+			if (REFRESH.equals(command)) {
+				sendRefresh(player, action, npc, result);
+			} else {
+				sendResult(player, action, npc, result);
+			}
+			return;
+		}
+		if (REFRESH.equals(command)) {
+			SERVICE.clearPendingAttempt(player);
+			sendRefresh(player, action, npc, null);
 			return;
 		}
 
@@ -204,6 +226,15 @@ public final class ItemUpgradeAction implements ActionListener {
 		player.addEvent(new ItemUpgradeEvent(npcId,
 				npc == null ? Collections.<Item>emptyList()
 						: SERVICE.findUpgradeCandidates(player), null, result));
+	}
+
+	private void sendRefresh(final Player player, final RPAction action,
+			final ItemUpgradeNPC npc, final ItemUpgradeResult result) {
+		final int npcId = npc != null ? npc.getID().getObjectID()
+				: getSafeNpcId(action);
+		player.addEvent(ItemUpgradeEvent.refresh(npcId,
+				npc == null ? Collections.<Item>emptyList()
+						: SERVICE.findUpgradeCandidates(player), result));
 	}
 
 	private int getSafeNpcId(final RPAction action) {

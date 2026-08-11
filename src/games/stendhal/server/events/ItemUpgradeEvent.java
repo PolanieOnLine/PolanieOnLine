@@ -25,6 +25,7 @@ import marauroa.common.game.RPSlot;
 /** Wire DTO shared by the desktop and web item-upgrade windows. */
 public final class ItemUpgradeEvent extends RPEvent {
 	public static final String PHASE_OPEN = "open";
+	public static final String PHASE_REFRESH = "refresh";
 	public static final String PHASE_PREVIEW = "preview";
 	public static final String PHASE_RESULT = "result";
 	private static final String PATH_SEPARATOR = "/";
@@ -77,6 +78,13 @@ public final class ItemUpgradeEvent extends RPEvent {
 			final List<Item> candidates, final ItemUpgradePreview preview) {
 		return new ItemUpgradeEvent(npcId, candidates, preview, null,
 				PHASE_OPEN);
+	}
+
+	/** Refreshes selectable instances without selecting one client-side. */
+	public static ItemUpgradeEvent refresh(final int npcId,
+			final List<Item> candidates, final ItemUpgradeResult result) {
+		return new ItemUpgradeEvent(npcId, candidates, null, result,
+				PHASE_REFRESH);
 	}
 
 	private ItemUpgradeEvent(final int npcId, final List<Item> candidates,
