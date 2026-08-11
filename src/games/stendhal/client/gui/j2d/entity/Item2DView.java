@@ -14,6 +14,7 @@ package games.stendhal.client.gui.j2d.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -25,8 +26,10 @@ import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.Item;
+import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
+import games.stendhal.client.gui.ItemUpgradeWindow;
 import games.stendhal.client.gui.SlotWindow;
 import games.stendhal.client.gui.j2d.entity.helpers.DrawingHelper;
 import games.stendhal.client.gui.j2d.entity.helpers.HorizontalAlignment;
@@ -223,6 +226,17 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	// EntityView
 	//
 
+	@Override
+	protected void buildActions(final List<String> list) {
+		super.buildActions(list);
+		if (entity.getRPObject().isContained()
+				&& entity.getRPObject().getContainerBaseOwner()
+						.equals(User.get().getRPObject())
+				&& ItemUpgradeWindow.canSelectItemForUpgrade(entity)) {
+			list.add(ActionType.ITEM_UPGRADE.getRepresentation());
+		}
+	}
+
 	/**
 	 * Determine if this entity can be moved (e.g. via dragging).
 	 *
@@ -275,6 +289,12 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	@Override
 	public void onAction(final ActionType at) {
 		switch (at) {
+		case ITEM_UPGRADE:
+			if (!isReleased()
+					&& ItemUpgradeWindow.canSelectItemForUpgrade(entity)) {
+				ItemUpgradeWindow.selectItemForUpgrade(entity);
+			}
+			break;
 		case USE:
 			/*
 			 * Send use action even for released items, if they are in a slot.

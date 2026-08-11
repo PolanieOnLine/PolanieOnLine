@@ -77,8 +77,8 @@ public class ItemRarityPresentationTest {
 		putStat(object, ItemTooltip.LIFESTEAL, "0.12402917");
 		putStat(object, ItemTooltip.PARRY_CHANCE, "0.15");
 		putStat(object, ItemTooltip.ARMOR_PENETRATION, "0.25");
-		putStat(object, ItemTooltip.IMPROVE, "0");
-		putStat(object, ItemTooltip.MAX_IMPROVES, "3");
+		putStat(object, ItemTooltip.UPGRADE_LEVEL, "0");
+		putStat(object, ItemTooltip.MAX_UPGRADE_LEVEL, "3");
 		putStat(object, ItemTooltip.VALUE, "11432");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
@@ -105,11 +105,11 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("&#9670; +15% szansy na parowanie"));
 		assertTrue(tooltip.contains("+25% penetracji pancerza"));
 		assertTrue(tooltip.contains("&#9670; +25% penetracji pancerza"));
-		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
-		assertTrue(tooltip.indexOf("Ulepszenie: +0/3")
+		assertTrue(tooltip.contains("Ulepszenie: +0 / +3"));
+		assertTrue(tooltip.indexOf("Ulepszenie: +0 / +3")
 				< tooltip.indexOf("53,3 pkt. obrażeń na sekundę"));
-		assertTrue(tooltip.indexOf("Ulepszenie: +0/3")
-				== tooltip.lastIndexOf("Ulepszenie: +0/3"));
+		assertTrue(tooltip.indexOf("Ulepszenie: +0 / +3")
+				== tooltip.lastIndexOf("Ulepszenie: +0 / +3"));
 		assertTrue(tooltip.contains("Wartość: 11432"));
 		assertTrue(tooltip.contains("text-align:right"));
 	}
@@ -206,17 +206,18 @@ public class ItemRarityPresentationTest {
 		putCategory(ring, ItemTooltip.CATEGORY_ACCESSORY);
 		putStat(ring, ItemTooltip.ATTACK, "7");
 		putStat(ring, ItemTooltip.DEFENSE, "17");
-		putStat(ring, ItemTooltip.IMPROVE, "2");
-		putStat(ring, ItemTooltip.MAX_IMPROVES, "4");
+		putStat(ring, ItemTooltip.UPGRADE_LEVEL, "2");
+		putStat(ring, ItemTooltip.MAX_UPGRADE_LEVEL, "4");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(ring));
 
 		assertTrue(tooltip.contains("+7 ataku"));
 		assertTrue(tooltip.contains("+17 pancerza"));
-		assertTrue(tooltip.contains("Ulepszenie: +2/4"));
+		assertTrue(tooltip.contains("PIERŚCIEŃ TESTOWY +2"));
+		assertTrue(tooltip.contains("Ulepszenie: +2 / +4"));
 		assertTrue(tooltip.indexOf("Rzadki")
-				< tooltip.indexOf("Ulepszenie: +2/4"));
+				< tooltip.indexOf("Ulepszenie: +2 / +4"));
 		assertTrue(countOccurrences(tooltip, DIVIDER_MARKER) == 1);
 		assertFalse(tooltip.contains("17 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
@@ -278,6 +279,30 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("Porównanie z: założony miecz"));
 		assertTrue(tooltip.contains("<font color='#62d26f'>+1</font>"));
 		assertTrue(tooltip.contains("<font color='#ef6a62'>-1</font>"));
+	}
+
+	@Test
+	public void testComparisonCanBeDisabledWithoutHidingItemStatistics() {
+		final RPObject candidate = ItemTestHelper.createItem("nowy miecz");
+		candidate.put("class", "sword");
+		putCategory(candidate, ItemTooltip.CATEGORY_WEAPON);
+		putStat(candidate, ItemTooltip.DAMAGE_MIN, "11");
+		putStat(candidate, ItemTooltip.DAMAGE_MAX, "19");
+		putStat(candidate, ItemTooltip.ATTACKS_PER_SECOND, "1");
+		final RPObject equipped = ItemTestHelper.createItem("założony miecz");
+		equipped.put("class", "sword");
+		putCategory(equipped, ItemTooltip.CATEGORY_WEAPON);
+		putStat(equipped, ItemTooltip.DAMAGE_MIN, "10");
+		putStat(equipped, ItemTooltip.DAMAGE_MAX, "20");
+		putStat(equipped, ItemTooltip.ATTACKS_PER_SECOND, "1");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(candidate), equipped, false);
+
+		assertTrue(tooltip.contains("[11–19] pkt. obrażeń za trafienie"));
+		assertFalse(tooltip.contains("Porównanie z:"));
+		assertFalse(tooltip.contains(BETTER_COLOR_MARKER));
+		assertFalse(tooltip.contains(WORSE_COLOR_MARKER));
 	}
 
 	@Test

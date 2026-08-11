@@ -22,7 +22,7 @@ export class ActionContextMenu extends Component {
 	private actions!: any[];
 	private appendActions: any[];
 
-	constructor(entity: any, append: any[] = []) {
+	constructor(entity: any|undefined, append: any[] = []) {
 		super("contextmenu-template", true);
 		this.entity = entity;
 		this.appendActions = append;
@@ -88,13 +88,16 @@ export class ActionContextMenu extends Component {
 
 	private gatherActions() {
 		let actions: any[] = [];
-		this.entity.buildActions(actions);
+		if (this.entity && typeof this.entity.buildActions === "function") {
+			this.entity.buildActions(actions);
+		}
 	
 		for (const action of this.appendActions) {
 			actions.push(action);
 		}
 	
-		if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600) {
+		if (this.entity && marauroa.me["adminlevel"]
+				&& marauroa.me["adminlevel"] >= 600) {
 			actions.push({
 				title: "Zbadaj (inspect)",
 				admin: true,

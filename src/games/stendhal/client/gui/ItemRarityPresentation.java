@@ -25,8 +25,10 @@ import javax.swing.ToolTipManager;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
+import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
@@ -68,15 +70,28 @@ final class ItemRarityPresentation {
 		if (entity == null) {
 			return null;
 		}
-		return buildItemToolTip(entity,
-				EquipmentComparisonResolver.resolve(entity.getRPObject()));
+		final boolean compareWithEquipment = WtWindowManager.getInstance()
+				.getPropertyBoolean(
+						SettingsProperties.ITEM_TOOLTIP_COMPARISON_PROPERTY, true);
+		RPObject equippedItem = null;
+		if (compareWithEquipment) {
+			equippedItem = EquipmentComparisonResolver.resolve(
+					entity.getRPObject());
+		}
+		return buildItemToolTip(entity, equippedItem, compareWithEquipment);
 	}
 
 	static String buildItemToolTip(final IEntity entity,
 			final RPObject equippedItem) {
+		return buildItemToolTip(entity, equippedItem, true);
+	}
+
+	static String buildItemToolTip(final IEntity entity,
+			final RPObject equippedItem, final boolean compareWithEquipment) {
 		if (entity == null) {
 			return null;
 		}
+		final RPObject comparisonItem = compareWithEquipment ? equippedItem : null;
 
 		final String scrollDestination = getScrollDestination(entity);
 		if (!(entity instanceof Item)) {
@@ -106,14 +121,14 @@ final class ItemRarityPresentation {
 		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);
-		appendComparisonHeader(tooltip, equippedItem);
+		appendComparisonHeader(tooltip, comparisonItem);
 		if (performance != null) {
-			appendWeaponPerformance(tooltip, object, performance, equippedItem);
+			appendWeaponPerformance(tooltip, object, performance, comparisonItem);
 		} else if (armour) {
-			appendArmourPerformance(tooltip, object, equippedItem);
+			appendArmourPerformance(tooltip, object, comparisonItem);
 		}
-		appendCoreStats(tooltip, object, equippedItem, weapon);
-		appendBonuses(tooltip, object, equippedItem, weapon, armour);
+		appendCoreStats(tooltip, object, comparisonItem, weapon);
+		appendBonuses(tooltip, object, comparisonItem, weapon, armour);
 		final String legendaryAffix = LegendaryAffixPresentation.build(object);
 		if (!legendaryAffix.isEmpty()) {
 			appendDivider(tooltip);
@@ -177,11 +192,14 @@ final class ItemRarityPresentation {
 			final IEntity entity, final RPObject object, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
+			final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.UPGRADE_LEVEL);
 			final String titleColor = rarity == null ? getTextColor()
 					: rarity.getColorHex();
 			tooltip.append("<font size='-1' color='")
 					.append(escapeHtml(titleColor)).append("'><b>")
-					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
+					.append(escapeHtml((title + (upgradeLevel > 0
+							? " +" + upgradeLevel : "")).toUpperCase(Locale.ROOT)))
 					.append("</b></font>");
 		}
 		if (rarity != null) {
@@ -190,7 +208,7 @@ final class ItemRarityPresentation {
 					.append(escapeHtml(rarity.getPolishDisplayName()))
 					.append("</font>");
 		}
-		appendImprovement(tooltip, object, rarity);
+		appendUpgrade(tooltip, object, rarity);
 	}
 
 	private static void appendComparisonHeader(final StringBuilder tooltip,
@@ -207,13 +225,13 @@ final class ItemRarityPresentation {
 		}
 	}
 
-	private static void appendImprovement(final StringBuilder tooltip,
+	private static void appendUpgrade(final StringBuilder tooltip,
 			final RPObject object, final ItemRarity rarity) {
-		final int improve = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.IMPROVE);
-		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.MAX_IMPROVES);
-		if (maxImproves <= 0 && improve <= 0) {
+		final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.UPGRADE_LEVEL);
+		final int maxUpgradeLevel = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MAX_UPGRADE_LEVEL);
+		if (maxUpgradeLevel <= 0 && upgradeLevel <= 0) {
 			return;
 		}
 
@@ -221,9 +239,9 @@ final class ItemRarityPresentation {
 				: rarity.getColorHex();
 		tooltip.append("<br><font size='-1' color='")
 				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
-				.append("Ulepszenie: +").append(improve);
-		if (maxImproves > 0) {
-			tooltip.append("/").append(maxImproves);
+				.append("Ulepszenie: +").append(upgradeLevel);
+		if (maxUpgradeLevel > 0) {
+			tooltip.append(" / +").append(maxUpgradeLevel);
 		}
 		tooltip.append("</font>");
 	}

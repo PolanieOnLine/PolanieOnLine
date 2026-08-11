@@ -127,6 +127,8 @@ class EventFactory {
 			event = new EntityMessageEvent();
 		}  else if (name.equals(Events.GLOBAL_VISUAL)) {
 			event = new GlobalVisualEffectEvent();
+		} else if (name.equals(Events.ITEM_UPGRADE)) {
+			event = new ItemUpgradeEvent();
 		}
 
 		if (event != null) {

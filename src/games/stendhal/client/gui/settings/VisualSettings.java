@@ -14,6 +14,7 @@ package games.stendhal.client.gui.settings;
 import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.ITEM_TOOLTIP_COMPARISON_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
@@ -293,6 +294,12 @@ class VisualSettings {
 			}
 		});
 		rightColumn.add(chatBubblesToggle);
+
+		final JCheckBox itemTooltipComparisonToggle = SettingsComponentFactory.createSettingsToggle(
+				ITEM_TOOLTIP_COMPARISON_PROPERTY, true,
+				"Porównuj statystyki przedmiotów",
+				"Pokazuje w tooltipie różnice względem aktualnie założonego przedmiotu.");
+		rightColumn.add(itemTooltipComparisonToggle);
 
 		// Font stuff
 		rightColumn.add(createFontSizeSelector());

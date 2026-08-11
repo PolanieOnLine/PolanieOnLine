@@ -68,4 +68,11 @@ public final class Events {
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
+
+	/**
+	 * Server-owned item-upgrade preview/result payload. This must differ from
+	 * the client action name because actions and events share the RPClass
+	 * registry on the desktop client.
+	 */
+	public static final String ITEM_UPGRADE = "item_upgrade_event";
 }

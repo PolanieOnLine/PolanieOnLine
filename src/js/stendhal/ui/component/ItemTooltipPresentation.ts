@@ -70,12 +70,13 @@ export function hasStructuredItemTooltip(item: Item): boolean {
 	return !!stats(item);
 }
 
-export function buildStructuredItemTooltip(item: Item): StructuredItemTooltip {
+export function buildStructuredItemTooltip(item: Item,
+		compareWithEquipment=true): StructuredItemTooltip {
 	const currentStats = stats(item);
 	if (!currentStats) {
 		return {lines: []};
 	}
-	const equipped = resolveEquippedItem(item);
+	const equipped = compareWithEquipment ? resolveEquippedItem(item) : undefined;
 	const equippedStats = stats(equipped);
 	const lines: ItemTooltipLine[] = [];
 	const category = currentStats["category"];

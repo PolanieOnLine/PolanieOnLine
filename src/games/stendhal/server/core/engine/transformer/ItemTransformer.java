@@ -56,6 +56,8 @@ public class ItemTransformer {
 			final int definitionAttack = getStoredAttack(item);
 			final Integer definitionDamageMin = getOptionalInt(item, "damage_min");
 			final Integer definitionDamageMax = getOptionalInt(item, "damage_max");
+			final Integer definitionMaxUpgradeLevel = getOptionalInt(item,
+					Item.MAX_UPGRADE_LEVEL_ATTRIBUTE);
 
 			item.setID(rpobject.getID());
 
@@ -78,6 +80,13 @@ public class ItemTransformer {
 				final RPClass rpclass = item.getRPClass();
 				item.fill(rpobject);
 				item.setRPClass(rpclass);
+				// max_improves is a volatile XML rule, so it is not present in old
+				// saved persistent instances. Keep the current definition after fill.
+				if (!rpobject.has(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE)
+						&& definitionMaxUpgradeLevel != null) {
+					item.put(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE,
+							definitionMaxUpgradeLevel.intValue());
+				}
 
 				// If we've updated the item name we don't want persistent reverting it
 				item.put("name", name);
@@ -135,7 +144,7 @@ public class ItemTransformer {
 				((MarkedScroll) item).applyDestInfo();
 			}
 
-			UpdateConverter.updateImproveItemAttr(item);
+			UpdateConverter.clampUpgradeLevel(item);
 
 			// Existing weapons without a saved range are migrated from their final
 			// restored ATK. The generated values are normal persistent attributes,
