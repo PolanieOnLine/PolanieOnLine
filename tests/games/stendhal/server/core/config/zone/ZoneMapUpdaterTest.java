@@ -49,6 +49,34 @@ public class ZoneMapUpdaterTest {
 		assertFalse(plan.isEmpty());
 	}
 
+	@Test
+	public void testDecorativePlantObjectIsRuntimeNoOp() {
+		assertTrue(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/plant/flower/pointed_yellow.png", 1));
+	}
+
+	@Test
+	public void testPortalMarkersMatchZonePopulationSemantics() {
+		assertTrue(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/portal.png", 4));
+		assertTrue(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/portal.png", 6));
+		assertFalse(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/portal.png", 0));
+		assertFalse(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/portal.png", 1));
+	}
+
+	@Test
+	public void testEntityProducingObjectsAreNotRuntimeNoOp() {
+		assertFalse(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/item/vegetable.png", 0));
+		assertFalse(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/creature/animal.png", 0));
+		assertFalse(ZoneMapUpdater.isRuntimeNoOpMapObject(
+				"../../tileset/logic/creature/motherlode.png", 0));
+	}
+
 	private static StendhalMapStructure createMap(final int floorTile) {
 		final StendhalMapStructure map = new StendhalMapStructure(2, 2);
 		for (final String name : new String[] {

@@ -138,7 +138,9 @@ public final class ZoneMapUpdater {
 				if (!same(referenceTile, candidateTile)) {
 					validateSupportedObjectDifference(referenceTile, candidateTile,
 							x, y, referencePath, candidatePath);
-					changes.add(new ObjectTileChange(x, y, referenceTile, candidateTile));
+					if (isPassiveItem(referenceTile) || isPassiveItem(candidateTile)) {
+						changes.add(new ObjectTileChange(x, y, referenceTile, candidateTile));
+					}
 				}
 			}
 		}
@@ -191,7 +193,7 @@ public final class ZoneMapUpdater {
 	private static void validateSupportedObjectDifference(final ObjectTile reference,
 			final ObjectTile candidate, final int x, final int y,
 			final String referencePath, final String candidatePath) throws IOException {
-		if (isSupportedPassiveItem(reference) && isSupportedPassiveItem(candidate)) {
+		if (isSupportedRuntimeObject(reference) && isSupportedRuntimeObject(candidate)) {
 			try {
 				validatePassiveItem(reference, x, y);
 				validatePassiveItem(candidate, x, y);
@@ -207,14 +209,43 @@ public final class ZoneMapUpdater {
 
 	private static void validatePassiveItem(final ObjectTile tile,
 			final int x, final int y) {
-		if (tile != null) {
+		if (isPassiveItem(tile)) {
 			PassiveEntityRespawnPointUpdater.validateMapObject(
 					tile.source, tile.type, x, y);
 		}
 	}
 
-	private static boolean isSupportedPassiveItem(final ObjectTile tile) {
-		return tile == null || tile.source.contains("logic/item");
+	private static boolean isSupportedRuntimeObject(final ObjectTile tile) {
+		return tile == null || isPassiveItem(tile) || isRuntimeNoOpMapObject(tile);
+	}
+
+	private static boolean isPassiveItem(final ObjectTile tile) {
+		return tile != null && tile.source.contains("logic/item");
+	}
+
+	/**
+	 * Mirrors the no-op branches and fall-through behavior of
+	 * StendhalRPZone.createEntityAt(). Portal marker types 4 and 6 are ignored
+	 * there because their actual portals are configured separately in XML.
+	 */
+	private static boolean isRuntimeNoOpMapObject(final ObjectTile tile) {
+		return tile != null && isRuntimeNoOpMapObject(tile.source, tile.type);
+	}
+
+	static boolean isRuntimeNoOpMapObject(final String source, final int type) {
+		if (source == null) {
+			return false;
+		}
+		if (source.contains("logic/portal")) {
+			return type == 4 || type == 6;
+		}
+		return !source.contains("motherlode.png")
+				&& !source.contains("sheep.png")
+				&& !source.contains("goat.png")
+				&& !source.contains("logic/creature")
+				&& !source.contains("logic/item")
+				&& !source.contains("logic/training_dummy")
+				&& !source.contains("logic/area");
 	}
 
 	private static ObjectTile objectTile(final LayerDefinition layer,
@@ -386,14 +417,14 @@ public final class ZoneMapUpdater {
 		}
 
 		private void removeOld(final StendhalRPZone zone) {
-			if (oldTile != null) {
+			if (isPassiveItem(oldTile)) {
 				PassiveEntityRespawnPointUpdater.removeMapSpawner(
 						zone, oldTile.source, oldTile.type, x, y);
 			}
 		}
 
 		private void addNew(final StendhalRPZone zone) {
-			if (newTile != null) {
+			if (isPassiveItem(newTile)) {
 				PassiveEntityRespawnPointUpdater.addMapSpawner(
 						zone, newTile.source, newTile.type, x, y);
 			}
