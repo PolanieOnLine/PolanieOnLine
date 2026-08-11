@@ -246,7 +246,7 @@ export class SlashActionRepo {
 				{type: "group", sparams: "join <gracz"},
 				{type: "group", sparams: "leader <gracz>"},
 				{type: "group", sparams: "lootmode single|shared"},
-				{type: "group", sparams: "expmode standard|lowest"},
+				{type: "group", sparams: "expmode standard|lowest|equal"},
 				{type: "group", sparams: "kick <gracz>"},
 				{type: "group", sparams: "part"},
 				{type: "group", sparams: "status"}

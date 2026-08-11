@@ -93,6 +93,8 @@ public class GroupPanelController implements GameObjects.GameObjectListener {
 					String exp;
 					if ("lowest".equals(expMode)) {
 						exp = "najniższy poziom";
+					} else if ("equal".equals(expMode)) {
+						exp = "równy podział";
 					} else {
 						exp = "standardowe";
 					}

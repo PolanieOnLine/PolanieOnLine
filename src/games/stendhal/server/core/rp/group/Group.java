@@ -247,7 +247,7 @@ public class Group {
 	/**
 	 * sets the exp mode
 	 *
-	 * @param mode "standard" or "lowest"
+	 * @param mode "standard", "lowest" or "equal"
 	 */
 	public void setExpmode(String mode) {
 		this.expmode = mode;
@@ -261,15 +261,28 @@ public class Group {
 	 * @return lowest level player or <code>null</code>
 	 */
 	public Player getLowestLevelMember(Player reference) {
+		return getOnlineMembersInSameZone(reference).stream()
+			.min(Comparator.comparingInt(Player::getLevel)
+				.thenComparing(Player::getName))
+			.orElse(null);
+	}
+
+	/**
+	 * Gets online group members who are in the same zone as the reference
+	 * player. The stable name ordering makes division remainders predictable.
+	 *
+	 * @param reference player whose zone should match
+	 * @return matching online group members sorted by name
+	 */
+	public List<Player> getOnlineMembersInSameZone(Player reference) {
 		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
 		return membersAndLastSeen.keySet().stream()
 			.map(ruleProcessor::getPlayer)
 			.filter(Objects::nonNull)
 			.filter(p -> (reference == null) || (reference.getZone() == null)
 					|| (p.getZone() == reference.getZone()))
-			.min(Comparator.comparingInt(Player::getLevel)
-				.thenComparing(Player::getName))
-			.orElse(null);
+			.sorted(Comparator.comparing(Player::getName))
+			.collect(java.util.stream.Collectors.toList());
 	}
 
 	/**

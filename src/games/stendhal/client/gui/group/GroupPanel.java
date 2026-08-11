@@ -454,6 +454,10 @@ class GroupPanel {
 			item.addActionListener(new ExpmodeActionListener("lowest"));
 			popup.add(item);
 
+			item = new JMenuItem("równy podział");
+			item.addActionListener(new ExpmodeActionListener("equal"));
+			popup.add(item);
+
 			popup.show(header, e.getX() - POPUP_OFFSET, e.getY() - POPUP_OFFSET);
 		}
 	}

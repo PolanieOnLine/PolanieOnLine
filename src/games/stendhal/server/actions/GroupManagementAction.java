@@ -114,8 +114,9 @@ public class GroupManagementAction implements ActionListener {
 		}
 
 		// check if the exp mode is valid
-		if ((expmode == null) || (!expmode.equals("standard") && !expmode.equals("lowest"))) {
-			player.sendPrivateText(NotificationType.ERROR, "Poprawny tryb dzielenia doświadczenia to \"standard\" lub \"lowest\".");
+		if ((expmode == null) || (!expmode.equals("standard") && !expmode.equals("lowest")
+				&& !expmode.equals("equal"))) {
+			player.sendPrivateText(NotificationType.ERROR, "Poprawny tryb dzielenia doświadczenia to \"standard\", \"lowest\" lub \"equal\".");
 			return;
 		}
 
