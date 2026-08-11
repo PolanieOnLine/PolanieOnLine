@@ -175,6 +175,19 @@ public class RPEntityWeaponDamageRollTest {
 				GlyphEffectService.getAttackRateReduction(attacker), 0.0001);
 	}
 
+	@Test
+	public void bloodGlyphStealsLifeFromUnarmedDamage() {
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.<Item>asList(), 0, 0.0);
+		attacker.setBaseHP(1000);
+		attacker.setHP(500);
+		attacker.setLifestealBonus(20.0);
+
+		attacker.handleLifesteal(attacker, attacker.getWeapons(), 100);
+
+		assertEquals(520, attacker.getHP());
+	}
+
 	private static Weapon fixedWeapon(final String weaponClass,
 			final int damage) {
 		final Map<String, String> attributes = new HashMap<String, String>();
@@ -241,6 +254,10 @@ public class RPEntityWeaponDamageRollTest {
 
 		private void setAttackRateReduction(final int reduction) {
 			glyph.put("rate_increase", reduction);
+		}
+
+		private void setLifestealBonus(final double percentage) {
+			glyph.put("lifesteal_increase", percentage);
 		}
 
 		private void clearGlyphs() {

@@ -346,7 +346,8 @@ public class StendhalRPAction {
 		}
 		final WeaponImpl weaponImpl = (WeaponImpl) attackWeapon;
 		// player may be using a melee weapon with longer reach
-		isRanged = isRanged && attackWeapon.isNonMeleeWeapon();
+		isRanged = isRanged && attackWeapon != null
+				&& attackWeapon.isNonMeleeWeapon();
 
 		boolean beaten;
 		final boolean usesTrainingDummy = defender instanceof TrainingDummy;

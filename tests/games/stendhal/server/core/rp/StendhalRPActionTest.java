@@ -283,4 +283,18 @@ public class StendhalRPActionTest {
 				"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania jekyll sheep.",
 				getPrivateReply(hyde));
 	}
+
+	@Test
+	public void playerAttackWithoutWeaponDoesNotThrow() {
+		final Player player = PlayerTestHelper.createPlayer("unarmed");
+		final Creature victim = SingletonRepository.getEntityManager()
+				.getCreature("mysz domowa");
+		player.setPosition(5, 5);
+		victim.setPosition(6, 5);
+		zone.add(player);
+		zone.add(victim);
+
+		assertNull(player.getWeapon());
+		StendhalRPAction.playerAttack(player, victim);
+	}
 }

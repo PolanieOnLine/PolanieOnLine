@@ -19,6 +19,7 @@ public final class GlyphEffectService {
 	public static final String SKILL_ATTACK_ATTRIBUTE = "skill_atk";
 	public static final String HEALTH_ATTRIBUTE = "health";
 	public static final String ATTACK_PERCENT_ATTRIBUTE = "atk_additional_bonus";
+	public static final String LIFESTEAL_PERCENT_ATTRIBUTE = "lifesteal_increase";
 	public static final String LEGACY_ATTACK_RATE_REDUCTION_ATTRIBUTE = "rate_increase";
 
 	private GlyphEffectService() {
@@ -45,6 +46,14 @@ public final class GlyphEffectService {
 	 */
 	public static double getAttackPercentBonusFraction(final RPEntity entity) {
 		return getDecimalBonus(entity, ATTACK_PERCENT_ATTRIBUTE) / 100.0;
+	}
+
+	/**
+	 * Returns glyph-granted lifesteal as a fraction of damage dealt.
+	 * A stored value of {@code 20.0} therefore returns {@code 0.20}.
+	 */
+	public static double getLifestealBonusFraction(final RPEntity entity) {
+		return getDecimalBonus(entity, LIFESTEAL_PERCENT_ATTRIBUTE) / 100.0;
 	}
 
 	/**
