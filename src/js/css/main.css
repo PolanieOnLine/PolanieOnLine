@@ -218,6 +218,20 @@ div.itemSlot.item-rarity {
 	font-weight: normal;
 }
 
+.item-rarity-tooltip__comparison {
+	color: #c6a58f;
+	font-size: 12px;
+	margin: 2px 0 3px;
+}
+
+.item-tooltip-delta {
+	font-weight: bold;
+}
+
+.item-tooltip-delta--better { color: #62d26f; }
+.item-tooltip-delta--worse { color: #ef6a62; }
+.item-tooltip-delta--equal { color: var(--text-color); }
+
 div#equipmentborder { width: 147px; }
 
 .inventory-window {
