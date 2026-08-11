@@ -100,7 +100,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private JComponent buildContent() {
 		final JPanel content = new JPanel(new BorderLayout(8, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(420, 460));
+		content.setPreferredSize(new Dimension(420, 420));
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
 		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
@@ -276,7 +276,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 					"Wymagania pojawią się po wybraniu przedmiotu."));
 			return;
 		}
-		materials.setLayout(new GridLayout(0, Math.min(3, names.size()), 6, 6));
+		materials.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 2));
 		for (int index = 0; index < names.size(); index++) {
 			final int have = index < owned.size() ? integer(owned.get(index)) : 0;
 			final int need = index < required.size() ? integer(required.get(index)) : 0;
@@ -292,12 +292,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final int required) {
 		final boolean available = owned >= required;
 		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
-		final JPanel card = new JPanel(new BorderLayout(0, 2));
-		card.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(stateColor),
-				BorderFactory.createEmptyBorder(4, 3, 4, 3)));
+		final JPanel card = new JPanel(new BorderLayout(0, 1));
+		card.setPreferredSize(new Dimension(70, 72));
 		final JPanel slot = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		slot.add(new MaterialIcon(itemClass, subclass, required, available));
+		slot.add(new MaterialIcon(itemClass, subclass, required));
 		card.add(slot, BorderLayout.NORTH);
 
 		final JPanel description = new JPanel(new GridLayout(0, 1, 0, 1));
@@ -488,10 +486,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		private static final long serialVersionUID = 1L;
 		private final Sprite sprite;
 		private final Sprite quantity;
-		private final Color stateColor;
 
 		private MaterialIcon(final String itemClass, final String subclass,
-				final int required, final boolean available) {
+				final int required) {
 			setPreferredSize(new Dimension(40, 40));
 			setMinimumSize(new Dimension(40, 40));
 			sprite = itemClass == null || itemClass.length() == 0
@@ -500,7 +497,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 							+ itemClass + "/" + subclass + ".png");
 			quantity = required > 1 ? TextSprite.createTextSprite(
 					Integer.toString(required), Color.WHITE) : null;
-			stateColor = available ? AVAILABLE : UNAVAILABLE;
 		}
 
 		@Override
@@ -516,9 +512,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				quantity.draw(graphics,
 						x + SLOT_BACKGROUND.getWidth() - quantity.getWidth(), y);
 			}
-			graphics.setColor(stateColor);
-			graphics.drawRect(x, y, SLOT_BACKGROUND.getWidth() - 1,
-					SLOT_BACKGROUND.getHeight() - 1);
 		}
 	}
 }

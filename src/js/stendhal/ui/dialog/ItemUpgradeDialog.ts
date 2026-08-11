@@ -195,8 +195,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			const need = Number(required[index] || 0);
 			const available = have >= need;
 			const card = document.createElement("div");
-			card.className = "item-upgrade-material "
-					+ (available ? "item-upgrade-owned" : "item-upgrade-missing");
+			card.className = "item-upgrade-material";
 			card.title = name + ": posiadasz " + have + ", wymagane " + need;
 
 			const slot = document.createElement("div");
@@ -212,6 +211,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			const label = document.createElement("div");
 			label.textContent = name;
 			const count = document.createElement("div");
+			count.className = available ? "item-upgrade-owned"
+					: "item-upgrade-missing";
 			count.textContent = (available ? "✓ " : "✗ ") + have + " / " + need;
 			card.append(slot, label, count);
 			this.materials.appendChild(card);
