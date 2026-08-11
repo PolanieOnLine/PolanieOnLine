@@ -271,6 +271,7 @@ public abstract class DressedEntity extends RPEntity {
 					if (has("outfit_colors", part)) {
 						remove("outfit_colors", part);
 					}
+				}
 			}
 		}
 
