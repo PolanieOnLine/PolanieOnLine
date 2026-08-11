@@ -352,7 +352,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private send(command: string, path?: string, token?: string): void {
 		if (!this.npcId) return;
 		const action: {[key: string]: any} = {
-			type: "item_upgrade",
+			type: "item_upgrade_action",
 			command,
 			npc_id: String(this.npcId)
 		};

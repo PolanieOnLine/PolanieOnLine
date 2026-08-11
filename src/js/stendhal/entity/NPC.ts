@@ -68,7 +68,7 @@ export class NPC extends RPEntity {
 				title: "Ulepsz przedmiot",
 				action: function(entity: NPC) {
 					marauroa.clientFramework.sendAction({
-						type: "item_upgrade",
+						type: "item_upgrade_action",
 						command: "open",
 						npc_id: String(entity["id"])
 					});

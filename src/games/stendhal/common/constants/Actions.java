@@ -219,7 +219,7 @@ public final class Actions {
 	public static final String ACHIEVEMENTLOG = "achievementlog";
 
 	/** Item-upgrade preview and execution requests. */
-	public static final String ITEM_UPGRADE = "item_upgrade";
+	public static final String ITEM_UPGRADE = "item_upgrade_action";
 
 	private Actions() {
 		// hide constructor

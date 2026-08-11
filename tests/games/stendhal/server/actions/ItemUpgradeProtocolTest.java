@@ -33,6 +33,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.ItemUpgradeAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.ItemUpgradeAdder.ItemUpgradeNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ItemUpgradeEvent;
+import games.stendhal.server.events.ItemUpgradeEventCompatibility;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPAction;
@@ -52,6 +53,7 @@ public class ItemUpgradeProtocolTest {
 		if (!RPClass.hasRPClass(Events.ITEM_UPGRADE)) {
 			ItemUpgradeEvent.generateRPClass();
 		}
+		ItemUpgradeEventCompatibility.generateRPClasses();
 	}
 
 	@Test
@@ -201,6 +203,9 @@ public class ItemUpgradeProtocolTest {
 	public void clientRequestDoesNotUseTheServerEventRpClass()
 			throws IOException {
 		assertNotEquals(Actions.ITEM_UPGRADE, Events.ITEM_UPGRADE);
+		assertNotEquals(Actions.ITEM_UPGRADE,
+				ItemUpgradeEventCompatibility.LEGACY_EVENT);
+		assertFalse(RPClass.hasRPClass(Actions.ITEM_UPGRADE));
 
 		final RPAction action = new RPAction();
 		action.put(Actions.TYPE, Actions.ITEM_UPGRADE);

@@ -18,7 +18,8 @@ import marauroa.common.game.RPClass;
 /**
  * Read-only RPClass definitions for item-upgrade events that may have been
  * captured by a character save. RPEvents are transient, but Marauroa stores
- * the event list when a database save happens in the same turn.
+ * the event list when a database save happens in the same turn. The legacy
+ * event name must remain distinct from the active item-upgrade action name.
  */
 public final class ItemUpgradeEventCompatibility {
 	public static final String LEGACY_EVENT = "item_upgrade";
