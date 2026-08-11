@@ -137,6 +137,7 @@ final class ChristmasZonePlan {
 						&& usesProperty(parameter.getAttribute("condition"), property)) {
 					return true;
 				}
+			}
 		}
 		return false;
 	}
@@ -153,6 +154,7 @@ final class ChristmasZonePlan {
 					attributes.put(parameter.getAttribute("name"),
 							XMLUtil.getText(parameter).trim());
 				}
+			}
 		}
 		return attributes;
 	}
@@ -168,6 +170,7 @@ final class ChristmasZonePlan {
 						&& XMLUtil.checkCondition(parameter.getAttribute("condition"))) {
 					file = XMLUtil.getText(parameter).trim();
 				}
+			}
 		}
 		return file;
 	}
