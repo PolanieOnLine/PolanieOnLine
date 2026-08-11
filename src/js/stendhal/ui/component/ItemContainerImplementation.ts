@@ -538,7 +538,8 @@ export class ItemContainerImplementation {
 
 	private static showRarityToolTip(target: HTMLElement, item: Item, x: number, y: number) {
 		const rarity = item.getRarity();
-		const structured = buildStructuredItemTooltip(item);
+		const structured = buildStructuredItemTooltip(item,
+				singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
 		if (!rarity && structured.lines.length === 0) {
 			return;
 		}

@@ -282,6 +282,30 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
+	public void testComparisonCanBeDisabledWithoutHidingItemStatistics() {
+		final RPObject candidate = ItemTestHelper.createItem("nowy miecz");
+		candidate.put("class", "sword");
+		putCategory(candidate, ItemTooltip.CATEGORY_WEAPON);
+		putStat(candidate, ItemTooltip.DAMAGE_MIN, "11");
+		putStat(candidate, ItemTooltip.DAMAGE_MAX, "19");
+		putStat(candidate, ItemTooltip.ATTACKS_PER_SECOND, "1");
+		final RPObject equipped = ItemTestHelper.createItem("założony miecz");
+		equipped.put("class", "sword");
+		putCategory(equipped, ItemTooltip.CATEGORY_WEAPON);
+		putStat(equipped, ItemTooltip.DAMAGE_MIN, "10");
+		putStat(equipped, ItemTooltip.DAMAGE_MAX, "20");
+		putStat(equipped, ItemTooltip.ATTACKS_PER_SECOND, "1");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(candidate), equipped, false);
+
+		assertTrue(tooltip.contains("[11–19] pkt. obrażeń za trafienie"));
+		assertFalse(tooltip.contains("Porównanie z:"));
+		assertFalse(tooltip.contains(BETTER_COLOR_MARKER));
+		assertFalse(tooltip.contains(WORSE_COLOR_MARKER));
+	}
+
+	@Test
 	public void testComparisonShowsStatsLostByCandidate() {
 		final RPObject candidate = ItemTestHelper.createItem("nowy pierścień");
 		putCategory(candidate, ItemTooltip.CATEGORY_ACCESSORY);
