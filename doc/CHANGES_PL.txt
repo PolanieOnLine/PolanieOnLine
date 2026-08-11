@@ -2,6 +2,14 @@ Changelog
 ---------
 1.42
 *klient*
+- Dodano nowe okno ulepszania przedmiotów w klientach desktopowym i webowym, zastępujące obowiązkowy tekstowy proces u kowala
+- Dodano wirtualny slot wyboru przedmiotu metodą przeciągnij i upuść, bez przenoszenia go z ekwipunku gracza
+- Okno ulepszania pokazuje aktualne i następne statystyki, poziom ulepszenia, szansę powodzenia, koszt oraz wymagane materiały wraz z ikonami i stanem posiadania
+- Dodano akcje kontekstowe umożliwiające otwarcie okna u odpowiedniego NPC, wybranie przedmiotu z ekwipunku oraz wyczyszczenie wirtualnego slotu
+- Dodano porównywanie statystyk oglądanego przedmiotu z założonym wyposażeniem; lepsze różnice są zielone, a gorsze czerwone
+- Dodano ustawienie pozwalające włączyć lub wyłączyć porównywanie statystyk przedmiotów w tooltipach
+- Tooltip przedmiotu pokazuje teraz jego poziom ulepszenia w nazwie oraz wartość „Ulepszenie: +N / +M”
+- Uproszczono odpowiedź /look dla przedmiotów do ich opisu i ukryto wartość sprzedaży w structured tooltipie
 - Przebudowano podpowiedzi ekwipunku, aby czytelniej prezentowały najważniejsze statystyki przedmiotów
 - Dodano wyświetlanie zakresu obrażeń, średnich obrażeń na sekundę oraz szybkości ataku dla broni
 - Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach
@@ -10,6 +18,8 @@ Changelog
 - Dodano wizualne wyróżnienie elitarnych potworów złotą nazwą, koroną oraz subtelnym obrysem postaci
 
 *świat*
+- Wprowadzono Item Upgrades 2.0 z bezpiecznym wyborem konkretnej instancji przedmiotu oraz wspólną matematyką podglądu i właściwego ulepszenia
+- Dodano tryb "równy podział" doświadczenia w grupie, dzielący wspólną pulę pomiędzy zalogowanych członków znajdujących się na tej samej mapie
 - Wprowadzono system rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
 - Rzadkie, epickie i legendarne przedmioty mogą otrzymywać losowe, trwałe afiksy zwiększające ich statystyki lub dodające specjalne właściwości
 - Legendarne przedmioty otrzymują dodatkowo jeden specjalny legendarny afiks zależny od rodzaju wyposażenia
@@ -17,7 +27,7 @@ Changelog
 - Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistych ataków
 - Wprowadzono klasy pancerza potworów: brak, lekki, średni oraz ciężki
 - Skuteczność sztyletów, mieczy, toporów i broni obuchowych zależy teraz od rodzaju pancerza przeciwnika
-- Dodano status Ogłuszenia, który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się
+- Dodano status "ogłuszenia", który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się
 - Wybrane potwory otrzymały możliwość ogłuszania gracza
 - Dodano losowe elitarne warianty potworów od 20 poziomu
 - Elitarne potwory posiadają zwiększone zdrowie, atak, obronę oraz przyznają więcej doświadczenia
@@ -25,12 +35,24 @@ Changelog
 - Bossowie oraz wybrane specjalne stworzenia są wyłączone z losowego systemu elit
 
 *kod*
+- Uporządkowano nazewnictwo systemu ulepszeń do wspólnej terminologii Item Upgrade oraz wydzielono reguły z obsługi dialogu NPC
+- Serwer ponownie weryfikuje przedmiot, jego położenie, pieniądze, materiały, karmę i odległość od NPC przy każdej próbie ulepszenia
+- Rozdzielono akcję klienta i event serwera systemu ulepszeń, zachowując odczyt historycznych zapisanych eventów
 - Przebudowano system krwawienia do wersji Bleeding 2.0
 - Ujednolicono krwawienie zadawane przez potwory oraz efekty przedmiotów, aby korzystały ze wspólnego systemu obrażeń okresowych
 - Dodano obsługę kumulowania ran, odporności na krwawienie oraz nowych źródeł efektów statusowych
 - Usunięto pozostałości starego systemu krwawienia oraz stare profile potworów
 - Rozszerzono system generowania przedmiotów o trwałe rarity, afiksy oraz możliwość deterministycznego odtworzenia wylosowanych parametrów
 - Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rarity, afiksy oraz ich parametry
+
+*naprawiono błędy*
+- Podgląd ulepszenia nie zużywa już karmy; karma jest wykorzystywana dopiero podczas właściwej, zweryfikowanej próby
+- Zabezpieczono ulepszanie przed podwójnym kliknięciem, przeniesieniem lub podmianą przedmiotu oraz utratą pieniędzy albo materiałów przy niepełnej transakcji
+- Naprawiono koszt ulepszenia broni korzystających wyłącznie z RATK oraz odtwarzanie maksymalnego poziomu ulepszenia starszych zapisanych przedmiotów
+- Naprawiono procentowe naliczanie bonusu obrażeń krytycznych i bonusu ATK z glifów podczas rzeczywistego losowania obrażeń broni
+- Naprawiono rozdzielenie trwałego ATK gracza od tymczasowego bonusu skill_atk glifów oraz uporządkowano obsługę zdrowia i szybkości ataku glifów
+- Glif krwi poprawnie zapewnia teraz kradzież życia także podczas walki bez broni; naprawiono również błąd takiego ataku kończący się NullPointerException
+- Zabezpieczono statystyki odradzanych potworów przed przekroczeniem maksymalnego zakresu obsługiwanego przez serwer
 
 
 1.41
