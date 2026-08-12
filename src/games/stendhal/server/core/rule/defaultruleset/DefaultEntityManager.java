@@ -13,10 +13,13 @@
 package games.stendhal.server.core.rule.defaultruleset;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +38,8 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.spell.Spell;
+import marauroa.common.resource.ResourceProvider;
+import marauroa.common.resource.ResourceReloadService;
 
 /**
  * entity manager for the default ruleset.
@@ -50,7 +55,7 @@ public class DefaultEntityManager implements EntityManager {
 	private final Map<String, String> idToClass;
 
 	/** maps the item names to the actual item enums. */
-	private final Map<String, DefaultItem> classToItem;
+	private volatile Map<String, DefaultItem> classToItem;
 
 	/** lists all creatures that are being used at least once. */
 	private final Map<String, Creature> createdCreature;
@@ -83,6 +88,8 @@ public class DefaultEntityManager implements EntityManager {
 		// initialize shops via XML
 		new ShopGroupsXMLLoader("/data/conf/shops.xml").load();
 		new ProductionGroupsXMLLoader("/data/conf/productions.xml").load();
+
+		ResourceReloadService.getInstance().register(ItemDefinitionsResource.getServerResource());
 	}
 
 	/**
@@ -134,6 +141,78 @@ public class DefaultEntityManager implements EntityManager {
 	}
 
 	/**
+	 * Prepares a complete detached item-definition map through the Marauroa
+	 * resource provider. The active map and representative item cache are not
+	 * touched by this method.
+	 *
+	 * @param provider resource provider selected by Marauroa
+	 * @return detached candidate definitions
+	 * @throws Exception if the configuration cannot be loaded or contains
+	 *         duplicate names
+	 */
+	Map<String, DefaultItem> loadItemDefinitions(final ResourceProvider provider) throws Exception {
+		final ItemGroupsXMLLoader loader = new ItemGroupsXMLLoader(new URI("/data/conf/items.xml"));
+		final List<DefaultItem> items = loader.load(provider);
+		final Map<String, DefaultItem> candidate = new HashMap<String, DefaultItem>();
+
+		for (final DefaultItem item : items) {
+			final String name = item.getItemName();
+			if (name == null || name.trim().length() == 0) {
+				throw new IllegalArgumentException("Item definition without a name");
+			}
+			if (candidate.put(name, item) != null) {
+				throw new IllegalArgumentException("Repeated item name in reload candidate: " + name);
+			}
+		}
+		return candidate;
+	}
+
+	/**
+	 * Validates the conservative 1.42 item reload contract.
+	 *
+	 * Runtime reload may change attributes of existing item definitions, but it
+	 * may not add or remove item names. This avoids changing WordList and other
+	 * cross-resource references while the server is live.
+	 *
+	 * @param candidate detached candidate definitions
+	 */
+	void validateItemDefinitions(final Map<String, DefaultItem> candidate) {
+		if (candidate == null || candidate.isEmpty()) {
+			throw new IllegalArgumentException("Item definition candidate must not be empty");
+		}
+
+		final Set<String> activeNames;
+		synchronized (createdItem) {
+			activeNames = new HashSet<String>(classToItem.keySet());
+		}
+		final Set<String> candidateNames = new HashSet<String>(candidate.keySet());
+		if (!activeNames.equals(candidateNames)) {
+			final Set<String> added = new HashSet<String>(candidateNames);
+			added.removeAll(activeNames);
+			final Set<String> removed = new HashSet<String>(activeNames);
+			removed.removeAll(candidateNames);
+			throw new IllegalArgumentException("Runtime item reload cannot add or remove item names. Added: "
+					+ added + ", removed: " + removed);
+		}
+	}
+
+	/**
+	 * Activates already parsed and validated item definitions.
+	 *
+	 * No XML, I/O or validation is performed here. Existing Item instances are
+	 * left untouched. The representative cache is cleared so future inspection
+	 * and future item creation use the new definitions.
+	 *
+	 * @param candidate validated candidate definitions
+	 */
+	void applyItemDefinitions(final Map<String, DefaultItem> candidate) {
+		synchronized (createdItem) {
+			classToItem = candidate;
+			createdItem.clear();
+		}
+	}
+
+	/**
 	 * Build the creatures tables
 	 */
 	private void buildCreatureTables() {
@@ -164,14 +243,14 @@ public class DefaultEntityManager implements EntityManager {
 	@Override
 	public boolean addItem(final DefaultItem item) {
 		final String clazz = item.getItemName();
+		synchronized (createdItem) {
+			if (classToItem.containsKey(clazz)) {
+				LOGGER.warn("Repeated item name: " + clazz);
+				return false;
+			}
 
-		if (classToItem.containsKey(clazz)) {
-			LOGGER.warn("Repeated item name: " + clazz);
-			return false;
+			classToItem.put(clazz, item);
 		}
-
-		classToItem.put(clazz, item);
-
 		return true;
 	}
 
@@ -227,7 +306,9 @@ public class DefaultEntityManager implements EntityManager {
 	 */
 	@Override
 	public Collection<Item> getItems() {
-		return createdItem.values();
+		synchronized (createdItem) {
+			return new ArrayList<Item>(createdItem.values());
+		}
 	}
 
 	/**
@@ -351,8 +432,9 @@ public class DefaultEntityManager implements EntityManager {
 		if (clazz == null) {
 			throw new IllegalArgumentException("entity class is null");
 		}
-
-		return classToItem.containsKey(clazz);
+		synchronized (createdItem) {
+			return classToItem.containsKey(clazz);
+		}
 	}
 
 	/**
@@ -376,16 +458,16 @@ public class DefaultEntityManager implements EntityManager {
 			throw new IllegalArgumentException("item creation context is null");
 		}
 
-		// Lookup the clazz in the item table
-		final DefaultItem item = classToItem.get(clazz);
-		if (item != null) {
-			if (createdItem.get(clazz) == null) {
-				// The representative item must never consume rarity randomness.
-				createdItem.put(clazz, item.getItem(ItemCreationContext.restore()));
+		synchronized (createdItem) {
+			final DefaultItem item = classToItem.get(clazz);
+			if (item != null) {
+				if (createdItem.get(clazz) == null) {
+					// The representative item must never consume rarity randomness.
+					createdItem.put(clazz, item.getItem(ItemCreationContext.restore()));
+				}
+				return item.getItem(context);
 			}
-			return item.getItem(context);
 		}
-
 		return null;
 	}
 
@@ -441,11 +523,15 @@ public class DefaultEntityManager implements EntityManager {
 
 	@Override
 	public Collection<DefaultItem> getDefaultItems() {
-		return classToItem.values();
+		synchronized (createdItem) {
+			return new ArrayList<DefaultItem>(classToItem.values());
+		}
 	}
 
 	public Collection<String> getConfiguredItems() {
-		return classToItem.keySet();
+		synchronized (createdItem) {
+			return new ArrayList<String>(classToItem.keySet());
+		}
 	}
 
 	@Override
