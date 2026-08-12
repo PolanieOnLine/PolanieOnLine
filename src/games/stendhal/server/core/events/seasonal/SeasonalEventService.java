@@ -185,140 +185,132 @@ public final class SeasonalEventService {
 			final ChristmasEventPlan target,
 			final ChristmasEventPlan rollback,
 			final ResultListener listener) {
-		String stage = "ustawienie flagi stendhal.christmas";
-		try {
-			setSeasonalProperty(ChristmasEventPlan.PROPERTY, target.isEnabled());
-			stage = "zastosowanie przygotowanych zasobów świata";
-			target.apply();
-			stage = "synchronizacja questa Rudolfa";
-			synchronizeRudolphQuest(target.isEnabled());
-			stage = "odświeżenie NPC Mariuszek";
-			refreshMariuszek();
-			if (listener != null) {
-				listener.onResult(true, target.isEnabled()
-						? "Event Christmas został aktywowany bez restartu serwera."
-						: "Event Christmas został wyłączony bez restartu serwera.");
-			}
-		} catch (final Exception e) {
-			LOGGER.error("Nie udało się zastosować eventu Christmas na etapie: " + stage
-					+ "; przywracam poprzedni stan", e);
-			String rollbackFailure = null;
-			String rollbackStage = "przywrócenie flagi stendhal.christmas";
-			try {
-				setSeasonalProperty(ChristmasEventPlan.PROPERTY, previous);
-				rollbackStage = "przywrócenie zasobów świata";
-				rollback.apply();
-				rollbackStage = "przywrócenie questa Rudolfa";
-				synchronizeRudolphQuest(previous);
-				rollbackStage = "przywrócenie NPC Mariuszek";
-				refreshMariuszek();
-			} catch (final Exception rollbackException) {
-				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Christmas na etapie: "
-						+ rollbackStage, rollbackException);
-				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage
-						+ "' zgłosił: " + readableMessage(rollbackException);
-			}
-			if (listener != null) {
-				listener.onResult(false, "Nie udało się przełączyć eventu Christmas na etapie '"
-						+ stage + "': " + readableMessage(e)
-						+ (rollbackFailure == null ? "" : rollbackFailure));
-			}
-		} finally {
-			transitionInProgress.set(false);
-		}
+		executeTransition("Christmas", "Christmas", target.isEnabled(), listener,
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("ustawienie flagi stendhal.christmas");
+						setSeasonalProperty(ChristmasEventPlan.PROPERTY, target.isEnabled());
+						stage.set("zastosowanie przygotowanych zasobów świata");
+						target.apply();
+						stage.set("synchronizacja questa Rudolfa");
+						synchronizeRudolphQuest(target.isEnabled());
+						stage.set("odświeżenie NPC Mariuszek");
+						refreshMariuszek();
+					}
+				},
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("przywrócenie flagi stendhal.christmas");
+						setSeasonalProperty(ChristmasEventPlan.PROPERTY, previous);
+						stage.set("przywrócenie zasobów świata");
+						rollback.apply();
+						stage.set("przywrócenie questa Rudolfa");
+						synchronizeRudolphQuest(previous);
+						stage.set("przywrócenie NPC Mariuszek");
+						refreshMariuszek();
+					}
+				});
 	}
 
 	private void applyMineTownTransition(final boolean previous,
 			final MineTownEventPlan target,
 			final MineTownEventPlan rollback,
 			final ResultListener listener) {
-		String stage = "ustawienie flagi stendhal.minetown";
-		try {
-			setSeasonalProperty(MineTownEventPlan.PROPERTY, target.isEnabled());
-			if (!target.isEnabled()) {
-				stage = "odłączenie Mine Town Revival Weeks";
-				synchronizeMineTownQuest(false);
-			}
-			stage = "zastosowanie przygotowanych zasobów Mine Town";
-			target.apply();
-			if (target.isEnabled()) {
-				stage = "uruchomienie Mine Town Revival Weeks";
-				synchronizeMineTownQuest(true);
-			}
-			stage = "ponowne podpięcie dialogu Easter do Caroline";
-			reattachEasterQuestToCurrentCaroline();
-			if (listener != null) {
-				listener.onResult(true, target.isEnabled()
-						? "Event Mine Town Revival Weeks został aktywowany bez restartu serwera."
-						: "Event Mine Town Revival Weeks został wyłączony bez restartu serwera.");
-			}
-		} catch (final Exception e) {
-			LOGGER.error("Nie udało się zastosować eventu Mine Town na etapie: " + stage
-					+ "; przywracam poprzedni stan", e);
-			String rollbackFailure = null;
-			String rollbackStage = "przywrócenie flagi stendhal.minetown";
-			try {
-				setSeasonalProperty(MineTownEventPlan.PROPERTY, previous);
-				if (!previous) {
-					rollbackStage = "usunięcie częściowo uruchomionego questa Mine Town";
-					synchronizeMineTownQuest(false);
-				}
-				rollbackStage = "przywrócenie zasobów Mine Town";
-				rollback.apply();
-				if (previous) {
-					rollbackStage = "przywrócenie questa Mine Town";
-					synchronizeMineTownQuest(true);
-				}
-				rollbackStage = "ponowne podpięcie dialogu Easter do Caroline";
-				reattachEasterQuestToCurrentCaroline();
-			} catch (final Exception rollbackException) {
-				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Mine Town na etapie: "
-						+ rollbackStage, rollbackException);
-				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage
-						+ "' zgłosił: " + readableMessage(rollbackException);
-			}
-			if (listener != null) {
-				listener.onResult(false, "Nie udało się przełączyć eventu Mine Town na etapie '"
-						+ stage + "': " + readableMessage(e)
-						+ (rollbackFailure == null ? "" : rollbackFailure));
-			}
-		} finally {
-			transitionInProgress.set(false);
-		}
+		executeTransition("Mine Town", "Mine Town Revival Weeks", target.isEnabled(), listener,
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("ustawienie flagi stendhal.minetown");
+						setSeasonalProperty(MineTownEventPlan.PROPERTY, target.isEnabled());
+						if (!target.isEnabled()) {
+							stage.set("odłączenie Mine Town Revival Weeks");
+							synchronizeMineTownQuest(false);
+						}
+						stage.set("zastosowanie przygotowanych zasobów Mine Town");
+						target.apply();
+						if (target.isEnabled()) {
+							stage.set("uruchomienie Mine Town Revival Weeks");
+							synchronizeMineTownQuest(true);
+						}
+						stage.set("ponowne podpięcie dialogu Easter do Caroline");
+						reattachEasterQuestToCurrentCaroline();
+					}
+				},
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("przywrócenie flagi stendhal.minetown");
+						setSeasonalProperty(MineTownEventPlan.PROPERTY, previous);
+						if (!previous) {
+							stage.set("usunięcie częściowo uruchomionego questa Mine Town");
+							synchronizeMineTownQuest(false);
+						}
+						stage.set("przywrócenie zasobów Mine Town");
+						rollback.apply();
+						if (previous) {
+							stage.set("przywrócenie questa Mine Town");
+							synchronizeMineTownQuest(true);
+						}
+						stage.set("ponowne podpięcie dialogu Easter do Caroline");
+						reattachEasterQuestToCurrentCaroline();
+					}
+				});
 	}
 
 	private void applyEasterTransition(final boolean previous,
 			final EasterEventPlan target,
 			final EasterEventPlan rollback,
 			final ResultListener listener) {
-		String stage = "ustawienie flagi stendhal.easter";
+		executeTransition("Easter", "Easter", target.isEnabled(), listener,
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("ustawienie flagi stendhal.easter");
+						setSeasonalProperty(EasterEventPlan.PROPERTY, target.isEnabled());
+						stage.set("zastosowanie przygotowanych zasobów Easter");
+						target.apply();
+					}
+				},
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("przywrócenie flagi stendhal.easter");
+						setSeasonalProperty(EasterEventPlan.PROPERTY, previous);
+						stage.set("przywrócenie zasobów Easter");
+						rollback.apply();
+					}
+				});
+	}
+
+	private void executeTransition(final String logName, final String resultName,
+			final boolean enabled, final ResultListener listener,
+			final TransitionWork apply, final TransitionWork rollback) {
+		final StageTracker stage = new StageTracker("rozpoczęcie przełączenia");
 		try {
-			setSeasonalProperty(EasterEventPlan.PROPERTY, target.isEnabled());
-			stage = "zastosowanie przygotowanych zasobów Easter";
-			target.apply();
+			apply.run(stage);
 			if (listener != null) {
-				listener.onResult(true, target.isEnabled()
-						? "Event Easter został aktywowany bez restartu serwera."
-						: "Event Easter został wyłączony bez restartu serwera.");
+				listener.onResult(true, enabled
+						? "Event " + resultName + " został aktywowany bez restartu serwera."
+						: "Event " + resultName + " został wyłączony bez restartu serwera.");
 			}
 		} catch (final Exception e) {
-			LOGGER.error("Nie udało się zastosować eventu Easter na etapie: " + stage
-					+ "; przywracam poprzedni stan", e);
+			LOGGER.error("Nie udało się zastosować eventu " + logName + " na etapie: "
+					+ stage.get() + "; przywracam poprzedni stan", e);
 			String rollbackFailure = null;
-			String rollbackStage = "przywrócenie flagi stendhal.easter";
+			final StageTracker rollbackStage = new StageTracker("rozpoczęcie rollbacku");
 			try {
-				setSeasonalProperty(EasterEventPlan.PROPERTY, previous);
-				rollbackStage = "przywrócenie zasobów Easter";
-				rollback.apply();
+				rollback.run(rollbackStage);
 			} catch (final Exception rollbackException) {
-				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu Easter na etapie: "
-						+ rollbackStage, rollbackException);
-				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage
+				LOGGER.error("Nie udało się w pełni przywrócić poprzedniego stanu " + logName
+						+ " na etapie: " + rollbackStage.get(), rollbackException);
+				rollbackFailure = "; dodatkowo rollback na etapie '" + rollbackStage.get()
 						+ "' zgłosił: " + readableMessage(rollbackException);
 			}
 			if (listener != null) {
-				listener.onResult(false, "Nie udało się przełączyć eventu Easter na etapie '"
-						+ stage + "': " + readableMessage(e)
+				listener.onResult(false, "Nie udało się przełączyć eventu " + logName
+						+ " na etapie '" + stage.get() + "': " + readableMessage(e)
 						+ (rollbackFailure == null ? "" : rollbackFailure));
 			}
 		} finally {
@@ -469,6 +461,26 @@ public final class SeasonalEventService {
 
 		abstract void apply(SeasonalEventService service, boolean previous,
 				P target, P rollback, ResultListener listener);
+	}
+
+	private interface TransitionWork {
+		void run(StageTracker stage) throws Exception;
+	}
+
+	private static final class StageTracker {
+		private String stage;
+
+		StageTracker(final String initialStage) {
+			stage = initialStage;
+		}
+
+		void set(final String newStage) {
+			stage = newStage;
+		}
+
+		String get() {
+			return stage;
+		}
 	}
 
 	public interface ResultListener {
