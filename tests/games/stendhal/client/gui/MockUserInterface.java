@@ -21,6 +21,7 @@ import games.stendhal.common.NotificationType;
  * An user interface that does nothing, but provides the things client side
  * code may expect.
  */
+@SuppressWarnings("deprecation")
 public class MockUserInterface implements UserInterface {
 	private final SoundSystemFacade sound = new NoSoundFacade();
 	/** Stored last message */

@@ -52,6 +52,7 @@ public class UserTest {
 	}
 
 	@Before
+	@SuppressWarnings("deprecation")
 	public void setupSystem() {
 		final SoundSystemFacade soundFacade = new NoSoundFacade();
 
