@@ -12,7 +12,7 @@
 package games.stendhal.client.actions;
 
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
