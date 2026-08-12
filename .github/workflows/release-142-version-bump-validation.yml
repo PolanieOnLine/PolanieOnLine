@@ -108,6 +108,7 @@ jobs:
           rm .github/workflows/release-142-version-bump-validation.yml
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A bin/runserver.sh bin/runserver.bat src/games/stendhal/common/Debug.java buildtools/mkdocs/mkdocs.yml src/games/stendhal/client/update/HttpClient.java app/neutralinojs/neutralino.config.json build.ant.properties app/android/client/src/main/res/values/strings.xml app/android/client/build.gradle .github/workflows/release-142-version-bump-validation.yml
+          git add -f bin/runserver.sh bin/runserver.bat
+          git add src/games/stendhal/common/Debug.java buildtools/mkdocs/mkdocs.yml src/games/stendhal/client/update/HttpClient.java app/neutralinojs/neutralino.config.json build.ant.properties app/android/client/src/main/res/values/strings.xml app/android/client/build.gradle .github/workflows/release-142-version-bump-validation.yml
           git commit -m 'Ustaw finalną wersję 1.42'
           git push origin HEAD:release/bump-version-1-42
