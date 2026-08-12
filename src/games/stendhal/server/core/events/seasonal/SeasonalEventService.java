@@ -20,6 +20,7 @@ import games.stendhal.server.maps.quests.EasterGiftsForChildren;
 import games.stendhal.server.maps.quests.GoodiesForRudolph;
 import games.stendhal.server.maps.quests.IQuest;
 import games.stendhal.server.maps.quests.MineTownRevivalWeeks;
+import games.stendhal.server.maps.quests.MineTownRevivalWeeksConstruction;
 import games.stendhal.server.maps.zakopane.city.MariuszekNPC;
 import games.stendhal.server.util.ResetSpeakerNPC;
 
@@ -65,6 +66,23 @@ public final class SeasonalEventService {
 				}
 			};
 
+	private static final Transition<MineTownConstructionEventPlan> MINE_TOWN_CONSTRUCTION =
+			new Transition<MineTownConstructionEventPlan>(MineTownConstructionEventPlan.PROPERTY,
+					"Budowa Mine Town") {
+				@Override
+				MineTownConstructionEventPlan prepare(final boolean enabled) throws Exception {
+					return MineTownConstructionEventPlan.prepare(enabled);
+				}
+
+				@Override
+				void apply(final SeasonalEventService service, final boolean previous,
+						final MineTownConstructionEventPlan target,
+						final MineTownConstructionEventPlan rollback,
+						final ResultListener listener) {
+					service.applyMineTownConstructionTransition(previous, target, rollback, listener);
+				}
+			};
+
 	private static final Transition<EasterEventPlan> EASTER =
 			new Transition<EasterEventPlan>(EasterEventPlan.PROPERTY, "Easter") {
 				@Override
@@ -106,6 +124,10 @@ public final class SeasonalEventService {
 		return MINE_TOWN.isEnabled();
 	}
 
+	public boolean isMineTownConstructionEnabled() {
+		return MINE_TOWN_CONSTRUCTION.isEnabled();
+	}
+
 	public boolean isEasterEnabled() {
 		return EASTER.isEnabled();
 	}
@@ -122,6 +144,11 @@ public final class SeasonalEventService {
 	public boolean requestMineTown(final boolean enabled,
 			final ResultListener listener) {
 		return request(MINE_TOWN, enabled, listener);
+	}
+
+	public boolean requestMineTownConstruction(final boolean enabled,
+			final ResultListener listener) {
+		return request(MINE_TOWN_CONSTRUCTION, enabled, listener);
 	}
 
 	public boolean requestEaster(final boolean enabled,
@@ -259,6 +286,49 @@ public final class SeasonalEventService {
 				});
 	}
 
+	private void applyMineTownConstructionTransition(final boolean previous,
+			final MineTownConstructionEventPlan target,
+			final MineTownConstructionEventPlan rollback,
+			final ResultListener listener) {
+		executeTransition("budowa Mine Town", "Budowa Mine Town Revival Weeks",
+				target.isEnabled(), listener,
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("ustawienie flagi stendhal.minetownconstruction");
+						setSeasonalProperty(MineTownConstructionEventPlan.PROPERTY,
+								target.isEnabled());
+						if (!target.isEnabled()) {
+							stage.set("odłączenie questa budowy Mine Town");
+							synchronizeMineTownConstructionQuest(false);
+						}
+						stage.set("zastosowanie przygotowanych zasobów budowy Mine Town");
+						target.apply();
+						if (target.isEnabled()) {
+							stage.set("uruchomienie questa budowy Mine Town");
+							synchronizeMineTownConstructionQuest(true);
+						}
+					}
+				},
+				new TransitionWork() {
+					@Override
+					public void run(final StageTracker stage) throws Exception {
+						stage.set("przywrócenie flagi stendhal.minetownconstruction");
+						setSeasonalProperty(MineTownConstructionEventPlan.PROPERTY, previous);
+						if (!previous) {
+							stage.set("usunięcie częściowo uruchomionego questa budowy Mine Town");
+							synchronizeMineTownConstructionQuest(false);
+						}
+						stage.set("przywrócenie zasobów budowy Mine Town");
+						rollback.apply();
+						if (previous) {
+							stage.set("przywrócenie questa budowy Mine Town");
+							synchronizeMineTownConstructionQuest(true);
+						}
+					}
+				});
+	}
+
 	private void applyEasterTransition(final boolean previous,
 			final EasterEventPlan target,
 			final EasterEventPlan rollback,
@@ -384,6 +454,20 @@ public final class SeasonalEventService {
 			quests.loadQuest(new MineTownRevivalWeeks());
 			if (quests.getQuest(MineTownRevivalWeeks.QUEST_NAME) == null) {
 				throw new IllegalStateException("Nie udało się załadować questa Mine Town Revival Weeks");
+			}
+		}
+	}
+
+	private static void synchronizeMineTownConstructionQuest(final boolean enabled) {
+		final StendhalQuestSystem quests = StendhalQuestSystem.get();
+		final IQuest current = quests.getQuest(MineTownRevivalWeeksConstruction.QUEST_NAME);
+		if (current != null && !quests.unloadQuest(current)) {
+			throw new IllegalStateException("Nie udało się odłączyć questa budowy Mine Town");
+		}
+		if (enabled) {
+			quests.loadQuest(new MineTownRevivalWeeksConstruction());
+			if (quests.getQuest(MineTownRevivalWeeksConstruction.QUEST_NAME) == null) {
+				throw new IllegalStateException("Nie udało się załadować questa budowy Mine Town");
 			}
 		}
 	}

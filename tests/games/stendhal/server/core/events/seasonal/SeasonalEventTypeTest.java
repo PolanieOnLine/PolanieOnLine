@@ -18,6 +18,12 @@ public class SeasonalEventTypeTest {
 		assertEquals(SeasonalEventType.MINE_TOWN, SeasonalEventType.parse("minetown"));
 		assertEquals(SeasonalEventType.MINE_TOWN, SeasonalEventType.parse("mine-town"));
 		assertEquals(SeasonalEventType.MINE_TOWN, SeasonalEventType.parse("REVIVAL"));
+		assertEquals(SeasonalEventType.MINE_TOWN_CONSTRUCTION,
+				SeasonalEventType.parse("minetownconstruction"));
+		assertEquals(SeasonalEventType.MINE_TOWN_CONSTRUCTION,
+				SeasonalEventType.parse("mine-town-construction"));
+		assertEquals(SeasonalEventType.MINE_TOWN_CONSTRUCTION,
+				SeasonalEventType.parse("CONSTRUCTION"));
 		assertEquals(SeasonalEventType.EASTER, SeasonalEventType.parse("easter"));
 	}
 
@@ -33,6 +39,8 @@ public class SeasonalEventTypeTest {
 		assertEquals("christmas", SeasonalEventType.CHRISTMAS.getCommandName());
 		assertEquals("stendhal.christmas", SeasonalEventType.CHRISTMAS.getProperty());
 		assertEquals("Mine Town Revival Weeks", SeasonalEventType.MINE_TOWN.getDisplayName());
+		assertEquals("stendhal.minetownconstruction",
+				SeasonalEventType.MINE_TOWN_CONSTRUCTION.getProperty());
 		assertEquals("stendhal.easter", SeasonalEventType.EASTER.getProperty());
 	}
 

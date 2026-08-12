@@ -14,6 +14,8 @@ public enum SeasonalEventType {
 	CHRISTMAS("christmas", "Christmas", ChristmasEventPlan.PROPERTY, "xmas"),
 	MINE_TOWN("minetown", "Mine Town Revival Weeks", MineTownEventPlan.PROPERTY,
 			"mine-town", "revival"),
+	MINE_TOWN_CONSTRUCTION("minetownconstruction", "Budowa Mine Town Revival Weeks",
+			MineTownConstructionEventPlan.PROPERTY, "mine-town-construction", "construction"),
 	EASTER("easter", "Easter", EasterEventPlan.PROPERTY);
 
 	private final String commandName;
@@ -57,6 +59,8 @@ public enum SeasonalEventType {
 			return service.requestChristmas(enabled, listener);
 		case MINE_TOWN:
 			return service.requestMineTown(enabled, listener);
+		case MINE_TOWN_CONSTRUCTION:
+			return service.requestMineTownConstruction(enabled, listener);
 		case EASTER:
 			return service.requestEaster(enabled, listener);
 		default:

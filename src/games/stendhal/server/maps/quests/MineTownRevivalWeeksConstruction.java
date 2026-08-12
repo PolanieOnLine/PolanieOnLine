@@ -21,37 +21,38 @@ import games.stendhal.server.maps.quests.revivalweeks.BuilderNPC;
 import games.stendhal.server.maps.quests.revivalweeks.LoadableContent;
 
 /**
- * Sets up the construction of Mine Town Revival Weeks
+ * Sets up the construction of Mine Town Revival Weeks.
+ *
+ * The runtime property is owned by SeasonalEventService. This quest only
+ * manages its world content so loading or unloading it cannot race with the
+ * event controller or independently change the canonical event state.
  */
 public class MineTownRevivalWeeksConstruction extends AbstractQuest {
 	private static final String QUEST_SLOT = "semos_mine_town_revival_construction";
 	public static final String QUEST_NAME = "Budowa Festiwalu Odrodzenia Miasta Kopalni";
 
-	private List<LoadableContent> content = new LinkedList<LoadableContent>();
+	private final List<LoadableContent> content = new LinkedList<LoadableContent>();
 
 	@Override
 	public void addToWorld() {
-		System.setProperty("stendhal.minetownconstruction", "true");
-
 		content.add(new BuilderNPC());
 
-		// add it to the world
-		for (LoadableContent loadableContent : content) {
+		for (final LoadableContent loadableContent : content) {
 			loadableContent.addToWorld();
 		}
 	}
 
 	/**
-	 * removes a quest from the world.
+	 * Removes a quest from the world.
 	 *
 	 * @return true, if the quest could be removed; false otherwise.
 	 */
 	@Override
 	public boolean removeFromWorld() {
-		System.getProperties().remove("stendhal.minetownconstruction");
-		for (LoadableContent loadableContent : content) {
+		for (final LoadableContent loadableContent : content) {
 			loadableContent.removeFromWorld();
 		}
+		content.clear();
 		return true;
 	}
 
