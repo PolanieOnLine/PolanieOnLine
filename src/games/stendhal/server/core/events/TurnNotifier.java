@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.engine.EndTurnDiagnostics;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 
@@ -75,6 +76,17 @@ public final class TurnNotifier {
 	 */
 
 	public void logic(final int currentTurn) {
+		logic(currentTurn, null);
+	}
+
+	/**
+	 * Executes listeners for the current turn and optionally records callback
+	 * timings for slow-turn diagnostics.
+	 *
+	 * @param currentTurn current turn
+	 * @param diagnostics optional end-turn diagnostics
+	 */
+	public void logic(final int currentTurn, final EndTurnDiagnostics diagnostics) {
 		// Note: It is OK to only synchronise the remove part
 		// because notifyAtTurn will not allow registrations
 		// for the current turn. So it is important to
@@ -103,11 +115,20 @@ public final class TurnNotifier {
 
 		if (set != null) {
 			for (final TurnListener turnListener : set) {
-
+				final long listenerStartNanos = diagnostics == null
+						? 0L : System.nanoTime();
+				boolean failed = false;
 				try {
 					turnListener.onTurnReached(currentTurn);
 				} catch (final RuntimeException e) {
+					failed = true;
 					logger.error("Exception in " + turnListener, e);
+				} finally {
+					if (diagnostics != null) {
+						diagnostics.recordTurnListener(
+								turnListener.getClass().getName(),
+								System.nanoTime() - listenerStartNanos, failed);
+					}
 				}
 			}
 		}

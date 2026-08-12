@@ -89,6 +89,7 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 	private static String welcomeMessage = "Witaj w #'PolanieOnLine'! Odwiedź stronę - #'polanieonline.eu'! \nPamiętaj, aby nikomu ~'nie udostępniać' hasła do swojego konta! Jeżeli znalazłeś jakieś błędy w grze to zgłoś to nam do ~'supportu'.";
 
 	private RPServerManager rpman;
+	private final EndTurnDiagnostics endTurnDiagnostics = new EndTurnDiagnostics();
 
 	/** a list of online players */
 	protected PlayerList onlinePlayers;
@@ -397,20 +398,45 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 	@Override
 	public synchronized void endTurn() {
 		final int currentTurn = getTurn();
+		final long endTurnStartNanos = System.nanoTime();
+		endTurnDiagnostics.reset();
 		try {
-
-			SingletonRepository.getTurnNotifier().logic(currentTurn);
+			final TurnNotifier turnNotifier = SingletonRepository.getTurnNotifier();
+			final long notifierStartNanos = System.nanoTime();
+			try {
+				turnNotifier.logic(currentTurn, endTurnDiagnostics);
+			} finally {
+				endTurnDiagnostics.recordTurnNotifierDuration(
+						System.nanoTime() - notifierStartNanos);
+			}
 
 			for (final IRPZone zoneI : SingletonRepository.getRPWorld()) {
 				final StendhalRPZone zone = (StendhalRPZone) zoneI;
-				zone.logic();
+				final long zoneStartNanos = System.nanoTime();
+				try {
+					zone.logic();
+				} finally {
+					endTurnDiagnostics.recordZone(zone.getName(),
+							System.nanoTime() - zoneStartNanos);
+				}
 			}
 
 			// run registered object's logic method for this turn
 
 		} catch (final Exception e) {
 			logger.error("error in endTurn", e);
+		} finally {
+			final long elapsedNanos = System.nanoTime() - endTurnStartNanos;
+			endTurnDiagnostics.finish(elapsedNanos);
+			if (elapsedNanos >= slowEndTurnThresholdNanos()) {
+				logger.warn(endTurnDiagnostics.format(currentTurn));
+			}
 		}
+	}
+
+	private long slowEndTurnThresholdNanos() {
+		final long turnDurationMs = rpman == null ? 300L : rpman.getTurnDuration();
+		return Math.max(50L, turnDurationMs / 2L) * 1000000L;
 	}
 
 	/**
