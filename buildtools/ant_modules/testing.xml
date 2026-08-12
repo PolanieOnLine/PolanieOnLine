@@ -86,6 +86,40 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 	</target> <!-- prepare_serverini_for_tests -->
 
 
+	<!-- Fast, explicit regression gate for the highest-risk 1.42 changes. -->
+	<target name="test_142" depends="compile_tests,prepare_serverini_for_tests">
+		<echo message="Running release 1.42 regression suite"/>
+		<java classname="org.junit.runner.JUnitCore" fork="true" failonerror="true">
+			<classpath>
+				<pathelement path="${build_tests}"/>
+				<pathelement path="${build_client}"/>
+				<pathelement path="${build_server}"/>
+				<pathelement path="${build_server_maps}"/>
+				<pathelement path="${build_polanieonlinetools}"/>
+				<pathelement path="${build_server_script}"/>
+				<pathelement path="${easymock_jar}"/>
+				<pathelement path="${easymockclassextension_jar}"/>
+				<pathelement path="${cglib_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${hamcrest_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${mysqldriver_jar}"/>
+				<pathelement path="${h2_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${luaj_jar}"/>
+				<pathelement path="."/>
+				<pathelement path="data/conf"/>
+				<pathelement path="data/script"/>
+			</classpath>
+			<arg value="games.stendhal.Release142RegressionSuite"/>
+		</java>
+	</target> <!-- test_142 -->
+
+
 	<!-- Run all tests. -->
 	<target name="run_tests">
 		<mkdir dir="${build_tests_report}"/>
