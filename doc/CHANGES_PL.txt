@@ -7,9 +7,9 @@ Changelog
 - Okno ulepszania pokazuje aktualne i następne statystyki, poziom ulepszenia, szansę powodzenia, koszt oraz wymagane materiały wraz z ikonami i stanem posiadania
 - Dodano akcje kontekstowe umożliwiające otwarcie okna u odpowiedniego NPC, wybranie przedmiotu z ekwipunku oraz wyczyszczenie wirtualnego slotu
 - Dodano porównywanie statystyk oglądanego przedmiotu z założonym wyposażeniem; lepsze różnice są zielone, a gorsze czerwone
-- Dodano ustawienie pozwalające włączyć lub wyłączyć porównywanie statystyk przedmiotów w tooltipach
-- Tooltip przedmiotu pokazuje teraz jego poziom ulepszenia w nazwie oraz wartość „Ulepszenie: +N / +M”
-- Uproszczono odpowiedź /look dla przedmiotów do ich opisu i ukryto wartość sprzedaży w structured tooltipie
+- Dodano ustawienie pozwalające włączyć lub wyłączyć porównywanie statystyk przedmiotów w podpowiedziach
+- Podpowiedź przedmiotu pokazuje teraz jego poziom ulepszenia w nazwie oraz wartość „Ulepszenie: +N / +M”
+- Uproszczono odpowiedź /look dla przedmiotów do ich opisu i ukryto wartość sprzedaży w rozszerzonej podpowiedzi
 - Przebudowano podpowiedzi ekwipunku, aby czytelniej prezentowały najważniejsze statystyki przedmiotów
 - Dodano wyświetlanie zakresu obrażeń, średnich obrażeń na sekundę oraz szybkości ataku dla broni
 - Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach
@@ -30,15 +30,28 @@ Changelog
 - Dodano status "ogłuszenia", który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się
 - Wybrane potwory otrzymały możliwość ogłuszania gracza
 - Dodano losowe elitarne warianty potworów od 20 poziomu
-- Elitarne potwory posiadają zwiększone zdrowie, atak, obronę oraz przyznają więcej doświadczenia
+- Elitarne potwory posiadają zwiększone zdrowie, atak i obronę oraz przyznają więcej doświadczenia
 - Przedmioty wypadające z elitarnych potworów mają zwiększoną szansę na uzyskanie wyższej rzadkości
 - Bossowie oraz wybrane specjalne stworzenia są wyłączone z losowego systemu elit
 - Dodano możliwość włączania i wyłączania wydarzeń sezonowych bez konieczności restartowania serwera
 - Boże Narodzenie, Wielkanoc oraz wydarzenia związane z odbudową Mine Town mogą teraz dynamicznie zmieniać mapy, dekoracje, NPC, zadania, stworzenia oraz pozostałe elementy świata
- - Poprawiono mapy wielkanocne w Zakopanem
+- Poprawiono mapy wielkanocne w Zakopanem
+- Prywatne skrzynie w zadaniu PrinceSupply są teraz poprawnie izolowane pomiędzy graczami, dzięki czemu kilka osób może korzystać z nich jednocześnie
+- Labirynt Haizena korzysta teraz z izolowanych instancji, dzięki czemu równoległe rozgrywki graczy nie wpływają na siebie
+
+*marauroa*
+- Dodano percepcję zależną od gracza, pozwalającą serwerowi udostępniać wybrane encje tylko konkretnym graczom
+- Dodano generyczny system Instance Zones zapewniający izolację encji i percepcji oraz automatyczne sprzątanie instancji po zakończeniu ich cyklu życia
+- Dodano scheduler zadań świata wykonywanych na bezpiecznej granicy tury, wraz z możliwością przypisywania właścicieli zadań i anulowania nieaktualnych wywołań
+- Dodano mechanizm Safe Hot Reload umożliwiający bezpieczne przygotowanie, walidację i zastosowanie nowych zasobów podczas działania serwera
+- Rozbudowano diagnostykę wolnych tur o pomiary poszczególnych faz przetwarzania
+- Dodano metryki kosztu generowania percepcji oraz wykorzystania jej pamięci podręcznej
+- Dodano metryki działania schedulera, Instance Zones oraz Safe Hot Reload
+- Dodano metryki transferu zasobów pomiędzy serwerem i klientem, obejmujące m.in. żądania pełnej zawartości, trafienia pamięci podręcznej, brakujące dane i rozmiary przesyłanych zasobów
+- Dodano diagnostykę kosztu przetwarzania stref wraz z rankingiem najbardziej obciążających stref
 
 *kod*
-- Uporządkowano nazewnictwo systemu ulepszeń do wspólnej terminologii Item Upgrade oraz wydzielono reguły z obsługi dialogu NPC
+- Uporządkowano nazewnictwo systemu ulepszeń do wspólnej terminologii Item Upgrade oraz wydzielono reguły ulepszania z obsługi dialogu NPC
 - Serwer ponownie weryfikuje przedmiot, jego położenie, pieniądze, materiały, karmę i odległość od NPC przy każdej próbie ulepszenia
 - Rozdzielono akcję klienta i event serwera systemu ulepszeń, zachowując odczyt historycznych zapisanych eventów
 - Rozszerzono komendę administratora /teleport o wariant /teleport <gracz> <inny gracz lub NPC>, zachowując teleportację do strefy i współrzędnych
@@ -46,17 +59,14 @@ Changelog
 - Ujednolicono krwawienie zadawane przez potwory oraz efekty przedmiotów, aby korzystały ze wspólnego systemu obrażeń okresowych
 - Dodano obsługę kumulowania ran, odporności na krwawienie oraz nowych źródeł efektów statusowych
 - Usunięto pozostałości starego systemu krwawienia oraz stare profile potworów
-- Rozszerzono system generowania przedmiotów o trwałe rarity, afiksy oraz możliwość deterministycznego odtworzenia wylosowanych parametrów
-- Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rarity, afiksy oraz ich parametry
+- Rozszerzono system generowania przedmiotów o trwałą rzadkość, afiksy oraz możliwość deterministycznego odtworzenia wylosowanych parametrów
+- Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rzadkość, afiksy oraz ich parametry
 - Przebudowano obsługę wydarzeń sezonowych, umożliwiając bezpieczne przełączanie ich podczas działania serwera
-- Dodano nowy skrypt administracyjny SeasonalEvent do włączania, wyłączania oraz sprawdzania stanu obsługiwanych wydarzeń sezonowych
-- Dodano player-specific perception w Marauroa oraz prywatne skrzynie `PrinceSupply`, dzięki czemu wielu graczy może bezpiecznie korzystać z prywatnych obiektów w tych samych współrzędnych.
-- Dodano generyczny fundament Instance Zones z izolacją encji i percepcji, lifecycle cleanupem oraz integracją z Labiryntem Haizena; krótkie runtime ID instancji nie wymagają zmiany wire protocol ani formatu persistence.
-- Dodano generyczny World Task Scheduler wykonywany na bezpiecznej granicy tury, z obsługą właścicieli i anulowaniem starych callbacków po cleanupie lifecycle.
-- Zintegrowano Safe Hot Reload oparty o `ResourceReloadService` z rozdzielonym `load`, `validate` i małym `apply` na safe poincie oraz administracyjnym dostępem wyłącznie przez stabilne resource ID.
-- Rozbudowano Observability 2.0 o metryki schedulera, nazwane fazy slow turns, koszt percepcji i cache, lifecycle Instance Zones, Safe Hot Reload, transfery zawartości oraz ranking top-3 najdroższych stref.
-- Uporządkowano toolchain i CI przy zachowaniu JDK 8: `checkout@v7`, `setup-java@v5`/Temurin 8, warning-free kompilacja, Groovy 3.0.25 i JUnit 4.13.2.
-- Dodano jawny cel `ant test_142` obejmujący najważniejsze regresje wydania; CI uruchamia go w izolowanym jobie przed pełnym zestawem testów.
+- Dodano skrypt administracyjny SeasonalEvent do włączania, wyłączania oraz sprawdzania stanu obsługiwanych wydarzeń sezonowych
+- Podłączono definicje przedmiotów do mechanizmu Safe Hot Reload, umożliwiając ich kontrolowane przeładowanie podczas działania serwera
+- Dodano administracyjny dostęp do przeładowywanych zasobów poprzez stabilne identyfikatory zasobów
+- Podłączono Labirynt Haizena do generycznego systemu Instance Zones oraz uporządkowano sprzątanie instancji po wyjściu gracza i wylogowaniu
+- Uporządkowano część przestarzałych interfejsów i zależności przy zachowaniu zgodności z Java 8
 
 *naprawiono błędy*
 - Podgląd ulepszenia nie zużywa już karmy; karma jest wykorzystywana dopiero podczas właściwej, zweryfikowanej próby
