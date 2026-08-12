@@ -35,6 +35,51 @@ public final class SeasonalEventService {
 	private static final SeasonalEventService INSTANCE = new SeasonalEventService();
 	private static final String RUDOLPH_QUEST = "Przysmaki Rudolpha";
 
+	private static final Transition<ChristmasEventPlan> CHRISTMAS =
+			new Transition<ChristmasEventPlan>(ChristmasEventPlan.PROPERTY, "Christmas") {
+				@Override
+				ChristmasEventPlan prepare(final boolean enabled) throws Exception {
+					return ChristmasEventPlan.prepare(enabled);
+				}
+
+				@Override
+				void apply(final SeasonalEventService service, final boolean previous,
+						final ChristmasEventPlan target, final ChristmasEventPlan rollback,
+						final ResultListener listener) {
+					service.applyChristmasTransition(previous, target, rollback, listener);
+				}
+			};
+
+	private static final Transition<MineTownEventPlan> MINE_TOWN =
+			new Transition<MineTownEventPlan>(MineTownEventPlan.PROPERTY, "Mine Town") {
+				@Override
+				MineTownEventPlan prepare(final boolean enabled) throws Exception {
+					return MineTownEventPlan.prepare(enabled);
+				}
+
+				@Override
+				void apply(final SeasonalEventService service, final boolean previous,
+						final MineTownEventPlan target, final MineTownEventPlan rollback,
+						final ResultListener listener) {
+					service.applyMineTownTransition(previous, target, rollback, listener);
+				}
+			};
+
+	private static final Transition<EasterEventPlan> EASTER =
+			new Transition<EasterEventPlan>(EasterEventPlan.PROPERTY, "Easter") {
+				@Override
+				EasterEventPlan prepare(final boolean enabled) throws Exception {
+					return EasterEventPlan.prepare(enabled);
+				}
+
+				@Override
+				void apply(final SeasonalEventService service, final boolean previous,
+						final EasterEventPlan target, final EasterEventPlan rollback,
+						final ResultListener listener) {
+					service.applyEasterTransition(previous, target, rollback, listener);
+				}
+			};
+
 	private final ExecutorService worker;
 	private final AtomicBoolean transitionInProgress = new AtomicBoolean(false);
 
@@ -54,15 +99,15 @@ public final class SeasonalEventService {
 	}
 
 	public boolean isChristmasEnabled() {
-		return System.getProperty(ChristmasEventPlan.PROPERTY) != null;
+		return CHRISTMAS.isEnabled();
 	}
 
 	public boolean isMineTownEnabled() {
-		return System.getProperty(MineTownEventPlan.PROPERTY) != null;
+		return MINE_TOWN.isEnabled();
 	}
 
 	public boolean isEasterEnabled() {
-		return System.getProperty(EasterEventPlan.PROPERTY) != null;
+		return EASTER.isEnabled();
 	}
 
 	public boolean isTransitionInProgress() {
@@ -71,65 +116,61 @@ public final class SeasonalEventService {
 
 	public boolean requestChristmas(final boolean enabled,
 			final ResultListener listener) {
-		if (!transitionInProgress.compareAndSet(false, true)) {
-			return false;
-		}
-		final boolean previous = isChristmasEnabled();
-		if (previous == enabled) {
-			finishAlreadyInState(listener, enabled,
-					"Event Christmas jest już aktywny.",
-					"Event Christmas jest już wyłączony.");
-			return true;
-		}
-		worker.execute(new Runnable() {
-			@Override
-			public void run() {
-				prepareChristmasTransition(previous, enabled, listener);
-			}
-		});
-		return true;
+		return request(CHRISTMAS, enabled, listener);
 	}
 
 	public boolean requestMineTown(final boolean enabled,
 			final ResultListener listener) {
+		return request(MINE_TOWN, enabled, listener);
+	}
+
+	public boolean requestEaster(final boolean enabled,
+			final ResultListener listener) {
+		return request(EASTER, enabled, listener);
+	}
+
+	private <P extends PreparedSeasonalEventPlan> boolean request(
+			final Transition<P> transition, final boolean enabled,
+			final ResultListener listener) {
 		if (!transitionInProgress.compareAndSet(false, true)) {
 			return false;
 		}
-		final boolean previous = isMineTownEnabled();
+
+		final boolean previous = transition.isEnabled();
 		if (previous == enabled) {
 			finishAlreadyInState(listener, enabled,
-					"Event Mine Town Revival Weeks jest już aktywny.",
-					"Event Mine Town Revival Weeks jest już wyłączony.");
+					"Event " + transition.displayName + " jest już aktywny.",
+					"Event " + transition.displayName + " jest już wyłączony.");
 			return true;
 		}
+
 		worker.execute(new Runnable() {
 			@Override
 			public void run() {
-				prepareMineTownTransition(previous, enabled, listener);
+				prepareTransition(transition, previous, enabled, listener);
 			}
 		});
 		return true;
 	}
 
-	public boolean requestEaster(final boolean enabled,
-			final ResultListener listener) {
-		if (!transitionInProgress.compareAndSet(false, true)) {
-			return false;
+	private <P extends PreparedSeasonalEventPlan> void prepareTransition(
+			final Transition<P> transition, final boolean previous,
+			final boolean enabled, final ResultListener listener) {
+		try {
+			final P target = transition.prepare(enabled);
+			final P rollback = transition.prepare(previous);
+			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
+				@Override
+				public void onTurnReached(final int currentTurn) {
+					transition.apply(SeasonalEventService.this, previous,
+							target, rollback, listener);
+				}
+			});
+		} catch (final Exception e) {
+			LOGGER.error("Nie udało się przygotować eventu " + transition.displayName, e);
+			notifyFailure(listener, "Nie udało się przygotować eventu "
+					+ transition.displayName + ": " + readableMessage(e));
 		}
-		final boolean previous = isEasterEnabled();
-		if (previous == enabled) {
-			finishAlreadyInState(listener, enabled,
-					"Event Easter jest już aktywny.",
-					"Event Easter jest już wyłączony.");
-			return true;
-		}
-		worker.execute(new Runnable() {
-			@Override
-			public void run() {
-				prepareEasterTransition(previous, enabled, listener);
-			}
-		});
-		return true;
 	}
 
 	private void finishAlreadyInState(final ResultListener listener,
@@ -137,60 +178,6 @@ public final class SeasonalEventService {
 		transitionInProgress.set(false);
 		if (listener != null) {
 			listener.onResult(true, enabled ? enabledMessage : disabledMessage);
-		}
-	}
-
-	private void prepareChristmasTransition(final boolean previous, final boolean enabled,
-			final ResultListener listener) {
-		try {
-			final ChristmasEventPlan target = ChristmasEventPlan.prepare(enabled);
-			final ChristmasEventPlan rollback = ChristmasEventPlan.prepare(previous);
-			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
-				@Override
-				public void onTurnReached(final int currentTurn) {
-					applyChristmasTransition(previous, target, rollback, listener);
-				}
-			});
-		} catch (final Exception e) {
-			LOGGER.error("Nie udało się przygotować eventu Christmas", e);
-			notifyFailure(listener, "Nie udało się przygotować eventu Christmas: "
-					+ readableMessage(e));
-		}
-	}
-
-	private void prepareMineTownTransition(final boolean previous, final boolean enabled,
-			final ResultListener listener) {
-		try {
-			final MineTownEventPlan target = MineTownEventPlan.prepare(enabled);
-			final MineTownEventPlan rollback = MineTownEventPlan.prepare(previous);
-			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
-				@Override
-				public void onTurnReached(final int currentTurn) {
-					applyMineTownTransition(previous, target, rollback, listener);
-				}
-			});
-		} catch (final Exception e) {
-			LOGGER.error("Nie udało się przygotować eventu Mine Town", e);
-			notifyFailure(listener, "Nie udało się przygotować eventu Mine Town: "
-					+ readableMessage(e));
-		}
-	}
-
-	private void prepareEasterTransition(final boolean previous, final boolean enabled,
-			final ResultListener listener) {
-		try {
-			final EasterEventPlan target = EasterEventPlan.prepare(enabled);
-			final EasterEventPlan rollback = EasterEventPlan.prepare(previous);
-			TurnNotifier.get().notifyInTurns(0, new TurnListener() {
-				@Override
-				public void onTurnReached(final int currentTurn) {
-					applyEasterTransition(previous, target, rollback, listener);
-				}
-			});
-		} catch (final Exception e) {
-			LOGGER.error("Nie udało się przygotować eventu Easter", e);
-			notifyFailure(listener, "Nie udało się przygotować eventu Easter: "
-					+ readableMessage(e));
 		}
 	}
 
@@ -463,6 +450,25 @@ public final class SeasonalEventService {
 			}
 		}
 		return result.toString();
+	}
+
+	private abstract static class Transition<P extends PreparedSeasonalEventPlan> {
+		private final String property;
+		private final String displayName;
+
+		Transition(final String property, final String displayName) {
+			this.property = property;
+			this.displayName = displayName;
+		}
+
+		final boolean isEnabled() {
+			return System.getProperty(property) != null;
+		}
+
+		abstract P prepare(boolean enabled) throws Exception;
+
+		abstract void apply(SeasonalEventService service, boolean previous,
+				P target, P rollback, ResultListener listener);
 	}
 
 	public interface ResultListener {
