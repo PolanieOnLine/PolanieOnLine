@@ -232,6 +232,9 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	@Override
 	public boolean removeFromWorld() {
+		if (npc == null) {
+			return true;
+		}
 		return ResetSpeakerNPC.reload(new RudolphNPC(), getNPCName());
 	}
 
@@ -287,7 +290,7 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	@Override
 	public String getNPCName() {
-		return npc.getName();
+		return npc == null ? "Rudolph" : npc.getName();
 	}
 
 	@Override

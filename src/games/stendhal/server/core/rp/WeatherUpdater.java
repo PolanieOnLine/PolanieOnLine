@@ -14,6 +14,7 @@ package games.stendhal.server.core.rp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -56,7 +57,7 @@ public class WeatherUpdater implements TurnListener {
 	private static final int TEMP_RANGE = 30;
 	/** Prevalence of rain. Roughly the percentage of rainy time. */
 	private static final double RAININESS = 10;
-	/** Prevalence of fog. Roughly the percentage of foggy time. */
+	/** Prevalence of fog. Foggy about the percentage of time. */
 	private static final double FOGGINESS = 4;
 	/**
 	 * Rough percentage of rains that are thunderstorms. Note that triggering
@@ -136,6 +137,39 @@ public class WeatherUpdater implements TurnListener {
 	}
 
 	/**
+	 * Stops managing varying weather for the supplied zone attributes.
+	 *
+	 * Runtime zone reloads replace the ZoneAttributes instance. Without
+	 * unregistering the old instance, the updater would keep an obsolete
+	 * ZoneData entry and continue waking it up after the zone switched to a
+	 * fixed weather such as Christmas snow.
+	 *
+	 * @param attr attributes which should no longer be managed
+	 * @return true if at least one registration was removed
+	 */
+	public boolean unmanageAttributes(final ZoneAttributes attr) {
+		if (attr == null) {
+			return false;
+		}
+
+		boolean removed = false;
+		final Iterator<ZoneData> iterator = zones.iterator();
+		while (iterator.hasNext()) {
+			final ZoneData data = iterator.next();
+			if (data.getAttributes() == attr) {
+				final StendhalRPZone zone = attr.getZone();
+				final WeatherEntity entity = data.getEntity();
+				if (zone != null && entity != null) {
+					zone.remove(entity);
+				}
+				iterator.remove();
+				removed = true;
+			}
+		}
+		return removed;
+	}
+
+	/**
 	 * Make a zone weather managed by the weather updater. Modifiers to the
 	 * default weather can be described in form
 	 * "varying(rain=value1, temperature=value2, fog=value3)", where any or all
@@ -163,6 +197,7 @@ public class WeatherUpdater implements TurnListener {
 	 * 	used to determine any zone specific modifiers
 	 */
 	public void manageAttributes(ZoneAttributes attr, String desc) {
+		unmanageAttributes(attr);
 		Modifiers mods = Modifiers.getModifiers(desc);
 		WeatherEntity entity = new WeatherEntity();
 		ZoneData data = new ZoneData(attr, mods, entity);

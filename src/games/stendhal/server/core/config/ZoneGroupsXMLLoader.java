@@ -36,6 +36,20 @@ public class ZoneGroupsXMLLoader extends DefaultHandler {
 	}
 
 	/**
+	 * Returns zone group URIs without loading them into the world.
+	 *
+	 * Runtime configuration validation uses the same master list as normal
+	 * server startup, so newly added zone groups are discovered automatically.
+	 *
+	 * @return zone group URIs
+	 * @throws SAXException if the group list cannot be parsed
+	 * @throws IOException if the group list cannot be read
+	 */
+	public List<URI> getZoneGroups() throws SAXException, IOException {
+		return new GroupsXMLLoader(uri).load();
+	}
+
+	/**
 	 * Load zones into a world.
 	 *
 	 * @throws SAXException
@@ -44,8 +58,7 @@ public class ZoneGroupsXMLLoader extends DefaultHandler {
 	 *             If an I/O error occurred.
 	 */
 	public void load() throws SAXException, IOException {
-		final GroupsXMLLoader groupsLoader = new GroupsXMLLoader(uri);
-		final List<URI> zoneGroups = groupsLoader.load();
+		final List<URI> zoneGroups = getZoneGroups();
 
 		// Load each group
 		for (final URI tempUri : zoneGroups) {

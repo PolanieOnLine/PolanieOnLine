@@ -16,7 +16,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.Occasion;
+import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -27,6 +31,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
+import games.stendhal.server.entity.npc.condition.AbstractChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -68,13 +73,24 @@ import games.stendhal.server.maps.Region;
  */
 public class EasterGiftsForChildren extends AbstractQuest {
 	private static final String QUEST_SLOT = "easter_gifts_[year]";
+	public static final String QUEST_NAME = "Prezent Wielkanocny";
 	private final SpeakerNPC npc = npcs.get("Caroline");
+
+	private static ChatCondition duringEaster(final ChatCondition condition) {
+		final ChatCondition easter = new AbstractChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+				return Occasion.EASTER;
+			}
+		};
+		return condition == null ? easter : new AndCondition(easter, condition);
+	}
 
 	private void prepareRequestingStep() {
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestNotCompletedCondition(QUEST_SLOT),
+			duringEaster(new QuestNotCompletedCondition(QUEST_SLOT)),
 			ConversationStates.QUEST_OFFERED,
 			"Potrzebuję pomocy w pakowaniu Wielkanocnych koszyków dla dzieci z Faiumoni. Wiem, że odwiedzi je zajączek, ale są takie kochane tak, że chcę je uszczęśliwić. Czy możesz mi pomóc?",
 			null);
@@ -82,97 +98,92 @@ public class EasterGiftsForChildren extends AbstractQuest {
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
+			duringEaster(new QuestCompletedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Bardzo dziękuję za słodycze! Już rozdałam wszystkie koszyki Wielkanocne dzieciom z Faiumoni i są teraz szczęśliwe! :) Niestety w tym momencie nie ma innych zadań dla ciebie. Życzę szczęśliwych świąt Wielkanocnych!",
 			null);
 
-		// Player asks for quests after it is already started
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestActiveCondition(QUEST_SLOT),
+			duringEaster(new QuestActiveCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Zapomniałeś? Już cię pytałam o przyniesienie trochę #słodyczy",
 			null);
 
-		// player is willing to help
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Potrzebuję trochę #słodyczy do moich koszyków Wielkanocnych. Jeśli przyniesiesz 5 #tabliczka #czekolady, #małe #jajo #wielkanocne, 5 #jabłko i 5 #wisienka to dam ci miłą nagrodę Wielkanocną.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
-		// player is not willing to help
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES, null,
+			ConversationPhrases.NO_MESSAGES,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Co za szkoda! Biedne dzieci nie dotaną wspaniałego koszyka. Może znajdę kogoś innego i zapytam go o pomoc.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
-		// player wants to know what sweets she is referring to
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("sweets", "słodyczy"),
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Jest wiele czekoladowych słodkości, ale chciałabym także zapełnić mój koszyk owocami.", null);
 
-		// player wants to know where he can get this sweets from
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("chocolate bar", "chocolate bars", "chocolate", "tabliczka czekolady", "tabliczka", "czekolady"),
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Tabliczka czekolady jest sprzedawana w tawernach i słyszałem też, że pare złych dzieci też je nosi. Jeśli znajdziesz je to pamiętaj, że Elizabeth w Kirdneh też uwielbia czekoladę. :)", null);
 
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("apple", "apples", "jabłko", "jabłka"),
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Jabłka można znaleźć na farmie na wschód od miasta. Są naprawdę zdrowe i możesz z nich upiec wspaniały jabłecznik. Można też dostać z ogrodów Marthy w mieście Kalavan.", null);
 
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("cherry", "cherries", "wisienka", "wisienki"),
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Old Mother Helena w Fado sprzedaje najpiękniejsze wisienki. Są naprawdę pyszne! Mam nadzieję, że spróbowałeś wspaniałego ciasta z wiśniami upieczonego przez Gerthę będącą w ogrodach miasta Kalavan.", null);
 
 		npc.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("small easter egg", "chocolate egg", "małe jajo wielkanocne", "czekoladowe jajko"),
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Małe jajo wielkanocne jest specjalnością zajączka Wielkanocnego, który kica podczas dni Wielkanocy. Może spotkasz go na swojej drodze. :)", null);
 	}
 
 	private void prepareBringingStep() {
-		// player returns while quest is still active
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+			duringEaster(new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				new AndCondition(
 					new PlayerHasItemWithHimCondition("tabliczka czekolady", 5),
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne",1),
 					new PlayerHasItemWithHimCondition("jabłko", 5),
-					new PlayerHasItemWithHimCondition("wisienka", 5))),
+					new PlayerHasItemWithHimCondition("wisienka", 5)))),
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Jak miło! Widzę, że masz ze sobą słodycze. Są one dla koszyka Wielkanocnego, który teraz przygotowuję?",
 			null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+			duringEaster(new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				new NotCondition(new AndCondition(
 					new PlayerHasItemWithHimCondition("tabliczka czekolady", 5),
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne",1),
 					new PlayerHasItemWithHimCondition("jabłko", 5),
-					new PlayerHasItemWithHimCondition("wisienka", 5)))),
+					new PlayerHasItemWithHimCondition("wisienka", 5))))),
 			ConversationStates.ATTENDING,
 			"Oh nie. Wciąż brakuję słodyczy, których potrzebuję do koszyka Wielkanocnego. Mam nadzieję, że wkrótce znajdziesz je...",
 			null);
@@ -191,22 +202,19 @@ public class EasterGiftsForChildren extends AbstractQuest {
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
-			// make sure the player isn't cheating by putting the sweets
-			// away and then saying "yes"
-
-			new AndCondition(
+			duringEaster(new AndCondition(
 					new PlayerHasItemWithHimCondition("tabliczka czekolady", 5),
 					new PlayerHasItemWithHimCondition("małe jajo wielkanocne", 1),
 					new PlayerHasItemWithHimCondition("jabłko", 5),
-					new PlayerHasItemWithHimCondition("wisienka", 5)),
-
-			ConversationStates.ATTENDING, "Jak wspaniale! Teraz mogę wypełnić koszyk dla dzieci! Będą szczęśliwe! Bardzo dziękuję za twoją pomoc i życzę wesołych Świąt Wielkanocnych! Proszę przyjmij te zwoje w dowód wdzięczności. :)",
+					new PlayerHasItemWithHimCondition("wisienka", 5))),
+			ConversationStates.ATTENDING,
+			"Jak wspaniale! Teraz mogę wypełnić koszyk dla dzieci! Będą szczęśliwe! Bardzo dziękuję za twoją pomoc i życzę wesołych Świąt Wielkanocnych! Proszę przyjmij te zwoje w dowód wdzięczności. :)",
 			new MultipleActions(reward));
 
 		npc.add(
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
-			null,
+			duringEaster(null),
 			ConversationStates.ATTENDING,
 			"Mam nadzieję, że znajdziesz jakieś słodycze przed Wielkanocą, bo dzieci będą smutne.",
 			null);
@@ -218,30 +226,23 @@ public class EasterGiftsForChildren extends AbstractQuest {
 				"Prezent Wielkanocny Dla Dzieci",
 				"Caroline miła właścicielka tawerny w mieście Ados chce uszczęśliwić dzieci podczas świąt Wielkanocnych.",
 				false);
-
-		if (System.getProperty("stendhal.easter") != null) {
-			prepareRequestingStep();
-			prepareBringingStep();
-		}
+		prepareRequestingStep();
+		prepareBringingStep();
 	}
 
 	/**
-	 * Details are added to travel log if Easter is active or player has completed quest.
-	 *
-	 * @param player
-	 *   Player for whom details are requested.
-	 * @return
-	 *   `true` if Easter is active or quest is completed.
-	 * @todo
-	 *   - FIXME: may not show in travel log after year's end
-	 *   - FIXME: how to check if quest is repeatable?
+	 * Caroline can be replaced by another event. The old NPC object disappears
+	 * with all of its transitions, so quest registry cleanup does not need to
+	 * mutate the shared NPC here.
 	 */
 	@Override
+	public boolean removeFromWorld() {
+		return true;
+	}
+
+	@Override
 	public boolean isVisibleOnQuestStatus(final Player player) {
-		if (System.getProperty("stendhal.easter") != null) {
-			return true;
-		}
-		return isCompleted(player);
+		return Occasion.EASTER || isCompleted(player);
 	}
 
 	@Override
@@ -274,7 +275,7 @@ public class EasterGiftsForChildren extends AbstractQuest {
 
 	@Override
 	public String getName() {
-		return "Prezent Wielkanocny";
+		return QUEST_NAME;
 	}
 
 	@Override
