@@ -4,7 +4,7 @@
 package games.stendhal.server.entity.mapstuff.block;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -14,7 +14,7 @@ package games.stendhal.server.maps.ados.bar;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
 import org.junit.BeforeClass;
