@@ -57,6 +57,7 @@ public class BleedingStatusTest {
 	}
 
 	@Test
+	@SuppressWarnings("deprecation")
 	public void compatibilityConstructorConvertsOldSignedValues() {
 		final BleedingStatus wound = new BleedingStatus(-20, 3, -5);
 
