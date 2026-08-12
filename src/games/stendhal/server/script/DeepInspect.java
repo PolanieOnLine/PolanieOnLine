@@ -34,6 +34,8 @@ import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
+import marauroa.server.db.DBTransaction;
+import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
 
@@ -83,17 +85,23 @@ public class DeepInspect extends ScriptImpl {
 	 */
 	private void inspectOffline(final Player admin, final String username) {
 		try {
-			Map<String, RPObject> characters = DAORegister.get().get(CharacterDAO.class).loadAllActiveCharacters(username);
-			int i = 0;
-			for (RPObject object : characters.values()) {
-				i++;
-				TurnNotifier.get().notifyInSeconds(i, new TurnListener() {
+			DBTransaction transaction = TransactionPool.get().beginWork();
+			try {
+				Map<String, RPObject> characters = DAORegister.get().get(CharacterDAO.class)
+						.loadAllActiveCharacters(transaction, username);
+				int i = 0;
+				for (RPObject object : characters.values()) {
+					i++;
+					TurnNotifier.get().notifyInSeconds(i, new TurnListener() {
 
-					@Override
-					public void onTurnReached(int currentTurn) {
-						inspect(admin, object);
-					}
-				});
+						@Override
+						public void onTurnReached(int currentTurn) {
+							inspect(admin, object);
+						}
+					});
+				}
+			} finally {
+				TransactionPool.get().commit(transaction);
 			}
 		} catch (SQLException e) {
 			admin.sendPrivateText(NotificationType.ERROR, e.toString());
