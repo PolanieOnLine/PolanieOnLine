@@ -593,6 +593,11 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 				updatePlayerNameListForPlayersOnLogout(player);
 
 				Player.destroy(player);
+				try {
+					SingletonRepository.getRPWorld().getInstanceZoneManager().releaseMember(player.getName());
+				} catch (final Exception e) {
+					logger.warn("Unable to release instance-zone memberships for " + player.getName(), e);
+				}
 				getOnlinePlayers().remove(player);
 
 				DBCommand command = new SetOnlineStatusCommand(player.getName(), false);
