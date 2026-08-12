@@ -120,6 +120,23 @@ public class WhereActionTest {
 
 	}
 
+	@Test
+	public void testOnActionUsesReadableZoneName() {
+		final WhereAction pq = new WhereAction();
+		final RPAction action = new RPAction();
+		action.put(Actions.TYPE, "where");
+		action.put(Actions.TARGET, "bob");
+
+		final Player player = PlayerTestHelper.createPlayer("bob");
+		final StendhalRPZone zone = new StendhalRPZone("instance_0123456789");
+		zone.getAttributes().put("readable_name", "Labirynt Haizena");
+		zone.add(player);
+		MockStendhalRPRuleProcessor.get().addPlayer(player);
+
+		pq.onAction(player, action);
+		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w Labirynt Haizena na (0,0)"));
+	}
+
 	/**
 	 * Tests for onActionSheep.
 	 */

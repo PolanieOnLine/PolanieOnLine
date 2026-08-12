@@ -10,6 +10,8 @@ import marauroa.server.game.rp.InstanceZoneFactory;
 
 /** Creates one ephemeral Maze zone for InstanceZoneManager. */
 public final class MazeInstanceFactory implements InstanceZoneFactory {
+	private static final String DISPLAY_NAME = "Labirynt Haizena";
+
 	private final String returnZoneName;
 	private final int returnX;
 	private final int returnY;
@@ -29,7 +31,9 @@ public final class MazeInstanceFactory implements InstanceZoneFactory {
 		generator = new MazeGenerator(descriptor.getRuntimeZoneIdString(), 128, 128);
 		generator.setReturnLocation(returnZoneName, returnX, returnY);
 		generator.setSign(sign);
-		return generator.getZone();
+		final StendhalRPZone zone = generator.getZone();
+		zone.getAttributes().put("readable_name", DISPLAY_NAME);
+		return zone;
 	}
 
 	@Override

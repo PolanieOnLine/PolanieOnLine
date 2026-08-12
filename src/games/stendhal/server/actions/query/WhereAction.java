@@ -61,11 +61,12 @@ public class WhereAction implements ActionListener {
 					} else {
 						final StendhalRPZone zone = who.getZone();
 						if (zone != null) {
+							final String zoneName = getZoneDisplayName(zone);
 							if (who.equals(player)) {
-								player.sendPrivateText("Jesteś w " + zone.getName()
+								player.sendPrivateText("Jesteś w " + zoneName
 										+ " na (" + who.getX() + "," + who.getY() + ")");
 							} else {
-								player.sendPrivateText(who.getTitle() + " jest w " + zone.getName()
+								player.sendPrivateText(who.getTitle() + " jest w " + zoneName
 										+ " na (" + who.getX() + "," + who.getY() + ")");
 							}
 						}
@@ -85,5 +86,15 @@ public class WhereAction implements ActionListener {
 
 			player.notifyWorldAboutChanges();
 		}
+	}
+
+	static String getZoneDisplayName(final StendhalRPZone zone) {
+		if (zone.getName().startsWith("instance_") && zone.getAttributes() != null) {
+			final String readableName = zone.getAttributes().get("readable_name");
+			if (readableName != null && !readableName.trim().isEmpty()) {
+				return readableName;
+			}
+		}
+		return zone.getName();
 	}
 }
