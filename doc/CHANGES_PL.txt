@@ -50,6 +50,13 @@ Changelog
 - Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rarity, afiksy oraz ich parametry
 - Przebudowano obsługę wydarzeń sezonowych, umożliwiając bezpieczne przełączanie ich podczas działania serwera
 - Dodano nowy skrypt administracyjny SeasonalEvent do włączania, wyłączania oraz sprawdzania stanu obsługiwanych wydarzeń sezonowych
+- Dodano player-specific perception w Marauroa oraz prywatne skrzynie `PrinceSupply`, dzięki czemu wielu graczy może bezpiecznie korzystać z prywatnych obiektów w tych samych współrzędnych.
+- Dodano generyczny fundament Instance Zones z izolacją encji i percepcji, lifecycle cleanupem oraz integracją z Labiryntem Haizena; krótkie runtime ID instancji nie wymagają zmiany wire protocol ani formatu persistence.
+- Dodano generyczny World Task Scheduler wykonywany na bezpiecznej granicy tury, z obsługą właścicieli i anulowaniem starych callbacków po cleanupie lifecycle.
+- Zintegrowano Safe Hot Reload oparty o `ResourceReloadService` z rozdzielonym `load`, `validate` i małym `apply` na safe poincie oraz administracyjnym dostępem wyłącznie przez stabilne resource ID.
+- Rozbudowano Observability 2.0 o metryki schedulera, nazwane fazy slow turns, koszt percepcji i cache, lifecycle Instance Zones, Safe Hot Reload, transfery zawartości oraz ranking top-3 najdroższych stref.
+- Uporządkowano toolchain i CI przy zachowaniu JDK 8: `checkout@v7`, `setup-java@v5`/Temurin 8, warning-free kompilacja, Groovy 3.0.25 i JUnit 4.13.2.
+- Dodano jawny cel `ant test_142` obejmujący najważniejsze regresje wydania; CI uruchamia go w izolowanym jobie przed pełnym zestawem testów.
 
 *naprawiono błędy*
 - Podgląd ulepszenia nie zużywa już karmy; karma jest wykorzystywana dopiero podczas właściwej, zweryfikowanej próby
