@@ -33,6 +33,9 @@ Changelog
 - Elitarne potwory posiadają zwiększone zdrowie, atak, obronę oraz przyznają więcej doświadczenia
 - Przedmioty wypadające z elitarnych potworów mają zwiększoną szansę na uzyskanie wyższej rzadkości
 - Bossowie oraz wybrane specjalne stworzenia są wyłączone z losowego systemu elit
+- Dodano możliwość włączania i wyłączania wydarzeń sezonowych bez konieczności restartowania serwera
+- Boże Narodzenie, Wielkanoc oraz wydarzenia związane z odbudową Mine Town mogą teraz dynamicznie zmieniać mapy, dekoracje, NPC, zadania, stworzenia oraz pozostałe elementy świata
+ - Poprawiono mapy wielkanocne w Zakopanem
 
 *kod*
 - Uporządkowano nazewnictwo systemu ulepszeń do wspólnej terminologii Item Upgrade oraz wydzielono reguły z obsługi dialogu NPC
@@ -45,6 +48,8 @@ Changelog
 - Usunięto pozostałości starego systemu krwawienia oraz stare profile potworów
 - Rozszerzono system generowania przedmiotów o trwałe rarity, afiksy oraz możliwość deterministycznego odtworzenia wylosowanych parametrów
 - Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rarity, afiksy oraz ich parametry
+- Przebudowano obsługę wydarzeń sezonowych, umożliwiając bezpieczne przełączanie ich podczas działania serwera
+- Dodano nowy skrypt administracyjny SeasonalEvent do włączania, wyłączania oraz sprawdzania stanu obsługiwanych wydarzeń sezonowych
 
 *naprawiono błędy*
 - Podgląd ulepszenia nie zużywa już karmy; karma jest wykorzystywana dopiero podczas właściwej, zweryfikowanej próby
