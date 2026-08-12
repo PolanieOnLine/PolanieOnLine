@@ -84,8 +84,7 @@ public final class ItemAffixGenerator {
 	public List<String> generate(final Item item,
 			final ItemCreationContext context) {
 		if (item == null || EXCLUDED_MISSILE_CLASS.equals(item.getItemClass())
-				|| context == null || !shouldGenerate(item, context)
-				|| ItemAffixState.hasAny(item)) {
+				|| context == null || ItemAffixState.hasAny(item)) {
 			return Collections.emptyList();
 		}
 
@@ -95,12 +94,22 @@ public final class ItemAffixGenerator {
 			return Collections.emptyList();
 		}
 
+		final List<String> applied = new ArrayList<String>();
+		final int guaranteedSlots = recordGuaranteedRegularAffixes(item,
+				regularSlots, applied);
+
+		// Definition-provided affixes remain guaranteed even for creation paths
+		// which deliberately disable random rolls (for example quest rewards).
+		if (!shouldGenerate(item, context)) {
+			return Collections.unmodifiableList(applied);
+		}
+
 		final long seed = context.getAffixSeed() == null
 				? random.nextLong() : context.getAffixSeed().longValue();
 		ItemAffixState.setSeed(item, seed);
 		final Random rollRandom = new Random(seed);
-		final List<String> applied = new ArrayList<String>();
-		applyRegularAffixes(item, regularSlots, applied, rollRandom);
+		applyRegularAffixes(item, regularSlots - guaranteedSlots, applied,
+				rollRandom);
 
 		if (legendarySlots > 0
 				&& !applyLegendarySignature(item, applied, rollRandom)) {
@@ -109,6 +118,28 @@ public final class ItemAffixGenerator {
 							+ item.getItemClass() + "/" + item.getName());
 		}
 		return Collections.unmodifiableList(applied);
+	}
+
+	/**
+	 * Materializes positive lifesteal supplied by the XML definition as one
+	 * regular affix. Its existing value is preserved (including rarity scaling)
+	 * instead of being rerolled by the random lifesteal definition.
+	 */
+	private int recordGuaranteedRegularAffixes(final Item item,
+			final int availableSlots, final List<String> applied) {
+		if (availableSlots <= 0 || !WeaponAffixService.isWeapon(item)
+				|| !item.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE)
+				|| item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) <= 0.0) {
+			return 0;
+		}
+		final ItemAffixDefinition definition = registry.get(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE);
+		if (definition == null || ItemAffixState.has(item, definition.getId())) {
+			return 0;
+		}
+		ItemAffixState.record(item, definition);
+		applied.add(definition.getId());
+		return 1;
 	}
 
 	private boolean shouldGenerate(final Item item,

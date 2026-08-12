@@ -18,8 +18,10 @@ import org.junit.Test;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
+import games.stendhal.server.core.rule.rarity.WeaponAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.DetailLevel;
@@ -31,6 +33,7 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ItemRarityTransformerTest {
 	private static final String ITEM_NAME = "miecz zaczepny";
+	private static final String INTRINSIC_LIFESTEAL_ITEM_NAME = "miecz chaosu";
 
 	@BeforeClass
 	public static void setUpClasses() {
@@ -152,6 +155,71 @@ public class ItemRarityTransformerTest {
 
 		assertEquals(42, restored.getInt("def"));
 		assertFalse(restored.has("rate"));
+	}
+
+	@Test
+	public void commonIntrinsicLifestealSuppressionSurvivesRestore()
+			throws IOException {
+		final Item created = SingletonRepository.getEntityManager().getItem(
+				INTRINSIC_LIFESTEAL_ITEM_NAME,
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withForcedRarity(ItemRarity.COMMON)
+						.randomizeModifiers(false).build());
+		created.setID(new ID(105, "rarity_test"));
+
+		final Item firstLoad = new ItemTransformer().transform(serializedCopy(created));
+		final Item secondLoad = new ItemTransformer().transform(
+				serializedCopy(firstLoad));
+
+		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
+		assertFalse(secondLoad.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE));
+		assertFalse(ItemAffixState.hasAny(secondLoad));
+	}
+
+	@Test
+	public void guaranteedLifestealAffixSurvivesRestoreWithoutReroll()
+			throws IOException {
+		final Item created = SingletonRepository.getEntityManager().getItem(
+				INTRINSIC_LIFESTEAL_ITEM_NAME,
+				ItemCreationContext.builder(ItemCreationContext.Source.DROP)
+						.withForcedRarity(ItemRarity.RARE)
+						.randomizeModifiers(false)
+						.withAffixSeed(12345L).build());
+		created.setID(new ID(106, "rarity_test"));
+		final double lifesteal = created.getDouble(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE);
+
+		final Item firstLoad = new ItemTransformer().transform(serializedCopy(created));
+		final Item secondLoad = new ItemTransformer().transform(
+				serializedCopy(firstLoad));
+
+		assertSame(ItemRarity.RARE, secondLoad.getRarity());
+		assertEquals(lifesteal, secondLoad.getDouble(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
+		assertEquals(ItemAffixState.getValues(created),
+				ItemAffixState.getValues(secondLoad));
+		assertTrue(ItemAffixState.has(secondLoad,
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
+		assertEquals(1, ItemAffixState.getValues(secondLoad).size());
+	}
+
+	@Test
+	public void legacyCommonItemKeepsItsSavedIntrinsicLifesteal()
+			throws IOException {
+		final Item legacy = SingletonRepository.getEntityManager().getItem(
+				INTRINSIC_LIFESTEAL_ITEM_NAME, ItemCreationContext.restore());
+		legacy.setID(new ID(107, "rarity_test"));
+		final double savedLifesteal = legacy.getDouble(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE);
+
+		final Item restored = new ItemTransformer().transform(serializedCopy(legacy));
+		final Item secondLoad = new ItemTransformer().transform(
+				serializedCopy(restored));
+
+		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
+		assertEquals(savedLifesteal, secondLoad.getDouble(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
+		assertFalse(ItemAffixState.hasAny(secondLoad));
 	}
 
 	private RPObject serializedCopy(final RPObject source) throws IOException {

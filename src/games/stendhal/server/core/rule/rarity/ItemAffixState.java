@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPObject;
 
-/** Persistent instance state for randomly rolled item affixes. */
+/** Persistent instance state for random and guaranteed item affixes. */
 public final class ItemAffixState {
 	/** Hidden persistent map: stable affix id -> exact materialized value. */
 	public static final String ATTRIBUTE = "item_affixes";

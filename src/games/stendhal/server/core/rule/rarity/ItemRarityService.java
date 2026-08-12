@@ -158,6 +158,12 @@ public final class ItemRarityService {
 		final ItemRarityModifiers fixed = context.getModifiers();
 		Double sharedDamageMultiplier = null;
 
+		// Positive lifesteal declared by the item definition is a guaranteed
+		// regular affix, not a free base statistic. Common items have no regular
+		// affix slots. Negative values are intentional weapon drawbacks and stay
+		// independent of rarity.
+		suppressPositiveIntrinsicLifestealForCommon(item, rarity);
+
 		for (final String statistic : INTEGRAL_STATS) {
 			if (item.has(statistic) && item.getInt(statistic) > 0) {
 				final double multiplier;
@@ -199,6 +205,15 @@ public final class ItemRarityService {
 		// generate according to their source/options; RESTORE never rerolls them.
 		affixGenerator.generate(item, context);
 		ItemTooltipService.update(item);
+	}
+
+	private void suppressPositiveIntrinsicLifestealForCommon(final Item item,
+			final ItemRarity rarity) {
+		if (rarity == ItemRarity.COMMON && WeaponAffixService.isWeapon(item)
+				&& item.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE)
+				&& item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) > 0.0) {
+			item.remove(WeaponAffixService.LIFESTEAL_ATTRIBUTE);
+		}
 	}
 
 	public void markLegacyCommon(final Item item) {

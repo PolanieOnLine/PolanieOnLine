@@ -55,6 +55,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rp.achievement.AchievementNotifier;
 import games.stendhal.server.entity.DressedEntity;
@@ -223,16 +224,20 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		player.update();
-		Entity entity = SingletonRepository.getEntityManager().getItem("skórzana zbroja");
+		final ItemCreationContext starterItem = ItemCreationContext.starter();
+		Entity entity = SingletonRepository.getEntityManager().getItem(
+				"skórzana zbroja", starterItem);
 		RPSlot slot = player.getSlot("armor");
 		slot.add(entity);
 
-		entity = SingletonRepository.getEntityManager().getItem("maczuga");
+		entity = SingletonRepository.getEntityManager().getItem("maczuga",
+				starterItem);
 		slot = player.getSlot("rhand");
 		slot.add(entity);
 
 		if (!Occasion.SECOND_WORLD) {
-			entity = SingletonRepository.getEntityManager().getItem("ciupaga startowa");
+			entity = SingletonRepository.getEntityManager().getItem(
+					"ciupaga startowa", starterItem);
 			((Item) entity).setBoundTo(player.getName());
 			slot = player.getSlot("bag");
 			slot.add(entity);

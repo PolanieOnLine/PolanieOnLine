@@ -65,6 +65,19 @@ public final class ItemCreationContext {
 		return builder(Source.QUEST).withQuestRarity(ItemRarity.COMMON).build();
 	}
 
+	/**
+	 * Creates deterministic Common equipment granted when a character is
+	 * created. Starter equipment must not give one new character a rarity-based
+	 * advantage over another.
+	 */
+	public static ItemCreationContext starter() {
+		return builder(Source.DEFAULT)
+				.withFactoryRarity(ItemRarity.COMMON)
+				.randomizeModifiers(false)
+				.generateAffixes(false)
+				.build();
+	}
+
 	public static ItemCreationContext admin() {
 		return builder(Source.ADMIN).build();
 	}

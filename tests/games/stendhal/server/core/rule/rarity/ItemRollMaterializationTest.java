@@ -4,6 +4,7 @@
 package games.stendhal.server.core.rule.rarity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class ItemRollMaterializationTest {
 		assertEquals(1.07, item.getRarityModifier("lifesteal").doubleValue(), 0.0);
 		assertEquals(0.11, item.getDouble("lifesteal"), 0.0);
 		assertEquals("1.07", item.getMap(Item.RARITY_MODIFIERS).get("lifesteal"));
+		assertEquals("0.11", ItemAffixState.getValues(item).get("lifesteal"));
 	}
 
 	@Test
@@ -61,7 +63,7 @@ public class ItemRollMaterializationTest {
 	}
 
 	@Test
-	public void unityModifierPreservesUnmodifiedIntrinsicFloatingPrecision() {
+	public void commonSuppressesPositiveIntrinsicLifesteal() {
 		final Item item = combatItem();
 		final double intrinsic = 0.12512031523088826;
 		item.put("lifesteal", intrinsic);
@@ -70,8 +72,8 @@ public class ItemRollMaterializationTest {
 				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
 						.withRarity(ItemRarity.COMMON).build());
 
-		assertEquals(intrinsic, item.getDouble("lifesteal"), 0.0);
-		assertEquals(1.0, item.getRarityModifier("lifesteal").doubleValue(), 0.0);
+		assertFalse(item.has("lifesteal"));
+		assertFalse(item.getRarityModifiers().containsKey("lifesteal"));
 	}
 
 	private Item combatItem() {

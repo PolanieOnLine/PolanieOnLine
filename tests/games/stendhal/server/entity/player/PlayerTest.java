@@ -30,7 +30,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.KeyedSlotUtil;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Outfit;
@@ -322,6 +324,20 @@ public class PlayerTest {
 
 		assertThat(george.getHeight(), is(1.0));
 		assertThat(george.get("height"), is("1"));
+	}
+
+	@Test
+	public void newCharactersReceiveCommonStarterEquipment() {
+		final Player starter = Player.createZeroLevelPlayer("commonStarter", null);
+
+		assertThat(((Item) starter.getSlot("armor").getFirst()).getRarity(),
+				is(ItemRarity.COMMON));
+		assertThat(((Item) starter.getSlot("rhand").getFirst()).getRarity(),
+				is(ItemRarity.COMMON));
+		if (!Occasion.SECOND_WORLD) {
+			assertThat(((Item) starter.getSlot("bag").getFirst()).getRarity(),
+					is(ItemRarity.COMMON));
+		}
 	}
 
 	/**
