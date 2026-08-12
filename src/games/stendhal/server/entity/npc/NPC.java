@@ -319,7 +319,11 @@ public abstract class NPC extends DressedEntity {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void logic() {
+		// Keep the deprecated movement-radius callbacks active for legacy
+		// scripted/mod NPCs that still use moveRandomly() and
+		// setRandomMovementRadius(). New Java NPCs should use WanderIdleBehaviour.
 		if (idler != null) {
 			// handled in pre-logic
 			return;
