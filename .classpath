@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="libs/swing-layout.jar"/>
 	<classpathentry kind="lib" path="libs/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.13.2.jar"/>
-	<classpathentry kind="lib" path="libs/java-hamcrest-2.0.0.0.jar" sourcepath="/home/brummermann/.m2/repository/org/hamcrest/java-hamcrest/2.0.0.0/java-hamcrest-2.0.0.0-sources.jar"/>
+	<classpathentry kind="lib" path="libs/java-hamcrest-2.0.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/marauroa.jar" sourcepath="/marauroa"/>
 	<classpathentry kind="lib" path="libs/luaj-jse-3.0.1.jar" sourcepath="/luaj"/>
 	<classpathentry kind="lib" path="libs/jakarta.annotation-api-2.1.1.jar"/>
