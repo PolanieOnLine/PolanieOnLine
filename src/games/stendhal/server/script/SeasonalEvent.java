@@ -41,7 +41,7 @@ public class SeasonalEvent extends ScriptImpl {
 		final SeasonalEventService service = SeasonalEventService.get();
 		if ("status".equals(action)) {
 			admin.sendPrivateText(event.getDisplayName() + ": "
-					+ (event.isEnabled(service) ? "AKTYWNY" : "WYŁĄCZONY")
+					+ (event.isEnabled() ? "AKTYWNY" : "WYŁĄCZONY")
 					+ transitionSuffix(service)
 					+ "; warunek: " + event.getProperty());
 			return;

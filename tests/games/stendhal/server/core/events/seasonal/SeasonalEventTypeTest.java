@@ -4,7 +4,9 @@
 package games.stendhal.server.core.events.seasonal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -32,5 +34,24 @@ public class SeasonalEventTypeTest {
 		assertEquals("stendhal.christmas", SeasonalEventType.CHRISTMAS.getProperty());
 		assertEquals("Mine Town Revival Weeks", SeasonalEventType.MINE_TOWN.getDisplayName());
 		assertEquals("stendhal.easter", SeasonalEventType.EASTER.getProperty());
+	}
+
+	@Test
+	public void readsEnabledStateFromCanonicalProperty() {
+		final String property = SeasonalEventType.EASTER.getProperty();
+		final String previous = System.getProperty(property);
+		try {
+			System.clearProperty(property);
+			assertFalse(SeasonalEventType.EASTER.isEnabled());
+
+			System.setProperty(property, "true");
+			assertTrue(SeasonalEventType.EASTER.isEnabled());
+		} finally {
+			if (previous == null) {
+				System.clearProperty(property);
+			} else {
+				System.setProperty(property, previous);
+			}
+		}
 	}
 }

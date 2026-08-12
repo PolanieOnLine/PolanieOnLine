@@ -41,17 +41,13 @@ public enum SeasonalEventType {
 		return property;
 	}
 
-	public boolean isEnabled(final SeasonalEventService service) {
-		switch (this) {
-		case CHRISTMAS:
-			return service.isChristmasEnabled();
-		case MINE_TOWN:
-			return service.isMineTownEnabled();
-		case EASTER:
-			return service.isEasterEnabled();
-		default:
-			throw new IllegalStateException("Nieobsługiwany event sezonowy: " + this);
-		}
+	/**
+	 * Reads the canonical runtime state directly from the property owned by this
+	 * registry entry. This keeps status reporting independent from event-specific
+	 * service methods while preserving those methods as compatibility wrappers.
+	 */
+	public boolean isEnabled() {
+		return System.getProperty(property) != null;
 	}
 
 	public boolean request(final SeasonalEventService service, final boolean enabled,
