@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.script;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -56,7 +57,7 @@ public abstract class AbstractOfflineAction extends ScriptImpl {
 		try {
 
 			// check that the player exists
-			if (!characterDAO.hasCharacter(characterName)) {
+			if (!characterDAO.hasCharacter(transaction, characterName)) {
 				admin.sendPrivateText("Nie ma wojownika o takim imieniu.");
 				TransactionPool.get().commit(transaction);
 				return;
@@ -67,7 +68,8 @@ public abstract class AbstractOfflineAction extends ScriptImpl {
 			process(admin, object, args);
 
 			// safe it back
-			characterDAO.storeCharacter(transaction, username, characterName, object);
+			characterDAO.storeCharacter(transaction, username, characterName, object,
+					new Timestamp(System.currentTimeMillis()));
 			TransactionPool.get().commit(transaction);
 
 			// remove from world
