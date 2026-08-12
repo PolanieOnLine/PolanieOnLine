@@ -28,7 +28,6 @@ import java.io.Writer;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.swing.DefaultBoundedRangeModel;
@@ -376,17 +375,11 @@ class KTextEdit extends JComponent {
 		if (type.equals(NotificationType.EMOJI)) {
 			// get file path basename
 			text = new File(text).getName().replaceFirst("[.][^.]+$", "");
-			final Map<String, String> chatLogChars = EmojiStore.chatLogChars;
-			if (chatLogChars.containsKey(text)) {
-				text = chatLogChars.get(text);
-			} else {
-				s = getStyle(c, NotificationType.NORMALSTYLE);
-				text = ":" + text + ":";
-				final ImageSprite emoji = (ImageSprite) EmojiStore.get().create(text);
-				// FIXME: should icons get cached?
-				textPane.insertIcon(new ImageIcon(emoji.getImage()));
-				return;
-			}
+			text = ":" + text + ":";
+			final ImageSprite emoji = (ImageSprite) EmojiStore.get().create(text);
+			// FIXME: should icons get cached?
+			textPane.insertIcon(new ImageIcon(emoji.getImage()));
+			return;
 		}
 		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), s);
 		set.setAttribute(StyleConstants.Foreground, c);

@@ -221,6 +221,7 @@ public class Field {
 	 * @param values the entries to get appended
 	 * @return the array
 	 */
+	@SafeVarargs
 	public static <T> T[] append(T[] field, int size, T... values) {
 		field = expand(field, (size + values.length), true);
 		System.arraycopy(values, 0, field, size, values.length);
@@ -257,6 +258,7 @@ public class Field {
 	 * @param values the entries to be inserted
 	 * @return the array
 	 */
+	@SafeVarargs
 	public static <T> T[] insert(T[] field, int index, int size, T... values) {
 		if (index < size) {
 			field = rshift(field, index, (size - index), values.length, true);

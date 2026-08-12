@@ -47,6 +47,7 @@ public class StyledComboBoxUI extends BasicComboBoxUI {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected ListCellRenderer<Object> createRenderer() {
 		/*
 		 * In java 6 the transparency setting of the entries gets
