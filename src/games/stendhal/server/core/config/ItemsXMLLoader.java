@@ -96,31 +96,49 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	private String tooltipCategory;
 
 	public List<DefaultItem> load(final URI uri) throws SAXException {
-		list = new LinkedList<DefaultItem>();
-		// Use the default (non-validating) parser
-		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		final InputStream is = ItemsXMLLoader.class.getResourceAsStream(uri.getPath());
+		if (is == null) {
+			throw new SAXException(new FileNotFoundException("cannot find resource '" + uri
+					+ "' in classpath"));
+		}
 		try {
-			// Parse the input
-			final SAXParser saxParser = factory.newSAXParser();
-
-			final InputStream is = ItemsXMLLoader.class.getResourceAsStream(uri.getPath());
-
-			if (is == null) {
-				throw new FileNotFoundException("cannot find resource '" + uri
-						+ "' in classpath");
-			}
-			try {
-				saxParser.parse(is, this);
-			} finally {
-				is.close();
-			}
-		} catch (final ParserConfigurationException t) {
-			LOGGER.error(t);
+			return load(is);
 		} catch (final IOException e) {
 			LOGGER.error(e);
 			throw new SAXException(e);
+		} finally {
+			try {
+				is.close();
+			} catch (final IOException e) {
+				LOGGER.warn("Could not close item resource '" + uri + "'", e);
+			}
 		}
+	}
 
+	/**
+	 * Parses item definitions from an already opened stream.
+	 *
+	 * The caller owns and closes the stream. This overload allows safe resource
+	 * reload preparation to obtain bytes through a {@code ResourceProvider}
+	 * without changing the parser semantics used at server startup.
+	 *
+	 * @param input item XML stream
+	 * @return parsed item definitions
+	 * @throws SAXException if XML parsing fails
+	 * @throws IOException if reading the stream fails
+	 */
+	public List<DefaultItem> load(final InputStream input) throws SAXException, IOException {
+		if (input == null) {
+			throw new IllegalArgumentException("input stream must not be null");
+		}
+		list = new LinkedList<DefaultItem>();
+		final SAXParserFactory factory = SAXParserFactory.newInstance();
+		try {
+			final SAXParser saxParser = factory.newSAXParser();
+			saxParser.parse(input, this);
+		} catch (final ParserConfigurationException e) {
+			throw new SAXException(e);
+		}
 		return list;
 	}
 
