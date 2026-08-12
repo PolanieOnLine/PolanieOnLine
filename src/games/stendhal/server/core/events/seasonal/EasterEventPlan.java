@@ -11,14 +11,13 @@ import games.stendhal.server.core.config.XMLUtil;
  * The Easter Bunny remains a separate runtime event controlled by
  * {@code stendhal.easterbunny}; this plan only owns {@code stendhal.easter}.
  */
-final class EasterEventPlan {
+final class EasterEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.easter";
 
-	private final boolean enabled;
 	private final ChristmasZonePlan zones;
 
 	private EasterEventPlan(final boolean enabled, final ChristmasZonePlan zones) {
-		this.enabled = enabled;
+		super(enabled);
 		this.zones = zones;
 	}
 
@@ -29,10 +28,7 @@ final class EasterEventPlan {
 		}
 	}
 
-	boolean isEnabled() {
-		return enabled;
-	}
-
+	@Override
 	void apply() throws Exception {
 		try {
 			zones.apply();

@@ -8,14 +8,13 @@ import games.stendhal.server.core.config.XMLUtil;
 /**
  * Fully prepared world resources for one Mine Town Revival state.
  */
-final class MineTownEventPlan {
+final class MineTownEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.minetown";
 
-	private final boolean enabled;
 	private final ChristmasZonePlan zones;
 
 	private MineTownEventPlan(final boolean enabled, final ChristmasZonePlan zones) {
-		this.enabled = enabled;
+		super(enabled);
 		this.zones = zones;
 	}
 
@@ -26,10 +25,7 @@ final class MineTownEventPlan {
 		}
 	}
 
-	boolean isEnabled() {
-		return enabled;
-	}
-
+	@Override
 	void apply() throws Exception {
 		try {
 			zones.apply();

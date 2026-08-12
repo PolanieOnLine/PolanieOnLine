@@ -8,17 +8,16 @@ import games.stendhal.server.core.config.XMLUtil;
 /**
  * Fully prepared set of resources for one Christmas state.
  */
-final class ChristmasEventPlan {
+final class ChristmasEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.christmas";
 
-	private final boolean enabled;
 	private final ChristmasZonePlan zones;
 	private final ChristmasCreaturePlan creatures;
 
 	private ChristmasEventPlan(final boolean enabled,
 			final ChristmasZonePlan zones,
 			final ChristmasCreaturePlan creatures) {
-		this.enabled = enabled;
+		super(enabled);
 		this.zones = zones;
 		this.creatures = creatures;
 	}
@@ -40,15 +39,12 @@ final class ChristmasEventPlan {
 		}
 	}
 
-	boolean isEnabled() {
-		return enabled;
-	}
-
 	/**
 	 * Applies only already prepared data. No TMX or XML parsing happens here.
 	 *
 	 * @throws Exception if applying a prepared resource fails
 	 */
+	@Override
 	void apply() throws Exception {
 		try {
 			creatures.apply();
