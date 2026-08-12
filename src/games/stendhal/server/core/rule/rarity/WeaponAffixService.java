@@ -58,6 +58,11 @@ public final class WeaponAffixService {
 		// utility class
 	}
 
+	/** @return whether the item belongs to a weapon class using weapon affixes */
+	public static boolean isWeapon(final Item item) {
+		return item != null && WEAPON_CLASSES.contains(item.getItemClass());
+	}
+
 	/** Returns whether this item may receive the requested random weapon affix. */
 	public static boolean isEligible(final Item item, final String attribute) {
 		return isEligibleForClasses(item, attribute, WEAPON_CLASSES);
