@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import games.stendhal.server.core.config.ProductionsXMLLoader;
+import games.stendhal.server.core.config.ProductionGroupsXMLLoader;
 import games.stendhal.server.core.config.zone.ConfiguratorDescriptor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
@@ -56,7 +56,7 @@ public class SpeakerNpcTest {
 
 	@Parameterized.Parameters
 	public static Collection<SpeakerNPC[]> npcs() {
-		ProductionsXMLLoader.get().init();
+		new ProductionGroupsXMLLoader("/data/conf/productions.xml").load();
 		setUpZone();
 
 		Collection<SpeakerNPC[]> npcArrays = new LinkedList<SpeakerNPC[]>();
