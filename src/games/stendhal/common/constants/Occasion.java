@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    (C) Copyright 2018-2020 - Arianne                    *
+ *                    (C) Copyright 2018-2026 - Arianne                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,28 +12,56 @@
 package games.stendhal.common.constants;
 
 /**
- * Constants for occasions such as Christmas & Mine Town Weeks.
+ * Runtime flags for occasions such as Christmas & Mine Town Weeks.
+ *
+ * Historically these values were {@code static final} snapshots of system
+ * properties. That made changing an occasion at runtime ineffective for code
+ * using this class. The fields remain source-compatible, but can now be
+ * refreshed after a controlled runtime property change.
  */
-public class Occasion {
-	/**
-	 * Stendhal
-	 */
-	// Christmas time
-	public static final Boolean CHRISTMAS = System.getProperty("stendhal.christmas") != null;
- 	// Easter
-	public static final Boolean EASTER = System.getProperty("stendhal.easter") != null;
- 	// Halloween/Mine Town Weeks
-	public static final Boolean MINETOWN = System.getProperty("stendhal.minetown") != null;
-	public static final Boolean MINETOWN_CONSTRUCTION = System.getProperty("stendhal.minetownconstruction") != null;
+public final class Occasion {
+	private Occasion() {
+		// utility class
+	}
+
+	/** Stendhal Christmas event. */
+	public static volatile Boolean CHRISTMAS;
+	/** Stendhal Easter event. */
+	public static volatile Boolean EASTER;
+	/** Halloween/Mine Town Weeks. */
+	public static volatile Boolean MINETOWN;
+	/** Mine Town construction event. */
+	public static volatile Boolean MINETOWN_CONSTRUCTION;
+
+	/** PolanieOnLine 50% more XP event. */
+	public static volatile Boolean MOREXP;
+	/** PolanieOnLine birthday event. */
+	public static volatile Boolean BIRTHDAY;
+	/** Second-world mode. */
+	public static volatile Boolean SECOND_WORLD;
+
+	static {
+		refresh();
+	}
 
 	/**
-	 * PolanieOnLine
+	 * Refreshes all occasion flags from their canonical system properties.
+	 *
+	 * Runtime event controllers must call this after changing one of those
+	 * properties. Using volatile references makes the refreshed values visible
+	 * to other threads without requiring callers to synchronize on this class.
 	 */
-	// 50% more XP
-	public static final Boolean MOREXP = System.getProperty("pol.morexp") != null;
-	// POL Birthday
-	public static final Boolean BIRTHDAY = System.getProperty("pol.birthday") != null;
+	public static synchronized void refresh() {
+		CHRISTMAS = enabled("stendhal.christmas");
+		EASTER = enabled("stendhal.easter");
+		MINETOWN = enabled("stendhal.minetown");
+		MINETOWN_CONSTRUCTION = enabled("stendhal.minetownconstruction");
+		MOREXP = enabled("pol.morexp");
+		BIRTHDAY = enabled("pol.birthday");
+		SECOND_WORLD = enabled("server.secondworld");
+	}
 
-	// Dla drugiego serwera
-	public static final Boolean SECOND_WORLD = System.getProperty("server.secondworld") != null;
+	private static Boolean enabled(final String property) {
+		return Boolean.valueOf(System.getProperty(property) != null);
+	}
 }

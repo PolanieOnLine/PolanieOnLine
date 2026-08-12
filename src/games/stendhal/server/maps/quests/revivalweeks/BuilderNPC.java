@@ -33,9 +33,11 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 	private static final String QUEST_SLOT = QuestUtils.evaluateQuestSlotName("minetown_construction_[year]");
 	private ReadGroupQuestCommand command;
 	private CollectingGroupQuestBehaviour behaviour;
+	private volatile boolean active;
 
 	@Override
 	public void addToWorld() {
+		active = true;
 		this.command = new ReadGroupQuestCommand(QUEST_SLOT);
 		DBCommandQueue.get().enqueue(command);
 		TurnNotifier.get().notifyInTurns(0, this);
@@ -43,13 +45,23 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 			
 	@Override
 	public void onTurnReached(int currentTurn) {
+		if (!active) {
+			return;
+		}
 		if (command.getProgress() == null) {
-			TurnNotifier.get().notifyInTurns(0, this);
+			if (active) {
+				TurnNotifier.get().notifyInTurns(0, this);
+			}
+			return;
+		}
+		if (!active) {
 			return;
 		}
 		Map<String, Integer> progress = command.getProgress();
 		setupCollectingGroupQuest(progress);
-		addNPC();
+		if (active) {
+			addNPC();
+		}
 	}
 
 	private void setupCollectingGroupQuest(Map<String, Integer> progress) {
@@ -102,8 +114,11 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 	}
 
 	private void addNPC() {
+		if (!active) {
+			return;
+		}
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("0_semos_mountain_n2");
-		final SpeakerNPC npc = new SpeakerNPC("Klaus") {
+		npc = new SpeakerNPC("Klaus") {
 
 			@Override
 			protected void createPath() {
@@ -133,8 +148,6 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		addQuestDialog(npc);
 	}
 
-	
-
 	private void addQuestDialog(SpeakerNPC npc) {
 		new CollectingGroupQuestAdder().add(npc, behaviour);
 		npc.addReply(Arrays.asList("Mine", "Town", "Revival", "Weeks", "Mine Town",
@@ -152,8 +165,12 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 
 	@Override
 	public boolean removeFromWorld() {
+		active = false;
 		if (npc != null) {
-			npc.getZone().remove(npc);
+			if (npc.getZone() != null) {
+				npc.getZone().remove(npc);
+			}
+			npc = null;
 		}
 		return true;
 	}

@@ -37,12 +37,12 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 	private static final String QUEST_SLOT = "semos_mine_town_revival";
 	public static final String QUEST_NAME = "Tydzień Odrodzenia Miasta Kopalni";
 
-	private List<LoadableContent> content = new LinkedList<LoadableContent>();
+	private final List<LoadableContent> content = new LinkedList<LoadableContent>();
 
 	@Override
 	public void addToWorld() {
-		System.setProperty("stendhal.minetown", "true");
-
+		// The event controller owns stendhal.minetown. Keeping property mutation
+		// out of the quest makes prepare/apply and rollback deterministic.
 		content.add(new FoundGirl());
 		content.add(new DadNPC());
 		content.add(new SoldierNPCs());
@@ -54,8 +54,7 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 		content.add(new NineSwitchesGame());
 //		content.add(new SokobanGame());
 
-		// add it to the world
-		for (LoadableContent loadableContent : content) {
+		for (final LoadableContent loadableContent : content) {
 			loadableContent.addToWorld();
 		}
 	}
@@ -67,11 +66,12 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 	 */
 	@Override
 	public boolean removeFromWorld() {
-		System.getProperties().remove("stendhal.minetown");
-		for (LoadableContent loadableContent : content) {
-			loadableContent.removeFromWorld();
+		boolean removed = true;
+		for (final LoadableContent loadableContent : content) {
+			removed = loadableContent.removeFromWorld() && removed;
 		}
-		return true;
+		content.clear();
+		return removed;
 	}
 
 	@Override

@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -29,6 +31,17 @@ import org.xml.sax.SAXException;
  * XML utility methods for DOM reading.
  */
 public class XMLUtil {
+	/**
+	 * Per-thread condition values used while preparing a detached runtime
+	 * configuration. They deliberately do not modify System properties.
+	 */
+	private static final ThreadLocal<Map<String, Boolean>> CONDITION_OVERRIDES =
+			new ThreadLocal<Map<String, Boolean>>() {
+				@Override
+				protected Map<String, Boolean> initialValue() {
+					return new HashMap<String, Boolean>();
+				}
+			};
 
 	/**
 	 * Get all the direct children elements of an element.
@@ -194,7 +207,7 @@ public class XMLUtil {
 	 */
 	public static Document parse(final InputStream in) throws SAXException,
 			IOException {
-	return parse(new InputSource(in));
+		return parse(new InputSource(in));
 	}
 
 	/**
@@ -224,7 +237,6 @@ public class XMLUtil {
 		}
 	}
 
-
 	/**
 	 * writes an xml document to a file
 	 *
@@ -245,7 +257,24 @@ public class XMLUtil {
 		writer.close();
 	}
 
-
+	/**
+	 * Temporarily overrides a condition value for the current thread.
+	 *
+	 * The returned scope must be closed, preferably by try-with-resources. The
+	 * override is intended for preparing an alternative configuration without
+	 * changing the process-wide System property seen by the active world.
+	 *
+	 * @param property canonical property name, for example stendhal.christmas
+	 * @param enabled desired condition value
+	 * @return scope restoring the previous per-thread value when closed
+	 */
+	public static ConditionOverride overrideCondition(final String property,
+			final boolean enabled) {
+		if (property == null || property.trim().isEmpty()) {
+			throw new IllegalArgumentException("property must not be empty");
+		}
+		return new ConditionOverride(property.trim(), enabled);
+	}
 
 	/**
 	 * checks if a condition is true
@@ -258,11 +287,46 @@ public class XMLUtil {
 			return true;
 		}
 
-		String value  = condition.trim();
-		if (value.charAt(0) == '!') {
-			return System.getProperty(value.substring(1)) == null;
+		String value = condition.trim();
+		boolean negate = value.charAt(0) == '!';
+		String property = negate ? value.substring(1) : value;
+		Boolean override = CONDITION_OVERRIDES.get().get(property);
+		boolean enabled = override != null
+				? override.booleanValue()
+				: System.getProperty(property) != null;
+		return negate ? !enabled : enabled;
+	}
+
+	/**
+	 * Auto-closeable per-thread condition override scope.
+	 */
+	public static final class ConditionOverride implements AutoCloseable {
+		private final String property;
+		private final Boolean previous;
+		private boolean closed;
+
+		private ConditionOverride(final String property, final boolean enabled) {
+			this.property = property;
+			final Map<String, Boolean> overrides = CONDITION_OVERRIDES.get();
+			previous = overrides.get(property);
+			overrides.put(property, Boolean.valueOf(enabled));
 		}
 
-		return System.getProperty(value) != null;
+		@Override
+		public void close() {
+			if (closed) {
+				return;
+			}
+			final Map<String, Boolean> overrides = CONDITION_OVERRIDES.get();
+			if (previous == null) {
+				overrides.remove(property);
+			} else {
+				overrides.put(property, previous);
+			}
+			if (overrides.isEmpty()) {
+				CONDITION_OVERRIDES.remove();
+			}
+			closed = true;
+		}
 	}
 }
