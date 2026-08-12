@@ -36,26 +36,20 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 
 /**
  * Detached, validated runtime changes for zones depending on one seasonal
- * system property. The historical class name is kept while the seasonal
- * controller is being generalized beyond Christmas.
+ * system property.
  */
-final class ChristmasZonePlan {
-	private static final String CHRISTMAS_PROPERTY = "stendhal.christmas";
+final class SeasonalZonePlan {
 	private static final URI ZONE_GROUPS = URI.create("/data/conf/zones.xml");
 
 	private final String property;
 	private final List<ZoneChange> changes;
 
-	private ChristmasZonePlan(final String property, final List<ZoneChange> changes) {
+	private SeasonalZonePlan(final String property, final List<ZoneChange> changes) {
 		this.property = property;
 		this.changes = changes;
 	}
 
-	static ChristmasZonePlan prepare(final boolean enabled) throws Exception {
-		return prepare(CHRISTMAS_PROPERTY, enabled);
-	}
-
-	static ChristmasZonePlan prepare(final String property, final boolean enabled) throws Exception {
+	static SeasonalZonePlan prepare(final String property, final boolean enabled) throws Exception {
 		if (property == null || property.trim().isEmpty()) {
 			throw new IllegalArgumentException("property must not be empty");
 		}
@@ -68,7 +62,7 @@ final class ChristmasZonePlan {
 			if (changes.isEmpty()) {
 				throw new IllegalStateException("No zones depend on " + property);
 			}
-			return new ChristmasZonePlan(property, changes);
+			return new SeasonalZonePlan(property, changes);
 		}
 	}
 
@@ -93,7 +87,7 @@ final class ChristmasZonePlan {
 
 	private static void prepareFile(final String resource, final String property,
 			final boolean enabled, final List<ZoneChange> changes) throws Exception {
-		final InputStream stream = ChristmasZonePlan.class.getResourceAsStream(resource);
+		final InputStream stream = SeasonalZonePlan.class.getResourceAsStream(resource);
 		if (stream == null) {
 			throw new IllegalStateException("Missing zone configuration " + resource);
 		}

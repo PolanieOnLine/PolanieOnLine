@@ -14,9 +14,9 @@ import games.stendhal.server.core.config.XMLUtil;
 final class EasterEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.easter";
 
-	private final ChristmasZonePlan zones;
+	private final SeasonalZonePlan zones;
 
-	private EasterEventPlan(final boolean enabled, final ChristmasZonePlan zones) {
+	private EasterEventPlan(final boolean enabled, final SeasonalZonePlan zones) {
 		super(enabled);
 		this.zones = zones;
 	}
@@ -24,7 +24,7 @@ final class EasterEventPlan extends PreparedSeasonalEventPlan {
 	static EasterEventPlan prepare(final boolean enabled) throws Exception {
 		try (XMLUtil.ConditionOverride ignored = XMLUtil.overrideCondition(PROPERTY, enabled)) {
 			return new EasterEventPlan(enabled,
-					ChristmasZonePlan.prepare(PROPERTY, enabled));
+					SeasonalZonePlan.prepare(PROPERTY, enabled));
 		}
 	}
 

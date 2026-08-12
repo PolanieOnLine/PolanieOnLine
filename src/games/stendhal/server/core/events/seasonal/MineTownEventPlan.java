@@ -11,9 +11,9 @@ import games.stendhal.server.core.config.XMLUtil;
 final class MineTownEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.minetown";
 
-	private final ChristmasZonePlan zones;
+	private final SeasonalZonePlan zones;
 
-	private MineTownEventPlan(final boolean enabled, final ChristmasZonePlan zones) {
+	private MineTownEventPlan(final boolean enabled, final SeasonalZonePlan zones) {
 		super(enabled);
 		this.zones = zones;
 	}
@@ -21,7 +21,7 @@ final class MineTownEventPlan extends PreparedSeasonalEventPlan {
 	static MineTownEventPlan prepare(final boolean enabled) throws Exception {
 		try (XMLUtil.ConditionOverride ignored = XMLUtil.overrideCondition(PROPERTY, enabled)) {
 			return new MineTownEventPlan(enabled,
-					ChristmasZonePlan.prepare(PROPERTY, enabled));
+					SeasonalZonePlan.prepare(PROPERTY, enabled));
 		}
 	}
 

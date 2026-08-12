@@ -11,11 +11,11 @@ import games.stendhal.server.core.config.XMLUtil;
 final class ChristmasEventPlan extends PreparedSeasonalEventPlan {
 	static final String PROPERTY = "stendhal.christmas";
 
-	private final ChristmasZonePlan zones;
+	private final SeasonalZonePlan zones;
 	private final ChristmasCreaturePlan creatures;
 
 	private ChristmasEventPlan(final boolean enabled,
-			final ChristmasZonePlan zones,
+			final SeasonalZonePlan zones,
 			final ChristmasCreaturePlan creatures) {
 		super(enabled);
 		this.zones = zones;
@@ -34,7 +34,7 @@ final class ChristmasEventPlan extends PreparedSeasonalEventPlan {
 		try (XMLUtil.ConditionOverride ignored =
 				XMLUtil.overrideCondition(PROPERTY, enabled)) {
 			return new ChristmasEventPlan(enabled,
-					ChristmasZonePlan.prepare(enabled),
+					SeasonalZonePlan.prepare(PROPERTY, enabled),
 					ChristmasCreaturePlan.prepare(enabled));
 		}
 	}
