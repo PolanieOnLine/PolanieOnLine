@@ -52,7 +52,8 @@ public class BrideAssistantNPC implements ZoneConfigurator {
 
 				final Map<String, Integer> priceList = new HashMap<String, Integer>();
 				priceList.put("gown", 100);
-				final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(priceList, true);
+				final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(priceList);
+				behaviour.setFlag("resetBeforeChange");
 				new OutfitChangerAdder().addOutfitChanger(this, behaviour, Arrays.asList("wear", "ubierz"));
 			}
 		};

@@ -144,7 +144,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 			prices.put(outfit.getLabel(), outfit.getPrice());
 		}
 
-		final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(prices, endurance, "Twój strój się skończył.", true) {
+		final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(prices, endurance, "Twój strój się skończył.") {
 			@Override
 			public boolean transactAgreedDeal(final ItemParserResult res, final EventRaiser seller, final Player player) {
 				final String outfitName = res.getChosenItemName();
@@ -201,6 +201,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 				return false;
 			}
 		};
+		behaviour.setFlag("resetBeforeChange");
 
 		new OutfitChangerAdder() {
 			@Override
