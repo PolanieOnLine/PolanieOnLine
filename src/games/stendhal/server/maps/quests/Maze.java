@@ -1,7 +1,7 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2024 - Stendhal                    *
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
  ***************************************************************************
- ***************************************************************************
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -14,6 +14,8 @@ package games.stendhal.server.maps.quests;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
@@ -34,11 +36,16 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.ados.magician_house.WizardNPC;
 import games.stendhal.server.maps.quests.maze.MazeGenerator;
+import games.stendhal.server.maps.quests.maze.MazeInstanceFactory;
 import games.stendhal.server.maps.quests.maze.MazeSign;
 import games.stendhal.server.util.ResetSpeakerNPC;
 import games.stendhal.server.util.TimeUtil;
+import marauroa.server.game.rp.InstanceScope;
+import marauroa.server.game.rp.InstanceZoneDescriptor;
+import marauroa.server.game.rp.InstanceZoneManager;
 
 public class Maze extends AbstractQuest {
+	private static final Logger logger = Logger.getLogger(Maze.class);
 	/** Minimum time between repeats. */
 	private static final int COOLING_TIME = TimeUtil.MINUTES_IN_HOUR * 24;
 	private MazeSign sign;
@@ -104,15 +111,26 @@ public class Maze extends AbstractQuest {
 
 		@Override
 		public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-			maze = new MazeGenerator(player.getName() + "_maze", 128, 128);
-			maze.setReturnLocation(player.getZone().getName(), player.getX(), player.getY());
-			maze.setSign(getSign());
-			StendhalRPZone zone = maze.getZone();
-			SingletonRepository.getRPWorld().addRPZone(zone);
-			new SetQuestAction(getSlotName(), 0, "start").fire(player, sentence, raiser);
-			new SetQuestToTimeStampAction(getSlotName(), 1).fire(player, sentence, raiser);
-			maze.startTiming();
-			player.teleport(zone, maze.getStartPosition().x, maze.getStartPosition().y, Direction.DOWN, player);
+			final MazeInstanceFactory factory = new MazeInstanceFactory(
+					player.getZone().getName(), player.getX(), player.getY(), getSign());
+			final InstanceZoneManager manager = SingletonRepository.getRPWorld().getInstanceZoneManager();
+			try {
+				final StendhalRPZone zone = (StendhalRPZone) manager.acquire(
+						"maze", "daily", InstanceScope.player(player.getName()),
+						player.getName(), factory);
+				maze = factory.getGenerator();
+				if (maze == null) {
+					player.sendPrivateText("Twój labirynt jest już aktywny.");
+					return;
+				}
+				new SetQuestAction(getSlotName(), 0, "start").fire(player, sentence, raiser);
+				new SetQuestToTimeStampAction(getSlotName(), 1).fire(player, sentence, raiser);
+				maze.startTiming();
+				player.teleport(zone, maze.getStartPosition().x, maze.getStartPosition().y, Direction.DOWN, player);
+			} catch (final Exception e) {
+				logger.error("Nie udało się utworzyć instancji labiryntu dla " + player.getName(), e);
+				player.sendPrivateText("Nie udało się utworzyć bezpiecznej instancji labiryntu.");
+			}
 		}
 	}
 
@@ -148,7 +166,10 @@ public class Maze extends AbstractQuest {
 		}
 		res.add("Haizen stworzył magiczny labirynt dla mnie do przejścia.");
 
-		if (player.getZone().getName().endsWith("_maze")) {
+		final InstanceZoneDescriptor instance = SingletonRepository.getRPWorld()
+				.getInstanceZoneManager().getDescriptor(player.getZone().getID());
+		if (player.getZone().getName().endsWith("_maze")
+				|| (instance != null && "maze".equals(instance.getBaseZoneId()))) {
 			res.add("Obecnie jestem uwięziony w labiryncie.");
 		} else {
 			if (!isCompleted(player)) {

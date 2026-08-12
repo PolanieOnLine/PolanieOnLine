@@ -45,6 +45,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.RPObject;
+import marauroa.server.game.rp.InstanceZoneManager;
 import marauroa.server.db.command.DBCommandPriority;
 import marauroa.server.db.command.DBCommandQueue;
 
@@ -484,6 +485,15 @@ public class MazeGenerator {
 	 * A listener to destroy the zone when players have left and to return the
 	 * player to the right place in case she logged out.
 	 */
+	/** Stop transient timers owned by entities in an ephemeral maze. */
+	public static void cleanupTransientEntities(final StendhalRPZone zone) {
+		for (final RPObject obj : zone) {
+			if (obj instanceof Corpse) {
+				((Corpse) obj).onRemoved(zone);
+			}
+		}
+	}
+
 	private final class MazeMovementListener implements MovementListener {
 		private final Rectangle2D area;
 
@@ -509,20 +519,22 @@ public class MazeGenerator {
 				return;
 			}
 			if (zone.getPlayers().size() == 1) {
-				// since we are about to destroy the arena, change the player zoneid to house so that
-				// if they are relogging, they can enter back to the house (not the default zone of PlayerRPClass).
-				// If they are out or walking out the portal it works as before.
+				// Persist a safe return location before the ephemeral zone disappears.
 				entity.put("zoneid", returnZoneName);
 				entity.put("x", returnX);
 				entity.put("y", returnY);
-				// Tell corpses they're going to be removed (from pets or creatures
-				// from summon scrolls). This is for stopping the rotting timers
-				for (RPObject obj : zone) {
-					if (obj instanceof Corpse) {
-						((Corpse) obj).onRemoved(zone);
+
+				final InstanceZoneManager manager = SingletonRepository.getRPWorld().getInstanceZoneManager();
+				if (manager.isInstanceZone(zone.getID())) {
+					try {
+						manager.release(zone.getID(), ((Player) entity).getName());
+					} catch (final Exception e) {
+						logger.error("Unable to release maze instance " + zone.getName(), e);
 					}
+				} else {
+					cleanupTransientEntities(zone);
+					SingletonRepository.getRPWorld().removeZone(zone);
 				}
-				SingletonRepository.getRPWorld().removeZone(zone);
 			}
 		}
 

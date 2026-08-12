@@ -271,8 +271,11 @@ public class QuestAchievementFactoryTest extends AchievementTestHelper {
 		en.step(player, "yes");
 		final StendhalRPZone maze = player.getZone();
 		assertNotNull(maze);
-		// check that player is in maze
-		assertEquals("player_maze", maze.getName());
+		// check that player is in a managed Maze instance rather than relying on
+		// the historical playerName + "_maze" zone-name convention
+		assertTrue(SingletonRepository.getRPWorld().getInstanceZoneManager().isInstanceZone(maze.getID()));
+		assertEquals("maze", SingletonRepository.getRPWorld().getInstanceZoneManager()
+				.getDescriptor(maze.getID()).getBaseZoneId());
 		final Portal exit = maze.getPortals().get(0);
 		player.setPosition(exit.getX(), exit.getY());
 		assertEquals(exit.getX(), player.getX());
