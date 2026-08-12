@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -44,6 +45,8 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.Log4J;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
+import marauroa.server.db.DBTransaction;
+import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
 import marauroa.server.game.db.DatabaseFactory;
@@ -677,11 +680,18 @@ public class AdministrationActionTest {
 		CommandCenter.execute(player, action);
 		assertEquals("Użyj: /jail <wojownik> <minuty> <powód>", player.events().get(0).get("text"));
 
-		if (!DAORegister.get().get(CharacterDAO.class).hasCharacter("offlineplayer")) {
-			RPObject rpobject = new RPObject();
-			rpobject.setRPClass("player");
-			rpobject.put("name", "offlineplayer");
-			DAORegister.get().get(CharacterDAO.class).addCharacter("offlineplayer", "offlineplayer", rpobject);
+		DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			CharacterDAO characterDAO = DAORegister.get().get(CharacterDAO.class);
+			if (!characterDAO.hasCharacter(transaction, "offlineplayer", "offlineplayer")) {
+				RPObject rpobject = new RPObject();
+				rpobject.setRPClass("player");
+				rpobject.put("name", "offlineplayer");
+				characterDAO.addCharacter(transaction, "offlineplayer", "offlineplayer", rpobject,
+						new Timestamp(System.currentTimeMillis()));
+			}
+		} finally {
+			TransactionPool.get().commit(transaction);
 		}
 
 		player.clearEvents();
