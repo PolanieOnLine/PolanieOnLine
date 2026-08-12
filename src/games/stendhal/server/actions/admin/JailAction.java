@@ -24,6 +24,8 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
+import marauroa.server.db.DBTransaction;
+import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
 
@@ -54,9 +56,14 @@ public class JailAction extends AdministrationAction {
 		final String target = action.get(TARGET);
 		if (StendhalRPRuleProcessor.get().getPlayer(target) == null) {
 			try {
-				if (!DAORegister.get().get(CharacterDAO.class).hasCharacter(target)) {
-					player.sendPrivateText("Brak wojownika o podanej nazwie: " + target);
-					return;
+				DBTransaction transaction = TransactionPool.get().beginWork();
+				try {
+					if (!DAORegister.get().get(CharacterDAO.class).hasCharacter(transaction, target)) {
+						player.sendPrivateText("Brak wojownika o podanej nazwie: " + target);
+						return;
+					}
+				} finally {
+					TransactionPool.get().commit(transaction);
 				}
 			} catch (SQLException e) {
 				logger.error(e, e);
