@@ -12,10 +12,12 @@ Changelog
 - Uproszczono odpowiedź /look dla przedmiotów do ich opisu i ukryto wartość sprzedaży w rozszerzonej podpowiedzi
 - Przebudowano podpowiedzi ekwipunku, aby czytelniej prezentowały najważniejsze statystyki przedmiotów
 - Dodano wyświetlanie zakresu obrażeń, średnich obrażeń na sekundę oraz szybkości ataku dla broni
-- Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach
+- Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach oraz na slotach ekwipunku
 - Dodano czytelniejszą prezentację pancerza, odporności, kradzieży życia, szansy na trafienie krytyczne oraz pozostałych bonusów przedmiotów
 - Dodano wizualizację statusu ogłuszenia w postaci animowanych gwiazdek nad postacią lub potworem
 - Dodano wizualne wyróżnienie elitarnych potworów złotą nazwą, koroną oraz subtelnym obrysem postaci
+- Dodano wizualną informację o skutecznym sparowaniu ataku
+- Dodano możliwość zmiany aktywnej postaci bez wylogowywania się z konta
 
 *świat*
 - Wprowadzono Item Upgrades 2.0 z bezpiecznym wyborem konkretnej instancji przedmiotu oraz wspólną matematyką podglądu i właściwego ulepszenia
@@ -27,6 +29,7 @@ Changelog
 - Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistych ataków
 - Wprowadzono klasy pancerza potworów: brak, lekki, średni oraz ciężki
 - Skuteczność sztyletów, mieczy, toporów i broni obuchowych zależy teraz od rodzaju pancerza przeciwnika
+- Dodano mechanikę parowania ataków wręcz zapewnianą przez wybrane właściwości wyposażenia i legendarne afiksy
 - Dodano status "ogłuszenia", który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się
 - Wybrane potwory otrzymały możliwość ogłuszania gracza
 - Dodano losowe elitarne warianty potworów od 20 poziomu
@@ -44,7 +47,10 @@ Changelog
 - Dodano generyczny system Instance Zones zapewniający izolację encji i percepcji oraz automatyczne sprzątanie instancji po zakończeniu ich cyklu życia
 - Dodano scheduler zadań świata wykonywanych na bezpiecznej granicy tury, wraz z możliwością przypisywania właścicieli zadań i anulowania nieaktualnych wywołań
 - Dodano mechanizm Safe Hot Reload umożliwiający bezpieczne przygotowanie, walidację i zastosowanie nowych zasobów podczas działania serwera
-- Rozbudowano diagnostykę wolnych tur o pomiary poszczególnych faz przetwarzania
+- Rozszerzono protokół sieciowy do wersji 36, zachowując obsługę starszych wspieranych wersji protokołu
+- Dodano obsługę zakończenia sesji aktywnej postaci bez rozłączania konta, umożliwiając powrót do wyboru postaci w ramach tego samego połączenia
+- Rozszerzono obsługę cyklu życia gracza o bezpieczne wyjście aktywnej postaci ze świata bez kończenia sesji konta
+- Rozbudowano diagnostykę wolnych tur o pomiary poszczególnych faz przetwarzania oraz czasu oczekiwania na blokady
 - Dodano metryki kosztu generowania percepcji oraz wykorzystania jej pamięci podręcznej
 - Dodano metryki działania schedulera, Instance Zones oraz Safe Hot Reload
 - Dodano metryki transferu zasobów pomiędzy serwerem i klientem, obejmujące m.in. żądania pełnej zawartości, trafienia pamięci podręcznej, brakujące dane i rozmiary przesyłanych zasobów
@@ -66,6 +72,10 @@ Changelog
 - Podłączono definicje przedmiotów do mechanizmu Safe Hot Reload, umożliwiając ich kontrolowane przeładowanie podczas działania serwera
 - Dodano administracyjny dostęp do przeładowywanych zasobów poprzez stabilne identyfikatory zasobów
 - Podłączono Labirynt Haizena do generycznego systemu Instance Zones oraz uporządkowano sprzątanie instancji po wyjściu gracza i wylogowaniu
+- Zoptymalizowano wybór miejsca odradzania potworów, ograniczając kosztowne wyszukiwanie ścieżek w zatłoczonych miejscach
+- Zmniejszono koszt inicjalizacji postaci podczas logowania poprzez usunięcie blokujących operacji wejścia/wyjścia z krytycznej ścieżki serwera
+- Rozszerzono diagnostykę wydajności serwera o szczegółowe pomiary odradzania potworów oraz inicjalizacji graczy
+- Zmodernizowano konfigurację CI oraz zależności narzędziowych przy zachowaniu zgodności gry z Java 8
 - Uporządkowano część przestarzałych interfejsów i zależności przy zachowaniu zgodności z Java 8
 
 *naprawiono błędy*
