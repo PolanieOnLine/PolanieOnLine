@@ -18,16 +18,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.Entity;
 
-/**
- * Finds a nearby reachable position for normal creature respawns without
- * launching a separate A* search for every candidate tile.
- *
- * <p>The old generic placement scans nearby tiles and may run pathfinding for
- * every free candidate. A blocked spawn point can therefore multiply the cost
- * of a single respawn. This helper performs one bounded breadth-first search on
- * the static collision map and checks dynamic occupancy only for reachable
- * candidates.</p>
- */
+/** Fast-path placement for normal creature respawns. */
 final class CreatureRespawnPlacement {
 	static final int MAX_DISPLACEMENT = 36;
 	private static final int DIAMETER = MAX_DISPLACEMENT * 2 + 1;
@@ -37,41 +28,22 @@ final class CreatureRespawnPlacement {
 	private CreatureRespawnPlacement() {
 	}
 
-	/**
-	 * Place a respawned creature near its authored spawn point.
-	 *
-	 * @param zone target zone
-	 * @param entity creature instance
-	 * @param x authored x coordinate
-	 * @param y authored y coordinate
-	 * @return true if placement succeeded
-	 */
 	static boolean place(final StendhalRPZone zone, final Entity entity,
 			final int x, final int y) {
 		if (!zone.collides(entity, x, y)) {
 			return StendhalRPAction.placeat(zone, entity, x, y);
 		}
-
-		/*
-		 * A spawn authored on a static collision tile is unusual. Preserve the
-		 * generic placement behavior for that edge case rather than changing its
-		 * semantics in this optimization.
-		 */
 		if (zone.simpleCollides(entity, x, y, entity.getWidth(), entity.getHeight())) {
 			return StendhalRPAction.placeat(zone, entity, x, y);
 		}
 
 		final Point location = findReachableFreeLocation(zone, entity, x, y);
 		if (location == null) {
-			return false;
+			return StendhalRPAction.placeat(zone, entity, x, y);
 		}
 		return StendhalRPAction.placeat(zone, entity, location.x, location.y);
 	}
 
-	/**
-	 * Find the nearest dynamically free tile reachable through static walkable
-	 * tiles. Search distance matches the generic placement limit.
-	 */
 	static Point findReachableFreeLocation(final StendhalRPZone zone,
 			final Entity entity, final int originX, final int originY) {
 		final BitSet visited = new BitSet(DIAMETER * DIAMETER);
@@ -113,11 +85,11 @@ final class CreatureRespawnPlacement {
 			return write;
 		}
 
-		final int index = index(dx, dy);
-		if (visited.get(index)) {
+		final int idx = index(dx, dy);
+		if (visited.get(idx)) {
 			return write;
 		}
-		visited.set(index);
+		visited.set(idx);
 
 		final int x = originX + dx;
 		final int y = originY + dy;
