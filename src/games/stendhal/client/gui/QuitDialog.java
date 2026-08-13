@@ -27,13 +27,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.User;
 
 @SuppressWarnings("serial") class QuitDialog {
 	private static final int PADDING = 10;
 	/** Quit dialog window. */
 	private InternalManagedWindow quitDialog;
-	private JButton yesButton;
+	private JButton changeCharacterButton;
+	private JButton quitButton;
 
 	/**
 	 * Get the dialog component.
@@ -61,29 +63,30 @@ import games.stendhal.client.entity.User;
 	private InternalManagedWindow buildQuitDialog() {
 		// dialog contents
 		JComponent content = new JComponent() { };
-		content.setLayout(new GridLayout(1, 2, PADDING, PADDING));
+		content.setLayout(new GridLayout(1, 3, PADDING, PADDING));
 		content.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
 		// Limit keyboard focus handling to the dialog until the user makes some
 		// decision
 		content.setFocusCycleRoot(true);
 		content.setFocusTraversalPolicy(new LimitingFocusTraversalPolicy());
 
-		// create "yes" button
-		yesButton = new JButton();
-		yesButton.setText("Tak");
-		yesButton.setMnemonic(KeyEvent.VK_Y);
-		yesButton.addActionListener(new QuitConfirmCB());
-		content.add(yesButton);
+		changeCharacterButton = new JButton("Zmień postać");
+		changeCharacterButton.setMnemonic(KeyEvent.VK_Z);
+		changeCharacterButton.addActionListener(new ChangeCharacterCB());
+		content.add(changeCharacterButton);
 
-		// create "no" button
-		JButton noButton = new JButton();
-		noButton.setText("Nie");
-		noButton.setMnemonic(KeyEvent.VK_N);
-		noButton.addActionListener(new QuitCancelCB());
-		content.add(noButton);
+		quitButton = new JButton("Wyjdź z gry");
+		quitButton.setMnemonic(KeyEvent.VK_W);
+		quitButton.addActionListener(new QuitConfirmCB());
+		content.add(quitButton);
+
+		JButton cancelButton = new JButton("Anuluj");
+		cancelButton.setMnemonic(KeyEvent.VK_A);
+		cancelButton.addActionListener(new QuitCancelCB());
+		content.add(cancelButton);
 
 		// Pack the whole thing in a managed window
-		InternalManagedWindow window = new InternalManagedWindow("quit", "Wyjdź");
+		InternalManagedWindow window = new InternalManagedWindow("quit", "Sesja");
 		window.setContent(content);
 		window.setMinimizable(false);
 		window.setHideOnClose(true);
@@ -92,9 +95,14 @@ import games.stendhal.client.entity.User;
 		return window;
 	}
 
-	/**
-	 * Call back at "No" answer to quit.
-	 */
+	private class ChangeCharacterCB implements ActionListener {
+		@Override
+		public void actionPerformed(final ActionEvent ev) {
+			quitDialog.setVisible(false);
+			j2DClient.get().requestCharacterChange();
+		}
+	}
+
 	private class QuitCancelCB implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent ev) {
@@ -102,9 +110,6 @@ import games.stendhal.client.entity.User;
 		}
 	}
 
-	/**
-	 * Call back at quit confirmed.
-	 */
 	private static class QuitConfirmCB implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent ev) {
@@ -113,9 +118,8 @@ import games.stendhal.client.entity.User;
 	}
 
 	/**
-	 * Request quit confirmation from the user. This stops all player actions
-	 * and shows a dialog in which the player can confirm that they really wants
-	 * to quit the program. If so it flags the client for termination.
+	 * Show the session dialog. Changing character is offered only when the
+	 * connected server negotiated protocol support for character-session leave.
 	 */
 	void requestQuit(final User user) {
 		/*
@@ -128,9 +132,19 @@ import games.stendhal.client.entity.User;
 			user.stopMovement();
 		}
 
+		StendhalClient client = StendhalClient.get();
+		boolean canChangeCharacter = client != null && client.supportsCharacterSessionLeave();
+		changeCharacterButton.setEnabled(canChangeCharacter);
+		changeCharacterButton.setToolTipText(canChangeCharacter ? null
+				: "Serwer nie obsługuje zmiany postaci bez ponownego logowania.");
+
 		quitDialog.center();
 		quitDialog.setVisible(true);
-		yesButton.requestFocusInWindow();
+		if (canChangeCharacter) {
+			changeCharacterButton.requestFocusInWindow();
+		} else {
+			quitButton.requestFocusInWindow();
+		}
 	}
 
 	/**

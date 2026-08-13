@@ -115,6 +115,15 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	}
 
 	/**
+	 * Detach this window from the active character without changing its
+	 * configured visibility. Used when returning to character selection.
+	 */
+	void clearSlot() {
+		content.release();
+		parent = null;
+	}
+
+	/**
 	 * Set the inspector used for the contained entities.
 	 *
 	 * @param inspector used inspector

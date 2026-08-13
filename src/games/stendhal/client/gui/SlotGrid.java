@@ -145,18 +145,26 @@ public class SlotGrid extends JComponent implements ContentChangeListener, Inspe
 		if (parent != null) {
 			parent.removeContentChangeListener(SlotGrid.this);
 		}
-		// Ensure that parent & slotName do not change in the middle of
-		// scanSlotContent()
-		GameLoop.get().runOnce(new Runnable() {
-			@Override
-			public void run() {
-				for (final ItemPanel panel : panels) {
-					panel.setEntity(null);
+
+		if (GameLoop.isGameLoop()) {
+			releaseOnGameLoop();
+		} else {
+			GameLoop.get().runOnce(new Runnable() {
+				@Override
+				public void run() {
+					releaseOnGameLoop();
 				}
-				parent = null;
-				slotName = null;
-			}
-		});
+			});
+		}
+	}
+
+	private void releaseOnGameLoop() {
+		for (final ItemPanel panel : panels) {
+			panel.setEntity(null);
+			panel.setParent(null);
+		}
+		parent = null;
+		slotName = null;
 	}
 
 	/**
