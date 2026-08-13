@@ -21,7 +21,6 @@ import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
-import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.util.Observer;
@@ -39,61 +38,21 @@ import games.stendhal.server.util.Observer;
  * creatures.
  */
 public class CreatureRespawnPoint implements TurnListener {
-	/** longest possible respawn time in turns. half a year - should be longer than the
-	 * server is up in one phase */
 	private static final int MAX_RESPAWN_TIME = 200 * 60 * 24 * 30 * 6;
-	/** minimum respawn time in turns. about 10s */
 	private static final int MIN_RESPAWN_TIME = 33;
-
-	/** the logger instance. */
+	private static final long SLOW_RESPAWN_NANOS = 20L * 1000L * 1000L;
 	private static final Logger logger = Logger.getLogger(CreatureRespawnPoint.class);
 
 	protected final StendhalRPZone zone;
-
 	private LinkedList<Observer> observers = new LinkedList<Observer>();
-
 	protected final int x;
-
 	protected final int y;
-
-	/**
-	 * The number of creatures spawned here that can exist at the same time.
-	 */
 	private final int maximum;
-
-	/**
-	 * This is the prototype; it will be copied to create new creatures that
-	 * will be spawned here.
-	 */
 	protected Creature prototypeCreature;
-
-	/** All creatures that were spawned here and that are still alive. */
 	protected final List<Creature> creatures;
-
-	/**
-	 * Stores if this respawn point is currently waiting for a creature to
-	 * respawn.
-	 */
 	protected boolean respawning;
-
-	/**
-	 * How long it takes to respawn a creature. This defaults to the creature's
-	 * default respawn time. It is in turns.
-	 */
 	private int respawnTime;
 
-	/**
-	 * Creates a new RespawnPoint.
-	 *
-	 * @param zone
-	 * @param x
-	 * @param y
-	 * @param creature
-	 *            The prototype creature
-	 * @param maximum
-	 *            The number of creatures spawned here that can exist at the
-	 *            same time
-	 */
 	public CreatureRespawnPoint(final StendhalRPZone zone, final int x, final int y,
 			final Creature creature, final int maximum) {
 		this.zone = zone;
@@ -101,29 +60,12 @@ public class CreatureRespawnPoint implements TurnListener {
 		this.y = y;
 		this.prototypeCreature = creature;
 		this.maximum = maximum;
-
 		this.respawnTime = creature.getRespawnTime();
 		this.creatures = new LinkedList<Creature>();
-
 		respawning = true;
-
-		// don't respawn in next turn!
 		SingletonRepository.getTurnNotifier().notifyInTurns(calculateNextRespawnTurn(), this);
 	}
 
-	/**
-	 * Creates a new RespawnPoint.
-	 *
-	 * @param zone
-	 * @param x
-	 * @param y
-	 * @param creature
-	 *            The prototype creature
-	 * @param maximum
-	 *            The number of creatures spawned here that can exist at the
-	 *            same time
-	 * @param observer
-	 */
 	public CreatureRespawnPoint(StendhalRPZone zone, int x,
 			int y, Creature creature, int maximum, final Observer observer) {
 		this(zone, x, y, creature, maximum);
@@ -134,44 +76,22 @@ public class CreatureRespawnPoint implements TurnListener {
 		return prototypeCreature;
 	}
 
-	/**
-	 * Sets the time it takes to respawn a creature. Note that this value
-	 * defaults to the creature's default respawn time.
-	 * @param respawnTime the middled delay between spawns in turns
-	 */
 	public void setRespawnTime(final int respawnTime) {
 		this.respawnTime = respawnTime;
 	}
 
-	/**
-	 * Notifies this respawn point about the death of a creature that was
-	 * spawned here.
-	 *
-	 * @param dead
-	 *            The creature that has died
-	 */
 	public void notifyDead(final Creature dead) {
-
 		if (!respawning) {
-			// start respawning a new creature
 			respawning = true;
 			SingletonRepository.getTurnNotifier().notifyInTurns(
 					calculateNextRespawnTurn(), this);
 		}
-
 		creatures.remove(dead);
 	}
 
-	/**
-	 * Is called when a new creature is ready to pop up.
-	 *
-	 * @see games.stendhal.server.core.events.TurnListener#onTurnReached(int)
-	 */
 	@Override
 	public void onTurnReached(final int currentTurn) {
 		respawn();
-
-		// Is this all or should we spawn more creatures?
 		if (creatures.size() == maximum) {
 			respawning = false;
 		} else {
@@ -180,134 +100,107 @@ public class CreatureRespawnPoint implements TurnListener {
 		}
 	}
 
-	/**
-	 * Calculates a randomized respawn time.
-	 * @return the amount of turns calculated
-	 */
 	protected int calculateNextRespawnTurn() {
 		return MathHelper.clamp(Rand.randExponential(respawnTime), MIN_RESPAWN_TIME, MAX_RESPAWN_TIME);
 	}
 
-	/**
-	 * Rolls a small per-spawn variation for a combat statistic.
-	 *
-	 * @param baseValue prototype statistic
-	 * @return randomized statistic before wire-range clamping
-	 */
 	int rollRespawnCombatStat(final int baseValue) {
 		return Rand.randGaussian(baseValue, baseValue / 10);
 	}
 
-	/** Keeps randomized creature statistics valid for SHORT RP attributes. */
 	static int clampRespawnCombatStat(final int value) {
 		return MathHelper.clamp(value, 0, Short.MAX_VALUE);
 	}
 
-	/**
-	 * Checks how many creatures which were spawned here are currently alive.
-	 *
-	 * @return amount of living creatures
-	 */
 	public int size() {
 		return creatures.size();
 	}
 
-	/**
-	 * function returns X coord of this respawn point
-	 * @return - x coord
-	 */
 	public int getX() {
 		return this.x;
 	}
 
-	/**
-	 * function returns Y coord of this respawn point
-	 * @return - y coord
-	 */
 	public int getY() {
 		return this.y;
 	}
 
-	/**
-	 * Set the prototype creature for the spawner.
-	 *
-	 * @param creature prototype creature
-	 */
-    public void setPrototypeCreature(final Creature creature) {
-    	this.prototypeCreature = creature;
-    }
+	public void setPrototypeCreature(final Creature creature) {
+		this.prototypeCreature = creature;
+	}
 
-	/**
-	 * add observer to observers list
-	 * @param observer - observer to add
-	 */
 	public void addObserver(final Observer observer) {
 		observers.add(observer);
 	}
 
-	/**
-	 * remove observer from list
-	 * @param observer - observer to remove
-	 */
 	public void removeObserver(final Observer observer) {
 		observers.remove(observer);
 	}
 
-	/**
-	 * return zone where respawn point placed
-	 * @return - zone where respawn point placed
-	 */
 	public StendhalRPZone getZone() {
 		return this.zone;
 	}
 
-	/**
-	 * Pops up a new creature.
-	 */
 	protected void respawn() {
+		final long respawnStartNanos = System.nanoTime();
+		long cloneNanos = 0L;
+		long variantNanos = 0L;
+		long observerNanos = 0L;
+		long placementNanos = 0L;
+		long initNanos = 0L;
+		boolean placed = false;
 
 		try {
-			// clone the prototype creature
+			long stepStartNanos = System.nanoTime();
 			final Creature newentity = prototypeCreature.getNewInstance();
+			cloneNanos = System.nanoTime() - stepStartNanos;
 
-			// A bit of randomization to make Joan and Snaketails a bit happier.
-			// :)
+			stepStartNanos = System.nanoTime();
 			newentity.setAtk(clampRespawnCombatStat(
 					rollRespawnCombatStat(newentity.getAtk())));
 			newentity.setDef(clampRespawnCombatStat(
 					rollRespawnCombatStat(newentity.getDef())));
-
-			// Elite promotion is instance-local and happens only for normal map
-			// respawns. Quest/script-created creatures therefore keep their exact
-			// authored statistics unless they explicitly use a respawn point.
 			EliteCreatureService.maybePromote(newentity);
+			variantNanos = System.nanoTime() - stepStartNanos;
 
+			stepStartNanos = System.nanoTime();
 			newentity.registerObjectsForNotification(observers);
+			observerNanos = System.nanoTime() - stepStartNanos;
 
-			if (StendhalRPAction.placeat(zone, newentity, x, y)) {
+			stepStartNanos = System.nanoTime();
+			placed = CreatureRespawnPlacement.place(zone, newentity, x, y);
+			placementNanos = System.nanoTime() - stepStartNanos;
+			if (placed) {
+				stepStartNanos = System.nanoTime();
 				newentity.init();
 				newentity.setRespawnPoint(this);
-
 				creatures.add(newentity);
+				initNanos = System.nanoTime() - stepStartNanos;
 			} else {
-				// Could not place the creature anywhere.
-				// Treat it like it just had died.
 				notifyDead(newentity);
 				logger.warn("Could not respawn " + newentity.getName() + " near "
 						+ zone.getName() + " " + x + " " + y);
 			}
 		} catch (final Exception e) {
 			logger.error("error respawning entity " + prototypeCreature, e);
+		} finally {
+			final long elapsedNanos = System.nanoTime() - respawnStartNanos;
+			if (elapsedNanos >= SLOW_RESPAWN_NANOS) {
+				logger.warn("Slow creature respawn [creature="
+						+ prototypeCreature.getName() + ", zone=" + zone.getName()
+						+ ", x=" + x + ", y=" + y + ", placed=" + placed
+						+ ", elapsedMs=" + elapsedNanos / 1000000L
+						+ ", cloneUs=" + cloneNanos / 1000L
+						+ ", variantUs=" + variantNanos / 1000L
+						+ ", observersUs=" + observerNanos / 1000L
+						+ ", placementUs=" + placementNanos / 1000L
+						+ ", initUs=" + initNanos / 1000L + "]");
+			}
 		}
 	}
 
-	/**
-	 * Pops up a new creature.
-	 */
 	public void spawnNow() {
 		if (creatures.size() < maximum) {
 			SingletonRepository.getTurnNotifier().dontNotify(this);
-			//SingletonRepository.getTurnNotifier().notifyInTurns(1, this);
 			onTurnReached(0);
 		}
 	}
