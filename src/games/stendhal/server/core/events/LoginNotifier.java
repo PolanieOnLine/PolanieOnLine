@@ -15,6 +15,8 @@ package games.stendhal.server.core.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -26,6 +28,9 @@ import games.stendhal.server.entity.player.Player;
  * @author daniel
  */
 public final class LoginNotifier {
+	private static final Logger logger = Logger.getLogger(LoginNotifier.class);
+	private static final long SLOW_LOGIN_LISTENER_NANOS = 20L * 1000L * 1000L;
+
 	/** The singleton instance. */
 	private static LoginNotifier instance;
 
@@ -82,7 +87,17 @@ public final class LoginNotifier {
 	 */
 	public void onPlayerLoggedIn(final Player player) {
 		for (final LoginListener listener : loginListeners) {
-			listener.onLoggedIn(player);
+			final long startedNanos = System.nanoTime();
+			try {
+				listener.onLoggedIn(player);
+			} finally {
+				final long elapsedNanos = System.nanoTime() - startedNanos;
+				if (elapsedNanos >= SLOW_LOGIN_LISTENER_NANOS) {
+					logger.warn("Slow login listener [player=" + player.getName()
+							+ ", listener=" + listener.getClass().getName()
+							+ ", elapsedMs=" + elapsedNanos / 1000000L + "]");
+				}
+			}
 		}
 	}
 }
