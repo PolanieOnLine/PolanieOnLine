@@ -221,6 +221,21 @@ public class UserContext implements RPObjectChangeListener {
 		}
 	}
 
+	/**
+	 * Clear state that belongs to the active character while keeping account
+	 * session state and registered listeners intact.
+	 */
+	void resetCharacterSession() {
+		if (!features.isEmpty()) {
+			processFeaturesRemoved(new HashMap<String, String>(features));
+		}
+		player = null;
+		name = null;
+		adminlevel = 0;
+		sheepID = 0;
+		goatID = 0;
+	}
+
 	boolean isUser(final RPObject object) {
 		if (name == null) {
 			return false;

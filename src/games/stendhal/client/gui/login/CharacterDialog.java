@@ -39,12 +39,14 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.GameLoop;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.gui.TransparencyMode;
 import games.stendhal.client.gui.WindowUtils;
+import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
 import games.stendhal.client.gui.layout.SBoxLayout;
@@ -83,6 +85,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 
 	/** Area containing buttons for each character */
 	private final JComponent characterPanel;
+	private final boolean characterSessionSelection;
 
 	/**
 	 * Create a new <code>CharacterDialog</code>.
@@ -94,6 +97,8 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	public CharacterDialog(final Map<String, RPObject> characters, JFrame owner) {
 		super(owner);
 		setTitle("Wybierz postać");
+		characterSessionSelection = j2DClient.get() != null
+				&& j2DClient.get().isCharacterSessionSelectionInProgress();
 
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -138,8 +143,8 @@ public final class CharacterDialog extends JDialog implements Runnable {
 		}
 		buttonBar.add(newCharButton);
 
-		JButton exitButton = new JButton("Anuluj");
-		exitButton.setMnemonic(KeyEvent.VK_C);
+		JButton exitButton = new JButton(characterSessionSelection ? "Wyjdź z gry" : "Anuluj");
+		exitButton.setMnemonic(characterSessionSelection ? KeyEvent.VK_W : KeyEvent.VK_C);
 		exitButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent evt) {
@@ -289,6 +294,14 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	 * Called when the window is closed or the exit button is pressed.
 	 */
 	private void onClose() {
+		if (characterSessionSelection) {
+			StendhalClient.get().close();
+			setVisible(false);
+			dispose();
+			GameLoop.get().stop();
+			return;
+		}
+
 		if (getOwner() == null) {
 			System.exit(0);
 		}
@@ -306,6 +319,9 @@ public final class CharacterDialog extends JDialog implements Runnable {
 		try {
 			StendhalClient.get().chooseCharacter(character);
 			setVisible(false);
+			if (characterSessionSelection && getOwner() != null) {
+				getOwner().setEnabled(true);
+			}
 			stendhal.setDoLogin();
 			dispose();
 		} catch (TimeoutException e) {
@@ -331,6 +347,14 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	private void handleError(String errorMessage, String errorTitle) {
 		JOptionPane.showMessageDialog(
 				this, errorMessage, errorTitle, JOptionPane.ERROR_MESSAGE);
+
+		if (characterSessionSelection) {
+			StendhalClient.get().close();
+			setVisible(false);
+			dispose();
+			GameLoop.get().stop();
+			return;
+		}
 
 		if (getOwner() != null) {
 			setVisible(false);
@@ -364,6 +388,8 @@ public final class CharacterDialog extends JDialog implements Runnable {
 				CharacterResult result = StendhalClient.get().createCharacter(name, new RPObject());
 				if (result.getResult().failed()) {
 					JOptionPane.showMessageDialog(parent, result.getResult().getText());
+				} else if (parent.characterSessionSelection) {
+					parent.chooseCharacter(name);
 				} else {
 					parent.setVisible(false);
 				}

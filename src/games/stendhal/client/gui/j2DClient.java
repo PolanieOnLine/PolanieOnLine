@@ -17,9 +17,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.CharacterSessionReset;
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.GameLoop;
 import games.stendhal.client.GameObjects;
@@ -58,6 +61,13 @@ public class j2DClient implements UserInterface {
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(j2DClient.class);
 
+	private enum CharacterSessionState {
+		ACTIVE,
+		LEAVING,
+		SELECTING,
+		UNCERTAIN
+	}
+
 	/**
 	 * A shared [singleton] copy.
 	 */
@@ -76,6 +86,8 @@ public class j2DClient implements UserInterface {
 	private SoundSystemFacade soundSystemFacade;
 	private boolean gameRunning;
 	private boolean debugEnabled = false;
+	private volatile CharacterSessionState characterSessionState = CharacterSessionState.ACTIVE;
+	private volatile boolean characterSessionResetPending;
 
 	/**
 	 * Get the default UI.
@@ -259,12 +271,48 @@ public class j2DClient implements UserInterface {
 		if ((user != null) && (user != lastuser)) {
 			gui.updateUser(user);
 			lastuser = user;
+			if (characterSessionState == CharacterSessionState.SELECTING) {
+				characterSessionState = CharacterSessionState.ACTIVE;
+			}
 		}
 
 
 		logger.debug("Query network");
 
-		client.loop(0);
+		/*
+		 * Keep the pending reset check and network loop under the same monitor
+		 * as ClientFramework.leaveCharacter(). A game-loop iteration may already
+		 * be waiting for this monitor when the ACK arrives. Rechecking here
+		 * guarantees the old character is cleared before a queued fresh
+		 * S2C_CHARACTERLIST can be processed.
+		 */
+		synchronized (client) {
+			if (characterSessionState == CharacterSessionState.LEAVING
+					|| characterSessionState == CharacterSessionState.UNCERTAIN) {
+				return;
+			}
+			if (!applyPendingCharacterSessionReset()) {
+				return;
+			}
+			client.loop(0);
+		}
+	}
+
+	private boolean applyPendingCharacterSessionReset() {
+		if (!characterSessionResetPending) {
+			return true;
+		}
+
+		try {
+			CharacterSessionReset.reset(client);
+			lastuser = null;
+			characterSessionResetPending = false;
+			return true;
+		} catch (RuntimeException e) {
+			characterSessionResetPending = false;
+			handleUncertainCharacterSession(e);
+			return false;
+		}
 	}
 
 	private void tryLogout() {
@@ -324,6 +372,97 @@ public class j2DClient implements UserInterface {
 
 	public void requestQuit() {
 		gui.requestQuit(client);
+	}
+
+	/**
+	 * Request returning to character selection without logging out the account.
+	 */
+	public void requestCharacterChange() {
+		if (!client.supportsCharacterSessionLeave()) {
+			JOptionPane.showMessageDialog(gui.getFrame(),
+					"Ten serwer nie obsługuje zmiany postaci bez ponownego logowania.",
+					"Zmień postać", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+
+		synchronized (this) {
+			if (characterSessionState != CharacterSessionState.ACTIVE) {
+				return;
+			}
+			characterSessionState = CharacterSessionState.LEAVING;
+		}
+
+		final User user = User.get();
+		if ((user != null) && !user.stopped()) {
+			user.stopMovement();
+		}
+
+		Thread leaveThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				leaveCharacterSession();
+			}
+		}, "Character session leave");
+		leaveThread.setDaemon(true);
+		leaveThread.start();
+	}
+
+	private void leaveCharacterSession() {
+		try {
+			boolean leftCharacter;
+			synchronized (client) {
+				leftCharacter = client.leaveCharacter();
+				if (leftCharacter) {
+					/*
+					 * Keep this preparation atomic with the leave ACK. The game loop
+					 * uses the same monitor before consuming network messages, so a
+					 * fresh list can never observe the previous auto-login character.
+					 */
+					client.setCharacter(null);
+					client.setSplashScreen(gui.getFrame());
+					characterSessionResetPending = true;
+					characterSessionState = CharacterSessionState.SELECTING;
+				}
+			}
+
+			if (!leftCharacter) {
+				characterSessionState = CharacterSessionState.ACTIVE;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						JOptionPane.showMessageDialog(gui.getFrame(),
+								"Nie można teraz zmienić postaci. Bieżąca postać pozostaje aktywna.",
+								"Zmień postać", JOptionPane.WARNING_MESSAGE);
+					}
+				});
+			}
+		} catch (final InvalidVersionException|TimeoutException|BannedAddressException|RuntimeException e) {
+			handleUncertainCharacterSession(e);
+		}
+	}
+
+	private void handleUncertainCharacterSession(final Exception e) {
+		characterSessionState = CharacterSessionState.UNCERTAIN;
+		logger.error("Character session cannot be continued safely", e);
+		client.close();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JOptionPane.showMessageDialog(gui.getFrame(),
+						"Nie udało się bezpiecznie dokończyć zmiany postaci. Stan sesji może być niepewny, więc klient zakończy tę sesję zamiast przywracać starą postać.",
+						"Zmień postać", JOptionPane.ERROR_MESSAGE);
+				GameLoop.get().stop();
+			}
+		});
+	}
+
+	/**
+	 * Whether the account is currently between two active characters.
+	 *
+	 * @return true while the character selector is required
+	 */
+	public boolean isCharacterSessionSelectionInProgress() {
+		return characterSessionState == CharacterSessionState.SELECTING;
 	}
 
 	public void getVisibleRunicAltar() {
