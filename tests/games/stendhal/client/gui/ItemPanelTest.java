@@ -14,6 +14,10 @@ package games.stendhal.client.gui;
 
 import static org.junit.Assert.assertEquals;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+
 import javax.swing.JPanel;
 
 import org.junit.Test;
@@ -25,11 +29,31 @@ import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
 import games.stendhal.client.gui.styled.cursor.CursorRepository;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
+import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemPanelTest {
 	private static final CursorRepository cursors = new CursorRepository();
+
+	@Test
+	public void rarityBorderFollowsTheSlotSpriteOutline() {
+		final BufferedImage image = new BufferedImage(40, 40,
+				BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D graphics = image.createGraphics();
+		ItemPanel.paintRarityBorder(graphics, ItemRarity.LEGENDARY, 40, 40);
+		graphics.dispose();
+
+		final int rarityColor = Color.decode(
+				ItemRarity.LEGENDARY.getColorHex()).getRGB();
+		assertEquals(rarityColor, image.getRGB(5, 1));
+		assertEquals(rarityColor, image.getRGB(1, 5));
+		assertEquals(rarityColor, image.getRGB(34, 38));
+		assertEquals(rarityColor, image.getRGB(38, 34));
+		assertEquals(0, image.getRGB(1, 1));
+		assertEquals(0, image.getRGB(3, 1));
+		assertEquals(rarityColor, image.getRGB(4, 1));
+	}
 
 	/**
 	 * Test getting the cursor.

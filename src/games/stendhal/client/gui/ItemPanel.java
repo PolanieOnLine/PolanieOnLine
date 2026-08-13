@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -63,6 +64,8 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 * the left up corner.
 	 */
 	private static final int POPUP_MENU_OFFSET = 10;
+	/** Rounded slot.png corners use a four-pixel radius. */
+	private static final int RARITY_BORDER_ARC_DIAMETER = 8;
 	private static final CursorRepository cursorRepository = new CursorRepository();
 
 	/**
@@ -291,11 +294,32 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			return;
 		}
 
+		paintRarityBorder(graphics, rarity, background.getWidth(),
+				background.getHeight());
+	}
+
+	/**
+	 * Paints the rarity color directly over the outer highlight of slot.png.
+	 * Keeping the sprite dimensions and its four-pixel corner radius prevents
+	 * the rarity marker from forming a second, inset frame.
+	 */
+	static void paintRarityBorder(final Graphics graphics,
+			final ItemRarity rarity, final int slotWidth, final int slotHeight) {
+		if (graphics == null || rarity == null || slotWidth < 4 || slotHeight < 4) {
+			return;
+		}
+
+		final Graphics2D borderGraphics = (Graphics2D) graphics.create();
 		try {
-			graphics.setColor(Color.decode(rarity.getColorHex()));
-			graphics.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 6, 6);
+			borderGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_OFF);
+			borderGraphics.setColor(Color.decode(rarity.getColorHex()));
+			borderGraphics.drawRoundRect(1, 1, slotWidth - 3, slotHeight - 3,
+					RARITY_BORDER_ARC_DIAMETER, RARITY_BORDER_ARC_DIAMETER);
 		} catch (NumberFormatException e) {
 			// A malformed presentation color must not make an item unusable.
+		} finally {
+			borderGraphics.dispose();
 		}
 	}
 
