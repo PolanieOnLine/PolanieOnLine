@@ -43,7 +43,7 @@ public final class CharacterSessionReset {
 			}
 		}
 
-		client.getGameObjects().clear();
+		client.getGameObjects().clearAndNotifyListeners();
 		client.getStaticGameLayers().clear();
 		UserContext.get().resetCharacterSession();
 		CharacterSessionEntityReset.reset();

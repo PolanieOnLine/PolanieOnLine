@@ -127,9 +127,24 @@ public class GameObjects implements RPObjectChangeListener, Iterable<IEntity> {
 	}
 
 	/**
-	 * Removes all the object entities.
+	 * Removes all the object entities without notifying listeners. This is used
+	 * after callers have already dispatched removals explicitly, for example
+	 * while rebuilding the world from a SYNC perception.
 	 */
 	void clear() {
+		clear(false);
+	}
+
+	/**
+	 * Removes all object entities and notifies listeners just like individual
+	 * {@link #onRemoved(RPObject)} calls would. Character-session reset uses
+	 * this so renderers and other entity consumers cannot retain stale views.
+	 */
+	void clearAndNotifyListeners() {
+		clear(true);
+	}
+
+	private void clear(final boolean notifyListeners) {
 		if (!objects.isEmpty()) {
 			logger.debug("Game objects not empty!");
 
@@ -139,6 +154,11 @@ public class GameObjects implements RPObjectChangeListener, Iterable<IEntity> {
 			while (it.hasNext()) {
 				final IEntity entity = it.next();
 				logger.debug("Residual entity: " + entity);
+				if (notifyListeners) {
+					for (GameObjectListener listener : gameObjectListeners) {
+						listener.removeEntity(entity);
+					}
+				}
 				entity.release();
 			}
 
