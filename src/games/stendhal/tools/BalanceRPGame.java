@@ -655,7 +655,7 @@ public class BalanceRPGame {
 				if (!ParryService.rollParry(fighter)) {
 					int damage = target.damageDone(fighter,
 							target.getItemAtkForAttack(),
-							target.getDamageType());
+							fighter.getDamageType());
 					damage = Math.max(0,
 							Math.min(damage, fighter.getHP()));
 					fighter.setHP(fighter.getHP() - damage);
