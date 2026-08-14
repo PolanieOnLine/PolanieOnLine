@@ -33,7 +33,14 @@ jobs:
       - name: Run BalanceRPGame audit for levels 0-30
         env:
           ANT_OPTS: -Dbalance.maxLevel=30 -Dbalance.rounds=50 -Dbalance.reportOnly=true -Dbalance.profile=expected
-        run: xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results.txt
+      - name: Upload balance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: balance-results
+          path: balance-results.txt
 
   build:
     needs: release-regressions
