@@ -32,15 +32,23 @@ jobs:
         run: sudo apt-get install -y xvfb
       - name: Run BalanceRPGame audit for levels 0-30
         env:
-          ANT_OPTS: -Dbalance.maxLevel=30 -Dbalance.rounds=50 -Dbalance.reportOnly=true -Dbalance.profile=expected
+          ANT_OPTS: -Dbalance.maxLevel=30 -Dbalance.rounds=100 -Dbalance.reportOnly=true -Dbalance.profile=expected
         run: |
           set -o pipefail
           xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results.txt
+      - name: Generate low-level balance proposals
+        env:
+          ANT_OPTS: -Dbalance.maxLevel=10 -Dbalance.rounds=100 -Dbalance.reportOnly=false -Dbalance.profile=expected -Dbalance.hardenEasy=false
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-proposals-low.txt
       - name: Upload balance results
         uses: actions/upload-artifact@v4
         with:
           name: balance-results
-          path: balance-results.txt
+          path: |
+            balance-results.txt
+            balance-proposals-low.txt
 
   build:
     needs: release-regressions
