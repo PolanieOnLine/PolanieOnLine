@@ -67,6 +67,12 @@ import marauroa.common.game.RPObject;
  * the pool of level-eligible items grows, a profile is never downgraded merely
  * because the percentile moved.
  *
+ * Combat is stochastic, so values just outside a target are marked BORDERLINE
+ * rather than immediately triggering an optimizer change. Only deviations
+ * outside the uncertainty margin are considered TOO_HARD/TOO_SLOW. This keeps
+ * repeated 100-round audits from changing a creature because its mean remaining
+ * HP moved by two or three percentage points between runs.
+ *
  * Creatures using combat mechanics which this simulator does not model fully
  * (ranged attacks, status attacks, healing AI, invulnerable-style defence, zero
  * XP or one-hit utility entities) are marked SPECIAL and never auto-optimized.
@@ -89,6 +95,9 @@ public class BalanceRPGame {
 	private static final int MAX_OPTIMIZER_STEPS = 80;
 	private static final int EARLY_GAME_MAX_LEVEL = 9;
 	private static final int ELITE_RESPAWN_THRESHOLD = 5000;
+	private static final double WIN_RATE_UNCERTAINTY = 5.0;
+	private static final double LEFT_HP_UNCERTAINTY = 0.05;
+	private static final int TURN_UNCERTAINTY = 5;
 
 	private static final String SLOT_WEAPON = "rhand";
 	private static final String SLOT_SHIELD = "lhand";
@@ -110,11 +119,6 @@ public class BalanceRPGame {
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
 					"club", "sword", "dagger", "axe", "whip")));
 
-	/**
-	 * Equipment that a new player can realistically own without relying on a
-	 * remote quest, event, gamble or rare drop. It consists of the starter set
-	 * and the inexpensive early merchant stock seen around the onboarding path.
-	 */
 	private static final Set<String> EARLY_ACCESSIBLE_ITEMS =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
 					STARTER_WEAPON, STARTER_AXE, STARTER_ARMOR, TUTORIAL_SHIELD,
@@ -200,6 +204,7 @@ public class BalanceRPGame {
 
 	private enum BalanceStatus {
 		BALANCED,
+		BORDERLINE,
 		TOO_HARD,
 		TOO_SLOW,
 		TOO_EASY,
@@ -347,6 +352,7 @@ public class BalanceRPGame {
 
 			if (!reportOnly && status != BalanceStatus.SPECIAL
 					&& status != BalanceStatus.ELITE
+					&& status != BalanceStatus.BORDERLINE
 					&& (status != BalanceStatus.TOO_EASY || hardenEasy)) {
 				referenceSummary = optimize(definition, target, referenceBuild,
 						referenceSummary, rounds, hardenEasy);
@@ -468,7 +474,6 @@ public class BalanceRPGame {
 
 	private static Item selectEquipmentItem(final EntityManager em,
 			final String slot, final int level, final PlayerProfile profile) {
-		/* A freshly created level-0 character has an exact, known loadout. */
 		if (level == 0) {
 			final String starterName = guaranteedItemName(slot, level, profile);
 			return starterName == null ? null
@@ -732,12 +737,21 @@ public class BalanceRPGame {
 
 		final BalanceBand band = balanceBand(definition.getLevel());
 		final double leftHp = relativeLeftHp(build, summary);
-		if (summary.getWinRate() < band.minWinRate || leftHp < band.minLeftHp) {
+
+		if (summary.getWinRate() < band.minWinRate - WIN_RATE_UNCERTAINTY
+				|| leftHp < band.minLeftHp - LEFT_HP_UNCERTAINTY) {
 			return BalanceStatus.TOO_HARD;
 		}
-		if (summary.meanTurns > band.maxTurns) {
+		if (summary.meanTurns > band.maxTurns + TURN_UNCERTAINTY) {
 			return BalanceStatus.TOO_SLOW;
 		}
+
+		if (summary.getWinRate() < band.minWinRate
+				|| leftHp < band.minLeftHp
+				|| summary.meanTurns > band.maxTurns) {
+			return BalanceStatus.BORDERLINE;
+		}
+
 		if (summary.getWinRate() >= 99.0 && leftHp > band.maxLeftHp
 				&& summary.meanTurns < band.minTurns) {
 			return BalanceStatus.TOO_EASY;
@@ -755,7 +769,10 @@ public class BalanceRPGame {
 				+ band.minTurns + ".." + band.maxTurns + "} actual{win="
 				+ formatPercent(summary.getWinRate()) + ", leftHP="
 				+ formatPercent(relativeLeftHp(build, summary) * 100.0)
-				+ ", turns=" + summary.meanTurns + "}");
+				+ ", turns=" + summary.meanTurns + "} uncertainty{win="
+				+ formatPercent(WIN_RATE_UNCERTAINTY) + ", leftHP="
+				+ formatPercent(LEFT_HP_UNCERTAINTY * 100.0) + ", turns="
+				+ TURN_UNCERTAINTY + "}");
 	}
 
 	private static BalanceBand balanceBand(final int level) {
@@ -804,7 +821,9 @@ public class BalanceRPGame {
 			CombatSummary summary, final int rounds, final boolean hardenEasy) {
 		for (int step = 0; step < MAX_OPTIMIZER_STEPS; step++) {
 			final BalanceStatus status = assess(definition, referenceBuild, summary);
-			if (status == BalanceStatus.BALANCED || status == BalanceStatus.SPECIAL
+			if (status == BalanceStatus.BALANCED
+					|| status == BalanceStatus.BORDERLINE
+					|| status == BalanceStatus.SPECIAL
 					|| status == BalanceStatus.ELITE
 					|| (status == BalanceStatus.TOO_EASY && !hardenEasy)) {
 				return summary;
