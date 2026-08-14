@@ -887,14 +887,11 @@ public class BalanceRPGame {
 					&& target.canHit(fighter)) {
 				if (!ParryService.rollParry(fighter)) {
 					int damage = target.damageDone(fighter,
-							target.getItemAtkForAttack(), target.getDamageType());
+							target.getItemAtkForAttack(), fighter.getDamageType());
 					damage = WeaponArmorInteractionService.applyDamageMultiplier(
 							damage, target.getWeapons(), fighter);
 					damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 							damage, target.getWeapons(), fighter, false);
-					if (CriticalHitService.rollCritical(target)) {
-						damage = CriticalHitService.applyCriticalDamage(target, damage);
-					}
 					damage = Math.max(0, Math.min(damage, fighter.getHP()));
 					fighter.setHP(fighter.getHP() - damage);
 					target.handleLifesteal(target, target.getWeapons(), damage);
