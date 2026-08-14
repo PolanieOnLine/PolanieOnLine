@@ -7,8 +7,8 @@
 		<type class="mutant" subclass="dziub_dziub" tileid="pol_mutanty.png:0"/>
 		<description>Oto Dziub-Dziub. Właśnie do zobaczyłeś, więc nie zadawaj głupich pytań.</description>
 		<attributes>
-			<atk value="44"/>
-			<def value="9"/>
+			<atk value="32"/>
+			<def value="3"/>
 			<armor value="none"/>
 			<hp value="250"/>
 			<speed value="0.8"/>
