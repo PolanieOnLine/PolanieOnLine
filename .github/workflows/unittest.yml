@@ -36,6 +36,12 @@ jobs:
         run: |
           set -o pipefail
           xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results.txt
+      - name: Audit low-level safety with weak gear
+        env:
+          ANT_OPTS: -Dbalance.maxLevel=9 -Dbalance.rounds=100 -Dbalance.reportOnly=true -Dbalance.profile=weak
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results-weak-low.txt
       - name: Generate low-level balance proposals
         env:
           ANT_OPTS: -Dbalance.maxLevel=10 -Dbalance.rounds=100 -Dbalance.reportOnly=false -Dbalance.profile=expected -Dbalance.hardenEasy=false
@@ -48,6 +54,7 @@ jobs:
           name: balance-results
           path: |
             balance-results.txt
+            balance-results-weak-low.txt
             balance-proposals-low.txt
 
   build:
