@@ -48,12 +48,6 @@ jobs:
         run: |
           set -o pipefail
           xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-proposals-low.txt
-      - name: Audit endgame mithril loadouts
-        env:
-          ANT_OPTS: -Dbalance.endgame.playerLevel=350 -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5
-        run: |
-          set -o pipefail
-          xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee balance-endgame-mithril.txt
       - name: Upload balance results
         uses: actions/upload-artifact@v4
         with:
@@ -62,7 +56,30 @@ jobs:
             balance-results.txt
             balance-results-weak-low.txt
             balance-proposals-low.txt
-            balance-endgame-mithril.txt
+
+  endgame-balance-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+      - name: Audit endgame mithril loadouts
+        env:
+          ANT_OPTS: -Dbalance.endgame.playerLevel=350 -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee balance-endgame-mithril.txt
+      - name: Upload endgame balance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: balance-endgame-mithril
+          path: balance-endgame-mithril.txt
 
   build:
     needs: release-regressions
