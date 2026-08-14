@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import games.stendhal.common.constants.ItemRarity;
@@ -34,6 +35,7 @@ import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.defaultruleset.DefaultCreature;
+import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
@@ -43,10 +45,17 @@ import marauroa.common.game.RPObject;
 /**
  * Offline creature balance helper.
  *
- * Player equipment is selected from real configured items. Three deterministic
- * player profiles are reported for every creature: WEAK, EXPECTED and STRONG.
- * The optimizer itself uses the profile selected by the balance.profile system
- * property (EXPECTED by default).
+ * Player equipment is selected from real configured item definitions rather
+ * than from the small cache of items which happened to be instantiated while
+ * loading creatures. Three deterministic player profiles are reported for
+ * every creature: WEAK, EXPECTED and STRONG. The optimizer itself uses the
+ * profile selected by the balance.profile system property (EXPECTED by
+ * default).
+ *
+ * The profiles intentionally model the six core combat slots used by the old
+ * balancer. Jewellery, runes and situational consumables are not assumed, so
+ * the EXPECTED profile remains a conservative baseline rather than a min-maxed
+ * build.
  *
  * Useful properties:
  * -Dbalance.profile=weak|expected|strong
@@ -60,6 +69,7 @@ public class BalanceRPGame {
 	private static final int HIGHEST_LEVEL = 500;
 	private static final int MAX_COMBAT_TURNS = 5000;
 	private static final double DEFAULT_DURATION_THRESHOLD = 0.2;
+	private static final int DEFAULT_ITEM_ATTACK_RATE = 5;
 
 	private static final String[] BALANCE_SLOTS = {
 		"rhand", "lhand", "armor", "head", "legs", "feet"
@@ -179,6 +189,10 @@ public class BalanceRPGame {
 		double getWinRate() {
 			return rounds == 0 ? 0.0 : wins * 100.0 / rounds;
 		}
+
+		boolean isUsefulForXp() {
+			return wins > 0 && meanTurns < MAX_COMBAT_TURNS;
+		}
 	}
 
 	/**
@@ -294,8 +308,9 @@ public class BalanceRPGame {
 			}
 
 			player = referenceBuild.player;
-			Integer proposedXPValue = Integer.valueOf(proposedXp(
-					creature.getLevel(), referenceSummary.meanTurns));
+			Integer proposedXPValue = referenceSummary.isUsefulForXp()
+					? Integer.valueOf(proposedXp(creature.getLevel(),
+							referenceSummary.meanTurns)) : null;
 
 			if (!reportOnly) {
 				final Optimizer optimizer = new Optimizer(target);
@@ -309,10 +324,13 @@ public class BalanceRPGame {
 					optimizer.step(referenceSummary.meanPlayerHp,
 							referenceSummary.meanTurns);
 					referenceSummary = combat(player, target, rounds);
-					proposedXPValue = Integer.valueOf(proposedXp(
-							creature.getLevel(), referenceSummary.meanTurns));
-					creature.setLevel(creature.getLevel(),
-							proposedXPValue.intValue());
+					proposedXPValue = referenceSummary.isUsefulForXp()
+							? Integer.valueOf(proposedXp(creature.getLevel(),
+									referenceSummary.meanTurns)) : null;
+					if (proposedXPValue != null) {
+						creature.setLevel(creature.getLevel(),
+								proposedXPValue.intValue());
+					}
 
 					System.out.println("Optimizer " + referenceProfile
 							+ ": ATK=" + target.getAtk() + " DEF="
@@ -353,9 +371,12 @@ public class BalanceRPGame {
 			line.append("ATK: ").append(target.getAtk());
 			line.append("\t\tDEF: ").append(target.getDef());
 			line.append("\t\tHP: ").append(target.getBaseHP());
-			if (System.getProperty("showxp") != null
-					&& proposedXPValue != null) {
-				line.append("\t\tXP: ").append(proposedXPValue);
+			if (System.getProperty("showxp") != null) {
+				if (proposedXPValue != null) {
+					line.append("\t\tXP: ").append(proposedXPValue);
+				} else {
+					line.append("\t\tXP: n/a");
+				}
 			}
 			suggestions.add(line.toString());
 		}
@@ -415,14 +436,14 @@ public class BalanceRPGame {
 
 		final StringBuilder equipment = new StringBuilder();
 		for (final String slot : BALANCE_SLOTS) {
-			final Item template = selectEquipmentTemplate(em, slot, level,
+			final DefaultItem template = selectEquipmentTemplate(em, slot, level,
 					profile);
 			if (template == null) {
 				continue;
 			}
 
-			final Item item = em.getItem(template.getName(),
-					itemContext(profile, slot, level, template.getName()));
+			final Item item = em.getItem(template.getItemName(),
+					itemContext(profile, slot, level, template.getItemName()));
 			if (item == null) {
 				continue;
 			}
@@ -451,10 +472,10 @@ public class BalanceRPGame {
 		return new PlayerBuild(result, equipment.toString());
 	}
 
-	private static Item selectEquipmentTemplate(final EntityManager em,
+	private static DefaultItem selectEquipmentTemplate(final EntityManager em,
 			final String slot, final int level, final PlayerProfile profile) {
 		final int gearLevelCap = profile.getGearLevelCap(level);
-		List<Item> candidates =
+		List<DefaultItem> candidates =
 				collectEquipmentCandidates(em, slot, gearLevelCap);
 
 		if (candidates.isEmpty() && gearLevelCap != level) {
@@ -464,16 +485,17 @@ public class BalanceRPGame {
 			return null;
 		}
 
-		Collections.sort(candidates, new Comparator<Item>() {
+		Collections.sort(candidates, new Comparator<DefaultItem>() {
 			@Override
-			public int compare(final Item first, final Item second) {
+			public int compare(final DefaultItem first,
+					final DefaultItem second) {
 				final int scoreCompare = Double.compare(
 						equipmentScore(first, slot),
 						equipmentScore(second, slot));
 				if (scoreCompare != 0) {
 					return scoreCompare;
 				}
-				return first.getName().compareTo(second.getName());
+				return first.getItemName().compareTo(second.getItemName());
 			}
 		});
 
@@ -483,26 +505,28 @@ public class BalanceRPGame {
 				Math.min(candidates.size() - 1, index)));
 	}
 
-	private static List<Item> collectEquipmentCandidates(
+	private static List<DefaultItem> collectEquipmentCandidates(
 			final EntityManager em, final String slot, final int levelCap) {
-		final List<Item> candidates = new ArrayList<Item>();
-		for (final Item item : em.getItems()) {
-			if (!item.getPossibleSlots().contains(slot)
+		final List<DefaultItem> candidates = new ArrayList<DefaultItem>();
+		for (final DefaultItem item : em.getDefaultItems()) {
+			if (item == null || item.isUnattainable() || item.getCreator() == null
+					|| item.getEquipableSlots() == null
+					|| !item.getEquipableSlots().contains(slot)
 					|| minimumLevel(item) > levelCap) {
 				continue;
 			}
 
 			if ("rhand".equals(slot)) {
 				if (!MELEE_WEAPON_CLASSES.contains(item.getItemClass())
-						|| item.getAverageDamage() <= 0.0) {
+						|| configuredAverageDamage(item) <= 0.0) {
 					continue;
 				}
 			} else if ("lhand".equals(slot)) {
 				if (!"shield".equals(item.getItemClass())
-						|| item.getDefense() <= 0) {
+						|| configuredInt(item, "def", 0) <= 0) {
 					continue;
 				}
-			} else if (item.getDefense() <= 0) {
+			} else if (configuredInt(item, "def", 0) <= 0) {
 				continue;
 			}
 
@@ -511,17 +535,45 @@ public class BalanceRPGame {
 		return candidates;
 	}
 
-	private static int minimumLevel(final Item item) {
-		return item.has("min_level")
-				? Math.max(0, item.getInt("min_level")) : 0;
+	private static int minimumLevel(final DefaultItem item) {
+		return Math.max(0, configuredInt(item, "min_level", 0));
 	}
 
-	private static double equipmentScore(final Item item, final String slot) {
+	private static double equipmentScore(final DefaultItem item,
+			final String slot) {
 		if ("rhand".equals(slot)) {
-			return item.getAverageDamage()
-					/ Math.max(1.0, item.getAttackRate());
+			return configuredAverageDamage(item)
+					/ Math.max(1.0,
+							configuredInt(item, "rate", DEFAULT_ITEM_ATTACK_RATE));
 		}
-		return item.getDefense();
+		return configuredInt(item, "def", 0);
+	}
+
+	private static double configuredAverageDamage(final DefaultItem item) {
+		final int attack = Math.max(configuredInt(item, "atk", 0),
+				configuredInt(item, "ratk", 0));
+		final int minimum = Math.max(0,
+				configuredInt(item, "damage_min", attack));
+		final int maximum = Math.max(minimum,
+				configuredInt(item, "damage_max", minimum));
+		return (minimum + maximum) / 2.0;
+	}
+
+	private static int configuredInt(final DefaultItem item,
+			final String attribute, final int defaultValue) {
+		final Map<String, String> attributes = item.getAttributes();
+		if (attributes == null) {
+			return defaultValue;
+		}
+		final String value = attributes.get(attribute);
+		if (value == null || value.trim().length() == 0) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(value.trim());
+		} catch (final NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 
 	private static ItemCreationContext itemContext(
