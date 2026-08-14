@@ -3,7 +3,7 @@ name: Java CI
 on: [push, pull_request]
 
 jobs:
-  endgame-diagnostic:
+  release-regressions:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,102 +15,132 @@ jobs:
           distribution: 'temurin'
       - name: Install Xvfb
         run: sudo apt-get install -y xvfb
-      - name: Prepare targeted realistic endgame audit
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
+      - name: Run release 1.42 regressions
+        run: xvfb-run --auto-servernum ant -noinput -buildfile build.xml test_142
 
-          audit = Path('src/games/stendhal/tools/EndgameBalanceAudit.java')
-          text = audit.read_text(encoding='utf-8')
+  balance-audit:
+    runs-on: ubuntu-latest
 
-          def replace_once(old, new, label):
-              global text
-              if old not in text:
-                  raise SystemExit('Could not patch ' + label)
-              text = text.replace(old, new, 1)
-
-          text = text.replace(
-              'set used by the achievement plus the mithril dagger.',
-              'set used by the achievement plus the golden ciupaga with three moustaches.')
-          text = text.replace('"sztylecik z mithrilu"', '"złota ciupaga z trzema wąsami"')
-          replace_once(
-              '\tprivate static final int MAX_COMBAT_TURNS = 5000;\n',
-              '\tprivate static final int MAX_COMBAT_TURNS = 1500;\n',
-              'combat turn cap')
-          replace_once(
-              '''\tprivate enum Loadout {\n\t\tMITHRIL_SET(false, false),\n\t\tMITHRIL_COMBAT(true, false),\n\t\tMITHRIL_COMBAT_MAX(true, true);\n''',
-              '''\tprivate enum Loadout {\n\t\tMITHRIL_COMBAT_MAX(true, true);\n''',
-              'max loadout only')
-          replace_once(
-              '\tprivate static final String SLOT_FINGER_B = "fingerb";\n',
-              '\tprivate static final String SLOT_FINGER_B = "fingerb";\n'
-              '\tprivate static final String SLOT_OFFENSIVE_RUNE = "offensive_rune";\n'
-              '\tprivate static final String SLOT_DEFENSIVE_RUNE = "defensive_rune";\n'
-              '\tprivate static final String SLOT_UTILITY_RUNE = "utility_rune";\n'
-              '\tprivate static final String SLOT_CONTROL_RUNE = "control_rune";\n',
-              'glyph slot constants')
-
-          player_build = '''\tprivate static final class PlayerBuild {\n\t\tprivate final Player player;\n\t\tprivate final String equipment;\n\n\t\tPlayerBuild(final Player player, final String equipment) {\n\t\t\tthis.player = player;\n\t\t\tthis.equipment = equipment;\n\t\t}\n\t}\n'''
-          replace_once(player_build, player_build + '''\n\tprivate static final class AuditCreature extends Creature {\n\t\tprivate final int syntheticArmor;\n\n\t\tAuditCreature(final Creature copy, final int syntheticArmor) {\n\t\t\tsuper(copy);\n\t\t\tthis.syntheticArmor = syntheticArmor;\n\t\t}\n\n\t\t@Override\n\t\tpublic float getItemDef() {\n\t\t\treturn super.getItemDef() + syntheticArmor;\n\t\t}\n\t}\n''', 'audit creature')
-          replace_once(
-              '\t\t\t\tfinal Creature target = definition.getCreature();\n',
-              '\t\t\t\tfinal Creature target = new AuditCreature(definition.getCreature(),\n'
-              '\t\t\t\t\t\tsyntheticArmor(definition));\n',
-              'synthetic armor target')
-          replace_once(
-              '\t\tresult.setAtk(10 + level);\n\t\tresult.setDef(10 + level);\n',
-              '\t\tresult.setAtk(Integer.getInteger("balance.endgame.playerAtk", 90).intValue());\n'
-              '\t\tresult.setDef(Integer.getInteger("balance.endgame.playerDef", 130).intValue());\n',
-              'player skills')
-
-          shield = '''\t\tif (loadout.complete) {\n\t\t\tequip(em, result, equipment, SLOT_SHIELD, "tarcza z mithrilu",\n\t\t\t\t\tloadout.maxUpgrades);\n'''
-          replace_once(
-              shield,
-              '''\t\tif (loadout.complete) {\n\t\t\tif (!Boolean.getBoolean("balance.endgame.noShield")) {\n\t\t\t\tequip(em, result, equipment, SLOT_SHIELD, "tarcza z mithrilu",\n\t\t\t\t\t\tloadout.maxUpgrades);\n\t\t\t}\n''',
-              'shield toggle')
-
-          replace_once(
-              '\t\treturn new PlayerBuild(result, equipment.toString());\n\t}\n\n\tprivate static void equip(final EntityManager em, final Player player,\n',
-              '''\t\tequipAuditGlyphs(em, result, equipment);\n\t\treturn new PlayerBuild(result, equipment.toString());\n\t}\n\n\tprivate static int syntheticArmor(final DefaultCreature definition) {\n\t\tfinal String model = System.getProperty("balance.endgame.syntheticArmor", "none")\n\t\t\t\t.trim().toLowerCase(Locale.ENGLISH);\n\t\tif ("def25".equals(model)) {\n\t\t\treturn Math.min(120, Math.max(0, (int) Math.round(definition.getDef() * 0.25)));\n\t\t}\n\t\tif ("semantic".equals(model)) {\n\t\t\tfinal String armorType = definition.getArmorType();\n\t\t\tif ("heavy".equals(armorType)) { return 120; }\n\t\t\tif ("medium".equals(armorType)) { return 80; }\n\t\t\tif ("light".equals(armorType)) { return 40; }\n\t\t}\n\t\treturn 0;\n\t}\n\n\tprivate static void equipAuditGlyphs(final EntityManager em, final Player player,\n\t\t\tfinal StringBuilder equipment) {\n\t\tfinal String profile = System.getProperty("balance.endgame.glyphProfile", "none")\n\t\t\t\t.trim().toLowerCase(Locale.ENGLISH);\n\t\tif ("none".equals(profile)) { return; }\n\t\tequip(em, player, equipment, SLOT_OFFENSIVE_RUNE, "glif Peruna", false);\n\t\tequip(em, player, equipment, SLOT_DEFENSIVE_RUNE, "glif Swaroga", false);\n\t\tequip(em, player, equipment, SLOT_UTILITY_RUNE, "glif Strzyboga", false);\n\t\tif ("sustain".equals(profile)) {\n\t\t\tequip(em, player, equipment, SLOT_CONTROL_RUNE, "glif krwi", false);\n\t\t}\n\t}\n\n\tprivate static void equip(final EntityManager em, final Player player,\n''',
-              'audit helpers')
-
-          legacy = '''\t\tif (item == null) {\n\t\t\tthrow new IllegalStateException("Missing configured endgame item: "\n\t\t\t\t\t+ itemName);\n\t\t}\n'''
-          replace_once(
-              legacy,
-              legacy + '''\t\tif ("złota ciupaga z trzema wąsami".equals(itemName)\n\t\t\t\t&& !item.has("lifesteal")) {\n\t\t\titem.put("lifesteal", 0.1);\n\t\t}\n''',
-              'legacy ciupaga lifesteal')
-          replace_once(
-              '\t\t\t\t\t+ " mechanics=" + mechanics(definition) + " ===");\n',
-              '\t\t\t\t\t+ " syntheticArmor=" + syntheticArmor(definition)\n'
-              '\t\t\t\t\t+ " mechanics=" + mechanics(definition) + " ===");\n',
-              'report synthetic armor')
-          audit.write_text(text, encoding='utf-8')
-
-          rp = Path('src/games/stendhal/server/entity/RPEntity.java')
-          rptext = rp.read_text(encoding='utf-8')
-          old = '''\t\t\t// Upewnij się, że rate nie spadnie poniżej 2\n\t\t\tif (best < 1) {\n\t\t\t\tbest = 1;\n\t\t\t}\n'''
-          new = '''\t\t\t// Upewnij się, że glif nie obniża rate poniżej 2.\n\t\t\tif (best < 2) {\n\t\t\t\tbest = 2;\n\t\t\t}\n'''
-          if old not in rptext:
-              raise SystemExit('Could not patch rate floor')
-          rp.write_text(rptext.replace(old, new, 1), encoding='utf-8')
-          PY
-      - name: Run targeted realistic endgame matrix
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+      - name: Run BalanceRPGame audit for levels 0-30
+        env:
+          ANT_OPTS: -Dbalance.maxLevel=30 -Dbalance.rounds=100 -Dbalance.reportOnly=true -Dbalance.profile=expected
         run: |
           set -o pipefail
-          run_audit() {
-            name="$1"; atk="$2"; def="$3"; glyph="$4"; armor="$5"; noshield="$6"
-            ANT_OPTS="-Dbalance.endgame.playerLevel=350 -Dbalance.endgame.playerAtk=$atk -Dbalance.endgame.playerDef=$def -Dbalance.endgame.glyphProfile=$glyph -Dbalance.endgame.syntheticArmor=$armor -Dbalance.endgame.noShield=$noshield -Dbalance.endgame.minLevel=350 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5" \
-              xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee "$name.txt"
-          }
-          run_audit endgame-base-no-shield 90 130 none none true
-          run_audit endgame-base-semantic 90 130 none semantic false
-          run_audit endgame-combat-ratefloor 90 130 combat none false
-          run_audit endgame-sustain-ratefloor 90 130 sustain none false
-          run_audit endgame-sustain-ratefloor-semantic 90 130 sustain semantic false
-          run_audit endgame-sustain-ratefloor-def25 90 130 sustain def25 false
-          run_audit endgame-strong-sustain-ratefloor-semantic 110 160 sustain semantic false
-      - name: Upload targeted endgame matrix
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results.txt
+      - name: Audit low-level safety with weak gear
+        env:
+          ANT_OPTS: -Dbalance.maxLevel=9 -Dbalance.rounds=100 -Dbalance.reportOnly=true -Dbalance.profile=weak
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-results-weak-low.txt
+      - name: Generate low-level balance proposals
+        env:
+          ANT_OPTS: -Dbalance.maxLevel=10 -Dbalance.rounds=100 -Dbalance.reportOnly=false -Dbalance.profile=expected -Dbalance.hardenEasy=false
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-proposals-low.txt
+      - name: Upload balance results
         uses: actions/upload-artifact@v4
         with:
-          name: balance-endgame-targeted
-          path: endgame-*.txt
+          name: balance-results
+          path: |
+            balance-results.txt
+            balance-results-weak-low.txt
+            balance-proposals-low.txt
+
+  endgame-balance-audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+      - name: Audit endgame mithril loadouts
+        env:
+          ANT_OPTS: -Dbalance.endgame.playerLevel=350 -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5
+        run: |
+          set -o pipefail
+          xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee balance-endgame-mithril.txt
+      - name: Upload endgame balance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: balance-endgame-mithril
+          path: balance-endgame-mithril.txt
+
+  build:
+    needs: release-regressions
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up JDK 8
+        uses: actions/setup-java@v5
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Install Xvfb
+        run: sudo apt-get install -y xvfb
+      - name: Build with Ant xvfb
+        env:
+          cikey: ${{ secrets.cikey }}
+        run: xvfb-run --auto-servernum ant -noinput -buildfile build.xml test
+      - name: Print failed JUnit reports
+        if: failure()
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          report = Path('build/build_test_report/testresults.xml')
+          if not report.exists():
+              print('JUnit aggregate report not found.')
+              raise SystemExit(0)
+
+          root = ET.parse(str(report)).getroot()
+          found = False
+          for testcase in root.iter('testcase'):
+              problems = list(testcase.findall('failure')) + list(testcase.findall('error'))
+              for problem in problems:
+                  found = True
+                  suite = testcase.get('classname', '')
+                  name = testcase.get('name', '')
+                  print('===== %s.%s =====' % (suite, name))
+                  if problem.get('message'):
+                      print(problem.get('message'))
+                  if problem.text:
+                      print(problem.text.strip())
+          if not found:
+              print('No failure/error nodes found in aggregate report.')
+          PY
+      - uses: sarisia/actions-status-discord@v1
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVELOPMENT }}
+        with:
+          nodetail: true
+          title: "Unittest failed"
+          description: "https://s1.polanieonline.eu/development/cireport.html"
+          ack_no_webhook: true
+      - uses: sarisia/actions-status-discord@v1
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVLOG }}
+        with:
+          nodetail: true
+          title: "Unittest failed"
+          description: "https://s1.polanieonline.eu/development/cireport.html"
+          ack_no_webhook: true
