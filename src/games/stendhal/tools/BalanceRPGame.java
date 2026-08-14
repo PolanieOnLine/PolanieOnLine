@@ -17,6 +17,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,35 +47,41 @@ import marauroa.common.game.RPObject;
 /**
  * Offline creature balance helper.
  *
- * The original tool represented every player with one synthetic, fully equipped
- * build whose item statistics were overwritten according to level. This version
- * keeps the optimizer but reports three deterministic player profiles built from
- * real item definitions: WEAK, EXPECTED and STRONG.
+ * This tool intentionally answers two different questions:
+ * 1. Is a same-level creature safe and reasonable for a normal player build?
+ * 2. If it is clearly too hard, which ATK/DEF direction would move it into the
+ *    target band without flattening all easy creatures into the same fight?
  *
- * Only item definitions with an explicit min_level are considered by the
- * automatic equipment selector. Some quest/event rewards intentionally rely on
- * quest conditions rather than item min_level; treating those as level-zero
- * equipment made the balancer equip late-game rewards on new characters. The
- * real starter items are handled explicitly.
+ * Player builds are deterministic and use real configured items. The expected
+ * profile also models guaranteed early-game progression: the starter weapon and
+ * armour, the starter ciupaga carried by a new character, and the puklerz from
+ * the introductory Pietrek quest. This is important because the old balancer
+ * accidentally removed the starter ciupaga after level 2 and delayed shields
+ * until level 10, creating an artificial difficulty cliff.
  *
- * Profiles use the six core combat slots of the old balancer. New characters
- * start with weapon and armour; head/legs/feet enter the model from level 5 and
- * a shield from level 10. Jewellery, glyphs and consumables are deliberately not
- * assumed in the EXPECTED baseline.
+ * Automatic equipment selection is monotonic: when the pool of level-eligible
+ * items grows, a profile is never downgraded merely because the percentile
+ * moved. Quest/event items without explicit min_level remain excluded unless
+ * they are explicitly listed as guaranteed tutorial equipment.
+ *
+ * Creatures using combat mechanics which this simulator does not model fully
+ * (ranged attacks, status attacks, healing AI, invulnerable-style defence, zero
+ * XP or one-hit utility entities) are marked SPECIAL and never auto-optimized.
  *
  * Useful properties:
  * -Dbalance.profile=weak|expected|strong
  * -Dbalance.rounds=100
  * -Dbalance.maxLevel=30
  * -Dbalance.reportOnly=true
+ * -Dbalance.hardenEasy=false
  */
 public class BalanceRPGame {
 
 	private static final int DEFAULT_ROUNDS = 100;
 	private static final int HIGHEST_LEVEL = 500;
 	private static final int MAX_COMBAT_TURNS = 5000;
-	private static final double DEFAULT_DURATION_THRESHOLD = 0.2;
 	private static final int DEFAULT_ITEM_ATTACK_RATE = 5;
+	private static final int MAX_OPTIMIZER_STEPS = 80;
 
 	private static final String SLOT_WEAPON = "rhand";
 	private static final String SLOT_SHIELD = "lhand";
@@ -85,6 +93,7 @@ public class BalanceRPGame {
 	private static final String STARTER_WEAPON = "maczuga";
 	private static final String STARTER_AXE = "ciupaga startowa";
 	private static final String STARTER_ARMOR = "skórzana zbroja";
+	private static final String TUTORIAL_SHIELD = "puklerz";
 
 	private static final String[] BALANCE_SLOTS = {
 		SLOT_WEAPON, SLOT_SHIELD, SLOT_ARMOR, SLOT_HEAD, SLOT_LEGS, SLOT_FEET
@@ -95,13 +104,15 @@ public class BalanceRPGame {
 					"club", "sword", "dagger", "axe", "whip")));
 
 	private static final List<String> suggestions = new LinkedList<String>();
-	private static double durationThreshold;
+	private static final Map<String, DefaultItem> equipmentSelectionCache =
+			new HashMap<String, DefaultItem>();
+
 	private static Player player;
 
 	private enum PlayerProfile {
-		WEAK(0.15, 5, 0.75),
-		EXPECTED(0.35, 0, 1.00),
-		STRONG(0.60, 0, 1.25);
+		WEAK(0.15, 6, 0.75),
+		EXPECTED(0.45, 2, 1.00),
+		STRONG(0.75, 0, 1.25);
 
 		private final double equipmentQuantile;
 		private final int gearLevelLag;
@@ -128,27 +139,24 @@ public class BalanceRPGame {
 		}
 
 		ItemRarity getRarity(final String slot, final int level) {
-			if (level < 10 || this == WEAK) {
+			if (this == WEAK || level < 10) {
 				return ItemRarity.COMMON;
 			}
-
 			if (this == EXPECTED) {
-				if (level >= 25
-						&& (SLOT_WEAPON.equals(slot) || SLOT_ARMOR.equals(slot))) {
+				if (level >= 30 && (SLOT_WEAPON.equals(slot)
+						|| SLOT_ARMOR.equals(slot))) {
 					return ItemRarity.RARE;
 				}
-				if (level >= 15 && SLOT_WEAPON.equals(slot)) {
+				if (level >= 20 && SLOT_WEAPON.equals(slot)) {
 					return ItemRarity.RARE;
 				}
 				return ItemRarity.COMMON;
 			}
-
-			if (level >= 30
-					&& (SLOT_WEAPON.equals(slot) || SLOT_ARMOR.equals(slot))) {
+			if (level >= 25 && (SLOT_WEAPON.equals(slot)
+					|| SLOT_ARMOR.equals(slot))) {
 				return ItemRarity.EPIC;
 			}
-			if (level >= 20 || SLOT_WEAPON.equals(slot)
-					|| SLOT_ARMOR.equals(slot)) {
+			if (level >= 10) {
 				return ItemRarity.RARE;
 			}
 			return ItemRarity.COMMON;
@@ -165,6 +173,31 @@ public class BalanceRPGame {
 						"Unknown balance.profile '" + value
 								+ "'. Expected weak, expected or strong.", e);
 			}
+		}
+	}
+
+	private enum BalanceStatus {
+		BALANCED,
+		TOO_HARD,
+		TOO_SLOW,
+		TOO_EASY,
+		SPECIAL
+	}
+
+	private static final class BalanceBand {
+		private final double minWinRate;
+		private final double minLeftHp;
+		private final double maxLeftHp;
+		private final int minTurns;
+		private final int maxTurns;
+
+		BalanceBand(final double minWinRate, final double minLeftHp,
+				final double maxLeftHp, final int minTurns, final int maxTurns) {
+			this.minWinRate = minWinRate;
+			this.minLeftHp = minLeftHp;
+			this.maxLeftHp = maxLeftHp;
+			this.minTurns = minTurns;
+			this.maxTurns = maxTurns;
 		}
 	}
 
@@ -208,56 +241,6 @@ public class BalanceRPGame {
 		double getWinRate() {
 			return rounds == 0 ? 0.0 : wins * 100.0 / rounds;
 		}
-
-		boolean isUsefulForXp() {
-			return wins > 0 && meanTurns < MAX_COMBAT_TURNS;
-		}
-	}
-
-	/** Simple optimizer retained from the original tool. */
-	private static class Optimizer {
-		private final Creature creature;
-
-		Optimizer(final Creature creature) {
-			this.creature = creature;
-		}
-
-		void step(final int leftHP, final int rounds) {
-			float stepSize = leftHP / (float) player.getBaseHP();
-			stepSize = Math.signum(stepSize)
-					* Math.min(Math.abs(stepSize), 0.5f);
-
-			final int oldAtk = creature.getAtk();
-			int newAtk = Math.max(1, Math.round(creature.getAtk()
-					+ stepSize * creature.getAtk()));
-			if ((leftHP < 0) && (newAtk == oldAtk)) {
-				newAtk--;
-			}
-
-			final int level = creature.getLevel();
-			final int oldDef = creature.getDef();
-			int newDef = oldDef;
-			final double preferred = preferredDuration(level);
-			if (!isWithinDurationRange(preferred, rounds)) {
-				if ((leftHP > 0) || (preferred < rounds)) {
-					newDef = Math.max(1, (int) (creature.getDef()
-							+ preferred - rounds + 0.5));
-				}
-			} else {
-				newDef = Math.max(1, (int) (creature.getDef()
-						+ 5 * stepSize * creature.getDef() + 0.5f));
-			}
-
-			if (newDef > 1.1 * oldDef) {
-				newDef = Math.max((int) (1.1 * oldDef), oldDef + 1);
-			} else if (newDef < 0.9 * oldDef) {
-				newDef = Math.max(1,
-						Math.min((int) (0.9 * oldDef), oldDef - 1));
-			}
-
-			creature.setAtk(newAtk);
-			creature.setDef(newDef);
-		}
 	}
 
 	public static void main(final String[] args) throws Exception {
@@ -282,124 +265,106 @@ public class BalanceRPGame {
 				HIGHEST_LEVEL);
 		final boolean reportOnly = Boolean.parseBoolean(
 				System.getProperty("balance.reportOnly", "false"));
+		final boolean hardenEasy = Boolean.parseBoolean(
+				System.getProperty("balance.hardenEasy", "false"));
 
 		System.out.println("BalanceRPGame: reference profile="
 				+ referenceProfile + ", rounds=" + rounds + ", maxLevel="
-				+ maxLevel + ", reportOnly=" + reportOnly);
+				+ maxLevel + ", reportOnly=" + reportOnly
+				+ ", hardenEasy=" + hardenEasy);
+
+		final EnumMap<BalanceStatus, Integer> statusCounts =
+				new EnumMap<BalanceStatus, Integer>(BalanceStatus.class);
+		for (final BalanceStatus status : BalanceStatus.values()) {
+			statusCounts.put(status, Integer.valueOf(0));
+		}
 
 		final Collection<DefaultCreature> creaturesToBalance =
 				selectCreatures(creatures, args);
 
-		for (final DefaultCreature creature : creaturesToBalance) {
-			final int level = creature.getLevel();
+		for (final DefaultCreature definition : creaturesToBalance) {
+			final int level = definition.getLevel();
 			if (level > maxLevel) {
 				continue;
 			}
 
-			final Creature target = creature.getCreature();
-			durationThreshold = DEFAULT_DURATION_THRESHOLD;
+			final Creature target = definition.getCreature();
+			final int originalAtk = target.getAtk();
+			final int originalDef = target.getDef();
+			final int originalHp = target.getBaseHP();
 
-			System.out.println("\n=== " + creature.getCreatureName()
+			System.out.println("\n=== " + definition.getCreatureName()
 					+ " (level " + level + ") ===");
 			System.out.println("Current creature: ATK=" + target.getAtk()
 					+ " DEF=" + target.getDef() + " HP="
-					+ target.getBaseHP() + " XP=" + creature.getXP());
+					+ target.getBaseHP() + " XP=" + definition.getXP());
 
-			PlayerBuild referenceBuild = null;
-			CombatSummary referenceSummary = null;
+			final EnumMap<PlayerProfile, PlayerBuild> builds =
+					new EnumMap<PlayerProfile, PlayerBuild>(PlayerProfile.class);
+			final EnumMap<PlayerProfile, CombatSummary> summaries =
+					new EnumMap<PlayerProfile, CombatSummary>(PlayerProfile.class);
+
 			for (final PlayerProfile profile : PlayerProfile.values()) {
 				final PlayerBuild build = createPlayer(em, level, profile);
 				final CombatSummary summary = combat(build.player, target, rounds);
+				builds.put(profile, build);
+				summaries.put(profile, summary);
 				printProfileResult(profile, build, summary);
-
-				if (profile == referenceProfile) {
-					referenceBuild = build;
-					referenceSummary = summary;
-				}
 			}
 
-			if (referenceBuild == null || referenceSummary == null) {
-				throw new IllegalStateException(
-						"Reference player profile was not created");
-			}
-
+			PlayerBuild referenceBuild = builds.get(referenceProfile);
+			CombatSummary referenceSummary = summaries.get(referenceProfile);
 			player = referenceBuild.player;
-			Integer proposedXPValue = referenceSummary.isUsefulForXp()
-					? Integer.valueOf(proposedXp(creature.getLevel(),
-							referenceSummary.meanTurns)) : null;
-			printReferenceXp(referenceProfile, creature, proposedXPValue);
 
-			if (!reportOnly) {
-				final Optimizer optimizer = new Optimizer(target);
-				boolean balanced = isCorrectResult(level,
-						referenceSummary.meanTurns,
-						referenceSummary.meanPlayerHp
-								/ (double) player.getBaseHP());
-				int tries = 0;
+			BalanceStatus status = assess(definition, referenceBuild,
+					referenceSummary);
+			printAssessment(definition, referenceBuild, referenceSummary, status);
+			printProfileSpread(summaries);
 
-				while (!balanced) {
-					optimizer.step(referenceSummary.meanPlayerHp,
-							referenceSummary.meanTurns);
-					referenceSummary = combat(player, target, rounds);
-					proposedXPValue = referenceSummary.isUsefulForXp()
-							? Integer.valueOf(proposedXp(creature.getLevel(),
-									referenceSummary.meanTurns)) : null;
-					if (proposedXPValue != null) {
-						creature.setLevel(creature.getLevel(),
-								proposedXPValue.intValue());
-					}
-
-					System.out.println("Optimizer " + referenceProfile
-							+ ": ATK=" + target.getAtk() + " DEF="
-							+ target.getDef() + " HP=" + target.getBaseHP()
-							+ " turns=" + referenceSummary.meanTurns
-							+ " leftHP=" + referenceSummary.meanPlayerHp
-							+ " winRate="
-							+ formatPercent(referenceSummary.getWinRate()));
-
-					balanced = isCorrectResult(level,
-							referenceSummary.meanTurns,
-							referenceSummary.meanPlayerHp
-									/ (double) player.getBaseHP());
-
-					tries++;
-					if (tries % 200 == 0) {
-						durationThreshold *= 1.1;
-					}
-					if (tries >= 2000) {
-						System.out.println("WARNING: optimizer stopped after "
-								+ tries + " attempts");
-						break;
-					}
-				}
+			if (!reportOnly && status != BalanceStatus.SPECIAL
+					&& (status != BalanceStatus.TOO_EASY || hardenEasy)) {
+				referenceSummary = optimize(definition, target, referenceBuild,
+						referenceSummary, rounds, hardenEasy);
+				status = assess(definition, referenceBuild, referenceSummary);
+				System.out.println("Post-balance EXPECTED/reference: ATK="
+						+ target.getAtk() + " DEF=" + target.getDef()
+						+ " turns=" + referenceSummary.meanTurns
+						+ " leftHP=" + formatPercent(relativeLeftHp(
+								referenceBuild, referenceSummary) * 100.0)
+						+ " winRate=" + formatPercent(referenceSummary.getWinRate())
+						+ " status=" + status);
 			}
 
-			final boolean changed = creature.getAtk() != target.getAtk()
-					|| creature.getDef() != target.getDef()
-					|| creature.getHP() != target.getBaseHP();
+			statusCounts.put(status,
+					Integer.valueOf(statusCounts.get(status).intValue() + 1));
+
+			final boolean changed = originalAtk != target.getAtk()
+					|| originalDef != target.getDef()
+					|| originalHp != target.getBaseHP();
 			final StringBuilder line = new StringBuilder();
-			line.append(creature.getCreatureName());
-			line.append(" (level ").append(creature.getLevel()).append("):");
+			line.append(definition.getCreatureName());
+			line.append(" (level ").append(definition.getLevel()).append("):");
 			line.append(changed ? " *\t" : "  \t");
-			line.append("ATK: ").append(target.getAtk());
-			line.append("\t\tDEF: ").append(target.getDef());
-			line.append("\t\tHP: ").append(target.getBaseHP());
-			if (System.getProperty("showxp") != null) {
-				line.append("\t\tXP: ")
-						.append(proposedXPValue == null ? "n/a" : proposedXPValue);
-			}
+			line.append("ATK: ").append(originalAtk).append(" -> ")
+					.append(target.getAtk());
+			line.append("\tDEF: ").append(originalDef).append(" -> ")
+					.append(target.getDef());
+			line.append("\tHP: ").append(originalHp);
+			line.append("\tXP: keep ").append(definition.getXP());
+			line.append("\tSTATUS: ").append(status);
 			suggestions.add(line.toString());
 		}
 
-		if (suggestions.isEmpty()) {
-			System.out.println("\nNo suggestions available\n");
-		} else {
-			System.out.println("\nSuggested values:");
-			for (final String suggestion : suggestions) {
-				System.out.println("\t" + suggestion);
-			}
-			System.out.println();
+		System.out.println("\nBalance summary:");
+		for (final BalanceStatus status : BalanceStatus.values()) {
+			System.out.println("\t" + status + ": " + statusCounts.get(status));
 		}
+
+		System.out.println("\nSuggested values (XP intentionally unchanged in this pass):");
+		for (final String suggestion : suggestions) {
+			System.out.println("\t" + suggestion);
+		}
+		System.out.println();
 	}
 
 	private static Collection<DefaultCreature> selectCreatures(
@@ -441,21 +406,7 @@ public class BalanceRPGame {
 				continue;
 			}
 
-			final String starterName = starterItemName(slot, level, profile);
-			final Item item;
-			if (starterName != null) {
-				item = em.getItem(starterName,
-						commonItemContext());
-			} else {
-				final DefaultItem template = selectEquipmentTemplate(
-						em, slot, level, profile);
-				if (template == null) {
-					continue;
-				}
-				item = em.getItem(template.getItemName(),
-						itemContext(profile, slot, level));
-			}
-
+			final Item item = selectEquipmentItem(em, slot, level, profile);
 			if (item == null) {
 				continue;
 			}
@@ -471,19 +422,49 @@ public class BalanceRPGame {
 		if (SLOT_WEAPON.equals(slot) || SLOT_ARMOR.equals(slot)) {
 			return true;
 		}
-		final int gearLevel = profile.getGearLevelCap(level);
-		if (SLOT_HEAD.equals(slot) || SLOT_LEGS.equals(slot)
-				|| SLOT_FEET.equals(slot)) {
-			return gearLevel >= 5;
+		if (SLOT_SHIELD.equals(slot)) {
+			if (profile == PlayerProfile.STRONG) {
+				return level >= 3;
+			}
+			if (profile == PlayerProfile.EXPECTED) {
+				return level >= 4;
+			}
+			return level >= 6;
 		}
-		return SLOT_SHIELD.equals(slot) && gearLevel >= 10;
+		if (profile == PlayerProfile.STRONG) {
+			return level >= 3;
+		}
+		if (profile == PlayerProfile.EXPECTED) {
+			return level >= 5;
+		}
+		return level >= 8;
 	}
 
-	private static String starterItemName(final String slot, final int level,
-			final PlayerProfile profile) {
-		if (level > 2) {
-			return null;
+	private static Item selectEquipmentItem(final EntityManager em,
+			final String slot, final int level, final PlayerProfile profile) {
+		Item selected = null;
+		final DefaultItem template = selectEquipmentTemplate(em, slot, level,
+				profile);
+		if (template != null) {
+			selected = em.getItem(template.getItemName(),
+					itemContext(profile, slot, level));
 		}
+
+		final String guaranteedName = guaranteedItemName(slot, level, profile);
+		if (guaranteedName != null) {
+			final Item guaranteed = em.getItem(guaranteedName,
+					commonItemContext());
+			if (guaranteed != null && (selected == null
+					|| itemEquipmentScore(guaranteed, slot)
+							> itemEquipmentScore(selected, slot))) {
+				selected = guaranteed;
+			}
+		}
+		return selected;
+	}
+
+	private static String guaranteedItemName(final String slot, final int level,
+			final PlayerProfile profile) {
 		if (SLOT_ARMOR.equals(slot)) {
 			return STARTER_ARMOR;
 		}
@@ -493,36 +474,64 @@ public class BalanceRPGame {
 			}
 			return STARTER_AXE;
 		}
+		if (SLOT_SHIELD.equals(slot)) {
+			if (profile == PlayerProfile.STRONG && level >= 3) {
+				return TUTORIAL_SHIELD;
+			}
+			if (profile == PlayerProfile.EXPECTED && level >= 4) {
+				return TUTORIAL_SHIELD;
+			}
+			if (profile == PlayerProfile.WEAK && level >= 6) {
+				return TUTORIAL_SHIELD;
+			}
+		}
 		return null;
 	}
 
 	private static DefaultItem selectEquipmentTemplate(final EntityManager em,
 			final String slot, final int level, final PlayerProfile profile) {
+		final String key = profile.name() + ':' + slot + ':' + level;
+		if (equipmentSelectionCache.containsKey(key)) {
+			return equipmentSelectionCache.get(key);
+		}
+
 		final int gearLevelCap = profile.getGearLevelCap(level);
 		final List<DefaultItem> candidates =
 				collectEquipmentCandidates(em, slot, gearLevelCap);
-		if (candidates.isEmpty()) {
-			return null;
+		DefaultItem selected = null;
+		if (!candidates.isEmpty()) {
+			Collections.sort(candidates, new Comparator<DefaultItem>() {
+				@Override
+				public int compare(final DefaultItem first,
+						final DefaultItem second) {
+					final int scoreCompare = Double.compare(
+							equipmentScore(first, slot),
+							equipmentScore(second, slot));
+					if (scoreCompare != 0) {
+						return scoreCompare;
+					}
+					return first.getItemName().compareTo(second.getItemName());
+				}
+			});
+
+			final int index = (int) Math.round(
+					profile.getEquipmentQuantile() * (candidates.size() - 1));
+			selected = candidates.get(Math.max(0,
+					Math.min(candidates.size() - 1, index)));
 		}
 
-		Collections.sort(candidates, new Comparator<DefaultItem>() {
-			@Override
-			public int compare(final DefaultItem first,
-					final DefaultItem second) {
-				final int scoreCompare = Double.compare(
-						equipmentScore(first, slot),
-						equipmentScore(second, slot));
-				if (scoreCompare != 0) {
-					return scoreCompare;
-				}
-				return first.getItemName().compareTo(second.getItemName());
+		if (level > 0) {
+			final DefaultItem previous = selectEquipmentTemplate(em, slot,
+					level - 1, profile);
+			if (previous != null && (selected == null
+					|| equipmentScore(previous, slot)
+							> equipmentScore(selected, slot))) {
+				selected = previous;
 			}
-		});
+		}
 
-		final int index = (int) Math.round(
-				profile.getEquipmentQuantile() * (candidates.size() - 1));
-		return candidates.get(Math.max(0,
-				Math.min(candidates.size() - 1, index)));
+		equipmentSelectionCache.put(key, selected);
+		return selected;
 	}
 
 	private static List<DefaultItem> collectEquipmentCandidates(
@@ -573,6 +582,14 @@ public class BalanceRPGame {
 							configuredInt(item, "rate", DEFAULT_ITEM_ATTACK_RATE));
 		}
 		return configuredInt(item, "def", 0);
+	}
+
+	private static double itemEquipmentScore(final Item item,
+			final String slot) {
+		if (SLOT_WEAPON.equals(slot)) {
+			return item.getAverageDamage() / Math.max(1.0, item.getAttackRate());
+		}
+		return item.getDefense();
 	}
 
 	private static double configuredAverageDamage(final DefaultItem item) {
@@ -640,13 +657,10 @@ public class BalanceRPGame {
 
 	private static void printProfileResult(final PlayerProfile profile,
 			final PlayerBuild build, final CombatSummary summary) {
-		final double leftHpPercent = build.player.getBaseHP() == 0
-				? 0.0
-				: summary.meanPlayerHp * 100.0 / build.player.getBaseHP();
 		System.out.println(profile + ": winRate="
 				+ formatPercent(summary.getWinRate()) + " turns="
 				+ summary.meanTurns + " leftHP="
-				+ String.format(Locale.ENGLISH, "%.1f%%", leftHpPercent)
+				+ formatPercent(relativeLeftHp(build, summary) * 100.0)
 				+ " ATK=" + build.player.getAtk() + " DEF="
 				+ build.player.getDef() + " itemATK="
 				+ String.format(Locale.ENGLISH, "%.1f",
@@ -657,15 +671,155 @@ public class BalanceRPGame {
 				+ " gear: " + build.equipment);
 	}
 
-	private static void printReferenceXp(final PlayerProfile profile,
-			final DefaultCreature creature, final Integer proposedXp) {
-		if (proposedXp == null) {
-			System.out.println("Reference " + profile
-					+ ": proposedXP=n/a currentXP=" + creature.getXP());
-		return;
+	private static void printProfileSpread(
+			final EnumMap<PlayerProfile, CombatSummary> summaries) {
+		final double weak = summaries.get(PlayerProfile.WEAK).getWinRate();
+		final double expected = summaries.get(PlayerProfile.EXPECTED).getWinRate();
+		final double strong = summaries.get(PlayerProfile.STRONG).getWinRate();
+		final double gap = strong - weak;
+		System.out.println("Profile spread: WEAK=" + formatPercent(weak)
+				+ " EXPECTED=" + formatPercent(expected) + " STRONG="
+				+ formatPercent(strong) + " strong-weak=" + formatPercent(gap)
+				+ (gap > 45.0 ? " GEAR_SENSITIVE" : ""));
+	}
+
+	private static BalanceStatus assess(final DefaultCreature definition,
+			final PlayerBuild build, final CombatSummary summary) {
+		if (!isModelCovered(definition)) {
+			return BalanceStatus.SPECIAL;
 		}
-		System.out.println("Reference " + profile + ": proposedXP="
-				+ proposedXp + " currentXP=" + creature.getXP());
+
+		final BalanceBand band = balanceBand(definition.getLevel());
+		final double leftHp = relativeLeftHp(build, summary);
+		if (summary.getWinRate() < band.minWinRate || leftHp < band.minLeftHp) {
+			return BalanceStatus.TOO_HARD;
+		}
+		if (summary.meanTurns > band.maxTurns) {
+			return BalanceStatus.TOO_SLOW;
+		}
+		if (summary.getWinRate() >= 99.0 && leftHp > band.maxLeftHp
+				&& summary.meanTurns < band.minTurns) {
+			return BalanceStatus.TOO_EASY;
+		}
+		return BalanceStatus.BALANCED;
+	}
+
+	private static void printAssessment(final DefaultCreature definition,
+			final PlayerBuild build, final CombatSummary summary,
+			final BalanceStatus status) {
+		final BalanceBand band = balanceBand(definition.getLevel());
+		System.out.println("Assessment: " + status + " target{win>="
+				+ formatPercent(band.minWinRate) + ", leftHP>="
+				+ formatPercent(band.minLeftHp * 100.0) + ", turns="
+				+ band.minTurns + ".." + band.maxTurns + "} actual{win="
+				+ formatPercent(summary.getWinRate()) + ", leftHP="
+				+ formatPercent(relativeLeftHp(build, summary) * 100.0)
+				+ ", turns=" + summary.meanTurns + "}");
+	}
+
+	private static BalanceBand balanceBand(final int level) {
+		if (level <= 2) {
+			return new BalanceBand(95.0, 0.65, 0.97, 6, 45);
+		}
+		if (level <= 5) {
+			return new BalanceBand(90.0, 0.50, 0.94, 8, 65);
+		}
+		if (level <= 9) {
+			return new BalanceBand(85.0, 0.40, 0.92, 10, 80);
+		}
+		if (level <= 19) {
+			return new BalanceBand(80.0, 0.30, 0.90, 12, 105);
+		}
+		if (level <= 39) {
+			return new BalanceBand(75.0, 0.22, 0.88, 15, 130);
+		}
+		return new BalanceBand(70.0, 0.15, 0.85, 18, 160);
+	}
+
+	private static boolean isModelCovered(final DefaultCreature definition) {
+		if (definition.getXP() <= 0 || definition.getHP() <= 1
+				|| definition.getRatk() > 0) {
+			return false;
+		}
+		if (definition.getStatusAttack() != null
+				&& definition.getStatusAttack().trim().length() > 0) {
+			return false;
+		}
+		final Map<String, String> ai = definition.getAiProfiles();
+		if (ai != null && ai.get("heal") != null) {
+			return false;
+		}
+		final int excessiveDefence = Math.max(120,
+				8 * (definition.getLevel() + 10));
+		return definition.getDef() < excessiveDefence;
+	}
+
+	private static CombatSummary optimize(final DefaultCreature definition,
+			final Creature target, final PlayerBuild referenceBuild,
+			CombatSummary summary, final int rounds, final boolean hardenEasy) {
+		for (int step = 0; step < MAX_OPTIMIZER_STEPS; step++) {
+			final BalanceStatus status = assess(definition, referenceBuild, summary);
+			if (status == BalanceStatus.BALANCED || status == BalanceStatus.SPECIAL
+					|| (status == BalanceStatus.TOO_EASY && !hardenEasy)) {
+				return summary;
+			}
+
+			final BalanceBand band = balanceBand(definition.getLevel());
+			final double leftHp = relativeLeftHp(referenceBuild, summary);
+			boolean changed = false;
+
+			if (status == BalanceStatus.TOO_HARD) {
+				if (summary.meanTurns > band.maxTurns) {
+					target.setDef(reduceStat(target.getDef()));
+					changed = true;
+				}
+				if (summary.getWinRate() < band.minWinRate
+						|| leftHp < band.minLeftHp) {
+					target.setAtk(reduceStat(target.getAtk()));
+					changed = true;
+				}
+			} else if (status == BalanceStatus.TOO_SLOW) {
+				target.setDef(reduceStat(target.getDef()));
+				changed = true;
+			} else if (status == BalanceStatus.TOO_EASY && hardenEasy) {
+				if (summary.meanTurns < band.minTurns) {
+					target.setDef(increaseStat(target.getDef()));
+				} else {
+					target.setAtk(increaseStat(target.getAtk()));
+				}
+				changed = true;
+			}
+
+			if (!changed) {
+				return summary;
+			}
+
+			summary = combat(referenceBuild.player, target, rounds);
+			System.out.println("Optimizer step " + (step + 1) + ": ATK="
+					+ target.getAtk() + " DEF=" + target.getDef() + " turns="
+					+ summary.meanTurns + " leftHP="
+					+ formatPercent(relativeLeftHp(referenceBuild, summary) * 100.0)
+					+ " winRate=" + formatPercent(summary.getWinRate()));
+		}
+		System.out.println("WARNING: optimizer stopped after "
+				+ MAX_OPTIMIZER_STEPS + " steps");
+		return summary;
+	}
+
+	private static int reduceStat(final int value) {
+		final int change = Math.max(1, (int) Math.round(value * 0.05));
+		return Math.max(1, value - change);
+	}
+
+	private static int increaseStat(final int value) {
+		final int change = Math.max(1, (int) Math.round(value * 0.04));
+		return value + change;
+	}
+
+	private static double relativeLeftHp(final PlayerBuild build,
+			final CombatSummary summary) {
+		return build.player.getBaseHP() == 0 ? 0.0
+				: summary.meanPlayerHp / (double) build.player.getBaseHP();
 	}
 
 	private static CombatSummary combat(final Player fighter,
@@ -733,7 +887,14 @@ public class BalanceRPGame {
 					&& target.canHit(fighter)) {
 				if (!ParryService.rollParry(fighter)) {
 					int damage = target.damageDone(fighter,
-							target.getItemAtkForAttack(), fighter.getDamageType());
+							target.getItemAtkForAttack(), target.getDamageType());
+					damage = WeaponArmorInteractionService.applyDamageMultiplier(
+							damage, target.getWeapons(), fighter);
+					damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
+							damage, target.getWeapons(), fighter, false);
+					if (CriticalHitService.rollCritical(target)) {
+						damage = CriticalHitService.applyCriticalDamage(target, damage);
+					}
 					damage = Math.max(0, Math.min(damage, fighter.getHP()));
 					fighter.setHP(fighter.getHP() - damage);
 					target.handleLifesteal(target, target.getWeapons(), damage);
@@ -744,28 +905,6 @@ public class BalanceRPGame {
 			}
 		}
 		return new CombatResult(turns, fighter.getHP(), false);
-	}
-
-	private static int proposedXp(final int level, final int meanTurns) {
-		return (int) ((2 * level + 1) * (meanTurns / 2.0));
-	}
-
-	private static boolean isCorrectResult(final int level,
-			final int meanTurns, final double relativeLeftHP) {
-		if (!isWithinDurationRange(preferredDuration(level), meanTurns)) {
-			return false;
-		}
-		return relativeLeftHP <= 0.1 && relativeLeftHP >= 0.0;
-	}
-
-	private static boolean isWithinDurationRange(final double preferred,
-			final double real) {
-		return real < (1.0 + durationThreshold) * preferred
-				&& real > (1.0 - durationThreshold) * preferred;
-	}
-
-	private static double preferredDuration(final int level) {
-		return 150 + level;
 	}
 
 	private static int intProperty(final String key, final int defaultValue,
