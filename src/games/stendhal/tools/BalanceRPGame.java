@@ -59,14 +59,19 @@ import marauroa.common.game.RPObject;
  * accidentally removed the starter ciupaga after level 2 and delayed shields
  * until level 10, creating an artificial difficulty cliff.
  *
- * Automatic equipment selection is monotonic: when the pool of level-eligible
- * items grows, a profile is never downgraded merely because the percentile
- * moved. Quest/event items without explicit min_level remain excluded unless
- * they are explicitly listed as guaranteed tutorial equipment.
+ * For levels 0-9 the automatic item pool is deliberately restricted to starter
+ * equipment plus equipment sold by the early Semos-area merchants. This keeps
+ * quest/event prizes (for example a lucky min-level-0 reward) from silently
+ * becoming the assumed baseline. Level 0 is always the exact starter loadout.
+ * Above the onboarding range, automatic equipment selection is monotonic: when
+ * the pool of level-eligible items grows, a profile is never downgraded merely
+ * because the percentile moved.
  *
  * Creatures using combat mechanics which this simulator does not model fully
  * (ranged attacks, status attacks, healing AI, invulnerable-style defence, zero
  * XP or one-hit utility entities) are marked SPECIAL and never auto-optimized.
+ * Very long-respawn creatures are marked ELITE and are also never flattened to
+ * the ordinary same-level target band.
  *
  * Useful properties:
  * -Dbalance.profile=weak|expected|strong
@@ -82,6 +87,8 @@ public class BalanceRPGame {
 	private static final int MAX_COMBAT_TURNS = 5000;
 	private static final int DEFAULT_ITEM_ATTACK_RATE = 5;
 	private static final int MAX_OPTIMIZER_STEPS = 80;
+	private static final int EARLY_GAME_MAX_LEVEL = 9;
+	private static final int ELITE_RESPAWN_THRESHOLD = 5000;
 
 	private static final String SLOT_WEAPON = "rhand";
 	private static final String SLOT_SHIELD = "lhand";
@@ -102,6 +109,21 @@ public class BalanceRPGame {
 	private static final Set<String> MELEE_WEAPON_CLASSES =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
 					"club", "sword", "dagger", "axe", "whip")));
+
+	/**
+	 * Equipment that a new player can realistically own without relying on a
+	 * remote quest, event, gamble or rare drop. It consists of the starter set
+	 * and the inexpensive early merchant stock seen around the onboarding path.
+	 */
+	private static final Set<String> EARLY_ACCESSIBLE_ITEMS =
+			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+					STARTER_WEAPON, STARTER_AXE, STARTER_ARMOR, TUTORIAL_SHIELD,
+					"sierp", "nożyk", "sztylecik", "mieczyk",
+					"drewniana tarcza", "koszula", "skórzany hełm",
+					"misiurka", "peleryna", "skórzane spodnie",
+					"toporek", "topór jednoręczny", "topór", "pyrlik",
+					"buty skórzane", "hełm nabijany ćwiekami",
+					"tarcza ćwiekowa", "miecz", "płaszcz krasnoludzki")));
 
 	private static final List<String> suggestions = new LinkedList<String>();
 	private static final Map<String, DefaultItem> equipmentSelectionCache =
@@ -181,6 +203,7 @@ public class BalanceRPGame {
 		TOO_HARD,
 		TOO_SLOW,
 		TOO_EASY,
+		ELITE,
 		SPECIAL
 	}
 
@@ -297,7 +320,8 @@ public class BalanceRPGame {
 					+ " (level " + level + ") ===");
 			System.out.println("Current creature: ATK=" + target.getAtk()
 					+ " DEF=" + target.getDef() + " HP="
-					+ target.getBaseHP() + " XP=" + definition.getXP());
+					+ target.getBaseHP() + " XP=" + definition.getXP()
+					+ " respawn=" + definition.getRespawnTime());
 
 			final EnumMap<PlayerProfile, PlayerBuild> builds =
 					new EnumMap<PlayerProfile, PlayerBuild>(PlayerProfile.class);
@@ -322,6 +346,7 @@ public class BalanceRPGame {
 			printProfileSpread(summaries);
 
 			if (!reportOnly && status != BalanceStatus.SPECIAL
+					&& status != BalanceStatus.ELITE
 					&& (status != BalanceStatus.TOO_EASY || hardenEasy)) {
 				referenceSummary = optimize(definition, target, referenceBuild,
 						referenceSummary, rounds, hardenEasy);
@@ -351,6 +376,7 @@ public class BalanceRPGame {
 					.append(target.getDef());
 			line.append("\tHP: ").append(originalHp);
 			line.append("\tXP: keep ").append(definition.getXP());
+			line.append("\tRESPAWN: ").append(definition.getRespawnTime());
 			line.append("\tSTATUS: ").append(status);
 			suggestions.add(line.toString());
 		}
@@ -442,6 +468,13 @@ public class BalanceRPGame {
 
 	private static Item selectEquipmentItem(final EntityManager em,
 			final String slot, final int level, final PlayerProfile profile) {
+		/* A freshly created level-0 character has an exact, known loadout. */
+		if (level == 0) {
+			final String starterName = guaranteedItemName(slot, level, profile);
+			return starterName == null ? null
+					: em.getItem(starterName, commonItemContext());
+		}
+
 		Item selected = null;
 		final DefaultItem template = selectEquipmentTemplate(em, slot, level,
 				profile);
@@ -497,7 +530,8 @@ public class BalanceRPGame {
 
 		final int gearLevelCap = profile.getGearLevelCap(level);
 		final List<DefaultItem> candidates =
-				collectEquipmentCandidates(em, slot, gearLevelCap);
+				collectEquipmentCandidates(em, slot, gearLevelCap,
+						level <= EARLY_GAME_MAX_LEVEL);
 		DefaultItem selected = null;
 		if (!candidates.isEmpty()) {
 			Collections.sort(candidates, new Comparator<DefaultItem>() {
@@ -535,7 +569,8 @@ public class BalanceRPGame {
 	}
 
 	private static List<DefaultItem> collectEquipmentCandidates(
-			final EntityManager em, final String slot, final int levelCap) {
+			final EntityManager em, final String slot, final int levelCap,
+			final boolean earlyGame) {
 		final List<DefaultItem> candidates = new ArrayList<DefaultItem>();
 		for (final DefaultItem item : em.getDefaultItems()) {
 			if (item == null || item.isUnattainable() || item.getCreator() == null
@@ -543,6 +578,9 @@ public class BalanceRPGame {
 					|| !item.getEquipableSlots().contains(slot)
 					|| !hasConfiguredAttribute(item, "min_level")
 					|| minimumLevel(item) > levelCap) {
+				continue;
+			}
+			if (earlyGame && !EARLY_ACCESSIBLE_ITEMS.contains(item.getItemName())) {
 				continue;
 			}
 
@@ -688,6 +726,9 @@ public class BalanceRPGame {
 		if (!isModelCovered(definition)) {
 			return BalanceStatus.SPECIAL;
 		}
+		if (isEliteCandidate(definition)) {
+			return BalanceStatus.ELITE;
+		}
 
 		final BalanceBand band = balanceBand(definition.getLevel());
 		final double leftHp = relativeLeftHp(build, summary);
@@ -736,6 +777,10 @@ public class BalanceRPGame {
 		return new BalanceBand(70.0, 0.15, 0.85, 18, 160);
 	}
 
+	private static boolean isEliteCandidate(final DefaultCreature definition) {
+		return definition.getRespawnTime() >= ELITE_RESPAWN_THRESHOLD;
+	}
+
 	private static boolean isModelCovered(final DefaultCreature definition) {
 		if (definition.getXP() <= 0 || definition.getHP() <= 1
 				|| definition.getRatk() > 0) {
@@ -760,6 +805,7 @@ public class BalanceRPGame {
 		for (int step = 0; step < MAX_OPTIMIZER_STEPS; step++) {
 			final BalanceStatus status = assess(definition, referenceBuild, summary);
 			if (status == BalanceStatus.BALANCED || status == BalanceStatus.SPECIAL
+					|| status == BalanceStatus.ELITE
 					|| (status == BalanceStatus.TOO_EASY && !hardenEasy)) {
 				return summary;
 			}
