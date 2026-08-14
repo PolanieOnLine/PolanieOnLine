@@ -69,17 +69,95 @@ jobs:
           distribution: 'temurin'
       - name: Install Xvfb
         run: sudo apt-get install -y xvfb
-      - name: Audit endgame mithril loadouts
-        env:
-          ANT_OPTS: -Dbalance.endgame.playerLevel=350 -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5
+      - name: Prepare realistic endgame audit matrix
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('src/games/stendhal/tools/EndgameBalanceAudit.java')
+          text = path.read_text(encoding='utf-8')
+
+          def replace_once(old, new, label):
+              global text
+              if old not in text:
+                  raise SystemExit('Could not patch ' + label)
+              text = text.replace(old, new, 1)
+
+          text = text.replace(
+              'set used by the achievement plus the mithril dagger.',
+              'set used by the achievement plus the golden ciupaga with three moustaches.')
+          text = text.replace('"sztylecik z mithrilu"', '"złota ciupaga z trzema wąsami"')
+
+          replace_once(
+              '\tprivate static final String SLOT_FINGER_B = "fingerb";\n',
+              '\tprivate static final String SLOT_FINGER_B = "fingerb";\n'
+              '\tprivate static final String SLOT_OFFENSIVE_RUNE = "offensive_rune";\n'
+              '\tprivate static final String SLOT_DEFENSIVE_RUNE = "defensive_rune";\n'
+              '\tprivate static final String SLOT_UTILITY_RUNE = "utility_rune";\n'
+              '\tprivate static final String SLOT_CONTROL_RUNE = "control_rune";\n',
+              'glyph slot constants')
+
+          player_build = '''\tprivate static final class PlayerBuild {\n\t\tprivate final Player player;\n\t\tprivate final String equipment;\n\n\t\tPlayerBuild(final Player player, final String equipment) {\n\t\t\tthis.player = player;\n\t\t\tthis.equipment = equipment;\n\t\t}\n\t}\n'''
+          audit_creature = player_build + '''\n\tprivate static final class AuditCreature extends Creature {\n\t\tprivate final int syntheticArmor;\n\n\t\tAuditCreature(final Creature copy, final int syntheticArmor) {\n\t\t\tsuper(copy);\n\t\t\tthis.syntheticArmor = syntheticArmor;\n\t\t}\n\n\t\t@Override\n\t\tpublic float getItemDef() {\n\t\t\treturn super.getItemDef() + syntheticArmor;\n\t\t}\n\t}\n'''
+          replace_once(player_build, audit_creature, 'audit creature')
+
+          replace_once(
+              '\t\t\t\tfinal Creature target = definition.getCreature();\n',
+              '\t\t\t\tfinal Creature target = new AuditCreature(definition.getCreature(),\n'
+              '\t\t\t\t\t\tsyntheticArmor(definition));\n',
+              'synthetic armor target')
+
+          replace_once(
+              '\t\tresult.setAtk(10 + level);\n\t\tresult.setDef(10 + level);\n',
+              '\t\tresult.setAtk(Integer.getInteger("balance.endgame.playerAtk", 90).intValue());\n'
+              '\t\tresult.setDef(Integer.getInteger("balance.endgame.playerDef", 130).intValue());\n',
+              'player skills')
+
+          replace_once(
+              '\t\treturn new PlayerBuild(result, equipment.toString());\n\t}\n\n\tprivate static void equip(final EntityManager em, final Player player,\n',
+              '''\t\tequipAuditGlyphs(em, result, equipment);\n\t\treturn new PlayerBuild(result, equipment.toString());\n\t}\n\n\tprivate static int syntheticArmor(final DefaultCreature definition) {\n\t\tfinal String model = System.getProperty("balance.endgame.syntheticArmor", "none")\n\t\t\t\t.trim().toLowerCase(Locale.ENGLISH);\n\t\tif ("def25".equals(model)) {\n\t\t\treturn Math.min(120, Math.max(0, (int) Math.round(definition.getDef() * 0.25)));\n\t\t}\n\t\tif ("def50".equals(model)) {\n\t\t\treturn Math.min(180, Math.max(0, (int) Math.round(definition.getDef() * 0.50)));\n\t\t}\n\t\tif ("semantic".equals(model)) {\n\t\t\tfinal String armorType = definition.getArmorType();\n\t\t\tif ("heavy".equals(armorType)) {\n\t\t\t\treturn 120;\n\t\t\t}\n\t\t\tif ("medium".equals(armorType)) {\n\t\t\t\treturn 80;\n\t\t\t}\n\t\t\tif ("light".equals(armorType)) {\n\t\t\t\treturn 40;\n\t\t\t}\n\t\t}\n\t\treturn 0;\n\t}\n\n\tprivate static void equipAuditGlyphs(final EntityManager em, final Player player,\n\t\t\tfinal StringBuilder equipment) {\n\t\tfinal String profile = System.getProperty("balance.endgame.glyphProfile", "none")\n\t\t\t\t.trim().toLowerCase(Locale.ENGLISH);\n\t\tif ("none".equals(profile)) {\n\t\t\treturn;\n\t\t}\n\t\tequip(em, player, equipment, SLOT_OFFENSIVE_RUNE, "glif Peruna", false);\n\t\tequip(em, player, equipment, SLOT_DEFENSIVE_RUNE, "glif Swaroga", false);\n\t\tequip(em, player, equipment, SLOT_UTILITY_RUNE, "glif Strzyboga", false);\n\t\tif ("sustain".equals(profile)) {\n\t\t\tequip(em, player, equipment, SLOT_CONTROL_RUNE, "glif krwi", false);\n\t\t}\n\t}\n\n\tprivate static void equip(final EntityManager em, final Player player,\n''',
+              'audit helpers')
+
+          legacy = '''\t\tif (item == null) {\n\t\t\tthrow new IllegalStateException("Missing configured endgame item: "\n\t\t\t\t\t+ itemName);\n\t\t}\n'''
+          replace_once(
+              legacy,
+              legacy + '''\t\tif ("złota ciupaga z trzema wąsami".equals(itemName)\n\t\t\t\t&& !item.has("lifesteal")) {\n\t\t\titem.put("lifesteal", 0.1);\n\t\t}\n''',
+              'legacy ciupaga lifesteal')
+
+          replace_once(
+              '\t\t\t\t\t+ " mechanics=" + mechanics(definition) + " ===");\n',
+              '\t\t\t\t\t+ " syntheticArmor=" + syntheticArmor(definition)\n'
+              '\t\t\t\t\t+ " mechanics=" + mechanics(definition) + " ===");\n',
+              'report synthetic armor')
+
+          path.write_text(text, encoding='utf-8')
+          PY
+      - name: Audit realistic endgame matrix
         run: |
           set -o pipefail
-          xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee balance-endgame-mithril.txt
-      - name: Upload endgame balance results
+          run_audit() {
+            name="$1"
+            atk="$2"
+            def="$3"
+            glyph="$4"
+            armor="$5"
+            echo "===== $name ATK=$atk DEF=$def glyph=$glyph armor=$armor ====="
+            ANT_OPTS="-Dbalance.endgame.playerLevel=350 -Dbalance.endgame.playerAtk=$atk -Dbalance.endgame.playerDef=$def -Dbalance.endgame.glyphProfile=$glyph -Dbalance.endgame.syntheticArmor=$armor -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5" \
+              xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee "$name.txt"
+          }
+          run_audit endgame-expected-base 90 130 none none
+          run_audit endgame-expected-combat-glyphs 90 130 combat none
+          run_audit endgame-expected-sustain-glyphs 90 130 sustain none
+          run_audit endgame-expected-combat-def25 90 130 combat def25
+          run_audit endgame-expected-combat-semantic 90 130 combat semantic
+          run_audit endgame-strong-sustain-def25 110 160 sustain def25
+      - name: Upload realistic endgame matrix
         uses: actions/upload-artifact@v4
         with:
-          name: balance-endgame-mithril
-          path: balance-endgame-mithril.txt
+          name: balance-endgame-realistic-matrix
+          path: |
+            endgame-*.txt
+            src/games/stendhal/tools/EndgameBalanceAudit.java
 
   build:
     needs: release-regressions
