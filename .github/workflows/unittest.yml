@@ -69,26 +69,7 @@ jobs:
           distribution: 'temurin'
       - name: Install Xvfb
         run: sudo apt-get install -y xvfb
-      - name: Prepare golden ciupaga endgame audit
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path('src/games/stendhal/tools/EndgameBalanceAudit.java')
-          text = path.read_text(encoding='utf-8')
-          text = text.replace(
-              'set used by the achievement plus the mithril dagger.',
-              'set used by the achievement plus the golden ciupaga with three moustaches.')
-          text = text.replace(
-              '"sztylecik z mithrilu"',
-              '"złota ciupaga z trzema wąsami"')
-          needle = '''\t\tif (item == null) {\n\t\t\tthrow new IllegalStateException("Missing configured endgame item: "\n\t\t\t\t\t+ itemName);\n\t\t}\n'''
-          replacement = needle + '''\t\tif ("złota ciupaga z trzema wąsami".equals(itemName)\n\t\t\t\t&& !item.has("lifesteal")) {\n\t\t\t// Existing pre-1.42 ciupagas keep their authored 10% lifesteal.\n\t\t\titem.put("lifesteal", 0.1);\n\t\t}\n'''
-          if needle not in text:
-              raise SystemExit('Could not patch equip() for legacy lifesteal')
-          path.write_text(text.replace(needle, replacement), encoding='utf-8')
-          PY
-      - name: Audit endgame mithril loadouts with golden ciupaga
+      - name: Audit endgame mithril loadouts
         env:
           ANT_OPTS: -Dbalance.endgame.playerLevel=350 -Dbalance.endgame.minLevel=250 -Dbalance.endgame.maxLevel=500 -Dbalance.endgame.rounds=30 -Dbalance.endgame.attritionSeries=10 -Dbalance.endgame.attritionFights=5
         run: |
@@ -98,9 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: balance-endgame-mithril
-          path: |
-            balance-endgame-mithril.txt
-            src/games/stendhal/tools/EndgameBalanceAudit.java
+          path: balance-endgame-mithril.txt
 
   build:
     needs: release-regressions
