@@ -40,38 +40,17 @@ import marauroa.common.game.RPObject;
 /**
  * Fixed-loadout endgame balance audit.
  *
- * <p>The regular {@link BalanceRPGame} answers whether a creature is reasonable
- * for an automatically selected same-level build. This audit answers a
- * different question: what happens when a real high-level character uses the
- * authored mithril equipment that players deliberately work towards?</p>
+ * The normal balancer answers whether a creature is reasonable for a
+ * same-level automatically selected build. This tool instead measures how
+ * authored high-level creatures cope with real mithril loadouts.
  *
- * <p>Three deterministic builds are tested:</p>
- * <ul>
- * <li>MITHRIL_SET: the six pieces used by the mithril-set achievement plus the
- *     mithril dagger.</li>
- * <li>MITHRIL_COMBAT: the set above plus the mithril shield, cloak, amulet and
- *     two mithril rings.</li>
- * <li>MITHRIL_COMBAT_MAX: the complete combat loadout with every item upgraded
- *     to its configured maximum.</li>
- * </ul>
- *
- * <p>Items are created as COMMON and without random affixes. If this conservative
- * baseline already trivializes endgame creatures, rarity and favourable affixes
- * can only widen the real-world power gap. The tool never rewrites creature
- * stats; it is an audit only.</p>
- *
- * <p>Useful properties:</p>
- * <ul>
- * <li>-Dbalance.endgame.playerLevel=350</li>
- * <li>-Dbalance.endgame.minLevel=250</li>
- * <li>-Dbalance.endgame.maxLevel=500</li>
- * <li>-Dbalance.endgame.rounds=30</li>
- * <li>-Dbalance.endgame.attritionSeries=10</li>
- * <li>-Dbalance.endgame.attritionFights=5</li>
- * </ul>
+ * All items are COMMON and have no random affixes. MITHRIL_SET is the six-piece
+ * set used by the achievement plus the mithril dagger. MITHRIL_COMBAT adds the
+ * mithril shield, cloak, amulet and two rings. MITHRIL_COMBAT_MAX additionally
+ * applies every configured item upgrade. The tool is report-only and never
+ * changes creature definitions.
  */
 public final class EndgameBalanceAudit {
-
 	private static final int MAX_COMBAT_TURNS = 5000;
 	private static final int DEFAULT_PLAYER_LEVEL = 350;
 	private static final int DEFAULT_MIN_LEVEL = 250;
@@ -98,13 +77,12 @@ public final class EndgameBalanceAudit {
 		MITHRIL_COMBAT(true, false),
 		MITHRIL_COMBAT_MAX(true, true);
 
-		private final boolean completeCombatSet;
-		private final boolean maximumUpgrades;
+		private final boolean complete;
+		private final boolean maxUpgrades;
 
-		Loadout(final boolean completeCombatSet,
-				final boolean maximumUpgrades) {
-			this.completeCombatSet = completeCombatSet;
-			this.maximumUpgrades = maximumUpgrades;
+		Loadout(final boolean complete, final boolean maxUpgrades) {
+			this.complete = complete;
+			this.maxUpgrades = maxUpgrades;
 		}
 	}
 
@@ -129,16 +107,15 @@ public final class EndgameBalanceAudit {
 	private static final class FightResult {
 		private final int turns;
 		private final int playerHp;
-		private final boolean playerWon;
+		private final boolean won;
 		private final int incomingDamage;
 		private final int lifestealHealing;
 
-		FightResult(final int turns, final int playerHp,
-				final boolean playerWon, final int incomingDamage,
-				final int lifestealHealing) {
+		FightResult(final int turns, final int playerHp, final boolean won,
+				final int incomingDamage, final int lifestealHealing) {
 			this.turns = turns;
 			this.playerHp = playerHp;
-			this.playerWon = playerWon;
+			this.won = won;
 			this.incomingDamage = incomingDamage;
 			this.lifestealHealing = lifestealHealing;
 		}
@@ -152,8 +129,8 @@ public final class EndgameBalanceAudit {
 		private final int meanIncomingDamage;
 		private final int meanLifestealHealing;
 
-		CombatSummary(final int meanTurns, final int meanPlayerHp,
-				final int wins, final int rounds, final int meanIncomingDamage,
+		CombatSummary(final int meanTurns, final int meanPlayerHp, final int wins,
+				final int rounds, final int meanIncomingDamage,
 				final int meanLifestealHealing) {
 			this.meanTurns = meanTurns;
 			this.meanPlayerHp = meanPlayerHp;
@@ -163,7 +140,7 @@ public final class EndgameBalanceAudit {
 			this.meanLifestealHealing = meanLifestealHealing;
 		}
 
-		double getWinRate() {
+		double winRate() {
 			return rounds == 0 ? 0.0 : wins * 100.0 / rounds;
 		}
 	}
@@ -182,7 +159,7 @@ public final class EndgameBalanceAudit {
 			this.meanEndHp = meanEndHp;
 		}
 
-		double getCompletionRate() {
+		double completionRate() {
 			return series == 0 ? 0.0 : completedSeries * 100.0 / series;
 		}
 	}
@@ -197,9 +174,8 @@ public final class EndgameBalanceAudit {
 		final List<DefaultCreature> creatures = loader.load();
 		Collections.sort(creatures, new Comparator<DefaultCreature>() {
 			@Override
-			public int compare(final DefaultCreature first,
-					final DefaultCreature second) {
-				return first.getLevel() - second.getLevel();
+			public int compare(final DefaultCreature a, final DefaultCreature b) {
+				return a.getLevel() - b.getLevel();
 			}
 		});
 
@@ -221,7 +197,7 @@ public final class EndgameBalanceAudit {
 				+ " creatureLevels=" + minLevel + ".." + maxLevel
 				+ " rounds=" + rounds + " attrition=" + attritionSeries
 				+ "x" + attritionFights);
-		System.out.println("All loadouts use COMMON rarity and no random affixes.");
+		System.out.println("All loadouts: COMMON rarity, no random affixes.");
 
 		final EnumMap<Loadout, PlayerBuild> builds =
 				new EnumMap<Loadout, PlayerBuild>(Loadout.class);
@@ -272,12 +248,12 @@ public final class EndgameBalanceAudit {
 						: summary.meanLifestealHealing * 100.0
 								/ summary.meanIncomingDamage;
 				System.out.println(loadout + ": " + threat + " win="
-						+ percent(summary.getWinRate()) + " leftHP="
+						+ percent(summary.winRate()) + " leftHP="
 						+ percent(leftHp * 100.0) + " turns=" + summary.meanTurns
 						+ " incoming=" + summary.meanIncomingDamage
 						+ " lifesteal=" + summary.meanLifestealHealing
 						+ " sustain=" + percent(sustain)
-						+ " attrition=" + percent(attrition.getCompletionRate())
+						+ " attrition=" + percent(attrition.completionRate())
 						+ " seriesComplete, fights="
 						+ String.format(Locale.ENGLISH, "%.2f",
 								attrition.meanFightsSurvived) + "/" + attritionFights
@@ -287,11 +263,11 @@ public final class EndgameBalanceAudit {
 						&& definition.getLevel() >= playerLevel
 						&& !hasPartiallyModeledOffense(definition)
 						&& threat == Threat.TRIVIAL
-						&& attrition.getCompletionRate() >= 99.0
+						&& attrition.completionRate() >= 99.0
 						&& attritionHp >= 0.80) {
 					suspicious.add(definition.getCreatureName() + " (level "
 							+ definition.getLevel() + ") win="
-							+ percent(summary.getWinRate()) + " leftHP="
+							+ percent(summary.winRate()) + " leftHP="
 							+ percent(leftHp * 100.0) + " attritionEndHP="
 							+ percent(attritionHp * 100.0));
 				}
@@ -320,53 +296,52 @@ public final class EndgameBalanceAudit {
 
 	private static PlayerBuild createPlayer(final EntityManager em,
 			final int level, final Loadout loadout) {
-		final Player player =
+		final Player result =
 				(Player) new PlayerTransformer().transform(new RPObject());
-		player.setLevel(level);
-		player.setBaseHP(100 + 10 * level);
-		player.setAtk(10 + level);
-		player.setDef(10 + level);
+		result.setLevel(level);
+		result.setBaseHP(100 + 10 * level);
+		result.setAtk(10 + level);
+		result.setDef(10 + level);
 
 		final StringBuilder equipment = new StringBuilder();
-		equip(em, player, equipment, SLOT_WEAPON, "sztylecik z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_ARMOR, "zbroja z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_HEAD, "hełm z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_LEGS, "spodnie z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_GLOVE, "rękawice z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_BELT, "pas z mithrilu",
-				loadout.maximumUpgrades);
-		equip(em, player, equipment, SLOT_FEET, "buty z mithrilu",
-				loadout.maximumUpgrades);
-
-		if (loadout.completeCombatSet) {
-			equip(em, player, equipment, SLOT_SHIELD, "tarcza z mithrilu",
-					loadout.maximumUpgrades);
-			equip(em, player, equipment, SLOT_CLOAK, "płaszcz z mithrilu",
-					loadout.maximumUpgrades);
-			equip(em, player, equipment, SLOT_NECK, "amulecik z mithrilu",
-					loadout.maximumUpgrades);
-			equip(em, player, equipment, SLOT_FINGER, "pierścień z mithrilu",
-					loadout.maximumUpgrades);
-			equip(em, player, equipment, SLOT_FINGER_B, "pierścień z mithrilu",
-					loadout.maximumUpgrades);
+		equip(em, result, equipment, SLOT_WEAPON, "sztylecik z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_ARMOR, "zbroja z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_HEAD, "hełm z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_LEGS, "spodnie z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_GLOVE, "rękawice z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_BELT, "pas z mithrilu",
+				loadout.maxUpgrades);
+		equip(em, result, equipment, SLOT_FEET, "buty z mithrilu",
+				loadout.maxUpgrades);
+		if (loadout.complete) {
+			equip(em, result, equipment, SLOT_SHIELD, "tarcza z mithrilu",
+					loadout.maxUpgrades);
+			equip(em, result, equipment, SLOT_CLOAK, "płaszcz z mithrilu",
+					loadout.maxUpgrades);
+			equip(em, result, equipment, SLOT_NECK, "amulecik z mithrilu",
+					loadout.maxUpgrades);
+			equip(em, result, equipment, SLOT_FINGER, "pierścień z mithrilu",
+					loadout.maxUpgrades);
+			equip(em, result, equipment, SLOT_FINGER_B, "pierścień z mithrilu",
+					loadout.maxUpgrades);
 		}
-		return new PlayerBuild(player, equipment.toString());
+		return new PlayerBuild(result, equipment.toString());
 	}
 
 	private static void equip(final EntityManager em, final Player player,
 			final StringBuilder equipment, final String slot,
-			final String itemName, final boolean maximumUpgrade) {
+			final String itemName, final boolean maxUpgrade) {
 		final Item item = em.getItem(itemName, commonItemContext());
 		if (item == null) {
 			throw new IllegalStateException("Missing configured endgame item: "
 					+ itemName);
 		}
-		if (maximumUpgrade && item.getMaxUpgradeLevel() > 0) {
+		if (maxUpgrade && item.getMaxUpgradeLevel() > 0) {
 			item.setUpgradeLevel(item.getMaxUpgradeLevel());
 		}
 		player.equip(slot, item);
@@ -375,13 +350,15 @@ public final class EndgameBalanceAudit {
 		}
 		equipment.append(slot).append('=').append(item.getName());
 		if (item.getUpgradeLevel() > 0) {
-			equipment.append("+").append(item.getUpgradeLevel());
+			equipment.append('+').append(item.getUpgradeLevel());
 		}
 		if (SLOT_WEAPON.equals(slot)) {
+			final double lifesteal = item.has("lifesteal")
+					? item.getDouble("lifesteal") : 0.0;
 			equipment.append("{dmg=").append(format(item.getAverageDamage()))
 					.append(",rate=").append(item.getAttackRate())
 					.append(",lifesteal=")
-					.append(percent(item.getLifesteal() * 100.0)).append('}');
+					.append(percent(lifesteal * 100.0)).append('}');
 		} else if (item.getDefense() != 0) {
 			equipment.append("{def=").append(item.getDefense()).append('}');
 		}
@@ -409,7 +386,7 @@ public final class EndgameBalanceAudit {
 			hp += result.playerHp;
 			incoming += result.incomingDamage;
 			lifesteal += result.lifestealHealing;
-			if (result.playerWon) {
+			if (result.won) {
 				wins++;
 			}
 		}
@@ -423,12 +400,12 @@ public final class EndgameBalanceAudit {
 		int completed = 0;
 		int totalFights = 0;
 		long endHp = 0;
-		for (int seriesIndex = 0; seriesIndex < series; seriesIndex++) {
+		for (int i = 0; i < series; i++) {
 			fighter.setHP(fighter.getBaseHP());
 			int survived = 0;
 			for (int fightIndex = 0; fightIndex < fightsPerSeries; fightIndex++) {
 				final FightResult result = fight(fighter, target);
-				if (!result.playerWon) {
+				if (!result.won) {
 					break;
 				}
 				survived++;
@@ -443,13 +420,11 @@ public final class EndgameBalanceAudit {
 				totalFights / (double) series, (int) (endHp / series));
 	}
 
-	private static FightResult fight(final Player fighter,
-			final Creature target) {
+	private static FightResult fight(final Player fighter, final Creature target) {
 		target.setHP(target.getBaseHP());
 		int turns = 0;
 		int incomingDamage = 0;
 		int lifestealHealing = 0;
-
 		int healAmount = 0;
 		int healRate = 0;
 		final String healer = target.getAIProfile("heal");
@@ -524,24 +499,19 @@ public final class EndgameBalanceAudit {
 	private static Threat assess(final PlayerBuild build,
 			final CombatSummary summary) {
 		final double hp = relativeHp(build.player, summary.meanPlayerHp);
-		if (summary.getWinRate() >= 99.0 && hp >= 0.90) {
+		if (summary.winRate() >= 99.0 && hp >= 0.90) {
 			return Threat.TRIVIAL;
 		}
-		if (summary.getWinRate() >= 95.0 && hp >= 0.70) {
+		if (summary.winRate() >= 95.0 && hp >= 0.70) {
 			return Threat.EASY;
 		}
-		if (summary.getWinRate() >= 70.0 && hp >= 0.30) {
+		if (summary.winRate() >= 70.0 && hp >= 0.30) {
 			return Threat.CONTESTED;
 		}
-		if (summary.getWinRate() >= 30.0) {
+		if (summary.winRate() >= 30.0) {
 			return Threat.DANGEROUS;
 		}
 		return Threat.LETHAL;
-	}
-
-	private static void increment(final EnumMap<Threat, Integer> counts,
-			final Threat threat) {
-		counts.put(threat, Integer.valueOf(counts.get(threat).intValue() + 1));
 	}
 
 	private static String mechanics(final DefaultCreature definition) {
@@ -582,6 +552,11 @@ public final class EndgameBalanceAudit {
 		}
 		final Map<String, String> ai = definition.getAiProfiles();
 		return ai != null && ai.containsKey("poisonous");
+	}
+
+	private static void increment(final EnumMap<Threat, Integer> counts,
+			final Threat threat) {
+		counts.put(threat, Integer.valueOf(counts.get(threat).intValue() + 1));
 	}
 
 	private static double relativeHp(final Player player, final int hp) {
