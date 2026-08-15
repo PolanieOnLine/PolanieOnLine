@@ -11,11 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AlwaysTrueCondition;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -26,15 +29,49 @@ import games.stendhal.server.entity.player.Player;
 public abstract class QuestTaskBuilder {
 	static final String REQUIREMENTS_MARKER = "<requirements>";
 
+	private final List<String> requiredCompletedQuests = new LinkedList<>();
+
 	// hide constructor
 	QuestTaskBuilder() {
 		super();
 	}
 
+	/**
+	 * Requires another quest to be completed before this quest can be started.
+	 *
+	 * @param questSlot quest slot which has to be completed
+	 * @return this task builder
+	 */
+	public QuestTaskBuilder requireCompletedQuest(String questSlot) {
+		requiredCompletedQuests.add(questSlot);
+		return this;
+	}
+
+	/**
+	 * Requires other quests to be completed before this quest can be started.
+	 *
+	 * @param questSlots quest slots which have to be completed
+	 * @return this task builder
+	 */
+	public QuestTaskBuilder requireCompletedQuest(String... questSlots) {
+		for (String questSlot : questSlots) {
+			requiredCompletedQuests.add(questSlot);
+		}
+		return this;
+	}
+
 	abstract void simulate(QuestSimulator simulator);
 
 	ChatCondition buildQuestPreCondition(@SuppressWarnings("unused") String questSlot) {
-		return new AlwaysTrueCondition();
+		if (requiredCompletedQuests.isEmpty()) {
+			return new AlwaysTrueCondition();
+		}
+
+		List<ChatCondition> conditions = new LinkedList<>();
+		for (String requiredQuest : requiredCompletedQuests) {
+			conditions.add(new QuestCompletedCondition(requiredQuest));
+		}
+		return new AndCondition(conditions);
 	}
 
 	abstract ChatAction buildStartQuestAction(String questSlot);
