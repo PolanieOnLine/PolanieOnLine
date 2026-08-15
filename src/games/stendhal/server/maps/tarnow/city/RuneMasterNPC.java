@@ -333,23 +333,23 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			private String getGlyphDescription(String glyphName) {
 				switch (glyphName.toLowerCase()) {
 					case "glif daru mokoszy":
-						return "dar bogini płodności i ochrony, zwiększający zdrowie o 1000 punktów";
+						return "dar bogini płodności i ochrony, zwiększający zdrowie o 500 punktów";
 					case "glif siły":
 						return "glif zwiększający siłę ataku o 5 punktów";
 					case "glif peruna":
 						return "glif zwiększający siłę ataku o 10% posiadanego ataku";
 					case "glif czaszy":
-						return "glif zwiększający obrażenia krytyczne o 25%";
+						return "glif sprawiający, że trafienia krytyczne zadają dodatkowe 25% bazowych obrażeń, zwiększając mnożnik z 2,00x do 2,25x";
 					case "glif tarczy":
 						return "glif zwiększający obronę o 20 punktów";
 					case "glif swaroga":
 						return "glif zwiększający obronę o 20% posiadanej obrony";
 					case "glif tytana":
-						return "glif zwiększający atak i obronę o 10 punktów oraz zdrowie o 400 punktów";
+						return "glif zwiększający atak i obronę o 5 punktów oraz zdrowie o 200 punktów";
 					case "glif strzyboga":
-						return "glif zwiększający prędkość ataku wszystkich broni";
+						return "glif skracający czas ataku wolniejszych broni o 1, gdy jest większy niż 2; czas ataku nie spada poniżej 2";
 					case "glif jarowita":
-						return "glif redukujący wpływ wszystkich żywiołów o 25%";
+						return "glif redukujący wpływ wszystkich żywiołów o 15%";
 					case "glif kryzysu":
 						return "glif zwiększający szansę na atak krytyczny o 15%";
 					case "glif krwi":
