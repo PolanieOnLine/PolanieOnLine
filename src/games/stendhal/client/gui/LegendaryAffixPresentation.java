@@ -120,8 +120,17 @@ final class LegendaryAffixPresentation {
 			});
 		}
 
+		// Legacy Bastion remains visible on saved items, but is no longer rolled.
 		appendRolled(result, object, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				"Niezłomny Bastion", "+", " pkt. dodatkowego pancerza.");
+		if (has(object, ItemTooltip.LEGENDARY_WALL_OF_GORD)) {
+			appendFixed(result, "Wał grodu", new String[] {
+					"Co ", "8 s",
+					", gdy pojedyncze bezpośrednie trafienie stworzenia zadałoby co najmniej ",
+					"10%", " maksymalnych PW, zmniejsza obrażenia tego trafienia o ",
+					"35%", "."
+			});
+		}
 		if (has(object, ItemTooltip.LEGENDARY_IRON_WILL)) {
 			appendFixed(result, "Żelazna Wola", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",

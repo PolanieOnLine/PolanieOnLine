@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.Set;
 
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WallOfGordService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
@@ -74,6 +75,7 @@ public final class LegendaryItemAffixRegistry {
 							WAND_CLASSES),
 					new EquipmentAffixDefinition(
 							LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE),
+					new EquipmentAffixDefinition(WallOfGordService.ATTRIBUTE),
 					new EquipmentAffixDefinition(
 							LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE),
 					new EquipmentAffixDefinition(
@@ -216,7 +218,12 @@ public final class LegendaryItemAffixRegistry {
 		@Override
 		public boolean isEligible(final Item item) {
 			if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE.equals(id)) {
-				return LegendaryEquipmentAffixService.isBastionEligible(item);
+				// Existing saved Bastions remain registered and materializable, but
+				// fresh legendary drops use Wall of the Gord instead of raw DEF.
+				return false;
+			}
+			if (WallOfGordService.ATTRIBUTE.equals(id)) {
+				return WallOfGordService.isEligible(item);
 			}
 			if (LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE.equals(id)) {
 				return LegendaryEquipmentAffixService.isIronWillEligible(item);
@@ -240,6 +247,9 @@ public final class LegendaryItemAffixRegistry {
 		public boolean apply(final Item item, final Random random) {
 			if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE.equals(id)) {
 				return LegendaryEquipmentAffixService.applyBastion(item, random);
+			}
+			if (WallOfGordService.ATTRIBUTE.equals(id)) {
+				return WallOfGordService.apply(item, random);
 			}
 			if (LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE.equals(id)) {
 				return LegendaryEquipmentAffixService.applyIronWill(item, random);

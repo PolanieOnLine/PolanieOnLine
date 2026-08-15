@@ -118,6 +118,8 @@ public final class ItemTooltipService {
 				ItemTooltip.LEGENDARY_ARCANE_FOCUS);
 		copyInt(item, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				ItemTooltip.LEGENDARY_BASTION_BONUS);
+		copyDouble(item, ItemTooltip.LEGENDARY_WALL_OF_GORD,
+				ItemTooltip.LEGENDARY_WALL_OF_GORD);
 		copyDouble(item, ItemTooltip.LEGENDARY_IRON_WILL,
 				ItemTooltip.LEGENDARY_IRON_WILL);
 		copyDouble(item, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION,

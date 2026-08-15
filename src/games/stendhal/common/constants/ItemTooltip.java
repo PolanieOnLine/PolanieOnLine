@@ -52,6 +52,7 @@ public final class ItemTooltip {
 	public static final String LEGENDARY_POWER_OVERLOAD = "legendary_power_overload";
 	public static final String LEGENDARY_ARCANE_FOCUS = "legendary_arcane_focus";
 	public static final String LEGENDARY_BASTION_BONUS = "legendary_bastion_bonus";
+	public static final String LEGENDARY_WALL_OF_GORD = "legendary_wall_of_gord";
 	public static final String LEGENDARY_IRON_WILL = "legendary_iron_will";
 	public static final String LEGENDARY_UNYIELDING_PROTECTION =
 			"legendary_unyielding_protection";
