@@ -125,6 +125,7 @@ public class Shovel extends AreaUseItem {
 								setGlifQuestAction(player, "start", expectedMap, newCoordinates[0], newCoordinates[1], 0);
 								sendApproximateCoordinates(player, newCoordinates[0], newCoordinates[1]);
 							}
+						}
 					} else if (zone.getName().equals(expectedMap) && nearItem(x, y, fragmentX, fragmentY)) {
 						player.sendPrivateText("Widzisz ślady dawnych wykopalisk. Fragment matrycy może znajdować się niedaleko.");
 					} else if (!zone.getName().equals(expectedMap)) {
