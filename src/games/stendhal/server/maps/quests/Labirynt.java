@@ -19,8 +19,10 @@ import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.scroll.MagicznyScroll;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -83,13 +85,31 @@ public class Labirynt extends AbstractQuest {
 
 	private static final int REQUIRED_WEEK = 2 * 7;
 
+	private ChatCondition completedTouristTripCondition() {
+		return new ChatCondition() {
+			@Override
+			public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+				return BiletTurystyczny.hasCompletedTrip(player);
+			}
+		};
+	}
+
 	private void step_1() {
-		// player says hi before starting the quest
+		final ChatCondition completedTouristTrip = completedTouristTripCondition();
+
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestNotStartedCondition(QUEST_SLOT)),
+					new QuestNotStartedCondition(QUEST_SLOT),
+					new NotCondition(completedTouristTrip)),
+			ConversationStates.ATTENDING,
+			"Jeśli szukasz magicznego biletu, zaczynasz od złej strony. Najpierw znajdź Juhasa w tawernie w Semos, użyj jego biletu turystycznego i wróć z pustyni. Jego przejście jest stabilne. Jeśli nie poradzisz sobie z nim, nie powierzam ci mojego.", null);
+
+		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestNotStartedCondition(QUEST_SLOT),
+					completedTouristTrip),
 			ConversationStates.INFORMATION_1,
-			"CIII! Nie chcesz wiedzieć jakimi rozmaitościami #handluje.", null);
+			"A więc wróciłeś z pustyni po użyciu biletu Juhasa. Dobrze. Skoro stabilne przejście cię nie złamało, mogę powiedzieć ci o czymś mniej przewidywalnym. Zapytaj, czym #handluję.", null);
 
 		// player returns after finishing the quest (it is repeatable) after the
 		// time as finished
@@ -98,9 +118,9 @@ public class Labirynt extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStartedCondition(QUEST_SLOT),
-					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_WEEK)),  
+					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_WEEK)),
 			ConversationStates.QUEST_OFFERED,
-			"Oj, to ty. Wróciłeś po następny magiczny bilet?", null);
+			"Wróciłeś. Chcesz ponownie otworzyć przejście do labiryntu?", null);
 
 		// player returns after finishing the quest (it is repeatable) before
 		// the time as finished
@@ -109,48 +129,50 @@ public class Labirynt extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStartedCondition(QUEST_SLOT),
-					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_WEEK))),  
-			ConversationStates.ATTENDING, 
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_WEEK))),
+			ConversationStates.ATTENDING,
 			null,
 			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_WEEK,
-					"Wszystko w porządku? Mam nadzieję, że nie chcesz więcej magicznych biletów. Nie mogę sprzedać Ci ich więcej przez co najmniej "));
+					"Przejście jeszcze się nie uspokoiło. Następny bilet mogę przygotować za co najmniej "));
 
 		// player responds to word 'deal' - enough level
-		npc.add(ConversationStates.INFORMATION_1, 
+		npc.add(ConversationStates.INFORMATION_1,
 			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet"),
 			new AndCondition(
-					new QuestNotStartedCondition(QUEST_SLOT), 
+					new QuestNotStartedCondition(QUEST_SLOT),
+					completedTouristTrip,
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
-			ConversationStates.QUEST_OFFERED, 
-			"Nie jesteś wścibski? Handluję magicznymi biletami. Możesz kupić jeden, ale kto wie gdzie Cię zabierze. To będzie Cię kosztować "
+			ConversationStates.QUEST_OFFERED,
+			"Juhas używa przejścia związanego z jednym znanym miejscem. Mój #'magiczny bilet' otwiera drogę do starego labiryntu, który nie zachowuje się jak zwykła mapa. Nie obiecam ci, co spotkasz po drugiej stronie, ale znak powrotu jest prawdziwy. Bilet kosztuje "
 								+ REQUIRED_MONEY
-								+ " money. Chcesz kupić?",
+								+ " monet. Chcesz go kupić?",
 			null);
 
 		// player responds to word 'deal' - low level
-		npc.add(ConversationStates.INFORMATION_1, 
+		npc.add(ConversationStates.INFORMATION_1,
 			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet"),
 			new AndCondition(
-					new QuestNotStartedCondition(QUEST_SLOT), 
+					new QuestNotStartedCondition(QUEST_SLOT),
+					completedTouristTrip,
 					new LevelLessThanCondition(REQUIRED_LEVEL)),
-			ConversationStates.ATTENDING, 
-			"Nie jesteś rycerzem. Wyjdź stąd i nie wracaj dopóki nie będziesz należał do stanu rycerskiego!",
+			ConversationStates.ATTENDING,
+			"Bilet Juhasa wystarczył, żebym uwierzył, że rozumiesz działanie przejść. To jednak nie znaczy, że poradzisz sobie w moim labiryncie. Wróć, gdy osiągniesz poziom 250.",
 			null);
 
 		// player wants to take the beans but hasn't the money
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			new NotCondition(new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY)),
-			ConversationStates.ATTENDING, 
-			"Plugawy oszust! Nie masz pieniędzy.",
+			ConversationStates.ATTENDING,
+			"Nie masz wystarczająco dużo pieniędzy. Wróć, gdy zbierzesz potrzebną kwotę.",
 			null);
 
 		// player wants to take the beans
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES, 
+				ConversationPhrases.YES_MESSAGES,
 				new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY),
-				ConversationStates.ATTENDING, 
-				"W porządku, oto zwój. Gdy go użyjesz to wrócisz za około 5 godzin. Jeśli będziesz chciał wrócić wcześniej to skorzystaj z wyjścia w środku labiryntu.",
+				ConversationStates.ATTENDING,
+				"Masz bilet. To nie jest wycieczka. Po użyciu znak otworzy przejście do labiryntu. Powrót nastąpi po około pięciu godzinach. Jeśli zechcesz wrócić wcześniej, poszukaj wyjścia wewnątrz labiryntu.",
 				new MultipleActions(
 						new DropItemAction("money", REQUIRED_MONEY),
 						new EquipItemAction("magiczny bilet", 1, true),
@@ -161,21 +183,17 @@ public class Labirynt extends AbstractQuest {
 								if (player.hasQuest(QUEST_SLOT)) {
 									final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 									if (tokens.length == 4) {
-										// we stored an old time taken or set it to -1 (never taken), either way, remember this.
+										// we stored a last time (or set it to -1), either way, remember this.
 										player.setQuest(QUEST_SLOT, "bought;"
 												+ System.currentTimeMillis() + ";taken;" + tokens[3]);
 									} else {
-										// it must have started with "done" (old quest slot status was done;timestamp), but now we store when the beans were taken. 
-										// And they haven't taken beans since
+										// old quest state without a recorded use time
 										player.setQuest(QUEST_SLOT, "bought;"
 												+ System.currentTimeMillis() + ";taken;-1");
-								
 									}
 								} else {
-									// first time they bought beans here
 									player.setQuest(QUEST_SLOT, "bought;"
 											+ System.currentTimeMillis() + ";taken;-1");
-								
 								}
 							}
 						}));
@@ -186,27 +204,36 @@ public class Labirynt extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"To nie jest dla każdego. Jeżeli chciałbyś coś to mów.",
+			"Rozsądnie. Do takiego przejścia nie powinno się wchodzić bez przekonania.",
 			null);
 
-		// player says 'deal' or asks about beans when NPC is ATTENDING, not
-		// just in information state (like if they said no then changed mind and
-		// are trying to get him to deal again)
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet", "yes", "tak"),
-			new LevelGreaterThanCondition(REQUIRED_LEVEL-1),
+			new AndCondition(
+					new QuestNotStartedCondition(QUEST_SLOT),
+					new NotCondition(completedTouristTrip)),
 			ConversationStates.ATTENDING,
-			"Już mówiliśmy o tym! Spróbuj innym razem.",
+			"Najpierw wróć z pustyni po użyciu biletu Juhasa. Dopiero wtedy porozmawiamy o moim przejściu.",
 			null);
 
-		// player says 'deal' or asks about beans when NPC is ATTENDING, not
-		// just in information state (like if they said no then changed mind and
-		// are trying to get him to deal again)
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet", "yes", "tak"),
-			new LevelLessThanCondition(REQUIRED_LEVEL),
-			ConversationStates.ATTENDING, 
-			"Ten towar jest tylko dla stanu rycerskiego nie dla Ciebie. Nie ma szans abym go sprzedał Ci!",
+			new AndCondition(
+					new QuestNotStartedCondition(QUEST_SLOT),
+					completedTouristTrip,
+					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
+			ConversationStates.ATTENDING,
+			"Już powiedziałem ci, czym różni się mój bilet od przejścia Juhasa. Jeśli nadal chcesz go kupić, wróć do naszej rozmowy od początku.",
+			null);
+
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("deal", "handluję", "bilet", "magiczny bilet", "yes", "tak"),
+			new AndCondition(
+					new QuestNotStartedCondition(QUEST_SLOT),
+					completedTouristTrip,
+					new LevelLessThanCondition(REQUIRED_LEVEL)),
+			ConversationStates.ATTENDING,
+			"Wiesz już, jak działa stabilne przejście, ale na mój labirynt jest jeszcze za wcześnie. Wróć na poziomie 250.",
 			null);
 	}
 
@@ -225,7 +252,7 @@ public class Labirynt extends AbstractQuest {
 		});
 		fillQuestInfo(
 				"Magiczny Bilet",
-				"Magiczny bilet jest przepustką do obcej krainy.",
+				"Po bezpieczniejszej podróży biletem Juhasa Ozo może dopuścić do znacznie mniej przewidywalnego przejścia prowadzącego do starego labiryntu.",
 				false);
 		step_1();
 	}
