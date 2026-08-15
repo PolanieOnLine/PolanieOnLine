@@ -53,14 +53,14 @@ public class CollectorNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Kiedyś zostanę projektantką mody!");
-				addHelp("Dziękuję za rękawice! Wszystkie pięknie się prezentują na naszej półce!");
-				addOffer("Moja znajoma, która znajduje się piętro niżej skupuje stare rękawice oraz skóry.");
-				addGoodbye("Do widzenia, do widzenia!");
+				addJob("Chcę zostać projektantką mody. Teraz uczę się na rękawicach, bo dobrze pokazują różnicę między wyglądem, ochroną i swobodą ruchu.");
+				addHelp("Jeśli znajdziesz ciekawe rękawice, pokaż mi je. Porównuję materiały i sposoby wykonania różnych ludów.");
+				addOffer("Moja znajoma piętro niżej skupuje stare rękawice oraz skóry. Ja zajmuję się projektowaniem i badaniem wzorów.");
+				addGoodbye("Do widzenia. Powodzenia w poszukiwaniu nowych wzorów!");
 			}
 		};
 
-		npc.setDescription("Oto Anastazja. Wygląda jakby chciała zajmować się modą.");
+		npc.setDescription("Oto Anastazja, początkująca projektantka mody badająca sposoby wykonywania rękawic.");
 		npc.setEntityClass("woman_009_npc");
 		npc.setGender("F");
 		npc.setPosition(7, 12);
