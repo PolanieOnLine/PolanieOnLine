@@ -3,9 +3,9 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.rarity;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 
@@ -28,15 +28,20 @@ public class DefenseAffixRetirementTest {
 	}
 
 	@Test
-	public void bastionStaysRegisteredForLegacyItemsButIsNotEligibleForFreshRolls() {
+	public void bastionRemainsAvailableUntilWallOfTheGordMechanicsAreDefined() {
 		assertNotNull(LegendaryItemAffixRegistry.getInstance().get(
 				LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE));
-		final Item armour = new Item("legacy bastion registration", "armor", "test",
+		final Item armour = new Item("temporary bastion availability", "armor", "test",
 				new HashMap<String, String>());
+		boolean found = false;
 		for (final ItemAffixDefinition definition
 				: LegendaryItemAffixRegistry.getInstance().getEligible(armour)) {
-			assertFalse(LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE
-					.equals(definition.getId()));
+			if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE
+					.equals(definition.getId())) {
+				found = true;
+				break;
+			}
 		}
+		assertTrue(found);
 	}
 }

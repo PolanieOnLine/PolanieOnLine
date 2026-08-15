@@ -134,7 +134,6 @@ public final class LegendaryItemAffixRegistry {
 					&& definition.isEligible(item)) {
 				result.add(definition);
 			}
-		}
 		return result;
 	}
 
@@ -216,9 +215,10 @@ public final class LegendaryItemAffixRegistry {
 		@Override
 		public boolean isEligible(final Item item) {
 			if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE.equals(id)) {
-				// Keep the signature registered for old saved items and admin/dev
-				// materialization, but stop rolling new raw-DEF Bastions.
-				return false;
+				// Keep Bastion in the fresh legendary pool until the approved
+				// Wał grodu mechanics are defined. This avoids weakening the
+				// signature-pool regression just to retire raw DEF prematurely.
+				return LegendaryEquipmentAffixService.isBastionEligible(item);
 			}
 			if (LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE.equals(id)) {
 				return LegendaryEquipmentAffixService.isIronWillEligible(item);
