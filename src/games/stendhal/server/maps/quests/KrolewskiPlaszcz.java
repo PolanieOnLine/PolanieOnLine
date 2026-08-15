@@ -70,6 +70,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 								} else {
 									npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Poszukaj Balbiny i pomóż jej spełnić marzenie związane z płaszczem.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
+								}
 							} else {
 								npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Rybak Tomasz potrzebuje pomocy przy naprawie łodzi.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
