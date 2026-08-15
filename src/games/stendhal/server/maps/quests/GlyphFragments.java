@@ -126,7 +126,7 @@ public class GlyphFragments extends AbstractQuest {
 					String questMap = getRandomMap();
 					int[] cords = getRandomCoordinates(getZone(questMap));
 					int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
-					npc.say("Weź łopatę. Fragmenty leżą pod kilkoma warstwami piasku i nie każdy zachował się tak samo dobrze — im większe pęknięcia, tym trudniej będzie mi później odtworzyć matrycę. Ostatnie ślady prowadzą do " + getQuestMapName(questMap) + ". Zacznij szukać w pobliżu (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
+					npc.say("Weź łopatę. Fragmenty leżą pod kilkoma warstwami piasku i nie każdy zachował się tak samo dobrze. Im większe pęknięcia, tym trudniej będzie mi później odtworzyć matrycę. Ostatnie ślady prowadzą do " + getQuestMapName(questMap) + ". Zacznij szukać w pobliżu (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
 					setStartQuestAction(player, questMap, cords);
 				}
 			});
@@ -189,7 +189,7 @@ public class GlyphFragments extends AbstractQuest {
 	 */
 	private int[] sendApproximateCoordinates(Player player, int fragmentX, int fragmentY) {
 		Random random = new Random();
-		// Generate random offsets within the range -8 to 8 for both X and Y.
+		// Generate random offsets within the range of eight fields in both directions for X and Y.
 		int approxX = Math.max(0, fragmentX + random.nextInt(17) - 8);
 		int approxY = Math.max(0, fragmentY + random.nextInt(17) - 8);
 
@@ -257,13 +257,13 @@ public class GlyphFragments extends AbstractQuest {
 
 		switch (direction) {
 			case "nw":
-				return "#'północno-zachodniej' części pustyni";
+				return "#'północno zachodniej' części pustyni";
 			case "ne":
-				return "#'północno-wschodniej' części pustyni";
+				return "#'północno wschodniej' części pustyni";
 			case "sw":
-				return "#'południowo-zachodniej' części pustyni";
+				return "#'południowo zachodniej' części pustyni";
 			case "se":
-				return "#'południowo-wschodniej' części pustyni";
+				return "#'południowo wschodniej' części pustyni";
 			default:
 				return "pustyni";
 		}
