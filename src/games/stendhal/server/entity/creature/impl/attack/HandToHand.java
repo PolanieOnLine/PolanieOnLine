@@ -14,6 +14,7 @@ package games.stendhal.server.entity.creature.impl.attack;
 
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.EquipmentAffixCombatService;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
@@ -41,7 +42,10 @@ class HandToHand implements AttackStrategy {
 				creature.notifyWorldAboutChanges();
 				return;
 			}
+			final int hitPointsBefore = defender == null ? 0 : defender.getHP();
 			creature.attack();
+			EquipmentAffixCombatService.onCreatureDamagedPlayer(creature,
+					defender, hitPointsBefore, true);
 		}
 	}
 

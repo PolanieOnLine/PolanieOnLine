@@ -13,6 +13,7 @@ package games.stendhal.server.entity.creature.impl.attack;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.EquipmentAffixCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
@@ -31,7 +32,11 @@ class RangeAttack implements AttackStrategy {
 	@Override
 	public void attack(final Creature creature) {
 		if ((SingletonRepository.getRuleProcessor().getTurn() % 5 == creature.getAttackTurn())) {
+			final RPEntity defender = creature.getAttackTarget();
+			final int hitPointsBefore = defender == null ? 0 : defender.getHP();
 			creature.attack();
+			EquipmentAffixCombatService.onCreatureDamagedPlayer(creature,
+					defender, hitPointsBefore, false);
 		}
 	}
 

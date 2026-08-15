@@ -45,6 +45,7 @@ const BONUS_DEFINITIONS: BonusDefinition[] = [
 	{key: "health", label: "Zdrowie"},
 	{key: "skill_atk", label: "Siła ataku"},
 	{key: "affix_flat_attack_bonus", label: "Atak z affixu"},
+	// Legacy saved/dev items may still carry the old flat DEF affix.
 	{key: "affix_flat_defense_bonus", label: "Pancerz z affixu"},
 	{key: "atk_additional_bonus", label: "Bonus ataku", percentage: true},
 	{key: "accuracy_bonus", label: "Precyzja", percentage: true},
@@ -114,6 +115,8 @@ export function buildStructuredItemTooltip(item: Item,
 				bonus.percentage ? "%" : "");
 	}
 
+	appendTacticalAffixLines(lines, currentStats);
+
 	for (const [nature, label] of RESISTANCES) {
 		const current = resistanceValue(currentStats, nature);
 		const previous = resistanceValue(equippedStats, nature);
@@ -125,6 +128,24 @@ export function buildStructuredItemTooltip(item: Item,
 		comparisonName: equipped?.getDisplayName(),
 		lines
 	};
+}
+
+function appendTacticalAffixLines(lines: ItemTooltipLine[],
+		current: Record<string, string>) {
+	const spiked = numberValue(current, "spiked_plating");
+	if (spiked > 0) {
+		lines.push({text: "Kolczaste okucie: odbija "
+				+ formatNumber(toPercentage(spiked), 1)
+				+ "% obrażeń z otrzymanych ciosów wręcz (łącznie maks. 10%)."});
+	}
+	if (numberValue(current, "hunter_mark") > 0) {
+		lines.push({text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; "
+				+ "przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});
+	}
+	if (numberValue(current, "giant_slayer") > 0) {
+		lines.push({text: "Łowca olbrzymów: za każde pełne 50 poziomów przewagi celu "
+				+ "redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%."});
+	}
 }
 
 function appendWeaponLines(lines: ItemTooltipLine[], current: Record<string, string>,

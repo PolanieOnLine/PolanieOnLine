@@ -8,6 +8,7 @@ import java.util.List;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * Resolves weapon-class advantages against semantic creature armor.
@@ -42,6 +43,11 @@ public final class WeaponArmorInteractionService {
 	 */
 	public static double getDamageMultiplier(final Item weapon,
 			final RPEntity defender) {
+		return getDamageMultiplier(weapon, defender, 0.0);
+	}
+
+	private static double getDamageMultiplier(final Item weapon,
+			final RPEntity defender, final double tacticalPenetration) {
 		if (weapon == null || !(defender instanceof Creature)) {
 			return 1.0;
 		}
@@ -52,8 +58,10 @@ public final class WeaponArmorInteractionService {
 		final double legendaryPenetration =
 				weapon.has(LEGENDARY_ARMOR_BREAKER_ATTRIBUTE)
 						? LEGENDARY_ARMOR_BREAKER_PENETRATION : 0.0;
-		final double penetration = combineIndependentFractions(normalPenetration,
+		double penetration = combineIndependentFractions(normalPenetration,
 				legendaryPenetration);
+		penetration = combineIndependentFractions(penetration,
+				tacticalPenetration);
 		return applyArmorPenetration(baseMultiplier, penetration);
 	}
 
@@ -86,6 +94,10 @@ public final class WeaponArmorInteractionService {
 	 * damage as weights, so a mixed set does not arbitrarily inherit only one
 	 * hand's matchup.
 	 *
+	 * Tactical armour affixes are resolved from the player who owns the equipped
+	 * weapon. Duplicate Hunter's Mark or Giant Slayer pieces intentionally do not
+	 * stack; the combat service reduces each effect to one conditional source.
+	 *
 	 * @param weapons held weapons taking part in the attack
 	 * @param defender attack target
 	 * @return multiplier to apply to the already calculated hit damage
@@ -97,6 +109,13 @@ public final class WeaponArmorInteractionService {
 			return 1.0;
 		}
 
+		final Player player = resolveOwningPlayer(weapons);
+		double tacticalPenetration =
+				EquipmentAffixCombatService.getHunterMarkArmorPenetration(
+						player, defender);
+		tacticalPenetration = combineIndependentFractions(tacticalPenetration,
+				EquipmentAffixCombatService.getGiantSlayerArmorPenetration(
+						player, defender));
 		double weightedMultiplier = 0.0;
 		double totalWeight = 0.0;
 		for (final Item weapon : weapons) {
@@ -111,7 +130,8 @@ public final class WeaponArmorInteractionService {
 			if (weight == 0.0) {
 				weight = 1.0;
 			}
-			weightedMultiplier += weight * getDamageMultiplier(weapon, defender);
+			weightedMultiplier += weight * getDamageMultiplier(weapon, defender,
+					tacticalPenetration);
 			totalWeight += weight;
 		}
 
@@ -215,6 +235,15 @@ public final class WeaponArmorInteractionService {
 		default:
 			return 1.0;
 		}
+	}
+
+	private static Player resolveOwningPlayer(final List<Item> weapons) {
+		for (final Item weapon : weapons) {
+			if (weapon != null && weapon.getContainer() instanceof Player) {
+				return (Player) weapon.getContainer();
+			}
+		}
+		return null;
 	}
 
 	private static double clampFraction(final double value) {

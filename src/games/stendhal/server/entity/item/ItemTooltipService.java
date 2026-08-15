@@ -135,6 +135,9 @@ public final class ItemTooltipService {
 				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS);
 		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS,
 				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS);
+		copyDouble(item, ItemTooltip.SPIKED_PLATING, ItemTooltip.SPIKED_PLATING);
+		copyDouble(item, ItemTooltip.HUNTER_MARK, ItemTooltip.HUNTER_MARK);
+		copyDouble(item, ItemTooltip.GIANT_SLAYER, ItemTooltip.GIANT_SLAYER);
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);

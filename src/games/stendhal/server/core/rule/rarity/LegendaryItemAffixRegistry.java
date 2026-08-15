@@ -216,7 +216,9 @@ public final class LegendaryItemAffixRegistry {
 		@Override
 		public boolean isEligible(final Item item) {
 			if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE.equals(id)) {
-				return LegendaryEquipmentAffixService.isBastionEligible(item);
+				// Keep the signature registered for old saved items and admin/dev
+				// materialization, but stop rolling new raw-DEF Bastions.
+				return false;
 			}
 			if (LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE.equals(id)) {
 				return LegendaryEquipmentAffixService.isIronWillEligible(item);

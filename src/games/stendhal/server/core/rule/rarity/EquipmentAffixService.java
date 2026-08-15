@@ -18,7 +18,11 @@ import games.stendhal.server.entity.status.StatusType;
 /** Rolls random affixes for armour and accessory instances. */
 public final class EquipmentAffixService {
 	public static final String FLAT_ATTACK_BONUS_ATTRIBUTE = "flat_attack_bonus";
+	/** Legacy materialized affix retained for saved items, but no longer rolled. */
 	public static final String FLAT_DEFENSE_BONUS_ATTRIBUTE = "flat_defense_bonus";
+	public static final String SPIKED_PLATING_ATTRIBUTE = "spiked_plating";
+	public static final String HUNTER_MARK_ATTRIBUTE = "hunter_mark";
+	public static final String GIANT_SLAYER_ATTRIBUTE = "giant_slayer";
 
 	public static final int MIN_ACCESSORY_ATTACK_BONUS = 1;
 	public static final int MAX_ACCESSORY_ATTACK_BONUS = 3;
@@ -32,10 +36,13 @@ public final class EquipmentAffixService {
 	public static final int MAX_ACCESSORY_CRITICAL_CHANCE_PERCENT = 7;
 	public static final int MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 5;
 	public static final int MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 15;
+	public static final int MIN_SPIKED_PLATING_PERCENT = 2;
+	public static final int MAX_SPIKED_PLATING_PERCENT = 4;
 
 	private static final Set<String> ARMOUR_CLASSES = classes("armor", "shield",
 			"helmet", "cloak", "boots", "glove", "gloves", "legs", "belt", "belts");
 	private static final Set<String> ACCESSORY_CLASSES = classes("ring", "necklace");
+	private static final Set<String> SPIKED_PLATING_CLASSES = classes("armor", "shield");
 
 	private EquipmentAffixService() {
 		// utility class
@@ -57,8 +64,22 @@ public final class EquipmentAffixService {
 		return isAccessory(item) && !item.has(FLAT_ATTACK_BONUS_ATTRIBUTE);
 	}
 
+	/** Legacy helper for persisted/dev items; fresh affix generation does not use it. */
 	public static boolean isFlatDefenseEligible(final Item item) {
 		return isEquipment(item) && !item.has(FLAT_DEFENSE_BONUS_ATTRIBUTE);
+	}
+
+	public static boolean isSpikedPlatingEligible(final Item item) {
+		return item != null && SPIKED_PLATING_CLASSES.contains(item.getItemClass())
+				&& !item.has(SPIKED_PLATING_ATTRIBUTE);
+	}
+
+	public static boolean isHunterMarkEligible(final Item item) {
+		return isArmour(item) && !item.has(HUNTER_MARK_ATTRIBUTE);
+	}
+
+	public static boolean isGiantSlayerEligible(final Item item) {
+		return isArmour(item) && !item.has(GIANT_SLAYER_ATTRIBUTE);
 	}
 
 	public static boolean isStatusResistanceEligible(final Item item,
@@ -103,8 +124,8 @@ public final class EquipmentAffixService {
 	}
 
 	/**
-	 * Adds an exact persistent flat DEF bonus. Jewellery rolls 1-3 points. Armour
-	 * rolls roughly 5-15% of its current rarity-scaled DEF, with at least 1 point.
+	 * Legacy materializer retained so saved/dev content can still be reproduced.
+	 * Fresh random generation replaces this raw DEF growth with tactical affixes.
 	 */
 	public static boolean applyFlatDefense(final Item item, final Random random) {
 		if (!isFlatDefenseEligible(item)) {
@@ -124,6 +145,29 @@ public final class EquipmentAffixService {
 		item.put(FLAT_DEFENSE_BONUS_ATTRIBUTE, bonus);
 		item.put("def", clampShort(currentDefense + bonus));
 		return true;
+	}
+
+	/** Rolls 2-4% melee damage reflection for body armour and shields. */
+	public static boolean applySpikedPlating(final Item item, final Random random) {
+		if (!isSpikedPlatingEligible(item)) {
+			return false;
+		}
+		final int percent = rollInclusive(random, MIN_SPIKED_PLATING_PERCENT,
+				MAX_SPIKED_PLATING_PERCENT);
+		item.put(SPIKED_PLATING_ATTRIBUTE, ItemRollPrecision.round(percent / 100.0));
+		return true;
+	}
+
+	/** Materializes the fixed Hunter's Mark tactical affix. */
+	public static boolean applyHunterMark(final Item item, final Random random) {
+		return applyMarker(item, HUNTER_MARK_ATTRIBUTE,
+				isHunterMarkEligible(item), random);
+	}
+
+	/** Materializes the fixed Giant Slayer tactical affix. */
+	public static boolean applyGiantSlayer(final Item item, final Random random) {
+		return applyMarker(item, GIANT_SLAYER_ATTRIBUTE,
+				isGiantSlayerEligible(item), random);
 	}
 
 	/** Rolls 10-25% resistance to one combat status and stores it as a fraction. */
@@ -173,6 +217,18 @@ public final class EquipmentAffixService {
 				ItemRollPrecision.round(rollInclusive(random,
 						MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT,
 						MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT) / 100.0));
+		return true;
+	}
+
+	private static boolean applyMarker(final Item item, final String attribute,
+			final boolean eligible, final Random random) {
+		if (!eligible) {
+			return false;
+		}
+		if (random == null) {
+			throw new IllegalArgumentException("Random source must not be null");
+		}
+		item.put(attribute, 1.0);
 		return true;
 	}
 

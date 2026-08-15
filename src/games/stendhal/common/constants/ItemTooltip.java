@@ -63,6 +63,9 @@ public final class ItemTooltip {
 	public static final String DISTANCE_DAMAGE = "distance_damage";
 	public static final String FLAT_ATTACK_BONUS = "flat_attack_bonus";
 	public static final String FLAT_DEFENSE_BONUS = "flat_defense_bonus";
+	public static final String SPIKED_PLATING = "spiked_plating";
+	public static final String HUNTER_MARK = "hunter_mark";
+	public static final String GIANT_SLAYER = "giant_slayer";
 	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
 	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
 	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";

@@ -3,6 +3,10 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
@@ -10,6 +14,7 @@ import marauroa.common.game.RPObject;
 final class LegendaryAffixPresentation {
 	private static final String LEGENDARY_TEXT_COLOR = "#f28c28";
 	private static final String LEGENDARY_NUMBER_COLOR = "#f3e2b8";
+	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 
 	private LegendaryAffixPresentation() {
 		// utility class
@@ -23,8 +28,19 @@ final class LegendaryAffixPresentation {
 		final StringBuilder result = new StringBuilder();
 		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
 				"dodatkowego ataku");
+		// Legacy saved/dev items keep their old materialized flat DEF line, but
+		// fresh generation no longer rolls this affix.
 		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
 				"dodatkowego pancerza");
+		appendSpikedPlating(result, object);
+		if (has(object, ItemTooltip.HUNTER_MARK)) {
+			appendRegularText(result, "Znak łowcy",
+					"trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza.");
+		}
+		if (has(object, ItemTooltip.GIANT_SLAYER)) {
+			appendRegularText(result, "Łowca olbrzymów",
+					"za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%.");
+		}
 
 		if (has(object, ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
 			appendFixed(result, "Głębokie Rany", new String[] {
@@ -140,6 +156,29 @@ final class LegendaryAffixPresentation {
 		return WeaponPerformanceCalculator.getTooltipValue(object, key) != null;
 	}
 
+	private static void appendSpikedPlating(final StringBuilder result,
+			final RPObject object) {
+		final String raw = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.SPIKED_PLATING);
+		if (raw == null) {
+			return;
+		}
+		final Double value = parseDouble(raw);
+		if (value == null || value.doubleValue() <= 0.0) {
+			return;
+		}
+		appendRegularText(result, "Kolczaste okucie",
+				"odbija " + ONE_DECIMAL.format(value.doubleValue() * 100.0)
+						+ "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 10%.");
+	}
+
+	private static void appendRegularText(final StringBuilder result,
+			final String title, final String text) {
+		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
+				.append(title).append(":</b> ").append(text)
+				.append("</font></div>");
+	}
+
 	private static void appendRegularRolled(final StringBuilder result,
 			final RPObject object, final String key, final String label) {
 		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
@@ -193,6 +232,19 @@ final class LegendaryAffixPresentation {
 		} catch (final NumberFormatException e) {
 			return null;
 		}
+	}
+
+	private static Double parseDouble(final String value) {
+		try {
+			return Double.valueOf(value);
+		} catch (final NumberFormatException e) {
+			return null;
+		}
+	}
+
+	private static DecimalFormat createDecimalFormat(final String pattern) {
+		return new DecimalFormat(pattern,
+				DecimalFormatSymbols.getInstance(Locale.forLanguageTag("pl-PL")));
 	}
 
 	private static void beginLine(final StringBuilder result, final String title) {

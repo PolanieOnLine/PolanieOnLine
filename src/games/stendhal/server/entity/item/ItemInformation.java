@@ -1,8 +1,8 @@
 /* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -82,6 +82,12 @@ public class ItemInformation extends Item {
 				Type.SHORT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE,
 				Type.SHORT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentAffixService.HUNTER_MARK_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentAffixService.GIANT_SLAYER_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
 				StatusType.POISONED), Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
