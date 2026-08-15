@@ -165,7 +165,7 @@
 
 	<item name="glif Strzyboga">
 		<type class="glyph" subclass="glyph_rate" tileid="-1"/>
-		<description>Oto glif Strzyboga. Zmniejsza ciężar wolniejszych broni: jeśli czas ataku broni jest większy niż 2, skraca go o 1. Nie może skrócić czasu ataku poniżej 2.</description>
+		<description>Oto glif Strzyboga. Zmniejsza wagę wolniejszych broni o 1, jeśli ich waga jest większa niż 2. Nie może zmniejszyć wagi broni poniżej 2.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<rate_increase value="1"/>
