@@ -126,9 +126,7 @@ public class EquipmentAffixCombatServiceTest {
 	}
 
 	private Player player(final String name) {
-		final Player player = PlayerTestHelper.createPlayer(name);
-		PlayerTestHelper.addEmptySlots(player);
-		return player;
+		return PlayerTestHelper.createPlayer(name);
 	}
 
 	private Creature creature(final int level) {
