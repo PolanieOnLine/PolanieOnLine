@@ -32,12 +32,9 @@ public class Shovel extends AreaUseItem {
 	private static final String ring_quest_info = "pierścionek Ariego";
 
 	private static final String glyph_fragment_quest_slot = "glyph_fragment";
-	private static final Map<String, Double> fragmentChances = new HashMap<>();
-	static {
-		fragmentChances.put("zniszczony", 60.0);
-		fragmentChances.put("spękany", 30.0);
-		fragmentChances.put("nadkruszony", 15.0);
-	}
+	private static final double damagedFragmentChance = 60.0;
+	private static final double crackedFragmentChance = 30.0;
+	private static final double crumbledFragmentChance = 15.0;
 	private static final Map<String, String> fragmentSprite = new HashMap<>();
 	static {
 		fragmentSprite.put("zniszczony", "damaged_glyph_fragment");
@@ -112,7 +109,7 @@ public class Shovel extends AreaUseItem {
 								item.setEntitySubclass(image);
 							}
 							item.setItemData(fragment + " " + item.getName());
-							item.setDescription("Oto " + item.getItemData() + ". Dostarcz go Omarowi, jest szansa jeszcze jego zrekonstruowania!");
+							item.setDescription("Oto " + item.getItemData() + ". To fragment dawnej matrycy glifu. Omar może spróbować go zrekonstruować.");
 
 							player.addXP(1);
 							player.equipOrPutOnGround(item);
@@ -121,16 +118,15 @@ public class Shovel extends AreaUseItem {
 							setGlifQuestAction(player, "found_fragment", fragment, expectedMap, fragmentX, fragmentY);
 						} else {
 							if (attemptCount < 2) {
-								player.sendPrivateText("Spróbuj wkopać się głębiej!");
+								player.sendPrivateText("W piasku nie ma jeszcze śladu matrycy. Spróbuj wkopać się głębiej!");
 								setGlifQuestAction(player, "start", expectedMap, fragmentX, fragmentY, (attemptCount + 1));
 							} else {
 								int[] newCoordinates = getRandomCoordinates(zone);
 								setGlifQuestAction(player, "start", expectedMap, newCoordinates[0], newCoordinates[1], 0);
 								sendApproximateCoordinates(player, newCoordinates[0], newCoordinates[1]);
 							}
-						}
 					} else if (zone.getName().equals(expectedMap) && nearItem(x, y, fragmentX, fragmentY)) {
-						player.sendPrivateText("Widzisz ślady stóp na piasku. Ktoś już czegoś tutaj szukał, może fragment znajduje się niedaleko.");
+						player.sendPrivateText("Widzisz ślady dawnych wykopalisk. Fragment matrycy może znajdować się niedaleko.");
 					} else if (!zone.getName().equals(expectedMap)) {
 						player.sendPrivateText("Tutaj tego chyba nie znajdę...");
 					}
@@ -180,32 +176,42 @@ public class Shovel extends AreaUseItem {
 	}
 
 	/**
-	 * Determines the type of fragment the player has found based on defined chances.
-	 * 
+	 * Determines the state of a found fragment. Each state uses a separate,
+	 * conditional roll: 60% for damaged, then 30% for cracked if that failed,
+	 * then 15% for crumbled if both previous rolls failed.
+	 *
 	 * @return
-	 *	 The type of fragment found or null if no fragment is found.
+	 *	 The type of fragment found or null if all three rolls fail.
 	 */
 	private String determineFragment() {
-		Random random = new Random();
-		double randValue = random.nextDouble() * 100;
+		final Random random = new Random();
+		return determineFragment(
+				random.nextDouble() * 100.0,
+				random.nextDouble() * 100.0,
+				random.nextDouble() * 100.0);
+	}
 
-		double cumulativeChance = 0.0;
-		for (Map.Entry<String, Double> entry : fragmentChances.entrySet()) {
-			cumulativeChance += entry.getValue();
-			if (randValue <= cumulativeChance) {
-				return entry.getKey();
-			}
+	static String determineFragment(final double damagedRoll,
+			final double crackedRoll, final double crumbledRoll) {
+		if (damagedRoll < damagedFragmentChance) {
+			return "zniszczony";
+		}
+		if (crackedRoll < crackedFragmentChance) {
+			return "spękany";
+		}
+		if (crumbledRoll < crumbledFragmentChance) {
+			return "nadkruszony";
 		}
 		return null;
 	}
 
 	/**
 	 * Generates random X and Y coordinates within the map boundaries.
-	 * 
+	 *
 	 * @param zone
 	 *	 The zone (map) where the new coordinates should be generated.
 	 * @return
-	 *	 An array containing the new random X and Y coordinates.
+	 *	 An array containing the X and Y coordinates.
 	 */
 	private int[] getRandomCoordinates(final StendhalRPZone zone) {
 		Random random = new Random();
