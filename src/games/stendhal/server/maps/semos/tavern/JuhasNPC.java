@@ -42,19 +42,19 @@ public class JuhasNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Pozdrawiam.");
-				addJob("Sprzedaję #'magiczne zwoje'. Zapytaj mnie o #ofertę.");
-				addHelp("Sprzedaję #zwoje, które mogą uratować Tobie życie.");
+				addJob("Handluję #'magicznymi zwojami' i znam kilka mniej zwyczajnych sposobów podróżowania. Zapytaj mnie o #ofertę.");
+				addHelp("Większość moich zwojów prowadzi prosto do znanego miejsca. Bilet turystyczny działa inaczej i korzysta ze starej magii przejść.");
 
 				add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 						null,
 						ConversationStates.ATTENDING,
-						"Nie mam dla Ciebie zadania. Jedynie mam do zaoferowania #'magiczne zwoje' takie jak #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'.", null);
+						"Nie zlecam zadań. Sprzedaję #'magiczne zwoje' takie jak #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'. Jeśli interesuje cię ten ostatni, zapytaj mnie o niego osobno.", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("magiczne zwoje", "zwoje"),
 						null,
 						ConversationStates.ATTENDING,
-						"#Oferuję zwoje i bilety, które pomagają w szybszym podróżowaniu: #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'! Powiedz: kupię <ilość> <nazwa zwoju>.", null);
+						"#Oferuję zwoje i bilety, które pomagają w szybszym podróżowaniu: #'zwój tatrzański', #'zwój krakowski', #'zwój wieliczka', #'zwój deniran', #'zwój ados', #'zwój fado', #'zwój kalavan', #'zwój kirdneh' oraz #'bilet turystyczny'. Powiedz: kupię <ilość> <nazwa zwoju>.", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("tatrzański", "zwój tatrzański"),
@@ -96,25 +96,25 @@ public class JuhasNPC implements ZoneConfigurator {
 						Arrays.asList("fado", "zwój fado"),
 						null,
 						ConversationStates.ATTENDING,
-						"Zwój fado zabiera do miasta Fado znajdującego się na południowy-zachód od Semos!", null);
+						"Zwój fado zabiera do miasta Fado znajdującego się na południowy zachód od Semos!", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("kalavan", "zwój kalavan"),
 						null,
 						ConversationStates.ATTENDING,
-						"Zwój kalavan zabiera natychmiast daleko do miasta Kalavan znajdującego się na południowy-zachód od Semos, za miastem Fado!", null);
+						"Zwój kalavan zabiera natychmiast daleko do miasta Kalavan znajdującego się na południowy zachód od Semos, za miastem Fado!", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("kirdneh", "zwój kirdneh"),
 						null,
 						ConversationStates.ATTENDING,
-						"Zwój kirdneh przenosi do miasta Kirdneh znajdującego się na południowy-zachód od Semos, do którego dostępu broni rzeka Orril!", null);
+						"Zwój kirdneh przenosi do miasta Kirdneh znajdującego się na południowy zachód od Semos, do którego dostępu broni rzeka Orril!", null);
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("turystyczny", "bilet turystyczny"),
 						null,
 						ConversationStates.ATTENDING,
-						"Bilet turystyczny zabiera na pustynie w pobliżu piramid. Udając się tam zaopatrz się w wodę, a także pamiętaj o upalnych dniach i zimnych nocach oraz niebezpiecznych burzach piaskowych!", null);
+						"Bilet turystyczny to ustabilizowany znak przejścia prowadzący na pustynię w pobliżu piramid. Nazwa brzmi niewinnie celowo. Wzór dostałem od Ozo z Zakopanego, który pracuje z dużo bardziej nieprzewidywalnymi przejściami. Jeśli wrócisz z pustyni cały, może uznać, że warto z tobą rozmawiać. Zabierz ze sobą wodę i przygotuj się na upał, chłodne noce oraz burze piaskowe.", null);
 
 				addGoodbye("Do widzenia i udanej podróży.");
 			}
@@ -125,7 +125,7 @@ public class JuhasNPC implements ZoneConfigurator {
 			}
 		};
 
-		juhas.setDescription("Oto Juhas, który zasłania się nieco swoim kapeluszem.");
+		juhas.setDescription("Oto Juhas, handlarz zwojami, który wie więcej o magii podróży, niż zdradza na pierwszy rzut oka.");
 		juhas.setEntityClass("npcjuhas");
 		juhas.setGender("M");
 		juhas.setPosition(10, 6);
