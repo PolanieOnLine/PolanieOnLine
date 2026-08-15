@@ -42,6 +42,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected String begOnGreeting = null;
 	protected String respondToRequest = null;
+	protected String respondToPreconditionIssue = "Najpierw musisz ukończyć wcześniejsze zadania.";
 	protected String respondToUnrepeatableRequest = "Dziękuję za pomoc. Nie mam dla ciebie nowego zadania.";
 	protected String respondToRepeatedRequest = null;
 	protected String respondToAccept = "Dziękuję.";
@@ -50,6 +51,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected double rejectionKarmaPenalty = 2.0;
 	protected List<String> lastRespondTo = null;
 	protected Map<List<String>, String> additionalReplies = new HashMap<>();
+	protected List<ChatAction> acceptWith = new LinkedList<>();
 
 	// hide constructor
 	QuestOfferBuilder() {
@@ -68,6 +70,12 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		if (this.respondToRepeatedRequest == null) {
 			this.respondToRepeatedRequest = respondToRequest;
 		}
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T respondToPreconditionIssue(String respondToPreconditionIssue) {
+		this.respondToPreconditionIssue = respondToPreconditionIssue;
 		return (T) this;
 	}
 
@@ -92,6 +100,12 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	@SuppressWarnings("unchecked")
 	public T respondToReject(String respondToReject) {
 		this.respondToReject = respondToReject;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T acceptWith(ChatAction action) {
+		this.acceptWith.add(action);
 		return (T) this;
 	}
 
@@ -165,6 +179,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	}
 
 	public void build(SpeakerNPC npc, String questSlot, QuestTaskBuilder task, ChatCondition questCompletedCondition, int repeatableAfterMinutes) {
+		ChatCondition questPreCondition = task.buildQuestPreCondition(questSlot);
 		ChatAction startQuestAction = task.buildStartQuestAction(questSlot);
 		ChatAction rejectQuestAction = task.buildRejectQuestAction(questSlot);
 
@@ -172,7 +187,9 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 			npc.add(ConversationStates.IDLE,
 					ConversationPhrases.GREETING_MESSAGES,
 					new OrCondition(
-							new QuestNotStartedCondition(questSlot),
+							new AndCondition(
+									new QuestNotStartedCondition(questSlot),
+									questPreCondition),
 							new AndCondition(
 									new QuestActiveCondition(questSlot),
 									new NotCondition(questCompletedCondition)
@@ -185,9 +202,20 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(questSlot),
+				new AndCondition(
+						new QuestNotStartedCondition(questSlot),
+						questPreCondition),
 				ConversationStates.QUEST_OFFERED,
 				respondToRequest,
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(
+						new QuestNotStartedCondition(questSlot),
+						new NotCondition(questPreCondition)),
+				ConversationStates.ATTENDING,
+				respondToPreconditionIssue,
 				null);
 
 		LinkedList<String> triggers = new LinkedList<String>();
@@ -208,9 +236,20 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(
 						new QuestCompletedCondition(questSlot),
-						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes)),
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						questPreCondition),
 					ConversationStates.QUEST_OFFERED,
 					respondToRepeatedRequest,
+					null);
+
+			npc.add(ConversationStates.ATTENDING,
+					ConversationPhrases.QUEST_MESSAGES,
+					new AndCondition(
+						new QuestCompletedCondition(questSlot),
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						new NotCondition(questPreCondition)),
+					ConversationStates.ATTENDING,
+					respondToPreconditionIssue,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
@@ -235,6 +274,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		if (startQuestAction != null) {
 			start.add(startQuestAction);
 		}
+		start.addAll(acceptWith);
 
 		npc.add(
 				ConversationStates.QUEST_OFFERED,
