@@ -80,7 +80,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	private void step_1() {
-		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
@@ -91,10 +90,9 @@ public class GoralskiCollector3 extends AbstractQuest {
 						}
 					}),
 				ConversationStates.QUEST_3_OFFERED,
-				"Witoj ponownie młody bohaterze... Mam kolejne #zadanie dla Ciebie... Powiedz tylko #'kolekcja', a będę wiedział, że chciałbyś mi pomóc.",
+				"Witoj ponownie. Strój i zbrojownia już opowiadają kawał naszej historii. Zostało mi ostatnie #zadanie, żeby domknąć izbę pamięci.",
 				null);
 
-		// player asks what items are needed
 		npc.add(ConversationStates.QUEST_3_OFFERED,
 				Arrays.asList("collection", "kolekcja", "zadanie"),
 				null,
@@ -104,19 +102,19 @@ public class GoralskiCollector3 extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingitems3(player, true);
-						entity.say("Brakuje "
+						entity.say("Chcę stworzyć reprezentacyjny zestaw gazdy, który połączy odświętny strój, ozdoby i broń. Część tych rzeczy już kiedyś trafiła w nasze ręce. Do pełnego zestawu brakuje "
 								+ Grammar.quantityplnoun(needed2.size(), "przedmiot")
-								+ ". To jest "
+								+ ". Są to "
 								+ Grammar.enumerateCollection(needed2)
-								+ ". Znajdziesz dla mnie?");
+								+ ". Pomożesz mi zakończyć tę pracę?");
 					}
 
 					@Override
 					public String toString() {
 						return "list missingitems3";
 					}
-				});
-		// player says yes
+			});
+
 		npc.add(ConversationStates.QUEST_3_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -125,7 +123,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
-						entity.say("Wspaniale, ale się cieszę! Do widzenia!");
+						entity.say("Dziękuję. Kiedy zbierzemy ten zestaw, izba pamięci będzie naprawdę kompletna.");
 						player.setQuest(QUEST_SLOT, "");
 						player.addKarma(5.0);
 					}
@@ -136,7 +134,6 @@ public class GoralskiCollector3 extends AbstractQuest {
 					}
 				});
 
-		// player is not willing to help
 		npc.add(ConversationStates.QUEST_3_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
@@ -145,7 +142,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
-						entity.say("Cóż może ktoś inny mi pomoże.");
+						entity.say("Rozumiem. Ostatni zestaw może jeszcze poczekać.");
 						player.addKarma(-5.0);
 					}
 
@@ -166,11 +163,11 @@ public class GoralskiCollector3 extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("Nie poznaję " + obj.getOriginal() + ". Czy mógłbyś podać mi inną nazwę przedmiotu?");
+							raiser.say("Nie poznaję " + obj.getOriginal() + ". Podaj proszę nazwę przedmiotu, o który pytasz.");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałem tego przedtem. Cóż to jest ");
+							stringBuilder.append("Ten przedmiot będzie częścią reprezentacyjnego zestawu. To ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -178,7 +175,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
 							}
 
-							stringBuilder.append(". Przepraszam, ale to mi nie pomaga! Znajdziesz je wszystkie?");
+							stringBuilder.append(". Jeśli masz odpowiedni egzemplarz, przynieś go do izby pamięci.");
 							raiser.say(stringBuilder.toString());
 						}
 					}
@@ -192,21 +189,19 @@ public class GoralskiCollector3 extends AbstractQuest {
 	}
 
 	private void step_2() {
-		// Just find the items and bring them to Gazda Bartek.
 	}
 
 	private void step_3() {
-		// player returns while quest is still active
 		npc.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.QUESTION_3,
-				"Witaj z powrotem! Przyniosłeś ze sobą jakieś #przedmioty góralskie?", null);
-		// player asks what exactly is missing
+				"Witaj z powrotem. Przyniosłeś coś do reprezentacyjnego #zestawu?", null);
+
 		npc.add(ConversationStates.QUESTION_3,
-				Arrays.asList("items", "przedmioty", "góralskie", "góral"),
+				Arrays.asList("items", "przedmioty", "góralskie", "góral", "zestaw"),
 				null,
 				ConversationStates.QUESTION_3,
 				null,
@@ -214,25 +209,24 @@ public class GoralskiCollector3 extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser entity) {
 						final List<String> needed2 = missingitems3(player, true);
-						entity.say("Chcę "
+						entity.say("Do pełnego zestawu brakuje "
 								+ Grammar.quantityplnoun(needed2.size(), "przedmiot")
-								+ ". To jest "
+								+ ". Są to "
 								+ Grammar.enumerateCollection(needed2)
-								+ ". Przyniosłeś jakiś?");
+								+ ". Masz któryś przy sobie?");
 					}
 
 					@Override
 					public String toString() {
 						return "enumerate missingitems3";
 					}
-				});
+			});
 
-		// player says he has a required item with him
 		npc.add(ConversationStates.QUESTION_3,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.QUESTION_3,
-				"Ooo! Jakie #przedmioty góralskie przyniosłeś mi?",
+				"Dobrze. Pokaż, co udało ci się zdobyć.",
 				null);
 
 		for(final String itemName : NEEDEDGORAL3) {
@@ -248,22 +242,19 @@ public class GoralskiCollector3 extends AbstractQuest {
 
 						if (missing.contains(itemName)) {
 							if (player.isEquippedWithItemdata(itemName, "burglary")) {
-								entity.say("Wybacz... Skradzionych rzeczy nie zamierzam przyjąć!");
+								entity.say("Skradzionych rzeczy nie przyjmę. Izba pamięci ma przechowywać tradycję, a nie cudzą krzywdę.");
 								return;
 							}
 
 							if (player.drop(itemName)) {
-								// register item as done
 								final String doneText = player.getQuest(QUEST_SLOT);
 								player.setQuest(QUEST_SLOT, doneText + ";" + itemName);
 
-								// check if the player has brought all items
 								missing = missingitems3(player, true);
 
 								if (missing.isEmpty()) {
 									rewardPlayer(player);
-									entity.say("To niewiarygodne, mogę zobaczyć to z bliska? Wielkie dzięki! Mam dla Ciebie niespodziankę!\n"
-													+ "Oto spinka! " + player.getGenderVerb("otrzymałem") + " ją od swoich przodków, a teraz będzie należeć do Ciebie! Niech Ci dobrze służy.");
+									entity.say("Gotowe. Mamy pełny strój, zbrojownię i reprezentacyjny zestaw gazdy. Dzięki tobie ta historia zostanie tutaj na długo. Mam dla ciebie spinkę po moich przodkach. Skoro pomogłeś ocalić ich pamięć, chcę, żeby teraz należała do ciebie.");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item spinka = SingletonRepository.getEntityManager().getItem(
 											"spinka", ItemCreationContext.quest());
@@ -272,15 +263,15 @@ public class GoralskiCollector3 extends AbstractQuest {
 									player.notifyWorldAboutChanges();
 									entity.setCurrentState(ConversationStates.ATTENDING);
 								} else {
-									entity.say("Dziękuję! Co jeszcze mi przyniosłeś?");
+									entity.say("Dziękuję. Ten element już mamy. Co jeszcze przyniosłeś?");
 								}
 							} else {
-								entity.say("Może jestem stary, ale nie posiadasz "
+								entity.say("Nie masz przy sobie "
 												+ itemName
-												+ " . Czego tak naprawdę chcesz ode mnie?");
+												+ ". Sprawdź proszę, czy niczego nie zostawiłeś po drodze.");
 							}
 						} else {
-							entity.say("Już przyniosłeś mi ten góralski przedmiot! Zapomniałeś już?");
+							entity.say("Ten przedmiot już trafił do zestawu. Poszukajmy pozostałych.");
 						}
 					}
 
@@ -300,10 +291,9 @@ public class GoralskiCollector3 extends AbstractQuest {
 					}
 				},
 				ConversationStates.ATTENDING,
-				"Dobrze. Jeżeli potrzebujesz pomocy to powiedz.",
+				"Dobrze. Jeśli chcesz sobie przypomnieć, czego szukamy, zapytaj o zestaw.",
 				null);
 
-		// player says he didn't bring any items to different question
 		npc.add(ConversationStates.QUESTION_3,
 				ConversationPhrases.NO_MESSAGES,
 				new ChatCondition() {
@@ -311,25 +301,23 @@ public class GoralskiCollector3 extends AbstractQuest {
 					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 						return !player.isQuestCompleted(QUEST_SLOT);
 					}
-				}, ConversationStates.ATTENDING, "Dobrze w takim razie wróć później.",
+				}, ConversationStates.ATTENDING, "Dobrze. Wróć, kiedy znajdziesz kolejny element zestawu.",
 				null);
 
-		// player returns after finishing the quest but not rewarded
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "done")),
 				ConversationStates.ATTENDING,
-				"Witoj, a oto twoja nagroda, spójrz tylko na tą lśniącą złotym blaskiem #'spinke', czyż nie jest ona prześliczna? Proszę weź nią.. posiada magiczne właściwości... chroni odpowiednio osobę noszącą ten przedmiot. Niech Ci ona służy!",
+				"Witoj. Izba pamięci jest już kompletna, a ja wciąż jestem ci winien nagrodę. Przyjmij tę #'spinke'. Należała do moich przodków i chcę, żeby teraz służyła tobie.",
 				new MultipleActions(new EquipItemAction("spinka", 1, true), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
-		// player returns after finishing the quest and was rewarded
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "done;rewarded")),
 				ConversationStates.ATTENDING,
-				"Jeszcze raz dziękuję za okazaną pomoc!",
+				"Dzięki tobie izba pamięci jest kompletna. Jeszcze raz dziękuję za pomoc.",
 				null);
 	}
 
@@ -342,7 +330,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Góralski Kolekcjoner III",
-				"Kolekcjoner poprosił mnie abym przyniósł ponownie ubrania i rzadką ciupagę z wąsem.",
+				"Gazda Bartek chce domknąć izbę pamięci reprezentacyjnym zestawem łączącym strój, ozdoby i rzadką złotą ciupagę z wąsem.",
 				false);
 		step_1();
 		step_2();
@@ -351,16 +339,16 @@ public class GoralskiCollector3 extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("Jestem na etapie gromadzenia przedmiotów dla Gazdy Bartka, potrzebuje jeszcze " + Grammar.enumerateCollection(missingitems3(player, false)) + ".");
-			} else {
-				res.add(player.getGenderVerb("Znalazłem") + " wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknie lśniącym naszyjnikiem jakim jest spinka.");
-			}
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
+		}
+		if (!isCompleted(player)) {
+			res.add("Pomagam Gazdzie Bartkowi przygotować ostatni reprezentacyjny zestaw do izby pamięci. Brakuje jeszcze " + Grammar.enumerateCollection(missingitems3(player, false)) + ".");
+		} else {
+			res.add(player.getGenderVerb("Ukończyłem") + " wraz z Gazdą Bartkiem izbę pamięci góralskiej tradycji. W podziękowaniu otrzymałem spinkę należącą do jego przodków.");
+		}
+		return res;
 	}
 
 	@Override
