@@ -52,10 +52,28 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected List<String> lastRespondTo = null;
 	protected Map<List<String>, String> additionalReplies = new HashMap<>();
 	protected List<ChatAction> acceptWith = new LinkedList<>();
+	protected ConversationStates offerState = ConversationStates.QUEST_OFFERED;
 
 	// hide constructor
 	QuestOfferBuilder() {
 		super();
+	}
+
+	/**
+	 * Selects the conversation state used while this quest offer waits for an
+	 * answer. NPCs which offer more than one quest must use distinct states so
+	 * their yes/no transitions cannot overlap.
+	 *
+	 * @param offerState state used by this offer
+	 * @return this builder
+	 */
+	@SuppressWarnings("unchecked")
+	public T offerState(final ConversationStates offerState) {
+		if (offerState == null) {
+			throw new IllegalArgumentException("offerState must not be null");
+		}
+		this.offerState = offerState;
+		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -195,7 +213,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 									new NotCondition(questCompletedCondition)
 							)
 					),
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					begOnGreeting,
 					null);
 		}
@@ -205,7 +223,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 				new AndCondition(
 						new QuestNotStartedCondition(questSlot),
 						questPreCondition),
-				ConversationStates.QUEST_OFFERED,
+				offerState,
 				respondToRequest,
 				null);
 
@@ -238,7 +256,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
 						questPreCondition),
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					respondToRepeatedRequest,
 					null);
 
@@ -277,14 +295,14 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		start.addAll(acceptWith);
 
 		npc.add(
-				ConversationStates.QUEST_OFFERED,
+				offerState,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				respondToAccept,
 				new MultipleActions(start));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(offerState,
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				respondToReject,
@@ -294,10 +312,10 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 
 		for (Map.Entry<List<String>, String> entry : additionalReplies.entrySet()) {
 			npc.add(
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					entry.getKey(),
 					null,
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					entry.getValue(),
 					null);
 		}
