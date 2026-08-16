@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -40,6 +41,7 @@ public class KillMtElves implements QuestManuscript {
 			.whenQuestWasCompleted("Czarnoksiężnik uznał drugą próbę za zakończoną i dał mi hełm kolczy, który ma się przydać przy jego ostatnim doświadczeniu.");
 
 		quest.offer()
+			.offerState(ConversationStates.QUEST_2_OFFERED)
 			.respondToPreconditionIssue("Najpierw oczyść moją starą wieżę. Nie będę omawiał z tobą poważniejszych spraw, dopóki nie zobaczę, że potrafisz dokończyć pierwsze zadanie.")
 			.respondToRequest("Poradziłeś sobie z wieżą, więc mogę powiedzieć więcej. Górskie elfy odcięły mi dostęp do miejsc potrzebnych do badań i nie zamierzają ustąpić. Chcę, żebyś przełamał ich opór. Podejmiesz się tego?")
 			.respondToUnrepeatableRequest("Sprawa górskich elfów jest już zakończona. Teraz interesuje mnie ostatni etap moich badań.")
