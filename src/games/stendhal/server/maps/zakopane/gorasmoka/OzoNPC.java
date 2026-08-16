@@ -54,15 +54,15 @@ public class OzoNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addJob("Chyba wiesz czym się zajmuję.");
-				addHelp("Jeśli mam być z Tobą szczery koleś to wiedz, że nie pomogę Ci z tym zbytnio, lepiej odejdź do miasta szukając odpowiedzi.");
-				addQuest("Zadanie? u mnie?..ha ha... .");
-				addOffer("Hm, mam coś co może cię zainteresować, #'magiczny bilet'.");
+				addJob("Zajmuję się starymi znakami przejścia. Juhas sprzedaje ich stabilniejsze odmiany. Ja zachowuję wzory, których działania nie da się tak łatwo przewidzieć.");
+				addHelp("Jeśli nigdy nie wróciłeś z pustyni po użyciu biletu Juhasa, zacznij od niego. Nie powierzam swoich przejść komuś, kto nie zna nawet bezpieczniejszej odmiany tej magii.");
+				addQuest("Nie potrzebuję posłańca ani zbieracza. Jeśli chcesz poznać moje przejścia, najpierw udowodnij, że potrafisz z nich wracać.");
+				addOffer("Mam #'magiczny bilet', ale nie sprzedaję go każdemu. Najpierw muszę wiedzieć, czy masz doświadczenie z biletem Juhasa.");
 				addGoodbye("Do widzenia.");
 			}
 		};
 
-		ozoNPC.setDescription("Oto Ozo, który wygląda jakby handlował czymś przedziwnym.");
+		ozoNPC.setDescription("Oto Ozo, badacz starych znaków przejścia, który z dużą ostrożnością wybiera ludzi dopuszczanych do swojej magii.");
 		ozoNPC.setEntityClass("scarletarmynpc");
 		ozoNPC.setGender("M");
 		ozoNPC.setPosition(33, 49);

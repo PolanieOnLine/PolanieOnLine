@@ -48,8 +48,6 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	private static final String LUD4 = "zabawka_leo";
 
 	private void start() {
-		String text = "I ja mam Tobie zaufać? Gdzie pomogłeś mojemu ludowi?!";
-
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
 			ConversationStates.QUEST_OFFERED, null,
@@ -62,27 +60,27 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 								if (player.isQuestCompleted(LUD3)) {
 									if (player.isQuestCompleted(LUD4)) {
 										if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-											raiser.say("Potrzebuję nowego królewskiego płaszcza. Potrzebuję od Ciebie #'czarnego płaszcza smoczego' i to 10 sztuk! W nagrodę otrzymasz ode mnie status szlachcica w na tych ziemiach. Pomożesz?");
+											raiser.say("Wieści o twojej pomocy dotarły na mój dwór. Udowodniłeś, że potrafisz służyć ludziom, a nie tylko własnej sławie. Mój królewski krawiec ma przygotować nowy płaszcz ceremonialny. Potrzebuje dziesięciu #'czarnych płaszczy smoczych', ponieważ wybierze z nich tylko najlepiej zachowane fragmenty skóry i łusek. Jeśli je zdobędziesz, nadam ci szlachectwo ziem Kraka i wręczę nagrodę z królewskiej zbrojowni. Pomożesz?");
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else {
-										npc.say(text + " Poszukaj małego chłopca o imieniu Leo, zgubił swojego ulubionego pluszaka i nie może odzyskać!");
+										npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Poszukaj chłopca o imieniu Leo. Zgubił swojego ulubionego pluszaka i potrzebuje pomocy.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say(text + " Poszukaj dziewczynki o imieniu Balbina, potrzebujego płaszcza do spełnienia swego marzenia!");
+									npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Poszukaj Balbiny i pomóż jej spełnić marzenie związane z płaszczem.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say(text + " Poszukaj rybaka o imieniu Tomasz, potrzebuje pomocy przy naprawie jego łódki!");
+								npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Rybak Tomasz potrzebuje pomocy przy naprawie łodzi.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say(text + " Poszukaj Farmera Bruno, bo od kilku tygodni nie można kupić nawet jednego chleba!");
+							npc.say("Zanim powierzę ci sprawę mojego dworu, pokaż, że dbasz o mieszkańców. Farmer Bruno ma problem z dostawami mąki, przez co brakuje chleba.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Moja armia królewska potrzebuje wyposażenia! Nasz gwardzista złożył zamówienie u miejskiego kowala! Lepiej mu pomóż jeśli Ci na tym zależy.");
+						npc.say("Najpierw pomóż królewskiej straży. Gwardzista złożył zamówienie u miejskiego kowala i bez twojej pomocy żołnierze nie otrzymają potrzebnego wyposażenia.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}
@@ -91,8 +89,8 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.IDLE,
-			"Jako władca ziem Polan, dziękuję Ci za pomoc!",
+			ConversationStates.ATTENDING,
+			"Szlachectwo, które ci nadałem, pozostaje świadectwem twojej służby mieszkańcom i Koronie. Noś ten zaszczyt godnie.",
 			null);
 
 		npc.add(
@@ -100,7 +98,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Świetnie... Będę za tobą czekał mieszczaninie.",
+			"Dobrze. Wróć, gdy zdobędziesz dziesięć czarnych płaszczy smoczych. Krawiec wybierze z nich najlepszy materiał.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(
@@ -108,28 +106,35 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Może nie zasługujesz na miano szlachcica... Precz!",
+			"Rozumiem. Szlachectwo wymaga gotowości do służby. Wróć, jeśli zmienisz zdanie.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
 	}
 
 	private void done() {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
-					new PlayerHasItemWithHimCondition("czarny płaszcz smoczy",10)),
+					new QuestCompletedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Oto i przybył mój wysłannik za smoczymi płaszczami. Czuję, iż coś masz dla mnie, prawda?", null);
+			"Witaj ponownie, szlachcicu. Pamiętam twoją służbę moim ludziom i dworowi.",
+			null);
+
+		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
+					new PlayerHasItemWithHimCondition("czarny płaszcz smoczy", 10)),
+			ConversationStates.ATTENDING,
+			"Widzę, że przyniosłeś smocze płaszcze. Czy mam przekazać je królewskiemu krawcowi?", null);
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
-					new NotCondition(new PlayerHasItemWithHimCondition("czarny płaszcz smoczy",10))),
-			ConversationStates.IDLE,
-			"Nie będę się powtarzał...",
+					new NotCondition(new PlayerHasItemWithHimCondition("czarny płaszcz smoczy", 10))),
+			ConversationStates.ATTENDING,
+			"Królewski krawiec wciąż czeka na dziesięć czarnych płaszczy smoczych. Wróć, gdy zbierzesz cały materiał.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("czarny płaszcz smoczy",10));
+		reward.add(new DropItemAction("czarny płaszcz smoczy", 10));
 		reward.add(new IncreaseXPAction(100000));
 		reward.add(new EquipItemAction("tarcza cieni", 1, true));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
@@ -139,7 +144,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
-			"Dziękuję Ci za pomoc! Teraz mój królewski krawiec uszyje dla mnie nowy płaszcz.",
+			"Doskonale. Krawiec wybierze z tych płaszczy najlepiej zachowane fragmenty i przygotuje strój godny Korony. Za twoją służbę moim ludziom i dworowi nadaję ci szlachectwo ziem Kraka. Przyjmij także tarczę cieni z królewskiej zbrojowni. Od dziś na moim dworze będziesz witany jako szlachcic.",
 			new MultipleActions(reward));
 
 		npc.add(
@@ -147,7 +152,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING,
-			"Chyba o coś Ciebie prosiłem, prawda?",
+			"Dobrze. Zachowaj płaszcze i wróć, gdy będziesz gotowy przekazać je krawcowi.",
 			null);
 	}
 
@@ -155,7 +160,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Królewski Płaszcz",
-				"Król Krak - władca ziem Polan potrzebuje nowego królewskiego płaszcza.",
+				"Król Krak potrzebuje najlepszego smoczego materiału na ceremonialny płaszcz. Pomoc dla jego ludzi może otworzyć drogę do królewskiego szlachectwa.",
 				false);
 		start();
 		done();
@@ -167,19 +172,19 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(player.getGenderVerb("Rozmawiałem") + " z królem Krakiem. Za pomoc obiecał nadać mi status szlachcica.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z królem Krakiem. Uznał moje wcześniejsze czyny za dowód, że można mi powierzyć sprawę królewskiego dworu.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie zamierzam pomóc królowi.");
+			res.add(player.getGenderVerb("Odmówiłem") + " zdobycia materiału na królewski płaszcz.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(player.getGenderVerb("Postanowiłem") + " pomóc królowi w wykonaniu nowego płaszcza.");
+			res.add(player.getGenderVerb("Zgodziłem się") + " zdobyć 10 czarnych płaszczy smoczych. Królewski krawiec wybierze z nich najlepiej zachowane fragmenty skóry i łusek.");
 		}
-		if ("start".equals(questState) && player.isEquipped("płaszcz czarnego smoka", 10) || "done".equals(questState)) {
-			res.add("Posiadam już 10 płaszczy dla Króla Kraka.");
+		if (("start".equals(questState) && player.isEquipped("czarny płaszcz smoczy", 10)) || "done".equals(questState)) {
+			res.add("Mam już 10 czarnych płaszczy smoczych potrzebnych królewskiemu krawcowi.");
 		}
 		if ("done".equals(questState)) {
-			res.add(player.getGenderVerb("Oddałem") + " potrzebne przedmioty do wykonania królewskiego płaszcza.");
+			res.add(player.getGenderVerb("Przekazałem") + " płaszcze królowi Krakowi. W nagrodę otrzymałem tarczę cieni, a Krak nadał mi szlachectwo za służbę mieszkańcom i dworowi.");
 		}
 		return res;
 	}

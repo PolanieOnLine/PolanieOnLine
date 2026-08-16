@@ -20,6 +20,7 @@ import games.stendhal.server.entity.player.Player;
  * after which it will teleport player to a random location in 0_zakopane_c.
  */
 public class LastMinuteScroll extends TimedTeleportScroll {
+	private static final String TOURIST_QUEST_SLOT = "bilet_turystyczny";
 
 	/**
 	 * Creates a new timed marked LastMinuteScroll scroll.
@@ -46,7 +47,15 @@ public class LastMinuteScroll extends TimedTeleportScroll {
 	
 	@Override
 	protected boolean useTeleportScroll(final Player player) {
-		return super.useTeleportScroll(player);
+		final boolean result = super.useTeleportScroll(player);
+		if (result && player.hasQuest(TOURIST_QUEST_SLOT)) {
+			final String[] tokens = player.getQuest(TOURIST_QUEST_SLOT).split(";");
+			if (tokens.length == 4) {
+				player.setQuest(TOURIST_QUEST_SLOT, "bought;" + tokens[1]
+						+ ";taken;" + System.currentTimeMillis());
+			}
+		}
+		return result;
 	}
 	
 	@Override
@@ -56,7 +65,6 @@ public class LastMinuteScroll extends TimedTeleportScroll {
 
 	@Override
 	protected String getAfterReturnMessage() {
-		return "Znalazłeś się w lesie wyczerpany i odwodniony."
-				+ " Nigdy nie czułeś, aż tak wielkiego pragnienia napicia się choć kropli wody.";
+		return "Znak biletu ściąga cię z powrotem z pustyni. Jesteś wyczerpany i spragniony, ale przejście zadziałało dokładnie tak, jak obiecał Juhas.";
 	}
 }

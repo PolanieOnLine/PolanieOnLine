@@ -75,14 +75,13 @@ public class GoralskiCollector2 extends AbstractQuest {
 	}
 
 	private void step_1() {
-		// player says hi before starting the quest
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestCompletedCondition("goralski_kolekcjoner1"),
 						new QuestNotStartedCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Pozdrawiam Cię stary przyjacielu. Jeżeli sobie życzysz to mam następne #zadanie dla Ciebie.",
+				"Dobrze, że wróciłeś. Strój już mamy, ale sama izba pamięci bez dawnego uzbrojenia pokazuje tylko połowę historii. Mam następne #zadanie.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -93,17 +92,15 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.isQuestCompleted(QUEST_SLOT)) {
-								raiser.say("Moja góralska kolekcja jest już kompletna! Dziękuję ponownie.");
-								raiser.setCurrentState(ConversationStates.ATTENDING);
-							} else {
-								raiser.say("Chciałbym, abyś ponownie dla mnie przyniósł góralskie przedmioty. "
-										+ "Tym razem chodzi mi dokładnie o tarcze i pozłacaną ciupagę. Dałbyś radę?");
-							}
+						if (player.isQuestCompleted(QUEST_SLOT)) {
+							raiser.say("Zbrojownia w izbie pamięci jest już kompletna. Dziękuję ponownie.");
+							raiser.setCurrentState(ConversationStates.ATTENDING);
+						} else {
+							raiser.say("Chcę pokazać, że góralska tradycja to nie tylko odświętny strój. Potrzebuję kilku rodzajów tarcz oraz złotej ciupagi, która stanie się głównym elementem zbrojowni. Pomożesz mi je zebrać?");
 						}
+					}
 				});
 
-		// player is willing to help
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
@@ -112,21 +109,18 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Cudownie! Teraz #'lista', spójrz na nią, potrzebuję właśnie takich przedmiotów. "
-								+ "Jeżeli wrócisz bezpiecznie to będę miał specjalną nagrodę dla Ciebie.");
+						raiser.say("Dziękuję. Powiedz #'lista', a przypomnę ci, czego jeszcze brakuje do zbrojowni.");
 						player.setQuest(QUEST_SLOT, "");
 					}
 				});
 
-		// player is not willing to help
 		npc.add(ConversationStates.QUEST_2_OFFERED,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Cóż może ktoś inny mi pomoże.",
+				"Rozumiem. Zbrojownia może jeszcze poczekać.",
 				null);
 
-		// player asks what exactly is missing
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("list", "listą", "lista"),
 				new QuestActiveCondition(QUEST_SLOT),
@@ -136,15 +130,14 @@ public class GoralskiCollector2 extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						final List<String> needed = missingGoral(player, true);
-						raiser.say("Chcę "
+						raiser.say("Do zbrojowni brakuje "
 								+ Grammar.quantityplnoun(needed.size(), "przedmiot")
-								+ ", gdzie brakuje wciąż: "
+								+ ". Są to "
 								+ Grammar.enumerateCollection(needed)
-								+ ". Czy masz coś takiego przy sobie?");
+								+ ". Masz coś z tej listy przy sobie?");
 					}
 				});
 
-		// player says he doesn't have required weapons with him
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.NO_MESSAGES,
 				null,
@@ -153,16 +146,15 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Powiadom mnie jeśli coś znajdziesz. Do widzenia.");
+						raiser.say("Dobrze. Wróć, gdy uda ci się odnaleźć kolejny egzemplarz.");
 					}
 				});
 
-		// player says he has a required weapon with him
 		npc.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.QUESTION_2,
-				"Co znalazłeś?",
+				"Pokaż, co udało ci się zdobyć.",
 				null);
 
 		for(final String itemName : neededGoral) {
@@ -178,15 +170,13 @@ public class GoralskiCollector2 extends AbstractQuest {
 
 						if (missing.contains(itemName)) {
 							if (player.drop(itemName)) {
-								// register weapon as done
 								final String doneText = player.getQuest(QUEST_SLOT);
 								player.setQuest(QUEST_SLOT, doneText + ";" + itemName);
 
-								// check if the player has brought all weapons
 								missing = missingGoral(player, true);
 
 								if (!missing.isEmpty()) {
-									raiser.say("Dziękuję bardzo! Masz coś jeszcze dla mnie?");
+									raiser.say("Dziękuję. Ten egzemplarz trafi do zbrojowni. Masz coś jeszcze?");
 								} else {
 									final Item pas = SingletonRepository.getEntityManager().getItem(
 											"pas zbójnicki", ItemCreationContext.quest());
@@ -194,18 +184,18 @@ public class GoralskiCollector2 extends AbstractQuest {
 									player.equipOrPutOnGround(pas);
 									player.addXP(75000);
 									player.addKarma(30);
-									raiser.say("Ponownie pomogłeś uzupełnić moją kolekcję o kolejne przedmioty, dziękuję! Spójrz tylko na ten #'pas zbójnicki', czyż nie jest on piękny? Proszę weź go... przyda Ci się pewnie.");
+									raiser.say("Teraz izba pamięci pokazuje nie tylko strój, lecz także broń i osłony dawnych górali. Dziękuję. Przyjmij ten #'pas zbójnicki'. Zachowałem go poza ekspozycją i wolę, żeby służył komuś, kto pomógł stworzyć to miejsce.");
 									player.setQuest(QUEST_SLOT, "done");
 									player.notifyWorldAboutChanges();
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								raiser.say("Może jestem stary, ale nie posiadasz "
+								raiser.say("Nie masz przy sobie "
 										+ itemName
-										+ ". Czego tak naprawdę chcesz ode mnie?");
+										+ ". Sprawdź proszę, czy niczego nie zostawiłeś po drodze.");
 							}
 						} else {
-							raiser.say("Już mam to. Masz jakąś inną broń dla mnie?");
+							raiser.say("Ten egzemplarz już mamy w zbrojowni. Poszukajmy pozostałych.");
 						}
 					}
 				});
@@ -213,15 +203,10 @@ public class GoralskiCollector2 extends AbstractQuest {
 	}
 
 	private void step_2() {
-		// Just find some of the weapons somewhere and bring them to Gazda Bartek.
 	}
 
 	private void step_3() {
-		// player returns while quest is still active
 		playerReturnsWhileQuestIsActive(npc);
-
-		// player returns after finishing the quest
-	//	playerReturnsAfterFinishingQuest(npc);
 	}
 
 	private void playerReturnsWhileQuestIsActive(final SpeakerNPC npc) {
@@ -230,25 +215,15 @@ public class GoralskiCollector2 extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj z powrotem. Mam nadzieję, że przyszedłeś mi pomóc z #listą.",
+				"Witaj z powrotem. Zbrojownia wciąż czeka na kilka eksponatów. Powiedz #lista, jeśli chcesz sobie przypomnieć, czego brakuje.",
 				null);
 	}
-
-/*	private void playerReturnsAfterFinishingQuest(final SpeakerNPC npc) {
-		npc.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new SubjectOptMatchCondition(getName()),
-						new QuestCompletedCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING,
-				"Witaj! Dziękuję za powiększenie mojej kolekcji.",
-				null);
-	} */
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
 				"Góralski Kolekcjoner II",
-				"Gazda Bartek potrzebuje nowych przedmiotów do kolekcji.",
+				"Gazda Bartek rozbudowuje izbę pamięci o zbrojownię i potrzebuje tradycyjnych tarcz oraz złotej ciupagi.",
 				true);
 		step_1();
 		step_2();
@@ -257,16 +232,16 @@ public class GoralskiCollector2 extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(QUEST_SLOT)) {
-				return res;
-			}
-			if (!isCompleted(player)) {
-				res.add("Jestem na etapie gromadzenia przedmiotów dla Gazdy Bartka, potrzebuje jeszcze " + Grammar.enumerateCollection(missingGoral(player, false)) + ".");
-			} else {
-				res.add(player.getGenderVerb("Znalazłem") + " wszystkie góralskie przedmioty, o które prosił Gazda Bartek, a on wynagrodził mnie przepięknym pasem zbójeckim.");
-			}
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
+		}
+		if (!isCompleted(player)) {
+			res.add("Pomagam Gazdzie Bartkowi stworzyć zbrojownię w izbie pamięci. Brakuje jeszcze " + Grammar.enumerateCollection(missingGoral(player, false)) + ".");
+		} else {
+			res.add(player.getGenderVerb("Zebrałem") + " wszystkie elementy zbrojowni dla Gazdy Bartka. W podziękowaniu otrzymałem pas zbójnicki.");
+		}
+		return res;
 	}
 
 	@Override

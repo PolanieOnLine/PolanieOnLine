@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - PolanieOnLine               *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,164 +11,65 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.action.StartRecordingKillsAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
-import marauroa.common.Pair;
 
-public class KillMtElves extends AbstractQuest {
-	private static final String QUEST_SLOT = "kill_mountain_elves";
-	private final SpeakerNPC npc = npcs.get("Czarnoksiężnik");
-
-	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
-						new QuestCompletedCondition("clear_tower"),
-						new QuestNotStartedCondition(QUEST_SLOT)),
-				ConversationStates.QUEST_2_OFFERED,
-				"Mniej więcej możesz mi się nadać.. Więc będę miał dla Ciebie drugie zadanie. Musisz zabić wszystkie elfy górskie! Zbuntowały się przeciwko mnie, a ja nie mogę na to pozwolić. Zrobisz to?",
-				null);
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, 
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING, 
-				"To nie wszystko...", null);
-
-		final List<ChatAction> start = new LinkedList<ChatAction>();
-		final HashMap<String, Pair<Integer, Integer>> toKill = 
-			new HashMap<String, Pair<Integer, Integer>>();
-			// first number is required solo kills, second is required shared kills
-			toKill.put("elf górski maskotka", new Pair<Integer, Integer>(0,3));
-			toKill.put("elf górski dama", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski strażniczka", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski kapłan", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski czarownica", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski lider", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski lord", new Pair<Integer, Integer>(0,2));
-			toKill.put("elf górski czarnoksiężnik", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski wojownik", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski służka", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski król", new Pair<Integer, Integer>(0,1));
-			toKill.put("elf górski królowa", new Pair<Integer, Integer>(0,1));
-
-			start.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 10.0));
-			start.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
-
-		npc.add(
-				ConversationStates.QUEST_2_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Dobrze. Wróć jak skończysz...",
-				new MultipleActions(start));
-
-		npc.add(ConversationStates.QUEST_2_OFFERED, ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"No cóż... już na początku wiedziałem, że się nie nadasz.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -15.0));
-	}
-
-	private void step_2() {
-		/* Player has to kill the monsters in tower */
-	}
-
-	private void step_3() {
-		final List<ChatAction> reward = new LinkedList<ChatAction>();
-			reward.add(new EquipItemAction("hełm kolczy", 1, true));
-			reward.add(new IncreaseKarmaAction(20.0));
-			reward.add(new IncreaseXPAction(20000));
-			reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new KilledForQuestCondition(QUEST_SLOT,1)),
-				ConversationStates.IDLE, "Dobrze, więc będziesz miał kolejne, ostatnie #'zadanie' ode mnie...",
-				new MultipleActions(reward));
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.IDLE,
-				"Jeszcze nie skończyłeś, wróć do mnie jak wybijesz ~'wszystkie' elfy górskie!",
-				null);
-	}
-
+public class KillMtElves implements QuestManuscript {
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Zguba Górskich Elfów",
-				"Czarnoksiężnik chce abyś pozbył się elfów górskich, a to niby wszystko dla nauki...",
-				false);
-		step_1();
-		step_2();
-		step_3();
-	}
+	public KillCreaturesQuestBuilder story() {
+		KillCreaturesQuestBuilder quest = new KillCreaturesQuestBuilder();
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add(player.getGenderVerb("Spotkałem") + " Czarnoksiężnika w jakieś starej wieży.");
-		final String questState = player.getQuest(QUEST_SLOT, 0);
-		if ("rejected".equals(questState)) {
-			res.add(player.getGenderVerb("Odmówiłem") + " Czarnoksiężnikowi pomocy.");
-		return res;
-		}
-		if ("done".equals(questState)) {
-			res.add(player.getGenderVerb("Zabiłem") + " wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
-		}
-		return res;
-	}
+		quest.info()
+			.name("Zguba Górskich Elfów")
+			.description("Po oczyszczeniu wieży Czarnoksiężnik ujawnia kolejny problem związany z górskimi elfami.")
+			.internalName("kill_mountain_elves")
+			.notRepeatable()
+			.minLevel(70)
+			.region(Region.ZAKOPANE_CITY)
+			.questGiverNpc("Czarnoksiężnik");
 
-	@Override
-	public int getMinLevel() {
-		return 70;
-	}
+		quest.history()
+			.whenNpcWasMet("Po oczyszczeniu starej wieży wróciłem do Czarnoksiężnika.")
+			.whenQuestWasRejected("Odmówiłem udziału w konflikcie Czarnoksiężnika z górskimi elfami.")
+			.whenQuestWasAccepted("Czarnoksiężnik poprosił mnie o pokonanie grup górskich elfów, które odcięły mu dostęp do terenów potrzebnych do dalszych badań.")
+			.whenTaskWasCompleted("Pokonałem wskazane przez Czarnoksiężnika górskie elfy. Mogę wrócić po dalsze wyjaśnienia.")
+			.whenQuestWasCompleted("Czarnoksiężnik uznał drugą próbę za zakończoną i dał mi hełm kolczy, który ma się przydać przy jego ostatnim doświadczeniu.");
 
-	@Override
-	public String getName() {
-		return "Zguba Górskich Elfów";
-	}
+		quest.offer()
+			.respondToPreconditionIssue("Najpierw oczyść moją starą wieżę. Nie będę omawiał z tobą poważniejszych spraw, dopóki nie zobaczę, że potrafisz dokończyć pierwsze zadanie.")
+			.respondToRequest("Poradziłeś sobie z wieżą, więc mogę powiedzieć więcej. Górskie elfy odcięły mi dostęp do miejsc potrzebnych do badań i nie zamierzają ustąpić. Chcę, żebyś przełamał ich opór. Podejmiesz się tego?")
+			.respondToUnrepeatableRequest("Sprawa górskich elfów jest już zakończona. Teraz interesuje mnie ostatni etap moich badań.")
+			.respondToAccept("Dobrze. Pokonaj wskazane grupy górskich elfów i wróć do mnie, gdy droga będzie znowu otwarta.")
+			.respondToReject("Rozumiem. Bez twojej pomocy będę musiał znaleźć inny sposób na odzyskanie dostępu do tych terenów.")
+			.rejectionKarmaPenalty(15.0)
+			.acceptWith(new IncreaseKarmaAction(10.0))
+			.remind("Droga nadal nie jest bezpieczna. Pokonaj wszystkie grupy górskich elfów, o których ci mówiłem.");
 
-	@Override
-	public String getNPCName() {
-		return npc.getName();
-	}
+		quest.task()
+			.requestKill(3, "elf górski maskotka")
+			.requestKill(1, "elf górski dama")
+			.requestKill(1, "elf górski strażniczka")
+			.requestKill(1, "elf górski kapłan")
+			.requestKill(1, "elf górski czarownica")
+			.requestKill(1, "elf górski lider")
+			.requestKill(2, "elf górski lord")
+			.requestKill(1, "elf górski czarnoksiężnik")
+			.requestKill(1, "elf górski wojownik")
+			.requestKill(1, "elf górski służka")
+			.requestKill(1, "elf górski król")
+			.requestKill(1, "elf górski królowa")
+			.requireCompletedQuest("clear_tower");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+		quest.complete()
+			.greet("Dobrze. Droga jest znowu otwarta. Przyjmij ten hełm kolczy. Nie jest przypadkową nagrodą, będzie ci potrzebny, jeśli zgodzisz się pomóc mi przy ostatnim doświadczeniu.")
+			.rewardWith(new EquipItemAction("hełm kolczy", 1, true))
+			.rewardWith(new IncreaseXPAction(20000))
+			.rewardWith(new IncreaseKarmaAction(20.0));
 
-	@Override
-	public String getRegion() {
-		return Region.ZAKOPANE_CITY;
+		return quest;
 	}
 }

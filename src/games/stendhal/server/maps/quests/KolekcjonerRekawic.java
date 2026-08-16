@@ -54,7 +54,6 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Anastazja");
 
-		// player asks about an individual cloak before accepting the quest
 		for(final String itemName : NEEDED_GLOVES) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
 				ConversationStates.QUEST_OFFERED, null,
@@ -63,11 +62,11 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę innych rękawic?");
+							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę rękawic, o które pytasz?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałeś jeszcze żadnego? Cóż to jest ");
+							stringBuilder.append("Chcę obejrzeć te rękawice jako wzór wykonania. To ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -75,7 +74,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
 							}
 
-							stringBuilder.append(". znajdziesz to?");
+							stringBuilder.append(". Jeśli znajdziesz taki egzemplarz, przynieś go do mojej pracowni.");
 							raiser.say(stringBuilder.toString());
 						}
 					}
@@ -125,86 +124,86 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public String welcomeBeforeStartingQuest() {
-		return "Hej nieznajomy! Nie chciałbys coś mi przynieść? Miałabym dla ciebie wyzywające #zadanie na skompletowanie dla mnie rękawic!";
+		return "Witaj. Chcę zostać projektantką mody, ale dobry projekt musi być nie tylko ładny. Potrzebuję pomocy przy #zadaniu związanym z rękawicami.";
 	}
 
 	@Override
 	public String welcomeDuringActiveQuest() {
-		return "Cześć! Zebrałeś już dla mnie jakieś #rękawice?";
+		return "Cześć. Udało ci się zdobyć jakieś #rękawice do moich badań?";
 	}
 
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
-		return "Witaj ponownie! Rękawice wciąż prezentują się wspaniale. Dziękuję!";
+		return "Dzięki zebranym rękawicom wiem już dużo więcej o materiałach, ochronie dłoni i swobodzie ruchu. Dziękuję.";
 	}
 
 	@Override
 	public String respondToQuest() {
-		return "Mam obsesję na punkcie #rękawic! Chciałabym je wszystkie skolekcjonować!";
+		return "Chcę porównać #rękawice wykonywane przez różne ludy. Jedne stawiają na lekkość, inne na ochronę, a jeszcze inne wykorzystują niezwykłe materiały. Jeśli poznam te rozwiązania, będę mogła tworzyć lepsze własne projekty. Pomożesz mi zebrać wzory?";
 	}
 
 	@Override
 	public String respondToQuestAcception() {
-		return "Super! Czekam z niecierpliowścią!";
+		return "Dziękuję. Każdą parę dokładnie obejrzę i zapiszę, co wyróżnia jej wykonanie.";
 	}
 
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
-		return "Cześć! Rękawice prezentują się wspaniale. Dziękuję!";
+		return "Mam już wszystkie potrzebne wzory. Teraz mogę zacząć tworzyć własne projekty z dużo większą wiedzą.";
 	}
 
 	@Override
 	public String respondToQuestRefusal() {
-		return "Och... nie jesteś zbyt miły. Do widzenia.";
+		return "Rozumiem. Jeśli zmienisz zdanie, wróć do mnie.";
 	}
 
 	@Override
 	public String askForItemsAfterPlayerSaidHeHasItems() {
-		return "Ekstra! Jakie #rękawice przyniosłeś?";
+		return "Dobrze. Jakie #rękawice udało ci się zdobyć?";
 	}
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
+		return "Do porównania potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
 				+ ". Są to " + Grammar.enumerateCollection(missingItems)
-				+ ". Dasz radę przynieść któreś z nich?";
+				+ ". Pomożesz mi je zdobyć?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
+		return "Do ukończenia zbioru wzorów potrzebuję jeszcze " + Grammar.quantityplnoun(missingItems.size(), "rękawic")
 				+ ". Są to " + Grammar.enumerateCollection(missingItems)
-				+ ". Masz już przy sobie jakiś?";
+				+ ". Masz którąś parę przy sobie?";
 	}
 
 	@Override
 	public String respondToItemBrought() {
-		return "Łał, dziękuję! Co jeszcze mi przyniosłeś?";
+		return "Dziękuję. Ten wzór dużo mi pokaże. Masz coś jeszcze?";
 	}
 
 	@Override
 	public String respondToLastItemBrought() {
-		return "Och, wszystkie wyglądają tak pięknie, dziękuję. Przyjmij ten specjalny prezent ode mnie oraz siostry!";
+		return "To ostatnia para. Teraz mam pełne porównanie lekkich, ciężkich i niezwykłych rękawic. Przyjmij ode mnie prezent za całą pomoc.";
 	}
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Och, jestem rozczarowana. Nie masz " + itemName + " ze sobą.";
+		return "Nie masz przy sobie " + itemName + ". Wróć, gdy uda ci się je zdobyć.";
 	}
 
 	@Override
 	public String respondToOfferOfNotMissingItem() {
-		return "Już je przynosiłeś...";
+		return "Ten wzór już mam opisany. Poszukajmy pozostałych.";
 	}
 
 	@Override
 	public String respondToOfferOfNotNeededItem() {
-		return "Nie mogę uwieżyć, że takie istnieją...";
+		return "Tych rękawic nie potrzebuję do obecnego porównania.";
 	}
 
 	@Override
 	public String respondToPlayerSayingHeHasNoItems(final List<String> missingItems) {
-		return "Dobrze wróć później.";
+		return "Dobrze. Wróć, kiedy zdobędziesz kolejną parę.";
 	}
 
 	@Override
@@ -223,7 +222,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 		setupAbstractQuest();
 		fillQuestInfo(
 				"Rękawice Kolekcjonerki",
-				"Anastazja szuka rękawic w wielu kolorach.",
+				"Anastazja chce poznać sposoby wykonywania rękawic przez różne ludy, aby wykorzystać tę wiedzę we własnych projektach.",
 				false);
 	}
 
@@ -232,7 +231,6 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 		return "Rękawice Kolekcjonerki";
 	}
 
-	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.
 	@Override
 	public int getMinLevel() {
 		return 55;

@@ -23,10 +23,10 @@
 
 	<item name="glif daru Mokoszy">
 		<type class="glyph" subclass="glyph_health" tileid="-1"/>
-		<description>Oto glif daru Mokoszy. Przynosi uzdrowienie, dodając 1000 punktów zdrowia. Mokosz, bogini płodności i urodzaju, błogosławi swoich wyznawców siłą i odnowieniem.</description>
+		<description>Oto glif daru Mokoszy. Przynosi uzdrowienie, dodając 500 punktów zdrowia. Mokosz, bogini płodności i urodzaju, błogosławi swoich wyznawców siłą i odnowieniem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
-			<health value="1000"/>
+			<health value="500"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="10000"/>
@@ -83,7 +83,7 @@
 
 	<item name="glif czaszy">
 		<type class="glyph" subclass="glyph_attack_critical" tileid="-1"/>
-		<description>Oto glif czaszy. Zwiększający obrażenia krytyczne o 25%, sprawi, że Twoje ataki zyskują na sile. Odkryj w sobie moc, która przełamie wszelkie przeszkody!</description>
+		<description>Oto glif czaszy. Trafienia krytyczne zadają dodatkowe 25% bazowych obrażeń, zwiększając bazowy mnożnik krytyczny z 2,00x do 2,25x. Odkryj w sobie moc, która przełamie wszelkie przeszkody!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<critical_additional_bonus value="25.0"/>
@@ -143,12 +143,12 @@
 
 	<item name="glif Tytana">
 		<type class="glyph" subclass="glyph_titan" tileid="-1"/>
-		<description>Oto glif Tytana. Przyznający 10 punktów ataku, 10 punktów obrony oraz 400 punktów zdrowia, uczyni Cię prawdziwym tytanem na polu walki. Wzmocnij swoje ciało i umysł potęgą przodków.</description>
+		<description>Oto glif Tytana. Przyznający 5 punktów ataku, 5 punktów obrony oraz 200 punktów zdrowia, uczyni Cię prawdziwym tytanem na polu walki. Wzmocnij swoje ciało i umysł potęgą przodków.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
-			<atk value="10"/>
-			<def value="10"/>
-			<health value="400"/>
+			<atk value="5"/>
+			<def value="5"/>
+			<health value="200"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="10000"/>
@@ -165,7 +165,7 @@
 
 	<item name="glif Strzyboga">
 		<type class="glyph" subclass="glyph_rate" tileid="-1"/>
-		<description>Oto glif Strzyboga. Sprawi iż twoje bronie staną się lżejsze, dając Ci przewagę w walce. Niezawodny towarzysz, który pomoże Ci w każdej sytuacji.</description>
+		<description>Oto glif Strzyboga. Zmniejsza wagę wolniejszych broni o 1, jeśli ich waga jest większa niż 2. Nie może zmniejszyć wagi broni poniżej 2.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<rate_increase value="1"/>
@@ -185,18 +185,18 @@
 
 	<item name="glif Jarowita">
 		<type class="glyph" subclass="glyph_resistance" tileid="-1"/>
-		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 25%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
+		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 15%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="10000"/>
-		<susceptibility type="earth" value="0.75"/>
-		<susceptibility type="water" value="0.75"/>
-		<susceptibility type="fire" value="0.75"/>
-		<susceptibility type="ice" value="0.75"/>
-		<susceptibility type="dark" value="0.75"/>
-		<susceptibility type="light" value="0.75"/>
+		<susceptibility type="earth" value="0.85"/>
+		<susceptibility type="water" value="0.85"/>
+		<susceptibility type="fire" value="0.85"/>
+		<susceptibility type="ice" value="0.85"/>
+		<susceptibility type="dark" value="0.85"/>
+		<susceptibility type="light" value="0.85"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

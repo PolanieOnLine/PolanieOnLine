@@ -166,9 +166,8 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj, poszukiwaczu starożytnej mocy! Czy szukasz tajemnicy run?");
-				addJob("Jestem strażnikiem starożytnej sztuki runicznej. Jeżeli chcesz dowiedzieć się więcej, możesz zdobyć nowe runy dzięki mojej pomocy. "
-					+ "Możesz zapytać się mnie o #listę glifów.");
-				addOffer("Mogę zaoferować pewną #listę glifów. Wystarczy, że będziesz miał fragmenty, którę nasycę odpowiednimi zasobami.");
+				addJob("Jestem strażnikiem starożytnej sztuki runicznej. Potrafię nasycać odzyskane matryce glifów nową mocą. Omar, pustynny poszukiwacz reliktów, bada miejsca, w których zachowały się takie nośniki. Możesz zapytać mnie o #listę glifów.");
+				addOffer("Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory.");
 				addGoodbye("Powodzenia w zdobywaniu glifów, młody poszukiwaczu mocy!");
 
 				String allGlyphNames = glyphManager.getAllGlyphs().stream()
@@ -177,10 +176,18 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					.orElse("Brak glifów.");
 
 				add(ConversationStates.ATTENDING,
+					Arrays.asList("Omar", "omar", "fragment", "fragmenty", "matryca", "matryce"),
+					null,
+					ConversationStates.ATTENDING,
+					"Omar odnajduje na pustyni pozostałości dawnych matryc glifów i potrafi oczyścić ich uszkodzone fragmenty. Ja zajmuję się tym, czego on zrobić nie może: nasycam odzyskany nośnik nową mocą i odtwarzam na nim wybrany znak.",
+					null
+				);
+
+				add(ConversationStates.ATTENDING,
 					Arrays.asList("lista glifów", "lista"),
 					new QuestNotInStateCondition(QUEST_SLOT, 0, "start"),
 					ConversationStates.ATTENDING,
-					"Oto glify jakie jestem w stanie Tobie zaoferować: " + allGlyphNames + ".",
+					"Znam następujące wzory glifów: " + allGlyphNames + ". Każdy wymaga odzyskanego fragmentu oraz składników związanych z mocą danego znaku.",
 					null
 				);
 
@@ -193,9 +200,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 							String glyphName = player.getQuest(QUEST_SLOT, 1);
-							raiser.say("Z tego co jeszcze pamiętam to " + Grammar.genderVerb(player.getGender(), "pytałeś") + " mnie się wcześniej o #'" + glyphName + "'. "
-								+ "Przygotuj proszę takie zasoby jak: " + glyphManager.getGlyph(glyphName).getFormattedResources() + ". No chyba, że "
-								+ "chcesz #zamienić, abym stworzył inny dla Ciebie glif.");
+							raiser.say("Pamiętam, że " + Grammar.genderVerb(player.getGender(), "pytałeś") + " mnie o #'" + glyphName + "'. Przygotuj odzyskany fragment oraz pozostałe składniki: " + glyphManager.getGlyph(glyphName).getFormattedResources() + ". Jeżeli zmienisz zdanie, możesz #zamienić wybrany wzór.");
 						}
 					}
 				);
@@ -208,8 +213,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							raiser.say("No dobrze, to powiedz jakim glifem w takim razie jesteś " + Grammar.genderVerb(player.getGender(), "zainteresowany") + ". "
-								+ "Takie glify jestem w stanie Tobie zaoferować: " + allGlyphNames + ".");
+							raiser.say("Dobrze. Powiedz, jaki znak mam odtworzyć. Znam następujące glify: " + allGlyphNames + ".");
 							player.removeQuest(QUEST_SLOT);
 						}
 					}
@@ -235,8 +239,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 							if (obj != null && !obj.getNormalized().equalsIgnoreCase(glyphName)) {
 								raiser.say("Nie znam takiego glifu jak " + obj.getOriginal() + ".");
 							} else {
-								raiser.say(Grammar.makeUpperCaseWord(glyphName) + " to " + getGlyphDescription(glyphName) + ". Aby stworzyć ten glif, potrzebuję następujące zasoby: "
-									+ glyph.getFormattedResources() + ". Jesteś " + Grammar.genderVerb(player.getGender(), "zainteresowany") + " nim?");
+								raiser.say(Grammar.makeUpperCaseWord(glyphName) + " to " + getGlyphDescription(glyphName) + ". Aby odtworzyć ten znak na matrycy, potrzebuję następujących składników: " + glyph.getFormattedResources() + ". Jesteś " + Grammar.genderVerb(player.getGender(), "zainteresowany") + " nim?");
 								player.setQuest("glyph_request", glyphName);
 							}
 						}
@@ -258,7 +261,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 								return;
 							}
 
-							raiser.say("Wspaniale! Przygotuj następujące zasoby: " + selectedGlyph.getFormattedResources() + ".");
+							raiser.say("Dobrze. Przygotuj odzyskany fragment oraz pozostałe składniki: " + selectedGlyph.getFormattedResources() + ".");
 							player.setQuest(QUEST_SLOT, "start;" + glyphName);
 							player.removeQuest("glyph_request");
 						}
@@ -273,7 +276,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							raiser.say("Rozumiem, że " + Grammar.genderVerb(player.getGender(), "zainteresowany") + " jesteś innym glifem.");
+							raiser.say("Rozumiem. Możemy wybrać inny wzór, gdy będziesz gotowy.");
 							player.removeQuest("glyph_request");
 						}
 					}
@@ -311,7 +314,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 							selectedGlyph.getResources().forEach((resourceName, amount) -> {
 								player.drop(resourceName, amount);
 							});
-							raiser.say("Gratulacje! Otrzymujesz " + glyphName + ". Korzystaj z tego glifu mądrze.");
+							raiser.say("Gotowe. Matryca przyjęła znak " + glyphName + ". Korzystaj z jego mocy mądrze.");
 
 							player.setQuest(QUEST_SLOT, "done");
 							player.notifyWorldAboutChanges();
@@ -325,7 +328,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					glyphName,
 					new AndCondition(new QuestInStateCondition(QUEST_SLOT, 1, glyphName), new NotCondition(resourceConditions)),
 					ConversationStates.ATTENDING,
-					"Wróć, gdy będziesz miał przy sobie wszystkie potrzebne zasoby do wytworzenia glifu " + glyphName + ". Oto lista: " + glyph.getFormattedResources() + ".",
+					"Wróć, gdy będziesz miał przy sobie wszystkie składniki potrzebne do odtworzenia glifu " + glyphName + ". Oto lista: " + glyph.getFormattedResources() + ".",
 					null
 				);
 			}
@@ -333,23 +336,23 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			private String getGlyphDescription(String glyphName) {
 				switch (glyphName.toLowerCase()) {
 					case "glif daru mokoszy":
-						return "dar bogini płodności i ochrony, zwiększający zdrowie o 1000 punktów";
+						return "dar bogini płodności i ochrony, zwiększający zdrowie o 500 punktów";
 					case "glif siły":
 						return "glif zwiększający siłę ataku o 5 punktów";
 					case "glif peruna":
 						return "glif zwiększający siłę ataku o 10% posiadanego ataku";
 					case "glif czaszy":
-						return "glif zwiększający obrażenia krytyczne o 25%";
+						return "glif sprawiający, że trafienia krytyczne zadają dodatkowe 25% bazowych obrażeń, zwiększając mnożnik z 2,00x do 2,25x";
 					case "glif tarczy":
 						return "glif zwiększający obronę o 20 punktów";
 					case "glif swaroga":
 						return "glif zwiększający obronę o 20% posiadanej obrony";
 					case "glif tytana":
-						return "glif zwiększający atak i obronę o 10 punktów oraz zdrowie o 400 punktów";
+						return "glif zwiększający atak i obronę o 5 punktów oraz zdrowie o 200 punktów";
 					case "glif strzyboga":
-						return "glif zwiększający prędkość ataku wszystkich broni";
+						return "glif zmniejszający wagę wolniejszych broni o 1, jeśli ich waga jest większa niż 2; waga broni nie spada poniżej 2";
 					case "glif jarowita":
-						return "glif redukujący wpływ wszystkich żywiołów o 25%";
+						return "glif redukujący wpływ wszystkich żywiołów o 15%";
 					case "glif kryzysu":
 						return "glif zwiększający szansę na atak krytyczny o 15%";
 					case "glif krwi":
@@ -365,7 +368,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Zoryk Runiczny. Stary i mądry człowiek, który spędził lata na zgłębianiu sztuki tworzenia potężnych run.");
+		npc.setDescription("Oto Zoryk Runiczny. Stary i mądry znawca dawnych matryc, który potrafi nasycać odzyskane fragmenty mocą glifów.");
 		npc.setEntityClass("oldwizardnpc");
 		npc.setGender("M");
 		npc.setPosition(60, 18);

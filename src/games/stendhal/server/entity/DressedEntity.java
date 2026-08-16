@@ -71,6 +71,36 @@ public abstract class DressedEntity extends RPEntity {
 	}
 
 	/**
+	 * Keeps the legacy Strzybog rate reduction from creating a synthetic rate-1
+	 * weapon. Authored rate-1 weapons stay untouched, while weapons whose rate
+	 * only fell from 2 to 1 because of an equipped glyph are floored at 2.
+	 */
+	@Override
+	public int getAttackRate() {
+		final int attackRate = super.getAttackRate();
+		final double rateReduction =
+				GlyphEffectService.getAttackRateReduction(this);
+		if (attackRate != 1 || rateReduction <= 0.0) {
+			return attackRate;
+		}
+
+		final List<Item> weapons = getWeapons();
+		if (weapons.isEmpty()) {
+			return attackRate;
+		}
+
+		final boolean meleeDistance = isAttacking()
+				&& nextTo(getAttackTarget());
+		int naturalBest = weapons.get(0).getAttackRate(meleeDistance);
+		for (final Item weapon : weapons) {
+			naturalBest = Math.min(naturalBest,
+					weapon.getAttackRate(meleeDistance));
+		}
+
+		return naturalBest <= 1 ? 1 : 2;
+	}
+
+	/**
 	 * Resolves a real weapon roll while keeping percentage attack bonuses from
 	 * equipped glyphs attached to that real roll rather than to the weapon's
 	 * stable average damage.
