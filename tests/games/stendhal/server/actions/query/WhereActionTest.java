@@ -94,13 +94,13 @@ public class WhereActionTest {
 		zone.add(player);
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w zone na (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Twoja lokalizacja: Zone (0,0)"));
 		player.clearEvents();
 
 		// test that you can still /where yourself as a ghost
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w zone na (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Twoja lokalizacja: Zone (0,0)"));
 		player.clearEvents();
 
 		// test the player before he becomes ghostmode
@@ -109,7 +109,7 @@ public class WhereActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(ghosted);
 		action.put(Actions.TARGET, ghosted.getName());
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("ghosted jest w zone na (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Lokalizacja gracza ghosted: Zone (0,0)"));
 		player.clearEvents();
 
 		// test the player after he becomes ghostmode
@@ -118,6 +118,22 @@ public class WhereActionTest {
 
 		assertThat(player.events().get(0).get("text"), equalTo("Nie znaleziono wojownika lub zwierzątka zwanego \"ghosted\" lub nie jest teraz zalogowany."));
 
+	}
+
+	@Test
+	public void testOnActionFormatsTechnicalZoneName() {
+		final WhereAction pq = new WhereAction();
+		final RPAction action = new RPAction();
+		action.put(Actions.TYPE, "where");
+		action.put(Actions.TARGET, "bob");
+
+		final Player player = PlayerTestHelper.createPlayer("bob");
+		final StendhalRPZone zone = new StendhalRPZone("0_semos_plains_n2e");
+		zone.add(player);
+		MockStendhalRPRuleProcessor.get().addPlayer(player);
+
+		pq.onAction(player, action);
+		assertThat(player.events().get(0).get("text"), equalTo("Twoja lokalizacja: Równiny Semos N2E (0,0)"));
 	}
 
 	@Test
@@ -134,7 +150,7 @@ public class WhereActionTest {
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("Jesteś w Labirynt Haizena na (0,0)"));
+		assertThat(player.events().get(0).get("text"), equalTo("Twoja lokalizacja: Labirynt Haizena (0,0)"));
 	}
 
 	/**
