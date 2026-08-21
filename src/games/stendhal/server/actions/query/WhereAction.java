@@ -23,6 +23,7 @@ import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.ZoneDisplayNameFormatter;
 import marauroa.common.game.RPAction;
 
 /**
@@ -63,11 +64,11 @@ public class WhereAction implements ActionListener {
 						if (zone != null) {
 							final String zoneName = getZoneDisplayName(zone);
 							if (who.equals(player)) {
-								player.sendPrivateText("Jesteś w " + zoneName
-										+ " na (" + who.getX() + "," + who.getY() + ")");
+								player.sendPrivateText("Twoja lokalizacja: " + zoneName
+										+ " (" + who.getX() + "," + who.getY() + ")");
 							} else {
-								player.sendPrivateText(who.getTitle() + " jest w " + zoneName
-										+ " na (" + who.getX() + "," + who.getY() + ")");
+								player.sendPrivateText("Lokalizacja gracza " + who.getTitle() + ": " + zoneName
+										+ " (" + who.getX() + "," + who.getY() + ")");
 							}
 						}
 					}
@@ -89,12 +90,6 @@ public class WhereAction implements ActionListener {
 	}
 
 	static String getZoneDisplayName(final StendhalRPZone zone) {
-		if (zone.getName().startsWith("instance_") && zone.getAttributes() != null) {
-			final String readableName = zone.getAttributes().get("readable_name");
-			if (readableName != null && !readableName.trim().isEmpty()) {
-				return readableName;
-			}
-		}
-		return zone.getName();
+		return ZoneDisplayNameFormatter.format(zone);
 	}
 }
