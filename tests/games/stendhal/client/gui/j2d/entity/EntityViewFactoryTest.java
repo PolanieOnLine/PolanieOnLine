@@ -190,6 +190,7 @@ public class EntityViewFactoryTest {
 
 		// misc
 		checkImplementation("area", null, null, InvisibleEntity2DView.class);
+		checkImplementation("block", "questuseable", null, UseableEntity2DView.class);
 		checkImplementation("block", null, null, LookableEntity2DView.class);
 		checkImplementation("blood", null, null, Blood2DView.class);
 		checkImplementation("chest", null, null, Chest2DView.class);

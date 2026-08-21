@@ -201,6 +201,7 @@ public class EntityViewFactory {
 
 		// misc
 		register("area", null, null, InvisibleEntity2DView.class);
+		register("block", "questuseable", null, UseableEntity2DView.class);
 		register("block", null, null, LookableEntity2DView.class);
 		register("blood", null, null, Blood2DView.class);
 		register("chest", null, null, Chest2DView.class);

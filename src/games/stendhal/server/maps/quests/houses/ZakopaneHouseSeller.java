@@ -36,7 +36,7 @@ final class ZakopaneHouseSeller extends HouseSellerNPCBase {
 	private static final String ADAS_QUEST_SLOT = "pomoc_adasiowi";
 	private static final String FRYDERYK_QUEST_SLOT = "scythe_fryderyk";
 	private static final String BERCIK_QUEST_SLOT = "cech_gornika";
-	private static final String ANDRZEJ_QUEST_SLOT = "andrzej_make_zlota_ciupaga";
+	private static final String ANDRZEJ_QUEST_SLOT = "zlota_ciupaga";
 
 	ZakopaneHouseSeller(final String name, final String location, final HouseTax houseTax) {
 		super(name, location, houseTax);

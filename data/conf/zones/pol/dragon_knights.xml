@@ -62,6 +62,7 @@
 	</zone>
 
 	<zone name="0_dragon_knights_e" level="0" x="513952" y="18304" file="Level 0/dragon_knights/e.tmx">
+		<configurator class-name="games.stendhal.server.maps.dragon_knights.SettlementNPCs"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

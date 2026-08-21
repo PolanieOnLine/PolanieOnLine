@@ -15,6 +15,7 @@ import { MathUtil } from "../util/MathUtil";
 
 import { stendhal } from "../stendhal";
 import { TileMap } from "data/TileMap";
+import { marauroa } from "marauroa";
 
 export class ActiveEntity extends Entity {
 
@@ -262,6 +263,11 @@ export class ActiveEntity extends Entity {
 		var i;
 		for (i in stendhal.zone.entities) {
 			var other = stendhal.zone.entities[i];
+			const ownerCollisionOnly = typeof(other["owner_collision_only"]) !== "undefined"
+				|| other["class"] === "questprop" || other["class"] === "questuseable";
+			if (ownerCollisionOnly && this !== marauroa.me) {
+				continue;
+			}
 			if (!this.isObstacle(other)) {
 				continue;
 			}
@@ -313,4 +319,3 @@ export class ActiveEntity extends Entity {
 		return dir;
 	}
 }
-
