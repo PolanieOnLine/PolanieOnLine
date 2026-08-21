@@ -176,6 +176,7 @@ public class ProductionsXMLLoader extends DefaultHandler {
 			for (String activ : activities) {
 				currentActivities.add(activ);
 			}
+			currentActivities = ProductionActivityAliases.expand(currentActivities);
 
 			currentBehaviour = new ProducerBehaviour(currentSlot, currentActivities, currentItem, productionPerCycle, requiredResources, productionTime, bound);
 

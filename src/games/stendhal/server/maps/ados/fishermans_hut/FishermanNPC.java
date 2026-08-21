@@ -53,16 +53,18 @@ public class FishermanNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addJob("Jestem rybakiem, a także wyrabiam #olejek z tranu dorsza. Olejek jest niesamowicie potrzebny, aby maszyny chodziły płynnie.");
-				addHelp("W dzisiejszych czasach możesz przeczytać drogowskazy, książki i inne rzeczy w Faiumoni.");
-				addOffer("Mogę zrobić dla Ciebie trochę olejku jeżeli potrzebujesz.");
+				addJob("Jestem rybakiem, ale wyrabiam też #olejek z tranu dorsza. Przydaje się do smarowania maszyn, gdy zaczynają się zacinać.");
+				addHelp("Jeśli potrzebujesz #olejku, przynieś mi dwa dorsze na każdą buteleczkę. Powiedz na przykład #'zrób olejek' albo #'przygotuj olejek'. Gotowe zlecenie odbierzesz słowem #przypomnij.");
+				addOffer("Wyrabiam #olejek z tranu dorsza. Jedna buteleczka kosztuje dwa dorsze i wymaga trochę czasu.");
 				addGoodbye("Do widzenia.");
-				addReply(Arrays.asList("oil", "olejek"),"Poproś mnie o wykonanie #olejku o ile masz dorsza ze sobą. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc #'przypomnij'.");
-				addReply(Arrays.asList("can of oil", "olejku"),"Do jednej puszki potrzebne są dwa dorsze. Zrobię dla Ciebie o ile potrzebujesz. Powiedz tylko #zrób. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
+				addReply(Arrays.asList("oil", "olejek"),
+						"Tak, robię olejek potrzebny między innymi do smarowania maszyn. Na jedną buteleczkę potrzebuję dwóch dorszy. Powiedz #'zrób olejek' lub #'przygotuj olejek'. Gdy wrócisz po gotowy produkt, powiedz #przypomnij.");
+				addReply(Arrays.asList("can of oil", "olejku"),
+						"Do jednej buteleczki olejku potrzebuję dwóch dorszy. Powiedz #'zrób olejek' albo #'przygotuj olejek'. Po zakończeniu pracy przypomnij mi o zleceniu słowem #przypomnij.");
 			}
 		};
 
-		fisherman.setDescription("Oto Pequod zapominalski stary rybak. Czasami trzeba mu przypomnieć co powinien zrobić!");
+		fisherman.setDescription("Oto Pequod, zapominalski stary rybak, który potrafi także wyrabiać olejek z tranu dorsza.");
 		fisherman.setEntityClass("fishermannpc");
 		fisherman.setGender("M");
 		fisherman.setDirection(Direction.DOWN);
