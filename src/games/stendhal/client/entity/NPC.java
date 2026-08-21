@@ -84,6 +84,14 @@ public class NPC extends RPEntity {
 		this.idea = idea;
 	}
 
+	@Override
+	public boolean isObstacle(final IEntity entity) {
+		if (rpObject != null && rpObject.has("owner_collision_only")) {
+			return entity.isUser() && super.isObstacle(entity);
+		}
+		return super.isObstacle(entity);
+	}
+
 	//
 	// RPObjectChangeListener
 	//
