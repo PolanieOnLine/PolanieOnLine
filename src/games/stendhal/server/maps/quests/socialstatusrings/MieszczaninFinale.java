@@ -4,7 +4,6 @@
 package games.stendhal.server.maps.quests.socialstatusrings;
 
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -105,8 +104,7 @@ public final class MieszczaninFinale {
 
 	private static ChatAction finishForgingAction() {
 		return new MultipleActions(
-				new EquipItemAction("pierścień mieszczanina", 1, true,
-						ItemCreationContext.questReward()),
+				new EquipItemAction("pierścień mieszczanina", 1, true),
 				new IncreaseXPAction(REWARD_XP),
 				new ChatAction() {
 					@Override

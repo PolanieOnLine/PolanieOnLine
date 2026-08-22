@@ -173,7 +173,7 @@ public class ZlotyPierscien extends AbstractQuest {
 					player.addXP(55000);
 					player.addKarma(25);
 					final Item pierscien = SingletonRepository.getEntityManager().getItem(
-							"złoty pierścień", ItemCreationContext.questReward());
+							"złoty pierścień", ItemCreationContext.quest());
 					pierscien.setBoundTo(player.getName());
 					player.equipOrPutOnGround(pierscien);
 					player.notifyWorldAboutChanges();

@@ -50,6 +50,21 @@ public class QuestRewardRarityMigrationServiceTest {
 	}
 
 	@Test
+	public void completedQuestRingRemainsCommon() {
+		final Player player = PlayerTestHelper.createPlayer("old_quest_ring");
+		player.setQuest("pierscien_mieszczanina", "done");
+		final Item ring = SingletonRepository.getEntityManager().getItem(
+				"pierścień mieszczanina", ItemCreationContext.quest());
+		ring.setBoundTo(player.getName());
+		assertTrue(player.equipToInventoryOnly(ring));
+
+		assertEquals(0, QuestRewardRarityMigrationService.migrate(player));
+
+		assertSame(ItemRarity.COMMON, ring.getRarity());
+		assertEquals(1, player.getNumberOfEquipped("pierścień mieszczanina"));
+	}
+
+	@Test
 	public void doesNotPromoteUnboundOrUnprovenItem() {
 		final Player player = PlayerTestHelper.createPlayer("unproven_reward");
 		final Item reward = SingletonRepository.getEntityManager().getItem(
