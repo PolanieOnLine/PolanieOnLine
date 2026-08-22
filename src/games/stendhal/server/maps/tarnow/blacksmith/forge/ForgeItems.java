@@ -17,10 +17,19 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityTransferSnapshot;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
+import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
 public class ForgeItems {
+	private static final Logger LOGGER = Logger.getLogger(ForgeItems.class);
+	private static final String RARITY_STATE_PREFIX = "rarity-v1:";
 	private final static String helmet = "hełm ciemnomithrilowy";
 	private final static String armor = "zbroja ciemnomithrilowa";
 	private final static String belt = "pas ciemnomithrilowy";
@@ -40,6 +49,18 @@ public class ForgeItems {
 		productionItems.add(cloak);
 
 		return productionItems;
+	}
+
+	private static Map<String, String> getSourceItems() {
+		final Map<String, String> sourceItems = new HashMap<String, String>();
+		sourceItems.put(helmet, "hełm z mithrilu");
+		sourceItems.put(armor, "zbroja z mithrilu");
+		sourceItems.put(belt, "pas z mithrilu");
+		sourceItems.put(legs, "spodnie z mithrilu");
+		sourceItems.put(boots, "buty z mithrilu");
+		sourceItems.put(shield, "tarcza z mithrilu");
+		sourceItems.put(cloak, "płaszcz z mithrilu");
+		return sourceItems;
 	}
 
 	private static HashMap<String, Map<String, Integer>> getItemResources() {
@@ -124,7 +145,7 @@ public class ForgeItems {
 	}
 
 	public static MultiProducerBehaviour getBehaviour() {
-		final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
+		final MultiProducerBehaviour behaviour = new RarityPreservingForgeBehaviour(
 				"przemyslaw_newarms",
 				Arrays.asList("forge", "create", "make", "stwórz", "wytwórz", "ulepsz", "zrób"),
 				getNewItems(),
@@ -133,5 +154,51 @@ public class ForgeItems {
 				getItemsBound());
 
 		return behaviour;
+	}
+
+	private static final class RarityPreservingForgeBehaviour
+			extends MultiProducerBehaviour {
+		private final Map<String, String> sourceItems = getSourceItems();
+
+		private RarityPreservingForgeBehaviour(final String questSlot,
+				final java.util.List<String> productionActivity,
+				final HashSet<String> productsNames,
+				final HashMap<String, Map<String, Integer>> resources,
+				final HashMap<String, Integer> productionTimes,
+				final HashMap<String, Boolean> productsBound) {
+			super(questSlot, productionActivity, productsNames, resources,
+					productionTimes, productsBound);
+		}
+
+		@Override
+		protected String captureAdditionalOrderData(final String productName,
+				final int amount, final Player player) {
+			final String sourceName = sourceItems.get(productName);
+			final Item source = sourceName == null ? null
+					: player.getFirstEquipped(sourceName);
+			final String snapshot = ItemRarityTransferSnapshot.encode(source);
+			return snapshot.length() == 0 ? "" : RARITY_STATE_PREFIX + snapshot;
+		}
+
+		@Override
+		protected Item getProduct(final String productName,
+				final String additionalOrderData) {
+			if (additionalOrderData == null
+					|| !additionalOrderData.startsWith(RARITY_STATE_PREFIX)) {
+				return SingletonRepository.getEntityManager().getItem(productName,
+						ItemCreationContext.quest());
+			}
+			final Item product = SingletonRepository.getEntityManager().getItem(
+					productName, ItemCreationContext.restore());
+			try {
+				ItemRarityTransferSnapshot.apply(product, additionalOrderData.substring(
+						RARITY_STATE_PREFIX.length()));
+				return product;
+			} catch (final IllegalArgumentException e) {
+				LOGGER.warn("Invalid rarity state for forge order " + productName, e);
+				return SingletonRepository.getEntityManager().getItem(productName,
+						ItemCreationContext.quest());
+			}
+		}
 	}
 }
