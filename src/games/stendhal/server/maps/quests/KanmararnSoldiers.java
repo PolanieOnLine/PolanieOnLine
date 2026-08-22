@@ -410,7 +410,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 		actions.add(new IncreaseXPAction(5000));
 		actions.add(new DropItemdataItemAction("mapa", SLD_HENRY));
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 15.0));
-		actions.add(new EquipItemAction("buty mainiocyjskie", 1, true));
+		actions.add(EquipItemAction.boundQuestReward("buty mainiocyjskie"));
 
 		james.add(ConversationStates.ATTENDING,
 				Arrays.asList("map", "henry", "mapa"),

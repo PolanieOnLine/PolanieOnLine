@@ -188,7 +188,7 @@ public class CloaksForBario extends AbstractQuest {
 		// player says he has a blue elf cloak with him and it's the last one
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("lazurowy płaszcz elficki"));
-		reward.add(new EquipItemAction("złota tarcza", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("złota tarcza"));
 		reward.add(new IncreaseXPAction(80000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(25));

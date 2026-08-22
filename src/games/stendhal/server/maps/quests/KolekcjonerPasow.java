@@ -210,7 +210,7 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item killer_gloves = SingletonRepository.getEntityManager().getItem(
-				"rękawice zabójcy", ItemCreationContext.quest());
+				"rękawice zabójcy", ItemCreationContext.questReward());
 		killer_gloves.setBoundTo(player.getName());
 		player.equipOrPutOnGround(killer_gloves);
 		player.addKarma(40.0);

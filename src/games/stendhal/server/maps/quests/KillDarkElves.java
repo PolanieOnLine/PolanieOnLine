@@ -163,7 +163,7 @@ public class KillDarkElves extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
 				new MultipleActions(new DropItemAction("amulet"),
-						new EquipItemAction("pierścień szmaragdowy", 1, true),
+						EquipItemAction.boundQuestReward("pierścień szmaragdowy"),
 						new IncreaseXPAction(100000),
 						new IncreaseKarmaAction(25.0),
 						new SetQuestAction(QUEST_SLOT, "done")));
@@ -209,7 +209,7 @@ public class KillDarkElves extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Bardzo, bardzo dziękuję. Cieszę się z oddania amuletu. Weź ten pierścień. Może on odrodzić twe moce po śmierci.",
 				new MultipleActions(new DropItemAction("amulet"),
-						new EquipItemAction("pierścień szmaragdowy", 1, true),
+						EquipItemAction.boundQuestReward("pierścień szmaragdowy"),
 						new IncreaseXPAction(100000),
 						new IncreaseKarmaAction(25.0),
 						new SetQuestAction(QUEST_SLOT, "done")));

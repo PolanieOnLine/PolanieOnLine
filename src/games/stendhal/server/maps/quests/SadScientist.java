@@ -130,7 +130,7 @@ public class SadScientist extends AbstractQuest {
 				new IncreaseKarmaAction(20),
 				new IncreaseXPAction(10000),
 				// here, true = bind them to player
-				new EquipItemAction("czarne spodnie", 1, true));
+				EquipItemAction.boundQuestReward("czarne spodnie"));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

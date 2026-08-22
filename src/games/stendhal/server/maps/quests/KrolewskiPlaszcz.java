@@ -136,7 +136,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("czarny płaszcz smoczy", 10));
 		reward.add(new IncreaseXPAction(100000));
-		reward.add(new EquipItemAction("tarcza cieni", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("tarcza cieni"));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(15));
 		npc.add(

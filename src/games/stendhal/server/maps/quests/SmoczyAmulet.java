@@ -120,7 +120,7 @@ public class SmoczyAmulet extends AbstractQuest {
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(5));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new EquipItemAction("smocze pazury", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("smocze pazury"));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,

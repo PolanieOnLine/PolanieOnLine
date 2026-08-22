@@ -116,7 +116,7 @@ public class RingMaker extends AbstractQuest {
 				new MultipleActions(
 						new IncreaseXPAction(500),
 						new SetQuestAction(QUEST_SLOT, "done"),
-						new EquipItemAction("pierścień szmaragdowy", 1, true)));
+						EquipItemAction.boundQuestReward("pierścień szmaragdowy")));
 
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("pierścień szmaragdowy", "life", "szmaragd"),
@@ -128,7 +128,7 @@ public class RingMaker extends AbstractQuest {
 				new MultipleActions(
 						new IncreaseXPAction(500),
 						new SetQuestAction(QUEST_SLOT, "done"),
-						new EquipItemAction("pierścień szmaragdowy", 1, false)));
+						EquipItemAction.questReward("pierścień szmaragdowy", 1, false)));
 
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("pierścień szmaragdowy", "life", "szmaragd"),

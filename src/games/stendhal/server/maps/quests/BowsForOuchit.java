@@ -195,8 +195,8 @@ public class BowsForOuchit extends AbstractQuest {
 
 		// These actions are part of the reward
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new EquipItemAction("zbroja łuskowa", 1, true));
-		reward.add(new EquipItemAction("spodnie nabijane ćwiekami", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("zbroja łuskowa"));
+		reward.add(EquipItemAction.boundQuestReward("spodnie nabijane ćwiekami"));
 		reward.add(new IncreaseXPAction(1500));
 		reward.add(new DropItemAction("końskie włosie"));
 		reward.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 25.0));

@@ -174,7 +174,7 @@ public class SevenCherubs extends AbstractQuest {
 								 */
 								final String[] items = { "złote buty", "złota zbroja", "złoty hełm", "miecz ognisty" };
 								final Item item = SingletonRepository.getEntityManager()
-									.getItem(items[Rand.rand(items.length)], ItemCreationContext.quest());
+									.getItem(items[Rand.rand(items.length)], ItemCreationContext.questReward());
 								item.setBoundTo(player.getName());
 								player.equipOrPutOnGround(item);
 								player.addXP(20000);

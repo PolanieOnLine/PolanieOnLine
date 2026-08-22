@@ -180,7 +180,7 @@ public class WeaponsCollector extends AbstractQuest implements BringListOfItemsQ
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item iceSword = SingletonRepository.getEntityManager().getItem(
-				"miecz lodowy", ItemCreationContext.quest());
+				"miecz lodowy", ItemCreationContext.questReward());
 		iceSword.setBoundTo(player.getName());
 		player.equipOrPutOnGround(iceSword);
 		player.addXP(50000);

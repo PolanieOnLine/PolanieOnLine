@@ -429,7 +429,7 @@ public class ObsidianKnife extends AbstractQuest {
 		reward.add(new IncreaseXPAction(10000));
 		reward.add(new IncreaseKarmaAction(40));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new EquipItemAction("obsydianowy saks", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("obsydianowy saks"));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

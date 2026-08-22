@@ -301,7 +301,7 @@ public class CloakCollector2 extends AbstractQuest {
 									entity.say("O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item boots = SingletonRepository.getEntityManager().getItem(
-											"buty zabójcy", ItemCreationContext.quest());
+											"buty zabójcy", ItemCreationContext.questReward());
 									boots.setBoundTo(player.getName());
 									player.equipOrPutOnGround(boots);
 									player.notifyWorldAboutChanges();
@@ -357,7 +357,7 @@ public class CloakCollector2 extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Och! Nie nagrodziłam Ciebie za ponowną pomoc! Weź te buty. Sądzę, że są wspaniałe, ale nie pasują na mnie :(",
 				new MultipleActions(
-						new EquipItemAction("buty zabójcy", 1, true),
+						EquipItemAction.boundQuestReward("buty zabójcy"),
 						new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
 		// Player returns after finishing the quest and was rewarded

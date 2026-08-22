@@ -18,6 +18,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -269,7 +270,8 @@ public class PierscienMagnata extends AbstractQuest {
 	}
 
 	private ChatAction finishForgingAction() {
-		return new MultipleActions(new EquipItemAction("pierścień magnata", 1, true),
+		return new MultipleActions(new EquipItemAction("pierścień magnata", 1, true,
+				ItemCreationContext.questReward()),
 				new IncreaseXPAction(REWARD_XP), new SetQuestAction(QUEST_SLOT, STATE_DONE));
 	}
 

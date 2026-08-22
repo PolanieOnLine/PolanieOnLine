@@ -196,7 +196,7 @@ public class ZlotyAmulet extends AbstractQuest {
 		reward2.add(new IncreaseXPAction(500));
 		reward2.add(new IncreaseKarmaAction(10));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "jagienka"));
-		reward2.add(new EquipItemAction("złoty amulet", 1, true));
+		reward2.add(EquipItemAction.boundQuestReward("złoty amulet"));
 		
 		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,

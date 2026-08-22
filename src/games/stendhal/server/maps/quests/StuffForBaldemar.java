@@ -205,7 +205,7 @@ public class StuffForBaldemar extends AbstractQuest {
 					player.addXP(95000);
 					player.addKarma(25);
 					final Item mithrilshield = SingletonRepository.getEntityManager().getItem(
-							"tarcza z mithrilu", ItemCreationContext.quest());
+							"tarcza z mithrilu", ItemCreationContext.questReward());
 					mithrilshield.setBoundTo(player.getName());
 					player.equipOrPutOnGround(mithrilshield);
 					player.notifyWorldAboutChanges();

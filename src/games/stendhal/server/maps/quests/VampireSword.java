@@ -236,7 +236,7 @@ public class VampireSword extends AbstractQuest {
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(15.0));
 		// here true means: yes, bound to player, in which case we also have to speciy the amount: 1
-		reward.add(new EquipItemAction("krwiopijca", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("krwiopijca"));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,

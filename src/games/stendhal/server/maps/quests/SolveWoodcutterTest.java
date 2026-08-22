@@ -409,7 +409,7 @@ public class SolveWoodcutterTest extends AbstractQuest {
 							player.setSkill("woodcutting", Double.toString(0.2));
 							player.addXP(2000);
 							final Item siekierka = SingletonRepository.getEntityManager()
-									.getItem("siekierka", ItemCreationContext.quest());
+									.getItem("siekierka", ItemCreationContext.questReward());
 							siekierka.setBoundTo(player.getName());
 							player.equipOrPutOnGround(siekierka);
 							player.setQuest(QUEST_SLOT, "done");

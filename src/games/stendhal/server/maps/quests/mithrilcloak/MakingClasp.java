@@ -139,7 +139,7 @@ class MakingClasp {
 				new MultipleActions(
 									 new DropItemAction("brosza z mithrilu"), 
 									 new SetQuestAndModifyKarmaAction(mithrilcloak.getQuestSlot(), "done", 10.0),
-									 new EquipItemAction("płaszcz z mithrilu", 1, true), 
+									 EquipItemAction.boundQuestReward("płaszcz z mithrilu"),
 									 new IncreaseXPAction(1000)
 									 )
 				);

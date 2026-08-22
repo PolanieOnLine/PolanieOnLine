@@ -1354,7 +1354,7 @@ public class KillDragons extends AbstractQuest {
 						raiser.say("Talizman zadziałał! Tej nocy nie miałam więcej koszmarów! Weź proszę tą broń. Należała do mojego dziadka, on był wielkim bohaterem. Myślę, że tobie bardziej się przyda.");
 						player.drop("pazur zielonego smoka");
 						final Item hammer = SingletonRepository.getEntityManager().getItem(
-								"młot wulkanów", ItemCreationContext.quest());
+								"młot wulkanów", ItemCreationContext.questReward());
 						hammer.setBoundTo(player.getName());
 						player.equipOrPutOnGround(hammer);
 						player.setBaseHP(150 + player.getBaseHP());

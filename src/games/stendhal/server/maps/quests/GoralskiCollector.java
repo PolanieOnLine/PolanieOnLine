@@ -216,7 +216,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item korale = SingletonRepository.getEntityManager().getItem(
-				"korale", ItemCreationContext.quest());
+				"korale", ItemCreationContext.questReward());
 		korale.setBoundTo(player.getName());
 		player.equipOrPutOnGround(korale);
 		player.addKarma(15.0);

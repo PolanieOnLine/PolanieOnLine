@@ -257,7 +257,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 									entity.say("Gotowe. Mamy pełny strój, zbrojownię i reprezentacyjny zestaw gazdy. Dzięki tobie ta historia zostanie tutaj na długo. Mam dla ciebie spinkę po moich przodkach. Skoro pomogłeś ocalić ich pamięć, chcę, żeby teraz należała do ciebie.");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
 									final Item spinka = SingletonRepository.getEntityManager().getItem(
-											"spinka", ItemCreationContext.quest());
+											"spinka", ItemCreationContext.questReward());
 									spinka.setBoundTo(player.getName());
 									player.equipOrPutOnGround(spinka);
 									player.notifyWorldAboutChanges();
@@ -310,7 +310,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "done")),
 				ConversationStates.ATTENDING,
 				"Witoj. Izba pamięci jest już kompletna, a ja wciąż jestem ci winien nagrodę. Przyjmij tę #'spinke'. Należała do moich przodków i chcę, żeby teraz służyła tobie.",
-				new MultipleActions(new EquipItemAction("spinka", 1, true), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
+				new MultipleActions(EquipItemAction.boundQuestReward("spinka"), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

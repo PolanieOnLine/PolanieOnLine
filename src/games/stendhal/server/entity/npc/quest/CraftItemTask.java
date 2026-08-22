@@ -19,6 +19,7 @@ import java.util.Map;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.constants.KillType;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -334,7 +335,8 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	@Override
 	ChatAction buildQuestCompleteAction(String questSlot) {
-		return new EquipItemAction(getItemName(), 1, true);
+		return new EquipItemAction(getItemName(), 1, true,
+				ItemCreationContext.questReward());
 	}
 
 	String getItemName() {

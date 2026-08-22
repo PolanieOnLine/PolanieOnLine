@@ -338,7 +338,7 @@ public class Hunting extends AbstractQuest {
 
 					if (player.getNumberOfRepetitions(QUEST_SLOT, 2) == 10) {
 						final Item specialRing = SingletonRepository.getEntityManager().getItem(
-								"pierścień powrotu", ItemCreationContext.quest());
+								"pierścień powrotu", ItemCreationContext.questReward());
 						specialRing.setBoundTo(player.getName());
 						player.equipOrPutOnGround(specialRing);
 						player.notifyWorldAboutChanges();

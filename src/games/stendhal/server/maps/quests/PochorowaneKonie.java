@@ -436,7 +436,7 @@ public class PochorowaneKonie extends AbstractQuest {
 				"Ufff... Świetnie to słyszeć! Dziękuję Ci za pomoc oraz weterynarzowi! Proszę, oto pas skórzany, możliwe, że kiedyś Ci się przyda!", 
 				new MultipleActions(
 						new IncreaseXPAction(10000),
-						new EquipItemAction("pas skórzany", 1, true),
+						EquipItemAction.boundQuestReward("pas skórzany"),
 						new SetQuestAction(QUEST_SLOT, "done")));
 	}
 

@@ -245,7 +245,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 					player.addXP(1000000);
 					player.addKarma(200);
 					final Item zlotaCiupagaZTrzemaWasami = SingletonRepository.getEntityManager().getItem(
-							"złota ciupaga z trzema wąsami", ItemCreationContext.quest());
+							"złota ciupaga z trzema wąsami", ItemCreationContext.questReward());
 					zlotaCiupagaZTrzemaWasami.setBoundTo(player.getName());
 					player.equipOrPutOnGround(zlotaCiupagaZTrzemaWasami);
 					player.notifyWorldAboutChanges();

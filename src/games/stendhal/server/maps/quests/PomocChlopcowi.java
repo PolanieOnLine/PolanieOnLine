@@ -55,7 +55,7 @@ public class PomocChlopcowi implements QuestManuscript {
 			.greet("Nasz wybawca! Nareszcie! Dziękuję!")
 			.rewardWith(new IncreaseXPAction(250))
 			.rewardWith(new IncreaseKarmaAction(5.0))
-			.rewardWith(new EquipItemAction("buty skórzane"));
+			.rewardWith(EquipItemAction.questReward("buty skórzane", 1, false));
 
 		return quest;
 	}

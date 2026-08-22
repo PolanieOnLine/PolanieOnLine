@@ -265,6 +265,27 @@ public class ItemRarityServiceTest {
 	}
 
 	@Test
+	public void questRewardIsDeterministicEpicWithoutRandomAffixes() {
+		final Item first = combatItem();
+		final Item second = combatItem();
+		final CountingRandom firstRandom = new CountingRandom(0.01);
+		final CountingRandom secondRandom = new CountingRandom(0.99);
+
+		new ItemRarityService(firstRandom).initialize(first,
+				ItemCreationContext.questReward());
+		new ItemRarityService(secondRandom).initialize(second,
+				ItemCreationContext.questReward());
+
+		assertSame(ItemRarity.EPIC, first.getRarity());
+		assertEquals(first.getRarityModifiers(), second.getRarityModifiers());
+		assertEquals(first.getInt("atk"), second.getInt("atk"));
+		assertEquals(115, first.getInt("atk"));
+		assertEquals(0, firstRandom.calls);
+		assertEquals(0, secondRandom.calls);
+		assertFalse(ItemAffixState.hasAny(first));
+	}
+
+	@Test
 	public void questModifierRandomnessRequiresExplicitOptIn() {
 		final CountingRandom deterministicRandom = new CountingRandom(0.9);
 		final Item deterministic = combatItem();

@@ -143,7 +143,7 @@ public class RingMakerStage extends AVRStage {
 			ConversationStates.IDLE,
 			"Skończyłem... Twój pierścień antyjadowy jest już gotowy.",
 			new MultipleActions(
-				new EquipItemAction("pierścień antyjadowy", 1, true),
+				EquipItemAction.boundQuestReward("pierścień antyjadowy"),
 				new IncreaseXPAction(2000),
 				new SetQuestAndModifyKarmaAction(questName, "done", 150.0)
 			));

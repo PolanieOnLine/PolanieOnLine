@@ -247,6 +247,18 @@ public class EquipItemAction implements ChatAction {
 		return new EquipItemAction(itemName, 1, true);
 	}
 
+	/** Creates a deterministic Epic action for an actual quest reward. */
+	public static EquipItemAction questReward(final String itemName,
+			final int amount, final boolean bind) {
+		return new EquipItemAction(itemName, amount, bind,
+				ItemCreationContext.questReward());
+	}
+
+	/** Creates one deterministic Epic bound quest reward. */
+	public static EquipItemAction boundQuestReward(final String itemName) {
+		return questReward(itemName, 1, true);
+	}
+
 	private static ItemCreationContext questContext(final ItemRarity rarity,
 			final ItemRarityModifiers modifiers, final boolean randomizeModifiers) {
 		if (rarity == null) {

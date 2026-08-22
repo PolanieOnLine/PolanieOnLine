@@ -206,7 +206,7 @@ public class MeetPietrek extends AbstractQuest {
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
-		reward2.add(new EquipItemAction("puklerz"));
+		reward2.add(EquipItemAction.questReward("puklerz", 1, false));
 		reward2.add(new IncreaseXPAction(250));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
 

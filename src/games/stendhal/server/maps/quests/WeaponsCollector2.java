@@ -232,11 +232,11 @@ public class WeaponsCollector2 extends AbstractQuest {
 									raiser.say("Dziękuję bardzo! Masz coś jeszcze dla mnie?");
 								} else {
 									final Item lhandsword = SingletonRepository.getEntityManager().getItem(
-											"miecz leworęczny", ItemCreationContext.quest());
+											"miecz leworęczny", ItemCreationContext.questReward());
 									lhandsword.setBoundTo(player.getName());
 									player.equipOrPutOnGround(lhandsword);
 									final Item rhandsword = SingletonRepository.getEntityManager().getItem(
-											"miecz praworęczny", ItemCreationContext.quest());
+											"miecz praworęczny", ItemCreationContext.questReward());
 									rhandsword.setBoundTo(player.getName());
 									player.equipOrPutOnGround(rhandsword);
 									player.addXP(50000);

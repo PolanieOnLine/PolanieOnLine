@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
@@ -65,5 +66,15 @@ public class CraftItemTaskTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void legacyForgingStateRejectsWholeSerializedState() {
 		new CraftItemTask().legacyForgingState("make;123");
+	}
+
+	@Test
+	public void craftedQuestItemUsesDeterministicEpicRewardContext() {
+		final CraftItemTask task = new CraftItemTask().craftItem("złota ciupaga");
+		final ChatAction action = task.buildQuestCompleteAction(QUEST_SLOT);
+
+		assertTrue(action.toString().contains("questRarity=EPIC"));
+		assertTrue(action.toString().contains("randomizeModifiers=false"));
+		assertTrue(action.toString().contains("generateAffixes=false"));
 	}
 }

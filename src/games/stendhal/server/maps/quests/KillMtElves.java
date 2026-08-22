@@ -68,7 +68,7 @@ public class KillMtElves implements QuestManuscript {
 
 		quest.complete()
 			.greet("Dobrze. Droga jest znowu otwarta. Przyjmij ten hełm kolczy. Nie jest przypadkową nagrodą, będzie ci potrzebny, jeśli zgodzisz się pomóc mi przy ostatnim doświadczeniu.")
-			.rewardWith(new EquipItemAction("hełm kolczy", 1, true))
+			.rewardWith(EquipItemAction.boundQuestReward("hełm kolczy"))
 			.rewardWith(new IncreaseXPAction(20000))
 			.rewardWith(new IncreaseKarmaAction(20.0));
 

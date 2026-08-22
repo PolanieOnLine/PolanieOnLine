@@ -249,7 +249,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					raiser.say("Cooo?! Miesiąc?! Moja armia potrzebuje na teraz! No cóż... Proszę, w nagrodę przyjmij to, magiczny srebrny pierścień. Uchroni Cię przed mrokiem. Słyszałem również, że gdzieś w rejonach wieliczki można go ulepszyć, lecz to są jedynie plotki.");
 					final Item item = SingletonRepository.getEntityManager().getItem(
-							"srebrny pierścień", ItemCreationContext.quest());
+							"srebrny pierścień", ItemCreationContext.questReward());
 					item.setBoundTo(player.getName());
 					player.equipOrPutOnGround(item);
 					player.addXP(10000);

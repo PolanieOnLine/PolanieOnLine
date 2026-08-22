@@ -79,4 +79,13 @@ public class EquipItemActionTest {
 		assertFalse(first.equals(different));
 		assertTrue(different.toString().contains("EPIC"));
 	}
+
+	@Test
+	public void explicitQuestRewardFactoryUsesEpicContext() {
+		final EquipItemAction action = EquipItemAction.boundQuestReward("sztylecik");
+
+		assertTrue(action.toString().contains("questRarity=EPIC"));
+		assertTrue(action.toString().contains("randomizeModifiers=false"));
+		assertTrue(action.toString().contains("generateAffixes=false"));
+	}
 }

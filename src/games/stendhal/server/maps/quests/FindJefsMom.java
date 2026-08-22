@@ -178,7 +178,7 @@ public class FindJefsMom extends AbstractQuest {
 
 			ConversationStates.IDLE,
 			"O, rozumiem. :) Mój syn Jef poprosił Cię, żebyś mnie poszukał. Co za kochany i troskliwy chłopiec! Proszę, daj mu tę bielikrasę. Kocham te kwiaty! Bedzie wiedział, że ze mną wszystko #w #porządku, jeśli mu ją dasz!",
-			new MultipleActions(new EquipItemAction("bielikrasa", 1, true),
+			new MultipleActions(EquipItemAction.boundQuestReward("bielikrasa"),
                                 new SetQuestAction(QUEST_SLOT, 0, "found_mom")));
 
 

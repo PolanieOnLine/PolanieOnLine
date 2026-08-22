@@ -117,7 +117,7 @@ public class ClubOfThorns extends AbstractQuest {
 
 	private void step_3() {
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new EquipItemAction("maczuga cierniowa", 1, true));
+		reward.add(EquipItemAction.boundQuestReward("maczuga cierniowa"));
 		reward.add(new IncreaseKarmaAction(20.0));
 		reward.add(new IncreaseXPAction(10000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
