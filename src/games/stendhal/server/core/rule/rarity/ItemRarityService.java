@@ -243,6 +243,42 @@ public final class ItemRarityService {
 		ItemTooltipService.update(item);
 	}
 
+	/**
+	 * Replaces only the rarity-controlled layer with an exact deterministic Epic
+	 * reward template. The existing object, binding, slots and quest provenance
+	 * remain untouched.
+	 */
+	boolean promoteToQuestReward(final Item item, final Item epicTemplate) {
+		if (item == null || epicTemplate == null || !isEligible(item)
+				|| !item.getName().equals(epicTemplate.getName())
+				|| epicTemplate.getRarityOrCommon() != ItemRarity.EPIC
+				|| item.getRarityOrCommon().ordinal() >= ItemRarity.EPIC.ordinal()) {
+			return false;
+		}
+		if (item.hasMap(Item.RARITY_MODIFIERS)) {
+			item.removeMap(Item.RARITY_MODIFIERS);
+		}
+		for (final String statistic : INTEGRAL_STATS) {
+			if (epicTemplate.has(statistic)) {
+				item.put(statistic, epicTemplate.getInt(statistic));
+			}
+		}
+		for (final String statistic : FLOAT_STATS) {
+			if (epicTemplate.has(statistic)) {
+				item.put(statistic, epicTemplate.getDouble(statistic));
+			}
+		}
+		for (final Map.Entry<String, Double> modifier
+				: epicTemplate.getRarityModifiers().entrySet()) {
+			item.setRarityModifier(modifier.getKey(), modifier.getValue().doubleValue());
+		}
+		item.setValue(epicTemplate.getValue());
+		item.setRarity(ItemRarity.EPIC);
+		item.put(Item.RARITY_PROFILE, epicTemplate.get(Item.RARITY_PROFILE));
+		ItemTooltipService.update(item);
+		return true;
+	}
+
 	private String selectProfile(final Item item, final ItemCreationContext context) {
 		if (!ItemRarityProfile.DEFAULT_ID.equals(context.getProfile())) {
 			return context.getProfile();
