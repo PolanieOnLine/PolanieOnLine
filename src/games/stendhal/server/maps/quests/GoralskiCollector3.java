@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.ItemTools;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
@@ -310,7 +311,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT, "done")),
 				ConversationStates.ATTENDING,
 				"Witoj. Izba pamięci jest już kompletna, a ja wciąż jestem ci winien nagrodę. Przyjmij tę #'spinke'. Należała do moich przodków i chcę, żeby teraz służyła tobie.",
-				new MultipleActions(EquipItemAction.boundQuestReward("spinka"), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
+				new MultipleActions(new EquipItemAction("spinka", 1, true, ItemRarity.EPIC), new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

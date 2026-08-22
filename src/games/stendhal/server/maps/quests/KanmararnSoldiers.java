@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -410,7 +411,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 		actions.add(new IncreaseXPAction(5000));
 		actions.add(new DropItemdataItemAction("mapa", SLD_HENRY));
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 15.0));
-		actions.add(EquipItemAction.boundQuestReward("buty mainiocyjskie"));
+		actions.add(new EquipItemAction("buty mainiocyjskie", 1, true, ItemRarity.EPIC));
 
 		james.add(ConversationStates.ATTENDING,
 				Arrays.asList("map", "henry", "mapa"),

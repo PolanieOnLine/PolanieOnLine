@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -320,7 +321,7 @@ public class EmotionCrystals extends AbstractQuest {
 		for (String color : crystalColors) {
 			rewardAction.add(new DropItemAction(color + " kryształ emocji"));
 		}
-		rewardAction.add(EquipItemAction.boundQuestReward("spodnie kamienne"));
+		rewardAction.add(new EquipItemAction("spodnie kamienne", 1, true, ItemRarity.EPIC));
 		rewardAction.add(new IncreaseXPAction(65000));
 		rewardAction.add(new IncreaseKarmaAction(15));
 		rewardAction.add(new SetQuestAction(QUEST_SLOT, 0, "done"));

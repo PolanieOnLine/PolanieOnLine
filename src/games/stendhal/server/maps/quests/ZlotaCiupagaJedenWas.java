@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.CraftItemQuestBuilder;
@@ -50,6 +51,7 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.remind("Lista dla twojej pamięci:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
 		quest.task().craftItem("złota ciupaga z wąsem")
+			.rarity(ItemRarity.EPIC)
 			.waitingTime(8 * 60) // 8 godzin
 			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
 			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")

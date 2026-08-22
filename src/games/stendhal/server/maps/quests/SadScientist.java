@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -130,7 +131,7 @@ public class SadScientist extends AbstractQuest {
 				new IncreaseKarmaAction(20),
 				new IncreaseXPAction(10000),
 				// here, true = bind them to player
-				EquipItemAction.boundQuestReward("czarne spodnie"));
+				new EquipItemAction("czarne spodnie", 1, true, ItemRarity.EPIC));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

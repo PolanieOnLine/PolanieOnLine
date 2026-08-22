@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -196,7 +197,7 @@ public class ZlotyAmulet extends AbstractQuest {
 		reward2.add(new IncreaseXPAction(500));
 		reward2.add(new IncreaseKarmaAction(10));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "jagienka"));
-		reward2.add(EquipItemAction.boundQuestReward("złoty amulet"));
+		reward2.add(new EquipItemAction("złoty amulet", 1, true, ItemRarity.EPIC));
 		
 		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,

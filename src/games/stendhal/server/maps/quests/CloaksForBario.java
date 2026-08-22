@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -188,7 +189,7 @@ public class CloaksForBario extends AbstractQuest {
 		// player says he has a blue elf cloak with him and it's the last one
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("lazurowy płaszcz elficki"));
-		reward.add(EquipItemAction.boundQuestReward("złota tarcza"));
+		reward.add(new EquipItemAction("złota tarcza", 1, true, ItemRarity.EPIC));
 		reward.add(new IncreaseXPAction(80000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(25));

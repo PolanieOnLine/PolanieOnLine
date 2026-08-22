@@ -13,6 +13,7 @@ package games.stendhal.server.maps.quests.mithrilcloak;
 
 import java.util.Arrays;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -139,7 +140,7 @@ class MakingClasp {
 				new MultipleActions(
 									 new DropItemAction("brosza z mithrilu"), 
 									 new SetQuestAndModifyKarmaAction(mithrilcloak.getQuestSlot(), "done", 10.0),
-									 EquipItemAction.boundQuestReward("płaszcz z mithrilu"),
+									 new EquipItemAction("płaszcz z mithrilu", 1, true, ItemRarity.EPIC),
 									 new IncreaseXPAction(1000)
 									 )
 				);

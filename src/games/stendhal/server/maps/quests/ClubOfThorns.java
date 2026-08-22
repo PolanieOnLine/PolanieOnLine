@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -117,7 +118,7 @@ public class ClubOfThorns extends AbstractQuest {
 
 	private void step_3() {
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(EquipItemAction.boundQuestReward("maczuga cierniowa"));
+		reward.add(new EquipItemAction("maczuga cierniowa", 1, true, ItemRarity.EPIC));
 		reward.add(new IncreaseKarmaAction(20.0));
 		reward.add(new IncreaseXPAction(10000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));

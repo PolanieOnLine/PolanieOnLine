@@ -286,23 +286,6 @@ public class ItemRarityServiceTest {
 	}
 
 	@Test
-	public void questRingAlwaysRemainsCommon() {
-		final Map<String, String> attributes = new HashMap<String, String>();
-		attributes.put("def", "40");
-		final Item ring = new Item("test ring", "ring", "test", attributes);
-		ring.setEquipableSlots(Arrays.asList("finger", "bag"));
-		ring.configureRarity(null, "default", 1000);
-
-		new ItemRarityService(new CountingRandom(0.99)).initialize(ring,
-				ItemCreationContext.questReward());
-
-		assertSame(ItemRarity.COMMON, ring.getRarity());
-		assertEquals(40, ring.getInt("def"));
-		assertEquals(Double.valueOf(1.0), ring.getRarityModifier("def"));
-		assertFalse(ItemAffixState.hasAny(ring));
-	}
-
-	@Test
 	public void questModifierRandomnessRequiresExplicitOptIn() {
 		final CountingRandom deterministicRandom = new CountingRandom(0.9);
 		final Item deterministic = combatItem();

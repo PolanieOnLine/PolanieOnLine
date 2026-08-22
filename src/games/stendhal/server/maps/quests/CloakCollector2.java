@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.ItemTools;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
@@ -357,7 +358,7 @@ public class CloakCollector2 extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Och! Nie nagrodziłam Ciebie za ponowną pomoc! Weź te buty. Sądzę, że są wspaniałe, ale nie pasują na mnie :(",
 				new MultipleActions(
-						EquipItemAction.boundQuestReward("buty zabójcy"),
+						new EquipItemAction("buty zabójcy", 1, true, ItemRarity.EPIC),
 						new SetQuestAction(QUEST_SLOT, "done;rewarded")));
 
 		// Player returns after finishing the quest and was rewarded

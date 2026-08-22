@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
@@ -68,7 +69,7 @@ public class KillMtElves implements QuestManuscript {
 
 		quest.complete()
 			.greet("Dobrze. Droga jest znowu otwarta. Przyjmij ten hełm kolczy. Nie jest przypadkową nagrodą, będzie ci potrzebny, jeśli zgodzisz się pomóc mi przy ostatnim doświadczeniu.")
-			.rewardWith(EquipItemAction.boundQuestReward("hełm kolczy"))
+			.rewardWith(new EquipItemAction("hełm kolczy", 1, true, ItemRarity.EPIC))
 			.rewardWith(new IncreaseXPAction(20000))
 			.rewardWith(new IncreaseKarmaAction(20.0));
 

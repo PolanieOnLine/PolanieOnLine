@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
@@ -206,7 +207,7 @@ public class MeetPietrek extends AbstractQuest {
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
-		reward2.add(EquipItemAction.questReward("puklerz", 1, false));
+		reward2.add(new EquipItemAction("puklerz", 1, false, ItemRarity.EPIC));
 		reward2.add(new IncreaseXPAction(250));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
 

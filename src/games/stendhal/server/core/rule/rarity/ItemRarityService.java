@@ -31,7 +31,6 @@ import games.stendhal.server.entity.item.StackableItem;
  */
 public final class ItemRarityService {
 	private static final String MISSILE_CLASS = "missile";
-	private static final String RING_CLASS = "ring";
 
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
@@ -148,10 +147,7 @@ public final class ItemRarityService {
 		final String profileId = selectProfile(item, context);
 		final ItemRarityProfile profile = getProfile(profileId);
 		final ItemRarity rarity;
-		if (context.getSource() == ItemCreationContext.Source.QUEST
-				&& RING_CLASS.equals(item.getItemClass())) {
-			rarity = ItemRarity.COMMON;
-		} else if (context.getRarity() != null) {
+		if (context.getRarity() != null) {
 			rarity = context.getRarity();
 		} else if (context.getSource() == ItemCreationContext.Source.QUEST) {
 			rarity = ItemRarity.COMMON;

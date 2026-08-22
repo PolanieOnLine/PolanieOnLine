@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
@@ -429,7 +430,7 @@ public class ObsidianKnife extends AbstractQuest {
 		reward.add(new IncreaseXPAction(10000));
 		reward.add(new IncreaseKarmaAction(40));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(EquipItemAction.boundQuestReward("obsydianowy saks"));
+		reward.add(new EquipItemAction("obsydianowy saks", 1, true, ItemRarity.EPIC));
 
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,

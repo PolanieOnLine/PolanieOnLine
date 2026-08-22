@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
@@ -69,8 +70,18 @@ public class CraftItemTaskTest {
 	}
 
 	@Test
-	public void craftedQuestItemUsesDeterministicEpicRewardContext() {
+	public void craftedQuestItemUsesCommonWhenRarityIsNotSet() {
 		final CraftItemTask task = new CraftItemTask().craftItem("złota ciupaga");
+		final ChatAction action = task.buildQuestCompleteAction(QUEST_SLOT);
+
+		assertTrue(action.toString().contains("questRarity=COMMON"));
+	}
+
+	@Test
+	public void craftedQuestItemUsesExplicitEpicRarity() {
+		final CraftItemTask task = new CraftItemTask()
+				.craftItem("złota ciupaga")
+				.rarity(ItemRarity.EPIC);
 		final ChatAction action = task.buildQuestCompleteAction(QUEST_SLOT);
 
 		assertTrue(action.toString().contains("questRarity=EPIC"));

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
@@ -178,7 +179,7 @@ public class FindJefsMom extends AbstractQuest {
 
 			ConversationStates.IDLE,
 			"O, rozumiem. :) Mój syn Jef poprosił Cię, żebyś mnie poszukał. Co za kochany i troskliwy chłopiec! Proszę, daj mu tę bielikrasę. Kocham te kwiaty! Bedzie wiedział, że ze mną wszystko #w #porządku, jeśli mu ją dasz!",
-			new MultipleActions(EquipItemAction.boundQuestReward("bielikrasa"),
+			new MultipleActions(new EquipItemAction("bielikrasa", 1, true, ItemRarity.EPIC),
                                 new SetQuestAction(QUEST_SLOT, 0, "found_mom")));
 
 
