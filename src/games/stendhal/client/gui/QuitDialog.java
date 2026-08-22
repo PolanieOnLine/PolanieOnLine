@@ -28,12 +28,14 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.entity.User;
 
 @SuppressWarnings("serial") class QuitDialog {
 	private static final int PADDING = 10;
 	/** Quit dialog window. */
 	private InternalManagedWindow quitDialog;
+	private JButton settingsButton;
 	private JButton changeCharacterButton;
 	private JButton quitButton;
 
@@ -63,12 +65,17 @@ import games.stendhal.client.entity.User;
 	private InternalManagedWindow buildQuitDialog() {
 		// dialog contents
 		JComponent content = new JComponent() { };
-		content.setLayout(new GridLayout(1, 3, PADDING, PADDING));
+		content.setLayout(new GridLayout(3, 1, PADDING, PADDING));
 		content.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
 		// Limit keyboard focus handling to the dialog until the user makes some
 		// decision
 		content.setFocusCycleRoot(true);
 		content.setFocusTraversalPolicy(new LimitingFocusTraversalPolicy());
+
+		settingsButton = new JButton("Ustawienia");
+		settingsButton.setMnemonic(KeyEvent.VK_U);
+		settingsButton.addActionListener(new SettingsCB());
+		content.add(settingsButton);
 
 		changeCharacterButton = new JButton("Zmień postać");
 		changeCharacterButton.setMnemonic(KeyEvent.VK_Z);
@@ -79,11 +86,6 @@ import games.stendhal.client.entity.User;
 		quitButton.setMnemonic(KeyEvent.VK_W);
 		quitButton.addActionListener(new QuitConfirmCB());
 		content.add(quitButton);
-
-		JButton cancelButton = new JButton("Anuluj");
-		cancelButton.setMnemonic(KeyEvent.VK_A);
-		cancelButton.addActionListener(new QuitCancelCB());
-		content.add(cancelButton);
 
 		// Pack the whole thing in a managed window
 		InternalManagedWindow window = new InternalManagedWindow("quit", "Sesja");
@@ -103,10 +105,11 @@ import games.stendhal.client.entity.User;
 		}
 	}
 
-	private class QuitCancelCB implements ActionListener {
+	private class SettingsCB implements ActionListener {
 		@Override
 		public void actionPerformed(final ActionEvent ev) {
 			quitDialog.setVisible(false);
+			SlashActionRepository.get("settings").execute(null, null);
 		}
 	}
 
@@ -140,11 +143,21 @@ import games.stendhal.client.entity.User;
 
 		quitDialog.center();
 		quitDialog.setVisible(true);
-		if (canChangeCharacter) {
-			changeCharacterButton.requestFocusInWindow();
-		} else {
-			quitButton.requestFocusInWindow();
-		}
+		settingsButton.requestFocusInWindow();
+	}
+
+	/**
+	 * @return whether the session menu is currently open
+	 */
+	boolean isVisible() {
+		return quitDialog.isVisible();
+	}
+
+	/**
+	 * Hide the session menu.
+	 */
+	void hide() {
+		quitDialog.setVisible(false);
 	}
 
 	/**

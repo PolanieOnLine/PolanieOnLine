@@ -21,16 +21,21 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 class ReserveSetWindow extends InternalManagedWindow {
+	interface Owner {
+		boolean isReserveWindowAvailable();
+		void onReserveWindowVisibilityChange(boolean visible);
+	}
+
 	/**
 	 * serial version uid.
 	 */
 	private static final long serialVersionUID = -6792704385484299338L;
 
-	private final Character owner;
+	private final Owner owner;
 	private boolean added;
 	private boolean suppressVisibilityEvents;
 
-	ReserveSetWindow(Character owner, JComponent content) {
+	ReserveSetWindow(Owner owner, JComponent content) {
 		super("reserve_set", "Schowek");
 		this.owner = owner;
 		setContent(content);
@@ -52,6 +57,11 @@ class ReserveSetWindow extends InternalManagedWindow {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void setVisible(final boolean visible) {
+		super.setVisible(visible && (owner != null) && owner.isReserveWindowAvailable());
 	}
 
 	void attach() {

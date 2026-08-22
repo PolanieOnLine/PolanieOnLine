@@ -44,6 +44,8 @@ import games.stendhal.client.StendhalClient;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.login.CreateAccountDialog;
 import games.stendhal.client.gui.login.LoginDialog;
+import games.stendhal.client.sound.ClientSoundSystem;
+import games.stendhal.client.sound.facade.SoundSystemFacade;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.update.ClientGameConfiguration;
 
@@ -57,6 +59,8 @@ public class StendhalFirstScreen extends JFrame {
 	/** Name of the font used for the html areas. Should match the file name without .ttf */
 	private static final String FONT_NAME = "BlackChancery";
 	private static final int FONT_SIZE = 16;
+	private static final int SOUND_BUTTON_SIZE = 24;
+	private static final int SOUND_ICON_SIZE = 14;
 
 	private final StendhalClient client;
 
@@ -64,7 +68,10 @@ public class StendhalFirstScreen extends JFrame {
 	private JButton loginButton;
 	private JButton createAccountButton;
 	private JButton helpButton;
+	private JButton settingsButton;
 	private JButton creditButton;
+	private JButton soundButton;
+	private final StartupMusicController startupMusic;
 	private final Point zeroPoint = new Point();
 
 	static {
@@ -79,15 +86,37 @@ public class StendhalFirstScreen extends JFrame {
 	 *            StendhalClient
 	 */
 	public StendhalFirstScreen(final StendhalClient client) {
+		this(client, ClientSoundSystem.create());
+	}
+
+	/**
+	 * Creates the first screen using the sound system that will later be reused
+	 * by the game client.
+	 *
+	 * @param client StendhalClient
+	 * @param soundSystem shared client sound system
+	 */
+	public StendhalFirstScreen(final StendhalClient client,
+			final SoundSystemFacade soundSystem) {
 		super(detectScreen());
 		setLocationByPlatform(true);
 		WindowUtils.trackLocation(this, "main", true);
 		this.client = client;
+		startupMusic = new StartupMusicController(soundSystem);
 		client.setSplashScreen(this);
 
 		initializeComponent();
-
 		setVisible(true);
+		backgroundComponent.paintImmediately(0, 0,
+				backgroundComponent.getWidth(), backgroundComponent.getHeight());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				startupMusic.start();
+				backgroundComponent.revalidate();
+				backgroundComponent.repaint();
+			}
+		});
 	}
 
 	/**
@@ -164,6 +193,26 @@ public class StendhalFirstScreen extends JFrame {
 		helpButton.setAction(helpAction);
 
 		//
+		// Client settings available before logging in
+		//
+		Action settingsAction = new AbstractAction("Ustawienia klienta") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				StartupSettingsDialog dialog = new StartupSettingsDialog(
+						StendhalFirstScreen.this, startupMusic);
+				dialog.setVisible(true);
+				updateSoundButton(startupMusic.isSoundEnabled());
+			}
+		};
+		settingsAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+		settingsAction.putValue(Action.SHORT_DESCRIPTION,
+				"Zmień tryb wyświetlania gry i ustawienia dźwięku.");
+
+		settingsButton = createTransparentButton();
+		settingsButton.setFont(font);
+		settingsButton.setAction(settingsAction);
+
+		//
 		// Credits
 		//
 		Action showCreditsAction = new AbstractAction("Wyróżnieni") {
@@ -178,36 +227,62 @@ public class StendhalFirstScreen extends JFrame {
 		creditButton.setFont(font);
 		creditButton.setAction(showCreditsAction);
 
+		JComponent startupControls = createStartupControls();
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		// Add the buttons
-		backgroundComponent.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+		// Keep the menu layout independent from the corner sound control.
+		JComponent menu = new JComponent() { };
+		menu.setLayout(new GridBagLayout());
+		GridBagConstraints menuConstraints = new GridBagConstraints();
+		menuConstraints.gridx = 0;
+		menuConstraints.gridy = 0;
 		// The buttons should be a bit larger than by default. We have enough
 		// space.
-		gbc.ipadx = 2 * COMMON_PADDING;
-		gbc.ipady = 2;
+		menuConstraints.ipadx = 2 * COMMON_PADDING;
+		menuConstraints.ipady = 2;
 
 		// All extra space should be above
-		gbc.weighty = 1.0;
-		backgroundComponent.add(Box.createVerticalGlue(), gbc);
-		gbc.weighty = 0.0;
+		menuConstraints.weighty = 1.0;
+		menu.add(Box.createVerticalGlue(), menuConstraints);
+		menuConstraints.weighty = 0.0;
 
-		gbc.gridy++;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(COMMON_PADDING, COMMON_PADDING, COMMON_PADDING, COMMON_PADDING);
+		menuConstraints.gridy++;
+		menuConstraints.fill = GridBagConstraints.HORIZONTAL;
+		menuConstraints.insets = new Insets(COMMON_PADDING, COMMON_PADDING,
+				COMMON_PADDING, COMMON_PADDING);
 
-		backgroundComponent.add(loginButton, gbc);
-		gbc.gridy++;
-		backgroundComponent.add(createAccountButton, gbc);
-		gbc.gridy++;
-		backgroundComponent.add(helpButton, gbc);
-		gbc.gridy++;
-		backgroundComponent.add(creditButton, gbc);
-		gbc.gridy++;
-		backgroundComponent.add(Box.createVerticalStrut(2 * COMMON_PADDING), gbc);
+		menu.add(loginButton, menuConstraints);
+		menuConstraints.gridy++;
+		menu.add(createAccountButton, menuConstraints);
+		menuConstraints.gridy++;
+		menu.add(helpButton, menuConstraints);
+		menuConstraints.gridy++;
+		menu.add(settingsButton, menuConstraints);
+		menuConstraints.gridy++;
+		menu.add(creditButton, menuConstraints);
+		menuConstraints.gridy++;
+		menu.add(Box.createVerticalStrut(2 * COMMON_PADDING), menuConstraints);
+
+		// Both components use the same GridBag cell. The corner controls float
+		// over the menu layer without changing the menu column width.
+		backgroundComponent.setLayout(new GridBagLayout());
+		GridBagConstraints layerConstraints = new GridBagConstraints();
+		layerConstraints.gridx = 0;
+		layerConstraints.gridy = 0;
+		layerConstraints.weightx = 1.0;
+		layerConstraints.weighty = 1.0;
+		layerConstraints.fill = GridBagConstraints.BOTH;
+		backgroundComponent.add(startupControls, layerConstraints);
+		backgroundComponent.add(menu, layerConstraints);
+
+		GridBagLayout layout = (GridBagLayout) backgroundComponent.getLayout();
+		GridBagConstraints controlsConstraints = layout.getConstraints(startupControls);
+		controlsConstraints.fill = GridBagConstraints.NONE;
+		controlsConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+		controlsConstraints.insets = new Insets(COMMON_PADDING, COMMON_PADDING,
+				COMMON_PADDING, COMMON_PADDING);
+		layout.setConstraints(startupControls, controlsConstraints);
 
 		getRootPane().setDefaultButton(loginButton);
 
@@ -222,13 +297,62 @@ public class StendhalFirstScreen extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Stop the first-screen music before the shared sound system starts playing
+	 * zone music.
+	 */
+	public void stopStartupMusic() {
+		startupMusic.stop();
+	}
+
+	private JComponent createStartupControls() {
+		createSoundButton();
+		return soundButton;
+	}
+
+	private void createSoundButton() {
+		soundButton = createTransparentButton();
+		configureSoundButton(soundButton);
+		soundButton.addActionListener(new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				updateSoundButton(startupMusic.toggleSound());
+			}
+		});
+		updateSoundButton(startupMusic.isSoundEnabled());
+	}
+
+	static void configureSoundButton(JButton button) {
+		Dimension size = new Dimension(SOUND_BUTTON_SIZE, SOUND_BUTTON_SIZE);
+		button.setPreferredSize(size);
+		button.setMinimumSize(size);
+		button.setMaximumSize(size);
+		button.setMargin(new Insets(1, 1, 1, 1));
+		button.setBorderPainted(true);
+		button.setContentAreaFilled(true);
+		button.setFocusPainted(false);
+	}
+
+	private void updateSoundButton(boolean soundEnabled) {
+		String iconName = soundEnabled ? "sound.png" : "sound-disabled.png";
+		URL iconUrl = DataLoader.getResource("data/gui/quickmenu/" + iconName);
+		Image icon = new ImageIcon(iconUrl).getImage().getScaledInstance(
+				SOUND_ICON_SIZE, SOUND_ICON_SIZE, Image.SCALE_SMOOTH);
+		soundButton.setIcon(new ImageIcon(icon));
+		String description = soundEnabled ? "Wycisz wszystkie dźwięki" : "Włącz wszystkie dźwięki";
+		soundButton.setToolTipText(description);
+		soundButton.getAccessibleContext().setAccessibleName(description);
+	}
+
 	@Override
 	public void setEnabled(boolean b) {
 		super.setEnabled(b);
 		loginButton.setEnabled(b);
 		createAccountButton.setEnabled(b);
 		helpButton.setEnabled(b);
+		settingsButton.setEnabled(b);
 		creditButton.setEnabled(b);
+		soundButton.setEnabled(b);
 	}
 
 	private JButton createTransparentButton() {
