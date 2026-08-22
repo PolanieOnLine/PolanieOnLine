@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -121,7 +120,7 @@ public class HelpKrasnolud extends AbstractQuest {
 		armoractions.add(new DropItemAction("skóra niebieskiego smoka",30));
 		armoractions.add(new DropItemAction("skóra czarnego smoka",30));
 		armoractions.add(new DropItemAction("skóra złotego smoka",10));
-		armoractions.add(new EquipItemAction("zbroja lazurowa", 1, false, ItemRarity.EPIC));
+		armoractions.add(new EquipItemAction("zbroja lazurowa", 1, false));
 		armoractions.add(new IncreaseXPAction(100000));
 		armoractions.add(new SetQuestAction(QUEST_SLOT, "gotarmor"));
 

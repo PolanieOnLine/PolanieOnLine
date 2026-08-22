@@ -131,7 +131,7 @@ public class NewsFromHackim extends AbstractQuest {
 					player.setQuest(QUEST_SLOT, "done");
 
 					final Item item = SingletonRepository.getEntityManager().getItem(
-							"skórzane spodnie", ItemCreationContext.questReward());
+							"skórzane spodnie", ItemCreationContext.quest());
 					player.equipOrPutOnGround(item);
 					player.addXP(150);
 					player.addKarma(2);

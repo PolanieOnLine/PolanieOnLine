@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -171,7 +170,7 @@ public class MeetHayunn extends AbstractQuest {
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
-		reward2.add(new EquipItemAction("drewniana tarcza", 1, false, ItemRarity.EPIC));
+		reward2.add(new EquipItemAction("drewniana tarcza", 1, false));
 		reward2.add(new IncreaseXPAction(20));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
 

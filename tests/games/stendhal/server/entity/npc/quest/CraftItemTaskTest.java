@@ -86,6 +86,6 @@ public class CraftItemTaskTest {
 
 		assertTrue(action.toString().contains("questRarity=EPIC"));
 		assertTrue(action.toString().contains("randomizeModifiers=false"));
-		assertTrue(action.toString().contains("generateAffixes=false"));
+		assertTrue(action.toString().contains("generateAffixes=true"));
 	}
 }

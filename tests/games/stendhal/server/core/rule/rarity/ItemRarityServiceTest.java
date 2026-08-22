@@ -265,7 +265,7 @@ public class ItemRarityServiceTest {
 	}
 
 	@Test
-	public void questRewardIsDeterministicEpicWithoutRandomAffixes() {
+	public void questRewardUsesDeterministicEpicStatsAndPersistentAffixes() {
 		final Item first = combatItem();
 		final Item second = combatItem();
 		final CountingRandom firstRandom = new CountingRandom(0.01);
@@ -282,7 +282,10 @@ public class ItemRarityServiceTest {
 		assertEquals(115, first.getInt("atk"));
 		assertEquals(0, firstRandom.calls);
 		assertEquals(0, secondRandom.calls);
-		assertFalse(ItemAffixState.hasAny(first));
+		assertEquals(2, ItemAffixState.getValues(first).size());
+		assertEquals(2, ItemAffixState.getValues(second).size());
+		assertTrue(ItemAffixState.hasSeed(first));
+		assertTrue(ItemAffixState.hasSeed(second));
 	}
 
 	@Test

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
 import games.stendhal.server.entity.item.Item;
@@ -87,6 +88,12 @@ public class EquipItemActionTest {
 
 		assertTrue(action.toString().contains("questRarity=EPIC"));
 		assertTrue(action.toString().contains("randomizeModifiers=false"));
-		assertTrue(action.toString().contains("generateAffixes=false"));
+		assertTrue(action.toString().contains("generateAffixes=true"));
+
+		final Player player = PlayerTestHelper.createPlayer("epic_reward");
+		action.fire(player, null, null);
+		final Item item = (Item) player.getSlot("bag").getFirst();
+		assertEquals(2, ItemAffixState.getValues(item).size());
+		assertTrue(ItemAffixState.hasSeed(item));
 	}
 }

@@ -244,9 +244,10 @@ public final class ItemRarityService {
 	}
 
 	/**
-	 * Replaces only the rarity-controlled layer with an exact deterministic Epic
-	 * reward template. The existing object, binding, slots and quest provenance
-	 * remain untouched.
+	 * Replaces only the rarity-controlled layer with an Epic reward template.
+	 * The existing object, binding, slots, upgrade level and quest provenance
+	 * remain untouched. The template's complete persisted affix state is copied
+	 * once instead of being regenerated on a later login.
 	 */
 	boolean promoteToQuestReward(final Item item, final Item epicTemplate) {
 		if (item == null || epicTemplate == null || !isEligible(item)
@@ -275,6 +276,7 @@ public final class ItemRarityService {
 		item.setValue(epicTemplate.getValue());
 		item.setRarity(ItemRarity.EPIC);
 		item.put(Item.RARITY_PROFILE, epicTemplate.get(Item.RARITY_PROFILE));
+		ItemAffixState.restore(item, epicTemplate);
 		ItemTooltipService.update(item);
 		return true;
 	}

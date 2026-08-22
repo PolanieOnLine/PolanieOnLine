@@ -3,6 +3,7 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.rarity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +51,7 @@ public final class QuestRewardRarityMigrationService {
 					new Reward("club_thorns", "maczuga cierniowa"),
 					new Reward("cloaks_for_bario", "złota tarcza"),
 					new Reward("emotion_crystals", "spodnie kamienne"),
-					new Reward("find_jefs_mom", "bielikrasa"),
 					new Reward("soldier_henry", "buty mainiocyjskie"),
-					new Reward("forge_newarms", "tarcza ciemnomithrilowa"),
 					new Reward("kill_mountain_elves", "hełm kolczy"),
 					new Reward("krolewski_plaszcz", "tarcza cieni"),
 					new Reward("mixture_for_ortiv", "sztylet mordercy"),
@@ -63,7 +62,6 @@ public final class QuestRewardRarityMigrationService {
 					new Reward("dragon_amulet", "smocze pazury"),
 					new Reward("vs_quest", "krwiopijca"),
 					new Reward("supplies_for_phalk", "zbroja krasnoludzka"),
-					new Reward("zloty_amulet", "złoty amulet"),
 					new Reward("zlota_ciupaga", "złota ciupaga"),
 					new Reward("zlota_ciupaga_was", "złota ciupaga z wąsem"),
 					new Reward("ciupaga_dwa_wasy", "złota ciupaga z dwoma wąsami"),
@@ -122,6 +120,17 @@ public final class QuestRewardRarityMigrationService {
 			}
 		}
 		return false;
+	}
+
+	/** Item names covered by the compatibility migration. */
+	static List<String> registeredItemNames() {
+		final List<String> names = new ArrayList<String>();
+		for (final Reward reward : REWARDS) {
+			if (!names.contains(reward.itemName)) {
+				names.add(reward.itemName);
+			}
+		}
+		return Collections.unmodifiableList(names);
 	}
 
 	private static final class Reward {

@@ -95,7 +95,7 @@ public class AdosDeathmatch extends AbstractQuest {
 	 */
 	public void createHelmet(final int x, final int y) {
 		final Item helmet = SingletonRepository.getEntityManager()
-				.getItem("zdobyczny hełm", ItemCreationContext.questReward());
+				.getItem("zdobyczny hełm", ItemCreationContext.quest());
 		helmet.setDescription("Oto główna nagroda dla zwycięzców Deathmatcha.");
 		helmet.setPosition(x, y);
 		zone.add(helmet, false);

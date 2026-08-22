@@ -66,7 +66,9 @@ public final class ItemCreationContext {
 	}
 
 	/**
-	 * Creates a deterministic Epic item awarded for completing a quest.
+	 * Creates an Epic item awarded for completing a quest. Tier multipliers are
+	 * deterministic, while the complete affix set is rolled once and persisted
+	 * with the item instance.
 	 *
 	 * <p>This is deliberately separate from {@link #quest()}. Quest scripts also
 	 * create temporary props, delivery items and other objects which must not be
@@ -76,7 +78,7 @@ public final class ItemCreationContext {
 		return builder(Source.QUEST)
 				.withQuestRarity(ItemRarity.EPIC)
 				.randomizeModifiers(false)
-				.generateAffixes(false)
+				.generateAffixes(true)
 				.build();
 	}
 

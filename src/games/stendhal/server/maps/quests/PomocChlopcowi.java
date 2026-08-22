@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -56,7 +55,7 @@ public class PomocChlopcowi implements QuestManuscript {
 			.greet("Nasz wybawca! Nareszcie! Dziękuję!")
 			.rewardWith(new IncreaseXPAction(250))
 			.rewardWith(new IncreaseKarmaAction(5.0))
-			.rewardWith(new EquipItemAction("buty skórzane", 1, false, ItemRarity.EPIC));
+			.rewardWith(new EquipItemAction("buty skórzane", 1, false));
 
 		return quest;
 	}

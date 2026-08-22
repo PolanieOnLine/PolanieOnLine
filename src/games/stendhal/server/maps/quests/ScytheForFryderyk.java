@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -123,7 +122,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 		reward.add(new DropItemAction("kosa"));
 		reward.add(new IncreaseXPAction(2200));
 		reward.add(new IncreaseKarmaAction(25));
-		reward.add(new EquipItemAction("skórzany hełm", 1, false, ItemRarity.EPIC));
+		reward.add(new EquipItemAction("skórzany hełm", 1, false));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		// make sure the player isn't cheating by putting the

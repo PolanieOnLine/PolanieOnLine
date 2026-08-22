@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.CraftItemQuestBuilder;
@@ -55,7 +54,6 @@ public class ZlotyRog implements QuestManuscript {
 
 		quest.task()
 			.craftItem("złoty róg")
-			.rarity(ItemRarity.EPIC)
 			.waitingTime(60)
 			.playerMinLevel(200)
 			.playerMinKarma(500)
