@@ -40,6 +40,8 @@ import games.stendhal.client.gui.login.Profile;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
 import games.stendhal.client.gui.styled.styles.StyleFactory;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.sound.ClientSoundSystem;
+import games.stendhal.client.sound.facade.SoundSystemFacade;
 import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.Debug;
 import games.stendhal.common.MathHelper;
@@ -371,6 +373,7 @@ public final class stendhal {
 
 			UIManager.getLookAndFeelDefaults().put("ClassLoader", stendhal.class.getClassLoader());
 
+			final SoundSystemFacade soundSystem = ClientSoundSystem.create();
 			final Profile profile = Profile.createFromCommandline(args);
 
 			SwingUtilities.invokeLater(new Runnable() {
@@ -379,7 +382,7 @@ public final class stendhal {
 					if (profile.isValid()) {
 						new LoginDialog(null, client).connect(profile);
 					} else {
-						splash = new StendhalFirstScreen(client);
+						splash = new StendhalFirstScreen(client, soundSystem);
 					}
 				}
 			});
@@ -406,7 +409,7 @@ public final class stendhal {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					j2DClient locclient = new j2DClient(client, userContext, splash);
+					j2DClient locclient = new j2DClient(client, userContext, splash, soundSystem);
 					perceptionDispatch.register(locclient.getPerceptionListener());
 					locclient.startGameLoop();
 				}

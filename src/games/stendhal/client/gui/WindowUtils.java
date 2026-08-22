@@ -113,6 +113,9 @@ public class WindowUtils {
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
+				if (!shouldTrackGeometry(window)) {
+					return;
+				}
 				WtWindowManager.getInstance().moveTo(mw, mw.getX(), mw.getY());
 			}
 
@@ -121,7 +124,7 @@ public class WindowUtils {
 				// Ignore tracking until the size has been restored, so that the
 				// stored size does not get overwritten before it has a chance
 				// of being used
-				if (!followSize || !mw.getRestored()) {
+				if (!followSize || !mw.getRestored() || !shouldTrackGeometry(window)) {
 					return;
 				}
 				WtWindowManager manager = WtWindowManager.getInstance();
@@ -137,10 +140,17 @@ public class WindowUtils {
 		window.addWindowStateListener(new WindowStateListener() {
 			@Override
 			public void windowStateChanged(WindowEvent e) {
+				if (!shouldTrackGeometry(window)) {
+					return;
+				}
 				manager.setProperty(PROP_PREFIX + mw.getName() + ".maximized",
 						Boolean.toString(mw.isMaximized()));
 			}
 		});
+	}
+
+	private static boolean shouldTrackGeometry(Window window) {
+		return !(window instanceof JFrame) || WindowModeController.getConfiguredMode().isWindowed();
 	}
 
 	/**
@@ -213,7 +223,11 @@ public class WindowUtils {
 				int size = MathHelper.parseIntDefault(newValue, DEFAULT_FONT_SIZE);
 				scaleComponentFonts(component, size);
 				component.validate();
-				component.setSize(component.getPreferredSize());
+				if (component instanceof JFrame) {
+					WindowModeController.fitToPreferredSize((JFrame) component);
+				} else {
+					component.setSize(component.getPreferredSize());
+				}
 			}
 		};
 

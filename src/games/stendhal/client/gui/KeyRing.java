@@ -11,16 +11,13 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import javax.swing.SwingUtilities;
-
 import games.stendhal.client.entity.factory.EntityMap;
-import games.stendhal.client.listener.FeatureChangeListener;
 
 /**
  * A key ring.
  */
 @SuppressWarnings("serial")
-class KeyRing extends SlotWindow implements FeatureChangeListener {
+class KeyRing extends FeatureEnabledSlotWindow {
 	/**
 	 * Create a key ring.
 	 */
@@ -30,19 +27,6 @@ class KeyRing extends SlotWindow implements FeatureChangeListener {
 		super("keyring", 6, 2);
 		// A panel window; forbid closing
 		setCloseable(false);
-	}
-
-	/**
-	 * A feature was disabled.
-	 *
-	 * @param name
-	 *            The name of the feature.
-	 */
-	@Override
-	public void featureDisabled(final String name) {
-		if (name.equals("keyring")) {
-			setVisible(false);
-		}
 	}
 
 	/**
@@ -62,15 +46,7 @@ class KeyRing extends SlotWindow implements FeatureChangeListener {
 			String[] values = value.split(" ");
 			setSlotsLayout(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
 			setAcceptedTypes(EntityMap.getClass("item", null, null));
-
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if(!isVisible()) {
-						setVisible(true);
-					}
-				}
-			});
 		}
+		super.featureEnabled(name, value);
 	}
 }

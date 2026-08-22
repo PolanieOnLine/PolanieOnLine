@@ -37,11 +37,10 @@ import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.client.listener.PositionChangeMulticaster;
+import games.stendhal.client.sound.ClientSoundSystem;
 import games.stendhal.client.sound.facade.SoundFileType;
 import games.stendhal.client.sound.facade.SoundGroup;
 import games.stendhal.client.sound.facade.SoundSystemFacade;
-import games.stendhal.client.sound.nosound.NoSoundFacade;
-import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.common.Debug;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.constants.SoundLayer;
@@ -154,8 +153,28 @@ public class j2DClient implements UserInterface {
 	public j2DClient(final StendhalClient client,
 			final UserContext userContext,
 			JFrame splash) {
+		this(client, userContext, splash, null);
+	}
+
+	/**
+	 * Create a client that reuses a sound system initialized for the first
+	 * screen.
+	 *
+	 * @param client network client
+	 * @param userContext user context
+	 * @param splash first screen or {@code null}
+	 * @param soundSystem shared sound system or {@code null}
+	 */
+	public j2DClient(final StendhalClient client,
+			final UserContext userContext,
+			JFrame splash,
+			SoundSystemFacade soundSystem) {
 		this.client = client;
+		this.soundSystemFacade = soundSystem;
 		setDefault(this);
+		if (splash instanceof StendhalFirstScreen) {
+			((StendhalFirstScreen) splash).stopStartupMusic();
+		}
 
 		/*
 		 * Register the slash actions in the client side command line parser.
@@ -566,17 +585,7 @@ public class j2DClient implements UserInterface {
 	@Override
 	public final SoundSystemFacade getSoundSystemFacade() {
 		if (soundSystemFacade == null) {
-			try {
-				if ((DataLoader.getResource("data/sounds/ui/login.ogg") != null)
-						|| (DataLoader.getResource("data/music/the_old_tavern.ogg") != null)) {
-					soundSystemFacade = new games.stendhal.client.sound.sound.SoundSystemFacadeImpl();
-				} else {
-					soundSystemFacade = new NoSoundFacade();
-				}
-			} catch (RuntimeException e) {
-				soundSystemFacade = new NoSoundFacade();
-				logger.error(e, e);
-			}
+			soundSystemFacade = ClientSoundSystem.create();
 		}
 		return soundSystemFacade;
 	}
