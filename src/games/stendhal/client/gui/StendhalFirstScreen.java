@@ -25,10 +25,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +45,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.gui.launcher.LauncherArtworkPanel;
 import games.stendhal.client.gui.launcher.LauncherButton;
 import games.stendhal.client.gui.launcher.LauncherButton.Style;
+import games.stendhal.client.gui.launcher.LauncherFramePanel;
 import games.stendhal.client.gui.launcher.LauncherTheme;
+import games.stendhal.client.gui.launcher.LauncherTransparentPanel;
 import games.stendhal.client.gui.login.CreateAccountDialog;
 import games.stendhal.client.gui.login.LoginDialog;
 import games.stendhal.client.sprite.DataLoader;
@@ -63,14 +64,14 @@ import games.stendhal.client.update.ClientGameConfiguration;
 public class StendhalFirstScreen extends JFrame {
 	private static final long serialVersionUID = -7825572598938892220L;
 
-	private static final int WINDOW_WIDTH = 1180;
-	private static final int WINDOW_HEIGHT = 700;
-	private static final int MINIMUM_WIDTH = 1020;
-	private static final int MINIMUM_HEIGHT = 620;
-	private static final int SIDEBAR_WIDTH = 218;
-	private static final int INFO_WIDTH = 270;
-	private static final int OUTER_PADDING = 18;
-	private static final int COLUMN_GAP = 14;
+	private static final int WINDOW_WIDTH = 1200;
+	private static final int WINDOW_HEIGHT = 660;
+	private static final int MINIMUM_WIDTH = 1040;
+	private static final int MINIMUM_HEIGHT = 600;
+	private static final int SIDEBAR_WIDTH = 196;
+	private static final int INFO_WIDTH = 238;
+	private static final int OUTER_PADDING = 16;
+	private static final int COLUMN_GAP = 12;
 
 	private final StendhalClient client;
 	private final List<JButton> actionButtons = new ArrayList<JButton>();
@@ -96,6 +97,7 @@ public class StendhalFirstScreen extends JFrame {
 
 		initializeComponent();
 		setVisible(true);
+		playButton.requestFocusInWindow();
 	}
 
 	/**
@@ -127,8 +129,8 @@ public class StendhalFirstScreen extends JFrame {
 		final Action creditsAction = createCreditsAction();
 
 		root.add(createSidebar(gameName, createAccountAction, helpAction, creditsAction), BorderLayout.WEST);
-		root.add(createCenterColumn(gameName, loginAction), BorderLayout.CENTER);
-		root.add(createInfoColumn(helpAction, creditsAction), BorderLayout.EAST);
+		root.add(createCenterColumn(loginAction), BorderLayout.CENTER);
+		root.add(createInfoColumn(), BorderLayout.EAST);
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle(gameName + " " + stendhal.VERSION + " - darmowa gra MMORPG - polanieonline.eu");
@@ -195,19 +197,19 @@ public class StendhalFirstScreen extends JFrame {
 
 	private JComponent createSidebar(final String gameName, final Action createAccountAction,
 			final Action helpAction, final Action creditsAction) {
-		final FramedPanel panel = new FramedPanel();
+		final LauncherFramePanel panel = new LauncherFramePanel();
 		panel.setPreferredSize(new Dimension(SIDEBAR_WIDTH, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBorder(BorderFactory.createEmptyBorder(20, 18, 18, 18));
+		panel.setBorder(BorderFactory.createEmptyBorder(18, 16, 16, 16));
 
-		final JLabel icon = createGameIcon(72);
+		final JLabel icon = createGameIcon(48);
 		icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(icon);
 		panel.add(Box.createVerticalStrut(8));
 
-		final JLabel title = new JLabel(gameName.toUpperCase());
+		final JLabel title = new JLabel("POLANIE");
 		title.setForeground(LauncherTheme.TEXT);
-		title.setFont(LauncherTheme.displayFont(24));
+		title.setFont(LauncherTheme.displayFont(23));
 		title.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(title);
 
@@ -216,7 +218,7 @@ public class StendhalFirstScreen extends JFrame {
 		subtitle.setFont(LauncherTheme.bodyFont(Font.BOLD, 11));
 		subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(subtitle);
-		panel.add(Box.createVerticalStrut(22));
+		panel.add(Box.createVerticalStrut(20));
 		panel.add(createDivider());
 		panel.add(Box.createVerticalStrut(16));
 
@@ -229,7 +231,7 @@ public class StendhalFirstScreen extends JFrame {
 		panel.add(createDivider());
 		panel.add(Box.createVerticalStrut(12));
 
-		final JLabel footer = new JLabel("Klient " + stendhal.VERSION);
+		final JLabel footer = new JLabel("Wersja " + stendhal.VERSION);
 		footer.setForeground(LauncherTheme.TEXT_MUTED);
 		footer.setFont(LauncherTheme.bodyFont(Font.PLAIN, 11));
 		footer.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -238,33 +240,32 @@ public class StendhalFirstScreen extends JFrame {
 		return panel;
 	}
 
-	private JComponent createCenterColumn(final String gameName, final Action loginAction) {
-		final JPanel center = new JPanel(new BorderLayout(0, 12));
-		center.setOpaque(false);
+	private JComponent createCenterColumn(final Action loginAction) {
+		final JPanel center = new LauncherTransparentPanel(new BorderLayout(0, 10));
 
-		final HeroPanel hero = new HeroPanel();
+		final LauncherArtworkPanel hero = new LauncherArtworkPanel();
 		hero.setLayout(new BorderLayout());
-		hero.setBorder(BorderFactory.createEmptyBorder(24, 28, 24, 28));
+		hero.setBorder(BorderFactory.createEmptyBorder(24, 30, 26, 30));
 
-		final JPanel heroBottom = new JPanel();
-		heroBottom.setOpaque(false);
+		final JPanel heroBottom = new LauncherTransparentPanel();
 		heroBottom.setLayout(new BoxLayout(heroBottom, BoxLayout.Y_AXIS));
 
-		final JLabel gameTitle = new JLabel(gameName.toUpperCase());
-		gameTitle.setForeground(Color.WHITE);
-		gameTitle.setFont(LauncherTheme.displayFont(44));
-		gameTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-		heroBottom.add(gameTitle);
+		final JLabel eyebrow = new JLabel("DARMOWA GRA MMORPG");
+		eyebrow.setForeground(LauncherTheme.GOLD_BRIGHT);
+		eyebrow.setFont(LauncherTheme.bodyFont(Font.BOLD, 11));
+		eyebrow.setAlignmentX(Component.CENTER_ALIGNMENT);
+		heroBottom.add(eyebrow);
+		heroBottom.add(Box.createVerticalStrut(7));
 
-		final JLabel description = new JLabel("Świat przygód, niebezpieczeństw i wspólnej historii.");
+		final JLabel description = new JLabel("Otwarty świat przygód, niebezpieczeństw i wspólnej historii.");
 		description.setForeground(new Color(229, 226, 218));
 		description.setFont(LauncherTheme.bodyFont(Font.PLAIN, 15));
-		description.setAlignmentX(Component.LEFT_ALIGNMENT);
+		description.setAlignmentX(Component.CENTER_ALIGNMENT);
 		heroBottom.add(description);
-		heroBottom.add(Box.createVerticalStrut(18));
+		heroBottom.add(Box.createVerticalStrut(20));
 
 		playButton = new LauncherButton(loginAction, Style.PRIMARY);
-		playButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+		playButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		actionButtons.add(playButton);
 		heroBottom.add(playButton);
 
@@ -274,11 +275,11 @@ public class StendhalFirstScreen extends JFrame {
 		return center;
 	}
 
-	private JComponent createInfoColumn(final Action helpAction, final Action creditsAction) {
-		final FramedPanel panel = new FramedPanel();
+	private JComponent createInfoColumn() {
+		final LauncherFramePanel panel = new LauncherFramePanel();
 		panel.setPreferredSize(new Dimension(INFO_WIDTH, 0));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.setBorder(BorderFactory.createEmptyBorder(20, 18, 18, 18));
+		panel.setBorder(BorderFactory.createEmptyBorder(18, 16, 16, 16));
 
 		panel.add(createSectionTitle("KLIENT"));
 		panel.add(Box.createVerticalStrut(12));
@@ -303,33 +304,25 @@ public class StendhalFirstScreen extends JFrame {
 		final boolean autoUpdate = Boolean.parseBoolean(
 				ClientGameConfiguration.get("UPDATE_ENABLE_AUTO_UPDATE"));
 		panel.add(createStatusLabel(autoUpdate
-				? "Automatyczne aktualizacje włączone"
-				: "Automatyczne aktualizacje wyłączone",
+				? "Włączone"
+				: "Wyłączone",
 				autoUpdate ? LauncherTheme.SUCCESS : LauncherTheme.TEXT_MUTED));
 		panel.add(Box.createVerticalGlue());
-
-		panel.add(createSectionTitle("INFORMACJE"));
-		panel.add(Box.createVerticalStrut(10));
-		final LauncherButton helpButton = new LauncherButton(helpAction, Style.SECONDARY);
-		helpButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-		helpButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		actionButtons.add(helpButton);
-		panel.add(helpButton);
-		panel.add(Box.createVerticalStrut(8));
-
-		final LauncherButton creditsButton = new LauncherButton(creditsAction, Style.SECONDARY);
-		creditsButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
-		creditsButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-		actionButtons.add(creditsButton);
-		panel.add(creditsButton);
+		panel.add(createDivider());
+		panel.add(Box.createVerticalStrut(12));
+		final JLabel website = new JLabel("polanieonline.eu");
+		website.setForeground(LauncherTheme.TEXT_MUTED);
+		website.setFont(LauncherTheme.bodyFont(Font.PLAIN, 12));
+		website.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(website);
 
 		return panel;
 	}
 
 	private JComponent createReadyPanel() {
-		final FramedPanel panel = new FramedPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 16, 11));
-		panel.setPreferredSize(new Dimension(0, 48));
+		final LauncherFramePanel panel = new LauncherFramePanel();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 14, 12));
+		panel.setPreferredSize(new Dimension(0, 50));
 
 		final JLabel dot = new JLabel("●");
 		dot.setForeground(LauncherTheme.SUCCESS);
@@ -341,7 +334,7 @@ public class StendhalFirstScreen extends JFrame {
 		status.setFont(LauncherTheme.bodyFont(Font.BOLD, 13));
 		panel.add(status);
 
-		final JLabel hint = new JLabel("Wybierz GRAJ, aby otworzyć istniejące logowanie klienta.");
+		final JLabel hint = new JLabel("Wybierz GRAJ, aby się zalogować.");
 		hint.setForeground(LauncherTheme.TEXT_MUTED);
 		hint.setFont(LauncherTheme.bodyFont(Font.PLAIN, 12));
 		panel.add(hint);
@@ -352,6 +345,7 @@ public class StendhalFirstScreen extends JFrame {
 		final LauncherButton button = new LauncherButton(action, Style.NAVIGATION);
 		button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 44));
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		button.setHorizontalAlignment(SwingConstants.LEFT);
 		actionButtons.add(button);
 		return button;
 	}
@@ -374,8 +368,7 @@ public class StendhalFirstScreen extends JFrame {
 	}
 
 	private JComponent createInfoRow(final String name, final String value) {
-		final JPanel row = new JPanel(new BorderLayout(8, 0));
-		row.setOpaque(false);
+		final JPanel row = new LauncherTransparentPanel(new BorderLayout(8, 0));
 		row.setMaximumSize(new Dimension(Integer.MAX_VALUE, 24));
 		row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -444,72 +437,4 @@ public class StendhalFirstScreen extends JFrame {
 		}
 	}
 
-	/** Reusable framed panel which does not require bitmap frame assets. */
-	private static final class FramedPanel extends JPanel {
-		private static final long serialVersionUID = 1L;
-
-		FramedPanel() {
-			setOpaque(false);
-		}
-
-		@Override
-		protected void paintComponent(final Graphics graphics) {
-			final Graphics2D g2 = (Graphics2D) graphics.create();
-			LauncherTheme.paintFrame(g2, 0, 0, getWidth(), getHeight(), 10);
-			g2.dispose();
-			super.paintComponent(graphics);
-		}
-	}
-
-	/** Center artwork based on the existing Polanie Online splash image. */
-	private static final class HeroPanel extends JPanel {
-		private static final long serialVersionUID = 1L;
-		private final ImageObserver observer = new ImageObserver() {
-			@Override
-			public boolean imageUpdate(final Image image, final int infoFlags, final int x, final int y,
-					final int width, final int height) {
-				return false;
-			}
-		};
-		private final Image image;
-		private final int imageWidth;
-		private final int imageHeight;
-
-		HeroPanel() {
-			setOpaque(false);
-			final URL url = DataLoader.getResource(ClientGameConfiguration.get("GAME_SPLASH_BACKGROUND"));
-			image = url == null ? null : new ImageIcon(url).getImage();
-			imageWidth = image == null ? 0 : image.getWidth(observer);
-			imageHeight = image == null ? 0 : image.getHeight(observer);
-		}
-
-		@Override
-		protected void paintComponent(final Graphics graphics) {
-			final Graphics2D g2 = (Graphics2D) graphics.create();
-			LauncherTheme.configureGraphics(g2);
-			g2.setColor(LauncherTheme.PANEL_INNER);
-			g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-
-			if (image != null && imageWidth > 0 && imageHeight > 0) {
-				final double scale = Math.max((double) getWidth() / imageWidth,
-						(double) getHeight() / imageHeight);
-				final int width = (int) Math.ceil(imageWidth * scale);
-				final int height = (int) Math.ceil(imageHeight * scale);
-				final int x = (getWidth() - width) / 2;
-				final int y = (getHeight() - height) / 2;
-				g2.drawImage(image, x, y, width, height, observer);
-			}
-
-			g2.setPaint(new GradientPaint(0, getHeight() / 3,
-					new Color(6, 8, 10, 25), 0, getHeight(), new Color(5, 7, 8, 235)));
-			g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setColor(LauncherTheme.GOLD_DARK);
-			g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
-			g2.setColor(new Color(231, 187, 112, 50));
-			g2.drawRoundRect(4, 4, getWidth() - 9, getHeight() - 9, 7, 7);
-			g2.dispose();
-			super.paintComponent(graphics);
-		}
-	}
 }
