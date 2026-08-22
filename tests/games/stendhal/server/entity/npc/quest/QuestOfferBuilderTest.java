@@ -8,6 +8,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.maps.quests.BringMagic;
 import games.stendhal.server.maps.quests.ClearTower;
 import games.stendhal.server.maps.quests.KillMtElves;
 
@@ -32,9 +33,11 @@ public class QuestOfferBuilderTest {
 	public void czarnoksieznikQuestsUseDifferentOfferStates() {
 		final KillCreaturesQuestBuilder clearTower = new ClearTower().story();
 		final KillCreaturesQuestBuilder mountainElves = new KillMtElves().story();
+		final CraftItemQuestBuilder bringMagic = new BringMagic().story();
 
 		assertSame(ConversationStates.QUEST_OFFERED, clearTower.offer.offerState);
 		assertSame(ConversationStates.QUEST_2_OFFERED, mountainElves.offer.offerState);
+		assertSame(ConversationStates.QUEST_3_OFFERED, bringMagic.offer.offerState);
 	}
 
 	@Test(expected = IllegalArgumentException.class)

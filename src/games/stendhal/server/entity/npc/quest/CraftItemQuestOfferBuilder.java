@@ -13,6 +13,7 @@ package games.stendhal.server.entity.npc.quest;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -32,6 +33,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 
 public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuestOfferBuilder> {
 	protected String respondToCraftIssue = "Wybacz, ale musisz zasłużyć na zaufanie zanim rozpoczę nad takim zleceniem prace...";
+	protected String respondToCraftNotReady = "Proszę... Nie poganiaj mnie! Wciąż pracuję nad Twoim zleceniem. Wróc za ";
 
 	CraftItemQuestOfferBuilder() {
 		super();
@@ -39,6 +41,11 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 	public CraftItemQuestOfferBuilder respondToCraftIssue(String respondToCraftIssue) {
 		this.respondToCraftIssue = respondToCraftIssue;
+		return this;
+	}
+
+	public CraftItemQuestOfferBuilder respondToCraftNotReady(String respondToCraftNotReady) {
+		this.respondToCraftNotReady = respondToCraftNotReady;
 		return this;
 	}
 
@@ -50,6 +57,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 		ChatCondition beforeForgingConditions = ((CraftItemTask) task).requiredConditionsBeforeForge();
 		ChatCondition requiredItemsToForge = ((CraftItemTask) task).requeredItemsToStartForging();
+		ChatCondition forgingState = ((CraftItemTask) task).buildForgingStateCondition(questSlot);
 		int productionTime = ((CraftItemTask) task).getProductionTime();
 
 		npc.add(ConversationStates.ATTENDING,
@@ -74,13 +82,16 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 		if (startQuestAction != null) {
 			startAction = startQuestAction;
 		}
+		List<ChatAction> startActions = new LinkedList<ChatAction>();
+		startActions.add(startAction);
+		startActions.addAll(acceptWith);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				null,
-				startAction);
+				new MultipleActions(startActions));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null,
@@ -118,11 +129,11 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
 				new AndCondition(
-					new QuestInStateCondition(questSlot, 0, "forging"),
+					forgingState,
 					new NotCondition(questCompletedCondition)),
 				ConversationStates.ATTENDING,
 				null,
-				new SayTimeRemainingAction(questSlot, 1, productionTime, "Proszę... Nie poganiaj mnie! Wciąż pracuję nad Twoim zleceniem. Wróc za "));
+				new SayTimeRemainingAction(questSlot, 1, productionTime, respondToCraftNotReady));
 
 		ChatAction dropRequiredItemsToForge = ((CraftItemTask) task).dropRequeredItemsToForge();
 		ChatAction forgeAction = new SetQuestAction(questSlot, 0, "forging");
@@ -145,9 +156,20 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(
 						new QuestCompletedCondition(questSlot),
-						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes)),
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						beforeForgingConditions),
 					ConversationStates.QUEST_OFFERED,
 					respondToRepeatedRequest,
+					null);
+
+			npc.add(ConversationStates.ATTENDING,
+					ConversationPhrases.QUEST_MESSAGES,
+					new AndCondition(
+						new QuestCompletedCondition(questSlot),
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						new NotCondition(beforeForgingConditions)),
+					ConversationStates.ATTENDING,
+					respondToCraftIssue,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
