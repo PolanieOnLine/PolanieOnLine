@@ -111,6 +111,7 @@ public class QuestRewardRarityMigrationServiceTest {
 		assertFalse(names.contains("złoty amulet"));
 		assertFalse(names.contains("tarcza ciemnomithrilowa"));
 		assertFalse(names.contains("złoty róg"));
+		assertFalse(names.contains("zdobyczny hełm"));
 	}
 
 	@Test

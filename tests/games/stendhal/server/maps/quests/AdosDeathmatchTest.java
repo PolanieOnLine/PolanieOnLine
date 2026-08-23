@@ -12,8 +12,10 @@
 package games.stendhal.server.maps.quests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
@@ -27,9 +29,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.creature.DeathMatchCreature;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
@@ -210,6 +215,10 @@ public class AdosDeathmatchTest {
 						+ " jego obrona będzie się zwiększać o 1. Teraz powiedz mi czy chcesz wyjść, mówiąc #wyjdź.",
 				getReply(assistant));
 		assertEquals(1, dmPlayer.getNumberOfEquipped("zdobyczny hełm"));
+		final Item trophyHelmet = dmPlayer.getFirstEquipped("zdobyczny hełm");
+		assertSame(ItemRarity.COMMON, trophyHelmet.getRarity());
+		assertFalse(ItemAffixState.hasAny(trophyHelmet));
+		assertEquals(dmPlayer.getName(), trophyHelmet.getBoundTo());
 		en.step(dmPlayer, "bye");
 
 		// check that player can restart
