@@ -93,7 +93,11 @@ public final class ChallengeArenaEngine implements TurnListener {
 		final ChallengeArenaTier tier = state.getTier();
 		final int alreadySpawned = state.getSpawnedCreatures();
 		final int remaining = tier.getCreatureCount() - alreadySpawned;
-		final int waveSize = Math.min(tier.getWaveSize(), remaining);
+		final int waveNumber = tier.getNextWaveNumber(alreadySpawned);
+		if (remaining <= 0 || waveNumber > tier.getWaveCount()) {
+			return;
+		}
+		final int waveSize = Math.min(tier.getWaveSizeForWave(waveNumber), remaining);
 		int spawnedNow = 0;
 
 		for (int i = 0; i < waveSize; i++) {
@@ -125,9 +129,9 @@ public final class ChallengeArenaEngine implements TurnListener {
 		player.setQuest(ChallengeArenaState.QUEST_SLOT, updated.serialize());
 		nextWaveAt = System.currentTimeMillis() + WAVE_DELAY_MILLIS;
 
-		final int waveNumber = 1 + alreadySpawned / Math.max(1, tier.getWaveSize());
-		player.sendPrivateText("Arena Wyzwań. Fala " + waveNumber
-				+ ". Przeciwników w tej fali " + spawnedNow + ".");
+		player.sendPrivateText("Arena Wyzwań. Fala " + waveNumber + " z "
+				+ tier.getWaveCount() + ". Przeciwników w tej fali "
+				+ spawnedNow + ".");
 	}
 
 	private void completeRun(final ChallengeArenaState state) {
@@ -171,7 +175,8 @@ public final class ChallengeArenaEngine implements TurnListener {
 			return;
 		}
 		player.sendPrivateText("Arena Wyzwań rozpoczęta. Do pokonania "
-				+ state.getTier().getCreatureCount() + " przeciwników.");
+				+ state.getTier().getCreatureCount() + " przeciwników w "
+				+ state.getTier().getWaveCount() + " falach.");
 		if (!modifiers.isEmpty()) {
 			final StringBuilder text = new StringBuilder("Modyfikatory areny ");
 			for (int i = 0; i < modifiers.size(); i++) {
