@@ -72,4 +72,32 @@ public class BleedingAttackerTest {
 		assertEquals(1, BleedingAttacker.calculateTotalDamage(1, 0.25));
 		assertEquals(0, BleedingAttacker.calculateTotalDamage(0, 0.25));
 	}
+
+	@Test
+	public void creatureBleedingUsesTargetHpMinimumForSmallHits() {
+		assertEquals(100, BleedingAttacker.calculateTotalDamage(60, 1.0,
+				5000, 0.02, 0.05));
+	}
+
+	@Test
+	public void creatureBleedingKeepsHitScaledDamageInsideGuardRails() {
+		assertEquals(180, BleedingAttacker.calculateTotalDamage(180, 1.0,
+				5000, 0.02, 0.05));
+	}
+
+	@Test
+	public void creatureBleedingCapsVeryLargeHitsByTargetHp() {
+		assertEquals(250, BleedingAttacker.calculateTotalDamage(400, 1.0,
+				5000, 0.02, 0.05));
+	}
+
+	@Test
+	public void ordinaryBleedingConstructorDoesNotGainCreatureGuardRails() {
+		final BleedingAttacker bleeding = new BleedingAttacker(10.0, 0.25);
+
+		assertEquals(0.0, bleeding.getMinimumTargetHpFactor(), 0.0);
+		assertEquals(0.0, bleeding.getMaximumTargetHpFactor(), 0.0);
+		assertEquals(25, BleedingAttacker.calculateTotalDamage(100,
+				bleeding.getDamageFactor()));
+	}
 }
