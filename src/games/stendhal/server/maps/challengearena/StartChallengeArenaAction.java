@@ -6,6 +6,7 @@ package games.stendhal.server.maps.challengearena;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
@@ -72,5 +73,7 @@ public final class StartChallengeArenaAction implements ChatAction {
 		}
 
 		ChallengeArenaRewardService.recordEntry(player, tier);
+		raiser.setAttending(null);
+		raiser.setCurrentState(ConversationStates.IDLE);
 	}
 }
