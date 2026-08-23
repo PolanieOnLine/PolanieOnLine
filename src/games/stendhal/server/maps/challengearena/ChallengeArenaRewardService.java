@@ -77,6 +77,8 @@ public final class ChallengeArenaRewardService {
 			}
 		}
 
+		ChallengeArenaRankingService.updateRanking(player);
+
 		String message = "Ukończyłeś Arenę Wyzwań. Otrzymujesz "
 				+ completionXp + " punktów doświadczenia oraz " + fragments
 				+ " fragmentów glifu.";
