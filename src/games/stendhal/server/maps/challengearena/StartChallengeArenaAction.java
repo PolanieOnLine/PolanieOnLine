@@ -64,7 +64,7 @@ public final class StartChallengeArenaAction implements ChatAction {
 			MoneyUtils.giveMoney(player, tier.getStake());
 			ChallengeArenaManager.release(player.getName());
 			if (arenaInfo.isInArena(player)) {
-				arenaInfo.returnPlayer(player);
+				arenaInfo.teleportToLobby(player);
 			}
 			raiser.say("Nie udało się wejść na arenę. Wpisowe zostało zwrócone.");
 			return;
@@ -73,7 +73,7 @@ public final class StartChallengeArenaAction implements ChatAction {
 		if (!arenaInfo.startSession(player, tier)) {
 			MoneyUtils.giveMoney(player, tier.getStake());
 			ChallengeArenaManager.release(player.getName());
-			arenaInfo.returnPlayer(player);
+			arenaInfo.teleportToLobby(player);
 			raiser.say("Nie udało się rozpocząć walki. Wpisowe zostało zwrócone.");
 			return;
 		}
