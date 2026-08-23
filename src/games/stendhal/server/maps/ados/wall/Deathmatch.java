@@ -1,7 +1,7 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -15,13 +15,15 @@ import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.Spot;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.challengearena.ChallengeArenaNPC;
 import games.stendhal.server.maps.quests.AdosDeathmatch;
 import games.stendhal.server.util.Area;
 
 /**
- * Ados Wall North population - Deathmatch.
+ * Ados Wall North population - Deathmatch and Challenge Arena.
  *
  * @author hendrik
  */
@@ -42,6 +44,7 @@ public class Deathmatch implements ZoneConfigurator {
 		final AdosDeathmatch deathmatch = new AdosDeathmatch(zone, arena);
 		deathmatch.createHelmet(102, 75);
 		deathmatch.createNPC("Thanatos", 98, 77);
+		ChallengeArenaNPC.create(zone, arena, new Spot(zone, 96, 75), 109, 77);
 	}
 
 	/**
