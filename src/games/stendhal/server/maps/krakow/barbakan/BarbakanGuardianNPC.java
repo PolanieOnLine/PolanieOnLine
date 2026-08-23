@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.krakow.barbakan;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,9 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.maps.challengearena.EnterChallengeArenaAction;
 
 /**
  * @author KarajuSs
@@ -53,10 +56,17 @@ public class BarbakanGuardianNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Jestem gwardzistą. Strzegę północnej bramy miasta Kraka i Brabakanu.");
 				addHelp("Aktualnie ja sam nie potrzebuję żadnej pomocy, ale poczekaj jeszcze, słyszałem, że król Kraka poszukuje dzielnego wojownika i może mieć zlecenie dla Ciebie!");
-				addOffer("Mogę Ci udzielić kilku #rad na temat #ekwipunku i #uzbrojenia prawdziwego wojownika oraz co Ciebie może spotkać poza naszymi bramami.");
+				addOffer("Mogę Ci udzielić kilku #rad na temat #ekwipunku i #uzbrojenia prawdziwego wojownika oraz co Ciebie może spotkać poza naszymi bramami. Mogę też wskazać drogę na #arenę dla doświadczonych wojowników.");
 				addReply("rad", "Pierwszą moją radą jest abyś uważał na potwory silniejsze od Ciebie samego! Nie powinieneś się do nich zbliżać dopóki nie zdobędziesz odpowiedniego doświadczenia w walce oraz idealnego #'ekwipunku' i #'uzbrojenia', które może Ci się przydać podczas walki!");
 				addReply("ekwipunek", "Podczas walki w ekwipunku powinieneś posiadać coś co Ci umożliwi zregenerowanie swoich sił! Także zalecam, aby każdy wojownik posiadał różego rodzaju eliksiry, które własnie umożliwiają szybkie zregenerowanie się! Pamiętaj, aby mieć przy sobie również zapasową broń lub łuk i strzały czy również różdżkę i magię. Zawsze to Ci umożliwi trzymanie się na dystans z poważnymi potworami, które czyhają poza bramami miasta.");
 				addReply("uzbrojenie", "Chyba najważnielszy element twoje wyposażenia. Uzbrojenie powinno być dopasowane do twoich aktualnych zdobytych doświadczeń, aby zmaksymalizować ilość obrony czy także ataku z broni! Najlepiej jakby zbroja miała jak największą ilość obrony dopasowaną do twojego poziomu, a broń, żeby posiadała jak największą siłę oraz musi być poręczna dla Ciebie! Bronie mające zazwyczaj najwięszką siłę są bardzo ciężkie dla zwykłych ludzi, którzy w ogóle nie trenowali, aby zostać wojownikami.");
+				addReply("arena", "Niedaleko Barbakanu działa Arena Wyzwań. Wojownicy sami wybierają tam stawkę i trudność walki. Jeśli chcesz wejść powiedz #wejście.");
+				addReply("arenę", "Niedaleko Barbakanu działa Arena Wyzwań. Wojownicy sami wybierają tam stawkę i trudność walki. Jeśli chcesz wejść powiedz #wejście.");
+				add(ConversationStates.ATTENDING,
+						Arrays.asList("wejście", "wejscie"),
+						null, ConversationStates.IDLE, null,
+						new EnterChallengeArenaAction());
+				addKnownChatOptions("arena", "wejście");
 				addGoodbye();
 			}
 		};
