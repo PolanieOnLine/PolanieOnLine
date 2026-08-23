@@ -8,15 +8,15 @@ package games.stendhal.server.maps.challengearena;
  *
  * <p>The stake is intentionally destroyed when a run starts. Higher tiers buy
  * a longer run, stronger creature selection, forced elite encounters and more
- * arena modifiers. They do not guarantee a particular item reward.</p>
+ * arena modifiers. They do not guarantee a particular item rarity.</p>
  */
 public enum ChallengeArenaTier {
-	TRIAL(100000, 10, 1, -2, 2, 0, 0),
-	SKIRMISH(250000, 12, 1, 0, 4, 0, 0),
-	HUNTER(500000, 15, 2, 2, 6, 1, 0),
-	VETERAN(1000000, 18, 2, 4, 8, 2, 1),
-	CHAMPION(2500000, 22, 3, 6, 12, 3, 1),
-	LEGEND(5000000, 28, 3, 8, 16, 5, 2);
+	TRIAL(100000, 10, 1, -2, 2, 0, 0, 0),
+	SKIRMISH(250000, 12, 1, 0, 4, 0, 0, 0),
+	HUNTER(500000, 15, 2, 2, 6, 1, 0, 1),
+	VETERAN(1000000, 18, 2, 4, 8, 2, 1, 2),
+	CHAMPION(2500000, 22, 3, 6, 12, 3, 1, 3),
+	LEGEND(5000000, 28, 3, 8, 16, 5, 2, 4);
 
 	private final int stake;
 	private final int creatureCount;
@@ -25,11 +25,12 @@ public enum ChallengeArenaTier {
 	private final int maximumLevelOffset;
 	private final int forcedEliteCount;
 	private final int modifierCount;
+	private final int rewardRarityRolls;
 
 	ChallengeArenaTier(final int stake, final int creatureCount,
 			final int waveSize, final int minimumLevelOffset,
 			final int maximumLevelOffset, final int forcedEliteCount,
-			final int modifierCount) {
+			final int modifierCount, final int rewardRarityRolls) {
 		this.stake = stake;
 		this.creatureCount = creatureCount;
 		this.waveSize = waveSize;
@@ -37,6 +38,7 @@ public enum ChallengeArenaTier {
 		this.maximumLevelOffset = maximumLevelOffset;
 		this.forcedEliteCount = forcedEliteCount;
 		this.modifierCount = modifierCount;
+		this.rewardRarityRolls = rewardRarityRolls;
 	}
 
 	public int getStake() {
@@ -65,6 +67,36 @@ public enum ChallengeArenaTier {
 
 	public int getModifierCount() {
 		return modifierCount;
+	}
+
+	/**
+	 * Number of normal drop-rarity rolls used for the equipment reward.
+	 * Zero means this tier does not award an equipment chest.
+	 */
+	public int getRewardRarityRolls() {
+		return rewardRarityRolls;
+	}
+
+	public boolean awardsEquipmentChest() {
+		return rewardRarityRolls > 0;
+	}
+
+	/** Higher two tiers finish with an additional champion encounter. */
+	public boolean isFinalChampion(final int creatureNumber) {
+		return (this == CHAMPION || this == LEGEND)
+				&& creatureNumber == creatureCount;
+	}
+
+	public double getChampionHpMultiplier() {
+		return this == LEGEND ? 1.50 : this == CHAMPION ? 1.25 : 1.0;
+	}
+
+	public double getChampionAttackMultiplier() {
+		return this == LEGEND ? 1.20 : this == CHAMPION ? 1.10 : 1.0;
+	}
+
+	public double getChampionDefenseMultiplier() {
+		return this == LEGEND ? 1.15 : this == CHAMPION ? 1.10 : 1.0;
 	}
 
 	/**
@@ -105,7 +137,6 @@ public enum ChallengeArenaTier {
 			if (tier.stake == stake) {
 				return tier;
 			}
-		}
 		return null;
 	}
 }
