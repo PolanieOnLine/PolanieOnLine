@@ -80,12 +80,17 @@ public final class ChallengeArenaRewardService {
 		ChallengeArenaRankingService.updateRanking(player);
 
 		String message = "Ukończyłeś Arenę Wyzwań. Otrzymujesz "
-				+ completionXp + " punktów doświadczenia oraz " + fragments
-				+ " fragmentów glifu.";
+				+ completionXp + " punktów doświadczenia oraz "
+				+ formatFragmentReward(fragments) + ".";
 		if (chestAwarded) {
 			message += " Otrzymujesz również skrzynię z losowym wyposażeniem.";
 		}
 		player.sendPrivateText(message);
+	}
+
+	private static String formatFragmentReward(final int fragments) {
+		return fragments == 1 ? "1 fragment glifu"
+				: fragments + " fragmentów glifu";
 	}
 
 	private static boolean awardEquipmentChest(final Player player,
