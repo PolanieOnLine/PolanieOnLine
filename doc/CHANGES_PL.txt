@@ -1,79 +1,173 @@
-Changelog
+## Changelog
 ---------
 1.42
 *klient*
-- Dodano nowe okno ulepszania przedmiotów w klientach desktopowym i webowym, z wirtualnym slotem przeciągnij i upuść, podglądem następnego poziomu, szansy powodzenia, kosztu oraz wymaganych materiałów
-- Dodano akcje kontekstowe u kowala i na przedmiotach, ułatwiające otwieranie okna ulepszania oraz wybór konkretnego przedmiotu
-- Przebudowano podpowiedzi wyposażenia, aby czytelniej prezentowały rzadkość, poziom ulepszenia, zakres obrażeń, średnie obrażenia na sekundę, szybkość ataku, pancerz, odporności, kradzież życia, trafienia krytyczne i pozostałe bonusy
-- Dodano porównywanie statystyk oglądanego przedmiotu z aktualnie założonym wyposażeniem; lepsze wartości są wyróżniane na zielono, a gorsze na czerwono
-- Dodano ustawienie pozwalające włączyć lub wyłączyć porównywanie statystyk przedmiotów
-- Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach oraz na slotach ekwipunku
-- Uproszczono odpowiedź /look dla przedmiotów do ich opisu i ukryto wartość sprzedaży w rozszerzonej podpowiedzi
-- Dodano wizualizację ogłuszenia w postaci animowanych gwiazdek nad postacią lub potworem
-- Dodano wizualne wyróżnienie elitarnych potworów złotą nazwą, koroną oraz subtelnym obrysem
-- Dodano wizualną informację o skutecznym sparowaniu ataku
-- W kliencie desktopowym dodano możliwość zmiany aktywnej postaci bez wylogowywania się z konta
+* Dodano nowe okno ulepszania przedmiotów w klientach desktopowym i webowym z możliwością przeciągnięcia przedmiotu oraz podglądem następnego poziomu, szansy powodzenia, kosztu i wymaganych materiałów
+* Dodano wygodne akcje kontekstowe u kowala i na przedmiotach pozwalające szybciej rozpocząć ulepszanie wybranego wyposażenia
+* Przebudowano podpowiedzi przedmiotów, aby czytelniej prezentowały rzadkość, poziom ulepszenia, obrażenia, szybkość ataku, pancerz, odporności, kradzież życia, trafienia krytyczne i pozostałe bonusy
+* Dodano porównywanie oglądanego przedmiotu z aktualnie założonym wyposażeniem
+* Lepsze wartości podczas porównywania przedmiotów są wyróżniane na zielono, a gorsze na czerwono
+* Dodano ustawienie pozwalające włączyć lub wyłączyć porównywanie statystyk przedmiotów
+* Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach i na slotach ekwipunku
+* Uproszczono informacje pokazywane po użyciu /look na przedmiotach
+* Dodano wizualizację ogłuszenia w postaci animowanych gwiazdek
+* Elitarne potwory są teraz wyróżniane złotą nazwą, koroną i dodatkowym efektem wizualnym
+* Dodano wizualną informację o skutecznym sparowaniu ataku
+* W kliencie desktopowym dodano możliwość zmiany aktywnej postaci bez ponownego logowania do konta
+* Dodano osobny przycisk Ustawienia klienta na ekranie startowym
+* Usunięto wybór trybu wyświetlania z głównego widoku ekranu startowego
+* Dodano tryb zwykłego okna, pełnego ekranu w oknie oraz pełnego ekranu
+* Tryb wyświetlania można zmieniać podczas gry bez restartowania klienta
+* Naprawiono początkowy rozmiar okna gry w trybach pełnoekranowych
+* Naprawiono problem, przez który zawartość klienta mogła pojawić się dopiero po zminimalizowaniu lub zmaksymalizowaniu okna
+* Dodano muzykę na ekranie startowym klienta
+* Dodano możliwość całkowitego wyciszenia dźwięku
+* Poprawiono wygląd i rozmiar przycisku dźwięku
+* Przebudowano menu otwierane klawiszem Escape
+* Menu Escape zawiera kolejno Ustawienia, Zmień postać oraz Wyjdź z gry
+* Ponowne naciśnięcie Escape zamyka menu
+* Zaklęcia, Schowek, Magiczna torba oraz Rzemyk nie są wyświetlane postaciom, które nie odblokowały jeszcze tych funkcji
+
+*przedmioty*
+* Wprowadzono nowy system ulepszania przedmiotów pozwalający ulepszać konkretny egzemplarz wyposażenia z podglądem możliwego rezultatu
+* Wprowadzono cztery poziomy rzadkości przedmiotów: zwykły, rzadki, epicki i legendarny
+* Rzadkie, epickie i legendarne przedmioty mogą posiadać trwałe dodatkowe właściwości
+* Legendarne przedmioty mogą otrzymywać dodatkową wyjątkową właściwość zależną od rodzaju wyposażenia
+* Wyposażenie startowe nowych postaci pozostaje zawsze zwykłej rzadkości
+* Dodatnia kradzież życia na broni może stanowić jedną z jej dodatkowych właściwości
+* Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistej walki
+* Kwalifikujące się nagrody ekwipunkowe otrzymywane z zadań mogą teraz posiadać epicką rzadkość
+* Epickie nagrody z zadań otrzymują dwie trwałe dodatkowe właściwości
+* Dodatkowe właściwości nagród są zachowywane po ponownym zalogowaniu
+* Starsze kwalifikujące się nagrody z ukończonych zadań są dostosowywane do nowego systemu po zalogowaniu postaci
+* Aktualizacja starszych nagród nie tworzy brakujących przedmiotów ani ich duplikatów
+* Zachowywane są dotychczasowe ulepszenia oraz pozostałe właściwości posiadanego przedmiotu
+* Wszystkie pierścienie będące nagrodami z zadań pozostają zwykłej rzadkości
+* Dotyczy to również pierścieni statusowych, Pierścienia Powrotu, pierścienia antyjadowego, szmaragdowego, srebrnego oraz złotego
+* Zdobyczny hełm z Deathmatchu pozostaje zwykłej rzadkości i nie otrzymuje dodatkowych właściwości
+* Zdobyczny hełm nadal rozwija obronę poprzez własny system kolejnych zwycięstw
+* Wybrane nieprzypisane nagrody z zadań pozostają zwykłej rzadkości
+* Przedmioty, które nie korzystają z systemu rzadkości, zachowują dotychczasowe działanie
+* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje rzadkość i dodatkowe właściwości użytego przedmiotu
+* Zwykły mithril daje zwykły ciemnomithril, epicki daje epicki, a legendarny legendarny
+
+*walka i balans*
+* Wprowadzono klasy pancerza przeciwników: brak pancerza, lekki, średni oraz ciężki
+* Skuteczność różnych rodzajów broni zależy teraz od pancerza przeciwnika
+* Sztylety najlepiej sprawdzają się przeciw lekkim pancerzom i gorzej przeciw ciężkim
+* Miecze najlepiej sprawdzają się przeciw średnim pancerzom
+* Topory i broń obuchowa lepiej radzą sobie z ciężkim pancerzem
+* Penetracja pomaga ograniczyć niekorzystne zestawienie broni i pancerza
+* Dodano mechanikę parowania ataków wręcz
+* Ograniczono maksymalną łączną szansę parowania gracza do 15 procent
+* Rozszerzono działanie dodatkowych właściwości wyposażenia podczas rzeczywistej walki
+* Dodano właściwości związane między innymi z odpornościami, oznaczaniem przeciwników, walką z silniejszym celem oraz niskim poziomem zdrowia
+* Dodano mechanizm pozwalający wybranemu wyposażeniu zmniejszyć wyjątkowo silne pojedyncze uderzenie przeciwnika
+* Rozbudowano działanie krwawienia
+* Krwawienie może się kumulować, a jego skuteczność zależy od zadanych obrażeń i odporności celu
+* Dodano status ogłuszenia, który czasowo uniemożliwia atakowanie bez blokowania poruszania się
+* Wybrane potwory mogą również ogłuszać graczy
+* Poprawiono działanie kradzieży życia, trafień krytycznych, dodatkowych obrażeń i odporności
+* Dostrojono balans wyposażenia dla początku gry oraz późniejszych etapów rozwoju postaci
+
+*elitarne potwory*
+* Dodano losowe elitarne warianty potworów od 20 poziomu
+* Elitarne potwory posiadają zwiększone zdrowie, atak i obronę
+* Pokonanie elitarnego potwora zapewnia zwiększoną nagrodę doświadczenia
+* Przedmioty wypadające z elitarnych przeciwników mają większą szansę na wyższą rzadkość
+* Bossowie i wybrane specjalne stworzenia nie są losowo zamieniane w elitarne warianty
+
+*glify*
+* Dostrojono wartości glifów ofensywnych, defensywnych i użytkowych
+* Poprawiono balans glifów związanych z kontrolą, odpornościami i leczeniem
+* Mokosz zapewnia 500 dodatkowego HP
+* Tytan zapewnia 5 ATK, 5 DEF oraz 200 HP
+* Jarowit zmniejsza podatność na kilka rodzajów obrażeń żywiołowych
+* Czasza zwiększa obrażenia trafień krytycznych
+* Strzybog zmniejsza wagę wolniejszych broni, ale nie poniżej wartości 2
+* Zachowano możliwość jednoczesnego korzystania z siedmiu różnych rodzajów glifów
+* Poprawiono szanse znajdowania fragmentów glifów podczas wykopalisk
+* Rozbudowano historię wykopalisk związaną z Omarem i Zorykiem
+* Poprawiono wskazówki dotyczące miejsc prowadzenia wykopalisk
+
+*grupy*
+* Dodano nowy tryb równego podziału doświadczenia w grupie
+* Wspólna pula doświadczenia może zostać rozdzielona pomiędzy zalogowanych członków grupy znajdujących się w tej samej strefie
+
+*zadania*
+* Przebudowano pełną drogę awansu społecznego od Mieszczanina do Magnata
+* Zachowano dotychczasowy postęp oraz nagrody postaci, które rozpoczęły lub ukończyły wcześniejsze wersje prób
+* Próba Mieszczanina otrzymała nowe prywatne sceny, wydarzenia i elementy świata
+* Elementy przeznaczone dla konkretnego gracza nie przeszkadzają innym osobom wykonującym zadanie
+* Poprawiono interakcje ze skrzynką z lekarstwami oraz narzędziami Stacha
+* Próba Rycerza wymaga odbycia pełnej warty oraz wykonania właściwych celów po rozpoczęciu próby
+* Zabicia wykonane przed rozpoczęciem odpowiedniego etapu próby Rycerza nie są zaliczane
+* Próba Barona została rozbudowana o decyzje dotyczące granicy, spichlerza i wyroku oraz wykonanie ich konsekwencji
+* Próba Magnata została rozbudowana o świadectwa wcześniejszych statusów, fundusz wspólnoty, poręczenie i okres pieczy
+* Poprawiono dialogi prowadzące przez próby po ponownym zalogowaniu lub dłuższej przerwie
+* Pierścienie przyznawane za kolejne statusy społeczne pozostają zwykłej rzadkości
+* Uporządkowano historie trzech zadań Gazdy Bartka i połączono je w opowieść o rozwoju izby pamięci
+* Rozbudowano motywację Eltefii podczas zbierania pasów
+* Rozbudowano motywację Anastazji podczas zbierania rękawic
+* Rozbudowano historię zadania Królewski Płaszcz
+* Pomoc mieszkańcom i straży ma teraz wyraźniejsze znaczenie dla zdobycia zaufania Króla Kraka
+* Ukończenie Królewskiego Płaszcza pozwala Krakowi później rozpoznawać szlachectwo postaci
+* Dodano osiągnięcie Szlachcic Kraka
+* Połączono fabularnie Bilet Turystyczny Juhasa z magicznymi przejściami Ozo
+* Nowe postacie muszą faktycznie skorzystać z biletu Juhasa przed uzyskaniem dalszego dostępu do usług Ozo
+* Starsze postacie zachowują wcześniej uzyskany dostęp do Ozo
+* Odświeżono ciąg zadań związanych z Czarnoksiężnikiem
+* Zadania ClearTower, KillMtElves, SkorySmokow oraz BringMagic tworzą teraz bardziej spójną historię
+* BringMagic został odświeżony z zachowaniem postępu postaci znajdujących się na starych etapach zadania
+* Złoty Róg został odświeżony z zachowaniem wcześniejszych zamówień, czasu oczekiwania i postępu
+* Uszkodzony zapis czasu w starszym stanie Złotego Rogu nie powinien już blokować zadania
+* Poprawiono wskazówki i przypomnienia w kilku starszych zadaniach
+* Poprawiono dialog Radomira, aby nie używał technicznych lub niepasujących do świata określeń
+* Skrzynie w zadaniu PrinceSupply są teraz prywatne dla poszczególnych graczy
+* Kilku graczy może wykonywać PrinceSupply równocześnie bez współdzielenia zawartości skrzyń
 
 *świat*
-- Wprowadzono Item Upgrades 2.0, umożliwiający bezpieczne ulepszanie konkretnej instancji przedmiotu z podglądem rezultatu przed wykonaniem próby
-- Dodano tryb "równy podział" doświadczenia w grupie, rozdzielający wspólną pulę EXP pomiędzy zalogowanych członków znajdujących się w tej samej strefie
-- Wprowadzono system rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
-- Rzadkie, epickie i legendarne przedmioty mogą otrzymywać losowe, trwałe afiksy zwiększające statystyki lub dodające specjalne właściwości
-- Legendarne przedmioty otrzymują dodatkowo specjalny legendarny afiks zależny od rodzaju wyposażenia
-- Wyposażenie startowe nowych postaci otrzymuje zawsze zwykłą rzadkość, zapewniając wszystkim nowym postaciom jednakowe warunki początkowe
-- Dodatnia kradzież życia będąca właściwością broni jest od rzadkiej jakości traktowana jako gwarantowany afiks i zajmuje jeden ze standardowych slotów afiksów
-- Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistych ataków
-- Wprowadzono klasy pancerza potworów: brak, lekki, średni oraz ciężki; skuteczność sztyletów, mieczy, toporów i broni obuchowych zależy teraz od rodzaju pancerza przeciwnika
-- Dodano mechanikę parowania ataków wręcz zapewnianą przez wybrane właściwości wyposażenia i legendarne afiksy
-- Rozszerzono efekty wyposażenia m.in. o krwawienie, przebicie pancerza, dodatkowe obrażenia, zwiększony zasięg, odporności na statusy oraz specjalne premie zależne od rodzaju broni
-- Przebudowano krwawienie do systemu Bleeding 2.0, obsługującego kumulowanie ran, odporność na krwawienie oraz obrażenia okresowe zależne od faktycznie zadanego trafienia
-- Dodano status ogłuszenia, który czasowo uniemożliwia wykonywanie ataków bez blokowania poruszania się; wybrane potwory również mogą ogłuszać graczy
-- Dodano losowe elitarne warianty potworów od 20 poziomu, posiadające zwiększone zdrowie, atak, obronę i nagrodę doświadczenia
-- Przedmioty wypadające z elitarnych potworów mają zwiększoną szansę na uzyskanie wyższej rzadkości; bossowie i wybrane specjalne stworzenia są wyłączone z losowego systemu elit
-- Dodano możliwość włączania i wyłączania wydarzeń sezonowych bez restartowania serwera
-- Boże Narodzenie, Wielkanoc oraz wydarzenia związane z odbudową Mine Town mogą dynamicznie zmieniać mapy, dekoracje, NPC, zadania i stworzenia podczas działania serwera
-- Poprawiono mapy wielkanocne w Zakopanem
-- Skrzynie w zadaniu PrinceSupply są teraz prywatne dla poszczególnych graczy, dzięki czemu kilka osób może wykonywać zadanie równocześnie bez współdzielenia ich zawartości
-- Labirynt Haizena korzysta teraz z izolowanych instancji, dzięki czemu równoległe rozgrywki graczy nie wpływają na siebie
+* Dodano możliwość dynamicznego włączania i wyłączania wydarzeń sezonowych bez restartowania serwera
+* Boże Narodzenie, Wielkanoc oraz wydarzenia związane z odbudową Mine Town mogą zmieniać świat podczas działania serwera
+* Poprawiono wielkanocne mapy w Zakopanem
+* Labirynt Haizena korzysta teraz z oddzielnych instancji dla poszczególnych rozgrywek
+* Równoległe przejścia Labiryntu Haizena nie wpływają już na siebie
+* Poprawiono nazwy lokalizacji wyświetlane przez polecenie /where
+* Usunięto z nazw widocznych dla gracza techniczne oznaczenia, identyfikatory i podkreślenia
+* Zachowano czytelne oznaczenia kierunków geograficznych
+* Prywatne lokacje pokazują przyjazne nazwy zamiast wewnętrznych identyfikatorów
+* Poprawiono zachowanie prywatnych elementów świata przeznaczonych dla pojedynczych graczy
 
-*marauroa*
-- Dodano percepcję zależną od gracza, pozwalającą serwerowi udostępniać wybrane encje tylko konkretnym graczom
-- Dodano generyczny system Instance Zones zapewniający izolację encji i percepcji oraz automatyczne sprzątanie instancji po zakończeniu ich cyklu życia
-- Dodano World Task Scheduler do wykonywania zadań świata na bezpiecznej granicy tury, wraz z obsługą właścicieli zadań i anulowania nieaktualnych wywołań
-- Dodano mechanizm Safe Hot Reload umożliwiający przygotowanie, walidację i bezpieczne zastosowanie nowych zasobów podczas działania serwera
-- Rozszerzono protokół sieciowy do wersji 36, zachowując obsługę starszych wspieranych wersji protokołu
-- Dodano obsługę zakończenia sesji aktywnej postaci bez rozłączania konta, umożliwiając ponowny wybór postaci w ramach tego samego połączenia
-- Rozbudowano diagnostykę wolnych tur o pomiary poszczególnych faz przetwarzania, kosztu percepcji, transferów oraz przetwarzania stref
-- Dodano metryki działania World Task Scheduler, Instance Zones oraz Safe Hot Reload
-- Dodano diagnostykę wykorzystania pamięci podręcznej percepcji oraz ranking najbardziej obciążających stref
-
-*kod*
-- Uporządkowano system ulepszania przedmiotów do wspólnej architektury Item Upgrade i wydzielono jego reguły z obsługi dialogów NPC
-- Serwer ponownie weryfikuje przedmiot, jego położenie, pieniądze, materiały, karmę oraz odległość od NPC przy każdej próbie ulepszenia
-- Rozdzielono akcję klienta i event serwera systemu ulepszeń, zachowując kompatybilność z historycznymi zapisanymi eventami
-- Rozszerzono komendę administratora /teleport o wariant /teleport <gracz> <inny gracz lub NPC>
-- Rozszerzono system tworzenia i odtwarzania przedmiotów o trwałą rzadkość, afiksy oraz deterministyczne zachowanie wylosowanych parametrów po zapisie i ponownym wczytaniu
-- Rozszerzono narzędzia administracyjne do tworzenia i podglądania przedmiotów o rzadkość, afiksy oraz ich parametry
-- Przebudowano obsługę wydarzeń sezonowych, umożliwiając bezpieczne przełączanie ich podczas działania serwera
-- Dodano skrypt administracyjny SeasonalEvent do włączania, wyłączania oraz sprawdzania stanu obsługiwanych wydarzeń sezonowych
-- Podłączono definicje przedmiotów do Safe Hot Reload, umożliwiając ich kontrolowane przeładowanie podczas działania serwera poprzez stabilne identyfikatory zasobów
-- Podłączono Labirynt Haizena do generycznego systemu Instance Zones oraz uporządkowano sprzątanie instancji po wyjściu gracza, wylogowaniu i zakończeniu ich cyklu życia
-- Zoptymalizowano odradzanie potworów, ograniczając kosztowne wielokrotne wyszukiwanie ścieżek podczas wyboru wolnego miejsca odrodzenia
-- Zmniejszono koszt inicjalizacji postaci podczas logowania, usuwając blokujące operacje wejścia/wyjścia z krytycznej ścieżki serwera
-- Rozszerzono diagnostykę wydajności o szczegółowe pomiary odradzania potworów, inicjalizacji graczy oraz kosztu końcowej fazy tury
-- Zmodernizowano konfigurację CI i zależności narzędziowych, m.in. Groovy oraz JUnit, zachowując zgodność gry z Java 8
-- Dodano szybki zestaw regresji dla wydania 1.42 uruchamiany w CI przed pełnym zestawem testów
-- Uporządkowano przestarzałe interfejsy i zależności bez zmiany istniejących formatów danych
+*produkcja i rzemiosło*
+* Poprawiono rozpoznawanie różnych rodzajów produkcji
+* Warzenie, mieszanie, wytapianie, szycie, pieczenie, mielenie i szlifowanie korzystają z bardziej naturalnych poleceń
+* Poprawiono dialog dotyczący produkcji olejku z tranu dorsza u Pequoda
+* Starsze rozpoczęte zlecenia kuźnicze zachowują dotychczasowy postęp
+* Przekuwanie mithrilowego wyposażenia zachowuje jego rzadkość i dodatkowe właściwości
 
 *naprawiono błędy*
-- Podgląd ulepszenia nie zużywa już karmy; karma jest wykorzystywana dopiero podczas właściwej, zweryfikowanej próby
-- Ulepszanie poprawnie zabezpiecza zasoby gracza przed utratą w przypadku nieaktualnego przedmiotu lub niepełnej transakcji
-- Naprawiono koszt ulepszania broni korzystających wyłącznie z RATK oraz odtwarzanie maksymalnego poziomu ulepszenia starszych zapisanych przedmiotów
-- Naprawiono procentowe naliczanie bonusu obrażeń krytycznych oraz bonusu ATK z glifów podczas rzeczywistych ataków
-- Poprawiono obsługę efektów glifów, rozdzielając trwałe statystyki postaci od tymczasowych bonusów wyposażenia
-- Glif krwi poprawnie zapewnia teraz kradzież życia również podczas walki bez broni
-- Naprawiono błąd powodujący NullPointerException podczas ataku gracza bez wyposażonej broni
-- Zabezpieczono statystyki odradzanych i elitarnych potworów przed przekroczeniem maksymalnego zakresu obsługiwanego przez serwer
+* Podgląd ulepszania przedmiotu nie zużywa już karmy
+* Zasoby są pobierane dopiero podczas właściwej próby ulepszenia
+* Ulepszanie przedmiotów lepiej zabezpiecza pieniądze, materiały i karmę przed utratą przy nieudanej lub przerwanej transakcji
+* Naprawiono koszt ulepszania wybranych broni dystansowych
+* Naprawiono odtwarzanie maksymalnego poziomu ulepszenia starszych zapisanych przedmiotów
+* Naprawiono naliczanie bonusu obrażeń krytycznych
+* Naprawiono działanie wybranych bonusów ATK pochodzących z glifów
+* Poprawiono współpracę glifów z właściwościami wyposażenia
+* Glif krwi poprawnie zapewnia kradzież życia również podczas walki bez broni
+* Naprawiono błąd mogący wystąpić podczas atakowania bez wyposażonej broni
+* Zabezpieczono statystyki bardzo silnych i elitarnych potworów przed nieprawidłowymi wartościami
+* Poprawiono anulowanie niektórych rozpoczętych zadań
+* Anulowanie wymagające wyzerowania postępu wymaga teraz wyraźnego potwierdzenia
+* Poprawiono obsługę starszych stanów anulowanych i rozpoczętych zadań
+* Poprawiono menu kontekstowe kilku przedmiotów związanych z zadaniami
+* Poprawiono informacje dotyczące wymaganych przedmiotów w zadaniu Smoczy Amulet
+* Pierścień Powrotu nie zapisuje już niedozwolonych miejsc w wybranych labiryntach i prywatnych lokacjach
+* Nieprawidłowe lub nieistniejące miejsca zapisane wcześniej w Pierścieniu Powrotu są bezpiecznie usuwane
+* Poprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
+* Poprawiono wiele dialogów i wskazówek w starszych zadaniach
+* Poprawiono zgodność nowych systemów wyposażenia i zadań ze starszymi zapisami postaci
+
 
 1.41
 *klient*
