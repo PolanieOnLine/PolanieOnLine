@@ -28,6 +28,22 @@ public final class ChallengeArenaRewardService {
 		player.setQuest(STATS_SLOT, 3, Long.toString(totalSpent));
 	}
 
+	public static int getWins(final Player player) {
+		return player == null ? 0 : getInt(player, 0);
+	}
+
+	public static int getBestStake(final Player player) {
+		return player == null ? 0 : getInt(player, 1);
+	}
+
+	public static long getBestTimeMillis(final Player player) {
+		return player == null ? 0L : getLong(player, 2);
+	}
+
+	public static long getTotalSpent(final Player player) {
+		return player == null ? 0L : getLong(player, 3);
+	}
+
 	public static void rewardVictory(final Player player,
 			final ChallengeArenaTier tier, final long durationMillis) {
 		if (player == null || tier == null) {
