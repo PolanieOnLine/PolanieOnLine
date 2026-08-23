@@ -18,23 +18,56 @@ public class ChallengeArenaTierTest {
 	}
 
 	@Test
-	public void higherStakeMeansMoreCreaturesAndLargerWaves() {
+	public void higherStakeMeansMoreCreaturesAndMoreCombatWaves() {
 		assertTrue(ChallengeArenaTier.LEGEND.getCreatureCount()
 				> ChallengeArenaTier.TRIAL.getCreatureCount());
-		assertTrue(ChallengeArenaTier.LEGEND.getWaveSize()
-				> ChallengeArenaTier.TRIAL.getWaveSize());
+		assertTrue(ChallengeArenaTier.LEGEND.getWaveCount()
+				> ChallengeArenaTier.TRIAL.getWaveCount());
 	}
 
 	@Test
-	public void creatureLevelRisesAcrossOneRun() {
+	public void trialUsesTenCreaturesInThreeDenseWaves() {
+		final ChallengeArenaTier tier = ChallengeArenaTier.TRIAL;
+		assertEquals(10, tier.getCreatureCount());
+		assertEquals(3, tier.getWaveCount());
+		assertEquals(4, tier.getWaveSizeForWave(1));
+		assertEquals(3, tier.getWaveSizeForWave(2));
+		assertEquals(3, tier.getWaveSizeForWave(3));
+		assertEquals(1, tier.getNextWaveNumber(0));
+		assertEquals(2, tier.getNextWaveNumber(4));
+		assertEquals(3, tier.getNextWaveNumber(7));
+		assertEquals(4, tier.getNextWaveNumber(10));
+	}
+
+	@Test
+	public void hunterUsesTwentyCreaturesInSixWaves() {
+		final ChallengeArenaTier tier = ChallengeArenaTier.HUNTER;
+		assertEquals(20, tier.getCreatureCount());
+		assertEquals(6, tier.getWaveCount());
+		assertEquals(4, tier.getWaveSizeForWave(1));
+		assertEquals(4, tier.getWaveSizeForWave(2));
+		assertEquals(3, tier.getWaveSizeForWave(3));
+		assertEquals(3, tier.getWaveSizeForWave(6));
+	}
+
+	@Test
+	public void creatureLevelRisesWellAbovePlayerAcrossOneRun() {
 		final ChallengeArenaTier tier = ChallengeArenaTier.LEGEND;
 		final int first = tier.getTargetCreatureLevel(300, 1);
 		final int last = tier.getTargetCreatureLevel(300,
 				tier.getCreatureCount());
 
-		assertEquals(308, first);
-		assertEquals(316, last);
+		assertEquals(316, first);
+		assertEquals(336, last);
 		assertTrue(last > first);
+	}
+
+	@Test
+	public void trialAlsoStartsAbovePlayerLevel() {
+		assertEquals(202,
+				ChallengeArenaTier.TRIAL.getTargetCreatureLevel(200, 1));
+		assertEquals(210,
+				ChallengeArenaTier.TRIAL.getTargetCreatureLevel(200, 10));
 	}
 
 	@Test
