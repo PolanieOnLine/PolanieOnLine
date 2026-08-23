@@ -7,6 +7,7 @@ package games.stendhal.server.maps.challengearena;
 public final class ChallengeArenaManager {
 	private static String activePlayer;
 	private static ChallengeArenaInfo arenaInfo;
+	private static ChallengeArenaRankingSign rankingSign;
 
 	private ChallengeArenaManager() {
 	}
@@ -17,6 +18,17 @@ public final class ChallengeArenaManager {
 
 	public static synchronized ChallengeArenaInfo getArenaInfo() {
 		return arenaInfo;
+	}
+
+	public static synchronized void configureRankingSign(
+			final ChallengeArenaRankingSign sign) {
+		rankingSign = sign;
+	}
+
+	public static synchronized void refreshRankingSign() {
+		if (rankingSign != null) {
+			rankingSign.updatePlayers();
+		}
 	}
 
 	public static synchronized boolean reserve(final String playerName) {
@@ -47,5 +59,6 @@ public final class ChallengeArenaManager {
 	static synchronized void clearForTests() {
 		activePlayer = null;
 		arenaInfo = null;
+		rankingSign = null;
 	}
 }
