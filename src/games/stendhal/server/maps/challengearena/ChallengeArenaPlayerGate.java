@@ -16,7 +16,7 @@ public final class ChallengeArenaPlayerGate extends OnePlayerArea {
 	@Override
 	public boolean isObstacle(final Entity entity) {
 		if (!(entity instanceof Player)) {
-			return super.isObstacle(entity);
+			return false;
 		}
 		final Player player = (Player) entity;
 		if (player.isGhost() || contains(player)) {
