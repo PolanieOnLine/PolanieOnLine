@@ -27,14 +27,19 @@ public final class ChallengeArenaNPC {
 			protected void createDialog() {
 				addGreeting("Witaj wojowniku. Na tej arenie sam wybierasz stawkę i ryzyko. Zapytaj mnie o #arenę.");
 				addJob("Prowadzę Arenę Wyzwań na ziemiach Kraka.");
-				addHelp("Powiedz #arena aby wybrać stawkę. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada. Gdy chcesz wrócić do Krakowa powiedz #wyjdź.");
+				addHelp("Powiedz #arena aby wybrać stawkę. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada. Gdy chcesz wrócić do Krakowa powiedz #wyjdź.");
 				addGoodbye("Wróć gdy będziesz gotowy na kolejną walkę.");
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("arena", "arenę", "wyzwania"),
 						null, ConversationStates.QUESTION_1,
-						"Mam sześć prób. #próba kosztuje 100000 money. #potyczka kosztuje 250000 money. #łowca kosztuje 500000 money. #weteran kosztuje 1000000 money. #czempion kosztuje 2500000 money. #legenda kosztuje 5000000 money. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
+						"Mam sześć prób. #próba kosztuje 100000 sztuk złota. #potyczka kosztuje 250000 sztuk złota. #łowca kosztuje 500000 sztuk złota. #weteran kosztuje 1000000 sztuk złota. #czempion kosztuje 2500000 sztuk złota. #legenda kosztuje 5000000 sztuk złota. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
 						null);
+
+				add(ConversationStates.ATTENDING,
+						Arrays.asList("wyniki", "wynik", "rekord"),
+						null, ConversationStates.ATTENDING, null,
+						new ShowChallengeArenaStatsAction());
 
 				addTier(Arrays.asList("próba", "proba", "100000", "100k"),
 						ChallengeArenaTier.TRIAL);
@@ -57,7 +62,7 @@ public final class ChallengeArenaNPC {
 						Arrays.asList("wyjdź", "wyjdz", "wychodzę", "wychodze"),
 						null, ConversationStates.IDLE, null,
 						new LeaveChallengeArenaAction());
-				addKnownChatOptions("arena", "rezygnuję", "wyjdź");
+				addKnownChatOptions("arena", "wyniki", "rezygnuję", "wyjdź");
 			}
 
 			private void addTier(final List<String> triggers,
