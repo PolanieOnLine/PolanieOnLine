@@ -51,4 +51,40 @@ public class ChallengeArenaTierTest {
 		}
 		assertEquals(ChallengeArenaTier.LEGEND.getForcedEliteCount(), elites);
 	}
+
+	@Test
+	public void onlyHigherTiersAwardEquipmentChest() {
+		assertFalse(ChallengeArenaTier.TRIAL.awardsEquipmentChest());
+		assertFalse(ChallengeArenaTier.SKIRMISH.awardsEquipmentChest());
+		assertTrue(ChallengeArenaTier.HUNTER.awardsEquipmentChest());
+		assertTrue(ChallengeArenaTier.VETERAN.awardsEquipmentChest());
+		assertTrue(ChallengeArenaTier.CHAMPION.awardsEquipmentChest());
+		assertTrue(ChallengeArenaTier.LEGEND.awardsEquipmentChest());
+
+		assertEquals(0, ChallengeArenaTier.TRIAL.getRewardRarityRolls());
+		assertEquals(1, ChallengeArenaTier.HUNTER.getRewardRarityRolls());
+		assertEquals(4, ChallengeArenaTier.LEGEND.getRewardRarityRolls());
+	}
+
+	@Test
+	public void onlyTopTiersEndWithArenaChampion() {
+		assertFalse(ChallengeArenaTier.VETERAN.isFinalChampion(
+				ChallengeArenaTier.VETERAN.getCreatureCount()));
+		assertTrue(ChallengeArenaTier.CHAMPION.isFinalChampion(
+				ChallengeArenaTier.CHAMPION.getCreatureCount()));
+		assertTrue(ChallengeArenaTier.LEGEND.isFinalChampion(
+				ChallengeArenaTier.LEGEND.getCreatureCount()));
+		assertFalse(ChallengeArenaTier.LEGEND.isFinalChampion(
+				ChallengeArenaTier.LEGEND.getCreatureCount() - 1));
+	}
+
+	@Test
+	public void legendChampionIsStrongerThanChampionTierFinale() {
+		assertTrue(ChallengeArenaTier.LEGEND.getChampionHpMultiplier()
+				> ChallengeArenaTier.CHAMPION.getChampionHpMultiplier());
+		assertTrue(ChallengeArenaTier.LEGEND.getChampionAttackMultiplier()
+				> ChallengeArenaTier.CHAMPION.getChampionAttackMultiplier());
+		assertTrue(ChallengeArenaTier.LEGEND.getChampionDefenseMultiplier()
+				> ChallengeArenaTier.CHAMPION.getChampionDefenseMultiplier());
+	}
 }
