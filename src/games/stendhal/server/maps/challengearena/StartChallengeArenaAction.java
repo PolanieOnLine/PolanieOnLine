@@ -33,12 +33,16 @@ public final class StartChallengeArenaAction implements ChatAction {
 			return;
 		}
 
-		final ChallengeArenaState previous = ChallengeArenaState.parse(
+		ChallengeArenaState previous = ChallengeArenaState.parse(
 				player.getQuest(ChallengeArenaState.QUEST_SLOT));
 		if (previous != null
 				&& previous.getLifecycle() == ChallengeArenaState.Lifecycle.ACTIVE) {
-			raiser.say("Twoje poprzednie wyzwanie wciąż trwa.");
-			return;
+			if (ChallengeArenaManager.isReservedBy(player.getName())) {
+				raiser.say("Twoje poprzednie wyzwanie wciąż trwa.");
+				return;
+			}
+			previous = previous.withLifecycle(ChallengeArenaState.Lifecycle.FAILED);
+			player.setQuest(ChallengeArenaState.QUEST_SLOT, previous.serialize());
 		}
 
 		final String deathmatch = player.getQuest("deathmatch");
