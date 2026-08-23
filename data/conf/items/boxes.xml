@@ -115,4 +115,21 @@
 			<slot name="bag"/>
 		</equipable>
 	</item>
+
+	<item name="skrzynia Areny Wyzwań">
+		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
+		<description>Oto nagroda zdobyta na Arenie Wyzwań. Otwórz ją aby otrzymać wyposażenie.</description>
+		<implementation class-name="games.stendhal.server.entity.item.ChallengeArenaRewardChest"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.01"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+		</equipable>
+	</item>
 </items>
