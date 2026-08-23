@@ -69,6 +69,16 @@ public final class ChallengeArenaEngine implements TurnListener {
 		}
 	}
 
+	boolean forfeit(final Player requester) {
+		if (!running || requester == null || requester != player
+				|| !ChallengeArenaManager.isReservedBy(player.getName())) {
+			return false;
+		}
+		player.sendPrivateText("Poddajesz Arenę Wyzwań. Wpisowe przepada.");
+		failRun(getState());
+		return true;
+	}
+
 	private ChallengeArenaState getState() {
 		return ChallengeArenaState.parse(
 				player.getQuest(ChallengeArenaState.QUEST_SLOT));
