@@ -10,26 +10,29 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** Charges one fixed stake and starts a Challenge Arena run. */
+/** Charges one fixed stake, moves the player to the arena and starts a run. */
 public final class StartChallengeArenaAction implements ChatAction {
-	private final ChallengeArenaInfo arenaInfo;
 	private final ChallengeArenaTier tier;
 
-	public StartChallengeArenaAction(final ChallengeArenaInfo arenaInfo,
-			final ChallengeArenaTier tier) {
-		this.arenaInfo = arenaInfo;
+	public StartChallengeArenaAction(final ChallengeArenaTier tier) {
 		this.tier = tier;
 	}
 
 	@Override
 	public void fire(final Player player, final Sentence sentence,
 			final EventRaiser raiser) {
-		if (player == null || arenaInfo == null || tier == null) {
+		if (player == null || tier == null) {
 			return;
 		}
 
-		if (!arenaInfo.hasOnlyPlayer(player)) {
-			raiser.say("Arena musi być pusta zanim rozpoczniesz płatne wyzwanie.");
+		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo();
+		if (arenaInfo == null) {
+			raiser.say("Arena nie jest teraz dostępna.");
+			return;
+		}
+
+		if (ChallengeArenaManager.isReserved() || !arenaInfo.isEmpty()) {
+			raiser.say("Arena Wyzwań jest teraz zajęta.");
 			return;
 		}
 
@@ -37,20 +40,8 @@ public final class StartChallengeArenaAction implements ChatAction {
 				player.getQuest(ChallengeArenaState.QUEST_SLOT));
 		if (previous != null
 				&& previous.getLifecycle() == ChallengeArenaState.Lifecycle.ACTIVE) {
-			if (ChallengeArenaManager.isReservedBy(player.getName())) {
-				raiser.say("Twoje poprzednie wyzwanie wciąż trwa.");
-				return;
-			}
 			previous = previous.withLifecycle(ChallengeArenaState.Lifecycle.FAILED);
 			player.setQuest(ChallengeArenaState.QUEST_SLOT, previous.serialize());
-		}
-
-		final String deathmatch = player.getQuest("deathmatch");
-		if (deathmatch != null && deathmatch.length() > 0
-				&& !deathmatch.startsWith("done")
-				&& !"cancel".equals(deathmatch)) {
-			raiser.say("Najpierw zakończ rozpoczęty Deathmatch.");
-			return;
 		}
 
 		if (!MoneyUtils.hasEnoughMoney(player, tier.getStake())) {
@@ -69,9 +60,20 @@ public final class StartChallengeArenaAction implements ChatAction {
 			return;
 		}
 
-		if (!arenaInfo.startSession(player, tier, raiser)) {
+		if (!arenaInfo.teleportIntoArena(player) || !arenaInfo.hasOnlyPlayer(player)) {
 			MoneyUtils.giveMoney(player, tier.getStake());
 			ChallengeArenaManager.release(player.getName());
+			if (arenaInfo.isInArena(player)) {
+				arenaInfo.returnPlayer(player);
+			}
+			raiser.say("Nie udało się wejść na arenę. Wpisowe zostało zwrócone.");
+			return;
+		}
+
+		if (!arenaInfo.startSession(player, tier)) {
+			MoneyUtils.giveMoney(player, tier.getStake());
+			ChallengeArenaManager.release(player.getName());
+			arenaInfo.returnPlayer(player);
 			raiser.say("Nie udało się rozpocząć walki. Wpisowe zostało zwrócone.");
 			return;
 		}
