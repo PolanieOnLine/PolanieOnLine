@@ -60,7 +60,7 @@ public final class ZoneDisplayNameFormatter {
 		if (zoneName == null || zoneName.trim().isEmpty()) {
 			return "Nieznana lokacja";
 		}
-		if ("int_krakow_challenge_arena".equalsIgnoreCase(zoneName.trim())) {
+		if ("int_tarnow_challenge_arena".equalsIgnoreCase(zoneName.trim())) {
 			return "Arena Wyzwań";
 		}
 
