@@ -25,6 +25,9 @@ import games.stendhal.server.entity.status.BleedingAttackerFactoryTest;
 import games.stendhal.server.entity.status.BleedingAttackerTest;
 import games.stendhal.server.entity.status.BleedingStatusTest;
 import games.stendhal.server.entity.status.StunnedStatusTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaManagerTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaStateTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 
 /**
  * Fast, explicit regression suite for the highest-risk changes scheduled for
@@ -47,6 +50,9 @@ import games.stendhal.server.entity.status.StunnedStatusTest;
 	CriticalHitServiceTest.class,
 	GroupExperienceDistributorTest.class,
 	RPEntityGroupExperienceTest.class,
+	ChallengeArenaTierTest.class,
+	ChallengeArenaStateTest.class,
+	ChallengeArenaManagerTest.class,
 	SeasonalZonePlanTest.class,
 	EasterEventPlanTest.class,
 	MineTownEventPlanTest.class,
