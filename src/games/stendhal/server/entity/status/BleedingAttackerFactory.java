@@ -20,9 +20,12 @@ public final class BleedingAttackerFactory {
 	/**
 	 * Parses {@code chancePercent[;damageFactor]}.
 	 *
-	 * <p>For example {@code 15} means a 15% chance with the default wound
-	 * damage factor (20% of the actual hit), while {@code 20;0.30} means a 20%
-	 * chance and a wound worth 30% of the actual hit.</p>
+	 * <p>For example {@code 15} means a 15% chance with the default creature
+	 * wound damage factor (100% of the actual hit), while {@code 20;0.30}
+	 * means a 20% chance with a wound initially worth 30% of the actual hit.
+	 * Creature wounds are additionally clamped to 2-5% of the target's maximum
+	 * HP so rare procs stay noticeable without becoming excessive after very
+	 * large hits.</p>
 	 */
 	public static BleedingAttacker get(final String profile) {
 		if (profile == null || profile.trim().isEmpty()) {
@@ -36,7 +39,9 @@ public final class BleedingAttackerFactory {
 		final double probability = Double.parseDouble(params[0].trim());
 		final double damageFactor = params.length == 2
 				? Double.parseDouble(params[1].trim())
-				: BleedingAttacker.DEFAULT_DAMAGE_FACTOR;
-		return new BleedingAttacker(probability, damageFactor);
+				: BleedingAttacker.CREATURE_DEFAULT_DAMAGE_FACTOR;
+		return new BleedingAttacker(probability, damageFactor,
+				BleedingAttacker.CREATURE_MIN_TARGET_HP_FACTOR,
+				BleedingAttacker.CREATURE_MAX_TARGET_HP_FACTOR);
 	}
 }
