@@ -60,6 +60,9 @@ public final class ZoneDisplayNameFormatter {
 		if (zoneName == null || zoneName.trim().isEmpty()) {
 			return "Nieznana lokacja";
 		}
+		if ("int_krakow_challenge_arena".equalsIgnoreCase(zoneName.trim())) {
+			return "Arena Wyzwań";
+		}
 
 		String level = null;
 		String remainder = zoneName.trim();
