@@ -25,8 +25,8 @@ public final class ShowChallengeArenaStatsAction implements ChatAction {
 		final long seconds = Math.max(0L, Math.round(bestTime / 1000.0));
 
 		raiser.say("Masz " + wins + " zwycięstw. Najwyższa ukończona stawka to "
-				+ bestStake + " money. Najlepszy czas na tej stawce to "
+				+ bestStake + " sztuk złota. Najlepszy czas na tej stawce to "
 				+ seconds + " sekund. Łącznie wydałeś na arenę "
-				+ totalSpent + " money.");
+				+ totalSpent + " sztuk złota.");
 	}
 }
