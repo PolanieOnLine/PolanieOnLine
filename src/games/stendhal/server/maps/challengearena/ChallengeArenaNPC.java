@@ -4,6 +4,7 @@
 package games.stendhal.server.maps.challengearena;
 
 import java.util.Arrays;
+import java.util.List;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.Spot;
@@ -32,7 +33,7 @@ public final class ChallengeArenaNPC {
 			protected void createDialog() {
 				addGreeting("Witaj wojowniku. Jeśli zwykły Deathmatch to za mało zapytaj mnie o #arenę.");
 				addJob("Prowadzę Arenę Wyzwań dla wojowników którzy chcą postawić własne pieniądze na trudniejszą walkę.");
-				addHelp("Powiedz #arena. Wybierzesz stawkę a ona określi liczbę i siłę przeciwników.");
+				addHelp("Powiedz #arena. Wybierzesz stawkę a ona określi liczbę i siłę przeciwników. Podczas walki możesz powiedzieć #rezygnuję ale wpisowe wtedy przepada.");
 				addGoodbye("Wróć gdy będziesz gotowy na prawdziwe wyzwanie.");
 
 				add(ConversationStates.ATTENDING,
@@ -53,9 +54,15 @@ public final class ChallengeArenaNPC {
 						ChallengeArenaTier.CHAMPION);
 				addTier(Arrays.asList("legenda", "5000000", "5m"),
 						ChallengeArenaTier.LEGEND);
+
+				add(ConversationStates.ATTENDING,
+						Arrays.asList("rezygnuję", "rezygnuje", "poddaję", "poddaje"),
+						null, ConversationStates.ATTENDING, null,
+						new ForfeitChallengeArenaAction(arenaInfo));
+				addKnownChatOptions("arena", "rezygnuję");
 			}
 
-			private void addTier(final java.util.List<String> triggers,
+			private void addTier(final List<String> triggers,
 					final ChallengeArenaTier tier) {
 				add(ConversationStates.QUESTION_1, triggers, null,
 						ConversationStates.ATTENDING, null,
