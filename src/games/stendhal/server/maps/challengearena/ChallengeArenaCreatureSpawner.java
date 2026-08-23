@@ -47,7 +47,10 @@ public final class ChallengeArenaCreatureSpawner {
 				|| creature.has("no_hpbar")) {
 			return false;
 		}
-		return !creature.getAIProfiles().containsKey("boss");
+		return !creature.getAIProfiles().containsKey("boss")
+				&& !creature.getAIProfiles().containsKey("no_elite")
+				&& (!creature.has("title_type")
+						|| "enemy".equals(creature.get("title_type")));
 	}
 
 	Creature calculateCreature(final int targetLevel) {
@@ -78,6 +81,7 @@ public final class ChallengeArenaCreatureSpawner {
 
 	Creature spawn(final Player player, final ChallengeArenaInfo arenaInfo,
 			final int targetLevel, final boolean forceElite,
+			final boolean finalChampion, final ChallengeArenaTier tier,
 			final List<ChallengeArenaModifier> modifiers) {
 		final Creature template = calculateCreature(targetLevel);
 		if (template == null) {
@@ -87,7 +91,7 @@ public final class ChallengeArenaCreatureSpawner {
 		final ArenaCreature creature = new ArenaCreature(template.getNewInstance(),
 				arenaInfo.getArena().getShape());
 		creature.clearDropItemList();
-		if (forceElite) {
+		if (forceElite || finalChampion) {
 			EliteCreatureService.promote(creature);
 		}
 		if (modifiers != null) {
@@ -96,6 +100,9 @@ public final class ChallengeArenaCreatureSpawner {
 					modifier.apply(creature);
 				}
 			}
+		}
+		if (finalChampion) {
+			ChallengeArenaChampionService.promote(creature, tier);
 		}
 		creature.setTarget(player);
 
