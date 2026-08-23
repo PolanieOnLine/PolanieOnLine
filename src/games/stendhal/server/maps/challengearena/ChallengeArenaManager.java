@@ -3,16 +3,20 @@
  ***************************************************************************/
 package games.stendhal.server.maps.challengearena;
 
-/**
- * Keeps the shared Ados arena reserved while a Challenge Arena run is active.
- *
- * <p>The first implementation intentionally reuses the physical Deathmatch
- * ring, but Challenge Arena remains a separate game mode and quest state.</p>
- */
+/** Keeps the dedicated Challenge Arena configured and reserved for one player. */
 public final class ChallengeArenaManager {
 	private static String activePlayer;
+	private static ChallengeArenaInfo arenaInfo;
 
 	private ChallengeArenaManager() {
+	}
+
+	public static synchronized void configureArena(final ChallengeArenaInfo info) {
+		arenaInfo = info;
+	}
+
+	public static synchronized ChallengeArenaInfo getArenaInfo() {
+		return arenaInfo;
 	}
 
 	public static synchronized boolean reserve(final String playerName) {
@@ -42,5 +46,6 @@ public final class ChallengeArenaManager {
 
 	static synchronized void clearForTests() {
 		activePlayer = null;
+		arenaInfo = null;
 	}
 }
