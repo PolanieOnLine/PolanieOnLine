@@ -21,6 +21,8 @@ import games.stendhal.server.core.rule.rarity.ItemAffixStateTest;
 import games.stendhal.server.core.rule.rarity.ItemRarityServiceTest;
 import games.stendhal.server.entity.RPEntityGroupExperienceTest;
 import games.stendhal.server.entity.RPEntityWeaponDamageRollTest;
+import games.stendhal.server.entity.status.BleedingAttackerFactoryTest;
+import games.stendhal.server.entity.status.BleedingAttackerTest;
 import games.stendhal.server.entity.status.BleedingStatusTest;
 import games.stendhal.server.entity.status.StunnedStatusTest;
 
@@ -39,6 +41,8 @@ import games.stendhal.server.entity.status.StunnedStatusTest;
 	EliteSummonActionTest.class,
 	StunnedStatusTest.class,
 	BleedingStatusTest.class,
+	BleedingAttackerTest.class,
+	BleedingAttackerFactoryTest.class,
 	RPEntityWeaponDamageRollTest.class,
 	CriticalHitServiceTest.class,
 	GroupExperienceDistributorTest.class,
