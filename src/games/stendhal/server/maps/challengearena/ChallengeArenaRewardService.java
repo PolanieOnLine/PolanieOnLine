@@ -5,12 +5,16 @@ package games.stendhal.server.maps.challengearena;
 
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.entity.item.ChallengeArenaRewardChest;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
 
 /** Handles non-money completion rewards and persistent Challenge Arena stats. */
 public final class ChallengeArenaRewardService {
 	public static final String STATS_SLOT = "challenge_arena_stats";
+	public static final String REWARD_CHEST_NAME = "skrzynia Areny Wyzwań";
 
 	private ChallengeArenaRewardService() {
 	}
@@ -38,6 +42,10 @@ public final class ChallengeArenaRewardService {
 				.getEntityManager().getItem("fragment glifu");
 		fragment.setQuantity(fragments);
 		player.equipOrPutOnGround(fragment);
+		player.incObtainedForItem(fragment.getName(), fragments);
+
+		final boolean chestAwarded = tier.awardsEquipmentChest()
+				&& awardEquipmentChest(player, tier);
 
 		final int wins = getInt(player, 0) + 1;
 		player.setQuest(STATS_SLOT, 0, Integer.toString(wins));
@@ -53,9 +61,30 @@ public final class ChallengeArenaRewardService {
 			}
 		}
 
-		player.sendPrivateText("Ukończyłeś Arenę Wyzwań. Otrzymujesz "
+		String message = "Ukończyłeś Arenę Wyzwań. Otrzymujesz "
 				+ completionXp + " punktów doświadczenia oraz " + fragments
-				+ " fragmentów glifu.");
+				+ " fragmentów glifu.";
+		if (chestAwarded) {
+			message += " Otrzymujesz również skrzynię z losowym wyposażeniem.";
+		}
+		player.sendPrivateText(message);
+	}
+
+	private static boolean awardEquipmentChest(final Player player,
+			final ChallengeArenaTier tier) {
+		final Item item = SingletonRepository.getEntityManager().getItem(
+				REWARD_CHEST_NAME, ItemCreationContext.defaultCreation());
+		if (!(item instanceof ChallengeArenaRewardChest)) {
+			return false;
+		}
+		final ChallengeArenaRewardChest chest = (ChallengeArenaRewardChest) item;
+		chest.setItemData(ChallengeArenaRewardChest.createRewardData(
+				tier, Math.max(1, player.getLevel())));
+		chest.setBoundTo(player.getName());
+		chest.setPersistent(true);
+		player.equipOrPutOnGround(chest);
+		player.incObtainedForItem(chest.getName(), 1);
+		return true;
 	}
 
 	static int getFragmentReward(final ChallengeArenaTier tier) {
