@@ -8,6 +8,7 @@ import java.util.List;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
@@ -27,16 +28,16 @@ public final class ChallengeArenaNPC {
 			protected void createDialog() {
 				addGreeting("Witaj wojowniku. W Tarnowie sam wybierasz stawkę i trudność walki. Zapytaj mnie o #arenę.");
 				addJob("Prowadzę Arenę Wyzwań w Tarnowie.");
-				addHelp("Powiedz #arena aby wybrać stawkę. Po wybraniu próby powiedz #wejście. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada.");
+				addHelp("Powiedz #arena aby wybrać stawkę. Po wybraniu próby powiedz #wejście albo #tak. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada.");
 				addGoodbye("Wróć gdy będziesz gotowy na kolejną walkę.");
 
-				add(ConversationStates.ATTENDING,
+				add(ConversationStates.ANY,
 						Arrays.asList("arena", "arenę", "wyzwania"),
 						null, ConversationStates.QUESTION_1,
 						"Mam sześć prób. #próba kosztuje 100000 sztuk złota. #potyczka kosztuje 250000 sztuk złota. #łowca kosztuje 500000 sztuk złota. #weteran kosztuje 1000000 sztuk złota. #czempion kosztuje 2500000 sztuk złota. #legenda kosztuje 5000000 sztuk złota. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale.",
 						null);
 
-				add(ConversationStates.ATTENDING,
+				add(ConversationStates.ANY,
 						Arrays.asList("wyniki", "wynik", "rekord"),
 						null, ConversationStates.ATTENDING, null,
 						new ShowChallengeArenaStatsAction());
@@ -59,6 +60,9 @@ public final class ChallengeArenaNPC {
 								"wejście na arenę", "wejscie na arene"),
 						null, ConversationStates.QUESTION_2, null,
 						new StartSelectedChallengeArenaAction());
+				add(ConversationStates.QUESTION_2, ConversationPhrases.YES_MESSAGES,
+						null, ConversationStates.QUESTION_2, null,
+						new StartSelectedChallengeArenaAction());
 
 				add(ConversationStates.ANY,
 						Arrays.asList("rezygnuję", "rezygnuje", "poddaję", "poddaje"),
@@ -69,12 +73,14 @@ public final class ChallengeArenaNPC {
 								"wychodzę", "wychodze", "opuścić", "opuscic"),
 						null, ConversationStates.IDLE, null,
 						new LeaveChallengeArenaAction());
-				addKnownChatOptions("arena", "wyniki", "wejście", "rezygnuję", "wyjdź");
+				addKnownChatOptions("arena", "próba", "potyczka", "łowca",
+						"weteran", "czempion", "legenda", "wyniki", "wejście",
+						"rezygnuję", "wyjdź");
 			}
 
 			private void addTier(final List<String> triggers,
 					final ChallengeArenaTier tier) {
-				add(ConversationStates.QUESTION_1, triggers, null,
+				add(ConversationStates.ANY, triggers, null,
 						ConversationStates.QUESTION_2, null,
 						new SelectChallengeArenaTierAction(tier));
 			}
