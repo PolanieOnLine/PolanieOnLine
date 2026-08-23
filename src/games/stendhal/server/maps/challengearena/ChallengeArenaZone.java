@@ -30,6 +30,12 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 		final ChallengeArenaInfo info = new ChallengeArenaInfo(combatArea, zone,
 				zone.getName(), LOBBY_X, LOBBY_Y, COMBAT_X, COMBAT_Y);
 		ChallengeArenaManager.configureArena(info);
+
+		final ChallengeArenaRankingSign rankingSign = new ChallengeArenaRankingSign();
+		rankingSign.setPosition(28, 59);
+		zone.add(rankingSign);
+		ChallengeArenaManager.configureRankingSign(rankingSign);
+
 		ChallengeArenaNPC.create(zone, 32, 59);
 	}
 }
