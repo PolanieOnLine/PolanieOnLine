@@ -12,7 +12,7 @@ public final class ChallengeArenaRankingSign extends Sign {
 	private static final int SIGN_LENGTH = 10;
 
 	public ChallengeArenaRankingSign() {
-		put("class", "book_blue");
+		put("class", "transparent");
 		setText("Najlepsi wojownicy Areny Wyzwań");
 		updatePlayers();
 	}
