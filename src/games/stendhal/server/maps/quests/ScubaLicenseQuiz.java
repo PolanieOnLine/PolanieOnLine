@@ -169,7 +169,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 						npc.say("Zgadza się dobra robota! Teraz jesteś licencjonowanym nurkiem! Oto twój akwalung.");
 						//For now I'm just handing out scuba gear until there's a license to give.
 						final Item ScubaGear = SingletonRepository.getEntityManager().getItem(
-								"zbroja akwalungowa", ItemCreationContext.quest());
+								"zbroja akwalungowa", ItemCreationContext.questReward());
 						ScubaGear.setBoundTo(player.getName());
 						player.equipOrPutOnGround(ScubaGear);
 						player.addXP(100);

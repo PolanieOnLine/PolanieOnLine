@@ -14,24 +14,30 @@ package games.stendhal.server.entity.npc.quest;
 import java.util.LinkedList;
 import java.util.List;
 
+import marauroa.common.Pair;
+
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 
 public class CraftItemQuestCompleteBuilder extends QuestCompleteBuilder {
 	private String greet = "Dzięki za skorzystanie z moich usług i proszę, oto twój sprzęt!";
 	private String respondToReject = null;
 	private String respondToAccept = null;
+	private String respondToMissingItem = "Wróć z przedmiotem potrzebnym do ukończenia zlecenia.";
 	private List<ChatAction> rewardWith = new LinkedList<>();
+	private List<Pair<String, Integer>> requiredItem = new LinkedList<>();
 
 	// hide constructor
 	CraftItemQuestCompleteBuilder() {
@@ -58,15 +64,49 @@ public class CraftItemQuestCompleteBuilder extends QuestCompleteBuilder {
 		return this;
 	}
 
+	public CraftItemQuestCompleteBuilder requiredItem(int quantity, String name) {
+		requiredItem.add(new Pair<String, Integer>(name, quantity));
+		return this;
+	}
+
+	public CraftItemQuestCompleteBuilder respondToMissingItem(String respondToMissingItem) {
+		this.respondToMissingItem = respondToMissingItem;
+		return this;
+	}
+
+	private ChatCondition requiredItemsCondition() {
+		List<ChatCondition> conditions = new LinkedList<>();
+		for (Pair<String, Integer> item : requiredItem) {
+			conditions.add(new PlayerHasItemWithHimCondition(item.first(), item.second()));
+		}
+		return new AndCondition(conditions);
+	}
+
 	@Override
 	void build(SpeakerNPC npc, String questSlot, ChatCondition questCompletedCondition, ChatAction questCompleteAction) {
-		ChatCondition mayCompleteCondition = new AndCondition(
+		ChatCondition readyCondition = new AndCondition(
 				new GreetingMatchesNameCondition(npc.getName()),
-				new QuestInStateCondition(questSlot, 0 , "forging"),
 				questCompletedCondition);
-		npc.registerPrioritizedGreetingTransition(mayCompleteCondition, this);
+		ChatCondition requiredItemsCondition = requiredItemsCondition();
+		ChatCondition mayCompleteCondition = new AndCondition(
+				readyCondition,
+				requiredItemsCondition);
+		npc.registerPrioritizedGreetingTransition(readyCondition, this);
+
+		if (!requiredItem.isEmpty()) {
+			npc.add(
+					ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(readyCondition, new NotCondition(requiredItemsCondition)),
+					ConversationStates.ATTENDING,
+					respondToMissingItem,
+					null);
+		}
 
 		List<ChatAction> actions = new LinkedList<ChatAction>();
+		for (Pair<String, Integer> item : requiredItem) {
+			actions.add(new DropItemAction(item.first(), item.second()));
+		}
 		if (questCompleteAction != null) {
 			actions.add(questCompleteAction);
 		}

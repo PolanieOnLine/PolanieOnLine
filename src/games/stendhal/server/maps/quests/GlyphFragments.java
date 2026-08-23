@@ -62,24 +62,24 @@ public class GlyphFragments extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Spotkałem Omara, tajemniczego wędrowca na pustyni, i otrzymałem zadanie odnalezienia fragmentów glifów.");
+		res.add("Omar bada pozostałości dawnych matryc glifów zasypanych przez pustynię. Zoryk Runiczny potrafi nasycić zrekonstruowane fragmenty nową mocą.");
 		if ("start".equals(player.getQuest(QUEST_SLOT, 0))) {
 			String questMap = player.getQuest(QUEST_SLOT, 2);
 			int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
 			int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 4));
 			int[] cords = sendApproximateCoordinates(player, x, y);
-			res.add("Muszę poszukać fragmentu w regionie " + getQuestMapName(questMap) + ". Gdzieś w pobliżu (#'" + cords[0] + "', #'" + cords[1] + "').");
+			res.add("Omar wskazał miejsce dawnych wykopalisk w regionie " + getQuestMapName(questMap) + ". Muszę szukać matrycy gdzieś w pobliżu (#'" + cords[0] + "', #'" + cords[1] + "').");
 		}
 		if ("found_fragment".equals(player.getQuest(QUEST_SLOT, 0))) {
 			String fragment = player.getQuest(QUEST_SLOT, 1);
-			res.add("Udało się wykopać " + fragment + " " + itemName + ".");
+			res.add("Wykopałem " + fragment + " fragment dawnej matrycy glifu. Omar może spróbować go zrekonstruować.");
 		}
 		if ("done".equals(player.getQuest(QUEST_SLOT, 0))) {
-			res.add("Dostarczyłem Omarowi fragmenty glifów i otrzymałem nagrodę.");
+			res.add("Omar zrekonstruował odnaleziony fragment. Zoryk Runiczny może wykorzystać go jako nośnik do stworzenia nowego glifu.");
 		}
 		int repetitions = player.getNumberOfRepetitions(QUEST_SLOT, 6);
 		if (repetitions > 0) {
-			res.add("Omar naprawił dla mnie " + Grammar.quantityplnoun(repetitions, "raz") + " fragment glifu.");
+			res.add("Omar zrekonstruował dla mnie " + Grammar.quantityplnoun(repetitions, "raz") + " fragment dawnej matrycy glifu.");
 		}
 		return res;
 	}
@@ -89,8 +89,7 @@ public class GlyphFragments extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
-			"W tejże pustyni możesz odnaleźć wiele skarbów zasypanych w piasku... Mnie interesują"
-				+ " jedynie fragmenty zapomnianych glifów. Zechcesz mi pomóc w ich odnalezieniu?",
+			"Od miesięcy badam ruiny ukryte pod piaskiem. Znajduję tam kamienne odłamki pokryte liniami dawnych matryc glifów. Zoryk Runiczny potwierdził, że po rekonstrukcji można je ponownie nasycić mocą. Ja potrafię wskazać miejsca wykopalisk i spróbować odtworzyć uszkodzony nośnik, ale potrzebuję kogoś z łopatą. Pomożesz mi?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -105,8 +104,7 @@ public class GlyphFragments extends AbstractQuest {
 					int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
 					int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 4));
 					int[] cords = sendApproximateCoordinates(player, x, y);
-					npc.say("Udaj się proszę w taki region jak " + getQuestMapName(questMap) + ". Przybliżone miejsce"
-						+ " gdzie mogą się znajdować fragmenty to (#'" + cords[0] + "', #'" + cords[1] + "').");
+					npc.say("Wciąż szukamy pozostałości matrycy w " + getQuestMapName(questMap) + ". Sprawdź piasek w pobliżu (#'" + cords[0] + "', #'" + cords[1] + "') i użyj łopaty. Jeśli pierwsza warstwa będzie pusta, spróbuj wkopać się głębiej.");
 				}
 			});
 
@@ -114,7 +112,7 @@ public class GlyphFragments extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
-			"Rozumiem, że jesteś zainteresowany ponownym szukaniem fragmentu?",
+			"Potrzebujesz kolejnego fragmentu dla Zoryka? Mam nowe ślady dawnych wykopalisk. Chcesz znowu poszukać matrycy?",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -128,11 +126,7 @@ public class GlyphFragments extends AbstractQuest {
 					String questMap = getRandomMap();
 					int[] cords = getRandomCoordinates(getZone(questMap));
 					int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
-					npc.say("Świetnie, będziesz potrzebował do tego zadania łopaty, aby odnaleźć fragmenty."
-						+ " Mogą one delikatnie różnić się w zależności w jakim stanie go wykopiesz."
-						+ " Pamiętam, że ostatnio zbadałem prawie wszystkie regiony prócz regionu " + getQuestMapName(questMap) + "."
-						+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
-						+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
+					npc.say("Weź łopatę. Fragmenty leżą pod kilkoma warstwami piasku i nie każdy zachował się tak samo dobrze. Im większe pęknięcia, tym trudniej będzie mi później odtworzyć matrycę. Ostatnie ślady prowadzą do " + getQuestMapName(questMap) + ". Zacznij szukać w pobliżu (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
 					setStartQuestAction(player, questMap, cords);
 				}
 			});
@@ -141,7 +135,7 @@ public class GlyphFragments extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Rozumiem, nie każdy podejmuje się tak niebezpiecznych zadań.",
+			"Rozumiem. Piasek nie oddaje swoich tajemnic łatwo.",
 			new SetQuestAction(QUEST_SLOT, "rejected"));
 	}
 
@@ -152,7 +146,7 @@ public class GlyphFragments extends AbstractQuest {
 				new QuestInStateCondition(QUEST_SLOT, 0, "found_fragment"),
 				new NotCondition(getItemWithItemdataCondition())),
 			ConversationStates.ATTENDING,
-			"A więc zgubiłeś swój wydobyty fragment? Może ci wypadł po drodze. Wróć tam gdzie został znaleziony i poszukaj go!",
+			"Nie masz już odnalezionego odłamka. Jeśli wypadł ci po drodze, wróć w miejsce wykopalisk i poszukaj ponownie.",
 			resetQuestAction());
 
 		npc.add(ConversationStates.ATTENDING,
@@ -161,7 +155,7 @@ public class GlyphFragments extends AbstractQuest {
 				new QuestInStateCondition(QUEST_SLOT, 0, "found_fragment"),
 				getItemWithItemdataCondition()),
 			ConversationStates.ATTENDING,
-			"Widzę, że odnalazłeś fragment glifu. Zechcesz mi go pokazać, abym mógł ocenić jego aktualny stan?",
+			"To rzeczywiście fragment dawnej matrycy glifu. Piasek i czas uszkodziły linie znaku, ale mogę spróbować go oczyścić i połączyć pęknięcia. Im gorszy stan, tym większe ryzyko, że kamień rozsypie się podczas pracy. Chcesz, żebym spróbował?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -179,7 +173,7 @@ public class GlyphFragments extends AbstractQuest {
 				new QuestInStateCondition(QUEST_SLOT, 0, "found_fragment"),
 				getItemWithItemdataCondition()),
 			ConversationStates.ATTENDING,
-			"Gdy zmienisz zdanie to wróć.",
+			"Dobrze. Zachowaj odłamek i wróć, kiedy zdecydujesz się zaryzykować rekonstrukcję.",
 			null);
 	}
 
@@ -195,11 +189,10 @@ public class GlyphFragments extends AbstractQuest {
 	 */
 	private int[] sendApproximateCoordinates(Player player, int fragmentX, int fragmentY) {
 		Random random = new Random();
-		// Generate random offsets within a small range (e.g., -8 to 8) for both X and Y.
-		int approxX = Math.max(0, fragmentX + random.nextInt(11) - 8);
-		int approxY = Math.max(0, fragmentY + random.nextInt(11) - 8);
+		// Generate random offsets within the range of eight fields in both directions for X and Y.
+		int approxX = Math.max(0, fragmentX + random.nextInt(17) - 8);
+		int approxY = Math.max(0, fragmentY + random.nextInt(17) - 8);
 
-		// Send a message to the player with the approximate coordinates.
 		return new int[] { approxX, approxY };
 	}
 
@@ -264,13 +257,13 @@ public class GlyphFragments extends AbstractQuest {
 
 		switch (direction) {
 			case "nw":
-				return "#'północno-zachodniej' części pustyni";
+				return "#'północno zachodniej' części pustyni";
 			case "ne":
-				return "#'północno-wschodniej' części pustyni";
+				return "#'północno wschodniej' części pustyni";
 			case "sw":
-				return "#'południowo-zachodniej' części pustyni";
+				return "#'południowo zachodniej' części pustyni";
 			case "se":
-				return "#'południowo-wschodniej' części pustyni";
+				return "#'południowo wschodniej' części pustyni";
 			default:
 				return "pustyni";
 		}
@@ -306,21 +299,18 @@ public class GlyphFragments extends AbstractQuest {
 							new EquipItemAction(itemName),
 							new SetQuestAction(QUEST_SLOT, "done;;;;;"),
 							new IncrementQuestAction(QUEST_SLOT, 6, 1),
-							new SayTextAction("Udało mi się naprawić fragment glifu. Proszę oto i ono!")
+							new SayTextAction("Udało się. Oczyściłem znak i odtworzyłem jego nośnik. Oto fragment glifu. Zoryk Runiczny potrafi nasycić taką matrycę nową mocą.")
 						).fire(player, sentence, raiser);
 					} else {
 						String questMap = getRandomMap();
 						int[] cords = getRandomCoordinates(getZone(questMap));
 						int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
 
-						raiser.say("Niestety, nie udało się naprawić. Może w innym miejscu znajdziesz nowy fragment!"
-							+ " Przy twojej nieobecności badałem ten region " + getQuestMapName(questMap) + "."
-							+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
-							+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
+						raiser.say("Niestety, pęknięcia poszły zbyt głęboko i kamień rozsypał się podczas oczyszczania. Znalazłem jednak ślady kolejnego stanowiska w " + getQuestMapName(questMap) + ". Spróbuj tam poszukać. Przybliżone miejsce to (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
 						setStartQuestAction(player, questMap, cords);
 					}
 				} else {
-					raiser.say("Nie rozumiem, jakiego rodzaju fragment próbujesz naprawić.");
+					raiser.say("Nie potrafię rozpoznać stanu tego odłamka. Lepiej go nie ruszać, dopóki nie będę pewien, z czym mamy do czynienia.");
 				}
 			}
 		};
@@ -328,7 +318,7 @@ public class GlyphFragments extends AbstractQuest {
 
 	/**
 	 * Returns the chance of repairing a fragment based on its type.
-	 * 
+	 *
 	 * @param fragmentType
 	 *	 The type of the fragment (e.g., "zniszczony", "spękany", "nadkruszony").
 	 * @return
@@ -356,9 +346,9 @@ public class GlyphFragments extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Odnalezienie Fragmentów Glifów",
-				"Omar, wędrowiec z pustyni, poprosił cię o odnalezienie fragmentów starożytnych glifów.",
+				"Omar bada pozostałości dawnych matryc glifów zakopanych pod pustynią. Pomóż mu odnaleźć i zrekonstruować fragment, który Zoryk Runiczny potrafi nasycić nową mocą.",
 				false
-			);
+		);
 		step_1();
 		step_2();
 	}

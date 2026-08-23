@@ -22,17 +22,20 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -88,6 +91,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final int SCROLLING_SPEED = 8;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
+	private static final String TOGGLE_SESSION_MENU = "toggleSessionMenu";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
 
 	private final JLayeredPane pane;
@@ -165,15 +169,15 @@ class SwingClientGUI implements J2DClientGUI {
 		wm.registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY, new ScalingSettingChangeListener(divWidth));
 		wm.registerSettingChangeListener(DISPLAY_SIZE_PROPERTY, new DisplaySizeChangeListener());
 
-		setInitialWindowStates();
-		frame.setVisible(true);
-
 		/*
-		 * Used by settings dialog to restore the client's dimensions back to
-		 * the original width and height. Needs to be called after
-		 * frame.setSize().
+		 * Keep the packed game window size as the reset target. Fullscreen modes
+		 * replace the frame bounds immediately below.
 		 */
 		frameDefaultSize = frame.getSize();
+		WindowModeController.applyConfigured(frame);
+		frame.setVisible(true);
+		setInitialWindowStates();
+		WindowModeController.refresh(frame);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
@@ -184,7 +188,10 @@ class SwingClientGUI implements J2DClientGUI {
 		setupKeyHandling(client);
 
 		locationHacksAndBugWorkaround();
-		WindowUtils.restoreSize(frame);
+		if (WindowModeController.getConfiguredMode().isWindowed()) {
+			WindowUtils.restoreSize(frame);
+		}
+		WindowModeController.refresh(frame);
 	}
 
 	private void setupInternalWindowProperties() {
@@ -238,6 +245,19 @@ class SwingClientGUI implements J2DClientGUI {
 		gameKeyHandler = new GameKeyHandler(client, screen);
 		chatText.addKeyListener(gameKeyHandler);
 		screen.addKeyListener(gameKeyHandler);
+
+		InputMap inputMap = frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), TOGGLE_SESSION_MENU);
+		frame.getRootPane().getActionMap().put(TOGGLE_SESSION_MENU, new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (quitDialog.isVisible()) {
+					quitDialog.hide();
+				} else {
+					requestQuit(client);
+				}
+			}
+		});
 	}
 
 	private JComponent createChatLog(NotificationChannelManager channelManager) {
@@ -350,6 +370,9 @@ class SwingClientGUI implements J2DClientGUI {
 
 	private JFrame prepareMainWindow(JFrame splash) {
 		JFrame frame = MainFrame.prepare(splash);
+		// The splash frame is reused. Keep it hidden while replacing its entire
+		// component tree so that Swing never paints a half-built game client.
+		frame.setVisible(false);
 		JComponent glassPane = DragLayer.get();
 		frame.setGlassPane(glassPane);
 		glassPane.setVisible(true);
@@ -425,9 +448,11 @@ class SwingClientGUI implements J2DClientGUI {
 				 * Mate desktop's marco window manager. Metacity and mutter
 				 * have a workaround for the same issue in AWT.
 				 */
-				Point location = frame.getLocation();
-				frame.setLocation(location.x + 1, location.y);
-				frame.setLocation(location.x, location.y);
+				if (WindowModeController.getConfiguredMode().isWindowed()) {
+					Point location = frame.getLocation();
+					frame.setLocation(location.x + 1, location.y);
+					frame.setLocation(location.x, location.y);
+				}
 
 				// The keyboard fix mentioned above
 				frame.setEnabled(true);
@@ -471,14 +496,14 @@ class SwingClientGUI implements J2DClientGUI {
 		character.setVisible(true);
 		inventory.setVisible(true);
 		/*
-		 * Keyring and spells, on the other hand, *should* be hidden until
-		 * revealed by feature change
+		 * Feature controlled slot windows must stay hidden until the server
+		 * reveals them for the active character.
 		 */
-		keyring.setVisible(false);
-		magicbag.setVisible(false);
+		keyring.restoreFeatureVisibility();
+		magicbag.restoreFeatureVisibility();
 		runicAltar.getRunicAltar().setVisible(false);
 		//portfolio.setVisible(false);
-		spells.setVisible(false);
+		spells.restoreFeatureVisibility();
 	}
 
 	private void setupWindowWideListeners(JFrame frame) {
@@ -609,6 +634,9 @@ class SwingClientGUI implements J2DClientGUI {
 
 	@Override
 	public void resetClientDimensions() {
+		if (!WindowModeController.getConfiguredMode().isWindowed()) {
+			return;
+		}
 		int frameState = frame.getExtendedState();
 
 		/*
@@ -879,7 +907,7 @@ class SwingClientGUI implements J2DClientGUI {
 						}
 					}
 					chatText.getPlayerChatText().setMaximumSize(new Dimension(displaySize.width, Integer.MAX_VALUE));
-					frame.pack();
+					WindowModeController.fitToPreferredSize(frame);
 					horizontalSplit.setDividerLocation(leftColumn.getPreferredSize().width);
 				}
 			});

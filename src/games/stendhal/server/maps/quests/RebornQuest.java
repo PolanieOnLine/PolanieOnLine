@@ -291,9 +291,9 @@ public class RebornQuest extends AbstractQuest {
 
 								if (player.getQuest(EXTRA_REWARD + "3") == null) {
 									final Item ldagger = SingletonRepository.getEntityManager().getItem(
-											"sztylet leworęczny", ItemCreationContext.quest());
+											"sztylet leworęczny", ItemCreationContext.questReward());
 									final Item rdagger = SingletonRepository.getEntityManager().getItem(
-											"sztylet praworęczny", ItemCreationContext.quest());
+											"sztylet praworęczny", ItemCreationContext.questReward());
 									ldagger.setBoundTo(player.getName());
 									rdagger.setBoundTo(player.getName());
 									player.equipOrPutOnGround(ldagger);
@@ -342,7 +342,7 @@ public class RebornQuest extends AbstractQuest {
 
 								if (player.getQuest(EXTRA_REWARD + "4") == null) {
 									final Item naszyjnik = SingletonRepository.getEntityManager().getItem(
-											"amulecik z mithrilu", ItemCreationContext.quest());
+											"amulecik z mithrilu", ItemCreationContext.questReward());
 									naszyjnik.setBoundTo(player.getName());
 									player.equipOrPutOnGround(naszyjnik);
 								}
@@ -389,7 +389,7 @@ public class RebornQuest extends AbstractQuest {
 
 								if (player.getQuest(EXTRA_REWARD + "5") == null) {
 									final Item excalibur = SingletonRepository.getEntityManager().getItem(
-											"ekskalibur", ItemCreationContext.quest());
+											"ekskalibur", ItemCreationContext.questReward());
 									excalibur.setBoundTo(player.getName());
 									player.equipOrPutOnGround(excalibur);
 								}

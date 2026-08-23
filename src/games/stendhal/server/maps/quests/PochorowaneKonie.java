@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -436,7 +437,7 @@ public class PochorowaneKonie extends AbstractQuest {
 				"Ufff... Świetnie to słyszeć! Dziękuję Ci za pomoc oraz weterynarzowi! Proszę, oto pas skórzany, możliwe, że kiedyś Ci się przyda!", 
 				new MultipleActions(
 						new IncreaseXPAction(10000),
-						new EquipItemAction("pas skórzany", 1, true),
+						new EquipItemAction("pas skórzany", 1, true, ItemRarity.EPIC),
 						new SetQuestAction(QUEST_SLOT, "done")));
 	}
 

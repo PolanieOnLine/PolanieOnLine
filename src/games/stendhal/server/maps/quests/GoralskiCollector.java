@@ -56,12 +56,11 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 		setupAbstractQuest();
 		fillQuestInfo(
 				"Góralski Kolekcjoner I",
-				"Gazda Bartek jest kolekcjonerem i zbiera wszystkie ubrania związane z góralstwem.",
+				"Gazda Bartek chce zachować pamięć o dawnym góralskim stroju i prosi o zebranie tradycyjnych części ubioru.",
 				false);
 	}
 
 	private void step_1() {
-		// player asks about an individual cloak before accepting the quest
 		for(final String itemName : MOUNTAINEER_ITEMS) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
 				ConversationStates.QUEST_OFFERED, null,
@@ -70,11 +69,11 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę?");
+							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę przedmiotu, o który pytasz?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałeś jeszcze żadnego? Cóż to jest ");
+							stringBuilder.append("Tego właśnie szukam do izby pamięci. To ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -82,7 +81,7 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
 							}
 
-							stringBuilder.append(". znajdziesz to?");
+							stringBuilder.append(". Jeśli znajdziesz taki egzemplarz, przynieś go proszę.");
 							raiser.say(stringBuilder.toString());
 						}
 					}
@@ -132,94 +131,92 @@ public class GoralskiCollector extends AbstractQuest implements BringListOfItems
 
 	@Override
 	public String welcomeBeforeStartingQuest() {
-		return "Witojże w mej krainie górskiej. Chciałbyś zobaczyć me #'ubrania'..?";
+		return "Witojże. Próbuję ocalić pamięć o dawnym góralskim stroju. Chcesz usłyszeć o #'ubraniach', których szukam?";
 	}
 
 	@Override
 	public String welcomeDuringActiveQuest() {
-		return "Zawsze chciałem poszerzyć swoją kolejcę o kolejne przedmioty związane z góralstwem! Masz przy sobie jakieś #'rzeczy'?";
+		return "Dobrze cię widzieć. Izba pamięci wciąż nie jest kompletna. Masz przy sobie jakieś #'rzeczy'?";
 	}
 
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
-		return "Góralskie ubrania wyglądają jak nowe. Niepotrzebuję nowszych. Dziękuję!";
+		return "Dzięki tobie pierwszy góralski strój w izbie pamięci jest już kompletny. Dziękuję.";
 	}
 
 	@Override
 	public String respondToQuest() {
-		return "Od urodzenia zawsze chciałem zbierać wszystkie #rzeczy góralskie. Chciałem je kolekcjonować!";
+		return "Coraz mniej ludzi pamięta, jak wyglądał pełny góralski strój. Chcę urządzić małą izbę pamięci i zachować te #rzeczy dla młodszych. Pomożesz mi skompletować pierwszy zestaw?";
 	}
 
 	@Override
 	public String respondToQuestAcception() {
-		// player.addKarma(5.0);
-		return "Wspaniale! Będę tutaj czekał jak wrócisz.";
+		return "Dziękuję. Każdy przyniesiony przedmiot będzie częścią historii, której nie chcę zgubić.";
 	}
 
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
-		return "Góralskie ubrania wyglądają jak nowe. Niepotrzebuję nowszych. Dziękuję!";
+		return "Pierwszy strój jest już kompletny i może zostać w izbie pamięci na długie lata. Dziękuję.";
 	}
 
 	@Override
 	public String respondToQuestRefusal() {
-		// player.addKarma(-5.0);
-		return "Och... nie jesteś zbyt miły. Do widzenia.";
+		return "Rozumiem. Jeśli zmienisz zdanie, wróć do mnie.";
 	}
 
 	@Override
 	public String askForItemsAfterPlayerSaidHeHasItems() {
-		return "Tak więc jakie #rzeczy przyniosłeś mi?";
+		return "Dobrze. Jakie #rzeczy udało ci się odnaleźć?";
 	}
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
-				+ ". To jest #'" + Grammar.enumerateCollection(missingItems)
-				+ "'. Pomógłbyś mi je zdobyć?";
+		return "Do pierwszego stroju potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
+				+ ". Są to #'" + Grammar.enumerateCollection(missingItems)
+				+ "'. Pomożesz mi je odnaleźć?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Chcę " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
-				+ ". To jest " + Grammar.enumerateCollection(missingItems)
-				+ ". Przyniosłeś mi jakiś?";
+		return "Do ukończenia stroju brakuje " + Grammar.quantityplnoun(missingItems.size(), "przedmiot")
+				+ ". Są to " + Grammar.enumerateCollection(missingItems)
+				+ ". Masz któryś przy sobie?";
 	}
 
 	@Override
 	public String respondToItemBrought() {
-		return "Super, co jeszcze przyniosłeś?";
+		return "Dziękuję. Ten przedmiot trafi do izby pamięci. Masz coś jeszcze?";
 	}
 
 	@Override
 	public String respondToLastItemBrought() {
-		return "Dziękuję bardzo... za te góralskie rzeczy... Proszę, przyjmij korale, mogą Ci się kiedyś przydać.";
+		return "Udało się skompletować cały strój. Dzięki tobie nie zginie pamięć o tym, jak nosili się dawni górale. Przyjmij te korale. Leżały w mojej skrzyni od lat, a tobie mogą się jeszcze przydać.";
 	}
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Rozczarowałeś mnie... Nie masz " + itemName + " przy sobie...";
+		return "Nie masz przy sobie " + itemName + ". Sprawdź proszę, czy niczego nie zostawiłeś po drodze.";
 	}
 
 	@Override
 	public String respondToOfferOfNotMissingItem() {
-		return "Już mi to przyniosłeś, kiedyś...";
+		return "Ten egzemplarz już mamy. Poszukajmy pozostałych części stroju.";
 	}
 
 	@Override
 	public String respondToOfferOfNotNeededItem() {
-		return "To nie jest prawdziwa rzecz, o którą prosiłem...";
+		return "Tego przedmiotu nie potrzebuję do tego stroju.";
 	}
 
 	@Override
 	public String respondToPlayerSayingHeHasNoItems(final List<String> missingItems) {
-		return "Dobrze, wróć później.";
+		return "Dobrze. Wróć, kiedy uda ci się coś odnaleźć.";
 	}
 
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item korale = SingletonRepository.getEntityManager().getItem(
-				"korale", ItemCreationContext.quest());
+				"korale", ItemCreationContext.questReward());
 		korale.setBoundTo(player.getName());
 		player.equipOrPutOnGround(korale);
 		player.addKarma(15.0);

@@ -24,7 +24,9 @@ public final class ItemAffixRegistry {
 	private static final ItemAffixRegistry INSTANCE = new ItemAffixRegistry(
 			Arrays.<ItemAffixDefinition>asList(
 					new FlatAttackAffixDefinition(),
-					new FlatDefenseAffixDefinition(),
+					new SpikedPlatingAffixDefinition(),
+					new HunterMarkAffixDefinition(),
+					new GiantSlayerAffixDefinition(),
 					new StatusResistanceAffixDefinition(StatusType.POISONED),
 					new StatusResistanceAffixDefinition(StatusType.BLEEDING),
 					new StatusResistanceAffixDefinition(StatusType.SHOCKED),
@@ -116,26 +118,72 @@ public final class ItemAffixRegistry {
 		}
 	}
 
-	private static final class FlatDefenseAffixDefinition
+	private static final class SpikedPlatingAffixDefinition
 			implements ItemAffixDefinition {
 		@Override
 		public String getId() {
-			return EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE;
+			return EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE;
 		}
 
 		@Override
 		public String getAttribute() {
-			return EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE;
+			return EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE;
 		}
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return EquipmentAffixService.isFlatDefenseEligible(item);
+			return EquipmentAffixService.isSpikedPlatingEligible(item);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
-			return EquipmentAffixService.applyFlatDefense(item, random);
+			return EquipmentAffixService.applySpikedPlating(item, random);
+		}
+	}
+
+	private static final class HunterMarkAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return EquipmentAffixService.HUNTER_MARK_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return EquipmentAffixService.HUNTER_MARK_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return EquipmentAffixService.isHunterMarkEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return EquipmentAffixService.applyHunterMark(item, random);
+		}
+	}
+
+	private static final class GiantSlayerAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return EquipmentAffixService.GIANT_SLAYER_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return EquipmentAffixService.GIANT_SLAYER_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return EquipmentAffixService.isGiantSlayerEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return EquipmentAffixService.applyGiantSlayer(item, random);
 		}
 	}
 

@@ -11,17 +11,14 @@
  ***************************************************************************/
 package games.stendhal.client.gui.spells;
 
-import javax.swing.SwingUtilities;
-
-import games.stendhal.client.gui.SlotWindow;
-import games.stendhal.client.listener.FeatureChangeListener;
+import games.stendhal.client.gui.FeatureEnabledSlotWindow;
 /**
  * Container displaying the spells of the player.
  *
  * @author madmetzger
  *
  */
-public class Spells extends SlotWindow implements FeatureChangeListener {
+public class Spells extends FeatureEnabledSlotWindow {
 
 	private static final long serialVersionUID = 79889495195014549L;
 
@@ -29,34 +26,6 @@ public class Spells extends SlotWindow implements FeatureChangeListener {
 		super("spells", 3, 2);
 		//panel window, no closing allowed
 		setCloseable(false);
-	}
-
-	@Override
-	public void featureDisabled(final String name) {
-		if (name.equals("spells")) {
-			if(isVisible()) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setVisible(false);
-					}
-				});
-			}
-		}
-	}
-
-	@Override
-	public void featureEnabled(final String name, final String value) {
-		if (name.equals("spells")) {
-			if(!isVisible()) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setVisible(true);
-					}
-				});
-			}
-		}
 	}
 
 }

@@ -67,7 +67,9 @@ public final class CharacterSessionGuiReset {
 			panel.setParent(null);
 		}
 		if (component instanceof Character) {
-			((Character) component).setTitle("Character");
+			Character character = (Character) component;
+			character.setTitle("Character");
+			character.resetSession();
 		}
 
 		if (component instanceof Container) {

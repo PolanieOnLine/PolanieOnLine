@@ -42,6 +42,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected String begOnGreeting = null;
 	protected String respondToRequest = null;
+	protected String respondToPreconditionIssue = "Najpierw musisz ukończyć wcześniejsze zadania.";
 	protected String respondToUnrepeatableRequest = "Dziękuję za pomoc. Nie mam dla ciebie nowego zadania.";
 	protected String respondToRepeatedRequest = null;
 	protected String respondToAccept = "Dziękuję.";
@@ -50,10 +51,29 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected double rejectionKarmaPenalty = 2.0;
 	protected List<String> lastRespondTo = null;
 	protected Map<List<String>, String> additionalReplies = new HashMap<>();
+	protected List<ChatAction> acceptWith = new LinkedList<>();
+	protected ConversationStates offerState = ConversationStates.QUEST_OFFERED;
 
 	// hide constructor
 	QuestOfferBuilder() {
 		super();
+	}
+
+	/**
+	 * Selects the conversation state used while this quest offer waits for an
+	 * answer. NPCs which offer more than one quest must use distinct states so
+	 * their yes/no transitions cannot overlap.
+	 *
+	 * @param offerState state used by this offer
+	 * @return this builder
+	 */
+	@SuppressWarnings("unchecked")
+	public T offerState(final ConversationStates offerState) {
+		if (offerState == null) {
+			throw new IllegalArgumentException("offerState must not be null");
+		}
+		this.offerState = offerState;
+		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -68,6 +88,12 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		if (this.respondToRepeatedRequest == null) {
 			this.respondToRepeatedRequest = respondToRequest;
 		}
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T respondToPreconditionIssue(String respondToPreconditionIssue) {
+		this.respondToPreconditionIssue = respondToPreconditionIssue;
 		return (T) this;
 	}
 
@@ -92,6 +118,12 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	@SuppressWarnings("unchecked")
 	public T respondToReject(String respondToReject) {
 		this.respondToReject = respondToReject;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T acceptWith(ChatAction action) {
+		this.acceptWith.add(action);
 		return (T) this;
 	}
 
@@ -165,6 +197,7 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	}
 
 	public void build(SpeakerNPC npc, String questSlot, QuestTaskBuilder task, ChatCondition questCompletedCondition, int repeatableAfterMinutes) {
+		ChatCondition questPreCondition = task.buildQuestPreCondition(questSlot);
 		ChatAction startQuestAction = task.buildStartQuestAction(questSlot);
 		ChatAction rejectQuestAction = task.buildRejectQuestAction(questSlot);
 
@@ -172,22 +205,35 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 			npc.add(ConversationStates.IDLE,
 					ConversationPhrases.GREETING_MESSAGES,
 					new OrCondition(
-							new QuestNotStartedCondition(questSlot),
+							new AndCondition(
+									new QuestNotStartedCondition(questSlot),
+									questPreCondition),
 							new AndCondition(
 									new QuestActiveCondition(questSlot),
 									new NotCondition(questCompletedCondition)
 							)
 					),
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					begOnGreeting,
 					null);
 		}
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(questSlot),
-				ConversationStates.QUEST_OFFERED,
+				new AndCondition(
+						new QuestNotStartedCondition(questSlot),
+						questPreCondition),
+				offerState,
 				respondToRequest,
+				null);
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(
+						new QuestNotStartedCondition(questSlot),
+						new NotCondition(questPreCondition)),
+				ConversationStates.ATTENDING,
+				respondToPreconditionIssue,
 				null);
 
 		LinkedList<String> triggers = new LinkedList<String>();
@@ -208,9 +254,20 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(
 						new QuestCompletedCondition(questSlot),
-						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes)),
-					ConversationStates.QUEST_OFFERED,
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						questPreCondition),
+					offerState,
 					respondToRepeatedRequest,
+					null);
+
+			npc.add(ConversationStates.ATTENDING,
+					ConversationPhrases.QUEST_MESSAGES,
+					new AndCondition(
+						new QuestCompletedCondition(questSlot),
+						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
+						new NotCondition(questPreCondition)),
+					ConversationStates.ATTENDING,
+					respondToPreconditionIssue,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
@@ -235,16 +292,17 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		if (startQuestAction != null) {
 			start.add(startQuestAction);
 		}
+		start.addAll(acceptWith);
 
 		npc.add(
-				ConversationStates.QUEST_OFFERED,
+				offerState,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				respondToAccept,
 				new MultipleActions(start));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(offerState,
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				respondToReject,
@@ -254,10 +312,10 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 
 		for (Map.Entry<List<String>, String> entry : additionalReplies.entrySet()) {
 			npc.add(
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					entry.getKey(),
 					null,
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					entry.getValue(),
 					null);
 		}

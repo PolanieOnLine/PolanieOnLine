@@ -35,13 +35,13 @@ public class DesertWandererNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Wędrowcze, cóż cię przywiało na tę jałową pustynię?");
-				addJob("Jestem wędrowcem, poszukiwaczem zaginionych reliktów.");
-				addOffer("Jeżeli odnajdziesz fragmenty starożytnych glifów, przynieś je do mnie.");
+				addJob("Jestem poszukiwaczem reliktów. Pod piaskiem znajduję pozostałości dawnych matryc glifów, które kiedyś służyły jako nośniki magicznych znaków. Zoryk Runiczny potwierdził, że część z nich można jeszcze wykorzystać.");
+				addOffer("Jeżeli chcesz pomóc mi w wykopaliskach, zapytaj o #zadanie. Ja potrafię odnaleźć i zrekonstruować stare matryce, a Zoryk Runiczny potrafi nasycić odzyskany fragment nową mocą.");
 				addGoodbye();
 			}
 		};
 
-		npc.setDescription("Oto Omar, tajemniczy wędrowiec przemierzający pustynię w poszukiwaniu reliktów.");
+		npc.setDescription("Oto Omar, pustynny poszukiwacz reliktów badający pozostałości dawnych matryc glifów.");
 		npc.setEntityClass("nomadnpc");
 		npc.setGender("M");
 		npc.setIdleBehaviour(new WanderIdleBehaviour());

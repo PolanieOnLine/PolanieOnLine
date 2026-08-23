@@ -120,7 +120,7 @@ public class HelpKrasnolud extends AbstractQuest {
 		armoractions.add(new DropItemAction("skóra niebieskiego smoka",30));
 		armoractions.add(new DropItemAction("skóra czarnego smoka",30));
 		armoractions.add(new DropItemAction("skóra złotego smoka",10));
-		armoractions.add(new EquipItemAction("zbroja lazurowa"));
+		armoractions.add(new EquipItemAction("zbroja lazurowa", 1, false));
 		armoractions.add(new IncreaseXPAction(100000));
 		armoractions.add(new SetQuestAction(QUEST_SLOT, "gotarmor"));
 

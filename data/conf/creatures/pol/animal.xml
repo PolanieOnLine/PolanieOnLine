@@ -758,8 +758,8 @@
 		<type class="insect" subclass="roj_os" tileid="pol_owady.png:1"/>
 		<description>Osy żądlą boleśnie. Jeśli masz przy sobie odtrutkę to przeżyjesz.</description>
 		<attributes>
-			<atk value="15"/>
-			<def value="30"/>
+			<atk value="9"/>
+			<def value="6"/>
 			<hp value="30"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>

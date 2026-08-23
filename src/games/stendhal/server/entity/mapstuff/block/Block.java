@@ -32,6 +32,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.util.TimeUtil;
+import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
@@ -71,6 +72,13 @@ public class Block extends ActiveEntity implements ZoneEnterExitListener,
 		clazz.addAttribute(Z_ORDER, Type.INT);
 		clazz.addAttribute("class", Type.STRING);
 		clazz.addAttribute("shape", Type.STRING);
+		// Optional map tileset-backed appearance used by dynamic scene props.
+		clazz.addAttribute("tileset", Type.STRING);
+		clazz.addAttribute("tile_index", Type.INT);
+		clazz.addAttribute("tileset_columns", Type.INT);
+		// Generic server-side perception filtering for player-private scene props.
+		clazz.addAttribute("#perception_key", Type.STRING, Definition.HIDDEN);
+		clazz.addAttribute("#perception_value", Type.STRING, Definition.HIDDEN);
 	}
 
 	/**

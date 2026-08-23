@@ -18,8 +18,14 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityTransferSnapshot;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -27,7 +33,6 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
-import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
@@ -46,6 +51,7 @@ import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.TimeUtil;
 
 public class ForgeNewArms extends AbstractQuest {
+	private static final Logger LOGGER = Logger.getLogger(ForgeNewArms.class);
 	private static final String QUEST_SLOT = "forge_newarms";
 	private static final String QUEST_COMPLETE = "grind_misty_gem";
 	private static final int DELAY = TimeUtil.MINUTES_IN_DAY * 2; // 48 godzin
@@ -97,6 +103,18 @@ public class ForgeNewArms extends AbstractQuest {
 			new DropItemAction("sztabka platyny", 14),
 			new DropItemAction("bryłka mithrilu", 24)
 		);
+	}
+
+	private ChatAction captureShieldRarityAction() {
+		return new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence,
+					final EventRaiser raiser) {
+				final Item shield = player.getFirstEquipped("tarcza z mithrilu");
+				player.setQuest(QUEST_SLOT, 2,
+						ItemRarityTransferSnapshot.encode(shield));
+			}
+		};
 	}
 
 	private void step1() {
@@ -170,6 +188,7 @@ public class ForgeNewArms extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Świetnie! Tak więc biorę się za prace.",
 			new MultipleActions(
+				captureShieldRarityAction(),
 				DropItemsAction(),
 				new SetQuestAction(QUEST_SLOT, 0, "forging"),
 				new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
@@ -230,24 +249,52 @@ public class ForgeNewArms extends AbstractQuest {
 				if (successText != null) {
 					npc.say(successText);
 					player.addXP(1000000);
+					giveTransferredItem(player, item);
 					player.setQuest(QUEST_SLOT, "done");
 					player.incProducedForItem(item, 1);
-					new EquipItemAction(item, 1, true).fire(player, null, null);
 				}
 			} else {
 				if (faultText != null) {
 					npc.say(faultText);
 					player.addXP(10);
 					player.setQuest(QUEST_SLOT, 0, "rejected");
-					new EquipItemAction("tarcza z mithrilu", 1, true).fire(player, null, null);
+					giveTransferredItem(player, "tarcza z mithrilu");
 				}
 			}
+		}
+
+		private void giveTransferredItem(final Player player,
+				final String itemName) {
+			player.equipOrPutOnGround(
+					ForgeNewArms.createTransferredItem(player, itemName));
 		}
 
 		protected boolean isSuccessful(final Player player) {
 			// Player have 30% chance to successful
 			return Rand.roll1D100() <= (0.3 * 100);
 		}
+	}
+
+	static Item createTransferredItem(final Player player, final String itemName) {
+		final String[] state = player.getQuest(QUEST_SLOT).split(";", -1);
+		final String snapshot = state.length > 2 ? state[2] : "";
+		Item result;
+		if (snapshot.length() == 0) {
+			result = SingletonRepository.getEntityManager().getItem(itemName,
+					ItemCreationContext.quest());
+		} else {
+			result = SingletonRepository.getEntityManager().getItem(itemName,
+					ItemCreationContext.restore());
+			try {
+				ItemRarityTransferSnapshot.apply(result, snapshot);
+			} catch (final IllegalArgumentException e) {
+				LOGGER.warn("Invalid rarity state for forge quest " + itemName, e);
+				result = SingletonRepository.getEntityManager().getItem(itemName,
+						ItemCreationContext.quest());
+			}
+		}
+		result.setBoundTo(player.getName());
+		return result;
 	}
 
 	@Override

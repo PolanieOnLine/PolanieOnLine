@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -195,8 +196,8 @@ public class BowsForOuchit extends AbstractQuest {
 
 		// These actions are part of the reward
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new EquipItemAction("zbroja łuskowa", 1, true));
-		reward.add(new EquipItemAction("spodnie nabijane ćwiekami", 1, true));
+		reward.add(new EquipItemAction("zbroja łuskowa", 1, true, ItemRarity.EPIC));
+		reward.add(new EquipItemAction("spodnie nabijane ćwiekami", 1, true, ItemRarity.EPIC));
 		reward.add(new IncreaseXPAction(1500));
 		reward.add(new DropItemAction("końskie włosie"));
 		reward.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 25.0));

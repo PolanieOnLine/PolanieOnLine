@@ -55,7 +55,6 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Eltefia");
 
-		// player asks about an individual cloak before accepting the quest
 		for(final String itemName : NEEDED_BELTS) {
 			npc.add(ConversationStates.QUEST_OFFERED, itemName, null,
 				ConversationStates.QUEST_OFFERED, null,
@@ -64,11 +63,11 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						Expression obj = sentence.getObject(0);
 						if (obj!=null && !obj.getNormalized().equals(itemName)) {
-							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę innych pasów?");
+							raiser.say("Nie znam " + obj.getOriginal() + ". Możesz podać nazwę pasa, o który pytasz?");
 						} else {
 							final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("Nie widziałeś jeszcze żadnego? Cóż to jest ");
+							stringBuilder.append("Chcę obejrzeć ten pas jako wzór rzemiosła. To ");
 
 							if (item == null) {
 								stringBuilder.append(itemName);
@@ -76,7 +75,7 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 								stringBuilder.append(ItemTools.itemNameToDisplayName(item.getItemSubclass()));
 							}
 
-							stringBuilder.append(". znajdziesz to?");
+							stringBuilder.append(". Jeśli znajdziesz taki egzemplarz, przynieś go do mojej pracowni.");
 							raiser.say(stringBuilder.toString());
 						}
 					}
@@ -126,92 +125,92 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 
 	@Override
 	public String welcomeBeforeStartingQuest() {
-		return "Hej nieznajomy! Nie chciałbys coś mi przynieść? Miałabym dla ciebie wyzywające #zadanie na skompletowanie dla mnie pasów!";
+		return "Witaj. Chcę kiedyś projektować własne pasy, ale najpierw muszę poznać rzemiosło różnych ludów. Mam dla ciebie #zadanie.";
 	}
 
 	@Override
 	public String welcomeDuringActiveQuest() {
-		return "Cześć! Zebrałeś już dla mnie jakieś #pasy?";
+		return "Cześć. Udało ci się zdobyć jakieś #pasy do mojej kolekcji wzorów?";
 	}
 
 	@Override
 	public String welcomeAfterQuestIsCompleted() {
-		return "Witaj ponownie! Pasy wciąż prezentują się wspaniale. Dziękuję!";
+		return "Dzięki zebranym wzorom mogę wreszcie zacząć projektować własne pasy. Dziękuję.";
 	}
 
 	@Override
 	public String respondToQuest() {
-		return "Mam obsesję na punkcie #pasów! Chciałabym je wszystkie skolekcjonować!";
+		return "Nie chcę kopiować jednego stylu. Chcę porównać #pasy ludzi, elfów, krasnoludów i innych ludów, zobaczyć jak dobierają materiały oraz wzmocnienia, a potem stworzyć własny projekt. Pomożesz mi zebrać wzory?";
 	}
 
 	@Override
 	public String respondToQuestAcception() {
-		return "Super! Czekam z niecierpliowścią!";
+		return "Świetnie. Każdy pas obejrzę dokładnie i zapiszę, czego mogę się z niego nauczyć.";
 	}
 
 	@Override
 	public String respondToQuestAfterItHasAlreadyBeenCompleted() {
-		return "Cześć! Pasy prezentują się wspaniale. Dziękuję!";
+		return "Mam już wszystkie potrzebne wzory. Teraz czas zamienić notatki w prawdziwe projekty.";
 	}
 
 	@Override
 	public String respondToQuestRefusal() {
-		return "Och... nie jesteś zbyt miły. Do widzenia.";
+		return "Rozumiem. Jeśli zmienisz zdanie, wróć do mnie.";
 	}
 
 	@Override
 	public String askForItemsAfterPlayerSaidHeHasItems() {
-		return "Ekstra! Jakie #pasy przyniosłeś?";
+		return "Dobrze. Jakie #pasy udało ci się zdobyć?";
 	}
 
 	@Override
 	public String firstAskForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów")
-				+ ". Jest to " + Grammar.enumerateCollection(missingItems)
-				+ ". Dasz radę przynieść któryś z nich?";
+		return "Do porównania potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów")
+				+ ". Są to " + Grammar.enumerateCollection(missingItems)
+				+ ". Pomożesz mi je zdobyć?";
 	}
 
 	@Override
 	public String askForMissingItems(final List<String> missingItems) {
-		return "Potrzebuję " + Grammar.quantityplnoun(missingItems.size(), "pasów")
-				+ ". Jest to " + Grammar.enumerateCollection(missingItems)
-				+ ". Masz już przy sobie jakiś?";
+		return "Do ukończenia zbioru wzorów potrzebuję jeszcze " + Grammar.quantityplnoun(missingItems.size(), "pasów")
+				+ ". Są to " + Grammar.enumerateCollection(missingItems)
+				+ ". Masz któryś przy sobie?";
 	}
 
 	@Override
 	public String respondToItemBrought() {
-		return "Łał, dziękuję! Co jeszcze mi przyniosłeś?";
+		return "Dziękuję. Ten wzór dużo mi pokaże. Masz coś jeszcze?";
 	}
 
 	@Override
 	public String respondToLastItemBrought() {
-		return "Och, wszystkie wyglądają tak pięknie, dziękuję. Przyjmij ten specjalny prezent ode mnie!";
+		return "To ostatni wzór. Teraz widzę, jak wiele można osiągnąć samym doborem materiału, zapięcia i wzmocnienia. Przyjmij ode mnie prezent za całą pomoc.";
 	}
 
 	@Override
 	public String respondToOfferOfNotExistingItem(final String itemName) {
-		return "Och, jestem rozczarowana. Nie masz " + itemName + " ze sobą.";
+		return "Nie masz przy sobie " + itemName + ". Wróć, gdy uda ci się go zdobyć.";
 	}
 
 	@Override
 	public String respondToOfferOfNotMissingItem() {
-		return "Już je przynosiłeś...";
+		return "Ten wzór już mam opisany. Poszukajmy pozostałych.";
 	}
 
 	@Override
 	public String respondToOfferOfNotNeededItem() {
-		return "Nie mogę uwieżyć, że takie istnieją...";
+		return "Tego pasa nie potrzebuję do obecnego porównania.";
 	}
 
 	@Override
 	public String respondToPlayerSayingHeHasNoItems(final List<String> missingItems) {
-		return "Dobrze wróć później.";
+		return "Dobrze. Wróć, kiedy zdobędziesz kolejny wzór.";
 	}
 
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item killer_gloves = SingletonRepository.getEntityManager().getItem(
-				"rękawice zabójcy", ItemCreationContext.quest());
+				"rękawice zabójcy", ItemCreationContext.questReward());
 		killer_gloves.setBoundTo(player.getName());
 		player.equipOrPutOnGround(killer_gloves);
 		player.addKarma(40.0);
@@ -224,7 +223,7 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 		setupAbstractQuest();
 		fillQuestInfo(
 				"Pasy Kolekcjonerki",
-				"Eltefia szuka pasy w wielu kolorach.",
+				"Eltefia chce poznać rzemiosło różnych ludów, aby na podstawie zebranych pasów stworzyć własne projekty.",
 				false);
 	}
 
@@ -233,7 +232,6 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 		return "Pasy Kolekcjonerki";
 	}
 
-	// You can start collecting just with a simple cloak which you can buy, but maybe not a good idea to send to Fado too early.
 	@Override
 	public int getMinLevel() {
 		return 70;

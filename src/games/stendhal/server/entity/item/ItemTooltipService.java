@@ -118,6 +118,8 @@ public final class ItemTooltipService {
 				ItemTooltip.LEGENDARY_ARCANE_FOCUS);
 		copyInt(item, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				ItemTooltip.LEGENDARY_BASTION_BONUS);
+		copyDouble(item, ItemTooltip.LEGENDARY_WALL_OF_GORD,
+				ItemTooltip.LEGENDARY_WALL_OF_GORD);
 		copyDouble(item, ItemTooltip.LEGENDARY_IRON_WILL,
 				ItemTooltip.LEGENDARY_IRON_WILL);
 		copyDouble(item, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION,
@@ -135,6 +137,9 @@ public final class ItemTooltipService {
 				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS);
 		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS,
 				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS);
+		copyDouble(item, ItemTooltip.SPIKED_PLATING, ItemTooltip.SPIKED_PLATING);
+		copyDouble(item, ItemTooltip.HUNTER_MARK, ItemTooltip.HUNTER_MARK);
+		copyDouble(item, ItemTooltip.GIANT_SLAYER, ItemTooltip.GIANT_SLAYER);
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);

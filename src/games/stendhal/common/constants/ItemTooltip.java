@@ -52,6 +52,7 @@ public final class ItemTooltip {
 	public static final String LEGENDARY_POWER_OVERLOAD = "legendary_power_overload";
 	public static final String LEGENDARY_ARCANE_FOCUS = "legendary_arcane_focus";
 	public static final String LEGENDARY_BASTION_BONUS = "legendary_bastion_bonus";
+	public static final String LEGENDARY_WALL_OF_GORD = "legendary_wall_of_gord";
 	public static final String LEGENDARY_IRON_WILL = "legendary_iron_will";
 	public static final String LEGENDARY_UNYIELDING_PROTECTION =
 			"legendary_unyielding_protection";
@@ -63,6 +64,9 @@ public final class ItemTooltip {
 	public static final String DISTANCE_DAMAGE = "distance_damage";
 	public static final String FLAT_ATTACK_BONUS = "flat_attack_bonus";
 	public static final String FLAT_DEFENSE_BONUS = "flat_defense_bonus";
+	public static final String SPIKED_PLATING = "spiked_plating";
+	public static final String HUNTER_MARK = "hunter_mark";
+	public static final String GIANT_SLAYER = "giant_slayer";
 	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
 	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
 	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2024 - Stendhal                    *
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,37 +13,30 @@ package games.stendhal.server.entity.item.scroll;
 
 import java.util.Map;
 
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.DelayedPlayerTextSender;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
 /**
- * Represents the balloon that takes the player to 7 kikareukin clouds,
- * after which it will teleport player to a random location in 6 kikareukin islands.
+ * Represents the balloon that takes the player to Zakopane clouds, after
+ * which it will teleport the player back to the Tatra foothills.
  */
 public class WhiteBalloonScroll extends TimedTeleportScroll {
 	private static final long DELAY = 6 * TimeUtil.MILLISECONDS_IN_HOUR;
 	private static final int NEWTIME = 540;
+	private static final String CLOUDS = "6_zakopane_clouds";
+	private static final String ALTERNATIVE_CLOUDS = "alt_6_zakopane_clouds";
+	private static final String RETURN_ZONE = "0_zakopane_ne";
+	private static final int RETURN_X = 70;
+	private static final int RETURN_Y = 5;
 
-	/**
-	 * Creates a new timed marked BalloonScroll scroll.
-	 *
-	 * @param name
-	 * @param clazz
-	 * @param subclass
-	 * @param attributes
-	 */
 	public WhiteBalloonScroll(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 	}
 
-	/**
-	 * Copy constructor.
-	 *
-	 * @param item
-	 *            item to copy
-	 */
 	public WhiteBalloonScroll(final WhiteBalloonScroll item) {
 		super(item);
 	}
@@ -58,16 +51,42 @@ public class WhiteBalloonScroll extends TimedTeleportScroll {
 		return "Spadłeś przez dziurę w chmurach na twardą ziemię.";
 	}
 
-	// Only let player use balloon from 6 kika clouds
-	// Balloons used more frequently than every 6 hours only last 5 minutes
+	/**
+	 * The ordinary timed-scroll code compares the current zone with the target
+	 * name literally. Alternative Zakopane clouds are the same timed area from
+	 * the gameplay point of view, so a player logging in there must be returned
+	 * just like a player logging in to the normal clouds.
+	 */
+	@Override
+	public boolean teleportBack(final Player player) {
+		if (player != null && player.getZone() != null && ALTERNATIVE_CLOUDS.equals(player.getZone().getName())) {
+			final StendhalRPZone returnZone = SingletonRepository.getRPWorld().getZone(RETURN_ZONE);
+			if (returnZone == null) {
+				return false;
+			}
+			final boolean result = player.teleport(returnZone, RETURN_X, RETURN_Y, null, player);
+			if (result) {
+				player.sendPrivateText(getAfterReturnMessage());
+			}
+			return result;
+		}
+		return super.teleportBack(player);
+	}
+
+	static boolean isZakopaneCloudZone(final String zoneName) {
+		return CLOUDS.equals(zoneName) || ALTERNATIVE_CLOUDS.equals(zoneName);
+	}
+
+	// Only let player use balloon from 6 kika clouds.
+	// Balloons used more frequently than every 6 hours only last 5 minutes.
 	@Override
 	protected boolean useTeleportScroll(final Player player) {
 		if (!"6_kikareukin_islands".equals(player.getZone().getName())) {
-			if ("6_zakopane_clouds".equals(player.getZone().getName())) {
+			if (CLOUDS.equals(player.getZone().getName())) {
 				player.sendPrivateText("Inny balon nie mógł wynieść cię wyżej.");
 			} else {
-				player.sendPrivateText("Balon próbował unieść cię wyżej, ale wysokość była zbyt niska, aby podnieść Ciebie. " 
-									  + "Spróbuj przejść gdzieś, gdzie jest wyżej.");
+				player.sendPrivateText("Balon próbował unieść cię wyżej, ale wysokość była zbyt niska, aby podnieść Ciebie. "
+						+ "Spróbuj przejść gdzieś, gdzie jest wyżej.");
 			}
 			return false;
 		}
@@ -80,13 +99,8 @@ public class WhiteBalloonScroll extends TimedTeleportScroll {
 
 		final long timeRemaining = (lastuse + DELAY) - System.currentTimeMillis();
 		if (timeRemaining > 0) {
-			// player used the balloon within the last DELAY hours
-			// so this use of balloon is going to be shortened
-			// (the clouds can't take so much weight on them)
-			// delay message for 1 turn for technical reasons
 			new DelayedPlayerTextSender(player, "Chmury osłabły od ostatniego razu i nie utrzymają Ciebie zbyt długo.", 1);
-
-			return super.useTeleportScroll(player, "6_zakopane_clouds", 8, 6, NEWTIME);
+			return super.useTeleportScroll(player, CLOUDS, 8, 6, NEWTIME);
 		}
 
 		return super.useTeleportScroll(player);

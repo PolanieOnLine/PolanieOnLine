@@ -11,12 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import javax.swing.SwingUtilities;
-
-import games.stendhal.client.listener.FeatureChangeListener;
-
 @SuppressWarnings("serial")
-class MagicBag extends SlotWindow implements FeatureChangeListener {
+class MagicBag extends FeatureEnabledSlotWindow {
 	/**
 	 * Create a magic bag.
 	 */
@@ -28,44 +24,4 @@ class MagicBag extends SlotWindow implements FeatureChangeListener {
 		setCloseable(false);
 	}
 
-	/**
-	 * Disable the magic bag.
-	 */
-	private void disableMagicBag() {
-	}
-
-	/**
-	 * A feature was disabled.
-	 *
-	 * @param name
-	 *            The name of the feature.
-	 */
-	@Override
-	public void featureDisabled(final String name) {
-		if (name.equals("magicbag")) {
-			disableMagicBag();
-		}
-	}
-
-	/**
-	 * A feature was enabled.
-	 *
-	 * @param name
-	 *            The name of the feature.
-	 * @param value
-	 *            Optional feature specific data.
-	 */
-	@Override
-	public void featureEnabled(final String name, final String value) {
-		if (name.equals("magicbag")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if(!isVisible()) {
-						setVisible(true);
-					}
-				}
-			});
-		}
-	}
 }

@@ -22,6 +22,7 @@ import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PR
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,12 +40,16 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JFrame;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.UiRenderingMethod;
+import games.stendhal.client.gui.WindowMode;
+import games.stendhal.client.gui.WindowModeController;
+import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -119,6 +124,7 @@ class VisualSettings {
 		leftColumn.add(createStyleTypeSelector(), SLayout.EXPAND_X);
 		leftColumn.add(createRenderingSelector(), SLayout.EXPAND_X);
 		leftColumn.add(createTransparencySelector(), SLayout.EXPAND_X);
+		leftColumn.add(createWindowModeSelector(), SLayout.EXPAND_X);
 		leftColumn.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
 		leftColumn.add(createFpsSelector(), SLayout.EXPAND_X);
 
@@ -465,6 +471,42 @@ class VisualSettings {
 				if (selected != null) {
 					WtWindowManager.getInstance().setProperty(DISPLAY_SIZE_PROPERTY,
 							Integer.toString(selected.getIndex()));
+				}
+			}
+		});
+		container.add(label);
+		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		container.add(combo);
+		return container;
+	}
+
+	/**
+	 * Create the selector controlling the window that contains the game.
+	 *
+	 * @return row containing the client window mode selector
+	 */
+	private JComponent createWindowModeSelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
+				SBoxLayout.COMMON_PADDING);
+		JLabel label = new JLabel("Tryb wyświetlania gry");
+		final JComboBox<WindowMode> combo = new JComboBox<WindowMode>(WindowMode.values());
+		combo.setSelectedItem(WindowModeController.getConfiguredMode());
+		combo.setToolTipText("Wybierz okno, pełny ekran w oknie lub pełny ekran");
+		label.setToolTipText(combo.getToolTipText());
+		combo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WindowMode selected = (WindowMode) combo.getSelectedItem();
+				if (selected != null) {
+					Frame mainFrame = j2DClient.get().getMainFrame();
+					if (mainFrame instanceof JFrame) {
+						WindowModeController.select((JFrame) mainFrame, selected);
+					} else {
+						WindowModeController.select(selected);
+					}
+					ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
+							"Tryb wyświetlania klienta został zmieniony.",
+							NotificationType.CLIENT));
 				}
 			}
 		});

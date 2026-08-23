@@ -30,5 +30,11 @@ public class DressedEntityRPClass {
 		entity.addAttribute("outfit_org", Type.INT, Definition.PRIVATE);
 		entity.addAttribute("outfit_colors", Type.MAP);
 		entity.addAttribute("outfit_expire_age", Type.INT, Definition.HIDDEN);
+		// Generic server-side perception filtering for player-private NPCs.
+		entity.addAttribute("#perception_key", Type.STRING, Definition.HIDDEN);
+		entity.addAttribute("#perception_value", Type.STRING, Definition.HIDDEN);
+		// Client-side movement prediction must only collide the local owner with
+		// a private NPC. The server still verifies ownership independently.
+		entity.addAttribute("owner_collision_only", Type.FLAG, Definition.VOLATILE);
 	}
 }

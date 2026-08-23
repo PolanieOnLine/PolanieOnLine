@@ -66,6 +66,23 @@ public final class ItemCreationContext {
 	}
 
 	/**
+	 * Creates an Epic item awarded for completing a quest. Tier multipliers are
+	 * deterministic, while the complete affix set is rolled once and persisted
+	 * with the item instance.
+	 *
+	 * <p>This is deliberately separate from {@link #quest()}. Quest scripts also
+	 * create temporary props, delivery items and other objects which must not be
+	 * promoted merely because they participate in a quest.</p>
+	 */
+	public static ItemCreationContext questReward() {
+		return builder(Source.QUEST)
+				.withQuestRarity(ItemRarity.EPIC)
+				.randomizeModifiers(false)
+				.generateAffixes(true)
+				.build();
+	}
+
+	/**
 	 * Creates deterministic Common equipment granted when a character is
 	 * created. Starter equipment must not give one new character a rarity-based
 	 * advantage over another.

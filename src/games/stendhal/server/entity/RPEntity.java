@@ -3504,6 +3504,11 @@ public abstract class RPEntity extends CombatEntity {
 				damage *= 2;
 			}
 
+			if (this instanceof Creature && defender instanceof Player) {
+				damage = games.stendhal.server.core.rule.damage.WallOfGordService
+						.reduceDirectCreatureHit((Player) defender, damage);
+			}
+
 			if (didDamage) {
 				// limit damage to target HP
 				damage = Math.min(damage, defender.getHP());

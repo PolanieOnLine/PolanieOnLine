@@ -135,7 +135,7 @@ public class FindDragons extends AbstractQuest {
 
 								final String[] items = { "magiczna tarcza płytowa", "tarcza chaosu", "tarcza xenocyjska" };
 								final Item item = SingletonRepository.getEntityManager()
-									.getItem(items[Rand.rand(items.length)], ItemCreationContext.quest());
+									.getItem(items[Rand.rand(items.length)], ItemCreationContext.questReward());
 								item.setBoundTo(player.getName());
 								player.equipOrPutOnGround(item);
 								player.addXP(7000);

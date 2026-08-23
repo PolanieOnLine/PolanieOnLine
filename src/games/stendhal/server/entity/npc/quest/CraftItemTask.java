@@ -16,8 +16,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.constants.KillType;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -29,9 +31,11 @@ import games.stendhal.server.entity.npc.condition.AlwaysFalseCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.KarmaGreaterThanCondition;
 import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasKilledNumberOfCreaturesCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.StringUtils;
@@ -39,6 +43,7 @@ import marauroa.common.Pair;
 
 public class CraftItemTask extends QuestTaskBuilder {
 	private String itemName;
+	private ItemRarity itemRarity = ItemRarity.COMMON;
 
 	private int waitingTime = 0;
 
@@ -47,14 +52,25 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	private List<String> playerCompletedQuest = new LinkedList<>();
 	private List<String> playerRequiredMonster = new LinkedList<>();
+	private List<String> playerRequiredSoloMonster = new LinkedList<>();
 
 	private List<Pair<String, Integer>> requiredItem = new LinkedList<>();
+	private List<String> legacyForgingStates = new LinkedList<>();
+	private List<ChatAction> craftWith = new LinkedList<>();
 
 	private String respondToCraft;
 	private String respondToCraftReject;
 
 	public CraftItemTask craftItem(String itemName) {
 		this.itemName = itemName;
+		return this;
+	}
+
+	public CraftItemTask rarity(ItemRarity rarity) {
+		if (rarity == null) {
+			throw new IllegalArgumentException("Crafted item rarity must not be null");
+		}
+		this.itemRarity = rarity;
 		return this;
 	}
 
@@ -103,6 +119,54 @@ public class CraftItemTask extends QuestTaskBuilder {
 		return this;
 	}
 
+	public CraftItemTask requestSoloKill(String creature) {
+		playerRequiredSoloMonster.add(creature);
+		return this;
+	}
+
+	public CraftItemTask requestSoloKill(String... creatures) {
+		for (String creature : creatures) {
+			playerRequiredSoloMonster.add(creature);
+		}
+		return this;
+	}
+
+	/**
+	 * Accepts an old first quest substate as an alias of {@code forging}.
+	 * The timestamp must remain in substate 1, just like in the current format.
+	 *
+	 * @param state old first substate without a semicolon
+	 * @return this task
+	 */
+	public CraftItemTask legacyForgingState(String state) {
+		if (state == null || state.trim().isEmpty() || state.contains(";")) {
+			throw new IllegalArgumentException("Legacy forging state must be a single non-empty substate");
+		}
+		if ("start".equals(state) || "forging".equals(state)
+				|| "done".equals(state) || "rejected".equals(state)) {
+			throw new IllegalArgumentException("Legacy forging state must not replace a current quest state");
+		}
+		if (!legacyForgingStates.contains(state)) {
+			legacyForgingStates.add(state);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds an action performed once when all crafting materials are submitted.
+	 * Legacy forging states do not execute these actions again.
+	 *
+	 * @param action action performed at the start of crafting
+	 * @return this task
+	 */
+	public CraftItemTask craftWith(ChatAction action) {
+		if (action == null) {
+			throw new IllegalArgumentException("Craft action must not be null");
+		}
+		craftWith.add(action);
+		return this;
+	}
+
 	public CraftItemTask respondToCraft(String respondToCraft) {
 		this.respondToCraft = respondToCraft;
 		return this;
@@ -132,6 +196,13 @@ public class CraftItemTask extends QuestTaskBuilder {
 		return null;
 	}
 
+	private String getSoloMonsterName() {
+		for (String creature : playerRequiredSoloMonster) {
+			return creature;
+		}
+		return null;
+	}
+
 	ChatCondition requiredConditionsBeforeForge() {
 		List<ChatCondition> conditions = new LinkedList<>();
 		if (getQuestName() != null) {
@@ -145,6 +216,10 @@ public class CraftItemTask extends QuestTaskBuilder {
 		}
 		if (getMonsterName() != null) {
 			conditions.add(new PlayerHasKilledNumberOfCreaturesCondition(1, getMonsterName()));
+		}
+		if (getSoloMonsterName() != null) {
+			conditions.add(new PlayerHasKilledNumberOfCreaturesCondition(
+					getSoloMonsterName(), 1, KillType.SOLO));
 		}
 		return new AndCondition(conditions);
 	}
@@ -165,6 +240,10 @@ public class CraftItemTask extends QuestTaskBuilder {
 		}
 
 		if (getMonsterName() != null && !player.hasKilled(getMonsterName())) {
+			isTrue = false;
+		}
+
+		if (getSoloMonsterName() != null && player.getSoloKill(getSoloMonsterName()) < 1) {
 			isTrue = false;
 		}
 
@@ -234,6 +313,9 @@ public class CraftItemTask extends QuestTaskBuilder {
 					npc.say(StringUtils.substitute(respondToCraft, params));
 					player.setQuest(questSlot, 0, "forging");
 					new SetQuestToTimeStampAction(questSlot, 1).fire(player, null, npc);
+					for (ChatAction action : craftWith) {
+						action.fire(player, sentence, npc);
+					}
 				} else {
 					npc.say(respondToCraftReject);
 				}
@@ -241,17 +323,28 @@ public class CraftItemTask extends QuestTaskBuilder {
 		};
 	}
 
+	ChatCondition buildForgingStateCondition(String questSlot) {
+		List<ChatCondition> conditions = new LinkedList<>();
+		conditions.add(new QuestInStateCondition(questSlot, 0, "forging"));
+		for (String state : legacyForgingStates) {
+			conditions.add(new QuestInStateCondition(questSlot, 0, state));
+		}
+		return new OrCondition(conditions);
+	}
+
 	@Override
 	ChatCondition buildQuestCompletedCondition(String questSlot) {
 		if (getProductionTime() > -1) {
-			return new TimePassedCondition(questSlot, 1, getProductionTime());
+			return new AndCondition(
+					buildForgingStateCondition(questSlot),
+					new TimePassedCondition(questSlot, 1, getProductionTime()));
 		}
 		return new AlwaysFalseCondition();
 	}
 
 	@Override
 	ChatAction buildQuestCompleteAction(String questSlot) {
-		return new EquipItemAction(getItemName(), 1, true);
+		return new EquipItemAction(getItemName(), 1, true, itemRarity);
 	}
 
 	String getItemName() {
@@ -266,7 +359,6 @@ public class CraftItemTask extends QuestTaskBuilder {
 	List<String> calculateHistoryProgress(QuestHistoryBuilder historyBuilder, Player player, String questSlot) {
 		CraftItemQuestHistoryBuilder history = (CraftItemQuestHistoryBuilder) historyBuilder;
 		List<String> res = new LinkedList<>();
-		final String questState = player.getQuest(questSlot, 0);
 		List<String> requirements = new LinkedList<>();
 
 		if (playerMinLevel > -1) {
@@ -286,6 +378,10 @@ public class CraftItemTask extends QuestTaskBuilder {
 			int current = Math.min(totalKills, 1);
 			requirements.add("Pokonaj: " + getMonsterName() + " (" + current + "/1)");
 		}
+		if (getSoloMonsterName() != null) {
+			int current = Math.min(player.getSoloKill(getSoloMonsterName()), 1);
+			requirements.add("Pokonaj samodzielnie: " + getSoloMonsterName() + " (" + current + "/1)");
+		}
 		for (Pair<String, Integer> item : requiredItem) {
 			int current = Math.min(player.getNumberOfSubmittableEquipped(item.first()), item.second());
 			requirements.add(item.first() + ": " + current + "/" + item.second());
@@ -296,7 +392,7 @@ public class CraftItemTask extends QuestTaskBuilder {
 			res.add(block);
 		}
 
-		if (questState.startsWith("forging")) {
+		if (buildForgingStateCondition(questSlot).fire(player, null, null)) {
 			if (new TimePassedCondition(questSlot, 1, getProductionTime()).fire(player, null, null)) {
 				res.add(history.whenTimeWasPassed());
 			} else {

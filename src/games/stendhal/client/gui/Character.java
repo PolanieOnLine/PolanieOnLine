@@ -54,7 +54,7 @@ import marauroa.common.game.RPAction;
  * Window for showing the equipment the player is wearing.
  */
 class Character extends InternalManagedWindow implements ContentChangeListener,
-Inspectable {
+Inspectable, ReserveSetWindow.Owner {
 	/**
 	 * serial version uid.
 	 */
@@ -78,6 +78,7 @@ Inspectable {
 	private JComponent equipmentRow;
 	private ReserveSetWindow reserveWindow;
 	private boolean reserveWindowVisible;
+	private volatile boolean reserveWindowAvailable;
 	private boolean pendingSetDrawerRefresh;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
@@ -384,18 +385,17 @@ Inspectable {
 	}
 
 	private void updateSetToggleVisibility(final RPObject obj) {
-		if (obj == null) {
-			return;
-		}
-
 		boolean hasSetSlots = false;
-		for (final String slotName : slotPanels.keySet()) {
-			if (slotName.endsWith("_set") && obj.hasSlot(slotName)) {
-				hasSetSlots = true;
-				break;
+		if (obj != null) {
+			for (final String slotName : slotPanels.keySet()) {
+				if (slotName.endsWith("_set") && obj.hasSlot(slotName)) {
+					hasSetSlots = true;
+					break;
+				}
 			}
 		}
 
+		reserveWindowAvailable = hasSetSlots;
 		final boolean showToggle = hasSetSlots;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -412,9 +412,6 @@ Inspectable {
 	}
 
 	private void setReserveWindowVisible(final boolean visible) {
-		if (reserveWindowVisible == visible) {
-			return;
-		}
 		reserveWindowVisible = visible;
 		if (reserveWindow == null) {
 			return;
@@ -426,7 +423,26 @@ Inspectable {
 		}
 	}
 
-	void onReserveWindowVisibilityChange(final boolean visible) {
+	@Override
+	public boolean isReserveWindowAvailable() {
+		return reserveWindowAvailable;
+	}
+
+	void resetSession() {
+		player = null;
+		reserveWindowAvailable = false;
+		setReserveWindowVisible(false);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setToggleRow.setVisible(false);
+				specialSlots.setVisible(false);
+			}
+		});
+	}
+
+	@Override
+	public void onReserveWindowVisibilityChange(final boolean visible) {
 		reserveWindowVisible = visible;
 		Runnable update = new Runnable() {
 			@Override

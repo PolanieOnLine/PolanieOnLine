@@ -231,7 +231,7 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item blackcloak = SingletonRepository.getEntityManager().getItem(
-				"czarny płaszcz", ItemCreationContext.quest());
+				"czarny płaszcz", ItemCreationContext.questReward());
 		blackcloak.setBoundTo(player.getName());
 		player.equipOrPutOnGround(blackcloak);
 		player.addKarma(25.0);

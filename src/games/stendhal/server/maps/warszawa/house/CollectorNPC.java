@@ -45,14 +45,14 @@ public class CollectorNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGreeting();
-				addJob("Mam marzenie zostać projektantką pasów!");
-				addHelp("Dziękuję za pomoc w zebraniu pasów! Chciałabym kiedyś zaprojektować swój własny pas!");
-				addOffer("Nie mam jeszcze nic do zaoferowania, ale za niedługo otworzę swój własny sklepik!");
-				addGoodbye("Do widzenia, do widzenia!");
+				addJob("Uczę się projektować pasy. Zbieram wzory wykonane przez różne ludy, żeby zrozumieć ich materiały, zapięcia i wzmocnienia.");
+				addHelp("Jeśli znajdziesz ciekawy pas, pokaż mi go. Każdy nowy wzór może mnie czegoś nauczyć.");
+				addOffer("Na razie skupiam się na nauce. Kiedy skończę badania nad pasami, chcę tworzyć własne projekty.");
+				addGoodbye("Do widzenia. Powodzenia w drodze!");
 			}
 		};
 
-		npc.setDescription("Oto Eltefia. Wygląda młodo oraz pięknie!");
+		npc.setDescription("Oto Eltefia, początkująca projektantka, która bada pasy wykonywane przez różne ludy.");
 		npc.setEntityClass("woman_004_npc");
 		npc.setGender("F");
 		npc.setPosition(4, 3);

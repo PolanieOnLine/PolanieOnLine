@@ -45,6 +45,34 @@ public abstract class DressedEntity extends RPEntity {
 	}
 
 	/**
+	 * Keep player/dressed-entity hit points representable by the SHORT RPClass
+	 * attributes before RPEntity stores the same value in its internal fields.
+	 */
+	@Override
+	public void setBaseHP(final int newhp) {
+		super.setBaseHP(clampHitPoints("base_hp", newhp));
+	}
+
+	@Override
+	public void setHP(final int hp) {
+		super.setHP(clampHitPoints("hp", hp));
+	}
+
+	private int clampHitPoints(final String attribute, final int value) {
+		if (value > Short.MAX_VALUE) {
+			logger.warn(String.format("Clamping %s from %d to %d for %s.",
+					attribute, value, (int) Short.MAX_VALUE, getName()));
+			return Short.MAX_VALUE;
+		}
+		if (value < Short.MIN_VALUE) {
+			logger.warn(String.format("Clamping %s from %d to %d for %s.",
+					attribute, value, (int) Short.MIN_VALUE, getName()));
+			return Short.MIN_VALUE;
+		}
+		return value;
+	}
+
+	/**
 	 * Returns attack skill including the flat bonus from currently equipped
 	 * glyphs. The stored/base ATK remains untouched so ATK XP calculations always
 	 * operate on the real trained value.
@@ -68,6 +96,36 @@ public abstract class DressedEntity extends RPEntity {
 				+ GlyphEffectService.getSkillAttackBonus(this);
 		return (int) Math.max(Short.MIN_VALUE,
 				Math.min(Short.MAX_VALUE, effectiveAttack));
+	}
+
+	/**
+	 * Keeps the legacy Strzybog rate reduction from creating a synthetic rate-1
+	 * weapon. Authored rate-1 weapons stay untouched, while weapons whose rate
+	 * only fell from 2 to 1 because of an equipped glyph are floored at 2.
+	 */
+	@Override
+	public int getAttackRate() {
+		final int attackRate = super.getAttackRate();
+		final double rateReduction =
+				GlyphEffectService.getAttackRateReduction(this);
+		if (attackRate != 1 || rateReduction <= 0.0) {
+			return attackRate;
+		}
+
+		final List<Item> weapons = getWeapons();
+		if (weapons.isEmpty()) {
+			return attackRate;
+		}
+
+		final boolean meleeDistance = isAttacking()
+				&& nextTo(getAttackTarget());
+		int naturalBest = weapons.get(0).getAttackRate(meleeDistance);
+		for (final Item weapon : weapons) {
+			naturalBest = Math.min(naturalBest,
+					weapon.getAttackRate(meleeDistance));
+		}
+
+		return naturalBest <= 1 ? 1 : 2;
 	}
 
 	/**

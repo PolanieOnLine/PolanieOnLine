@@ -182,7 +182,7 @@ public class StuffForVulcanus extends AbstractQuest {
 					player.addXP(15000);
 					player.addKarma(25);
 					final Item magicSword = SingletonRepository.getEntityManager().getItem(
-							"miecz nieśmiertelnych", ItemCreationContext.quest());
+							"miecz nieśmiertelnych", ItemCreationContext.questReward());
 					magicSword.setBoundTo(player.getName());
 					player.equipOrPutOnGround(magicSword);
 					player.notifyWorldAboutChanges();

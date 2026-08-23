@@ -53,6 +53,17 @@ public class BiletTurystyczny extends AbstractQuest {
 	// Time
 	private static final int REQUIRED_MINUTES = 60 * 12;
 
+	static boolean hasCompletedTrip(final Player player) {
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return false;
+		}
+		final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
+		if (tokens.length < 4) {
+			return false;
+		}
+		return MathHelper.parseLongDefault(tokens[3], -1) > 0;
+	}
+
 	private void step_1() {
 		// player says hi before starting the quest
 		npc.add(ConversationStates.ATTENDING,
@@ -61,7 +72,7 @@ public class BiletTurystyczny extends AbstractQuest {
 						new QuestNotStartedCondition(QUEST_SLOT),
 						new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
 			ConversationStates.INFORMATION_1,
-			"CIII! *SZEPT* Nikt nie może wiedzieć jakimi towarami #handluję.", null);
+			"Nie wszystkie moje zwoje działają tak samo. Bilet turystyczny dostał taką nazwę celowo, bo brzmi niewinnie. Jego wzór pochodzi od Ozo z Zakopanego i otwiera czasowe przejście na pustynię. Ten wariant jest stabilny i potrafi sprowadzić podróżnika z powrotem. Jeśli chcesz wiedzieć więcej, zapytaj czym #handluję.", null);
 
 		// player says hi before starting the quest
 		npc.add(ConversationStates.ATTENDING,
@@ -70,7 +81,7 @@ public class BiletTurystyczny extends AbstractQuest {
 						new QuestNotStartedCondition(QUEST_SLOT),
 						new LevelLessThanCondition(REQUIRED_LEVEL)),
 			ConversationStates.ATTENDING,
-			"Przepraszam, ale chyba coś nie dosłyszałem... *SZEPT* CIII! Nie mogę Ci powiedzieć czym handluję, ponieważ nie masz wystarczającego doświadczenia z potworami, ale możesz sprawdzić moją inną #'ofertę'.", null);
+			"To nie jest zwykły zwój podróżny. Przejście prowadzi na niebezpieczną pustynię, dlatego nie sprzedam ci biletu, dopóki nie zdobędziesz większego doświadczenia. Wróć, gdy osiągniesz poziom 100.", null);
 
 		// player returns after finishing the quest (it is repeatable) after the
 		// time as finished
@@ -82,7 +93,7 @@ public class BiletTurystyczny extends AbstractQuest {
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES),
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
 			ConversationStates.QUEST_OFFERED,
-			"Wróciłeś po kolejny bilet turystyczny?", null);
+			"Widzę, że przejście cię nie zniechęciło. Chcesz kolejny bilet turystyczny?", null);
 
 		// player returns after finishing the quest (it is repeatable) before
 		// the time as finished
@@ -95,7 +106,7 @@ public class BiletTurystyczny extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES))),
 			ConversationStates.ATTENDING,
 			null,
-			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Niestety kolejny bilet dostanę za co najmniej"));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Nie mam jeszcze gotowego następnego biletu. Wróć za co najmniej"));
 
 		// player responds to word 'deal' - enough level
 		npc.add(ConversationStates.INFORMATION_1,
@@ -104,16 +115,16 @@ public class BiletTurystyczny extends AbstractQuest {
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new LevelGreaterThanCondition(REQUIRED_LEVEL-1)),
 			ConversationStates.QUEST_OFFERED,
-			"Sprzedaję #'bilety turystyczne' na pustynię. Możesz kupić, ale będzie Cię kosztować "
+			"Zwykły zwój prowadzi do jednego znanego miejsca. Ten bilet na chwilę wiąże podróżnika z pustynią i później sprowadza go z powrotem. Ozo zachował dla siebie znacznie mniej stabilne wzory, dlatego dobrze najpierw poznać bezpieczniejszą odmianę przejścia. Bilet kosztuje "
 								+ REQUIRED_MONEY
-								+ " money. Chcesz kupić?",
+								+ " monet. Chcesz go kupić?",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				Arrays.asList("bilety turystyczne"),
 				null,
 				ConversationStates.QUEST_OFFERED,
-				"To są pewnego rodzaju zwoje, które wysyłają na wycieczkę do obcej krainy pokrytej piaskiem.",
+				"To ustabilizowane znaki przejścia prowadzące na pustynię. Nazwa bilet turystyczny ma po prostu nie zwracać uwagi na to, z jaką magią naprawdę mamy do czynienia.",
 				null);
 
 		// player responds to word 'deal' - low level
@@ -123,7 +134,7 @@ public class BiletTurystyczny extends AbstractQuest {
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new LevelLessThanCondition(REQUIRED_LEVEL)),
 			ConversationStates.ATTENDING,
-			"Nie jesteś gotowy na taką podróż. Wróć, gdy podrośniesz!",
+			"Nie jesteś jeszcze gotowy na takie przejście. Wróć, gdy zdobędziesz więcej doświadczenia.",
 			null);
 
 		// player wants to take the beans but hasn't the money
@@ -139,7 +150,7 @@ public class BiletTurystyczny extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				new PlayerHasItemWithHimCondition("money", REQUIRED_MONEY),
 				ConversationStates.ATTENDING,
-				"W porządku oto twój bilet turystyczny. Gdy użyjesz to wrócisz za około 3 godziny. Jeśli będziesz chciał wcześniej wrócić to skorzystaj tam stan na herbie Zakopanego, który zabierze Ciebie z powrotem.",
+				"Oto twój bilet. Użyj go, gdy będziesz gotowy. Po mniej więcej trzech godzinach znak sam sprowadzi cię z pustyni. Jeśli zechcesz wrócić wcześniej, poszukaj tam znaku z herbem Zakopanego, który zamknie przejście i odeśle cię z powrotem.",
 				new MultipleActions(
 						new DropItemAction("money", REQUIRED_MONEY),
 						new EquipItemAction(SCROLL, 1, true),
@@ -175,8 +186,24 @@ public class BiletTurystyczny extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"To nie jest dla każdego. Jeżeli chciałbyś coś to mów.",
+			"Rozumiem. Takiej podróży nie warto zaczynać bez przekonania.",
 			null);
+
+		npc.add(ConversationStates.ATTENDING,
+			Arrays.asList("Ozo", "ozo"),
+			null,
+			ConversationStates.ATTENDING,
+			null,
+			new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					if (hasCompletedTrip(player)) {
+						npc.say("Skoro wróciłeś już z pustyni, Ozo powinien potraktować cię poważniej. Znajdziesz go w Zakopanem w okolicach Góry Smoka. Pamiętaj tylko, że jego bilety nie są tak przewidywalne jak moje.");
+					} else {
+						npc.say("Ozo nie ufa ludziom, którzy nie przeszli nawet przez stabilne przejście. Najpierw użyj mojego biletu turystycznego i wróć z pustyni. Dopiero wtedy warto go szukać.");
+					}
+				}
+			});
 	}
 
 	@Override
@@ -203,7 +230,7 @@ public class BiletTurystyczny extends AbstractQuest {
 		});
 		fillQuestInfo(
 				"Bilet Turystyczny",
-				"Juhas może sprzedać bilet turystyczny, który wysyła na wycieczkę do obcej krainy pokrytej piaskiem.",
+				"Juhas sprzedaje ustabilizowany bilet otwierający czasowe przejście na pustynię. Udany powrót może przekonać Ozo, że znasz już podstawy tej magii.",
 				false);
 		step_1();
 
@@ -216,14 +243,7 @@ public class BiletTurystyczny extends AbstractQuest {
 
 	@Override
 	public boolean isCompleted(final Player player) {
-		if(!player.hasQuest(QUEST_SLOT)) {
-			return false;
-		}
-		String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-		if (tokens.length < 4) {
-			return false;
-		}
-		return MathHelper.parseLongDefault(tokens[3],-1)>0;
+		return hasCompletedTrip(player);
 	}
 
 	@Override

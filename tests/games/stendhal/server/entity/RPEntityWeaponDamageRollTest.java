@@ -176,6 +176,33 @@ public class RPEntityWeaponDamageRollTest {
 	}
 
 	@Test
+	public void strzybogDoesNotSpeedUpRateTwoWeapon() {
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.<Item>asList(fixedWeapon("axe", 10, 2)), 0, 0.0);
+		attacker.setAttackRateReduction(1);
+
+		assertEquals(2, attacker.getAttackRate());
+	}
+
+	@Test
+	public void strzybogSpeedsUpRateThreeWeaponToTwo() {
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.<Item>asList(fixedWeapon("axe", 10, 3)), 0, 0.0);
+		attacker.setAttackRateReduction(1);
+
+		assertEquals(2, attacker.getAttackRate());
+	}
+
+	@Test
+	public void strzybogDoesNotAlterNaturalRateOneWeapon() {
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.<Item>asList(fixedWeapon("axe", 10, 1)), 0, 0.0);
+		attacker.setAttackRateReduction(1);
+
+		assertEquals(1, attacker.getAttackRate());
+	}
+
+	@Test
 	public void bloodGlyphStealsLifeFromUnarmedDamage() {
 		final TestDressedEntity attacker = new TestDressedEntity(
 				Arrays.<Item>asList(), 0, 0.0);
@@ -190,11 +217,16 @@ public class RPEntityWeaponDamageRollTest {
 
 	private static Weapon fixedWeapon(final String weaponClass,
 			final int damage) {
+		return fixedWeapon(weaponClass, damage, 5);
+	}
+
+	private static Weapon fixedWeapon(final String weaponClass,
+			final int damage, final int rate) {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", Integer.toString(damage));
 		attributes.put("damage_min", Integer.toString(damage));
 		attributes.put("damage_max", Integer.toString(damage));
-		attributes.put("rate", "5");
+		attributes.put("rate", Integer.toString(rate));
 		return new Weapon("test " + weaponClass, weaponClass, "test",
 				attributes);
 	}

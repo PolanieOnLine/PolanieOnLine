@@ -17,15 +17,28 @@ import games.stendhal.client.entity.StatefulEntity;
 import games.stendhal.client.sprite.EmptySprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import marauroa.common.game.RPObject;
 
 class VariableSpriteEntity2DView<T extends StatefulEntity> extends Entity2DView<T> {
+
+	private static final String TILESET_ATTRIBUTE = "tileset";
+	private static final String TILE_INDEX_ATTRIBUTE = "tile_index";
+	private static final String TILESET_COLUMNS_ATTRIBUTE = "tileset_columns";
 
 	@Override
 	protected void buildRepresentation(T entity) {
 		final SpriteStore store = SpriteStore.get();
-		Sprite sprite;
-		ZoneInfo info = ZoneInfo.get();
+		final ZoneInfo info = ZoneInfo.get();
+		final RPObject object = entity.getRPObject();
 
+		if (object.has(TILESET_ATTRIBUTE)
+				&& object.has(TILE_INDEX_ATTRIBUTE)
+				&& object.has(TILESET_COLUMNS_ATTRIBUTE)) {
+			buildTilesetRepresentation(store, info, object);
+			return;
+		}
+
+		Sprite sprite;
 		if (entity.getName() == null) {
 			setSprite(new EmptySprite(1, 1, null));
 			return;
@@ -60,5 +73,30 @@ class VariableSpriteEntity2DView<T extends StatefulEntity> extends Entity2DView<
 		}
 
 		setSprite(sprite);
+	}
+
+	private void buildTilesetRepresentation(final SpriteStore store, final ZoneInfo info,
+			final RPObject object) {
+		final String tileset = object.get(TILESET_ATTRIBUTE);
+		final int tileIndex = object.getInt(TILE_INDEX_ATTRIBUTE);
+		final int columns = object.getInt(TILESET_COLUMNS_ATTRIBUTE);
+		if (tileIndex < 0 || columns < 1) {
+			setSprite(new EmptySprite(1, 1, null));
+			return;
+		}
+
+		final Sprite sheet = store.getModifiedSprite(
+				"data/maps/tileset/" + tileset + ".png",
+				info.getZoneColor(), info.getColorMethod());
+		final int tileSize = IGameScreen.SIZE_UNIT_PIXELS;
+		final int sourceX = tileIndex % columns * tileSize;
+		final int sourceY = tileIndex / columns * tileSize;
+
+		if (sourceX + tileSize > sheet.getWidth() || sourceY + tileSize > sheet.getHeight()) {
+			setSprite(new EmptySprite(1, 1, null));
+			return;
+		}
+
+		setSprite(store.getTile(sheet, sourceX, sourceY, tileSize, tileSize));
 	}
 }

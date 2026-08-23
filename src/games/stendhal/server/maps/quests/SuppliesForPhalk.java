@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -407,7 +408,7 @@ public class SuppliesForPhalk extends AbstractQuest {
 		actions.add(new DropItemdataItemAction("złota zbroja","Phalk"));
 		actions.add(new DropItemdataItemAction("płaszcz krasnoludzki","Phalk"));
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 5.0));
-		actions.add(new EquipItemAction("zbroja krasnoludzka", 1, true));
+		actions.add(new EquipItemAction("zbroja krasnoludzka", 1, true, ItemRarity.EPIC));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("clothes", "ubrania"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),

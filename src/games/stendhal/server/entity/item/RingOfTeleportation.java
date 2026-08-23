@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2026 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,13 +24,17 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.RPObject;
+import marauroa.server.game.rp.InstanceZoneDescriptor;
+import marauroa.server.game.rp.InstanceZoneManager;
 
 public class RingOfTeleportation extends Item {
 	private static final Logger logger = Logger.getLogger(RingOfTeleportation.class);
 
-	/** The cooling period in seconds */
+	/** The cooling period in seconds. */
 	private static final int MIN_COOLING_PERIOD = 5 * 60;
 	private static final String LAST_USE = "frequency";
+	private static final String OZO_MAZE = "7_labirynt";
+	private static final String HAIZEN_MAZE_NAME = "Labirynt Haizena";
 
 	public RingOfTeleportation(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
@@ -43,9 +47,7 @@ public class RingOfTeleportation extends Item {
 		updateState();
 	}
 
-	/**
-	 * Create a RingOfTeleportation.
-	 */
+	/** Create a RingOfTeleportation. */
 	public RingOfTeleportation() {
 		super("pierścień powrotu", "ring", "ametyst-ring", null);
 		put("amount", 0);
@@ -61,7 +63,7 @@ public class RingOfTeleportation extends Item {
 	}
 
 	@Override
-	public void fill(RPObject rpobject) {
+	public void fill(final RPObject rpobject) {
 		super.fill(rpobject);
 		updateState();
 	}
@@ -73,10 +75,8 @@ public class RingOfTeleportation extends Item {
 	public void usedRing() {
 		setEntityClass("ring");
 		setEntitySubclass("ametyst-ring");
-
 		put("amount", 0);
 		put("state", 0);
-		put("frequency", getLastUsed());
 	}
 
 	public void activeRing() {
@@ -94,21 +94,15 @@ public class RingOfTeleportation extends Item {
 		return false;
 	}
 
-	/**
-	 * Get the last use time in seconds
-	 * @return last use time
-	 */
+	/** Get the last use time in seconds. */
 	private int getLastUsed() {
 		if (has(LAST_USE)) {
 			return getInt(LAST_USE);
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
-	/**
-	 * Store current system time as the last used
-	 */
+	/** Store current system time as the last used. */
 	private void storeLastUsed() {
 		put(LAST_USE, (int) (System.currentTimeMillis() / 1000));
 	}
@@ -118,7 +112,6 @@ public class RingOfTeleportation extends Item {
 	}
 
 	private boolean teleportToSavedPosition(final Player player) {
-		// don't allow use if on the ground
 		if (!isContained()) {
 			player.sendPrivateText(player.getGenderVerb("Powinieneś") + " podnieść swój pierścień powrotu, by go użyć.");
 			return false;
@@ -129,56 +122,120 @@ public class RingOfTeleportation extends Item {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. "
 					+ "Myślisz, że będzie gotowy w ciągu "
 					+ TimeUtil.approxTimeUntil(secondsNeeded) + ".");
-
 			return false;
 		}
 
-		StendhalRPZone zone = player.getZone();
-
 		if (isUsed()) {
-			setItemData(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
-			activeRing();
+			return saveCurrentPosition(player);
+		}
+		return returnToSavedPosition(player);
+	}
 
+	private boolean saveCurrentPosition(final Player player) {
+		final StendhalRPZone zone = player.getZone();
+		if (isForbiddenReturnZone(zone)) {
+			player.sendPrivateText("Magia pierścienia nie potrafi zapisać tego labiryntu. Musisz wydostać się z niego w sposób przewidziany dla tej próby.");
+			return false;
+		}
+
+		setItemData(zone.getName() + " " + player.getX() + " " + player.getY());
+		activeRing();
+		return true;
+	}
+
+	private boolean returnToSavedPosition(final Player player) {
+		final SavedPosition saved = parseSavedPosition(getItemData());
+		if (saved == null) {
+			invalidateSavedPosition(player, "Zapisane miejsce w pierścieniu jest uszkodzone. Kamień stracił ten zapis i trzeba wskazać mu nowe miejsce.");
+			return false;
+		}
+
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(saved.zoneName);
+		if (zone == null) {
+			logger.warn("Ring of return points to unknown zone " + saved.zoneName + " for " + player.getName());
+			invalidateSavedPosition(player, "Zapisana w pierścieniu lokacja już nie istnieje. Kamień stracił ten zapis i nie przeniósł cię w inne miejsce zastępcze.");
+			return false;
+		}
+		if (isForbiddenReturnZone(zone)) {
+			invalidateSavedPosition(player, "Pierścień miał zapisane miejsce w labiryncie, z którego nie wolno uciekać w ten sposób. Ten stary zapis został usunięty.");
+			return false;
+		}
+		if (player.getKeyedSlot("!visited", saved.zoneName) == null) {
+			player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
+					+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + player.getGenderVerb("byłeś") + ".");
+			return false;
+		}
+
+		if (player.teleport(zone, saved.x, saved.y, null, player)) {
+			TeleportNotifier.get().notify(player, true);
+			setItemData(null);
+			storeLastUsed();
+			usedRing();
 			return true;
-		} else {
-			zone = SingletonRepository.getRPWorld().getZone("0_semos_city");
-			int x = 30;
-			int y = 40;
+		}
+		return false;
+	}
 
-			final String itemdata = getItemData();
-			if (itemdata != null) {
-				final StringTokenizer st = new StringTokenizer(itemdata);
-				if (st.countTokens() == 3) {
-					// check destination
-					final String zoneName = st.nextToken();
-					final StendhalRPZone temp = SingletonRepository.getRPWorld().getZone(zoneName);
-					if (temp == null) {
-						player.sendPrivateText("Z dziwnych powodów pierścień nie przeniósł mnie tam gdzie chciałem.");
-						logger.warn("marked scroll to unknown zone " + itemdata
-								+ " teleported " + player.getName() + " to Semos instead");
-					} else {
-						if (player.getKeyedSlot("!visited", zoneName) == null) {
-							player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
-									+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + player.getGenderVerb("byłeś") + ".");
-							return false;
-						} else {
-							zone = temp;
-							x = Integer.parseInt(st.nextToken());
-							y = Integer.parseInt(st.nextToken());
-						}
-					}
+	private void invalidateSavedPosition(final Player player, final String message) {
+		setItemData(null);
+		usedRing();
+		player.sendPrivateText(message);
+	}
+
+	private static SavedPosition parseSavedPosition(final String itemdata) {
+		if (itemdata == null) {
+			return null;
+		}
+		final StringTokenizer tokenizer = new StringTokenizer(itemdata);
+		if (tokenizer.countTokens() != 3) {
+			return null;
+		}
+		final String zoneName = tokenizer.nextToken();
+		try {
+			final int x = Integer.parseInt(tokenizer.nextToken());
+			final int y = Integer.parseInt(tokenizer.nextToken());
+			return new SavedPosition(zoneName, x, y);
+		} catch (final NumberFormatException e) {
+			return null;
+		}
+	}
+
+	static boolean isForbiddenReturnZone(final StendhalRPZone zone) {
+		if (zone == null) {
+			return true;
+		}
+		if (OZO_MAZE.equals(zone.getName()) || zone.getName().endsWith("_maze")) {
+			return true;
+		}
+		if (zone.getAttributes() != null && HAIZEN_MAZE_NAME.equals(zone.getAttributes().get("readable_name"))) {
+			return true;
+		}
+
+		try {
+			final InstanceZoneManager manager = SingletonRepository.getRPWorld().getInstanceZoneManager();
+			if (manager != null) {
+				final InstanceZoneDescriptor descriptor = manager.getDescriptor(zone.getID());
+				if (descriptor != null && "maze".equals(descriptor.getBaseZoneId())) {
+					return true;
 				}
 			}
+		} catch (final RuntimeException e) {
+			// A standalone zone used in tests may not belong to an initialized world.
+			// Explicit names and attributes above still protect the known mazes.
+			logger.debug("Could not inspect instance descriptor for " + zone.getName(), e);
+		}
+		return false;
+	}
 
-			if (player.teleport(zone, x, y, null, player)) {
-				TeleportNotifier.get().notify(player, true);
-				setItemData(null);
-				storeLastUsed();
-				usedRing();
+	private static final class SavedPosition {
+		private final String zoneName;
+		private final int x;
+		private final int y;
 
-				return true;
-			}
-			return false;
+		SavedPosition(final String zoneName, final int x, final int y) {
+			this.zoneName = zoneName;
+			this.x = x;
+			this.y = y;
 		}
 	}
 

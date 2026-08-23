@@ -362,12 +362,20 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 			npc.say("Hej! Jestem tutaj! Lepiej nie próbuj mnie oszukać...");
 			return false;
 		} else {
+			final String additionalOrderData = captureAdditionalOrderData(
+					productName, amount, player);
 			for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerProduct(productName).entrySet()) {
 				final int amountToDrop = amount * entry.getValue();
 				player.drop(entry.getKey(), amountToDrop);
 			}
 			final long timeNow = new Date().getTime();
-			player.setQuest(questSlot, amount + ";" + productName + ";" + timeNow);
+			final StringBuilder order = new StringBuilder()
+					.append(amount).append(';').append(productName).append(';')
+					.append(timeNow);
+			if (additionalOrderData != null && additionalOrderData.length() > 0) {
+				order.append(';').append(additionalOrderData);
+			}
+			player.setQuest(questSlot, order.toString());
 			npc.say("Dobrze zrobię dla Ciebie "
 					+ Grammar.quantityplnoun(amount, productName)
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
@@ -376,7 +384,16 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 		}
 	}
 
-	private Item getProduct(String productName) {
+	/**
+	 * Hook for producers which must persist instance data before ingredients are
+	 * removed. The default empty value retains the legacy three-field state.
+	 */
+	protected String captureAdditionalOrderData(final String productName,
+			final int amount, final Player player) {
+		return "";
+	}
+
+	protected Item getProduct(String productName) {
 		Item item = SingletonRepository.getEntityManager().getItem(productName);
 		if (item instanceof StackableItem) {
 			return (StackableItem) item;
@@ -386,6 +403,12 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 			// Obsługa innych typów produktów lub błąd, jeśli typ jest nieobsługiwany
 			throw new IllegalArgumentException("Unknown product type: " + productName);
 		}
+	}
+
+	/** Creates a product using optional versioned data stored with the order. */
+	protected Item getProduct(final String productName,
+			final String additionalOrderData) {
+		return getProduct(productName);
 	}
 
 	/**
@@ -404,12 +427,13 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 		final String[] order = orderString.split(";");
 		final int numberOfProductItems = Integer.parseInt(order[0]);
 		final String productName = order[1];
+		final String additionalOrderData = order.length > 3 ? order[3] : "";
 
 		if (!isOrderReady(player)) {
 			npc.say("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem. Wróć za "
 					+ getApproximateRemainingTime(player) + ", aby odebrać.");
 		} else {
-			Item products = getProduct(productName);
+			Item products = getProduct(productName, additionalOrderData);
 			if (products != null) {
 				if (products instanceof StackableItem) {
 					((StackableItem) products).setQuantity(numberOfProductItems);

@@ -66,6 +66,7 @@
 		<!-- process Ant build configuration files -->
 		<java classname="games.stendhal.tools.CleanWhitespace">
 			<classpath>
+				<pathelement path="."/>
 				<pathelement path="${build_polanieonlinetools}"/>
 			</classpath>
 			<arg value="${ant_modules}" />
@@ -188,5 +189,22 @@
 			<sysproperty key="showxp" value=""/>
 		</java>
 	</target> <!-- balance -->
+
+	<!-- Audit fixed endgame mithril loadouts without modifying creature stats. -->
+	<target name="balance_endgame" depends="compile_polanieonlinetools,server_build">
+		<java classname="games.stendhal.tools.EndgameBalanceAudit">
+			<classpath>
+				<pathelement path="${build_polanieonlinetools}"/>
+				<pathelement path="."/>
+				<pathelement path="${build_server}"/>
+				<pathelement path="${testsrc}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+			</classpath>
+			<sysproperty key="showxp" value=""/>
+		</java>
+	</target> <!-- balance_endgame -->
 
 </project>

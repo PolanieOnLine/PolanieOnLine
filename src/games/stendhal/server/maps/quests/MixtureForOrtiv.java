@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -185,7 +186,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 				new SayTextAction("Dziękuję bardzo! Teraz mogę zacząć mieszanie mikstury, która, miejmy nadzieję jest bezpieczna wewnątrz mojego własnego domu, bez morderców i bandytów, pochodzących z dołu. Poniżej znajduje się sztylet zabójcy dla Ciebie. Musiałam zabrać go jednemu z moich uczniów w klasie."),
 				new IncreaseXPAction(5000),
 				new IncreaseKarmaAction(25),
-				new EquipItemAction("sztylet mordercy", 1 ,true)
+				new EquipItemAction("sztylet mordercy", 1, true, ItemRarity.EPIC)
 				);
 		/* add triggers for the item names */
 		final ItemCollection items = new ItemCollection();

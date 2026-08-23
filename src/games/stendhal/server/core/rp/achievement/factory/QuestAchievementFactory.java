@@ -18,6 +18,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.core.rp.achievement.condition.QuestCountCompletedCondition;
 import games.stendhal.server.core.rp.achievement.condition.QuestsInRegionCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 import games.stendhal.server.maps.Region;
 
@@ -112,6 +113,12 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 			"Ukończono wszystkie zadania w mieście Kraków",
 			Achievement.MEDIUM_BASE_SCORE, true,
 			new QuestsInRegionCompletedCondition(Region.KRAKOW_CITY)));
+
+		achievements.add(createAchievement(
+			"quest.special.krakow.noble", "Szlachcic Kraka",
+			"Król Krak nadał szlachectwo za służbę mieszkańcom i dworowi",
+			Achievement.MEDIUM_BASE_SCORE, true,
+			new QuestCompletedCondition("krolewski_plaszcz")));
 
 		// complete nearly all the quests in the game?
 		achievements.add(createAchievement(

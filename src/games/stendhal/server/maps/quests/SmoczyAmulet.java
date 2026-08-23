@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2026 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -37,20 +38,23 @@ import games.stendhal.server.entity.player.Player;
 
 public class SmoczyAmulet extends AbstractQuest {
 	public static final String QUEST_SLOT = "dragon_amulet";
+	private static final String GREEN_CLAW = "pazur zielonego smoka";
+	private static final String RED_CLAW = "pazur czerwonego smoka";
+	private static final String BLUE_CLAW = "pazur niebieskiego smoka";
 	private final SpeakerNPC npc = npcs.get("Robercik");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, 
+			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, 
+			ConversationStates.QUEST_OFFERED,
 			"Przynieś mi 3 różne smocze pazurki, a zrobię z nich naszyjnik dla Ciebie, który będzie cię chronił. Jesteś zainteresowany?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Już wykonałem dla Ciebie naszyjnik.",
 			null);
 
@@ -58,7 +62,7 @@ public class SmoczyAmulet extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Okej. Wróć do mnie z #'pazurem zielonego smoka', #'pazurem czerwonego smoka' oraz #'pazurem niebieskiego smoka' mówiąc mi #naszynik.",
+			"Okej. Wróć do mnie z #'pazurem zielonego smoka', #'pazurem czerwonego smoka' oraz #'pazurem niebieskiego smoka' i powiedz #naszyjnik.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -69,22 +73,22 @@ public class SmoczyAmulet extends AbstractQuest {
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("pazurem zielonego smoka", "pazur zielonego smoka"),
+			Arrays.asList("pazurem zielonego smoka", GREEN_CLAW),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING, 
+			ConversationStates.ATTENDING,
 			"Zielony pazurek możesz złupić z zielonych smoków.",
 			null);
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("pazurem czerwonego smoka", "pazur czerwonego smoka"),
+			Arrays.asList("pazurem czerwonego smoka", RED_CLAW),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING, 
-			"Zielony pazurek możesz złupić z czerwonych smoków.",
+			ConversationStates.ATTENDING,
+			"Czerwony pazurek możesz złupić z czerwonych smoków.",
 			null);
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("pazurem niebieskiego smoka", "pazur niebieskiego smoka"),
+			Arrays.asList("pazurem niebieskiego smoka", BLUE_CLAW),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING, 
-			"Zielony pazurek możesz złupić z niebieskich smoków.",
+			ConversationStates.ATTENDING,
+			"Niebieski pazurek możesz złupić z niebieskich smoków.",
 			null);
 	}
 
@@ -92,10 +96,10 @@ public class SmoczyAmulet extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("necklace", "neck", "naszyjnik", "amulet", "przypomnij"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
-				new PlayerHasItemWithHimCondition("pazur zielonego smoka", 1),
-				new PlayerHasItemWithHimCondition("pazur czerwonego smoka", 1),
-				new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1)),
-			ConversationStates.QUEST_ITEM_BROUGHT, 
+				new PlayerHasItemWithHimCondition(GREEN_CLAW, 1),
+				new PlayerHasItemWithHimCondition(RED_CLAW, 1),
+				new PlayerHasItemWithHimCondition(BLUE_CLAW, 1)),
+			ConversationStates.QUEST_ITEM_BROUGHT,
 			"Ooo... zdobyłeś pazurki. Chcesz, abym wykonał dla Ciebie ten naszyjnik?",
 			null);
 
@@ -103,21 +107,21 @@ public class SmoczyAmulet extends AbstractQuest {
 			Arrays.asList("necklace", "neck", "naszyjnik", "amulet", "przypomnij"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 				new NotCondition(new AndCondition(
-					new PlayerHasItemWithHimCondition("pazur zielonego smoka", 1),
-					new PlayerHasItemWithHimCondition("pazur czerwonego smoka", 1),
-					new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1)))),
-			ConversationStates.ATTENDING, 
-			"Wróć jak zdobędziesz już wszystkie pazurki, o które Cię poprosiłem.",
+					new PlayerHasItemWithHimCondition(GREEN_CLAW, 1),
+					new PlayerHasItemWithHimCondition(RED_CLAW, 1),
+					new PlayerHasItemWithHimCondition(BLUE_CLAW, 1)))),
+			ConversationStates.ATTENDING,
+			"Wciąż potrzebuję trzech konkretnych pazurów: zielonego, czerwonego i niebieskiego smoka. Wróć z kompletem.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("pazur zielonego smoka", 1));
-		reward.add(new DropItemAction("pazur czerwonego smoka", 1));
-		reward.add(new DropItemAction("pazur niebieskiego smoka", 1));
+		reward.add(new DropItemAction(GREEN_CLAW, 1));
+		reward.add(new DropItemAction(RED_CLAW, 1));
+		reward.add(new DropItemAction(BLUE_CLAW, 1));
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(5));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new EquipItemAction("smocze pazury", 1, true));
+		reward.add(new EquipItemAction("smocze pazury", 1, true, ItemRarity.EPIC));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
@@ -156,7 +160,7 @@ public class SmoczyAmulet extends AbstractQuest {
 			res.add("Nie potrzebuję jakiegoś amuletu...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(player.getGenderVerb("Zgodziłem") + " się zebrać pazurki dla Robercika w zamian za amulet.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się zebrać dla Robercika trzy różne pazury: pazur zielonego smoka, pazur czerwonego smoka i pazur niebieskiego smoka.");
 		}
 		if ("done".equals(questState)) {
 			res.add(player.getGenderVerb("Zaniosłem") + " potrzebne smocze pazurki, a w zamian " + player.getGenderVerb("otrzymałem") + " smoczy amulet.");
