@@ -9,8 +9,11 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** Leaves the Challenge Arena and returns the visitor to Krakow. */
+/** Leaves the Challenge Arena and returns the visitor to Tarnow. */
 public final class LeaveChallengeArenaAction implements ChatAction {
+	private static final int TARNOW_RETURN_X = 44;
+	private static final int TARNOW_RETURN_Y = 64;
+
 	@Override
 	public void fire(final Player player, final Sentence sentence,
 			final EventRaiser raiser) {
@@ -22,11 +25,10 @@ public final class LeaveChallengeArenaAction implements ChatAction {
 			}
 		}
 
-		if (!player.teleport(ChallengeArenaZone.KRAKOW_EXIT_ZONE,
-				ChallengeArenaZone.KRAKOW_EXIT_X,
-				ChallengeArenaZone.KRAKOW_EXIT_Y,
+		if (!player.teleport(ChallengeArenaZone.TARNOW_CITY_ZONE,
+				TARNOW_RETURN_X, TARNOW_RETURN_Y,
 				Direction.DOWN, null)) {
-			raiser.say("Nie udało się teraz wrócić do Krakowa.");
+			raiser.say("Nie udało się teraz wrócić do Tarnowa.");
 		}
 	}
 }
