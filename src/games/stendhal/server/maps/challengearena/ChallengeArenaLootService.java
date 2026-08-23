@@ -21,6 +21,7 @@ import games.stendhal.server.entity.item.Item;
 public final class ChallengeArenaLootService {
 	private static final int SOURCE_LEVEL_BELOW_PLAYER = 60;
 	private static final int SOURCE_LEVEL_ABOVE_TARGET = 20;
+	private static final int MAX_BASE_VALUE_STAKE_DIVISOR = 5;
 
 	private ChallengeArenaLootService() {
 	}
@@ -60,6 +61,7 @@ public final class ChallengeArenaLootService {
 				playerLevel - SOURCE_LEVEL_BELOW_PLAYER);
 		final int maximumSourceLevel = Math.max(1, playerLevel
 				+ tier.getMaximumLevelOffset() + SOURCE_LEVEL_ABOVE_TARGET);
+		final double minimumDropProbability = minimumDropProbability(tier);
 
 		for (final DefaultCreature creature : entityManager.getDefaultCreatures()) {
 			if (creature == null || creature.getAiProfiles().containsKey("boss")) {
@@ -70,10 +72,11 @@ public final class ChallengeArenaLootService {
 				continue;
 			}
 			for (final DropItem drop : creature.getDropItems()) {
-				if (drop == null || drop.name == null || names.contains(drop.name)) {
+				if (drop == null || drop.name == null || names.contains(drop.name)
+						|| drop.probability < minimumDropProbability) {
 					continue;
 				}
-				if (isSafeEquipmentReward(entityManager, drop.name)) {
+				if (isSafeEquipmentReward(entityManager, drop.name, tier)) {
 					names.add(drop.name);
 				}
 			}
@@ -81,15 +84,33 @@ public final class ChallengeArenaLootService {
 		return new ArrayList<String>(names);
 	}
 
+	private static double minimumDropProbability(final ChallengeArenaTier tier) {
+		switch (tier) {
+			case HUNTER:
+				return 2.0;
+			case VETERAN:
+				return 1.0;
+			case CHAMPION:
+				return 0.5;
+			case LEGEND:
+				return 0.25;
+			default:
+				return 100.0;
+		}
+	}
+
 	private static boolean isSafeEquipmentReward(final EntityManager entityManager,
-			final String itemName) {
+			final String itemName, final ChallengeArenaTier tier) {
 		if (!entityManager.isItem(itemName) || "zdobyczny hełm".equals(itemName)) {
 			return false;
 		}
 		final Item item = entityManager.getItem(itemName,
 				ItemCreationContext.restore());
+		final int maxBaseValue = Math.max(1,
+				tier.getStake() / MAX_BASE_VALUE_STAKE_DIVISOR);
 		return item != null
 				&& item.getDefinitionValue() > 0
+				&& item.getDefinitionValue() <= maxBaseValue
 				&& !item.has("bound")
 				&& !item.has("autobind")
 				&& !item.isPersistent()
