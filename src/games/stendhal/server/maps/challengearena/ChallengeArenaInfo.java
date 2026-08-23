@@ -13,25 +13,25 @@ import games.stendhal.server.util.Area;
 public final class ChallengeArenaInfo {
 	private final Area arena;
 	private final StendhalRPZone zone;
-	private final String returnZone;
-	private final int returnX;
-	private final int returnY;
+	private final String lobbyZone;
+	private final int lobbyX;
+	private final int lobbyY;
 	private final int startX;
 	private final int startY;
 	private ChallengeArenaEngine engine;
 
 	public ChallengeArenaInfo(final Area arena, final StendhalRPZone zone,
-			final String returnZone, final int returnX, final int returnY,
+			final String lobbyZone, final int lobbyX, final int lobbyY,
 			final int startX, final int startY) {
-		if (arena == null || zone == null || returnZone == null
-				|| returnZone.trim().isEmpty()) {
+		if (arena == null || zone == null || lobbyZone == null
+				|| lobbyZone.trim().isEmpty()) {
 			throw new IllegalArgumentException("Challenge Arena world data must not be null");
 		}
 		this.arena = arena;
 		this.zone = zone;
-		this.returnZone = returnZone;
-		this.returnX = returnX;
-		this.returnY = returnY;
+		this.lobbyZone = lobbyZone;
+		this.lobbyX = lobbyX;
+		this.lobbyY = lobbyY;
 		this.startX = startX;
 		this.startY = startY;
 	}
@@ -61,8 +61,8 @@ public final class ChallengeArenaInfo {
 				Direction.DOWN, null);
 	}
 
-	public boolean returnPlayer(final Player player) {
-		return player != null && player.teleport(returnZone, returnX, returnY,
+	public boolean teleportToLobby(final Player player) {
+		return player != null && player.teleport(lobbyZone, lobbyX, lobbyY,
 				Direction.DOWN, null);
 	}
 
