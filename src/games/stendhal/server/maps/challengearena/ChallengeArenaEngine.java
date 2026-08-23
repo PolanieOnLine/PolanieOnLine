@@ -157,7 +157,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		arenaInfo.clearEngine(this);
 		if (!player.isDisconnected() && player.getHP() > 0
 				&& arenaInfo.isInArena(player)) {
-			arenaInfo.returnPlayer(player);
+			arenaInfo.teleportToLobby(player);
 		}
 	}
 
