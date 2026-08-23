@@ -22,7 +22,7 @@ import utilities.QuestHelper;
 
 public class ChallengeArenaNPCTest {
 	@BeforeClass
-	public static void beforeClass() {
+	public static void beforeClass() throws Exception {
 		QuestHelper.setUpBeforeClass();
 	}
 
