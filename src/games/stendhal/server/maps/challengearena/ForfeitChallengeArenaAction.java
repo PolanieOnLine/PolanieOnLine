@@ -10,15 +10,10 @@ import games.stendhal.server.entity.player.Player;
 
 /** Lets the owner abandon an active Challenge Arena run without a refund. */
 public final class ForfeitChallengeArenaAction implements ChatAction {
-	private final ChallengeArenaInfo arenaInfo;
-
-	public ForfeitChallengeArenaAction(final ChallengeArenaInfo arenaInfo) {
-		this.arenaInfo = arenaInfo;
-	}
-
 	@Override
 	public void fire(final Player player, final Sentence sentence,
 			final EventRaiser raiser) {
+		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo();
 		final ChallengeArenaEngine engine = arenaInfo == null
 				? null : arenaInfo.getEngine();
 		if (engine == null || !engine.forfeit(player)) {
