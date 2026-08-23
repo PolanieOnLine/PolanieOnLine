@@ -57,6 +57,12 @@ public class ZoneDisplayNameFormatterTest {
 	}
 
 	@Test
+	public void formatsChallengeArenaAsPlayerFacingName() {
+		assertThat(ZoneDisplayNameFormatter.formatTechnicalName("int_krakow_challenge_arena"),
+				equalTo("Arena Wyzwań"));
+	}
+
+	@Test
 	public void keepsCustomPrivateZoneName() {
 		final StendhalRPZone zone = new StendhalRPZone("instance_secret_house_0123456789");
 		zone.getAttributes().put("readable_name", "Kryjówka Witomira");
