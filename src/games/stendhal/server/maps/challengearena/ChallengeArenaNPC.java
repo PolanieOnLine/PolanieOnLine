@@ -7,22 +7,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Direction;
-import games.stendhal.server.core.engine.Spot;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.util.Area;
 
-/** Creates the in-world master used to start paid Challenge Arena runs. */
+/** Creates the master of the dedicated Challenge Arena near Krakow. */
 public final class ChallengeArenaNPC {
 	private ChallengeArenaNPC() {
 	}
 
-	public static void create(final StendhalRPZone zone, final Area arena,
-			final Spot entrance, final int x, final int y) {
-		final ChallengeArenaInfo arenaInfo = new ChallengeArenaInfo(arena, zone,
-				entrance);
-
+	public static void create(final StendhalRPZone zone, final int x, final int y) {
 		final SpeakerNPC npc = new SpeakerNPC("Mistrz Wyzwań") {
 			@Override
 			protected void createPath() {
@@ -31,15 +25,15 @@ public final class ChallengeArenaNPC {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj wojowniku. Jeśli zwykły Deathmatch to za mało zapytaj mnie o #arenę.");
-				addJob("Prowadzę Arenę Wyzwań dla wojowników którzy chcą postawić własne pieniądze na trudniejszą walkę.");
-				addHelp("Powiedz #arena. Wybierzesz stawkę a ona określi liczbę i siłę przeciwników. Podczas walki możesz powiedzieć #rezygnuję ale wpisowe wtedy przepada.");
-				addGoodbye("Wróć gdy będziesz gotowy na prawdziwe wyzwanie.");
+				addGreeting("Witaj wojowniku. Na tej arenie sam wybierasz stawkę i ryzyko. Zapytaj mnie o #arenę.");
+				addJob("Prowadzę Arenę Wyzwań na ziemiach Kraka.");
+				addHelp("Powiedz #arena aby wybrać stawkę. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada. Gdy chcesz wrócić do Krakowa powiedz #wyjdź.");
+				addGoodbye("Wróć gdy będziesz gotowy na kolejną walkę.");
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("arena", "arenę", "wyzwania"),
 						null, ConversationStates.QUESTION_1,
-						"Mam sześć prób. #próba kosztuje 100000 money. #potyczka kosztuje 250000 money. #łowca kosztuje 500000 money. #weteran kosztuje 1000000 money. #czempion kosztuje 2500000 money. #legenda kosztuje 5000000 money. Większa stawka oznacza więcej silniejszych przeciwników i trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
+						"Mam sześć prób. #próba kosztuje 100000 money. #potyczka kosztuje 250000 money. #łowca kosztuje 500000 money. #weteran kosztuje 1000000 money. #czempion kosztuje 2500000 money. #legenda kosztuje 5000000 money. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
 						null);
 
 				addTier(Arrays.asList("próba", "proba", "100000", "100k"),
@@ -55,27 +49,32 @@ public final class ChallengeArenaNPC {
 				addTier(Arrays.asList("legenda", "5000000", "5m"),
 						ChallengeArenaTier.LEGEND);
 
-				add(ConversationStates.ATTENDING,
+				add(ConversationStates.ANY,
 						Arrays.asList("rezygnuję", "rezygnuje", "poddaję", "poddaje"),
 						null, ConversationStates.ATTENDING, null,
-						new ForfeitChallengeArenaAction(arenaInfo));
-				addKnownChatOptions("arena", "rezygnuję");
+						new ForfeitChallengeArenaAction());
+				add(ConversationStates.ANY,
+						Arrays.asList("wyjdź", "wyjdz", "wychodzę", "wychodze"),
+						null, ConversationStates.IDLE, null,
+						new LeaveChallengeArenaAction());
+				addKnownChatOptions("arena", "rezygnuję", "wyjdź");
 			}
 
 			private void addTier(final List<String> triggers,
 					final ChallengeArenaTier tier) {
 				add(ConversationStates.QUESTION_1, triggers, null,
 						ConversationStates.ATTENDING, null,
-						new StartChallengeArenaAction(arenaInfo, tier));
+						new StartChallengeArenaAction(tier));
 			}
 		};
 
-		npc.setEntityClass("darkwizardnpc");
+		npc.setEntityClass("barracksbuyernpc");
+		npc.setGender("M");
 		npc.setPosition(x, y);
 		npc.setDirection(Direction.DOWN);
-		npc.setDescription("Oto Mistrz Wyzwań. Przyjmuje wysokie stawki za walki na Arenie Wyzwań.");
+		npc.setDescription("Oto Mistrz Wyzwań prowadzący arenę dla najodważniejszych wojowników ziem Kraka.");
 		npc.initHP(100);
-		npc.setPerceptionRange(7);
+		npc.setPerceptionRange(100);
 		zone.add(npc);
 	}
 }
