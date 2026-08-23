@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.Creature;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
 /** Runs one paid Challenge Arena session. */
@@ -20,18 +19,15 @@ public final class ChallengeArenaEngine implements TurnListener {
 
 	private final Player player;
 	private final ChallengeArenaInfo arenaInfo;
-	private final EventRaiser raiser;
 	private final ChallengeArenaCreatureSpawner spawner;
 	private final List<ChallengeArenaModifier> modifiers;
 
 	private boolean running = true;
 	private long nextWaveAt;
 
-	ChallengeArenaEngine(final Player player, final ChallengeArenaInfo arenaInfo,
-			final EventRaiser raiser) {
+	ChallengeArenaEngine(final Player player, final ChallengeArenaInfo arenaInfo) {
 		this.player = player;
 		this.arenaInfo = arenaInfo;
-		this.raiser = raiser;
 		this.spawner = new ChallengeArenaCreatureSpawner();
 
 		final ChallengeArenaState state = getState();
@@ -161,9 +157,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		arenaInfo.clearEngine(this);
 		if (!player.isDisconnected() && player.getHP() > 0
 				&& arenaInfo.isInArena(player)) {
-			player.teleport(arenaInfo.getEntrance().getZone(),
-					arenaInfo.getEntrance().getX(), arenaInfo.getEntrance().getY(),
-					null, null);
+			arenaInfo.returnPlayer(player);
 		}
 	}
 
@@ -182,9 +176,6 @@ public final class ChallengeArenaEngine implements TurnListener {
 				text.append(modifiers.get(i).getDisplayName());
 			}
 			player.sendPrivateText(text.toString());
-		}
-		if (raiser != null) {
-			raiser.say("Powodzenia. Na tej arenie liczy się tylko zwycięstwo.");
 		}
 	}
 }
