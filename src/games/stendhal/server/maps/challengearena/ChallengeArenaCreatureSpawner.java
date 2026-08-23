@@ -77,7 +77,8 @@ public final class ChallengeArenaCreatureSpawner {
 	}
 
 	Creature spawn(final Player player, final ChallengeArenaInfo arenaInfo,
-			final int targetLevel, final boolean forceElite) {
+			final int targetLevel, final boolean forceElite,
+			final List<ChallengeArenaModifier> modifiers) {
 		final Creature template = calculateCreature(targetLevel);
 		if (template == null) {
 			return null;
@@ -88,6 +89,13 @@ public final class ChallengeArenaCreatureSpawner {
 		creature.clearDropItemList();
 		if (forceElite) {
 			EliteCreatureService.promote(creature);
+		}
+		if (modifiers != null) {
+			for (final ChallengeArenaModifier modifier : modifiers) {
+				if (modifier != null) {
+					modifier.apply(creature);
+				}
+			}
 		}
 		creature.setTarget(player);
 
