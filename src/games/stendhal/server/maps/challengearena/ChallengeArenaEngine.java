@@ -100,10 +100,15 @@ public final class ChallengeArenaEngine implements TurnListener {
 			final int creatureNumber = alreadySpawned + spawnedNow + 1;
 			final int targetLevel = tier.getTargetCreatureLevel(
 					player.getLevel(), creatureNumber);
+			final boolean finalChampion = tier.isFinalChampion(creatureNumber);
 			final Creature creature = spawner.spawn(player, arenaInfo, targetLevel,
-					tier.shouldForceElite(creatureNumber), modifiers);
+					tier.shouldForceElite(creatureNumber), finalChampion, tier,
+					modifiers);
 			if (creature == null) {
 				break;
+			}
+			if (finalChampion) {
+				player.sendPrivateText("Na arenę wkracza Czempion Areny.");
 			}
 			spawnedNow++;
 		}
