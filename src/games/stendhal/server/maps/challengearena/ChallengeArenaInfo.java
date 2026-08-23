@@ -3,28 +3,37 @@
  ***************************************************************************/
 package games.stendhal.server.maps.challengearena;
 
+import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.Spot;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.Area;
 
-/** Holds the shared world objects used by Challenge Arena sessions. */
+/** Holds the dedicated world data used by Challenge Arena sessions. */
 public final class ChallengeArenaInfo {
 	private final Area arena;
 	private final StendhalRPZone zone;
-	private final Spot entrance;
+	private final String returnZone;
+	private final int returnX;
+	private final int returnY;
+	private final int startX;
+	private final int startY;
 	private ChallengeArenaEngine engine;
 
 	public ChallengeArenaInfo(final Area arena, final StendhalRPZone zone,
-			final Spot entrance) {
-		if (arena == null || zone == null || entrance == null) {
+			final String returnZone, final int returnX, final int returnY,
+			final int startX, final int startY) {
+		if (arena == null || zone == null || returnZone == null
+				|| returnZone.trim().isEmpty()) {
 			throw new IllegalArgumentException("Challenge Arena world data must not be null");
 		}
 		this.arena = arena;
 		this.zone = zone;
-		this.entrance = entrance;
+		this.returnZone = returnZone;
+		this.returnX = returnX;
+		this.returnY = returnY;
+		this.startX = startX;
+		this.startY = startY;
 	}
 
 	public Area getArena() {
@@ -35,27 +44,37 @@ public final class ChallengeArenaInfo {
 		return zone;
 	}
 
-	public Spot getEntrance() {
-		return entrance;
-	}
-
 	public boolean isInArena(final Player player) {
 		return player != null && arena.contains(player);
+	}
+
+	public boolean isEmpty() {
+		return arena.getPlayers().isEmpty();
 	}
 
 	public boolean hasOnlyPlayer(final Player player) {
 		return isInArena(player) && arena.getPlayers().size() == 1;
 	}
 
+	public boolean teleportIntoArena(final Player player) {
+		return player != null && player.teleport(zone, startX, startY,
+				Direction.DOWN, null);
+	}
+
+	public boolean returnPlayer(final Player player) {
+		return player != null && player.teleport(returnZone, returnX, returnY,
+				Direction.DOWN, null);
+	}
+
 	public synchronized boolean startSession(final Player player,
-			final ChallengeArenaTier tier, final EventRaiser raiser) {
+			final ChallengeArenaTier tier) {
 		if (player == null || tier == null || !hasOnlyPlayer(player)
-				|| !ChallengeArenaManager.reserve(player.getName())) {
+				|| !ChallengeArenaManager.isReservedBy(player.getName())) {
 			return false;
 		}
 		final ChallengeArenaState state = ChallengeArenaState.start(tier);
 		player.setQuest(ChallengeArenaState.QUEST_SLOT, state.serialize());
-		engine = new ChallengeArenaEngine(player, this, raiser);
+		engine = new ChallengeArenaEngine(player, this);
 		SingletonRepository.getTurnNotifier().notifyInTurns(0, engine);
 		return true;
 	}
