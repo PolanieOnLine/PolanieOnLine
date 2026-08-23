@@ -22,10 +22,10 @@
 	<group uri="zones/pol/gdansk.xml"/>
 	<group uri="zones/pol/koscielisko.xml"/>
 	<group uri="zones/pol/krakow.xml"/>
-	<group uri="zones/pol/challenge_arena.xml"/>
 	<group uri="zones/pol/labirynt.xml"/>
 	<group uri="zones/pol/pirates_island.xml"/>
 	<group uri="zones/pol/tarnow.xml"/>
+	<group uri="zones/pol/challenge_arena.xml"/>
 	<group uri="zones/pol/tatry.xml"/>
 	<group uri="zones/pol/warszawa.xml"/>
 	<group uri="zones/pol/wieliczka.xml"/>
