@@ -11,25 +11,28 @@ package games.stendhal.server.maps.challengearena;
  * arena modifiers. They do not guarantee a particular item reward.</p>
  */
 public enum ChallengeArenaTier {
-	TRIAL(100000, 10, -2, 2, 0, 0),
-	SKIRMISH(250000, 12, 0, 4, 0, 0),
-	HUNTER(500000, 15, 2, 6, 1, 0),
-	VETERAN(1000000, 18, 4, 8, 2, 1),
-	CHAMPION(2500000, 22, 6, 12, 3, 1),
-	LEGEND(5000000, 28, 8, 16, 5, 2);
+	TRIAL(100000, 10, 1, -2, 2, 0, 0),
+	SKIRMISH(250000, 12, 1, 0, 4, 0, 0),
+	HUNTER(500000, 15, 2, 2, 6, 1, 0),
+	VETERAN(1000000, 18, 2, 4, 8, 2, 1),
+	CHAMPION(2500000, 22, 3, 6, 12, 3, 1),
+	LEGEND(5000000, 28, 3, 8, 16, 5, 2);
 
 	private final int stake;
 	private final int creatureCount;
+	private final int waveSize;
 	private final int minimumLevelOffset;
 	private final int maximumLevelOffset;
 	private final int forcedEliteCount;
 	private final int modifierCount;
 
 	ChallengeArenaTier(final int stake, final int creatureCount,
-			final int minimumLevelOffset, final int maximumLevelOffset,
-			final int forcedEliteCount, final int modifierCount) {
+			final int waveSize, final int minimumLevelOffset,
+			final int maximumLevelOffset, final int forcedEliteCount,
+			final int modifierCount) {
 		this.stake = stake;
 		this.creatureCount = creatureCount;
+		this.waveSize = waveSize;
 		this.minimumLevelOffset = minimumLevelOffset;
 		this.maximumLevelOffset = maximumLevelOffset;
 		this.forcedEliteCount = forcedEliteCount;
@@ -42,6 +45,10 @@ public enum ChallengeArenaTier {
 
 	public int getCreatureCount() {
 		return creatureCount;
+	}
+
+	public int getWaveSize() {
+		return waveSize;
 	}
 
 	public int getMinimumLevelOffset() {
