@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../zones.xsd ">
+
+	<!-- Dedicated Challenge Arena on the Praslavic map near Krakow. -->
+	<zone name="int_krakow_challenge_arena" file="interiors/fado/battle_arena.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.challengearena.ChallengeArenaZone"/>
+	</zone>
+</zones>
