@@ -11,7 +11,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
-/** Creates the master of the dedicated Challenge Arena near Krakow. */
+/** Creates the master of the Challenge Arena in Tarnow. */
 public final class ChallengeArenaNPC {
 	private ChallengeArenaNPC() {
 	}
@@ -25,15 +25,15 @@ public final class ChallengeArenaNPC {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj wojowniku. Na tej arenie sam wybierasz stawkę i ryzyko. Zapytaj mnie o #arenę.");
-				addJob("Prowadzę Arenę Wyzwań na ziemiach Kraka.");
-				addHelp("Powiedz #arena aby wybrać stawkę. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada. Gdy chcesz wrócić do Krakowa powiedz #wyjdź.");
+				addGreeting("Witaj wojowniku. W Tarnowie sam wybierasz stawkę i trudność walki. Zapytaj mnie o #arenę.");
+				addJob("Prowadzę Arenę Wyzwań w Tarnowie.");
+				addHelp("Powiedz #arena aby wybrać stawkę. Po wybraniu próby powiedz #wejście. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada.");
 				addGoodbye("Wróć gdy będziesz gotowy na kolejną walkę.");
 
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("arena", "arenę", "wyzwania"),
 						null, ConversationStates.QUESTION_1,
-						"Mam sześć prób. #próba kosztuje 100000 sztuk złota. #potyczka kosztuje 250000 sztuk złota. #łowca kosztuje 500000 sztuk złota. #weteran kosztuje 1000000 sztuk złota. #czempion kosztuje 2500000 sztuk złota. #legenda kosztuje 5000000 sztuk złota. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
+						"Mam sześć prób. #próba kosztuje 100000 sztuk złota. #potyczka kosztuje 250000 sztuk złota. #łowca kosztuje 500000 sztuk złota. #weteran kosztuje 1000000 sztuk złota. #czempion kosztuje 2500000 sztuk złota. #legenda kosztuje 5000000 sztuk złota. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale.",
 						null);
 
 				add(ConversationStates.ATTENDING,
@@ -54,22 +54,29 @@ public final class ChallengeArenaNPC {
 				addTier(Arrays.asList("legenda", "5000000", "5m"),
 						ChallengeArenaTier.LEGEND);
 
+				add(ConversationStates.QUESTION_2,
+						Arrays.asList("wejście", "wejscie", "wchodzę", "wchodze",
+								"wejście na arenę", "wejscie na arene"),
+						null, ConversationStates.QUESTION_2, null,
+						new StartSelectedChallengeArenaAction());
+
 				add(ConversationStates.ANY,
 						Arrays.asList("rezygnuję", "rezygnuje", "poddaję", "poddaje"),
 						null, ConversationStates.ATTENDING, null,
 						new ForfeitChallengeArenaAction());
 				add(ConversationStates.ANY,
-						Arrays.asList("wyjdź", "wyjdz", "wychodzę", "wychodze"),
+						Arrays.asList("wyjdź", "wyjdz", "wyjście", "wyjscie",
+								"wychodzę", "wychodze", "opuścić", "opuscic"),
 						null, ConversationStates.IDLE, null,
 						new LeaveChallengeArenaAction());
-				addKnownChatOptions("arena", "wyniki", "rezygnuję", "wyjdź");
+				addKnownChatOptions("arena", "wyniki", "wejście", "rezygnuję", "wyjdź");
 			}
 
 			private void addTier(final List<String> triggers,
 					final ChallengeArenaTier tier) {
 				add(ConversationStates.QUESTION_1, triggers, null,
-						ConversationStates.ATTENDING, null,
-						new StartChallengeArenaAction(tier));
+						ConversationStates.QUESTION_2, null,
+						new SelectChallengeArenaTierAction(tier));
 			}
 		};
 
@@ -77,7 +84,7 @@ public final class ChallengeArenaNPC {
 		npc.setGender("M");
 		npc.setPosition(x, y);
 		npc.setDirection(Direction.DOWN);
-		npc.setDescription("Oto Mistrz Wyzwań prowadzący arenę dla najodważniejszych wojowników ziem Kraka.");
+		npc.setDescription("Oto Mistrz Wyzwań prowadzący tarnowską arenę dla najodważniejszych wojowników.");
 		npc.initHP(100);
 		npc.setPerceptionRange(100);
 		zone.add(npc);
