@@ -21,6 +21,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixStateTest;
 import games.stendhal.server.core.rule.rarity.ItemRarityServiceTest;
 import games.stendhal.server.entity.RPEntityGroupExperienceTest;
 import games.stendhal.server.entity.RPEntityWeaponDamageRollTest;
+import games.stendhal.server.entity.item.ChallengeArenaRewardChestTest;
 import games.stendhal.server.entity.status.BleedingAttackerFactoryTest;
 import games.stendhal.server.entity.status.BleedingAttackerTest;
 import games.stendhal.server.entity.status.BleedingStatusTest;
@@ -53,6 +54,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 	ChallengeArenaTierTest.class,
 	ChallengeArenaStateTest.class,
 	ChallengeArenaManagerTest.class,
+	ChallengeArenaRewardChestTest.class,
 	SeasonalZonePlanTest.class,
 	EasterEventPlanTest.class,
 	MineTownEventPlanTest.class,
