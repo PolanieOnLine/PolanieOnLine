@@ -58,7 +58,7 @@ public class ZoneDisplayNameFormatterTest {
 
 	@Test
 	public void formatsChallengeArenaAsPlayerFacingName() {
-		assertThat(ZoneDisplayNameFormatter.formatTechnicalName("int_krakow_challenge_arena"),
+		assertThat(ZoneDisplayNameFormatter.formatTechnicalName("int_tarnow_challenge_arena"),
 				equalTo("Arena Wyzwań"));
 	}
 
