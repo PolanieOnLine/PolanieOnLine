@@ -80,7 +80,8 @@ public class EquipItemAction implements ChatAction {
 	}
 
 	/**
-	 * Creates a deterministic quest reward with a forced rarity.
+	 * Creates a quest reward with a forced rarity. Its tier multipliers are
+	 * deterministic and non-Common rewards receive their persistent affixes.
 	 *
 	 * @param itemName name of item
 	 * @param amount amount for stackable items
@@ -93,7 +94,7 @@ public class EquipItemAction implements ChatAction {
 	}
 
 	/**
-	 * Creates a deterministic quest reward with fixed modifiers.
+	 * Creates a quest reward with fixed modifiers and persistent affixes.
 	 *
 	 * @param itemName name of item
 	 * @param amount amount for stackable items
@@ -255,7 +256,8 @@ public class EquipItemAction implements ChatAction {
 
 		final ItemCreationContext.Builder builder = ItemCreationContext.builder(Source.QUEST)
 				.withRarity(rarity)
-				.randomizeModifiers(randomizeModifiers);
+				.randomizeModifiers(randomizeModifiers)
+				.generateAffixes(rarity != ItemRarity.COMMON);
 		if (modifiers != null) {
 			builder.withModifiers(modifiers);
 		}

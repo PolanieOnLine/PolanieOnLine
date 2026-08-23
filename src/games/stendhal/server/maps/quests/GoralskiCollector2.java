@@ -179,7 +179,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 									raiser.say("Dziękuję. Ten egzemplarz trafi do zbrojowni. Masz coś jeszcze?");
 								} else {
 									final Item pas = SingletonRepository.getEntityManager().getItem(
-											"pas zbójnicki", ItemCreationContext.quest());
+											"pas zbójnicki", ItemCreationContext.questReward());
 									pas.setBoundTo(player.getName());
 									player.equipOrPutOnGround(pas);
 									player.addXP(75000);

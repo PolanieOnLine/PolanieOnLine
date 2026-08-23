@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -120,7 +121,7 @@ public class SmoczyAmulet extends AbstractQuest {
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(5));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new EquipItemAction("smocze pazury", 1, true));
+		reward.add(new EquipItemAction("smocze pazury", 1, true, ItemRarity.EPIC));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,

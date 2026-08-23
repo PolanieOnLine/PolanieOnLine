@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -54,6 +55,7 @@ public class BringMagic implements QuestManuscript {
 
 		quest.task()
 			.craftItem("magiczny hełm kolczy")
+			.rarity(ItemRarity.EPIC)
 			.waitingTime(0)
 			.completedQuest("kill_mountain_elves")
 			.requiredItem(100, "magia ziemi")

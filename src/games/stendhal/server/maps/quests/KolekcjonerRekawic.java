@@ -209,7 +209,7 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 	@Override
 	public void rewardPlayer(final Player player) {
 		final Item killer_belt = SingletonRepository.getEntityManager().getItem(
-				"pas zabójcy", ItemCreationContext.quest());
+				"pas zabójcy", ItemCreationContext.questReward());
 		killer_belt.setBoundTo(player.getName());
 		player.equipOrPutOnGround(killer_belt);
 		player.addKarma(30.0);

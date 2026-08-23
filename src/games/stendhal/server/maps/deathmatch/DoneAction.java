@@ -51,6 +51,9 @@ public class DoneAction implements ChatAction {
 	 * @return Helmet
 	 */
 	private Item createTrophyHelmet(final Player player) {
+		// This trophy deliberately remains Common. Its defense is advanced by the
+		// Deathmatch progression itself, so normal quest Epic scaling and affixes
+		// would stack two unrelated growth systems on the same instance.
 		final Item helmet = SingletonRepository.getEntityManager().getItem(
 				"zdobyczny hełm", ItemCreationContext.quest());
 		helmet.setBoundTo(player.getName());

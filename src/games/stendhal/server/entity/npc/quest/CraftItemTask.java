@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.constants.KillType;
@@ -42,6 +43,7 @@ import marauroa.common.Pair;
 
 public class CraftItemTask extends QuestTaskBuilder {
 	private String itemName;
+	private ItemRarity itemRarity = ItemRarity.COMMON;
 
 	private int waitingTime = 0;
 
@@ -61,6 +63,14 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	public CraftItemTask craftItem(String itemName) {
 		this.itemName = itemName;
+		return this;
+	}
+
+	public CraftItemTask rarity(ItemRarity rarity) {
+		if (rarity == null) {
+			throw new IllegalArgumentException("Crafted item rarity must not be null");
+		}
+		this.itemRarity = rarity;
 		return this;
 	}
 
@@ -334,7 +344,7 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	@Override
 	ChatAction buildQuestCompleteAction(String questSlot) {
-		return new EquipItemAction(getItemName(), 1, true);
+		return new EquipItemAction(getItemName(), 1, true, itemRarity);
 	}
 
 	String getItemName() {

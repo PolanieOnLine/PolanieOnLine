@@ -27,6 +27,7 @@ import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TutorialNotifier;
+import games.stendhal.server.core.rule.rarity.QuestRewardRarityMigrationService;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.Outfit;
@@ -100,6 +101,8 @@ public class PlayerTransformer implements Transformer {
 		StendhalQuestSystem.updatePlayerQuests(player);
 
 		UpdateConverter.updateQuests(player);
+		QuestRewardRarityMigrationService.migrate(player);
+		player.updateItemAtkDef();
 		// Should be at least after converting the features list, as this
 		// depends on checking the keyring feature.
 

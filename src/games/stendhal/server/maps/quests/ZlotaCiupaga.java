@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.CraftItemQuestBuilder;
@@ -50,6 +51,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 ciupaga\n#5 drewna\n#25 sztabek złota\noraz #'50 000' money.");
 
 		quest.task().craftItem("złota ciupaga")
+			.rarity(ItemRarity.EPIC)
 			.waitingTime(6 * 60) // 6 godzin
 			.playerMinLevel(100).playerMinKarma(100).completedQuest("kill_herszt_basehp")
 			.requiredItem(1, "ciupaga").requiredItem(5, "polano").requiredItem(25, "sztabka złota").requiredItem(50000, "money")

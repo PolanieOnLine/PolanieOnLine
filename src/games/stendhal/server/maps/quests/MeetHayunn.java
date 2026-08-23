@@ -170,7 +170,7 @@ public class MeetHayunn extends AbstractQuest {
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
-		reward2.add(new EquipItemAction("drewniana tarcza"));
+		reward2.add(new EquipItemAction("drewniana tarcza", 1, false));
 		reward2.add(new IncreaseXPAction(20));
 		reward2.add(new SetQuestAction(QUEST_SLOT, "done"));
 

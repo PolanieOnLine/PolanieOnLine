@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -236,7 +237,7 @@ public class VampireSword extends AbstractQuest {
 		reward.add(new IncreaseXPAction(5000));
 		reward.add(new IncreaseKarmaAction(15.0));
 		// here true means: yes, bound to player, in which case we also have to speciy the amount: 1
-		reward.add(new EquipItemAction("krwiopijca", 1, true));
+		reward.add(new EquipItemAction("krwiopijca", 1, true, ItemRarity.EPIC));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,

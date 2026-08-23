@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -136,7 +137,7 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("czarny płaszcz smoczy", 10));
 		reward.add(new IncreaseXPAction(100000));
-		reward.add(new EquipItemAction("tarcza cieni", 1, true));
+		reward.add(new EquipItemAction("tarcza cieni", 1, true, ItemRarity.EPIC));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(15));
 		npc.add(
