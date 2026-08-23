@@ -15,8 +15,12 @@ public class BleedingAttackerFactoryTest {
 		assertNotNull(attacker);
 		assertTrue(attacker instanceof BleedingAttacker);
 		assertEquals(15.0, attacker.getProbability(), 0.0);
-		assertEquals(BleedingAttacker.DEFAULT_DAMAGE_FACTOR,
+		assertEquals(BleedingAttacker.CREATURE_DEFAULT_DAMAGE_FACTOR,
 				attacker.getDamageFactor(), 0.0);
+		assertEquals(BleedingAttacker.CREATURE_MIN_TARGET_HP_FACTOR,
+				attacker.getMinimumTargetHpFactor(), 0.0);
+		assertEquals(BleedingAttacker.CREATURE_MAX_TARGET_HP_FACTOR,
+				attacker.getMaximumTargetHpFactor(), 0.0);
 	}
 
 	@Test
@@ -27,6 +31,10 @@ public class BleedingAttackerFactoryTest {
 		assertEquals(first.getProbability(), second.getProbability(), 0.0);
 		assertEquals(first.getDamageFactor(), second.getDamageFactor(), 0.0);
 		assertEquals(0.30, second.getDamageFactor(), 0.0);
+		assertEquals(first.getMinimumTargetHpFactor(),
+				second.getMinimumTargetHpFactor(), 0.0);
+		assertEquals(first.getMaximumTargetHpFactor(),
+				second.getMaximumTargetHpFactor(), 0.0);
 	}
 
 	@Test
@@ -34,8 +42,12 @@ public class BleedingAttackerFactoryTest {
 		final BleedingAttacker defaultDamage = BleedingAttackerFactory.get("12");
 		final BleedingAttacker customDamage = BleedingAttackerFactory.get("12;0.35");
 
-		assertEquals(BleedingAttacker.DEFAULT_DAMAGE_FACTOR,
+		assertEquals(BleedingAttacker.CREATURE_DEFAULT_DAMAGE_FACTOR,
 				defaultDamage.getDamageFactor(), 0.0);
 		assertEquals(0.35, customDamage.getDamageFactor(), 0.0);
+		assertEquals(BleedingAttacker.CREATURE_MIN_TARGET_HP_FACTOR,
+				customDamage.getMinimumTargetHpFactor(), 0.0);
+		assertEquals(BleedingAttacker.CREATURE_MAX_TARGET_HP_FACTOR,
+				customDamage.getMaximumTargetHpFactor(), 0.0);
 	}
 }
