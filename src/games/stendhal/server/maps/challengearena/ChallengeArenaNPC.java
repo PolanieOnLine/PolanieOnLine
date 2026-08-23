@@ -38,21 +38,26 @@ public final class ChallengeArenaNPC {
 				add(ConversationStates.ATTENDING,
 						Arrays.asList("arena", "arenę", "wyzwania"),
 						null, ConversationStates.QUESTION_1,
-						"Możesz postawić 100000, 250000, 500000, 1000000, 2500000 albo 5000000 money. Większa stawka oznacza więcej silniejszych przeciwników oraz trudniejsze fale. Wpisowe przepada po rozpoczęciu walki. Wybierz kwotę.",
+						"Mam sześć prób. #próba kosztuje 100000 money. #potyczka kosztuje 250000 money. #łowca kosztuje 500000 money. #weteran kosztuje 1000000 money. #czempion kosztuje 2500000 money. #legenda kosztuje 5000000 money. Większa stawka oznacza więcej silniejszych przeciwników i trudniejsze fale. Wpisowe przepada po rozpoczęciu walki.",
 						null);
 
-				addTier("100000", "100k", ChallengeArenaTier.TRIAL);
-				addTier("250000", "250k", ChallengeArenaTier.SKIRMISH);
-				addTier("500000", "500k", ChallengeArenaTier.HUNTER);
-				addTier("1000000", "1m", ChallengeArenaTier.VETERAN);
-				addTier("2500000", "2m5", ChallengeArenaTier.CHAMPION);
-				addTier("5000000", "5m", ChallengeArenaTier.LEGEND);
+				addTier(Arrays.asList("próba", "proba", "100000", "100k"),
+						ChallengeArenaTier.TRIAL);
+				addTier(Arrays.asList("potyczka", "250000", "250k"),
+						ChallengeArenaTier.SKIRMISH);
+				addTier(Arrays.asList("łowca", "lowca", "500000", "500k"),
+						ChallengeArenaTier.HUNTER);
+				addTier(Arrays.asList("weteran", "1000000", "1m"),
+						ChallengeArenaTier.VETERAN);
+				addTier(Arrays.asList("czempion", "2500000", "2m5"),
+						ChallengeArenaTier.CHAMPION);
+				addTier(Arrays.asList("legenda", "5000000", "5m"),
+						ChallengeArenaTier.LEGEND);
 			}
 
-			private void addTier(final String amount, final String shortName,
+			private void addTier(final java.util.List<String> triggers,
 					final ChallengeArenaTier tier) {
-				add(ConversationStates.QUESTION_1,
-						Arrays.asList(amount, shortName), null,
+				add(ConversationStates.QUESTION_1, triggers, null,
 						ConversationStates.ATTENDING, null,
 						new StartChallengeArenaAction(arenaInfo, tier));
 			}
