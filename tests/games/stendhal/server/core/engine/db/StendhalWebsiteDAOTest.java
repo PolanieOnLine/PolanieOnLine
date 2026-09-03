@@ -19,7 +19,9 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
+import marauroa.server.game.db.DAORegister;
 import marauroa.server.game.db.DatabaseFactory;
+import marauroa.server.game.db.RPObjectDAO;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
@@ -66,6 +68,52 @@ public class StendhalWebsiteDAOTest {
 			try {
 				assertTrue(result.next());
 				assertEquals("", result.getString("offensive_rune"));
+			} finally {
+				result.close();
+			}
+
+			TransactionPool.get().rollback(transaction);
+		} catch (final Exception e) {
+			TransactionPool.get().rollback(transaction);
+			throw e;
+		}
+	}
+
+	@Test
+	public void testBackfillRuneStatsLoadsPersistedRPObject() throws Exception {
+		final DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			final String name = "legacy_backfill_rune_stats";
+			transaction.execute("DELETE FROM character_stats WHERE name='" + name + "'", null);
+			transaction.execute("DELETE FROM characters WHERE charname='" + name + "'", null);
+
+			final RPObject player = new RPObject();
+			player.setRPClass("player");
+			player.put("name", name);
+			player.addSlot(new RPSlot("offensive_rune"));
+			player.getSlot("offensive_rune").add(
+					new Item("persisted offensive rune", "rune", "test", null));
+
+			final int objectId = DAORegister.get().get(RPObjectDAO.class)
+					.storeRPObject(transaction, player);
+			transaction.execute(
+					"INSERT INTO characters (player_id, charname, object_id, status)"
+					+ " VALUES (1, '" + name + "', " + objectId + ", 'active')", null);
+			transaction.execute(
+					"INSERT INTO character_stats (name, offensive_rune, defensive_rune,"
+					+ " resistance_rune, utility_rune, healing_rune, control_rune, special_rune)"
+					+ " VALUES ('" + name + "', NULL, NULL, NULL, NULL, NULL, NULL, NULL)", null);
+
+			final StendhalWebsiteDAO dao = new StendhalWebsiteDAO();
+			assertEquals(1, dao.backfillRuneStats(transaction));
+
+			final ResultSet result = transaction.query(
+					"SELECT offensive_rune, defensive_rune FROM character_stats"
+					+ " WHERE name='" + name + "'", null);
+			try {
+				assertTrue(result.next());
+				assertEquals("persisted offensive rune", result.getString("offensive_rune"));
+				assertEquals("", result.getString("defensive_rune"));
 			} finally {
 				result.close();
 			}
