@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.Constants;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.db.AchievementDAO;
 import games.stendhal.server.core.engine.db.PendingAchievementDAO;
@@ -70,6 +71,7 @@ public class StendhalPlayerDatabase {
 		}
 
 		registerStendhalDAOs();
+		backfillRuneStats();
 	}
 
 
@@ -285,11 +287,7 @@ public class StendhalPlayerDatabase {
 		}
 
 		// expose equipped runes in character_stats for direct database and website queries
-		final String[] runeColumns = {
-				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune",
-				"healing_rune", "control_rune", "special_rune"
-		};
-		for (final String runeColumn : runeColumns) {
+		for (final String runeColumn : Constants.RUNE_SLOTS) {
 			if (!transaction.doesColumnExist("character_stats", runeColumn)) {
 				transaction.execute("ALTER TABLE character_stats ADD COLUMN (" + runeColumn + " VARCHAR(64));", null);
 			}
@@ -329,6 +327,27 @@ public class StendhalPlayerDatabase {
 				prepareStatement.addBatch();
 			} while (set.next());
 			prepareStatement.executeBatch();
+		}
+	}
+
+
+	/**
+	 * Populates the readable rune mirror for characters that predate the rune
+	 * columns. This runs after DAO registration because it loads raw RPObjects
+	 * through Marauroa's persistence DAO.
+	 */
+	private void backfillRuneStats() {
+		final DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			final int updated = DAORegister.get().get(StendhalWebsiteDAO.class)
+					.backfillRuneStats(transaction);
+			TransactionPool.get().commit(transaction);
+			if (updated > 0) {
+				logger.info("Backfilled rune statistics for " + updated + " characters.");
+			}
+		} catch (final Exception e) {
+			logger.error("Could not backfill rune statistics", e);
+			TransactionPool.get().rollback(transaction);
 		}
 	}
 

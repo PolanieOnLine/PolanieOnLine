@@ -11,13 +11,18 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine.db;
 
+import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.Constants;
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
@@ -26,6 +31,8 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
+import marauroa.server.game.db.DAORegister;
+import marauroa.server.game.db.RPObjectDAO;
 
 
 /**
@@ -33,6 +40,60 @@ import marauroa.server.db.TransactionPool;
  */
 public class StendhalWebsiteDAO {
 	private static Logger logger = Logger.getLogger(StendhalWebsiteDAO.class);
+
+	private static final String RUNE_STATS_COLUMNS = buildRuneStatsColumns();
+	private static final String RUNE_STATS_VALUES = buildRuneStatsValues();
+	private static final String RUNE_STATS_SET_CLAUSE = buildRuneStatsSetClause();
+	private static final String RUNE_STATS_UPDATE_QUERY =
+			"UPDATE character_stats SET " + RUNE_STATS_SET_CLAUSE + " WHERE name='[name]'";
+	private static final String INCOMPLETE_RUNE_STATS_QUERY = buildIncompleteRuneStatsQuery();
+
+	private static String buildRuneStatsColumns() {
+		final StringBuilder result = new StringBuilder();
+		for (final String slot : Constants.RUNE_SLOTS) {
+			if (result.length() > 0) {
+				result.append(", ");
+			}
+			result.append(slot);
+		}
+		return result.toString();
+	}
+
+	private static String buildRuneStatsValues() {
+		final StringBuilder result = new StringBuilder();
+		for (final String slot : Constants.RUNE_SLOTS) {
+			if (result.length() > 0) {
+				result.append(", ");
+			}
+			result.append("'[").append(slot).append("]'");
+		}
+		return result.toString();
+	}
+
+	private static String buildRuneStatsSetClause() {
+		final StringBuilder result = new StringBuilder();
+		for (final String slot : Constants.RUNE_SLOTS) {
+			if (result.length() > 0) {
+				result.append(", ");
+			}
+			result.append(slot).append("='[").append(slot).append("]'");
+		}
+		return result.toString();
+	}
+
+	private static String buildIncompleteRuneStatsQuery() {
+		final StringBuilder result = new StringBuilder(
+				"SELECT characters.object_id FROM character_stats, characters"
+				+ " WHERE character_stats.name=characters.charname AND (");
+		for (int i = 0; i < Constants.RUNE_SLOTS.length; i++) {
+			if (i > 0) {
+				result.append(" OR ");
+			}
+			result.append("character_stats.").append(Constants.RUNE_SLOTS[i]).append(" IS NULL");
+		}
+		result.append(")");
+		return result.toString();
+	}
 
 	/**
 	 * clears the online status of all players (used on server startup)
@@ -127,10 +188,8 @@ public class StendhalWebsiteDAO {
 			+ " married='[married]', atk='[atk]', def='[def]', ratk='[ratk]', mining='[mining]', hp='[hp]', karma='[karma]',"
 			+ " neck='[neck]', head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]', pas='[pas]',"
 			+ " legs='[legs]', feet='[feet]', cloak='[cloak]',"
-			+ " glove='[glove]', finger='[finger]', fingerb='[fingerb]',"
-			+ " offensive_rune='[offensive_rune]', defensive_rune='[defensive_rune]',"
-			+ " resistance_rune='[resistance_rune]', utility_rune='[utility_rune]', healing_rune='[healing_rune]',"
-			+ " control_rune='[control_rune]', special_rune='[special_rune]',"
+			+ " glove='[glove]', finger='[finger]', fingerb='[fingerb]', "
+			+ RUNE_STATS_SET_CLAUSE + ","
 			+ " zone='[zone]', lastseen='[lastseen]'"
 			+ " WHERE name='[name]'";
 
@@ -178,13 +237,9 @@ public class StendhalWebsiteDAO {
 		params.put("glove", extractName(player.getGloves()));
 		params.put("finger", extractSlotItemName(player, "finger"));
 		params.put("fingerb", extractName(player.getRingB()));
-		params.put("offensive_rune", extractSlotItemName(player, "offensive_rune"));
-		params.put("defensive_rune", extractSlotItemName(player, "defensive_rune"));
-		params.put("resistance_rune", extractSlotItemName(player, "resistance_rune"));
-		params.put("utility_rune", extractSlotItemName(player, "utility_rune"));
-		params.put("healing_rune", extractSlotItemName(player, "healing_rune"));
-		params.put("control_rune", extractSlotItemName(player, "control_rune"));
-		params.put("special_rune", extractSlotItemName(player, "special_rune"));
+		for (final String runeSlot : Constants.RUNE_SLOTS) {
+			params.put(runeSlot, extractRuneName(player, runeSlot));
+		}
 		params.put("name", player.getName());
 		String zoneName = "";
 		StendhalRPZone zone = player.getZone();
@@ -208,19 +263,93 @@ public class StendhalWebsiteDAO {
 			+ " (name, admin, sentence, age, gender, level,"
 			+ " outfit, outfit_colors, outfit_layers, xp, money, married, atk, def, ratk, mining, hp,"
 			+ " karma, neck, head, armor, lhand, rhand, pas,"
-			+ " legs, feet, cloak, glove, finger, fingerb,"
-			+ " offensive_rune, defensive_rune, resistance_rune, utility_rune, healing_rune,"
-			+ " control_rune, special_rune, zone, lastseen)"
+			+ " legs, feet, cloak, glove, finger, fingerb, "
+			+ RUNE_STATS_COLUMNS + ", zone, lastseen)"
 			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[gender]', '[level]',"
 			+ " '[outfit]', '[outfit_colors]', '[outfit_layers]', '[xp]', '[money]', '[married]',"
 			+ " '[atk]', '[def]', '[ratk]', '[mining]', '[hp]', '[karma]', '[neck]', '[head]', '[armor]',"
-			+ " '[lhand]', '[rhand]', '[pas]', '[legs]', '[feet]', '[cloak]', '[glove]', '[finger]', '[fingerb]',"
-			+ " '[offensive_rune]', '[defensive_rune]', '[resistance_rune]', '[utility_rune]', '[healing_rune]',"
-			+ " '[control_rune]', '[special_rune]', '[zone]', '[lastseen]')";
+			+ " '[lhand]', '[rhand]', '[pas]', '[legs]', '[feet]', '[cloak]', '[glove]', '[finger]', '[fingerb]', "
+			+ RUNE_STATS_VALUES + ", '[zone]', '[lastseen]')";
 		Map<String, Object> params = getParamsFromPlayer(player);
 		params.put("lastseen", timestamp);
 		logger.debug("storeCharacter is running: " + query);
 		transaction.execute(query, params);
+	}
+
+	/**
+	 * Updates only the rune mirror for a player object. This accepts a raw
+	 * persisted RPObject so it can also be used to migrate characters which
+	 * have not logged in since rune columns were added to character_stats.
+	 *
+	 * @param transaction DBTransaction
+	 * @param player player object
+	 * @return number of updated rows
+	 * @throws SQLException in case of a database error
+	 */
+	protected int updateRuneStats(final DBTransaction transaction, final RPObject player) throws SQLException {
+		final Map<String, Object> params = new HashMap<String, Object>();
+		for (final String runeSlot : Constants.RUNE_SLOTS) {
+			params.put(runeSlot, extractRuneName(player, runeSlot));
+		}
+		params.put("name", player.get("name"));
+		return transaction.execute(RUNE_STATS_UPDATE_QUERY, params);
+	}
+
+	/**
+	 * Backfills rune columns which have never been populated. Empty rune slots
+	 * are stored as empty strings, so completed records are not scanned again
+	 * on subsequent server starts.
+	 *
+	 * @param transaction DBTransaction
+	 * @return number of updated character_stats rows
+	 * @throws SQLException in case of a database error
+	 * @throws IOException in case a persisted RPObject cannot be loaded
+	 */
+	public int backfillRuneStats(final DBTransaction transaction) throws SQLException, IOException {
+		final List<Integer> objectIds = new ArrayList<Integer>();
+		final ResultSet result = transaction.query(INCOMPLETE_RUNE_STATS_QUERY, null);
+		try {
+			while (result.next()) {
+				objectIds.add(Integer.valueOf(result.getInt("object_id")));
+			}
+		} finally {
+			result.close();
+		}
+
+		if (objectIds.isEmpty()) {
+			return 0;
+		}
+
+		final RPObjectDAO rpObjectDAO = DAORegister.get().get(RPObjectDAO.class);
+		int updated = 0;
+		for (final Integer objectId : objectIds) {
+			final RPObject player = rpObjectDAO.loadRPObject(transaction, objectId.intValue(), false);
+			if (player != null && player.has("name")) {
+				updated += updateRuneStats(transaction, player);
+			}
+		}
+		return updated;
+	}
+
+	/**
+	 * Gets the equipped rune name from either a live Player or a raw persisted
+	 * RPObject. Missing rune slots are represented by an empty string so NULL
+	 * remains reserved for records that still require migration.
+	 *
+	 * @param instance player object
+	 * @param slotName rune slot name
+	 * @return rune name, or an empty string if the slot is empty
+	 */
+	private String extractRuneName(final RPObject instance, final String slotName) {
+		if (instance != null && slotName != null && instance.hasSlot(slotName)) {
+			final RPSlot rpslot = instance.getSlot(slotName);
+			for (final RPObject object : rpslot) {
+				if (object.has("name")) {
+					return object.get("name");
+				}
+			}
+		}
+		return "";
 	}
 
 	/**

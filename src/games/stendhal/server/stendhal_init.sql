@@ -39,13 +39,13 @@ create table if not exists character_stats
   feet varchar(32),
 
   /* Runes */
-  offensive_rune varchar(64),
-  defensive_rune varchar(64),
-  resistance_rune varchar(64),
-  utility_rune varchar(64),
-  healing_rune varchar(64),
-  control_rune varchar(64),
-  special_rune varchar(64),
+  offensive_rune varchar(64) default '',
+  defensive_rune varchar(64) default '',
+  resistance_rune varchar(64) default '',
+  utility_rune varchar(64) default '',
+  healing_rune varchar(64) default '',
+  control_rune varchar(64) default '',
+  special_rune varchar(64) default '',
 
   zone varchar(50),
 
