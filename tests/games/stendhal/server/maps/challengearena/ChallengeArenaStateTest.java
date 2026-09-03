@@ -30,6 +30,7 @@ public class ChallengeArenaStateTest {
 		assertNull(ChallengeArenaState.parse("garbage"));
 		assertNull(ChallengeArenaState.parse("active;unknown;5;123"));
 		assertNull(ChallengeArenaState.parse("active;TRIAL;bad;123"));
+		assertNull(ChallengeArenaState.parse("active;TRIAL;5;bad"));
 	}
 
 	@Test

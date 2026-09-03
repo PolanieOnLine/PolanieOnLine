@@ -3,8 +3,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.challengearena;
 
-import games.stendhal.common.MathHelper;
-
 /** Persistent state stored in the player quest slot for Challenge Arena runs. */
 public final class ChallengeArenaState {
 	public static final String QUEST_SLOT = "challenge_arena";
@@ -79,8 +77,10 @@ public final class ChallengeArenaState {
 		try {
 			final Lifecycle lifecycle = Lifecycle.valueOf(parts[0].trim().toUpperCase());
 			final ChallengeArenaTier tier = ChallengeArenaTier.valueOf(parts[1].trim().toUpperCase());
-			final int spawned = parts.length > 2 ? MathHelper.parseInt(parts[2]) : 0;
-			final long started = parts.length > 3 ? Long.parseLong(parts[3]) : 0L;
+			final int spawned = parts.length > 2
+					? Integer.parseInt(parts[2].trim()) : 0;
+			final long started = parts.length > 3
+					? Long.parseLong(parts[3].trim()) : 0L;
 			return new ChallengeArenaState(lifecycle, tier, spawned, started);
 		} catch (final IllegalArgumentException e) {
 			return null;

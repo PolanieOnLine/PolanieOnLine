@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -38,7 +39,8 @@ public class ChallengeArenaNPCTest {
 		ChallengeArenaNPC.create(zone, 32, 46);
 
 		SpeakerNPC npc = null;
-		for (final SpeakerNPC candidate : zone.getEntitiesOfClass(SpeakerNPC.class)) {
+		for (final Entity entity : zone.getEntitiesOfClass(SpeakerNPC.class)) {
+			final SpeakerNPC candidate = (SpeakerNPC) entity;
 			if ("Mistrz Wyzwań".equals(candidate.getName())) {
 				npc = candidate;
 				break;
@@ -53,27 +55,38 @@ public class ChallengeArenaNPCTest {
 		engine.step(player, "hi");
 		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
 
-		engine.step(player, "arena");
-		assertEquals(ConversationStates.QUESTION_1, engine.getCurrentState());
-		assertTrue(getReply(npc).contains("#próba"));
+		final String[] triggers = {
+				"próba", "potyczka", "łowca", "weteran", "czempion", "legenda"
+		};
+		final ChallengeArenaTier[] tiers = {
+				ChallengeArenaTier.TRIAL,
+				ChallengeArenaTier.SKIRMISH,
+				ChallengeArenaTier.HUNTER,
+				ChallengeArenaTier.VETERAN,
+				ChallengeArenaTier.CHAMPION,
+				ChallengeArenaTier.LEGEND
+		};
 
-		engine.step(player, "próba");
-		assertEquals(ConversationStates.QUESTION_2, engine.getCurrentState());
-		assertEquals(ChallengeArenaTier.TRIAL.name(),
-				player.getQuest(SelectChallengeArenaTierAction.SELECTION_SLOT));
-		assertTrue(getReply(npc).contains("100000"));
+		// Tier keywords must work directly after greeting, matching real player use.
+		for (int i = 0; i < triggers.length; i++) {
+			engine.setCurrentState(ConversationStates.ATTENDING);
+			engine.step(player, triggers[i]);
+			assertEquals(ConversationStates.QUESTION_2, engine.getCurrentState());
+			assertEquals(tiers[i].name(),
+					player.getQuest(SelectChallengeArenaTierAction.SELECTION_SLOT));
+		}
 
-		engine.step(player, "arena");
-		assertEquals(ConversationStates.QUESTION_1, engine.getCurrentState());
-		engine.step(player, "potyczka");
-		assertEquals(ConversationStates.QUESTION_2, engine.getCurrentState());
-		assertEquals(ChallengeArenaTier.SKIRMISH.name(),
-				player.getQuest(SelectChallengeArenaTierAction.SELECTION_SLOT));
+		// They must also work after asking the NPC to show the arena offer.
+		for (int i = 0; i < triggers.length; i++) {
+			engine.setCurrentState(ConversationStates.ATTENDING);
+			engine.step(player, "arena");
+			assertEquals(ConversationStates.QUESTION_1, engine.getCurrentState());
+			assertTrue(getReply(npc).contains("#próba"));
 
-		engine.setCurrentState(ConversationStates.ATTENDING);
-		engine.step(player, "legenda");
-		assertEquals(ConversationStates.QUESTION_2, engine.getCurrentState());
-		assertEquals(ChallengeArenaTier.LEGEND.name(),
-				player.getQuest(SelectChallengeArenaTierAction.SELECTION_SLOT));
+			engine.step(player, triggers[i]);
+			assertEquals(ConversationStates.QUESTION_2, engine.getCurrentState());
+			assertEquals(tiers[i].name(),
+					player.getQuest(SelectChallengeArenaTierAction.SELECTION_SLOT));
+		}
 	}
 }

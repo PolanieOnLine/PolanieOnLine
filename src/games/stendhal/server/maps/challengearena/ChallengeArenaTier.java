@@ -167,6 +167,7 @@ public enum ChallengeArenaTier {
 			if (tier.stake == stake) {
 				return tier;
 			}
+		}
 		return null;
 	}
 }
