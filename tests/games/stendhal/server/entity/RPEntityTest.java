@@ -264,8 +264,9 @@ public class RPEntityTest {
 
 		final Item righthanditem = SingletonRepository.getEntityManager().getItem("miecz praworęczny");
 		entity.getSlot("rhand").add(righthanditem);
-		assertThat(entity.getItemAtk(),
-				is((float) (lefthanditem.getAttack() + righthanditem.getAttack())));
+		final float expectedItemAtk = (float) Math.round(
+				lefthanditem.getAverageDamage() + righthanditem.getAverageDamage());
+		assertThat(entity.getItemAtk(), is(expectedItemAtk));
 	}
 
 	/**
