@@ -38,6 +38,15 @@ create table if not exists character_stats
   fingerb varchar(32),
   feet varchar(32),
 
+  /* Runes */
+  offensive_rune varchar(64),
+  defensive_rune varchar(64),
+  resistance_rune varchar(64),
+  utility_rune varchar(64),
+  healing_rune varchar(64),
+  control_rune varchar(64),
+  special_rune varchar(64),
+
   zone varchar(50),
 
   timedate timestamp default CURRENT_TIMESTAMP,

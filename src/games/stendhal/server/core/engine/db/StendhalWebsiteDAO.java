@@ -126,8 +126,12 @@ public class StendhalWebsiteDAO {
 			+ " outfit=[outfit], outfit_colors='[outfit_colors]', outfit_layers='[outfit_layers]', xp=[xp], money='[money]',"
 			+ " married='[married]', atk='[atk]', def='[def]', ratk='[ratk]', mining='[mining]', hp='[hp]', karma='[karma]',"
 			+ " neck='[neck]', head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]', pas='[pas]',"
-			+ " legs='[legs]', feet='[feet]', cloak='[cloak]', lastseen='[lastseen]',"
-			+ " glove='[glove]', finger='[finger]', fingerb='[fingerb]', zone='[zone]'"
+			+ " legs='[legs]', feet='[feet]', cloak='[cloak]',"
+			+ " glove='[glove]', finger='[finger]', fingerb='[fingerb]',"
+			+ " offensive_rune='[offensive_rune]', defensive_rune='[defensive_rune]',"
+			+ " resistance_rune='[resistance_rune]', utility_rune='[utility_rune]', healing_rune='[healing_rune]',"
+			+ " control_rune='[control_rune]', special_rune='[special_rune]',"
+			+ " zone='[zone]', lastseen='[lastseen]'"
 			+ " WHERE name='[name]'";
 
 		Map<String, Object> params = getParamsFromPlayer(player);
@@ -165,15 +169,22 @@ public class StendhalWebsiteDAO {
 		params.put("neck", extractName(player.getNecklace()));
 		params.put("head", extractName(player.getHelmet()));
 		params.put("armor", extractName(player.getArmor()));
-		params.put("lhand", extractHandName(player, "lhand"));
-		params.put("rhand", extractHandName(player, "rhand"));
+		params.put("lhand", extractSlotItemName(player, "lhand"));
+		params.put("rhand", extractSlotItemName(player, "rhand"));
 		params.put("pas", extractName(player.getBelt()));
 		params.put("legs", extractName(player.getLegs()));
 		params.put("feet", extractName(player.getBoots()));
 		params.put("cloak", extractName(player.getCloak()));
 		params.put("glove", extractName(player.getGloves()));
-		params.put("finger", extractHandName(player, "finger"));
+		params.put("finger", extractSlotItemName(player, "finger"));
 		params.put("fingerb", extractName(player.getRingB()));
+		params.put("offensive_rune", extractSlotItemName(player, "offensive_rune"));
+		params.put("defensive_rune", extractSlotItemName(player, "defensive_rune"));
+		params.put("resistance_rune", extractSlotItemName(player, "resistance_rune"));
+		params.put("utility_rune", extractSlotItemName(player, "utility_rune"));
+		params.put("healing_rune", extractSlotItemName(player, "healing_rune"));
+		params.put("control_rune", extractSlotItemName(player, "control_rune"));
+		params.put("special_rune", extractSlotItemName(player, "special_rune"));
 		params.put("name", player.getName());
 		String zoneName = "";
 		StendhalRPZone zone = player.getZone();
@@ -197,12 +208,15 @@ public class StendhalWebsiteDAO {
 			+ " (name, admin, sentence, age, gender, level,"
 			+ " outfit, outfit_colors, outfit_layers, xp, money, married, atk, def, ratk, mining, hp,"
 			+ " karma, neck, head, armor, lhand, rhand, pas,"
-			+ " legs, feet, cloak, glove, finger, fingerb, zone, lastseen)"
+			+ " legs, feet, cloak, glove, finger, fingerb,"
+			+ " offensive_rune, defensive_rune, resistance_rune, utility_rune, healing_rune,"
+			+ " control_rune, special_rune, zone, lastseen)"
 			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[gender]', '[level]',"
 			+ " '[outfit]', '[outfit_colors]', '[outfit_layers]', '[xp]', '[money]', '[married]',"
 			+ " '[atk]', '[def]', '[ratk]', '[mining]', '[hp]', '[karma]', '[neck]', '[head]', '[armor]',"
 			+ " '[lhand]', '[rhand]', '[pas]', '[legs]', '[feet]', '[cloak]', '[glove]', '[finger]', '[fingerb]',"
-			+ " '[zone]', '[lastseen]')";
+			+ " '[offensive_rune]', '[defensive_rune]', '[resistance_rune]', '[utility_rune]', '[healing_rune]',"
+			+ " '[control_rune]', '[special_rune]', '[zone]', '[lastseen]')";
 		Map<String, Object> params = getParamsFromPlayer(player);
 		params.put("lastseen", timestamp);
 		logger.debug("storeCharacter is running: " + query);
@@ -210,18 +224,16 @@ public class StendhalWebsiteDAO {
 	}
 
 	/**
-	 * Used to get the items in the hands container, as they can be different to weapons or shields...
-	 * Could also be done using getEquippedItemClass and using all posibble classes for
-	 * the objects that can be used in hands.
+	 * Gets the first item name from an equipment-like player slot.
 	 *
 	 * @param instance player
-	 * @param handSlot hand slot name
+	 * @param slotName slot name
 	 * @return item name
 	 */
-	private String extractHandName(final Player instance, final String handSlot) {
-		if (instance != null && handSlot != null) {
-			if (instance.hasSlot(handSlot)) {
-				final RPSlot rpslot = instance.getSlot(handSlot);
+	private String extractSlotItemName(final Player instance, final String slotName) {
+		if (instance != null && slotName != null) {
+			if (instance.hasSlot(slotName)) {
+				final RPSlot rpslot = instance.getSlot(slotName);
 					// traverse all slot items
 					for (final RPObject object : rpslot) {
 						// is it the right type

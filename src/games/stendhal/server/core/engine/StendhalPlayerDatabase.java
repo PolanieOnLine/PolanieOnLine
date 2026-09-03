@@ -284,6 +284,17 @@ public class StendhalPlayerDatabase {
 			transaction.execute("UPDATE character_stats SET mining = '10' WHERE mining IS NULL;", null);
 		}
 
+		// expose equipped runes in character_stats for direct database and website queries
+		final String[] runeColumns = {
+				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune",
+				"healing_rune", "control_rune", "special_rune"
+		};
+		for (final String runeColumn : runeColumns) {
+			if (!transaction.doesColumnExist("character_stats", runeColumn)) {
+				transaction.execute("ALTER TABLE character_stats ADD COLUMN (" + runeColumn + " VARCHAR(64));", null);
+			}
+		}
+
 		// pol1.18: remove ratk achievements
 		if (!Testing.COMBAT) {
 			transaction.execute("DELETE FROM achievement WHERE identifier in ("
