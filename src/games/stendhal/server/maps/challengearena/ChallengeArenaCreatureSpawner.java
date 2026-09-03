@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -38,6 +39,7 @@ public final class ChallengeArenaCreatureSpawner {
 
 	private final List<Creature> sortedCreatures = new LinkedList<Creature>();
 	private final List<Creature> spawnedCreatures = new ArrayList<Creature>();
+	private final List<Creature> currentWaveCreatures = new ArrayList<Creature>();
 
 	public ChallengeArenaCreatureSpawner() {
 		final Collection<Creature> creatures = SingletonRepository.getEntityManager()
@@ -127,6 +129,7 @@ public final class ChallengeArenaCreatureSpawner {
 			if (StendhalRPAction.placeat(zone, creature, point.x, point.y,
 					arenaInfo.getArena().getShape())) {
 				spawnedCreatures.add(creature);
+				currentWaveCreatures.add(creature);
 				return creature;
 			}
 		}
@@ -188,12 +191,27 @@ public final class ChallengeArenaCreatureSpawner {
 	}
 
 	boolean areAllCreaturesDead() {
-		for (final Creature creature : spawnedCreatures) {
-			if (creature.getHP() > 0) {
-				return false;
+		for (final Iterator<Creature> iterator = currentWaveCreatures.iterator();
+				iterator.hasNext();) {
+			final Creature creature = iterator.next();
+			if (!isActiveArenaCreature(creature)) {
+				iterator.remove();
 			}
 		}
-		return true;
+		return currentWaveCreatures.isEmpty();
+	}
+
+	/**
+	 * A defeated arena creature can already be removed from its zone while its
+	 * Java object is still retained for cleanup. Such an object must not block
+	 * the next wave.
+	 */
+	static boolean isActiveArenaCreature(final Creature creature) {
+		if (creature == null || creature.getHP() <= 0
+				|| creature.getZone() == null || creature.getID() == null) {
+			return false;
+		}
+		return creature.getZone().has(creature.getID());
 	}
 
 	void removeAllCreatures() {
@@ -204,5 +222,6 @@ public final class ChallengeArenaCreatureSpawner {
 			}
 		}
 		spawnedCreatures.clear();
+		currentWaveCreatures.clear();
 	}
 }

@@ -63,7 +63,7 @@ public final class ChallengeArenaInfo {
 
 	public boolean teleportToLobby(final Player player) {
 		return player != null && player.teleport(lobbyZone, lobbyX, lobbyY,
-				Direction.DOWN, null);
+				Direction.UP, null);
 	}
 
 	public synchronized boolean startSession(final Player player,

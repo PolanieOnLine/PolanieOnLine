@@ -33,13 +33,14 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 	private static final int COMBAT_AREA_WIDTH = 62;
 	private static final int COMBAT_AREA_HEIGHT = 39;
 
-	private static final int LOBBY_RETURN_X = 32;
-	private static final int LOBBY_RETURN_Y = 48;
+	static final int LOBBY_RETURN_X = 32;
+	// One tile directly in front of the NPC at 32,46.
+	static final int LOBBY_RETURN_Y = 47;
 	private static final int COMBAT_X = 32;
 	private static final int COMBAT_Y = 19;
 
-	private static final int NPC_X = 32;
-	private static final int NPC_Y = 46;
+	static final int NPC_X = 32;
+	static final int NPC_Y = 46;
 	private static final int RANKING_X = 41;
 	private static final int RANKING_Y = 39;
 

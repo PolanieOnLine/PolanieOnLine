@@ -5,8 +5,8 @@
 	<!-- Dedicated Challenge Arena in Tarnow. -->
 	<zone name="int_tarnow_challenge_arena" file="interiors/tarnow/challenge_arena.tmx">
 		<attributes>
-			<parameter name="music">dark_quest</parameter>
-			<parameter name="music_volume">0.70</parameter>
+			<parameter name="music">pol-storm</parameter>
+			<parameter name="music_volume">0.20</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.maps.challengearena.ChallengeArenaZone"/>
 	</zone>

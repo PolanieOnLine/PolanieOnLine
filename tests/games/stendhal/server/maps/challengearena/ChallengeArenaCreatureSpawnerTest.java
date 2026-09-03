@@ -7,11 +7,19 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.creature.Creature;
+import utilities.RPClass.CreatureTestHelper;
 
 public class ChallengeArenaCreatureSpawnerTest {
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		CreatureTestHelper.generateRPClasses();
+	}
+
 	@Test
 	public void spawnSearchNeverCrossesSolidCollisionWall() {
 		final StendhalRPZone zone = new StendhalRPZone("test_arena", 20, 20);
@@ -44,4 +52,20 @@ public class ChallengeArenaCreatureSpawnerTest {
 			assertTrue(distance <= 14);
 		}
 	}
+	@Test
+	public void removedCreatureDoesNotBlockFollowingWave() {
+		final StendhalRPZone zone = new StendhalRPZone("test_arena_wave", 20, 20);
+		final Creature creature = new Creature();
+		creature.setBaseHP(100);
+		creature.setHP(100);
+		zone.add(creature);
+		creature.setPosition(5, 5);
+
+		assertTrue(ChallengeArenaCreatureSpawner.isActiveArenaCreature(creature));
+
+		zone.remove(creature);
+
+		assertFalse(ChallengeArenaCreatureSpawner.isActiveArenaCreature(creature));
+	}
+
 }

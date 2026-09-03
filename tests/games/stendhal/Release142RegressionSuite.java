@@ -27,6 +27,7 @@ import games.stendhal.server.entity.status.BleedingAttackerTest;
 import games.stendhal.server.entity.status.BleedingStatusTest;
 import games.stendhal.server.entity.status.StunnedStatusTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaCreatureSpawnerTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaInfoTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaManagerTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaModifierTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaNPCTest;
@@ -61,6 +62,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 	ChallengeArenaModifierTest.class,
 	ChallengeArenaRankingServiceTest.class,
 	ChallengeArenaCreatureSpawnerTest.class,
+	ChallengeArenaInfoTest.class,
 	ChallengeArenaNPCTest.class,
 	ChallengeArenaRewardChestTest.class,
 	SeasonalZonePlanTest.class,
