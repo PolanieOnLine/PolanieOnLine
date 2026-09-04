@@ -539,7 +539,7 @@ final class ItemRarityPresentation {
 	private static void appendPercentageBonus(final StringBuilder bonuses,
 			final RPObject object, final RPObject equippedItem,
 			final String attribute, final String label, final boolean fraction) {
-		final double value = percentageValue(object, attribute, fraction);
+		double value = percentageValue(object, attribute, fraction);
 		final double equippedValue = percentageValue(equippedItem, attribute,
 				fraction);
 		if (value == 0.0 && (equippedItem == null || equippedValue == 0.0)) {
@@ -652,12 +652,6 @@ final class ItemRarityPresentation {
 				ItemTooltip.MIN_LEVEL);
 		if (minLevel > 0) {
 			footer.append("Wymagany poziom: ").append(minLevel);
-		}
-		final int value = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.VALUE);
-		if (value > 0) {
-			appendFooterSeparator(footer);
-			footer.append("Wartość: ").append(value);
 		}
 		final int durability = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.DURABILITY);

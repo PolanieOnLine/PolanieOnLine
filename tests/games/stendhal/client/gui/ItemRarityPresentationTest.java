@@ -110,8 +110,8 @@ public class ItemRarityPresentationTest {
 				< tooltip.indexOf("53,3 pkt. obrażeń na sekundę"));
 		assertTrue(tooltip.indexOf("Ulepszenie: +0 / +3")
 				== tooltip.lastIndexOf("Ulepszenie: +0 / +3"));
-		assertTrue(tooltip.contains("Wartość: 11432"));
-		assertTrue(tooltip.contains("text-align:right"));
+		assertFalse(tooltip.contains("Wartość: 11432"));
+		assertFalse(tooltip.contains("text-align:right"));
 	}
 
 	@Test
