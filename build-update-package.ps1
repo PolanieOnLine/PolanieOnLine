@@ -1,4 +1,4 @@
-# build-update-package.ps1 v4 - resolve real Ant from ant.cmd config + direct jardiff generation
+# build-update-package.ps1 v5 - robust local JDK/Ant discovery + direct jardiff generation
 param(
     [switch]$NoDiff,
     [switch]$PromoteOnly,
@@ -70,40 +70,139 @@ function Write-AsciiLines([string]$Path, [string[]]$Lines) {
     [System.IO.File]::WriteAllLines($Path, $Lines, $encoding)
 }
 
-function Import-LocalBuildEnvironment {
+function Read-AntWrapperEnvironment {
     $wrapper = Join-Path $Root "ant.cmd"
+    $antHome = $null
+    $javaHome = $null
 
-    if (-not (Test-Path -LiteralPath $wrapper)) {
-        return
+    if (Test-Path -LiteralPath $wrapper) {
+        foreach ($line in Get-Content -LiteralPath $wrapper) {
+            if ($line -match '^\s*set\s+ANT_HOME=(.+?)\s*$') {
+                $antHome = $Matches[1].Trim().Trim('"')
+                continue
+            }
+
+            if ($line -match '^\s*set\s+JAVA_HOME=(.+?)\s*$') {
+                $javaHome = $Matches[1].Trim().Trim('"')
+            }
+        }
     }
 
-    foreach ($line in Get-Content -LiteralPath $wrapper) {
-        if ($line -match '^\s*set\s+ANT_HOME=(.+?)\s*$') {
-            $value = $Matches[1].Trim().Trim('"')
-            if (-not [string]::IsNullOrWhiteSpace($value)) {
-                $env:ANT_HOME = $value
-            }
-            continue
-        }
-
-        if ($line -match '^\s*set\s+JAVA_HOME=(.+?)\s*$') {
-            $value = $Matches[1].Trim().Trim('"')
-            if (-not [string]::IsNullOrWhiteSpace($value)) {
-                $env:JAVA_HOME = $value
-            }
-        }
+    [pscustomobject]@{
+        AntHome = $antHome
+        JavaHome = $javaHome
     }
 }
 
-function Resolve-AntTool {
-    if ($env:ANT_HOME) {
-        $candidate = Join-Path $env:ANT_HOME "bin\ant.bat"
+function Test-JavaHome([string]$Path) {
+    if ([string]::IsNullOrWhiteSpace($Path)) {
+        return $false
+    }
+
+    return (Test-Path -LiteralPath (Join-Path $Path "bin\java.exe")) -and
+        (Test-Path -LiteralPath (Join-Path $Path "bin\javap.exe"))
+}
+
+function Resolve-JavaHome([string]$WrapperJavaHome) {
+    $directCandidates = @()
+
+    if (-not [string]::IsNullOrWhiteSpace($env:JAVA_HOME)) {
+        $directCandidates += $env:JAVA_HOME
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($WrapperJavaHome)) {
+        $directCandidates += $WrapperJavaHome
+    }
+
+    foreach ($candidate in ($directCandidates | Select-Object -Unique)) {
+        if (Test-JavaHome $candidate) {
+            return (Resolve-Path -LiteralPath $candidate).Path
+        }
+    }
+
+    # ant.cmd bywa stary (np. wskazuje Z:\Java\jdk, gdy faktyczny JDK to
+    # Z:\Java\jdk-11). Jesli wskazany katalog nie istnieje, sprawdz rodzenstwo
+    # jdk* w tym samym katalogu nadrzednym. Preferujemy JDK 11, bo na nim jest
+    # obecnie budowany release, a potem pozostale dostepne JDK.
+    $parents = @()
+    foreach ($candidate in ($directCandidates | Select-Object -Unique)) {
+        try {
+            $parent = Split-Path -Parent $candidate
+            if (-not [string]::IsNullOrWhiteSpace($parent)) {
+                $parents += $parent
+            }
+        } catch {
+            # Niepoprawna sciezka kandydata - przechodzimy do kolejnego zrodla.
+        }
+    }
+
+    foreach ($parent in ($parents | Select-Object -Unique)) {
+        if (-not (Test-Path -LiteralPath $parent)) {
+            continue
+        }
+
+        $allJdkDirs = @(
+            Get-ChildItem -LiteralPath $parent -Directory -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -like "jdk*" }
+        )
+        $jdk11Dirs = @(
+            $allJdkDirs |
+                Where-Object { $_.Name -match '^jdk-?11(?:[._-]|$)' } |
+                Sort-Object Name -Descending
+        )
+        $otherJdkDirs = @(
+            $allJdkDirs |
+                Where-Object { $_.Name -notmatch '^jdk-?11(?:[._-]|$)' } |
+                Sort-Object Name -Descending
+        )
+        $jdkDirs = @($jdk11Dirs + $otherJdkDirs)
+
+        foreach ($jdkDir in $jdkDirs) {
+            if (Test-JavaHome $jdkDir.FullName) {
+                Write-Host "[INFO] JAVA_HOME z ant.cmd nie wskazuje pelnego JDK; uzywam $($jdkDir.FullName)"
+                return $jdkDir.FullName
+            }
+        }
+    }
+
+    $javap = Get-Command "javap.exe" -ErrorAction SilentlyContinue
+    if (-not $javap) {
+        $javap = Get-Command "javap" -ErrorAction SilentlyContinue
+    }
+
+    if ($javap) {
+        $binDir = Split-Path -Parent $javap.Source
+        $home = Split-Path -Parent $binDir
+        if (Test-JavaHome $home) {
+            return $home
+        }
+    }
+
+    $shown = @($directCandidates | Select-Object -Unique) -join ", "
+    throw "Nie znaleziono pelnego JDK (java.exe + javap.exe). Sprawdzone JAVA_HOME: $shown"
+}
+
+function Resolve-AntTool([string]$WrapperAntHome) {
+    $candidates = @()
+
+    if (-not [string]::IsNullOrWhiteSpace($env:ANT_HOME)) {
+        $candidates += $env:ANT_HOME
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($WrapperAntHome)) {
+        $candidates += $WrapperAntHome
+    }
+
+    foreach ($home in ($candidates | Select-Object -Unique)) {
+        $candidate = Join-Path $home "bin\ant.bat"
         if (Test-Path -LiteralPath $candidate) {
+            $env:ANT_HOME = $home
             return $candidate
         }
 
-        $candidate = Join-Path $env:ANT_HOME "bin\ant"
+        $candidate = Join-Path $home "bin\ant"
         if (Test-Path -LiteralPath $candidate) {
+            $env:ANT_HOME = $home
             return $candidate
         }
     }
@@ -114,7 +213,7 @@ function Resolve-AntTool {
     }
 
     if (-not $cmd) {
-        throw "Nie znaleziono Anta. Ustaw ANT_HOME albo popraw ANT_HOME w ant.cmd."
+        throw "Nie znaleziono Anta. Sprawdz ANT_HOME w ant.cmd albo ustaw ANT_HOME."
     }
 
     return $cmd.Source
@@ -134,7 +233,7 @@ function Resolve-JavaTool([string]$Name) {
     }
 
     if (-not $cmd) {
-        throw "Nie znaleziono narzedzia '$Name'. Ustaw JAVA_HOME."
+        throw "Nie znaleziono narzedzia '$Name'. JAVA_HOME=$env:JAVA_HOME"
     }
 
     return $cmd.Source
@@ -246,18 +345,22 @@ if ($NoDiff -and $ForcePromote) {
     throw "-ForcePromote ma sens tylko razem z -PromoteOnly."
 }
 
-# Lokalny ant.cmd jest wrapperem do pelnego release i ignoruje przekazane targety
-# (ma na sztywno "cmd /c ant dist"). Czytamy z niego tylko ANT_HOME/JAVA_HOME,
-# a same targety wywolujemy bezposrednio przez prawdziwy ant.bat.
-Import-LocalBuildEnvironment
+# ant.cmd jest lokalnym wrapperem z wpisanym na sztywno "ant dist". Nie wolno
+# uzywac go jako runnera targetow. Czytamy z niego tylko kandydatow ANT_HOME i
+# JAVA_HOME, a nastepnie walidujemy je przed uzyciem.
+$WrapperEnvironment = Read-AntWrapperEnvironment
+$ResolvedJavaHome = Resolve-JavaHome $WrapperEnvironment.JavaHome
+$env:JAVA_HOME = $ResolvedJavaHome
 
-$Ant = Resolve-AntTool
+$Ant = Resolve-AntTool $WrapperEnvironment.AntHome
 $Java = Resolve-JavaTool "java"
 $Javap = Resolve-JavaTool "javap"
 
 Write-Host "[INFO] ANT_HOME=$env:ANT_HOME"
 Write-Host "[INFO] JAVA_HOME=$env:JAVA_HOME"
 Write-Host "[INFO] Ant: $Ant"
+Write-Host "[INFO] Java: $Java"
+Write-Host "[INFO] Javap: $Javap"
 
 if (-not (Test-Path -LiteralPath (Join-Path $Root "keystore.ks"))) {
     throw "Brakuje keystore.ks. Nie da sie podpisac startera i plikow updatera."
@@ -347,13 +450,11 @@ if ($NoDiff) {
 
 Write-Host ""
 
-# ant.cmd z repo/lokalnego srodowiska nie jest runnerem targetow:
-# ma na sztywno "cmd /c ant dist" i ignoruje argumenty. Dlatego wywolujemy
-# bezposrednio prawdziwy ant.bat znaleziony przez ANT_HOME.
-#
-# Nie wywolujemy targetu jardiff z Anta, bo zalezy on od client_build i przy
-# osobnym wywolaniu zbudowalby klienta drugi raz. Diffy tworzymy nizej
-# bezposrednio przez libs\jardiff.jar z TEGO SAMEGO buildu.
+# Nie wywolujemy ant.cmd: ten lokalny wrapper zawsze robi pelne "ant dist" i
+# ignoruje przekazane targety. Odpalamy bezposrednio prawdziwy ant.bat.
+# Nie wywolujemy tez targetu jardiff z Anta, bo zalezy od client_build i przy
+# osobnym wywolaniu przebudowalby klienta drugi raz. Diffy powstaja nizej przez
+# libs\jardiff.jar z TEGO SAMEGO buildu.
 Invoke-Checked $Ant @("clean")
 Invoke-Checked $Ant @("dist_client_binary")
 Invoke-Checked $Ant @("compile_polanieonlinetools")
@@ -464,6 +565,8 @@ foreach ($item in @($FullFiles + $DiffFiles)) {
     }
 }
 
+# Jesli biblioteka zmienila sie od poprzedniego oficjalnego ZIP-a,
+# updater musi pobrac jej pelny nowy plik (jardiff ich nie obsluguje).
 $ChangedLibraries = @()
 
 if (-not $NoDiff) {
@@ -501,8 +604,10 @@ if (-not $NoDiff) {
         }
     }
 
-    Remove-Item -LiteralPath $OldExtractDir -Recurse -Force
-    $OldExtractDir = $null
+    if ($OldExtractDir -and (Test-Path -LiteralPath $OldExtractDir)) {
+        Remove-Item -LiteralPath $OldExtractDir -Recurse -Force
+        $OldExtractDir = $null
+    }
 }
 
 if (Test-Path -LiteralPath $PackageRoot) {
@@ -523,6 +628,7 @@ if (-not (Test-Path -LiteralPath $CurrentZip)) {
 
 Copy-Item -LiteralPath $CurrentZip -Destination (Join-Path $ArchiveOutDir ("polanieonline-" + $Version + ".zip")) -Force
 
+# Zbuduj kompletna historie manifestu.
 $Properties = [ordered]@{}
 
 if (-not $NoDiff) {
@@ -532,6 +638,7 @@ if (-not $NoDiff) {
         }
     }
 
+    # Poprzedni CURRENT staje sie UPDATE_NEEDED.
     foreach ($key in @($Properties.Keys)) {
         if (($key -match '^version\.(?!destination\.)') -and ($Properties[$key] -eq "CURRENT")) {
             $Properties[$key] = "UPDATE_NEEDED"
@@ -662,6 +769,8 @@ $ManifestLines += ""
 $ManifestPath = Join-Path $UploadDir "update-1.16.properties"
 Write-AsciiLines $ManifestPath $ManifestLines
 
+# Kopia manifestu razem z ZIP-em - to dokladnie ten zestaw, ktory po testach
+# mozna wypromowac bez ponownego builda.
 Copy-Item -LiteralPath $ManifestPath -Destination (Join-Path $ArchiveOutDir "update-1.16.properties") -Force
 
 $HashLines = @()
