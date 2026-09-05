@@ -2017,7 +2017,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 - Dodano muzykę w tle w mieście Fado
 - Rozbudowano nową funkcję rysowania cieni pod obiektami
 
-*świat gry*
+*świat*
 - Przystosowano niektóre mapy zakopanego do Xmas
 - Zbalansowano mnożnik ilości punktów defensywnych z setów
 - McPegleg skupuje teraz spodnie lazurowe
@@ -2036,7 +2036,7 @@ Wersja poprawiająca działanie systemu limitów u burmistrzów następująco:
 	zostanie nałożone ograniczenie, które zmniejszy o 75% możliwych punktów do zdobycia.
 	Przykładowo:
 		Osiągneliśmy obrone na poziomie 140 to każda kolejna misja u burmistrza ograniczy ilość możliwych do zdobycia punktów dla tej umiejętności o 75%,
-		natomiast reszta będzie miała normalny przelicznik dopóki nie osiągnięmy wcześniej wyznaczonego limitu.
+		natomiast reszta będzie miała normalny przelicznik dopóki nie osiągniemy wcześniej wyznaczonego limitu.
 
 *klient*
 - Dodano kilka nowo-odświeżonych grafik
@@ -2177,11 +2177,15 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 - Dodano możliwość wypożyczenia małego oraz dużego statku u Liliany jako kostium
 - Można wyprodukować smoczy eliksir u Agrypin'a (nowy budynek w Wieliczce) oraz duży smoczy eliksir u Aron'a (piwnica Aligerna)
 - Zwiększono ilość możliwego do zdobycia PD u potworów takich jak:
-	superczłowiek olbrzym,
-	mega mag,
-	czarny szkielet gigant,
-	książę szkieletów oraz wszystkie kostuchy wielkie
-	i wszystkie dwugłowe smoki
+	wilczykruk,
+	żółty glut,
+	czerwony glut,
+	Jožin z lesa,
+	Jožin z bažin,
+	coś niszczącego
+
+*kod gry*
+- Dodano nowe wydarzenie zatytułowane "50% więcej PD oraz 20% szybszy respawn potworów"
 
 *naprawiono błędy*
 - Naprawiono sklep u Balduina za wykonanie ostatniego zadania
