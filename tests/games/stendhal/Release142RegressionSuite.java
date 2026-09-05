@@ -36,6 +36,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaNPCTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaRankingServiceTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaStateTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaViewOrbTest;
 import games.stendhal.server.maps.quests.BringMagicTest;
 
 /**
@@ -68,6 +69,7 @@ import games.stendhal.server.maps.quests.BringMagicTest;
 	ChallengeArenaCreatureSpawnerTest.class,
 	ChallengeArenaInfoTest.class,
 	ChallengeArenaNPCTest.class,
+	ChallengeArenaViewOrbTest.class,
 	ChallengeArenaLootServiceTest.class,
 	ChallengeArenaRewardChestTest.class,
 	BringMagicTest.class,

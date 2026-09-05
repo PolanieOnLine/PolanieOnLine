@@ -16,6 +16,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
+import games.stendhal.server.entity.mapstuff.useable.ViewChangeEntity;
 import games.stendhal.server.util.Area;
 
 /** Configures the dedicated Challenge Arena in Tarnow. */
@@ -36,8 +37,12 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 	static final int LOBBY_RETURN_X = 32;
 	// One tile directly in front of the NPC at 32,46.
 	static final int LOBBY_RETURN_Y = 47;
-	private static final int COMBAT_X = 32;
-	private static final int COMBAT_Y = 19;
+	static final int COMBAT_X = 32;
+	static final int COMBAT_Y = 19;
+
+	static final int LEFT_VIEW_ORB_X = 27;
+	static final int RIGHT_VIEW_ORB_X = 37;
+	static final int VIEW_ORB_Y = 43;
 
 	static final int NPC_X = 32;
 	static final int NPC_Y = 46;
@@ -67,6 +72,7 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 		playerGate.setPosition(COMBAT_AREA_X, COMBAT_AREA_Y);
 		zone.add(playerGate);
 
+		configureViewOrbs(zone);
 		configureArenaPortals(zone);
 		configureTarnowPortals();
 
@@ -76,6 +82,17 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 		ChallengeArenaManager.configureRankingSign(rankingSign);
 
 		ChallengeArenaNPC.create(zone, NPC_X, NPC_Y);
+	}
+
+	static void configureViewOrbs(final StendhalRPZone zone) {
+		addViewOrb(zone, LEFT_VIEW_ORB_X);
+		addViewOrb(zone, RIGHT_VIEW_ORB_X);
+	}
+
+	private static void addViewOrb(final StendhalRPZone zone, final int x) {
+		final ViewChangeEntity orb = ViewChangeEntity.unrestricted(COMBAT_X, COMBAT_Y);
+		orb.setPosition(x, VIEW_ORB_Y);
+		zone.add(orb);
 	}
 
 	private void configureArenaPortals(final StendhalRPZone zone) {
