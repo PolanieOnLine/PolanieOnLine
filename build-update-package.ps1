@@ -743,7 +743,7 @@ $ManifestLines += "# Fresh install"
 $ManifestLines += "init.version=$($Properties['init.version'])"
 $ManifestLines += "init.file-list=$($Properties['init.file-list'])"
 
-$updateListKeys = Get-KeysMatching $Properties '^update-file-list\.'
+$updateListKeys = @(Get-KeysMatching $Properties '^update-file-list\.')
 if ($updateListKeys.Count -gt 0) {
     $ManifestLines += ""
     $ManifestLines += "# Incremental updates"
