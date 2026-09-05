@@ -18,6 +18,7 @@ import games.stendhal.client.sound.facade.SoundHandle;
 import games.stendhal.client.sound.facade.SoundSystemFacade;
 import games.stendhal.client.sound.facade.Time;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.common.math.Numeric;
 
 /**
  * Owns the music played on the first screen and the global sound switch shown
@@ -25,6 +26,7 @@ import games.stendhal.common.constants.SoundLayer;
  */
 final class StartupMusicController {
 	static final String SOUND_PROPERTY = "sound.play";
+	private static final String MASTER_VOLUME_PROPERTY = "sound.volume.master";
 
 	private static final String MUSIC_NAME = "pol-krolewskie-miasto1";
 	private static final String MUSIC_FILE = MUSIC_NAME + ".ogg";
@@ -81,10 +83,34 @@ final class StartupMusicController {
 		return enabled;
 	}
 
+	int getMasterVolumePercent() {
+		return clampVolume(Numeric.floatToInt(soundSystem.getVolume(), 100f));
+	}
+
+	void previewMasterVolumePercent(int volume) {
+		applyMasterVolume(clampVolume(volume));
+	}
+
+	void setMasterVolumePercent(int volume) {
+		int clampedVolume = clampVolume(volume);
+		applyMasterVolume(clampedVolume);
+		settingsStore.setMasterVolume(clampedVolume);
+	}
+
+	private void applyMasterVolume(int volume) {
+		soundSystem.changeVolume(Numeric.intToFloat(volume, 100f));
+	}
+
+	private static int clampVolume(int volume) {
+		return Math.max(0, Math.min(100, volume));
+	}
+
 	interface SoundSettingsStore {
 		boolean isEnabled();
 
 		void setEnabled(boolean enabled);
+
+		void setMasterVolume(int volume);
 	}
 
 	private static final class PersistedSoundSettingsStore implements SoundSettingsStore {
@@ -97,6 +123,13 @@ final class StartupMusicController {
 		public void setEnabled(boolean enabled) {
 			WtWindowManager manager = WtWindowManager.getInstance();
 			manager.setProperty(SOUND_PROPERTY, Boolean.toString(enabled));
+			manager.save();
+		}
+
+		@Override
+		public void setMasterVolume(int volume) {
+			WtWindowManager manager = WtWindowManager.getInstance();
+			manager.setProperty(MASTER_VOLUME_PROPERTY, Integer.toString(volume));
 			manager.save();
 		}
 	}

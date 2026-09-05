@@ -77,6 +77,28 @@ public class StartupMusicControllerTest {
 	}
 
 	@Test
+	public void appliesAndPersistsMasterVolume() {
+		RecordingFacade facade = new RecordingFacade();
+		RecordingSettingsStore settings = new RecordingSettingsStore();
+		StartupMusicController controller = new StartupMusicController(facade, settings);
+		facade.volume = 0.42f;
+
+		assertEquals(42, controller.getMasterVolumePercent());
+
+		controller.previewMasterVolumePercent(35);
+		assertEquals(0.35f, facade.volume, 0.0001f);
+		assertEquals(-1, settings.masterVolume);
+
+		controller.setMasterVolumePercent(73);
+		assertEquals(0.73f, facade.volume, 0.0001f);
+		assertEquals(73, settings.masterVolume);
+
+		controller.setMasterVolumePercent(150);
+		assertEquals(1.0f, facade.volume, 0.0001f);
+		assertEquals(100, settings.masterVolume);
+	}
+
+	@Test
 	public void configuresACompactSoundButtonWithoutReplacingItsBorder() {
 		JButton button = new JButton();
 		Border border = button.getBorder();
@@ -97,6 +119,7 @@ public class StartupMusicControllerTest {
 		private String requestedGroup;
 		private SoundHandle stopped;
 		private boolean muted;
+		private float volume;
 
 		@Override
 		public SoundGroup getGroup(String groupName) {
@@ -113,10 +136,21 @@ public class StartupMusicControllerTest {
 		public void mute(boolean state, boolean insideSoundGroup, Time fadingDuration) {
 			muted = state;
 		}
+
+		@Override
+		public float getVolume() {
+			return volume;
+		}
+
+		@Override
+		public void changeVolume(float volume) {
+			this.volume = volume;
+		}
 	}
 
 	private static class RecordingSettingsStore implements StartupMusicController.SoundSettingsStore {
 		private boolean enabled = true;
+		private int masterVolume = -1;
 
 		@Override
 		public boolean isEnabled() {
@@ -126,6 +160,11 @@ public class StartupMusicControllerTest {
 		@Override
 		public void setEnabled(boolean enabled) {
 			this.enabled = enabled;
+		}
+
+		@Override
+		public void setMasterVolume(int volume) {
+			masterVolume = volume;
 		}
 	}
 

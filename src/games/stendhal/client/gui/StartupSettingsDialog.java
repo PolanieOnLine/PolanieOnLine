@@ -23,6 +23,9 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -43,16 +46,21 @@ final class StartupSettingsDialog extends JDialog {
 		settings.setBorder(BorderFactory.createEmptyBorder(pad, pad, 0, pad));
 		settings.add(createWindowModeSelector(), SLayout.EXPAND_X);
 
+		final JSlider masterVolume = createMasterVolumeSlider(startupMusic);
 		final JCheckBox soundToggle = new JCheckBox("Włącz wszystkie dźwięki");
 		soundToggle.setSelected(startupMusic.isSoundEnabled());
 		soundToggle.setToolTipText("Włącza lub wycisza muzykę i pozostałe dźwięki klienta");
+		masterVolume.setEnabled(soundToggle.isSelected());
 		soundToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				startupMusic.setSoundEnabled(soundToggle.isSelected());
+				boolean enabled = soundToggle.isSelected();
+				startupMusic.setSoundEnabled(enabled);
+				masterVolume.setEnabled(enabled);
 			}
 		});
 		settings.add(soundToggle);
+		settings.add(createMasterVolumeRow(masterVolume), SLayout.EXPAND_X);
 		add(settings, SLayout.EXPAND_X);
 
 		JButton closeButton = new JButton("Zamknij");
@@ -95,5 +103,33 @@ final class StartupSettingsDialog extends JDialog {
 		row.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
 		row.add(selector);
 		return row;
+	}
+
+	private JComponent createMasterVolumeRow(JSlider masterVolume) {
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
+				SBoxLayout.COMMON_PADDING);
+		JLabel label = new JLabel("Głośność główna");
+		String tooltip = "Głośność muzyki startowej i wszystkich dźwięków gry";
+		label.setToolTipText(tooltip);
+		masterVolume.setToolTipText(tooltip);
+		row.add(label);
+		SBoxLayout.addSpring(row);
+		row.add(masterVolume);
+		return row;
+	}
+
+	private JSlider createMasterVolumeSlider(final StartupMusicController startupMusic) {
+		final JSlider slider = new JSlider(0, 100, startupMusic.getMasterVolumePercent());
+		slider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int volume = slider.getValue();
+				startupMusic.previewMasterVolumePercent(volume);
+				if (!slider.getValueIsAdjusting()) {
+					startupMusic.setMasterVolumePercent(volume);
+				}
+			}
+		});
+		return slider;
 	}
 }
