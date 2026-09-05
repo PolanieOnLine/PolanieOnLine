@@ -18,15 +18,12 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
 public class MetalDetector extends AreaUseItem {
 	private static final Logger logger = Logger.getLogger(MetalDetector.class);
-
-	private static final EntityManager em = SingletonRepository.getEntityManager();
 
 	private static final String ring_quest_slot = "lost_engagement_ring";
 	private static final String ring_quest_info = "pierścionek Ariego";
@@ -57,7 +54,8 @@ public class MetalDetector extends AreaUseItem {
 					if (slot.length > 1 && !slot[0].equals("found_ring") && !slot[0].equals("done")) {
 						try {
 							if (detectRing(player, x, y, Integer.parseInt(slot[0]), Integer.parseInt(slot[1]))) {
-								final Item ring = em.getItem("pierścień zaręczynowy");
+								final Item ring = SingletonRepository.getEntityManager()
+										.getItem("pierścień zaręczynowy");
 								ring.setItemData(ring_quest_info);
 								ring.setDescription("W wiecznym oddaniu Emmie.");
 								ring.setBoundTo(player.getName());

@@ -68,7 +68,6 @@ public class BlacksmithNPC implements ZoneConfigurator {
 		upgradeNpc.addHelp("Powiedz #ulepsz, aby otworzyć okno z kosztami, materiałami i szansą powodzenia.");
 
 		upgradeNpc.addReply("sprawdzić", "Powiedz #sprawdź <#'nazwa przedmiotu'>, aby poznać maksymalny poziom, albo #ulepsz, aby otworzyć okno.");
-		upgradeNpc.addReply("ulepszyć", "Powiedz #ulepsz, aby otworzyć okno i wybrać konkretną instancję przedmiotu.");
 
 		upgradeNpc.setGender("M");
 		upgradeNpc.setPosition(10, 4);

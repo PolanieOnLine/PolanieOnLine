@@ -173,12 +173,14 @@
 
 	<!-- Run enemy balancer. -->
 	<!-- USAGE: ant balance -Dcreature="<creature_name>" -->
-	<target name="balance" depends="compile_polanieonlinetools,server_build">
+	<target name="balance" depends="compile_polanieonlinetools,server_build,prepare_serverini_for_tests">
 		<java classname="games.stendhal.tools.BalanceRPGame">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="."/>
 				<pathelement path="${build_server}"/>
+				<pathelement path="${build_server_maps}"/>
+				<pathelement path="${build_server_script}"/>
 				<pathelement path="${testsrc}"/>
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>
@@ -191,12 +193,14 @@
 	</target> <!-- balance -->
 
 	<!-- Audit fixed endgame mithril loadouts without modifying creature stats. -->
-	<target name="balance_endgame" depends="compile_polanieonlinetools,server_build">
+	<target name="balance_endgame" depends="compile_polanieonlinetools,server_build,prepare_serverini_for_tests">
 		<java classname="games.stendhal.tools.EndgameBalanceAudit">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
 				<pathelement path="."/>
 				<pathelement path="${build_server}"/>
+				<pathelement path="${build_server_maps}"/>
+				<pathelement path="${build_server_script}"/>
 				<pathelement path="${testsrc}"/>
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>

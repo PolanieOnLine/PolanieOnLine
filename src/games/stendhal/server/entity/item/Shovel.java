@@ -19,14 +19,11 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 
 public class Shovel extends AreaUseItem {
 	private static final Logger logger = Logger.getLogger(Shovel.class);
-
-	private static final EntityManager em = SingletonRepository.getEntityManager();
 
 	private static final String ring_quest_slot = "lost_engagement_ring";
 	private static final String ring_quest_info = "pierścionek Ariego";
@@ -70,7 +67,8 @@ public class Shovel extends AreaUseItem {
 							final int ringY = Integer.parseInt(slot[1]);
 
 							if (x == ringX && y == ringY) {
-								final Item ring = em.getItem("pierścień zaręczynowy");
+								final Item ring = SingletonRepository.getEntityManager()
+										.getItem("pierścień zaręczynowy");
 								ring.setItemData(ring_quest_info);
 								ring.setDescription("W wiecznym oddaniu Emmie.");
 								ring.setBoundTo(player.getName());
@@ -102,7 +100,8 @@ public class Shovel extends AreaUseItem {
 					if (zone.getName().equals(expectedMap) && nearDigRange(x, y, fragmentX, fragmentY, 1)) {
 						String fragment = determineFragment();
 						if (fragment != null) {
-							final Item item = em.getItem("fragment glifu");
+							final Item item = SingletonRepository.getEntityManager()
+									.getItem("fragment glifu");
 
 							String image = fragmentSprite.get(fragment);
 							if (image != null) {

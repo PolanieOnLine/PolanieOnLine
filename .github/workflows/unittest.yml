@@ -49,7 +49,7 @@ jobs:
           set -o pipefail
           xvfb-run --auto-servernum ant -noinput -buildfile build.xml -Dcreature= balance | tee balance-proposals-low.txt
       - name: Upload balance results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: balance-results
           path: |
@@ -76,7 +76,7 @@ jobs:
           set -o pipefail
           xvfb-run --auto-servernum ant -noinput -buildfile build.xml balance_endgame | tee balance-endgame-mithril.txt
       - name: Upload endgame balance results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: balance-endgame-mithril
           path: balance-endgame-mithril.txt
