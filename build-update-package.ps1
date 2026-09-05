@@ -1,4 +1,5 @@
-﻿param(
+# build-update-package.ps1 v4 - resolve real Ant from ant.cmd config + direct jardiff generation
+param(
     [switch]$NoDiff,
     [switch]$PromoteOnly,
     [switch]$ForcePromote
@@ -67,6 +68,56 @@ function Read-SimpleProperties([string]$Path) {
 function Write-AsciiLines([string]$Path, [string[]]$Lines) {
     $encoding = [System.Text.Encoding]::ASCII
     [System.IO.File]::WriteAllLines($Path, $Lines, $encoding)
+}
+
+function Import-LocalBuildEnvironment {
+    $wrapper = Join-Path $Root "ant.cmd"
+
+    if (-not (Test-Path -LiteralPath $wrapper)) {
+        return
+    }
+
+    foreach ($line in Get-Content -LiteralPath $wrapper) {
+        if ($line -match '^\s*set\s+ANT_HOME=(.+?)\s*$') {
+            $value = $Matches[1].Trim().Trim('"')
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                $env:ANT_HOME = $value
+            }
+            continue
+        }
+
+        if ($line -match '^\s*set\s+JAVA_HOME=(.+?)\s*$') {
+            $value = $Matches[1].Trim().Trim('"')
+            if (-not [string]::IsNullOrWhiteSpace($value)) {
+                $env:JAVA_HOME = $value
+            }
+        }
+    }
+}
+
+function Resolve-AntTool {
+    if ($env:ANT_HOME) {
+        $candidate = Join-Path $env:ANT_HOME "bin\ant.bat"
+        if (Test-Path -LiteralPath $candidate) {
+            return $candidate
+        }
+
+        $candidate = Join-Path $env:ANT_HOME "bin\ant"
+        if (Test-Path -LiteralPath $candidate) {
+            return $candidate
+        }
+    }
+
+    $cmd = Get-Command "ant.bat" -ErrorAction SilentlyContinue
+    if (-not $cmd) {
+        $cmd = Get-Command "ant" -ErrorAction SilentlyContinue
+    }
+
+    if (-not $cmd) {
+        throw "Nie znaleziono Anta. Ustaw ANT_HOME albo popraw ANT_HOME w ant.cmd."
+    }
+
+    return $cmd.Source
 }
 
 function Resolve-JavaTool([string]$Name) {
@@ -178,29 +229,6 @@ Jesli naprawde chcesz je zastapic, uzyj:
     Write-Host "To jest teraz baza do diffow dla nastepnej wersji."
 }
 
-function Restore-BuildArchiveAfterJarDiff([string]$HistoryRaw) {
-    if (-not (Test-Path -LiteralPath $BuildArchiveDir)) {
-        return
-    }
-
-    # jardiff rozpakowuje poprzedni ZIP bezposrednio do build-archive.
-    # Zostawiamy tylko ZIP-y i przywracamy oficjalny manifest historii.
-    Get-ChildItem -LiteralPath $BuildArchiveDir -Force |
-        Where-Object {
-            (-not $_.PSIsContainer -and $_.Extension -ne ".zip" -and $_.Name -ne "update-1.16.properties") -or
-            $_.PSIsContainer
-        } |
-        Remove-Item -Recurse -Force
-
-    if ($null -ne $HistoryRaw) {
-        [System.IO.File]::WriteAllText(
-            $HistoryManifestPath,
-            $HistoryRaw,
-            [System.Text.Encoding]::ASCII
-        )
-    }
-}
-
 $versions = Get-BuildVersions
 $Version = $versions.Current
 $OldVersion = $versions.Old
@@ -218,13 +246,18 @@ if ($NoDiff -and $ForcePromote) {
     throw "-ForcePromote ma sens tylko razem z -PromoteOnly."
 }
 
-$Ant = Join-Path $Root "ant.cmd"
-if (-not (Test-Path -LiteralPath $Ant)) {
-    throw "Brakuje ant.cmd w katalogu repo."
-}
+# Lokalny ant.cmd jest wrapperem do pelnego release i ignoruje przekazane targety
+# (ma na sztywno "cmd /c ant dist"). Czytamy z niego tylko ANT_HOME/JAVA_HOME,
+# a same targety wywolujemy bezposrednio przez prawdziwy ant.bat.
+Import-LocalBuildEnvironment
 
+$Ant = Resolve-AntTool
 $Java = Resolve-JavaTool "java"
 $Javap = Resolve-JavaTool "javap"
+
+Write-Host "[INFO] ANT_HOME=$env:ANT_HOME"
+Write-Host "[INFO] JAVA_HOME=$env:JAVA_HOME"
+Write-Host "[INFO] Ant: $Ant"
 
 if (-not (Test-Path -LiteralPath (Join-Path $Root "keystore.ks"))) {
     throw "Brakuje keystore.ks. Nie da sie podpisac startera i plikow updatera."
@@ -314,35 +347,82 @@ if ($NoDiff) {
 
 Write-Host ""
 
-# Jedna sesja Anta jest wazna: client_build wykonuje sie raz.
-$AntTargets = @(
-    "clean",
-    "dist_client_binary"
-)
-
-if (-not $NoDiff) {
-    $AntTargets += "jardiff"
-}
-
-$AntTargets += "compile_polanieonlinetools"
-
-$AntSucceeded = $false
-
-try {
-    Invoke-Checked $Ant $AntTargets
-    $AntSucceeded = $true
-}
-catch {
-    if (-not $NoDiff) {
-        Restore-BuildArchiveAfterJarDiff $HistoryRaw
-    }
-    throw
-}
+# ant.cmd z repo/lokalnego srodowiska nie jest runnerem targetow:
+# ma na sztywno "cmd /c ant dist" i ignoruje argumenty. Dlatego wywolujemy
+# bezposrednio prawdziwy ant.bat znaleziony przez ANT_HOME.
+#
+# Nie wywolujemy targetu jardiff z Anta, bo zalezy on od client_build i przy
+# osobnym wywolaniu zbudowalby klienta drugi raz. Diffy tworzymy nizej
+# bezposrednio przez libs\jardiff.jar z TEGO SAMEGO buildu.
+Invoke-Checked $Ant @("clean")
+Invoke-Checked $Ant @("dist_client_binary")
+Invoke-Checked $Ant @("compile_polanieonlinetools")
 
 $ClientJar = Join-Path $Root ("build\lib\polanieonline-" + $Version + ".jar")
 
 Assert-JarVersion $Javap $ClientJar "games.stendhal.common.Debug" $Version
 Assert-JarVersion $Javap $ClientJar "games.stendhal.common.Version" $Version
+
+$OldExtractDir = $null
+
+if (-not $NoDiff) {
+    $JarDiffTool = Join-Path $Root "libs\jardiff.jar"
+    if (-not (Test-Path -LiteralPath $JarDiffTool)) {
+        throw "Brakuje narzedzia jardiff: $JarDiffTool"
+    }
+
+    $OldExtractDir = Join-Path $Root ("build\update-base-" + $OldVersion)
+
+    if (Test-Path -LiteralPath $OldExtractDir) {
+        Remove-Item -LiteralPath $OldExtractDir -Recurse -Force
+    }
+
+    New-Item -ItemType Directory -Path $OldExtractDir -Force | Out-Null
+    Expand-Archive -LiteralPath $OldZip -DestinationPath $OldExtractDir -Force
+
+    $JarDiffJobs = @(
+        [pscustomobject]@{
+            Old = (Join-Path $OldExtractDir "lib\polanieonline.jar")
+            New = (Join-Path $Root "build\lib\polanieonline-$Version.jar")
+            Output = (Join-Path $Root "build\lib\polanieonline-diff-$OldVersion-$Version.jar")
+        },
+        [pscustomobject]@{
+            Old = (Join-Path $OldExtractDir "lib\polanieonline-data.jar")
+            New = (Join-Path $Root "build\lib\polanieonline-data-$Version.jar")
+            Output = (Join-Path $Root "build\lib\polanieonline-data-diff-$OldVersion-$Version.jar")
+        },
+        [pscustomobject]@{
+            Old = (Join-Path $OldExtractDir "lib\polanieonline-sound-data.jar")
+            New = (Join-Path $Root "build\lib\polanieonline-sound-data-$Version.jar")
+            Output = (Join-Path $Root "build\lib\polanieonline-sound-data-diff-$OldVersion-$Version.jar")
+        },
+        [pscustomobject]@{
+            Old = (Join-Path $OldExtractDir "lib\polanieonline-music-data.jar")
+            New = (Join-Path $Root "build\lib\polanieonline-music-data-$Version.jar")
+            Output = (Join-Path $Root "build\lib\polanieonline-music-data-diff-$OldVersion-$Version.jar")
+        }
+    )
+
+    foreach ($job in $JarDiffJobs) {
+        if (-not (Test-Path -LiteralPath $job.Old)) {
+            throw "W archiwum $OldZip brakuje: $($job.Old)"
+        }
+        if (-not (Test-Path -LiteralPath $job.New)) {
+            throw "Brakuje nowego JAR-a: $($job.New)"
+        }
+
+        Invoke-Checked $Java @(
+            "-jar",
+            $JarDiffTool,
+            "-nonminimal",
+            "-creatediff",
+            "-output",
+            $job.Output,
+            $job.Old,
+            $job.New
+        )
+    }
+}
 
 $FullFiles = @(
     [pscustomobject]@{ Name = "log4j.jar"; Source = (Join-Path $Root "libs\log4j.jar") },
@@ -380,15 +460,10 @@ if (-not $NoDiff) {
 
 foreach ($item in @($FullFiles + $DiffFiles)) {
     if (-not (Test-Path -LiteralPath $item.Source)) {
-        if (-not $NoDiff) {
-            Restore-BuildArchiveAfterJarDiff $HistoryRaw
-        }
         throw "Brakuje pliku po buildzie: $($item.Source)"
     }
 }
 
-# Jesli biblioteka zmienila sie od poprzedniego oficjalnego ZIP-a,
-# updater musi pobrac jej pelny nowy plik (jardiff ich nie obsluguje).
 $ChangedLibraries = @()
 
 if (-not $NoDiff) {
@@ -396,28 +471,27 @@ if (-not $NoDiff) {
         [pscustomobject]@{
             Name = "log4j.jar"
             Current = (Join-Path $Root "libs\log4j.jar")
-            Old = (Join-Path $BuildArchiveDir "lib\log4j.jar")
+            Old = (Join-Path $OldExtractDir "lib\log4j.jar")
         },
         [pscustomobject]@{
             Name = "jorbis.jar"
             Current = (Join-Path $Root "libs\jorbis.jar")
-            Old = (Join-Path $BuildArchiveDir "lib\jorbis.jar")
+            Old = (Join-Path $OldExtractDir "lib\jorbis.jar")
         },
         [pscustomobject]@{
             Name = "marauroa.jar"
             Current = (Join-Path $Root "libs\marauroa.jar")
-            Old = (Join-Path $BuildArchiveDir "lib\marauroa.jar")
+            Old = (Join-Path $OldExtractDir "lib\marauroa.jar")
         },
         [pscustomobject]@{
             Name = "json-simple-1.1.1.jar"
             Current = (Join-Path $Root "libs\json-simple-1.1.1.jar")
-            Old = (Join-Path $BuildArchiveDir "lib\json-simple-1.1.1.jar")
+            Old = (Join-Path $OldExtractDir "lib\json-simple-1.1.1.jar")
         }
     )
 
     foreach ($lib in $libraryChecks) {
         if (-not (Test-Path -LiteralPath $lib.Old)) {
-            Restore-BuildArchiveAfterJarDiff $HistoryRaw
             throw "W starym oficjalnym ZIP-ie brakuje $($lib.Old)."
         }
 
@@ -427,7 +501,8 @@ if (-not $NoDiff) {
         }
     }
 
-    Restore-BuildArchiveAfterJarDiff $HistoryRaw
+    Remove-Item -LiteralPath $OldExtractDir -Recurse -Force
+    $OldExtractDir = $null
 }
 
 if (Test-Path -LiteralPath $PackageRoot) {
@@ -448,7 +523,6 @@ if (-not (Test-Path -LiteralPath $CurrentZip)) {
 
 Copy-Item -LiteralPath $CurrentZip -Destination (Join-Path $ArchiveOutDir ("polanieonline-" + $Version + ".zip")) -Force
 
-# Zbuduj kompletna historie manifestu.
 $Properties = [ordered]@{}
 
 if (-not $NoDiff) {
@@ -458,7 +532,6 @@ if (-not $NoDiff) {
         }
     }
 
-    # Poprzedni CURRENT staje sie UPDATE_NEEDED.
     foreach ($key in @($Properties.Keys)) {
         if (($key -match '^version\.(?!destination\.)') -and ($Properties[$key] -eq "CURRENT")) {
             $Properties[$key] = "UPDATE_NEEDED"
@@ -589,8 +662,6 @@ $ManifestLines += ""
 $ManifestPath = Join-Path $UploadDir "update-1.16.properties"
 Write-AsciiLines $ManifestPath $ManifestLines
 
-# Kopia manifestu razem z ZIP-em - to dokladnie ten zestaw, ktory po testach
-# mozna wypromowac bez ponownego builda.
 Copy-Item -LiteralPath $ManifestPath -Destination (Join-Path $ArchiveOutDir "update-1.16.properties") -Force
 
 $HashLines = @()
