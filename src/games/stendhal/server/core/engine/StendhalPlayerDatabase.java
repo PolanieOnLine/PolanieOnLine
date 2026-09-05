@@ -71,6 +71,10 @@ public class StendhalPlayerDatabase {
 		}
 
 		registerStendhalDAOs();
+		// Persisted player RPObjects need their RPClass definitions while being
+		// deserialized. Database initialization runs before StendhalRPWorld, so
+		// make the definitions available before migrating the rune mirror.
+		new RPClassGenerator().createRPClassesWithoutBaking();
 		backfillRuneStats();
 	}
 
@@ -130,7 +134,7 @@ public class StendhalPlayerDatabase {
 			}
 		}
 
-		// 0.87: added new column finger to character_stats
+		// 0.87: added new column finger to table character_stats
 		if (!transaction.doesColumnExist("character_stats", "finger")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (finger VARCHAR(32));", null);
 		}

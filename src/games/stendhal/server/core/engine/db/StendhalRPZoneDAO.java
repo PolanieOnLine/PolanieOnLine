@@ -28,6 +28,24 @@ public class StendhalRPZoneDAO {
 	private static Logger logger = Logger.getLogger(StendhalRPZoneDAO.class);
 
 	/**
+	 * Returns descriptions for legacy zone names which do not follow the normal
+	 * level/location naming scheme used by StendhalRPZone.describe().
+	 */
+	private String getZoneDescription(final StendhalRPZone zone) {
+		final String name = zone.getName();
+		if ("alt_int_dragon_knights_dungeons".equals(name)) {
+			return "w alternatywnych lochach smoczych rycerzy";
+		}
+		if ("alt_hell".equals(name)) {
+			return "w alternatywnym Piekle";
+		}
+		if ("bone_pillar".equals(name)) {
+			return "przy kościanym filarze";
+		}
+		return zone.describe();
+	}
+
+	/**
 	 * dumps the properties of the specified zone into the prepared statement as an operation in a batch.
 	 *
 	 * @param stmt PreparedStatement in batch mode
@@ -46,7 +64,7 @@ public class StendhalRPZoneDAO {
 		stmt.setInt(8, zone.getWidth());
 		stmt.setInt(9, zone.isPublicAccessible() ? 1 : 0);
 		stmt.setString(10, zone.getAttributes().get("readable_name"));
-		stmt.setString(11, zone.describe());
+		stmt.setString(11, getZoneDescription(zone));
 		stmt.setString(12, zone.getAttributes().get("color_method"));
 		stmt.setString(13, zone.getAttributes().get("color"));
 		stmt.setString(14, zone.getAttributes().get("blend_method"));

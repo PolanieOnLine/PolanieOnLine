@@ -65,7 +65,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 				new AndCondition(
 					new QuestNotStartedCondition(questSlot),
 					beforeForgingConditions),
-				ConversationStates.QUEST_OFFERED,
+				offerState,
 				respondToRequest,
 				null);
 
@@ -86,14 +86,14 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 		startActions.add(startAction);
 		startActions.addAll(acceptWith);
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(offerState,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(startActions));
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(offerState,
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				respondToReject,
@@ -158,7 +158,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
 						beforeForgingConditions),
-					ConversationStates.QUEST_OFFERED,
+					offerState,
 					respondToRepeatedRequest,
 					null);
 

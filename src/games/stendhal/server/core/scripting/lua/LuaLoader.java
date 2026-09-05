@@ -63,9 +63,10 @@ public class LuaLoader {
 	/**
 	 * Retrieves the singleton instance.
 	 */
-	public static LuaLoader get() {
+	public static synchronized LuaLoader get() {
 		if (instance == null) {
 			instance = new LuaLoader();
+			instance.init();
 		}
 		return instance;
 	}
@@ -74,7 +75,8 @@ public class LuaLoader {
 	 * Hidden singleton constructor.
 	 */
 	private LuaLoader() {
-		init();
+		// Initialization is performed by get() after publishing the singleton
+		// instance. Lua helpers may call LuaLoader.get() while init() is running.
 	}
 
 	/**

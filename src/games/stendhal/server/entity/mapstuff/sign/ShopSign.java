@@ -76,8 +76,9 @@ public class ShopSign extends Sign implements UseListener {
 		} else {
 			registered = shops.get(this.shopName, this.shopType) != null;
 		}
-		// show warning for unregistered shops
-		if (!registered) {
+		// Anonymous subclasses commonly provide their own local catalogue in
+		// onUsed(). Only validate signs that actually rely on a registered shop.
+		if (!registered && !getClass().isAnonymousClass()) {
 			logger.warn("Unknown shop '" + this.shopName + "'");
 		}
 	}

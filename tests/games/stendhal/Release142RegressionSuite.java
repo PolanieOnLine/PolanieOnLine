@@ -8,6 +8,7 @@ import org.junit.runners.Suite;
 
 import games.stendhal.client.gui.ItemRarityPresentationTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
+import games.stendhal.server.core.engine.db.StendhalWebsiteDAOTest;
 import games.stendhal.server.core.events.seasonal.EasterEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownConstructionEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownEventPlanTest;
@@ -35,6 +36,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaNPCTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaRankingServiceTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaStateTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
+import games.stendhal.server.maps.quests.BringMagicTest;
 
 /**
  * Fast, explicit regression suite for the highest-risk changes scheduled for
@@ -49,6 +51,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 	ItemAffixGeneratorTest.class,
 	ItemAffixDropIntegrationTest.class,
 	EliteSummonActionTest.class,
+	StendhalWebsiteDAOTest.class,
 	StunnedStatusTest.class,
 	BleedingStatusTest.class,
 	BleedingAttackerTest.class,
@@ -67,6 +70,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 	ChallengeArenaNPCTest.class,
 	ChallengeArenaLootServiceTest.class,
 	ChallengeArenaRewardChestTest.class,
+	BringMagicTest.class,
 	SeasonalZonePlanTest.class,
 	EasterEventPlanTest.class,
 	MineTownEventPlanTest.class,

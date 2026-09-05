@@ -17,6 +17,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
@@ -92,6 +93,7 @@ public class BringMagicTest {
 
 		assertTrue(engine.step(player, "hi"));
 		assertTrue(engine.step(player, "task"));
+		assertEquals(ConversationStates.QUEST_3_OFFERED, engine.getCurrentState());
 		assertTrue(engine.step(player, "yes"));
 		assertEquals("start", player.getQuest(QUEST_SLOT, 0));
 		assertEquals(karmaBefore + 10.0, player.getKarma(), 0.01);

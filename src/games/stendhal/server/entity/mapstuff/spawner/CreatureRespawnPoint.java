@@ -40,7 +40,9 @@ import games.stendhal.server.util.Observer;
 public class CreatureRespawnPoint implements TurnListener {
 	private static final int MAX_RESPAWN_TIME = 200 * 60 * 24 * 30 * 6;
 	private static final int MIN_RESPAWN_TIME = 33;
-	private static final long SLOW_RESPAWN_NANOS = 20L * 1000L * 1000L;
+	// Keep the diagnostic focused on meaningful stalls rather than one-off
+	// placement/JIT spikes well below a single 300 ms game turn.
+	private static final long SLOW_RESPAWN_NANOS = 50L * 1000L * 1000L;
 	private static final Logger logger = Logger.getLogger(CreatureRespawnPoint.class);
 
 	protected final StendhalRPZone zone;

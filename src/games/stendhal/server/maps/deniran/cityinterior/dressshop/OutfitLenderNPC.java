@@ -136,7 +136,7 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 		final List<DeniranOutfit> outfitList = new LinkedList<DeniranOutfit>() {{
 			add(new DeniranOutfit("niebieski niedźwiadek", OutfitType.BEAR_BLUE, 2500));
 			add(new DeniranOutfit("brązowy niedźwiadek", OutfitType.BEAR_BROWN, 2500));
-			add(new DeniranOutfit("super", OutfitType.SUPERSTENDHAL, 5000));
+			add(new DeniranOutfit("super strój", OutfitType.SUPERSTENDHAL, 5000));
 		}};
 
 		final Map<String, Integer> prices = new LinkedHashMap<>();
