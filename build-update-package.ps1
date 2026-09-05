@@ -1,4 +1,4 @@
-# build-update-package.ps1 v5 - robust local JDK/Ant discovery + direct jardiff generation
+# build-update-package.ps1 v6 - fix reserved HOME variable collision + robust JDK/Ant discovery
 param(
     [switch]$NoDiff,
     [switch]$PromoteOnly,
@@ -172,9 +172,9 @@ function Resolve-JavaHome([string]$WrapperJavaHome) {
 
     if ($javap) {
         $binDir = Split-Path -Parent $javap.Source
-        $home = Split-Path -Parent $binDir
-        if (Test-JavaHome $home) {
-            return $home
+        $resolvedJavaHome = Split-Path -Parent $binDir
+        if (Test-JavaHome $resolvedJavaHome) {
+            return $resolvedJavaHome
         }
     }
 
@@ -193,16 +193,16 @@ function Resolve-AntTool([string]$WrapperAntHome) {
         $candidates += $WrapperAntHome
     }
 
-    foreach ($home in ($candidates | Select-Object -Unique)) {
-        $candidate = Join-Path $home "bin\ant.bat"
+    foreach ($antHomeCandidate in ($candidates | Select-Object -Unique)) {
+        $candidate = Join-Path $antHomeCandidate "bin\ant.bat"
         if (Test-Path -LiteralPath $candidate) {
-            $env:ANT_HOME = $home
+            $env:ANT_HOME = $antHomeCandidate
             return $candidate
         }
 
-        $candidate = Join-Path $home "bin\ant"
+        $candidate = Join-Path $antHomeCandidate "bin\ant"
         if (Test-Path -LiteralPath $candidate) {
-            $env:ANT_HOME = $home
+            $env:ANT_HOME = $antHomeCandidate
             return $candidate
         }
     }
