@@ -121,16 +121,11 @@
 *Arena Wyzwań*
 ---
 * Dodano Arenę Wyzwań w Tarnowie przeznaczoną do samodzielnych walk z kolejnymi falami przeciwników
-* Do wyboru jest sześć poziomów wyzwania: Próba, Potyczka, Łowca, Weteran, Czempion oraz Legenda, różniących się wpisowym, liczbą fal i siłą przeciwników
-* Kolejne fale pojawiają się po pokonaniu wszystkich przeciwników z bieżącej fali, a po ostatniej walce rozgrywka jest automatycznie kończona
-* Po zakończeniu Areny gracz wraca bezpośrednio przed NPC prowadzącego wyzwanie
-* Arena zapisuje liczbę zwycięstw, najlepszy ukończony poziom, najlepszy czas oraz dane wykorzystywane w rankingu
-* Za zwycięstwo przyznawane jest dodatkowe doświadczenie oraz fragmenty glifów zależne od poziomu wyzwania
-* Od poziomu Łowcy zwycięzca otrzymuje skrzynię Areny Wyzwań zawierającą dokładnie jeden element wyposażenia
-* Skrzynie korzystają z ręcznie dobranych pul istniejących przedmiotów odpowiednich dla Łowcy, Weterana, Czempiona i Legendy zamiast losować wyposażenie z ogólnej listy dropów potworów
-* Nagrody ze skrzyń zachowują system rzadkości przedmiotów, a wyższe poziomy Areny otrzymują więcej losowań rarity
-* Wartość `value` przedmiotu nie wpływa na możliwość otrzymania go ze skrzyni Areny
-* Legenda posiada niewielką szansę na nagrodę z istniejącego wyposażenia mithrilowego, bez dodawania nowych przedmiotów i bez bezpośredniego rozdawania ciemnomithrilowego wyposażenia
+* Dodano sześć poziomów wyzwania: Próba, Potyczka, Łowca, Weteran, Czempion i Legenda, różniących się wpisowym, liczbą fal i poziomem trudności
+* Za ukończenie Areny przyznawane są doświadczenie i fragmenty glifów, a od poziomu Łowcy również skrzynia z jednym elementem wyposażenia
+* Skrzynie Areny korzystają z dobranych pul istniejącego wyposażenia zależnych od poziomu wyzwania, a nagrody mogą otrzymywać różne poziomy rzadkości
+* Na poziomie Legenda istnieje niewielka szansa na zdobycie wyposażenia mithrilowego
+* Dodano ranking Hall of Fame Areny Wyzwań oparty na najwyższym ukończonym poziomie wyzwania i najlepszym czasie
 
 *produkcja i rzemiosło*
 ---
@@ -2022,7 +2017,7 @@ oraz po wyborze ciała szlamu nie będzie rysowane ubranie
 - Dodano muzykę w tle w mieście Fado
 - Rozbudowano nową funkcję rysowania cieni pod obiektami
 
-*świat*
+*świat gry*
 - Przystosowano niektóre mapy zakopanego do Xmas
 - Zbalansowano mnożnik ilości punktów defensywnych z setów
 - McPegleg skupuje teraz spodnie lazurowe
@@ -2182,15 +2177,11 @@ Zaktualizowano do najnowszej wersji Stendhala 1.31
 - Dodano możliwość wypożyczenia małego oraz dużego statku u Liliany jako kostium
 - Można wyprodukować smoczy eliksir u Agrypin'a (nowy budynek w Wieliczce) oraz duży smoczy eliksir u Aron'a (piwnica Aligerna)
 - Zwiększono ilość możliwego do zdobycia PD u potworów takich jak:
-	wilczykruk,
-	żółty glut,
-	czerwony glut,
-	Jožin z lesa,
-	Jožin z bažin,
-	coś niszczącego
-
-*kod gry*
-- Dodano nowe wydarzenie zatytułowane "50% więcej PD oraz 20% szybszy respawn potworów"
+	superczłowiek olbrzym,
+	mega mag,
+	czarny szkielet gigant,
+	książę szkieletów oraz wszystkie kostuchy wielkie
+	i wszystkie dwugłowe smoki
 
 *naprawiono błędy*
 - Naprawiono sklep u Balduina za wykonanie ostatniego zadania
