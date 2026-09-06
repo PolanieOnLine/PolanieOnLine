@@ -225,7 +225,6 @@ public class StendhalQuestSystem {
 		loadQuest(new PochorowaneKonie());
 		loadQuest(new PomocChlopcowi());
 		loadQuest(new Ratownik());
-		loadQuest(new RebornQuest());
 		loadQuest(new ScytheForFryderyk());
 		loadQuest(new WegielNaOpal());
 		loadQuest(new ZakopaneBank());
@@ -844,8 +843,6 @@ public class StendhalQuestSystem {
 		return res;
 	}
 
-
-
 	/**
 	 * gets a list of the unique npc names for unstarted quests in a specified region
 	 *
@@ -858,7 +855,6 @@ public class StendhalQuestSystem {
 		List<String> res = new LinkedList<String>();
 		for (final IQuest quest : quests) {
 			if (region.equals(quest.getRegion()) && !quest.isStarted(player) && quest.isVisibleOnQuestStatus(player) && quest.getMinLevel()<playerlevel) {
-				// don't add a name twice
 				if (!res.contains(quest.getNPCName())) {
 					res.add(quest.getNPCName());
 				}
@@ -866,7 +862,6 @@ public class StendhalQuestSystem {
 		}
 		return res;
 	}
-
 
 	/**
 	 * Gets quest descriptions for unstarted quests in a specified region

@@ -23,6 +23,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.PlayerTestHelper;
@@ -75,6 +76,57 @@ public class RPEntityGroupExperienceTest {
 		assertEquals(33, bartek.getXP());
 		assertEquals(33, celina.getXP());
 		assertEquals(0, distant.getXP());
+	}
+
+	@Test
+	public void combatExperienceUsesRebornBonus() {
+		final StendhalRPZone combatZone = new StendhalRPZone("reborn_exp_combat", 20, 20);
+		final Player anna = addPlayer("anna", combatZone);
+		anna.put(RebornSystem.ATTR_REBORNS, 2);
+
+		final RewardTestEntity defeated = new RewardTestEntity();
+		defeated.setName("test target");
+		defeated.addContribution(anna, 100);
+
+		// 5 percent of 8880 is 444. Two reborns add 10 percent, rounded to 488.
+		defeated.rewardContributors(8880);
+		assertEquals(488, anna.getXP());
+	}
+
+	@Test
+	public void directExperienceDoesNotUseRebornCombatBonus() {
+		final Player anna = PlayerTestHelper.createPlayer("direct-exp");
+		anna.put(RebornSystem.ATTR_REBORNS, 2);
+
+		anna.addXP(444);
+		assertEquals(444, anna.getXP());
+	}
+
+	@Test
+	public void equalModeAppliesRebornBonusAfterSplittingForEachRecipient() {
+		final StendhalRPZone combatZone = new StendhalRPZone("reborn_equal_exp", 20, 20);
+		final Player anna = addPlayer("anna", combatZone);
+		final Player bartek = addPlayer("bartek", combatZone);
+		final Player celina = addPlayer("celina", combatZone);
+
+		anna.put(RebornSystem.ATTR_REBORNS, 2);
+		bartek.put(RebornSystem.ATTR_REBORNS, 1);
+
+		group = SingletonRepository.getGroupManager().createGroup(anna.getName());
+		group.addMember(bartek.getName());
+		group.addMember(celina.getName());
+		group.setExpmode("equal");
+
+		final RewardTestEntity defeated = new RewardTestEntity();
+		defeated.setName("test target");
+		defeated.addContribution(anna, 60);
+		defeated.addContribution(bartek, 40);
+		defeated.rewardContributors(2000);
+
+		// Base shares are 34, 33 and 33. Bonuses are then applied per recipient.
+		assertEquals(37, anna.getXP());
+		assertEquals(35, bartek.getXP());
+		assertEquals(33, celina.getXP());
 	}
 
 	private Player addPlayer(final String name, final StendhalRPZone zone) {

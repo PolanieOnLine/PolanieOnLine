@@ -5,12 +5,11 @@ import java.util.LinkedList;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
+import games.stendhal.server.entity.npc.condition.ComparisonOperator;
+import games.stendhal.server.entity.npc.condition.PlayerStatLevelCondition;
+import games.stendhal.server.entity.player.RebornSystem;
 
 public class RebornAchievementFactory extends AbstractAchievementFactory {
-	private static final String QUEST_SLOT = "reset_level";
-
 	private static final int EASY_SCORE = 2500;
 	private static final int MEDIUM_SCORE = 5000;
 	private static final int HARD_SCORE = 7500;
@@ -34,42 +33,37 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 				ID_NEWBORN, "Nowa Przygoda",
 				"Rozpoczęto przygodę od nowa",
 				EASY_SCORE, true,
-				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_1"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_2"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_3"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
+				atLeastReborns(1)));
 
 		achievements.add(createAchievement(
 				ID_NEW_ADVENTURE, "Druga Szansa",
 				"Rozpoczęto przygodę drugi raz od nowa",
 				MEDIUM_SCORE, true,
-				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_2"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_3"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
+				atLeastReborns(2)));
 
 		achievements.add(createAchievement(
 				ID_COMING, "Nadchodzę",
 				"Rozpoczęto przygodę trzeci raz od nowa",
 				MEDIUM_SCORE, true,
-				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_3"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
+				atLeastReborns(3)));
 
 		achievements.add(createAchievement(
 				ID_REPLAY, "Zdobywca Doświadczenia",
 				"Rozpoczęto przygodę czwarty raz od nowa",
 				HARD_SCORE, true,
-				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
-						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
+				atLeastReborns(4)));
 
 		achievements.add(createAchievement(
 				ID_NEW_HISTORY, "Legendarny Wojownik",
 				"Rozpoczęto przygodę piąty raz od nowa",
 				LEGENDARY_SCORE, true,
-				new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5")));
+				atLeastReborns(5)));
 
 		return achievements;
+	}
+
+	private PlayerStatLevelCondition atLeastReborns(final int reborns) {
+		return new PlayerStatLevelCondition(RebornSystem.ATTR_REBORNS,
+				ComparisonOperator.GREATER_OR_EQUALS, reborns);
 	}
 }

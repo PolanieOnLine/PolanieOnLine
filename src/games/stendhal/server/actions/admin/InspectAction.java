@@ -23,6 +23,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.RebornSystem;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -90,6 +91,18 @@ public class InspectAction extends AdministrationAction {
 					+ inspected.getMiningXP() + ")");
 			st.append("\nPD:     " + inspected.getXP());
 			st.append("\nPoziom:  " + inspected.getLevel());
+			if (inspected instanceof Player) {
+				final Player inspectedPlayer = (Player) inspected;
+				st.append("\nOdrodzenia: " + RebornSystem.getRebornCount(inspectedPlayer));
+				st.append("\nPremia ataku z odrodzeń: "
+						+ RebornSystem.getAttackBonusPercent(inspectedPlayer) + "%");
+				st.append("\nPremia doświadczenia z walki: "
+						+ RebornSystem.getCombatExperienceBonusPercent(inspectedPlayer) + "%");
+				st.append("\nPremia zdrowia z odrodzeń: "
+						+ RebornSystem.getHealthBonus(inspectedPlayer));
+				st.append("\nNagrody odrodzeń: "
+						+ RebornSystem.getClaimedRewardCount(inspectedPlayer) + "/3");
+			}
 			st.append("\nKarma:  " + inspected.getKarma());
 			st.append("\nMana:  " + inspected.getMana() + " / "
 					+ inspected.getBaseMana());

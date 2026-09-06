@@ -71,6 +71,12 @@ public class PlayerRPClass {
 
 		player.addAttribute("age", Type.INT, Definition.HIDDEN);
 
+		// Permanent reborn progression. Values are server-side only and are not
+		// represented as quest states.
+		player.addAttribute("reborns", Type.INT, Definition.HIDDEN);
+		player.addAttribute("reborn_rewards", Type.INT, Definition.HIDDEN);
+		player.addAttribute("reborn_migration_version", Type.INT, Definition.HIDDEN);
+
 		// Store sheep at DB
 		player.addRPSlot("#flock", 1, Definition.HIDDEN);
 		player.addAttribute("sheep", Type.INT);

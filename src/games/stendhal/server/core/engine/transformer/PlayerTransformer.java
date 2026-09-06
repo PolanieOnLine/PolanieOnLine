@@ -38,6 +38,7 @@ import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.SlotActivatedItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.BankSlot;
 import games.stendhal.server.entity.slot.Banks;
@@ -102,6 +103,7 @@ public class PlayerTransformer implements Transformer {
 
 		UpdateConverter.updateQuests(player);
 		QuestRewardRarityMigrationService.migrate(player);
+		RebornSystem.migrateLegacyData(player);
 		player.updateItemAtkDef();
 		// Should be at least after converting the features list, as this
 		// depends on checking the keyring feature.
@@ -111,7 +113,7 @@ public class PlayerTransformer implements Transformer {
 		}
 
 		UpdateConverter.updateMoneyPouch(player);
-		UpdateConverter.updateBaseHP(player);
+		RebornSystem.updateBaseHP(player);
 
 		// update player with 'outfit_ext' attribute
 		if (!player.has("outfit_ext")) {
@@ -273,8 +275,8 @@ public class PlayerTransformer implements Transformer {
 					if (player.getLevel() >= 2) {
 						TutorialNotifier.newrelease(player);
 					}
+					player.put("release", Debug.VERSION);
 				}
-				player.put("release", Debug.VERSION);
 			}
 		} catch (final RuntimeException e) {
 			// If placing the player at its last position

@@ -56,6 +56,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
 import games.stendhal.server.entity.status.StatusAttacker;
@@ -458,34 +459,8 @@ public abstract class RPEntity extends CombatEntity {
 	protected int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType, boolean isRanged,
 			int maxRange) {
 		// Don't start from 0 to mitigate weird behaviour at very low levels
-		int effectiveAttackerLevel = getLevel() + 5;
-		int effectiveDefenderLevel = defender.getLevel() + 5;
-
-		if (this instanceof Player) {
-			Player player = (Player) this;
-
-			final String QUEST_SLOT = "reset_level";
-
-			final int value = 300;
-			final int def_value = (value / 2);
-
-			if (player.isQuestInState(QUEST_SLOT, "done;reborn_1")) {
-				effectiveAttackerLevel = getLevel() + 1 * value;
-				effectiveDefenderLevel = defender.getLevel() + 1 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_2")) {
-				effectiveAttackerLevel = getLevel() + 2 * value;
-				effectiveDefenderLevel = defender.getLevel() + 2 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_3")) {
-				effectiveAttackerLevel = getLevel() + 3 * value;
-				effectiveDefenderLevel = defender.getLevel() + 3 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_4")) {
-				effectiveAttackerLevel = getLevel() + 4 * value;
-				effectiveDefenderLevel = defender.getLevel() + 4 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_5")) {
-				effectiveAttackerLevel = getLevel() + 5 * value;
-				effectiveDefenderLevel = defender.getLevel() + 5 * def_value;
-			}
-		}
+		final int effectiveAttackerLevel = getLevel() + 5;
+		final int effectiveDefenderLevel = defender.getLevel() + 5;
 
 		// Defending side
 		final double armor = defender.getItemDef();
@@ -546,7 +521,10 @@ public abstract class RPEntity extends CombatEntity {
 
 		final double weaponComponent = 1.0 + attackingWeaponsValue;
 		// XXX: Is correct to use sourceAtk here instead of atkStrength?
-		final double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
+		double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
+		if (this instanceof Player) {
+			maxAttack *= 1.0 + RebornSystem.getAttackBonusPercent((Player) this) / 100.0;
+		}
 		double attack = Rand.rand() * maxAttack;
 
 		/*
@@ -1676,7 +1654,7 @@ public abstract class RPEntity extends CombatEntity {
 					}
 				}
 
-				expRecipient.addXP(reward);
+				expRecipient.addXP(RebornSystem.applyCombatExperienceBonus(expRecipient, reward));
 				if (expRecipient != killer) {
 					expRecipient.notifyWorldAboutChanges();
 				}
@@ -1722,13 +1700,16 @@ public abstract class RPEntity extends CombatEntity {
 			final Map<Player, Integer> shares = GroupExperienceDistributor.splitEqually(
 					pool.group.getOnlineMembersInSameZone(pool.reference), pool.reward);
 			if (shares.isEmpty()) {
-				pool.reference.addXP(pool.reward);
+				pool.reference.addXP(RebornSystem.applyCombatExperienceBonus(pool.reference, pool.reward));
 				pool.reference.notifyWorldAboutChanges();
 				continue;
 			}
 			for (Entry<Player, Integer> share : shares.entrySet()) {
-				share.getKey().addXP(share.getValue().intValue());
-				share.getKey().notifyWorldAboutChanges();
+				final Player recipient = share.getKey();
+				final int reward = RebornSystem.applyCombatExperienceBonus(
+						recipient, share.getValue().intValue());
+				recipient.addXP(reward);
+				recipient.notifyWorldAboutChanges();
 			}
 		}
 	}
