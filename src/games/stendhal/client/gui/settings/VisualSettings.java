@@ -14,6 +14,7 @@ package games.stendhal.client.gui.settings;
 import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.REBORN_BADGES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.ITEM_TOOLTIP_COMPARISON_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
@@ -273,6 +274,20 @@ class VisualSettings {
 			}
 		});
 		rightColumn.add(showHPBarToggle);
+
+		final JCheckBox showRebornBadgesToggle = SettingsComponentFactory.createSettingsToggle(
+				REBORN_BADGES_PROPERTY, true, "Pokaż odznaki odrodzeń",
+				"Pokazuje tarczę z liczbą odrodzeń przy nazwach wszystkich graczy.");
+		rightColumn.add(showRebornBadgesToggle);
+		showRebornBadgesToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				final boolean enabled = e.getStateChange() == ItemEvent.SELECTED;
+				final String state = enabled ? "włączone" : "wyłączone";
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
+						"Odznaki odrodzeń zostały " + state + ".", NotificationType.CLIENT));
+			}
+		});
 
 		// system font antialiasing
 		final JCheckBox overrideSystemFontAA = SettingsComponentFactory.createSettingsToggle(OVERRIDE_AA, false,

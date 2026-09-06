@@ -24,6 +24,9 @@ public class SettingsProperties {
 	/** Property for display HP bar. */
 	public static final String HP_BAR_PROPERTY = "ui.hp_bar";
 
+	/** Property for displaying reborn badges next to player names. */
+	public static final String REBORN_BADGES_PROPERTY = "ui.reborn_badges";
+
 	/** Property for selecting the movement key scheme. */
 	public static final String MOVE_KEY_SCHEME_PROPERTY = "move.keys";
 

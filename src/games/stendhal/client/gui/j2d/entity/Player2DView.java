@@ -127,7 +127,10 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 	@Override
 	protected void drawStatusBar(final Graphics2D g2d, final int x,
 			final int y, final int width) {
-		drawTitle(g2d, x, y, width);
+		if (!RebornBadgeRenderer.drawNameplate(entity, g2d, x, y, width,
+				titleDrawYOffset)) {
+			drawTitle(g2d, x, y, width);
+		}
 		Composite comp = g2d.getComposite();
 		// Draw in full color for ignored players. Avoid making ghosts visible
 		if (ignored && !entity.isGhostMode()) {

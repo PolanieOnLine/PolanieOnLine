@@ -76,6 +76,8 @@ public class PlayerRPClass {
 		player.addAttribute("reborns", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_rewards", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_migration_version", Type.INT, Definition.HIDDEN);
+		// Public, volatile mirror used only by clients to draw the reborn badge.
+		player.addAttribute(RebornDisplay.ATTR_REBORN_BADGE, Type.INT, Definition.VOLATILE);
 
 		// Store sheep at DB
 		player.addRPSlot("#flock", 1, Definition.HIDDEN);
