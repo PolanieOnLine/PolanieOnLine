@@ -258,18 +258,31 @@ export class MiniMapComponent extends Component {
 	}
 
 	private onTouchStart(event: TouchEvent) {
-		event.preventDefault();
+		if (!stendhal.config.getBoolean("pathfinding.minimap")) {
+			return;
+		}
+		if (event.cancelable) {
+			event.preventDefault();
+		}
 	}
 
 	private onTouchEnd(event: TouchEvent) {
 		if (!stendhal.config.getBoolean("pathfinding.minimap")) {
 			return;
 		}
-		event.preventDefault();
+		if (event.cancelable) {
+			event.preventDefault();
+		}
+		if (!event.changedTouches || event.changedTouches.length === 0) {
+			return;
+		}
 		const pos = stendhal.ui.html.extractPosition(event);
+		if (typeof pos.canvasRelativeX !== "number" || typeof pos.canvasRelativeY !== "number") {
+			return;
+		}
 		const x = Math.floor((pos.canvasRelativeX + this.xOffset) / this.scale);
 		const y = Math.floor((pos.canvasRelativeY + this.yOffset) / this.scale);
-		if (!stendhal.data.map.collision(x, y)) {
+		if (!this.map.collision(x, y)) {
 			const action: any = {
 				type: "moveto",
 				x: x.toString(),
