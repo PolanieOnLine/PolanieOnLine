@@ -42,10 +42,15 @@ export class SoundEvent extends RPEvent {
 		}
 
 		let volume = 1;
-		// Adjust by the server specified volume, if any
+		// Adjust by the server specified volume, if any.
 		if (this.hasOwnProperty("volume")) {
-			// NOTE: server uses int in range 1-100 while HTMLAudioElement uses float in range 0-1
-			volume *= this["volume"] / 100;
+			// Server uses a value in range 1-100 while HTMLAudioElement uses 0-1.
+			// Old or incomplete events may carry undefined/NaN, which must not be
+			// forwarded to HTMLAudioElement.volume.
+			const eventVolume = Number(this["volume"]);
+			if (Number.isFinite(eventVolume)) {
+				volume *= eventVolume / 100;
+			}
 		}
 
 		let sound = this["sound"];

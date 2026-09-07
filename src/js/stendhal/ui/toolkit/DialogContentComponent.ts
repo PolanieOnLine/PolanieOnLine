@@ -62,7 +62,7 @@ export abstract class DialogContentComponent extends Component {
 		let buttonContainer = this.child(".dialogbuttons");
 		if (typeof(buttonContainer) === "undefined" || buttonContainer == null) {
 			buttonContainer = document.createElement("div");
-			buttonContainer.classList.add("horizontalgroup dialogbuttons");
+			buttonContainer.classList.add("horizontalgroup", "dialogbuttons");
 			this.componentElement.appendChild(buttonContainer);
 		}
 		let button: HTMLButtonElement|undefined = undefined;

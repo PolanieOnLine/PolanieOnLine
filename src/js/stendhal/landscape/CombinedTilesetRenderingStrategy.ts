@@ -14,6 +14,7 @@ import { Canvas } from "util/Types";
 import { TileMap } from "../data/TileMap";
 import { CombinedTilesetFactory } from "./CombinedTilesetFactory";
 import { CombinedTileset } from "./CombinedTileset";
+import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "./TileOverlap";
 
 export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 	private combinedTileset?: CombinedTileset;
@@ -57,10 +58,23 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 			return;
 		}
 		let ctx = canvas.getContext("2d")!;
+		ctx.imageSmoothingEnabled = false;
 
 		const layer = combinedTileset.combinedLayers[layerNo];
 		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, this.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, this.map.zoneSizeX);
+		const tileScale = resolveTileScale(targetTileWidth / this.map.tileWidth);
+		const pixelRatio = typeof window.devicePixelRatio === "number" ? window.devicePixelRatio || 1 : 1;
+		const metrics = getTileOverlapMetrics(
+			tileScale,
+			BASE_TILE_EDGE_TRIM,
+			pixelRatio,
+			this.map.tileWidth
+		);
+		const sourceWidth = this.map.tileWidth - metrics.edgeTrim * 2;
+		const sourceHeight = this.map.tileHeight - metrics.edgeTrim * 2;
+		const drawTileWidth = targetTileWidth + metrics.tileOverlap;
+		const drawTileHeight = targetTileHeight + metrics.tileOverlap;
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
@@ -68,17 +82,17 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 				if (index > -1) {
 
 					try {
-						const pixelX = x * targetTileWidth;
-						const pixelY = y * targetTileHeight;
+						const pixelX = x * targetTileWidth - metrics.overlapOffset;
+						const pixelY = y * targetTileHeight - metrics.overlapOffset;
 
 						ctx.drawImage(combinedTileset.canvas,
 
-							(index % combinedTileset.tilesPerRow) * this.map.tileWidth,
-							Math.floor(index / combinedTileset.tilesPerRow) * this.map.tileHeight,
+							(index % combinedTileset.tilesPerRow) * this.map.tileWidth + metrics.edgeTrim,
+							Math.floor(index / combinedTileset.tilesPerRow) * this.map.tileHeight + metrics.edgeTrim,
 
-							this.map.tileWidth, this.map.tileHeight,
+							sourceWidth, sourceHeight,
 							pixelX, pixelY,
-							targetTileWidth, targetTileHeight);
+							drawTileWidth, drawTileHeight);
 					} catch (e) {
 						console.error(e);
 					}

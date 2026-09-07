@@ -10,7 +10,7 @@
  ***************************************************************************/
 
 import { InteractionButtonBase } from "./InteractionButtonBase";
-import { UiStateStore } from "../mobile/UiStateStore";
+import { UiHandedness, UiMode, UiStateStore } from "../mobile/UiStateStore";
 import { ElementClickListener } from "../../util/ElementClickListener";
 import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
 
@@ -31,7 +31,20 @@ export class LeftPanelToggleButton extends InteractionButtonBase {
 		super(element);
 
 		const listener = new ElementClickListener(this.componentElement);
-		listener.onClick = () => UiStateStore.get().toggleLeftPanel();
+		listener.onClick = () => {
+			const store = UiStateStore.get();
+			const state = store.getState();
+			const leftPanelIsActive = state.mode === UiMode.PANELS
+					&& state.handedness === UiHandedness.LEFT
+					&& state.leftPanelExpanded;
+			if (leftPanelIsActive) {
+				store.setLeftPanelExpanded(false);
+				return;
+			}
+			store.setHandedness(UiHandedness.LEFT);
+			store.setMode(UiMode.PANELS);
+			store.setLeftPanelExpanded(true);
+		};
 
 	}
 

@@ -18,6 +18,7 @@ export class HTMLManager {
 
 	/** Singleton instance. */
 	private static instance: HTMLManager;
+	private mobileTooltipTarget?: HTMLElement;
 
 
 	/**
@@ -34,7 +35,38 @@ export class HTMLManager {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		// do nothing
+		document.addEventListener("touchend", (event) => {
+			this.handleMobileTooltipToggle(event);
+		}, { capture: true, passive: false });
+	}
+
+	private handleMobileTooltipToggle(event: TouchEvent) {
+		if (!event.changedTouches || event.changedTouches.length === 0) {
+			return;
+		}
+		const target = this.extractTarget(event);
+		const slot = target instanceof Element
+			? target.closest("div.itemSlot") as HTMLElement|null
+			: null;
+		if (!slot) {
+			return;
+		}
+
+		const tooltip = document.querySelector(".item-rarity-tooltip") as HTMLElement|null;
+		if (tooltip && this.mobileTooltipTarget === slot) {
+			tooltip.remove();
+			this.mobileTooltipTarget = undefined;
+			if (event.cancelable) {
+				event.preventDefault();
+			}
+			event.stopImmediatePropagation();
+			return;
+		}
+
+		queueMicrotask(() => {
+			const currentTooltip = document.querySelector(".item-rarity-tooltip");
+			this.mobileTooltipTarget = currentTooltip ? slot : undefined;
+		});
 	}
 
 	esc(msg: string, filter=[]) {

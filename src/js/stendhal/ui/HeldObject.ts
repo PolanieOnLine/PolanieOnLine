@@ -105,6 +105,7 @@ export class HeldObjectManager {
 
 		document.body.addEventListener("touchmove", this.onDragWhileHeld);
 		document.body.addEventListener("touchend", this.onReleaseWhileHeld);
+		document.addEventListener("touchend", this.onQuickSlotDrop, { capture: true, passive: false });
 	}
 
 	/**
@@ -153,14 +154,48 @@ export class HeldObjectManager {
 	}
 
 	/**
-	 * Handles event to unset held object.
+	 * Routes a touch drag to a quick slot before the source inventory handles
+	 * touchend as a regular equipment drop.
 	 */
-	private onReleaseWhileHeld(e: Event) {
+	private onQuickSlotDrop(e: Event) {
+		if (!(e instanceof TouchEvent) || !stendhal.ui.heldObject) {
+			return;
+		}
+		const pos = stendhal.ui.html.extractPosition(e);
+		if (typeof pos.clientX !== "number" || typeof pos.clientY !== "number") {
+			return;
+		}
+		const target = document.elementFromPoint(pos.clientX, pos.clientY);
+		const quickSlot = target?.closest(".quick-slot");
+		if (!(quickSlot instanceof HTMLElement)) {
+			return;
+		}
+
+		if (e.cancelable) {
+			e.preventDefault();
+		}
+		e.stopPropagation();
+		quickSlot.dispatchEvent(new Event("drop", { cancelable: true }));
+		stendhal.ui.touch.setHolding(false);
+
 		const hom = HeldObjectManager.get();
 		hom.onRelease();
+		hom.removeTouchListeners();
+	}
 
-		document.body.removeEventListener("touchmove", hom.onDragWhileHeld);
-		document.body.removeEventListener("touchend", hom.onReleaseWhileHeld);
+	/**
+	 * Handles event to unset held object.
+	 */
+	private onReleaseWhileHeld(_e: Event) {
+		const hom = HeldObjectManager.get();
+		hom.onRelease();
+		hom.removeTouchListeners();
+	}
+
+	private removeTouchListeners() {
+		document.body.removeEventListener("touchmove", this.onDragWhileHeld);
+		document.body.removeEventListener("touchend", this.onReleaseWhileHeld);
+		document.removeEventListener("touchend", this.onQuickSlotDrop, true);
 	}
 }
 

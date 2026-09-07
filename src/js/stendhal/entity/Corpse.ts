@@ -119,6 +119,10 @@ export class Corpse extends PopupInventory {
 			const dstate = stendhal.config.getWindowState("corpse");
 			this.inventory = new FloatingWindow("Zwłoki", invComponent,
 					dstate.x, dstate.y);
+			// Keep the window fitted to the corpse grid. Otherwise the title bar can
+			// make the window wider than the inventory and expose the white window
+			// background beside the slots.
+			this.inventory.setFixedWidth(content_row === 3 ? 126 : 82);
 			this.inventory.setId("corpse");
 		}
 	}
