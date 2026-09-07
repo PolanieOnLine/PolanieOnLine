@@ -1,0 +1,162 @@
+name: Temporary webclient input fix
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Patch webclient input handling
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected one match, found {count}: {old[:80]!r}')
+              p.write_text(text.replace(old, new, 1))
+
+          # Use the module-owned stendhal singleton for viewport input scaling.
+          path = Path('src/js/stendhal/ui/HTMLManager.ts')
+          text = path.read_text()
+          marker = '''/***************************************************************************\n\n/**\n * HTML code manipulation.\n */\n'''
+          replacement = '''/***************************************************************************\n\nimport { stendhal } from "../stendhal";\n\n/**\n * HTML code manipulation.\n */\n'''
+          if marker not in text:
+              raise SystemExit('HTMLManager.ts: import insertion marker not found')
+          text = text.replace(marker, replacement, 1)
+          old = 'const gamewindow = (globalThis as any)?.stendhal?.ui?.gamewindow;'
+          if text.count(old) != 1:
+              raise SystemExit('HTMLManager.ts: global stendhal lookup mismatch')
+          text = text.replace(old, 'const gamewindow = stendhal.ui?.gamewindow;', 1)
+          path.write_text(text)
+
+          # Viewport touchstart must be cancelable so the game can own gestures.
+          replace_once(
+              'src/js/stendhal/Client.ts',
+              'gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown, { passive: true });',
+              'gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown, { passive: false });'
+          )
+
+          # Stabilize viewport taps/long presses and fix touch drop target lookup.
+          path = Path('src/js/stendhal/ui/ViewPort.ts')
+          text = path.read_text()
+          old = '''\t\tconst element = this.getElement() as HTMLCanvasElement;\n\t\tthis.ctx = element.getContext("2d")!;'''
+          new = '''\t\tconst element = this.getElement() as HTMLCanvasElement;\n\t\telement.style.touchAction = "none";\n\t\tthis.ctx = element.getContext("2d")!;'''
+          if text.count(old) != 1:
+              raise SystemExit('ViewPort.ts: constructor marker mismatch')
+          text = text.replace(old, new, 1)
+
+          old = '''\t\t\tif (stendhal.ui.touch.isTouchEvent(e)) {\n\t\t\t\tif (stendhal.ui.touch.holding()) {'''
+          new = '''\t\t\tif (stendhal.ui.touch.isTouchEvent(e)) {\n\t\t\t\tif (e.cancelable) {\n\t\t\t\t\te.preventDefault();\n\t\t\t\t}\n\t\t\t\tif (stendhal.ui.touch.holding()) {'''
+          if text.count(old) != 1:
+              raise SystemExit('ViewPort.ts: touch start marker mismatch')
+          text = text.replace(old, new, 1)
+
+          old = '''\t\tmHandle.onDrag = function(e: MouseEvent) {\n\t\t\tif (stendhal.ui.touch.isTouchEvent(e)) {\n\t\t\t\tstendhal.ui.gamewindow.onDragStart(e);\n\t\t\t}\n\n\t\t\tvar pos = stendhal.ui.html.extractPosition(e);\n\t\t\tvar xDiff = startX - pos.canvasRelativeX;\n\t\t\tvar yDiff = startY - pos.canvasRelativeY;\n\t\t\t// It's not really a click if the mouse has moved too much.\n\t\t\tif (xDiff * xDiff + yDiff * yDiff > 5) {\n\t\t\t\tmHandle.cleanUp(e);\n\t\t\t}\n\t\t}'''
+          new = '''\t\tmHandle.onDrag = function(e: MouseEvent | TouchEvent) {\n\t\t\tconst isTouch = stendhal.ui.touch.isTouchEvent(e);\n\t\t\tif (isTouch) {\n\t\t\t\tstendhal.ui.gamewindow.onDragStart(e);\n\t\t\t}\n\n\t\t\tvar pos = stendhal.ui.html.extractPosition(e);\n\t\t\tvar xDiff = startX - pos.canvasRelativeX;\n\t\t\tvar yDiff = startY - pos.canvasRelativeY;\n\t\t\t// Touch input jitters by a few pixels even during a normal tap.\n\t\t\tconst dragThresholdSquared = isTouch ? 32 * 32 : 5;\n\t\t\tif (xDiff * xDiff + yDiff * yDiff > dragThresholdSquared) {\n\t\t\t\tmHandle.cleanUp(e);\n\t\t\t}\n\t\t}'''
+          if text.count(old) != 1:
+              raise SystemExit('ViewPort.ts: drag threshold block mismatch')
+          text = text.replace(old, new, 1)
+
+          old = 'stendhal.ui.html.extractTarget(event).parentElement!'
+          if text.count(old) != 1:
+              raise SystemExit('ViewPort.ts: stale global event lookup mismatch')
+          text = text.replace(old, 'stendhal.ui.html.extractTarget(e).parentElement!', 1)
+
+          old = '''\tonTouchEnd(e: TouchEvent) {\n\t\tstendhal.ui.touch.onTouchEnd();\n\t\tstendhal.ui.gamewindow.onDrop(e);\n\t\tif (stendhal.ui.touch.holding()) {'''
+          new = '''\tonTouchEnd(e: TouchEvent) {\n\t\tstendhal.ui.touch.onTouchEnd();\n\t\tif (stendhal.ui.heldObject) {\n\t\t\tstendhal.ui.gamewindow.onDrop(e);\n\t\t}\n\t\tif (stendhal.ui.touch.holding()) {'''
+          if text.count(old) != 1:
+              raise SystemExit('ViewPort.ts: touchend drop block mismatch')
+          text = text.replace(old, new, 1)
+          path.write_text(text)
+
+          # Make inventory touch dragging own the gesture and let normal taps behave like clicks.
+          path = Path('src/js/stendhal/ui/component/ItemContainerImplementation.ts')
+          text = path.read_text()
+          old = '''\t\t\te.addEventListener("touchmove", (event: TouchEvent) => {\n\t\t\t\tthis.onTouchMove(event);\n\t\t\t}, {passive: true});'''
+          new = '''\t\t\te.addEventListener("touchmove", (event: TouchEvent) => {\n\t\t\t\tthis.onTouchMove(event);\n\t\t\t}, {passive: false});'''
+          if text.count(old) != 1:
+              raise SystemExit('ItemContainerImplementation.ts: touchmove listener mismatch')
+          text = text.replace(old, new, 1)
+
+          old = '''\t\t\tlet e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;\n\t\t\te.setAttribute("draggable", "true");'''
+          new = '''\t\t\tlet e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;\n\t\t\te.setAttribute("draggable", "true");\n\t\t\te.style.touchAction = "none";'''
+          if text.count(old) != 1:
+              raise SystemExit('ItemContainerImplementation.ts: slot init marker mismatch')
+          text = text.replace(old, new, 1)
+
+          old = '''\tprivate onTouchMove(event: TouchEvent) {\n\t\tif (stendhal.ui.heldObject) {\n\t\t\treturn;\n\t\t}\n\t\tthis.onDragStart(event);\n\t}'''
+          new = '''\tprivate onTouchMove(event: TouchEvent) {\n\t\tif (event.cancelable) {\n\t\t\tevent.preventDefault();\n\t\t}\n\t\tif (stendhal.ui.heldObject) {\n\t\t\treturn;\n\t\t}\n\t\tthis.onDragStart(event);\n\t}'''
+          if text.count(old) != 1:
+              raise SystemExit('ItemContainerImplementation.ts: onTouchMove mismatch')
+          text = text.replace(old, new, 1)
+
+          old = '''\tprivate onTouchEnd(evt: TouchEvent) {\n\t\tstendhal.ui.touch.onTouchEnd();\n\t\tif (stendhal.ui.touch.isLongTouch(evt) && !stendhal.ui.touch.holding()) {\n\t\t\tthis.onMouseUp(evt);\n\t\t} else if (stendhal.ui.touch.holding()) {\n\t\t\tevt.preventDefault();\n\n\t\t\tthis.onDrop(evt);\n\t\t\tstendhal.ui.touch.setHolding(false);\n\t\t}\n\t\t// clean up touch handler\n\t\tstendhal.ui.touch.unsetOrigin();\n\t}'''
+          new = '''\tprivate onTouchEnd(evt: TouchEvent) {\n\t\tstendhal.ui.touch.onTouchEnd();\n\t\tif (stendhal.ui.touch.holding()) {\n\t\t\tif (evt.cancelable) {\n\t\t\t\tevt.preventDefault();\n\t\t\t}\n\t\t\tthis.onDrop(evt);\n\t\t\tstendhal.ui.touch.setHolding(false);\n\t\t} else {\n\t\t\t// Treat a tap like a normal click and a long press like a context click.\n\t\t\tthis.onMouseUp(evt);\n\t\t}\n\t\t// clean up touch handler\n\t\tstendhal.ui.touch.unsetOrigin();\n\t}'''
+          if text.count(old) != 1:
+              raise SystemExit('ItemContainerImplementation.ts: onTouchEnd mismatch')
+          text = text.replace(old, new, 1)
+          path.write_text(text)
+
+          # The held-item preview is visual only and must never become a drop target.
+          path = Path('src/js/stendhal/ui/HeldObject.ts')
+          text = path.read_text()
+          old = '''\tprivate constructor() {\n\t\tthis.image = document.getElementById("held-object")! as HTMLImageElement;\n\t}'''
+          new = '''\tprivate constructor() {\n\t\tthis.image = document.getElementById("held-object")! as HTMLImageElement;\n\t\tthis.image.style.pointerEvents = "none";\n\t\tthis.image.classList.add("notarget");\n\t}'''
+          if text.count(old) != 1:
+              raise SystemExit('HeldObject.ts: constructor mismatch')
+          path.write_text(text.replace(old, new, 1))
+
+          # Keep browser gestures from stealing minimap taps.
+          path = Path('src/js/stendhal/ui/component/MiniMapComponent.ts')
+          text = path.read_text()
+          old = '''\tconstructor() {\n\t\tsuper("minimap");\n\t\tthis.map = TileMap.get();'''
+          new = '''\tconstructor() {\n\t\tsuper("minimap");\n\t\tthis.map = TileMap.get();\n\t\tthis.componentElement.style.touchAction = "none";'''
+          if text.count(old) != 1:
+              raise SystemExit('MiniMapComponent.ts: constructor mismatch')
+          path.write_text(text.replace(old, new, 1))
+
+          # Current web assets do not provide the old *b.png dress variants.
+          path = Path('src/js/stendhal/data/OutfitStore.ts')
+          text = path.read_text()
+          old = '''\tprivate busty_dress: number[] = [\n\t\t  1,   4,   6,   7,  10,  11,  13,  16,\n\t\t 29,  37,  40,  53,  54,  56,  61,  64,\n\t\t967, 968, 977, 980, 989, 990, 999\n\t];'''
+          new = '''\t// Legacy *b.png variants are not present in the web sprite set.\n\t// Use the regular dress sprite instead of requesting a missing file.\n\tprivate busty_dress: number[] = [];'''
+          if text.count(old) != 1:
+              raise SystemExit('OutfitStore.ts: legacy dress list mismatch')
+          path.write_text(text.replace(old, new, 1))
+          PY
+
+          git diff --check
+          git diff -- src/js/stendhal/Client.ts src/js/stendhal/ui/HTMLManager.ts src/js/stendhal/ui/ViewPort.ts src/js/stendhal/ui/component/ItemContainerImplementation.ts src/js/stendhal/ui/HeldObject.ts src/js/stendhal/ui/component/MiniMapComponent.ts src/js/stendhal/data/OutfitStore.ts
+
+      - name: Compile webclient
+        run: ant -noinput -buildfile build.xml compilejs
+
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add src/js/stendhal/Client.ts \
+                  src/js/stendhal/ui/HTMLManager.ts \
+                  src/js/stendhal/ui/ViewPort.ts \
+                  src/js/stendhal/ui/component/ItemContainerImplementation.ts \
+                  src/js/stendhal/ui/HeldObject.ts \
+                  src/js/stendhal/ui/component/MiniMapComponent.ts \
+                  src/js/stendhal/data/OutfitStore.ts
+          git commit -m "Fix webclient touch and input handling"
+          git push origin HEAD:master
