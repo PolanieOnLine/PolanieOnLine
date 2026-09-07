@@ -36,11 +36,9 @@ export class OutfitStore {
 		"body": 3
 	};
 
-	private busty_dress: number[] = [
-		  1,   4,   6,   7,  10,  11,  13,  16,
-		 29,  37,  40,  53,  54,  56,  61,  64,
-		967, 968, 977, 980, 989, 990, 999
-	];
+	// Legacy *b.png variants are not present in the web sprite set.
+	// Use the regular dress sprite instead of requesting a missing file.
+	private busty_dress: number[] = [];
 
 	// hair should not be drawn with hat indexes in this list
 	private hats_no_hair: number[] = [

@@ -56,6 +56,8 @@ export class HeldObjectManager {
 	 */
 	private constructor() {
 		this.image = document.getElementById("held-object")! as HTMLImageElement;
+		this.image.style.pointerEvents = "none";
+		this.image.classList.add("notarget");
 	}
 
 	/**

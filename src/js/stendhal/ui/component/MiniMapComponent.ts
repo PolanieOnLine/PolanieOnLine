@@ -47,6 +47,7 @@ export class MiniMapComponent extends Component {
 	constructor() {
 		super("minimap");
 		this.map = TileMap.get();
+		this.componentElement.style.touchAction = "none";
 		this.componentElement.addEventListener("click", (event) => {
 			this.onClick(event);
 		});

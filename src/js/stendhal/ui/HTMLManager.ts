@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+import { stendhal } from "../stendhal";
+
 /**
  * HTML code manipulation.
  */
@@ -143,7 +145,7 @@ export class HTMLManager {
 		}
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
 		if (canvas && rect.width && rect.height) {
-			const gamewindow = (globalThis as any)?.stendhal?.ui?.gamewindow;
+			const gamewindow = stendhal.ui?.gamewindow;
 			const viewportCanvas = gamewindow?.getElement?.();
 			const isViewportCanvas = Boolean(viewportCanvas && canvas === viewportCanvas);
 			const inputScale = isViewportCanvas ? gamewindow?.getInputScale?.() : undefined;

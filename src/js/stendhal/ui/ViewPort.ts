@@ -165,6 +165,7 @@ export class ViewPort {
 	private constructor() {
 		this.map = TileMap.get();
 		const element = this.getElement() as HTMLCanvasElement;
+		element.style.touchAction = "none";
 		this.ctx = element.getContext("2d")!;
 
 		const { styles, maxHeight } = this.resolveInitialStyles(element);
@@ -931,6 +932,9 @@ export class ViewPort {
 		mHandle._onMouseDown = function(e: MouseEvent | TouchEvent) {
 			var pos = stendhal.ui.html.extractPosition(e);
 			if (stendhal.ui.touch.isTouchEvent(e)) {
+				if (e.cancelable) {
+					e.preventDefault();
+				}
 				if (stendhal.ui.touch.holding()) {
 					// prevent default viewport action when item is "held"
 					return;
@@ -1013,16 +1017,18 @@ export class ViewPort {
 			e.preventDefault();
 		}
 
-		mHandle.onDrag = function(e: MouseEvent) {
-			if (stendhal.ui.touch.isTouchEvent(e)) {
+		mHandle.onDrag = function(e: MouseEvent | TouchEvent) {
+			const isTouch = stendhal.ui.touch.isTouchEvent(e);
+			if (isTouch) {
 				stendhal.ui.gamewindow.onDragStart(e);
 			}
 
 			var pos = stendhal.ui.html.extractPosition(e);
 			var xDiff = startX - pos.canvasRelativeX;
 			var yDiff = startY - pos.canvasRelativeY;
-			// It's not really a click if the mouse has moved too much.
-			if (xDiff * xDiff + yDiff * yDiff > 5) {
+			// Touch input jitters by a few pixels even during a normal tap.
+			const dragThresholdSquared = isTouch ? 32 * 32 : 5;
+			if (xDiff * xDiff + yDiff * yDiff > dragThresholdSquared) {
 				mHandle.cleanUp(e);
 			}
 		}
@@ -1170,7 +1176,7 @@ export class ViewPort {
 				let objectId = marauroa.me["id"];
 				if (e.type === "touchend" && targetSlot === "content") {
 					// find the actual target ID for touch events
-					const container = stendhal.ui.equip.getByElement(stendhal.ui.html.extractTarget(event).parentElement!);
+					const container = stendhal.ui.equip.getByElement(stendhal.ui.html.extractTarget(e).parentElement!);
 					if (container && container.object) {
 						objectId = container.object.id;
 					}
@@ -1205,7 +1211,9 @@ export class ViewPort {
 	 */
 	onTouchEnd(e: TouchEvent) {
 		stendhal.ui.touch.onTouchEnd();
-		stendhal.ui.gamewindow.onDrop(e);
+		if (stendhal.ui.heldObject) {
+			stendhal.ui.gamewindow.onDrop(e);
+		}
 		if (stendhal.ui.touch.holding()) {
 			stendhal.ui.touch.setHolding(false);
 			stendhal.ui.touch.unsetOrigin();

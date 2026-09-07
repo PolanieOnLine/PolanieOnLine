@@ -70,6 +70,7 @@ export class ItemContainerImplementation {
 		for (let i = 0; i < size; i++) {
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			e.setAttribute("draggable", "true");
+			e.style.touchAction = "none";
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
 			});
@@ -78,7 +79,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchmove", (event: TouchEvent) => {
 				this.onTouchMove(event);
-			}, {passive: true});
+			}, {passive: false});
 			e.addEventListener("drop", (event: DragEvent) => {
 				this.onDrop(event)
 			});
@@ -250,6 +251,9 @@ export class ItemContainerImplementation {
 	 * Handles displaying an icon for objects dragged with touch.
 	 */
 	private onTouchMove(event: TouchEvent) {
+		if (event.cancelable) {
+			event.preventDefault();
+		}
 		if (stendhal.ui.heldObject) {
 			return;
 		}
@@ -459,13 +463,15 @@ export class ItemContainerImplementation {
 
 	private onTouchEnd(evt: TouchEvent) {
 		stendhal.ui.touch.onTouchEnd();
-		if (stendhal.ui.touch.isLongTouch(evt) && !stendhal.ui.touch.holding()) {
-			this.onMouseUp(evt);
-		} else if (stendhal.ui.touch.holding()) {
-			evt.preventDefault();
-
+		if (stendhal.ui.touch.holding()) {
+			if (evt.cancelable) {
+				evt.preventDefault();
+			}
 			this.onDrop(evt);
 			stendhal.ui.touch.setHolding(false);
+		} else {
+			// Treat a tap like a normal click and a long press like a context click.
+			this.onMouseUp(evt);
 		}
 		// clean up touch handler
 		stendhal.ui.touch.unsetOrigin();
