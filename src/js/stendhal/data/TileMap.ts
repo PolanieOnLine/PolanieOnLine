@@ -81,6 +81,9 @@ export class TileMap {
 		if (!TileMap.instance) {
 			TileMap.instance = new TileMap();
 		}
+		// Keep the legacy stendhal.data.map alias while older webclient code is migrated.
+		stendhal.data = stendhal.data || {};
+		stendhal.data.map = TileMap.instance;
 		return TileMap.instance;
 	}
 
