@@ -37,8 +37,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 	public onMapLoaded(map: TileMap): void {
-		// do nothing
-		console.log("Using IndividualTilesetRenderingStrategy.")
+		console.log("Using IndividualTilesetRenderingStrategy.");
 		this.map = map;
 		this.imageCache.close();
 		this.imageCache = new ImageCache();
@@ -89,7 +88,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 			clampedScale,
 			BASE_TILE_EDGE_TRIM,
 			pixelRatio,
-			stendhal.data.map.tileWidth
+			this.map.tileWidth
 		);
 		this.tileOverlap = tileOverlap;
 		this.overlapOffset = overlapOffset;
@@ -144,18 +143,18 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 			ctx.translate(pixelX, pixelY);
 
 			if ((flip & 0x80000000) !== 0) {
-			    // flip horizontally
-			    ctx.transform(-1, 0, 0, 1, 0, 0);
-			    ctx.translate(-this.targetTileWidth, 0);
+				// flip horizontally
+				ctx.transform(-1, 0, 0, 1, 0, 0);
+				ctx.translate(-this.targetTileWidth, 0);
 			}
 			if ((flip & 0x40000000) !== 0) {
-			    // flip vertically
-			    ctx.transform(1, 0, 0, -1, 0, 0);
-			    ctx.translate(0, -this.targetTileWidth);
+				// flip vertically
+				ctx.transform(1, 0, 0, -1, 0, 0);
+				ctx.translate(0, -this.targetTileWidth);
 			}
 			if ((flip & 0x20000000) !== 0) {
-			    // Coordinate swap
-			    ctx.transform(0, 1, 1, 0, 0, 0);
+				// Coordinate swap
+				ctx.transform(0, 1, 1, 0, 0, 0);
 			}
 
 			this.drawTile(ctx, tileset, idx, 0, 0, 0);
