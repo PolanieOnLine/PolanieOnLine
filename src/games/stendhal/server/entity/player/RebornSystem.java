@@ -135,7 +135,7 @@ public final class RebornSystem {
 		final int resetHP = player.getHP() - levelHealth + healthReward;
 
 		player.put(ATTR_REBORNS, reborns);
-		RebornDisplay.sync(player);
+		RebornBadgeSynchronizer.sync(player);
 		player.setXP(0);
 		player.setLevel(0);
 
@@ -187,7 +187,7 @@ public final class RebornSystem {
 		}
 		if (player.has(ATTR_MIGRATION_VERSION)
 				&& player.getInt(ATTR_MIGRATION_VERSION) >= MIGRATION_VERSION) {
-			RebornDisplay.sync(player);
+			RebornBadgeSynchronizer.sync(player);
 			return;
 		}
 
@@ -219,7 +219,7 @@ public final class RebornSystem {
 		player.removeQuest(LEGACY_REWARD_FIFTH);
 
 		player.put(ATTR_MIGRATION_VERSION, MIGRATION_VERSION);
-		RebornDisplay.sync(player);
+		RebornBadgeSynchronizer.sync(player);
 	}
 
 	static int getLegacyRebornCount(final String state) {

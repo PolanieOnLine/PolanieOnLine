@@ -9,10 +9,10 @@ package games.stendhal.server.entity.player;
  * The badge value is presentation-only and volatile. RebornSystem remains the
  * only source of truth for progression and bonuses.
  */
-public final class RebornDisplay {
+public final class RebornBadgeSynchronizer {
 	public static final String ATTR_REBORN_BADGE = "reborn_badge";
 
-	private RebornDisplay() {
+	private RebornBadgeSynchronizer() {
 		// utility class
 	}
 

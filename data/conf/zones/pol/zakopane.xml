@@ -2554,7 +2554,7 @@ Aktualne ceny u Gazdy Wojtka:
 		</attributes>
 
 		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.zakopane.mountain.ResetLVLNPC"/>
+		<configurator class-name="games.stendhal.server.maps.zakopane.mountain.YerenaRebornNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">

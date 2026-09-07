@@ -29,7 +29,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
 
 /** Yerena, guardian of the character reborn system. */
-public class ResetLVLNPC implements ZoneConfigurator {
+public class YerenaRebornNPC implements ZoneConfigurator {
 	private static final String HOME = "int_zakopane_home";
 
 	@Override

@@ -12,28 +12,28 @@ import org.junit.Test;
 import games.stendhal.common.Level;
 import utilities.PlayerTestHelper;
 
-public class RebornDisplayTest {
+public class RebornBadgeSynchronizerTest {
 
 	@Test
 	public void syncPublishesPositiveRebornCount() {
 		final Player player = PlayerTestHelper.createPlayer("reborn-badge");
 		player.put(RebornSystem.ATTR_REBORNS, 7);
 
-		RebornDisplay.sync(player);
+		RebornBadgeSynchronizer.sync(player);
 
-		assertTrue(player.has(RebornDisplay.ATTR_REBORN_BADGE));
-		assertEquals(7, player.getInt(RebornDisplay.ATTR_REBORN_BADGE));
+		assertTrue(player.has(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
+		assertEquals(7, player.getInt(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 	}
 
 	@Test
 	public void syncHidesBadgeWithoutReborns() {
 		final Player player = PlayerTestHelper.createPlayer("no-reborn-badge");
-		player.put(RebornDisplay.ATTR_REBORN_BADGE, 4);
+		player.put(RebornBadgeSynchronizer.ATTR_REBORN_BADGE, 4);
 		player.put(RebornSystem.ATTR_REBORNS, 0);
 
-		RebornDisplay.sync(player);
+		RebornBadgeSynchronizer.sync(player);
 
-		assertFalse(player.has(RebornDisplay.ATTR_REBORN_BADGE));
+		assertFalse(player.has(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class RebornDisplayTest {
 		player.setHP(player.getBaseHP());
 
 		assertEquals(2, RebornSystem.performReborn(player));
-		assertEquals(2, player.getInt(RebornDisplay.ATTR_REBORN_BADGE));
+		assertEquals(2, player.getInt(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 	}
 
 	@Test
@@ -56,12 +56,12 @@ public class RebornDisplayTest {
 		player.put(RebornSystem.ATTR_REWARDS, 7);
 
 		RebornSystem.migrateLegacyData(player);
-		assertEquals(6, player.getInt(RebornDisplay.ATTR_REBORN_BADGE));
+		assertEquals(6, player.getInt(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 
-		player.remove(RebornDisplay.ATTR_REBORN_BADGE);
-		assertFalse(player.has(RebornDisplay.ATTR_REBORN_BADGE));
+		player.remove(RebornBadgeSynchronizer.ATTR_REBORN_BADGE);
+		assertFalse(player.has(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 
 		RebornSystem.migrateLegacyData(player);
-		assertEquals(6, player.getInt(RebornDisplay.ATTR_REBORN_BADGE));
+		assertEquals(6, player.getInt(RebornBadgeSynchronizer.ATTR_REBORN_BADGE));
 	}
 }
