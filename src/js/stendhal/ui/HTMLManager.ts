@@ -75,7 +75,6 @@ export class HTMLManager {
 					if (!el.classList.contains("notarget")) {
 						return el;
 					}
-				}
 			}
 			return touch.target;
 		}
@@ -83,20 +82,30 @@ export class HTMLManager {
 	}
 
 	/**
-	 * Normalizes an event object.
+	 * Normalizes an event object without mutating the native browser event.
 	 *
 	 * @param event {any}
 	 *   Executed event.
 	 * @return {any}
-	 *   Normalized event.
+	 *   Normalized event data.
 	 */
 	extractPosition(event: any): any {
-		let pos = event;
 		const target = this.extractTarget(event);
 		if (!(target instanceof HTMLElement)) {
-			return pos;
+			return event;
 		}
 		const element = target as HTMLElement;
+		const pos: any = {
+			type: event.type,
+			target: target,
+			button: event.button,
+			buttons: event.buttons,
+			which: event.which,
+			ctrlKey: event.ctrlKey,
+			shiftKey: event.shiftKey,
+			altKey: event.altKey,
+			metaKey: event.metaKey
+		};
 		let clientX: number|undefined;
 		let clientY: number|undefined;
 		let pageX: number|undefined;
@@ -105,26 +114,21 @@ export class HTMLManager {
 			// FIXME: Always uses last index. Any way to detect which touch index was engaged?
 			const tidx = event.changedTouches.length - 1;
 			const touch = event.changedTouches[tidx];
-			pos = {
-				pageX: Math.round(touch.pageX),
-				pageY: Math.round(touch.pageY),
-				clientX: Math.round(touch.clientX),
-				clientY: Math.round(touch.clientY),
-				target: target
-			};
-			clientX = pos.clientX;
-			clientY = pos.clientY;
-			pageX = pos.pageX;
-			pageY = pos.pageY;
+			clientX = Math.round(touch.clientX);
+			clientY = Math.round(touch.clientY);
+			pageX = Math.round(touch.pageX);
+			pageY = Math.round(touch.pageY);
 		} else {
-			clientX = typeof pos.clientX === "number" ? pos.clientX : undefined;
-			clientY = typeof pos.clientY === "number" ? pos.clientY : undefined;
-			pageX = typeof pos.pageX === "number" ? pos.pageX : undefined;
-			pageY = typeof pos.pageY === "number" ? pos.pageY : undefined;
-			if (!pos.target) {
-				pos.target = target;
-			}
+			clientX = typeof event.clientX === "number" ? event.clientX : undefined;
+			clientY = typeof event.clientY === "number" ? event.clientY : undefined;
+			pageX = typeof event.pageX === "number" ? event.pageX : undefined;
+			pageY = typeof event.pageY === "number" ? event.pageY : undefined;
 		}
+
+		pos.clientX = clientX;
+		pos.clientY = clientY;
+		pos.pageX = pageX;
+		pos.pageY = pageY;
 
 		const rect = element.getBoundingClientRect();
 		if (typeof clientX === "number" && typeof clientY === "number") {
@@ -136,12 +140,8 @@ export class HTMLManager {
 			pos.offsetX = Math.round(pageX - (rect.left + scrollLeft));
 			pos.offsetY = Math.round(pageY - (rect.top + scrollTop));
 		} else {
-			if (typeof pos.offsetX !== "number") {
-				pos.offsetX = 0;
-			}
-			if (typeof pos.offsetY !== "number") {
-				pos.offsetY = 0;
-			}
+			pos.offsetX = typeof event.offsetX === "number" ? event.offsetX : 0;
+			pos.offsetY = typeof event.offsetY === "number" ? event.offsetY : 0;
 		}
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
 		if (canvas && rect.width && rect.height) {
