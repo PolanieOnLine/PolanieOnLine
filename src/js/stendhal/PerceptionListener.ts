@@ -53,12 +53,15 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 		(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 		stendhal.ui.equip.update();
+		singletons.getQuickSlotsController().update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 		if (!Client.get().loaded) {
 			Client.get().loaded = true;
-			// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
+			stendhal.playerInGame = true;
+			singletons.getQuickSlotsController().update();
+			// delay visible change of client a little to allow for initialisation in the background for a smoother experience
 			window.setTimeout(function() {
-				let body = document.getElementById("body")!;
+				const body = document.getElementById("body")!;
 				body.style.cursor = "auto";
 				document.getElementById("client")!.style.display = "flex";
 				document.getElementById("loginpopup")!.style.display = "none";
