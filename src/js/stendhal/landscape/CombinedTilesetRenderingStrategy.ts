@@ -61,6 +61,8 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 		ctx.imageSmoothingEnabled = false;
 
 		const layer = combinedTileset.combinedLayers[layerNo];
+		const yStart = Math.max(0, tileOffsetY);
+		const xStart = Math.max(0, tileOffsetX);
 		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, this.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, this.map.zoneSizeX);
 		const tileScale = resolveTileScale(targetTileWidth / this.map.tileWidth);
@@ -76,8 +78,8 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 		const drawTileWidth = targetTileWidth + metrics.tileOverlap;
 		const drawTileHeight = targetTileHeight + metrics.tileOverlap;
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
+		for (let y = yStart; y < yMax; y++) {
+			for (let x = xStart; x < xMax; x++) {
 				let index = layer[y * this.map.zoneSizeX + x];
 				if (index > -1) {
 

@@ -65,11 +65,13 @@ export default class TileLayerPainter {
 		const effectiveScale = tileScale * pixelRatio;
 		const drawTileWidth = snapToPixel(targetTileWidth + tileOverlap, effectiveScale);
 		const drawTileHeight = snapToPixel(targetTileHeight + tileOverlap, effectiveScale);
+		const yStart = Math.max(0, tileOffsetY);
+		const xStart = Math.max(0, tileOffsetX);
 		const yMax = Math.min(tileOffsetY + viewportSize.height / targetTileHeight + 1, map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportSize.width / targetTileWidth + 1, map.zoneSizeX);
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
+		for (let y = yStart; y < yMax; y++) {
+			for (let x = xStart; x < xMax; x++) {
 				let gid = layer[y * map.zoneSizeX + x];
 				const flip = gid & 0xE0000000;
 				gid &= 0x1FFFFFFF;

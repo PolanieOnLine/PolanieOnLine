@@ -93,14 +93,16 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		this.tileOverlap = tileOverlap;
 		this.overlapOffset = overlapOffset;
 		this.effectiveScale = clampedScale * pixelRatio;
+		const yStart = Math.max(0, tileOffsetY);
+		const xStart = Math.max(0, tileOffsetX);
 		const yMax = Math.min(tileOffsetY + viewportSize.height / this.targetTileHeight + 1, this.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportSize.width / this.targetTileWidth + 1, this.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 		ctx.imageSmoothingEnabled = false;
 		ctx.imageSmoothingQuality = "low";
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
+		for (let y = yStart; y < yMax; y++) {
+			for (let x = xStart; x < xMax; x++) {
 				let gid = layer[y * this.map.zoneSizeX + x];
 				const flip = gid & 0xE0000000;
 				gid &= 0x1FFFFFFF;
@@ -143,17 +145,14 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 			ctx.translate(pixelX, pixelY);
 
 			if ((flip & 0x80000000) !== 0) {
-				// flip horizontally
 				ctx.transform(-1, 0, 0, 1, 0, 0);
 				ctx.translate(-this.targetTileWidth, 0);
 			}
 			if ((flip & 0x40000000) !== 0) {
-				// flip vertically
 				ctx.transform(1, 0, 0, -1, 0, 0);
 				ctx.translate(0, -this.targetTileWidth);
 			}
 			if ((flip & 0x20000000) !== 0) {
-				// Coordinate swap
 				ctx.transform(0, 1, 1, 0, 0, 0);
 			}
 
