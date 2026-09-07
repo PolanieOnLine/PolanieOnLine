@@ -62,21 +62,22 @@ export class HTMLManager {
 	 * @return {EventTarget}
 	 *   Translated event target.
 	 */
-	extractTarget(event: any): EventTarget {
-		if (event.changedTouches) {
+	extractTarget(event: any): EventTarget | null {
+		if (event.changedTouches && event.changedTouches.length > 0) {
 			// FIXME: Always uses last index. Any way to detect which touch index was engaged?
 			const tidx = event.changedTouches.length - 1;
+			const touch = event.changedTouches[tidx];
 			if (["touchmove", "touchend"].indexOf(event.type) > -1) {
 				// touch events target source element
-				for (const el of document.elementsFromPoint(event.changedTouches[tidx].pageX, event.changedTouches[tidx].pageY)) {
+				for (const el of document.elementsFromPoint(touch.clientX, touch.clientY)) {
 					if (!el.classList.contains("notarget")) {
 						return el;
 					}
 				}
 			}
-			return event.changedTouches[tidx].target;
+			return touch.target;
 		}
-		return event.target;
+		return event.target ?? null;
 	}
 
 	/**
@@ -98,7 +99,7 @@ export class HTMLManager {
 		let clientY: number|undefined;
 		let pageX: number|undefined;
 		let pageY: number|undefined;
-		if (event.changedTouches) {
+		if (event.changedTouches && event.changedTouches.length > 0) {
 			// FIXME: Always uses last index. Any way to detect which touch index was engaged?
 			const tidx = event.changedTouches.length - 1;
 			const touch = event.changedTouches[tidx];
