@@ -75,6 +75,7 @@ export class HTMLManager {
 					if (!el.classList.contains("notarget")) {
 						return el;
 					}
+				}
 			}
 			return touch.target;
 		}
