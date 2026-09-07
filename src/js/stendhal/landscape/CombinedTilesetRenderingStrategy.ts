@@ -36,7 +36,7 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 
 		this.drawLayer(
 			canvas,
-			this.map.combinedTileset,
+			this.combinedTileset,
 			0,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 
@@ -44,7 +44,7 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 
 		this.drawLayer(
 			canvas,
-			this.map.combinedTileset,
+			this.combinedTileset,
 			1,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 	}

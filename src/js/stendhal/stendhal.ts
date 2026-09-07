@@ -10,5 +10,6 @@ export class stendhal {
 	static session: any;
 	static main: any;
 	static actions: any;
-	static players: any
+	static players: any;
+	static playerInGame = false;
 }
