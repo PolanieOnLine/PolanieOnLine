@@ -1,6 +1,7 @@
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
 
 import { stendhal } from "../stendhal";
+import { TileMap } from "../data/TileMap";
 
 export interface TileLayerOptions {
 	composite?: GlobalCompositeOperation;
@@ -24,11 +25,12 @@ export default class TileLayerPainter {
 
 	public static drawLayerByName(ctx: CanvasRenderingContext2D, name: string, tileOffsetX: number,
 			tileOffsetY: number, targetTileWidth: number, targetTileHeight: number, options?: TileLayerOptions): boolean {
-		const index = stendhal.data.map.layerNames.indexOf(name);
+		const map = TileMap.get();
+		const index = map.layerNames.indexOf(name);
 		if (index < 0) {
 			return false;
 		}
-		const layer = stendhal.data.map.layers[index];
+		const layer = map.layers[index];
 		if (!layer) {
 			return false;
 		}
@@ -37,14 +39,13 @@ export default class TileLayerPainter {
 		if (typeof(composite) !== "undefined") {
 			ctx.globalCompositeOperation = composite;
 		}
-		TileLayerPainter.drawLayerTiles(ctx, layer, tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
+		TileLayerPainter.drawLayerTiles(ctx, map, layer, tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 		ctx.restore();
 		return true;
 	}
 
-	private static drawLayerTiles(ctx: CanvasRenderingContext2D, layer: number[], tileOffsetX: number,
+	private static drawLayerTiles(ctx: CanvasRenderingContext2D, map: TileMap, layer: number[], tileOffsetX: number,
 			tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
-		const map = stendhal.data.map;
 		const canvas = ctx.canvas;
 		const tileScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
 			? stendhal.ui.gamewindow.getTileScale()
@@ -85,6 +86,7 @@ export default class TileLayerPainter {
 				const idx = gid - base;
 				TileLayerPainter.drawTile(
 					ctx,
+					map,
 					tileset,
 					idx,
 					snapToPixel(x * targetTileWidth - overlapOffset, effectiveScale),
@@ -98,14 +100,14 @@ export default class TileLayerPainter {
 		}
 	}
 
-	private static drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number, screenX: number, screenY: number,
-			destWidth: number, destHeight: number, flip: number, edgeTrim: number): void {
+	private static drawTile(ctx: CanvasRenderingContext2D, map: TileMap, tileset: HTMLImageElement, idx: number,
+			screenX: number, screenY: number, destWidth: number, destHeight: number, flip: number, edgeTrim: number): void {
 		const tilesetWidth = tileset.width;
-		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + edgeTrim;
-		const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + edgeTrim;
-		const sourceWidth = stendhal.data.map.tileWidth - edgeTrim * 2;
-		const sourceHeight = stendhal.data.map.tileHeight - edgeTrim * 2;
+		const tilesPerRow = Math.floor(tilesetWidth / map.tileWidth);
+		const sourceX = (idx % tilesPerRow) * map.tileWidth + edgeTrim;
+		const sourceY = Math.floor(idx / tilesPerRow) * map.tileHeight + edgeTrim;
+		const sourceWidth = map.tileWidth - edgeTrim * 2;
+		const sourceHeight = map.tileHeight - edgeTrim * 2;
 
 		if (flip === 0) {
 			ctx.drawImage(tileset, sourceX, sourceY, sourceWidth, sourceHeight, screenX, screenY, destWidth, destHeight);
