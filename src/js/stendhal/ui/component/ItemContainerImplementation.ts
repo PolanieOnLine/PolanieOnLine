@@ -27,7 +27,8 @@ import { ItemRarity } from "../../data/ItemRarity";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
-	ItemTooltipDelta
+	ItemTooltipDelta,
+	ItemTooltipLine
 } from "./ItemTooltipPresentation";
 
 
@@ -195,10 +196,9 @@ export class ItemContainerImplementation {
 				e.style.backgroundImage = "none";
 			}
 			e.textContent = "";
-			if (this.dirty) {
-				this.updateCursor(e);
-				this.updateToolTip(e);
-			}
+			// Empty slots must always drop cursor, tooltip and rarity decoration.
+			this.updateCursor(e);
+			this.updateToolTip(e);
 			(e as any).dataItem = undefined;
 		}
 
@@ -544,9 +544,10 @@ export class ItemContainerImplementation {
 
 	private static showRarityToolTip(target: HTMLElement, item: Item, x: number, y: number) {
 		const rarity = item.getRarity();
+		const hasStructured = hasStructuredItemTooltip(item);
 		const structured = buildStructuredItemTooltip(item,
 				singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
-		if (!rarity && structured.lines.length === 0) {
+		if (!rarity && structured.lines.length === 0 && !structured.upgradeText) {
 			return;
 		}
 
@@ -565,14 +566,21 @@ export class ItemContainerImplementation {
 
 		const name = document.createElement("div");
 		name.className = "item-rarity-tooltip__name";
-		name.textContent = item.getDisplayName();
+		name.textContent = (item.getDisplayName() + (structured.titleSuffix || "")).toUpperCase();
 		toolTip.appendChild(name);
 
 		if (rarity) {
 			const rarityLine = document.createElement("div");
-			rarityLine.className = "item-rarity-tooltip__detail";
-			rarityLine.textContent = "Rzadkość: " + rarity.polishDisplayName;
+			rarityLine.className = "item-rarity-tooltip__rarity";
+			rarityLine.textContent = rarity.polishDisplayName;
 			toolTip.appendChild(rarityLine);
+		}
+
+		if (structured.upgradeText) {
+			const upgrade = document.createElement("div");
+			upgrade.className = "item-rarity-tooltip__upgrade";
+			upgrade.textContent = "◆ " + structured.upgradeText;
+			toolTip.appendChild(upgrade);
 		}
 
 		if (structured.comparisonName) {
@@ -583,35 +591,21 @@ export class ItemContainerImplementation {
 		}
 
 		for (const line of structured.lines) {
-			const detail = document.createElement("div");
-			detail.className = "item-rarity-tooltip__detail";
-			detail.appendChild(document.createTextNode(line.text));
-			if (line.deltas?.length) {
-				detail.appendChild(document.createTextNode(" ("));
-				line.deltas.forEach((delta: ItemTooltipDelta, index: number) => {
-					if (index > 0) {
-						detail.appendChild(document.createTextNode("–"));
-					}
-					const value = document.createElement("span");
-					value.className = "item-tooltip-delta item-tooltip-delta--"
-							+ delta.direction;
-					value.textContent = delta.text;
-					detail.appendChild(value);
-				});
-				detail.appendChild(document.createTextNode(")"));
-			}
-			toolTip.appendChild(detail);
+			ItemContainerImplementation.appendStructuredTooltipLine(toolTip, line);
 		}
 
-		const rarityText = rarity ? "Rzadkość: " + rarity.polishDisplayName : "";
-		for (const line of item.getToolTip().split("\n")) {
-			if (!line || line === item.getDisplayName() || line === rarityText) {
-				continue;
+		// Legacy servers do not publish tooltip_stats, so preserve their plain text.
+		if (!hasStructured) {
+			const rarityText = rarity ? "Rzadkość: " + rarity.polishDisplayName : "";
+			for (const line of item.getToolTip().split("\n")) {
+				if (!line || line === item.getDisplayName() || line === rarityText) {
+					continue;
+				}
+				const detail = document.createElement("div");
+				detail.className = "item-rarity-tooltip__detail";
+				detail.textContent = line;
+				toolTip.appendChild(detail);
 			}
-			const detail = document.createElement("div");
-			detail.className = "item-rarity-tooltip__detail";
-			detail.textContent = line;
-			toolTip.appendChild(detail);
 		}
 
 		document.body.appendChild(toolTip);
@@ -624,6 +618,71 @@ export class ItemContainerImplementation {
 		target.setAttribute("aria-describedby", toolTip.id);
 		ItemContainerImplementation.rarityToolTip = toolTip;
 		ItemContainerImplementation.rarityToolTipTarget = target;
+	}
+
+	private static appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTooltipLine) {
+		if (line.kind === "divider") {
+			const divider = document.createElement("div");
+			divider.className = "item-rarity-tooltip__divider";
+			divider.textContent = "────◇◇────";
+			toolTip.appendChild(divider);
+			return;
+		}
+
+		const detail = document.createElement("div");
+		if (line.kind === "tree") {
+			detail.className = "item-rarity-tooltip__tree";
+			const prefix = document.createElement("span");
+			prefix.className = "item-rarity-tooltip__tree-prefix";
+			prefix.textContent = line.branchContinues ? "├─◆ " : "└─◆ ";
+			detail.appendChild(prefix);
+			const value = document.createElement("span");
+			value.className = "item-rarity-tooltip__tree-value";
+			value.appendChild(document.createTextNode(line.text));
+			ItemContainerImplementation.appendTooltipDeltas(value, line.deltas);
+			detail.appendChild(value);
+			toolTip.appendChild(detail);
+			return;
+		}
+
+		switch (line.kind) {
+		case "primary":
+			detail.className = "item-rarity-tooltip__primary";
+			break;
+		case "bonus":
+			detail.className = "item-rarity-tooltip__bonus";
+			detail.appendChild(document.createTextNode("◆ "));
+			break;
+		case "affix":
+			detail.className = "item-rarity-tooltip__affix";
+			break;
+		case "footer":
+			detail.className = "item-rarity-tooltip__footer";
+			break;
+		default:
+			detail.className = "item-rarity-tooltip__detail";
+			break;
+		}
+		detail.appendChild(document.createTextNode(line.text));
+		ItemContainerImplementation.appendTooltipDeltas(detail, line.deltas);
+		toolTip.appendChild(detail);
+	}
+
+	private static appendTooltipDeltas(target: HTMLElement, deltas?: ItemTooltipDelta[]) {
+		if (!deltas?.length) {
+			return;
+		}
+		target.appendChild(document.createTextNode(" ("));
+		deltas.forEach((delta, index) => {
+			if (index > 0) {
+				target.appendChild(document.createTextNode("–"));
+			}
+			const value = document.createElement("span");
+			value.className = "item-tooltip-delta item-tooltip-delta--" + delta.direction;
+			value.textContent = delta.text;
+			target.appendChild(value);
+		});
+		target.appendChild(document.createTextNode(")"));
 	}
 
 	private static hideRarityToolTip(target?: HTMLElement, restoreTitle = true) {

@@ -72,6 +72,8 @@ export class LeftPanelToggleController {
 
 		const store = UiStateStore.get();
 		this.unsubscribeState = store.subscribe(({ leftPanelExpanded }) => {
+			document.getElementById("client")?.classList.toggle(
+					"left-panel-collapsed", !leftPanelExpanded);
 			this.component?.setExpanded(leftPanelExpanded);
 			this.component?.update();
 		});

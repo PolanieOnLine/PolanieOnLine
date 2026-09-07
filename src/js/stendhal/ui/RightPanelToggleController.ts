@@ -72,6 +72,8 @@ export class RightPanelToggleController {
 
 		const store = UiStateStore.get();
 		this.unsubscribeState = store.subscribe(({ rightPanelExpanded }) => {
+			document.getElementById("client")?.classList.toggle(
+					"right-panel-collapsed", !rightPanelExpanded);
 			this.component?.setExpanded(rightPanelExpanded);
 			this.component?.update();
 		});
