@@ -737,9 +737,10 @@
 				version: "${version}",
 				build: "${datetime}",
 				dist: "webclient"
-			}
+			};
 
 			//CI
+			}
 		</echo>
 		<antcall target="js-prepare-build-ci" />
 	</target>
