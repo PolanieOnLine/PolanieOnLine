@@ -60,7 +60,7 @@ export class StendhalPerceptionListener extends PerceptionListener {
 			window.setTimeout(function() {
 				let body = document.getElementById("body")!;
 				body.style.cursor = "auto";
-				document.getElementById("client")!.style.display = "block";
+				document.getElementById("client")!.style.display = "flex";
 				document.getElementById("loginpopup")!.style.display = "none";
 
 				// initialize observer after UI is ready
