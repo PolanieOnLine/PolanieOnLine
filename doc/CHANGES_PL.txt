@@ -3,150 +3,161 @@
 1.42
 *klient*
 ---
-* Dodano nowe okno ulepszania przedmiotów w klientach desktopowym i webowym z podglądem następnego poziomu, szansy powodzenia, kosztu i wymaganych materiałów
-* Dodano akcje kontekstowe u kowala i na przedmiotach ułatwiające rozpoczęcie ulepszania wybranego wyposażenia
-* Przebudowano podpowiedzi przedmiotów, aby czytelniej prezentowały rzadkość, poziom ulepszenia, obrażenia, szybkość ataku, pancerz, odporności, kradzież życia, trafienia krytyczne i pozostałe bonusy
+* Dodano nowe okno ulepszania przedmiotów z podglądem następnego poziomu, szansy powodzenia, kosztu i wymaganych materiałów
+* Dodano akcje u kowala i na przedmiotach ułatwiające rozpoczęcie ulepszania wybranego wyposażenia
+* Zmieniono podpowiedzi przedmiotów, aby czytelniej prezentowały rzadkość, poziom ulepszenia, obrażenia, szybkość ataku, pancerz, odporności, kradzież życia, trafienia krytyczne i pozostałe właściwości
 * Dodano porównywanie oglądanego przedmiotu z aktualnie założonym wyposażeniem
-* Lepsze wartości podczas porównywania przedmiotów są wyróżniane na zielono, a gorsze na czerwono
+* Dodano kolorystyczne wyróżnianie lepszych i gorszych wartości podczas porównywania przedmiotów
 * Dodano ustawienie pozwalające wyłączyć porównywanie statystyk przedmiotów
 * Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach i na slotach ekwipunku
 * Dodano wizualizację ogłuszenia w postaci animowanych gwiazdek
-* Elitarne potwory są wyróżniane złotą nazwą, koroną i dodatkowym efektem wizualnym
+* Dodano złote oznaczenie nazwy, koronę i dodatkowy efekt wizualny dla elitarnych potworów
 * Dodano wizualną informację o skutecznym sparowaniu ataku
-* W kliencie desktopowym dodano możliwość zmiany aktywnej postaci bez ponownego logowania do konta
+* Dodano możliwość zmiany aktywnej postaci bez ponownego logowania do konta w kliencie desktopowym
 * Dodano osobne ustawienia klienta dostępne z ekranu startowego
 * Dodano tryb zwykłego okna, pełnego ekranu w oknie oraz pełnego ekranu
-* Tryb wyświetlania można zmieniać podczas gry bez restartowania klienta
-* Dodano muzykę na ekranie startowym klienta oraz możliwość całkowitego wyciszenia dźwięku
-* Przebudowano menu otwierane klawiszem Escape, które zawiera Ustawienia, Zmień postać oraz Wyjdź z gry
-* Ponowne naciśnięcie Escape zamyka menu
-* Zaklęcia, Schowek, Magiczna torba oraz Rzemyk są widoczne dopiero po odblokowaniu ich przez postać
+* Dodano możliwość zmiany trybu wyświetlania podczas gry bez restartowania klienta
+* Dodano muzykę na ekranie startowym oraz regulację głównej głośności
+* Zmieniono menu otwierane klawiszem Escape, dodając Ustawienia, Zmień postać oraz Wyjdź z gry
+* Zmieniono działanie klawisza Escape, aby ponowne naciśnięcie zamykało otwarte menu
+* Zmieniono widoczność Zaklęć, Schowka, Magicznej torby oraz Rzemyka, aby pojawiały się dopiero po odblokowaniu ich przez postać
 
-*przedmioty*
+*web-klient i urządzenia mobilne*
 ---
-* Wprowadzono nowy system ulepszania przedmiotów pozwalający ulepszać konkretny egzemplarz wyposażenia z podglądem możliwego rezultatu
-* Wprowadzono cztery poziomy rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
-* Rzadkie, epickie i legendarne przedmioty mogą posiadać trwałe dodatkowe właściwości
-* Legendarne przedmioty mogą otrzymywać dodatkową wyjątkową właściwość zależną od rodzaju wyposażenia
-* Wyposażenie startowe nowych postaci posiada zawsze zwykłą rzadkość
-* Dodano zakres obrażeń broni wykorzystywany podczas rzeczywistych ataków
-* Kwalifikujące się nagrody ekwipunkowe z zadań otrzymują epicką rzadkość oraz dwie trwałe dodatkowe właściwości
-* Starsze kwalifikujące się nagrody z ukończonych zadań są dostosowywane do nowego systemu po zalogowaniu postaci
-* Dotychczasowe ulepszenia i pozostałe właściwości starszych nagród są zachowywane
-* Pierścienie otrzymywane jako nagrody z zadań pozostają zwykłej rzadkości
-* Zdobyczny hełm z Deathmatchu pozostaje zwykłej rzadkości i nadal rozwija obronę poprzez własny system kolejnych zwycięstw
-* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje rzadkość oraz dodatkowe właściwości użytego przedmiotu
+* Zmieniono interfejs web-klienta, aby dostosowywał się do mniejszych ekranów i obsługi dotykowej
+* Dodano możliwość wygodnego otwierania i zamykania paneli bocznych na urządzeniach mobilnych
+* Dodano obsługę podpowiedzi przedmiotów za pomocą dotyku
+* Dodano przeciąganie przedmiotów dotykiem pomiędzy wyposażeniem oraz szybkimi slotami
+* Zmieniono układ podpowiedzi przedmiotów na bardziej kompaktowy na mniejszych ekranach
+
+*odrodzenia*
+---
+* Zmieniono system odrodzeń, umożliwiając wykonywanie ich bez limitu
+* Zmieniono system bonusów odrodzeń, ograniczając specjalne premie do pierwszych pięciu odrodzeń
+* Dodano 2 procent dodatkowej siły ataku za każde z pierwszych pięciu odrodzeń, maksymalnie 10 procent
+* Dodano 5 procent dodatkowego doświadczenia z walki za każde z pierwszych pięciu odrodzeń, maksymalnie 25 procent
+* Zmieniono bonus zdrowia z pierwszych pięciu odrodzeń do łącznej wartości 6000 punktów zdrowia
+* Zmieniono odrodzenia od szóstego wzwyż, aby nie przyznawały kolejnych bonusów ataku, doświadczenia ani zdrowia
+* Zachowano osiągnięcia i specjalne nagrody związane z pierwszymi pięcioma odrodzeniami
+* Dodano tarczę z liczbą odrodzeń wyświetlaną przy nazwie postaci
+* Dodano ustawienie pozwalające wyłączyć wyświetlanie tarcz odrodzeń
+
+*przedmioty i ulepszenia*
+---
+* Dodano system ulepszania konkretnych egzemplarzy wyposażenia z podglądem możliwego rezultatu
+* Dodano cztery poziomy rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
+* Dodano trwałe dodatkowe właściwości dla rzadkich, epickich i legendarnych przedmiotów
+* Dodano wyjątkowe właściwości dla legendarnych przedmiotów zależne od rodzaju wyposażenia
+* Zmieniono wyposażenie startowe nowych postaci, aby zawsze posiadało zwykłą rzadkość
+* Dodano zakres obrażeń broni wykorzystywany podczas walki
+* Zmieniono kwalifikujące się nagrody ekwipunkowe z zadań, przyznając im epicką rzadkość oraz dwie trwałe dodatkowe właściwości
+* Zmieniono starsze nagrody z ukończonych zadań tak, aby zachowywały dotychczasowe ulepszenia i pozostałe właściwości
+* Zmieniono pierścienie otrzymywane jako nagrody z zadań, pozostawiając je w zwykłej rzadkości
+* Zmieniono działanie zdobycznego hełmu z Deathmatchu, zachowując jego rozwój obrony poprzez kolejne zwycięstwa
+* Zmieniono przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość oraz dodatkowe właściwości użytego przedmiotu
 
 *walka i balans*
 ---
-* Wprowadzono klasy pancerza przeciwników: brak pancerza, lekki, średni oraz ciężki
-* Skuteczność różnych rodzajów broni zależy teraz od pancerza przeciwnika
-* Sztylety najlepiej sprawdzają się przeciw lekkim pancerzom
-* Miecze najlepiej sprawdzają się przeciw średnim pancerzom
-* Topory i broń obuchowa lepiej radzą sobie z ciężkimi pancerzami
-* Penetracja pomaga ograniczyć niekorzystne zestawienie rodzaju broni z pancerzem przeciwnika
+* Dodano klasy pancerza przeciwników: brak pancerza, lekki, średni oraz ciężki
+* Zmieniono skuteczność różnych rodzajów broni w zależności od pancerza przeciwnika
+* Zmieniono sztylety, aby najlepiej sprawdzały się przeciw lekkim pancerzom
+* Zmieniono miecze, aby najlepiej sprawdzały się przeciw średnim pancerzom
+* Zmieniono topory i broń obuchową, aby lepiej radziły sobie z ciężkimi pancerzami
+* Dodano penetrację ograniczającą niekorzystne zestawienie rodzaju broni z pancerzem przeciwnika
 * Dodano mechanikę parowania ataków wręcz
-* Maksymalna łączna szansa parowania gracza wynosi 15 procent
-* Rozszerzono działanie dodatkowych właściwości wyposażenia podczas rzeczywistej walki
-* Dodano między innymi właściwości związane z odpornościami, oznaczaniem przeciwników, walką z silniejszym celem oraz niskim poziomem zdrowia
-* Wybrane właściwości wyposażenia mogą ograniczyć obrażenia otrzymane od wyjątkowo silnego pojedynczego uderzenia
-* Rozbudowano system krwawienia o kumulowanie ran oraz odporność na krwawienie
+* Dodano limit 15 procent dla łącznej szansy parowania gracza
+* Rozszerzono działanie dodatkowych właściwości wyposażenia podczas walki
+* Dodano właściwości wpływające między innymi na odporności, oznaczanie przeciwników, walkę z silniejszym celem oraz walkę przy niskim poziomie zdrowia
+* Dodano właściwości ograniczające obrażenia otrzymywane od wyjątkowo silnego pojedynczego uderzenia
+* Rozbudowano krwawienie o kumulowanie ran oraz odporność na krwawienie
 * Dodano status ogłuszenia czasowo uniemożliwiający wykonywanie ataków
-* Wybrane potwory mogą również ogłuszać graczy
-* Dostrojono balans wyposażenia dla początku gry oraz późniejszych etapów rozwoju postaci
+* Dodano możliwość ogłuszania graczy przez wybrane potwory
+* Zmieniono balans wyposażenia dla początku gry oraz późniejszych etapów rozwoju postaci
 
 *elitarne potwory*
 ---
 * Dodano losowe elitarne warianty potworów od 20 poziomu
-* Elitarne potwory posiadają zwiększone zdrowie, atak i obronę
-* Pokonanie elitarnego potwora zapewnia więcej doświadczenia
-* Przedmioty wypadające z elitarnych przeciwników mają większą szansę na wyższą rzadkość
-* Bossowie i wybrane specjalne stworzenia nie są losowo zamieniane w elitarne warianty
+* Zwiększono zdrowie, atak i obronę elitarnych potworów względem ich zwykłych odpowiedników
+* Zwiększono doświadczenie otrzymywane za pokonanie elitarnego potwora
+* Zwiększono szansę na wyższą rzadkość przedmiotów wypadających z elitarnych przeciwników
+* Wyłączono bossów i wybrane specjalne stworzenia z losowego systemu elitarnych wariantów
 
 *glify*
 ---
-* Dostrojono wartości glifów ofensywnych, defensywnych i użytkowych
-* Poprawiono balans glifów związanych z kontrolą, odpornościami i leczeniem
-* Mokosz zapewnia teraz 500 dodatkowego HP
-* Tytan zapewnia 5 ATK, 5 DEF oraz 200 HP
-* Jarowit zmniejsza podatność na kilka rodzajów obrażeń żywiołowych
-* Czasza zwiększa dodatkowe obrażenia trafień krytycznych
-* Strzybog zmniejsza wagę wolniejszych broni, ale nie poniżej wartości 2
-* Dostrojono również działanie glifów Siły, Peruna, Tarczy, Swaroga, Kryzysu oraz Krwi
-* Poprawiono szanse znajdowania fragmentów glifów podczas wykopalisk
+* Zmieniono wartości glifów ofensywnych, defensywnych i użytkowych
+* Zmieniono Glif Daru Mokoszy, który zapewnia teraz 500 dodatkowego HP
+* Zmieniono Glif Tytana, który zapewnia 5 ATK, 5 DEF oraz 200 HP
+* Zmieniono Glif Jarowita, który zmniejsza podatność na kilka rodzajów obrażeń żywiołowych
+* Zmieniono Glif Czaszy, który zwiększa dodatkowe obrażenia trafień krytycznych
+* Zmieniono Glif Strzyboga, który zmniejsza wagę wolniejszych broni, ale nie poniżej wartości 2
+* Zmieniono działanie glifów Siły, Peruna, Tarczy, Swaroga, Kryzysu oraz Krwi
+* Zmieniono szanse znajdowania fragmentów glifów podczas wykopalisk
 * Rozbudowano historię wykopalisk związaną z Omarem i Zorykiem
-* Poprawiono wskazówki dotyczące miejsc prowadzenia wykopalisk
 
 *grupy*
 ---
-* Dodano nowy tryb równego podziału doświadczenia w grupie
-* Wspólna pula doświadczenia może zostać rozdzielona pomiędzy zalogowanych członków grupy znajdujących się w tej samej strefie
+* Dodano tryb równego podziału doświadczenia w grupie
+* Dodano możliwość rozdzielania wspólnej puli doświadczenia pomiędzy zalogowanych członków grupy znajdujących się w tej samej strefie
 
 *zadania*
 ---
 * Przebudowano pełną drogę awansu społecznego od Mieszczanina do Magnata
 * Rozbudowano próbę Mieszczanina o nowe wydarzenia, miejsca i elementy świata przeznaczone dla wykonującego ją gracza
-* Próba Rycerza wymaga odbycia pełnej warty oraz wykonania powierzonych celów po rozpoczęciu odpowiedniego etapu zadania
-* Próba Barona została rozbudowana o decyzje dotyczące granicy, spichlerza i wyroku oraz wykonanie ich konsekwencji
-* Próba Magnata została rozbudowana o obowiązki związane ze świadectwami wcześniejszych statusów, funduszem wspólnoty, poręczeniem i pieczą
+* Zmieniono próbę Rycerza, wymagając odbycia pełnej warty oraz wykonania powierzonych celów
+* Rozbudowano próbę Barona o decyzje dotyczące granicy, spichlerza i wyroku oraz wykonanie ich konsekwencji
+* Rozbudowano próbę Magnata o obowiązki związane ze świadectwami wcześniejszych statusów, funduszem wspólnoty, poręczeniem i pieczą
 * Rozbudowano dialogi i historię całej drogi awansu społecznego
 * Zachowano postęp starszych postaci posiadających rozpoczęte lub ukończone próby statusowe
-* Uporządkowano historie trzech zadań Gazdy Bartka i połączono je w opowieść o rozwoju izby pamięci
+* Zmieniono historie trzech zadań Gazdy Bartka, łącząc je w opowieść o rozwoju izby pamięci
 * Rozbudowano historie Eltefii oraz Anastazji związane ze zbieraniem wyposażenia
 * Rozbudowano historię zadania Królewski Płaszcz
-* Pomoc mieszkańcom i straży ma większe znaczenie dla zdobycia zaufania Króla Kraka
+* Zmieniono zdobywanie zaufania Króla Kraka, zwiększając znaczenie pomocy mieszkańcom i straży
 * Dodano osiągnięcie Szlachcic Kraka
 * Połączono fabularnie Bilet Turystyczny Juhasa z magicznymi przejściami Ozo
-* Nowe postacie muszą faktycznie skorzystać z biletu Juhasa przed uzyskaniem dalszego dostępu do usług Ozo
-* Starsze postacie zachowują wcześniej uzyskany dostęp do Ozo
-* Odświeżono ciąg zadań Czarnoksiężnika: Wyczyszczenie Starej Wieży, Zguba Górskich Elfów oraz Magiczne Zasoby
-* Zadania Czarnoksiężnika tworzą teraz bardziej spójną historię prowadzącą gracza przez kolejne próby
-* Odświeżono zadanie Magiczne Zasoby z zachowaniem postępu starszych postaci
-* Odświeżono zadanie Klucz Aligerna oraz uporządkowano jego przebieg i historię
-* Odświeżono zadanie Złoty Róg z zachowaniem wcześniejszego postępu oraz czasu rozpoczętych zamówień
-* Uporządkowano dialogi, wskazówki i przypomnienia w wielu starszych zadaniach
-* Skrzynie w zadaniu Odbicie Arsenału są prywatne dla poszczególnych graczy, dzięki czemu kilka osób może wykonywać zadanie równocześnie
+* Zmieniono dostęp do usług Ozo dla nowych postaci, wymagając wcześniejszego skorzystania z biletu Juhasa
+* Zachowano wcześniej uzyskany dostęp do Ozo dla starszych postaci
+* Zmieniono ciąg zadań Czarnoksiężnika: Wyczyszczenie Starej Wieży, Zguba Górskich Elfów oraz Magiczne Zasoby, tworząc bardziej spójną historię
+* Odświeżono zadania Magiczne Zasoby, Klucz Aligerna oraz Złoty Róg
+* Zmieniono skrzynie w zadaniu Odbicie Arsenału na prywatne dla poszczególnych graczy, umożliwiając równoczesne wykonywanie zadania przez kilka osób
 
 *świat*
 ---
 * Dodano możliwość zmiany aktywnych wydarzeń sezonowych podczas działania serwera
-* Boże Narodzenie, Wielkanoc oraz wydarzenia związane z odbudową Mine Town mogą dynamicznie zmieniać świat gry
-* Poprawiono wielkanocne mapy w Zakopanem
-* Labirynt Haizena korzysta z oddzielnych instancji dla poszczególnych rozgrywek, dzięki czemu równoległe przejścia graczy nie wpływają na siebie
-* Poprawiono nazwy lokalizacji wyświetlane przez polecenie /where
-* Techniczne oznaczenia i identyfikatory lokacji nie są już pokazywane graczom
-* Prywatne lokacje korzystają z czytelnych nazw
+* Zmieniono wydarzenia Bożego Narodzenia, Wielkanocy oraz odbudowy Mine Town tak, aby mogły dynamicznie zmieniać świat gry
+* Zmieniono Labirynt Haizena, dodając oddzielne rozgrywki dla poszczególnych graczy
+* Zmieniono nazwy lokalizacji wyświetlane przez polecenie /where na czytelne nazwy miejsc
+* Dodano czytelne nazwy dla prywatnych lokacji
 * Rozszerzono wykorzystanie prywatnych elementów świata przeznaczonych dla konkretnego gracza
 
 *Arena Wyzwań*
 ---
 * Dodano Arenę Wyzwań w Tarnowie przeznaczoną do samodzielnych walk z kolejnymi falami przeciwników
 * Dodano sześć poziomów wyzwania: Próba, Potyczka, Łowca, Weteran, Czempion i Legenda, różniących się wpisowym, liczbą fal i poziomem trudności
-* Za ukończenie Areny przyznawane są doświadczenie i fragmenty glifów, a od poziomu Łowcy również skrzynia z jednym elementem wyposażenia
-* Skrzynie Areny korzystają z dobranych pul istniejącego wyposażenia zależnych od poziomu wyzwania, a nagrody mogą otrzymywać różne poziomy rzadkości
-* Na poziomie Legenda istnieje niewielka szansa na zdobycie wyposażenia mithrilowego
+* Dodano nagrody za ukończenie Areny w postaci doświadczenia i fragmentów glifów, a od poziomu Łowcy również skrzyni z jednym elementem wyposażenia
+* Dodano różne pule wyposażenia w skrzyniach Areny zależne od poziomu wyzwania oraz możliwość uzyskania różnych poziomów rzadkości
+* Dodano niewielką szansę na zdobycie wyposażenia mithrilowego na poziomie Legenda
 * Dodano ranking Hall of Fame Areny Wyzwań oparty na najwyższym ukończonym poziomie wyzwania i najlepszym czasie
+* Dodano własną muzykę walki dla Areny Wyzwań
+* Dodano bezpłatne kule w części obserwacyjnej Areny pozwalające oglądać obszar walki
 
 *produkcja i rzemiosło*
 ---
 * Rozszerzono polecenia wykorzystywane podczas różnych rodzajów produkcji
-* Warzenie, mieszanie, wytapianie, szycie, pieczenie, mielenie i szlifowanie korzystają z bardziej naturalnych określeń
-* Poprawiono informacje dotyczące produkcji olejku z tranu dorsza u Pequoda
-* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje rzadkość i dodatkowe właściwości przedmiotu
+* Zmieniono nazewnictwo warzenia, mieszania, wytapiania, szycia, pieczenia, mielenia i szlifowania na bardziej naturalne określenia
+* Zmieniono przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość i dodatkowe właściwości przedmiotu
 
 *naprawiono błędy*
 ---
 * Naprawiono naliczanie bonusu obrażeń krytycznych podczas rzeczywistych ataków
 * Naprawiono naliczanie wybranych bonusów ataku pochodzących z glifów
-* Glif Krwi zapewnia kradzież życia również podczas walki bez broni
+* Naprawiono działanie Glifu Krwi podczas walki bez broni, aby prawidłowo zapewniał kradzież życia
 * Poprawiono anulowanie wybranych rozpoczętych zadań
-* Destrukcyjne wyzerowanie postępu zadania wymaga teraz wyraźnego potwierdzenia
+* Zmieniono resetowanie postępu zadania tak, aby destrukcyjne wyzerowanie wymagało wyraźnego potwierdzenia
 * Poprawiono informacje dotyczące wymaganych przedmiotów w zadaniu Smoczy Amulet
-* Pierścień Powrotu nie zapisuje niedozwolonych miejsc w wybranych labiryntach i prywatnych lokacjach
-* Nieprawidłowe miejsca zapisane wcześniej w Pierścieniu Powrotu są bezpiecznie odrzucane
-* Poprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
+* Naprawiono Pierścień Powrotu, aby nie zapisywał niedozwolonych miejsc w wybranych labiryntach i prywatnych lokacjach
+* Naprawiono obsługę niedozwolonych miejsc zapisanych wcześniej w Pierścieniu Powrotu
+* Naprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
 * Poprawiono koszt ulepszania wybranych broni dystansowych
-
 
 1.41
 *klient*
