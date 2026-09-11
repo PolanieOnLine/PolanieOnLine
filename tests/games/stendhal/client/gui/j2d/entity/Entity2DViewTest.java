@@ -16,7 +16,7 @@ import games.stendhal.client.entity.Entity;
 
 public class Entity2DViewTest {
 	@Test
-	public void preservesFractionalPositionForTopLayerRendering() {
+	public void topLayerKeepsFractionalPositionWithoutBilinearFiltering() {
 		final TestEntity entity = new TestEntity(0.2, 0.3);
 		final TestView view = new TestView();
 		view.initialize(entity);
@@ -26,6 +26,8 @@ public class Entity2DViewTest {
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D graphics = image.createGraphics();
 		try {
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			view.drawTop(graphics);
 		} finally {
 			graphics.dispose();
@@ -33,7 +35,7 @@ public class Entity2DViewTest {
 
 		assertEquals(0.4, view.translateX, 0.0001);
 		assertEquals(0.6, view.translateY, 0.0001);
-		assertSame(RenderingHints.VALUE_INTERPOLATION_BILINEAR,
+		assertSame(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR,
 				view.interpolationHint);
 	}
 

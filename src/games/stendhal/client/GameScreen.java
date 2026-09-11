@@ -558,6 +558,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				} else {
 					renderScene(graphics, xAdjust, yAdjust, fullRedraw);
 				}
+
+				/*
+				 * Nameplates and other top-layer UI are rendered after the scene
+				 * buffer has been transformed. Raster text must not be filtered as
+				 * part of the moving camera image, otherwise its glyph edges shimmer
+				 * between adjacent subpixel phases while the camera is moving.
+				 */
+				renderTopLayer(graphics, xAdjust, yAdjust);
 			} finally {
 				graphics.dispose();
 			}
@@ -618,18 +626,48 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				"4_roof_add");
 		gameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);
 
-		// Draw the top portion screen entities (such as HP/title bars).
-		viewManager.drawTop(g);
-		// Effects get drawn even above title bars, so that darkening and such work
-		// as expected
-		Iterator<EffectLayer> it = globalEffects.iterator();
-		while (it.hasNext()) {
-			EffectLayer eff = it.next();
-			if (!eff.isExpired()) {
-				eff.draw(g, startTileX, startTileY, layerWidth, layerHeight);
-			} else {
-				it.remove();
+	}
+
+	/**
+	 * Render entity overlays and effects directly to the final destination.
+	 * This keeps cached raster text such as player names out of the camera
+	 * buffer's bilinear resampling pass.
+	 *
+	 * @param source destination graphics
+	 * @param xAdjust x coordinate offset
+	 * @param yAdjust y coordinate offset
+	 */
+	private void renderTopLayer(final Graphics2D source, final int xAdjust,
+			final int yAdjust) {
+		final Graphics2D g = (Graphics2D) source.create();
+		try {
+			g.translate(xAdjust, yAdjust);
+
+			int startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);
+			int startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);
+			Rectangle clip = g.getClipBounds();
+			if (clip == null) {
+				clip = new Rectangle(-xAdjust, -yAdjust, sw, sh);
 			}
+			startTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);
+			startTileY = Math.max(startTileY, clip.y / IGameScreen.SIZE_UNIT_PIXELS);
+			int layerWidth = Math.min(getViewWidth(), clip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;
+			int layerHeight = Math.min(getViewHeight(), clip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;
+
+			viewManager.drawTop(g);
+
+			// Effects remain above title bars, preserving the old darkening order.
+			Iterator<EffectLayer> it = globalEffects.iterator();
+			while (it.hasNext()) {
+				EffectLayer eff = it.next();
+				if (!eff.isExpired()) {
+					eff.draw(g, startTileX, startTileY, layerWidth, layerHeight);
+				} else {
+					it.remove();
+				}
+			}
+		} finally {
+			g.dispose();
 		}
 	}
 

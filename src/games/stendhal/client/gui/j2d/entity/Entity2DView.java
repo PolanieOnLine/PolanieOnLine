@@ -381,7 +381,8 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Graphics2D renderGraphics = createRenderGraphics(g2d);
+		final Graphics2D renderGraphics = createRenderGraphics(g2d,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {
@@ -396,16 +397,25 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		}
 	}
 
-	private Graphics2D createRenderGraphics(final Graphics2D source) {
-		if (isContained() || (Math.abs(renderOffsetX) <= SUBPIXEL_EPSILON
-				&& Math.abs(renderOffsetY) <= SUBPIXEL_EPSILON)) {
+	private Graphics2D createRenderGraphics(final Graphics2D source,
+			final Object interpolationHint) {
+		if (isContained()) {
+			return source;
+		}
+
+		final boolean fractionalPosition = Math.abs(renderOffsetX) > SUBPIXEL_EPSILON
+				|| Math.abs(renderOffsetY) > SUBPIXEL_EPSILON;
+		final Object currentInterpolation = source.getRenderingHint(
+				RenderingHints.KEY_INTERPOLATION);
+		if (!fractionalPosition && interpolationHint.equals(currentInterpolation)) {
 			return source;
 		}
 
 		final Graphics2D graphics = (Graphics2D) source.create();
-		graphics.translate(renderOffsetX, renderOffsetY);
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		if (fractionalPosition) {
+			graphics.translate(renderOffsetX, renderOffsetY);
+		}
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolationHint);
 		return graphics;
 	}
 
@@ -497,7 +507,8 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Graphics2D renderGraphics = createRenderGraphics(g2d);
+		final Graphics2D renderGraphics = createRenderGraphics(g2d,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {
