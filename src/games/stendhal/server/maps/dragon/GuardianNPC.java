@@ -131,8 +131,8 @@ public class GuardianNPC implements ZoneConfigurator {
 							lessThan,
 							new QuestCompletedCondition("meet_racirad")),
 						ConversationStates.ATTENDING,
-						"Hej, młody poszukiwaczu [name]! Kroczysz na ziemie podniebnych stworzeń! Proszę... uważaj w tym miejscu, nie chcę mieć ciebie na sumieniu.",
-						null);
+						null,
+						new SayTextAction("Hej, młody poszukiwaczu [name]! Kroczysz na ziemie podniebnych stworzeń! Proszę... uważaj w tym miejscu, nie chcę mieć ciebie na sumieniu."));
 
 				addHelp("Strzegę tegoż przejścia przed smokami, nie czuję potrzeby wsparcia.");
 				addOffer("Hmmm... Z ofertami możesz zajrzeć w sukienniach na rynku w pobliżu Krakowskiego grodu.");
