@@ -158,6 +158,8 @@
 * Naprawiono obsługę niedozwolonych miejsc zapisanych wcześniej w Pierścieniu Powrotu
 * Naprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
 * Poprawiono koszt ulepszania wybranych broni dystansowych
+* Naprawiono drganie nazw postaci i pasków zdrowia podczas płynnego poruszania kamerą w kliencie Java
+* Naprawiono powitanie Racirada, aby poprawnie wyświetlało nazwę postaci gracza zamiast znacznika [name]
 
 1.41
 *klient*
