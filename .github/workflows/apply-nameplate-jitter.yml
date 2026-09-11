@@ -31,18 +31,11 @@ jobs:
               p.write_text(text.replace(old, new, 1))
 
           game_screen = "src/games/stendhal/client/GameScreen.java"
-
-          replace_once(
-              game_screen,
-              "\t\t\t\t} else {\n\t\t\t\t\trenderScene(graphics, xAdjust, yAdjust, fullRedraw);\n\t\t\t\t}\n\t\t\t} finally {",
-              "\t\t\t\t} else {\n\t\t\t\t\trenderScene(graphics, xAdjust, yAdjust, fullRedraw);\n\t\t\t\t}\n\n\t\t\t\t/*\n\t\t\t\t * Nameplates and other top-layer UI are rendered after the scene\n\t\t\t\t * buffer has been transformed. Raster text must not be filtered as\n\t\t\t\t * part of the moving camera image, otherwise its glyph edges shimmer\n\t\t\t\t * between adjacent subpixel phases while the camera is moving.\n\t\t\t\t */\n\t\t\t\trenderTopLayer(graphics, xAdjust, yAdjust);\n\t\t\t} finally {"
-          )
-
-          old_top_block = """\n\t\t// Draw the top portion screen entities (such as HP/title bars).\n\t\tviewManager.drawTop(g);\n\t\t// Effects get drawn even above title bars, so that darkening and such work\n\t\t// as expected\n\t\tIterator<EffectLayer> it = globalEffects.iterator();\n\t\twhile (it.hasNext()) {\n\t\t\tEffectLayer eff = it.next();\n\t\t\tif (!eff.isExpired()) {\n\t\t\t\teff.draw(g, startTileX, startTileY, layerWidth, layerHeight);\n\t\t\t} else {\n\t\t\t\tit.remove();\n\t\t\t}\n\t\t}\n"""
+          replace_once(game_screen, "\t\t\t\t} else {\n\t\t\t\t\trenderScene(graphics, xAdjust, yAdjust, fullRedraw);\n\t\t\t\t}\n\t\t\t} finally {", "\t\t\t\t} else {\n\t\t\t\t\trenderScene(graphics, xAdjust, yAdjust, fullRedraw);\n\t\t\t\t}\n\n\t\t\t\t/*\n\t\t\t\t * Nameplates and other top-layer UI are rendered after the scene\n\t\t\t\t * buffer has been transformed. Raster text must not be filtered as\n\t\t\t\t * part of the moving camera image, otherwise its glyph edges shimmer\n\t\t\t\t * between adjacent subpixel phases while the camera is moving.\n\t\t\t\t */\n\t\t\t\trenderTopLayer(graphics, xAdjust, yAdjust);\n\t\t\t} finally {")
+          old_top_block = "\n\t\t// Draw the top portion screen entities (such as HP/title bars).\n\t\tviewManager.drawTop(g);\n\t\t// Effects get drawn even above title bars, so that darkening and such work\n\t\t// as expected\n\t\tIterator<EffectLayer> it = globalEffects.iterator();\n\t\twhile (it.hasNext()) {\n\t\t\tEffectLayer eff = it.next();\n\t\t\tif (!eff.isExpired()) {\n\t\t\t\teff.draw(g, startTileX, startTileY, layerWidth, layerHeight);\n\t\t\t} else {\n\t\t\t\tit.remove();\n\t\t\t}\n\t\t}\n"
           replace_once(game_screen, old_top_block, "\n")
-
-          anchor = """\t\tgameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);\n\n\t}\n\n\t/**\n\t * Draw the offline indicator, blinking, if the client is offline.\n"""
-          replacement = """\t\tgameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);\n\n\t}\n\n\t/**\n\t * Render entity overlays and effects directly to the final destination.\n\t * This keeps cached raster text such as player names out of the camera\n\t * buffer's bilinear resampling pass.\n\t *\n\t * @param source destination graphics\n\t * @param xAdjust x coordinate offset\n\t * @param yAdjust y coordinate offset\n\t */\n\tprivate void renderTopLayer(final Graphics2D source, final int xAdjust,\n\t\t\tfinal int yAdjust) {\n\t\tfinal Graphics2D g = (Graphics2D) source.create();\n\t\ttry {\n\t\t\tg.translate(xAdjust, yAdjust);\n\n\t\t\tint startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tint startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tRectangle clip = g.getClipBounds();\n\t\t\tif (clip == null) {\n\t\t\t\tclip = new Rectangle(-xAdjust, -yAdjust, sw, sh);\n\t\t\t}\n\t\t\tstartTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tstartTileY = Math.max(startTileY, clip.y / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tint layerWidth = Math.min(getViewWidth(),\n\t\t\t\t\tclip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;\n\t\t\tint layerHeight = Math.min(getViewHeight(),\n\t\t\t\t\tclip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;\n\n\t\t\tviewManager.drawTop(g);\n\n\t\t\t// Effects remain above title bars, preserving the old darkening order.\n\t\t\tIterator<EffectLayer> it = globalEffects.iterator();\n\t\t\twhile (it.hasNext()) {\n\t\t\t\tEffectLayer eff = it.next();\n\t\t\t\tif (!eff.isExpired()) {\n\t\t\t\t\teff.draw(g, startTileX, startTileY, layerWidth, layerHeight);\n\t\t\t\t} else {\n\t\t\t\t\tit.remove();\n\t\t\t\t}\n\t\t\t}\n\t\t} finally {\n\t\t\tg.dispose();\n\t\t}\n\t}\n\n\t/**\n\t * Draw the offline indicator, blinking, if the client is offline.\n"""
+          anchor = "\t\tgameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);\n\n\t}\n\n\t/**\n\t * Draw the offline indicator, blinking, if the client is offline.\n"
+          replacement = "\t\tgameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);\n\n\t}\n\n\t/**\n\t * Render entity overlays and effects directly to the final destination.\n\t * This keeps cached raster text such as player names out of the camera\n\t * buffer's bilinear resampling pass.\n\t *\n\t * @param source destination graphics\n\t * @param xAdjust x coordinate offset\n\t * @param yAdjust y coordinate offset\n\t */\n\tprivate void renderTopLayer(final Graphics2D source, final int xAdjust,\n\t\t\tfinal int yAdjust) {\n\t\tfinal Graphics2D g = (Graphics2D) source.create();\n\t\ttry {\n\t\t\tg.translate(xAdjust, yAdjust);\n\n\t\t\tint startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tint startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tRectangle clip = g.getClipBounds();\n\t\t\tif (clip == null) {\n\t\t\t\tclip = new Rectangle(-xAdjust, -yAdjust, sw, sh);\n\t\t\t}\n\t\t\tstartTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tstartTileY = Math.max(startTileY, clip.y / IGameScreen.SIZE_UNIT_PIXELS);\n\t\t\tint layerWidth = Math.min(getViewWidth(), clip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;\n\t\t\tint layerHeight = Math.min(getViewHeight(), clip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;\n\n\t\t\tviewManager.drawTop(g);\n\n\t\t\t// Effects remain above title bars, preserving the old darkening order.\n\t\t\tIterator<EffectLayer> it = globalEffects.iterator();\n\t\t\twhile (it.hasNext()) {\n\t\t\t\tEffectLayer eff = it.next();\n\t\t\t\tif (!eff.isExpired()) {\n\t\t\t\t\teff.draw(g, startTileX, startTileY, layerWidth, layerHeight);\n\t\t\t\t} else {\n\t\t\t\t\tit.remove();\n\t\t\t\t}\n\t\t\t}\n\t\t} finally {\n\t\t\tg.dispose();\n\t\t}\n\t}\n\n\t/**\n\t * Draw the offline indicator, blinking, if the client is offline.\n"
           replace_once(game_screen, anchor, replacement)
 
           entity_view = "src/games/stendhal/client/gui/j2d/entity/Entity2DView.java"
@@ -51,125 +44,18 @@ jobs:
           call = "\t\tfinal Graphics2D renderGraphics = createRenderGraphics(g2d);"
           if text.count(call) != 2:
               raise SystemExit(f"{entity_view}: expected two render-graphics calls, got {text.count(call)}")
-          text = text.replace(
-              call,
-              "\t\tfinal Graphics2D renderGraphics = createRenderGraphics(g2d,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_BILINEAR);",
-              1)
-          text = text.replace(
-              call,
-              "\t\tfinal Graphics2D renderGraphics = createRenderGraphics(g2d,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);",
-              1)
-
-          old_helper = """\tprivate Graphics2D createRenderGraphics(final Graphics2D source) {\n\t\tif (isContained() || (Math.abs(renderOffsetX) <= SUBPIXEL_EPSILON\n\t\t\t\t&& Math.abs(renderOffsetY) <= SUBPIXEL_EPSILON)) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal Graphics2D graphics = (Graphics2D) source.create();\n\t\tgraphics.translate(renderOffsetX, renderOffsetY);\n\t\tgraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_BILINEAR);\n\t\treturn graphics;\n\t}\n"""
-          new_helper = """\tprivate Graphics2D createRenderGraphics(final Graphics2D source,\n\t\t\tfinal Object interpolationHint) {\n\t\tif (isContained()) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal boolean fractionalPosition = Math.abs(renderOffsetX) > SUBPIXEL_EPSILON\n\t\t\t\t|| Math.abs(renderOffsetY) > SUBPIXEL_EPSILON;\n\t\tfinal Object currentInterpolation = source.getRenderingHint(\n\t\t\t\tRenderingHints.KEY_INTERPOLATION);\n\t\tif (!fractionalPosition && interpolationHint.equals(currentInterpolation)) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal Graphics2D graphics = (Graphics2D) source.create();\n\t\tif (fractionalPosition) {\n\t\t\tgraphics.translate(renderOffsetX, renderOffsetY);\n\t\t}\n\t\tgraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,\n\t\t\t\tinterpolationHint);\n\t\treturn graphics;\n\t}\n"""
+          text = text.replace(call, "\t\tfinal Graphics2D renderGraphics = createRenderGraphics(g2d,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_BILINEAR);", 1)
+          text = text.replace(call, "\t\tfinal Graphics2D renderGraphics = createRenderGraphics(g2d,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);", 1)
+          old_helper = "\tprivate Graphics2D createRenderGraphics(final Graphics2D source) {\n\t\tif (isContained() || (Math.abs(renderOffsetX) <= SUBPIXEL_EPSILON\n\t\t\t\t&& Math.abs(renderOffsetY) <= SUBPIXEL_EPSILON)) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal Graphics2D graphics = (Graphics2D) source.create();\n\t\tgraphics.translate(renderOffsetX, renderOffsetY);\n\t\tgraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,\n\t\t\t\tRenderingHints.VALUE_INTERPOLATION_BILINEAR);\n\t\treturn graphics;\n\t}\n"
+          new_helper = "\tprivate Graphics2D createRenderGraphics(final Graphics2D source,\n\t\t\tfinal Object interpolationHint) {\n\t\tif (isContained()) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal boolean fractionalPosition = Math.abs(renderOffsetX) > SUBPIXEL_EPSILON\n\t\t\t\t|| Math.abs(renderOffsetY) > SUBPIXEL_EPSILON;\n\t\tfinal Object currentInterpolation = source.getRenderingHint(\n\t\t\t\tRenderingHints.KEY_INTERPOLATION);\n\t\tif (!fractionalPosition && interpolationHint.equals(currentInterpolation)) {\n\t\t\treturn source;\n\t\t}\n\n\t\tfinal Graphics2D graphics = (Graphics2D) source.create();\n\t\tif (fractionalPosition) {\n\t\t\tgraphics.translate(renderOffsetX, renderOffsetY);\n\t\t}\n\t\tgraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolationHint);\n\t\treturn graphics;\n\t}\n"
           if text.count(old_helper) != 1:
               raise SystemExit(f"{entity_view}: render helper did not match exactly once")
           p.write_text(text.replace(old_helper, new_helper, 1))
 
-          test_path = Path("tests/games/stendhal/client/gui/j2d/entity/Entity2DViewTest.java")
-          test_path.write_text(r'''/***************************************************************************
- *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************/
-package games.stendhal.client.gui.j2d.entity;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
-import org.junit.Test;
-
-import games.stendhal.client.entity.Entity;
-
-public class Entity2DViewTest {
-	@Test
-	public void topLayerKeepsFractionalPositionWithoutBilinearFiltering() {
-		final TestEntity entity = new TestEntity(0.2, 0.3);
-		final TestView view = new TestView();
-		view.initialize(entity);
-		view.applyChanges();
-
-		final BufferedImage image = new BufferedImage(64, 64,
-				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		try {
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			view.drawTop(graphics);
-		} finally {
-			graphics.dispose();
-		}
-
-		assertEquals(0.4, view.topTranslateX, 0.0001);
-		assertEquals(0.6, view.topTranslateY, 0.0001);
-		assertSame(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR,
-				view.topInterpolationHint);
-	}
-
-	@Test
-	public void entitySpriteStillUsesBilinearSubpixelRendering() {
-		final TestEntity entity = new TestEntity(0.2, 0.3);
-		final TestView view = new TestView();
-		view.initialize(entity);
-		view.applyChanges();
-
-		final BufferedImage image = new BufferedImage(64, 64,
-				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		try {
-			view.draw(graphics);
-		} finally {
-			graphics.dispose();
-		}
-
-		assertEquals(0.4, view.entityTranslateX, 0.0001);
-		assertEquals(0.6, view.entityTranslateY, 0.0001);
-		assertSame(RenderingHints.VALUE_INTERPOLATION_BILINEAR,
-				view.entityInterpolationHint);
-	}
-
-	private static final class TestEntity extends Entity {
-		private TestEntity(final double x, final double y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	private static final class TestView extends Entity2DView<TestEntity> {
-		private double topTranslateX;
-		private double topTranslateY;
-		private Object topInterpolationHint;
-		private double entityTranslateX;
-		private double entityTranslateY;
-		private Object entityInterpolationHint;
-
-		@Override
-		protected void buildRepresentation(final TestEntity entity) {
-			// The test only needs positioning; no sprite is required.
-		}
-
-		@Override
-		protected void draw(final Graphics2D graphics, final int x,
-				final int y, final int width, final int height) {
-			entityTranslateX = graphics.getTransform().getTranslateX();
-			entityTranslateY = graphics.getTransform().getTranslateY();
-			entityInterpolationHint = graphics.getRenderingHint(
-					RenderingHints.KEY_INTERPOLATION);
-		}
-
-		@Override
-		protected void drawTop(final Graphics2D graphics, final int x,
-				final int y, final int width, final int height) {
-			topTranslateX = graphics.getTransform().getTranslateX();
-			topTranslateY = graphics.getTransform().getTranslateY();
-			topInterpolationHint = graphics.getRenderingHint(
-					RenderingHints.KEY_INTERPOLATION);
-		}
-	}
-}
-''')
+          test_file = "tests/games/stendhal/client/gui/j2d/entity/Entity2DViewTest.java"
+          replace_once(test_file, "\tpublic void preservesFractionalPositionForTopLayerRendering() {", "\tpublic void topLayerKeepsFractionalPositionWithoutBilinearFiltering() {")
+          replace_once(test_file, "\t\tfinal Graphics2D graphics = image.createGraphics();\n\t\ttry {\n\t\t\tview.drawTop(graphics);", "\t\tfinal Graphics2D graphics = image.createGraphics();\n\t\ttry {\n\t\t\tgraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,\n\t\t\t\t\tRenderingHints.VALUE_INTERPOLATION_BILINEAR);\n\t\t\tview.drawTop(graphics);")
+          replace_once(test_file, "\t\tassertSame(RenderingHints.VALUE_INTERPOLATION_BILINEAR,\n\t\t\t\tview.interpolationHint);", "\t\tassertSame(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR,\n\t\t\t\tview.interpolationHint);")
 
           workflow = Path('.github/workflows/apply-nameplate-jitter.yml')
           if workflow.exists():
