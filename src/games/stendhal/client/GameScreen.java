@@ -58,7 +58,6 @@ import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
-import games.stendhal.common.MathHelper;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -89,21 +88,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		keyEventMapping.put(KeyEvent.VK_0, Integer.valueOf(10));
 	}
 
-	/**
-	 * A scale factor for panning delta (to allow non-float precision).
-	 */
-	private static final int PAN_SCALE = 8;
-        /**
-         * Reference frame duration for smoothing calculations (60 FPS baseline).
-         */
+	/** Reference frame duration used before the first rendered frame. */
 	private static final double BASE_FRAME_MILLIS = 1000.0 / 60.0;
-	private static final double MAX_STABLE_ACCUM_MS = 200.0;
-	private static final double STABLE_SAMPLE_INTERVAL_MS = 45.0;
-	/**
-	 * Speed factor for centering the screen. Smaller is faster,
-	 * and keeps the player closer to the center of the screen when walking.
-	 */
-	private static final int PAN_INERTIA = 15;
 	/**
 	 * Space at the right and bottom of the screen next to the off line
 	 * indicator icon.
@@ -159,25 +145,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private int sw;
 	private int sh;
 
-	/**
-	 * The difference between current and target screen view X.
-	 */
-	private int dvx;
-
-	/**
-	 * The difference between current and target screen view Y.
-	 */
-	private int dvy;
-
-	private double pendingDx;
-	private double pendingDy;
+	/** Frame-rate independent camera state kept in native map pixels. */
+	private final CameraSmoother camera = new CameraSmoother();
 	private long lastFrameNanos;
-	private double stableAccumulator;
-
-	/**
-	 * Current panning speed.
-	 */
-	private double speed;
 
 	/**
 	 * Flag for telling if the screen should be scaled if it's not of the
@@ -251,14 +221,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 		x = 0.0;
 		y = 0.0;
-		GameScreenSpriteHelper.setScreenViewX(-sw / 2);
-		GameScreenSpriteHelper.setScreenViewY(-sh / 2);
-		dvx = 0;
-		dvy = 0;
-		pendingDx = 0.0;
-		pendingDy = 0.0;
-
-		speed = 0;
+		camera.reset(-sw / 2.0, -sh / 2.0);
+		syncCameraView();
 
 		// Drawing is done in EDT
 		GameScreenSpriteHelper.setTexts(Collections.synchronizedList(new LinkedList<RemovableSprite>()));
@@ -428,161 +392,40 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	}
 
 	/**
-	 * Update the view position to center the target position.
+	 * Move the camera towards its target using frame-rate independent
+	 * exponential smoothing. Logical screen coordinates stay pixel aligned,
+	 * while rendering consumes the fractional remainder so the whole scene,
+	 * including player nameplates, moves continuously at high frame rates.
 	 */
 	private void adjustView(final double deltaMillis) {
-		/*
-		 * Already centered?
-		 */
-		if ((dvx == 0) && (dvy == 0)) {
-			pendingDx = 0.0;
-			pendingDy = 0.0;
-			speed = 0.0;
-			stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
+		if (camera.isSettled()) {
 			return;
 		}
 
-		final int sx = GameScreenSpriteHelper.convertWorldXToScaledScreen(x)
-				- GameScreenSpriteHelper.getScreenViewX() + SIZE_UNIT_PIXELS / 2;
-		final int sy = GameScreenSpriteHelper.convertWorldYToScaledScreen(y)
-				- GameScreenSpriteHelper.getScreenViewY() + SIZE_UNIT_PIXELS / 2;
+		final double scale = GameScreenSpriteHelper.getScale();
+		final double viewWidth = sw / scale;
+		final double viewHeight = sh / scale;
+		final double playerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0) - camera.getX();
+		final double playerY = (y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0) - camera.getY();
 
-		if ((sx < 0) || (sx >= sw) || (sy < -SIZE_UNIT_PIXELS) || (sy > sh)) {
-			/*
-			 * If off screen, just center
-			 */
+		/* Teleports and large corrections should not make the camera travel
+		 * across the whole map. */
+		if ((playerX < 0.0) || (playerX >= viewWidth)
+				|| (playerY < -SIZE_UNIT_PIXELS) || (playerY > viewHeight)) {
 			center();
-		} else {
-			double deadZone = computeDynamicDeadZone(deltaMillis);
-			boolean nearX = Math.abs(dvx) <= deadZone;
-			boolean nearY = Math.abs(dvy) <= deadZone;
+			return;
+		}
 
-			if (nearX && nearY && (Math.abs(pendingDx) < 0.5) && (Math.abs(pendingDy) < 0.5)) {
-				stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
-				if (stableAccumulator >= STABLE_SAMPLE_INTERVAL_MS) {
-					center();
-					stableAccumulator = 0.0;
-				}
-				speed = 0.0;
-				return;
-			}
+		camera.update(deltaMillis);
+		syncCameraView();
+	}
 
-			stableAccumulator = 0.0;
-			calculatePanningSpeed(deltaMillis);
-
-			/*
-			 * Moving?
-			 */
-			if (speed > 0.0) {
-				/*
-				 * Not a^2 + b^2 = c^2, but good enough
-				 */
-				final int scalediv = (Math.abs(dvx) + Math.abs(dvy)) * PAN_SCALE;
-
-				double dxStep = speed * dvx / scalediv;
-				double dyStep = speed * dvy / scalediv;
-				double dxScale = applyDeadZoneScale(dvx, deadZone);
-				double dyScale = applyDeadZoneScale(dvy, deadZone);
-
-				pendingDx += dxStep * dxScale;
-				pendingDy += dyStep * dyScale;
-
-				int dx = limitMoveDelta(extractMove(pendingDx, dvx), dvx);
-				int dy = limitMoveDelta(extractMove(pendingDy, dvy), dvy);
-
-				/*
-				 * Adjust view
-				 */
-				if (dx != 0) {
-					GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
-					dvx -= dx;
-					pendingDx -= dx;
-					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
-				} else if (nearX) {
-					dvx = 0;
-					pendingDx = 0.0;
-				} else {
-					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
-				}
-
-				if (dy != 0) {
-					GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
-					dvy -= dy;
-					pendingDy -= dy;
-					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
-				} else if (nearY) {
-					dvy = 0;
-					pendingDy = 0.0;
-				} else {
-					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
-				}
-			}
+	private void syncCameraView() {
+		synchronized (camera) {
+			GameScreenSpriteHelper.setScreenViewX(camera.getPixelX());
+			GameScreenSpriteHelper.setScreenViewY(camera.getPixelY());
 		}
 	}
-
-	private int limitMoveDelta(int moveDelta, int viewDelta) {
-		if (viewDelta < 0) {
-			moveDelta = MathHelper.clamp(moveDelta, viewDelta, -1);
-		} else if (viewDelta > 0) {
-			moveDelta = MathHelper.clamp(moveDelta, 1, viewDelta);
-		}
-		return moveDelta;
-	}
-
-	private int extractMove(double pending, int viewDelta) {
-		int move = 0;
-		if (pending > 1.0) {
-			move = (int) Math.floor(pending);
-		} else if (pending < -1.0) {
-			move = (int) Math.ceil(pending);
-		} else if ((viewDelta != 0) && (pending != 0.0) && (Math.abs(viewDelta) <= 1)) {
-			move = (viewDelta > 0) ? 1 : -1;
-		}
-		return move;
-	}
-
-	private void calculatePanningSpeed(final double deltaMillis) {
-		final int dux = dvx / PAN_INERTIA;
-		final int duy = dvy / PAN_INERTIA;
-
-		final double targetSpeed = ((dux * dux) + (duy * duy)) * PAN_SCALE;
-		final double deltaFactor = Math.max(deltaMillis / BASE_FRAME_MILLIS, 0.0);
-		final double baseAlpha = 1.0 / 3.0;
-		final double alpha = 1.0 - Math.pow(1.0 - baseAlpha, Math.min(deltaFactor, 60.0));
-
-		speed += (targetSpeed - speed) * alpha;
-		if ((dvx != 0) || (dvy != 0)) {
-			speed = Math.max(speed, 1.0);
-		} else if (Math.abs(speed) < 0.0001) {
-			speed = 0.0;
-		}
-	}
-
-	private double computeDynamicDeadZone(final double deltaMillis) {
-		double fps = Math.max(1.0, GameLoop.get().getCurrentFps());
-		double fpsFactor = clampDouble(60.0 / fps, 0.5, 1.5);
-		double deltaFactor = clampDouble(deltaMillis / BASE_FRAME_MILLIS, 0.5, 1.5);
-		double speedFactor = clampDouble(speed / 12.0, 0.0, 1.5);
-		double base = 0.75 + ((fpsFactor - 0.5) * 1.5) + ((deltaFactor - 0.5) * 0.5) + (speedFactor * 1.25);
-		return clampDouble(base * 2.0, 1.0, 6.0);
-	}
-
-	private double applyDeadZoneScale(int viewDelta, double deadZone) {
-		int abs = Math.abs(viewDelta);
-		if (abs == 0) {
-			return 0.0;
-		}
-		if (abs <= deadZone) {
-			return 0.0;
-		}
-		double adjusted = (abs - deadZone) / abs;
-		return clampDouble(adjusted, 0.0, 1.0);
-	}
-
-	private double clampDouble(double value, double minValue, double maxValue) {
-		return Math.max(minValue, Math.min(maxValue, value));
-	}
-
 
 	/**
 	 * Updates the target position of the view center.
@@ -594,54 +437,33 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private void calculateView(double x, double y) {
 		final double scale = GameScreenSpriteHelper.getScale();
 
-		// Coordinates for a screen centered on player
 		final double centerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
 		final double centerY = (y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
-		int cvx = (int) (centerX - (sw / 2.0) / scale);
-		int cvy = (int) (centerY - (sh / 2.0) / scale);
+		double cvx = centerX - (sw / 2.0) / scale;
+		double cvy = centerY - (sh / 2.0) / scale;
 
-		/*
-		 * Keep the world within the screen view
-		 */
-		final int maxX = (int) (GameScreenSpriteHelper.getWorldWidth() * SIZE_UNIT_PIXELS - sw / scale);
-		if (maxX < 0) {
-			cvx = maxX / 2;
+		final double maxX = GameScreenSpriteHelper.getWorldWidth() * SIZE_UNIT_PIXELS - sw / scale;
+		if (maxX < 0.0) {
+			cvx = maxX / 2.0;
 		} else {
-			cvx = MathHelper.clamp(cvx, 0, maxX);
+			cvx = Math.max(0.0, Math.min(maxX, cvx));
 		}
 
-		final int maxY = (int) (GameScreenSpriteHelper.getWorldHeight() * SIZE_UNIT_PIXELS - sh / scale);
-		if (maxY < 0) {
-			cvy = maxY / 2;
+		final double maxY = GameScreenSpriteHelper.getWorldHeight() * SIZE_UNIT_PIXELS - sh / scale;
+		if (maxY < 0.0) {
+			cvy = maxY / 2.0;
 		} else {
-			cvy = MathHelper.clamp(cvy, 0, maxY);
+			cvy = Math.max(0.0, Math.min(maxY, cvy));
 		}
 
-		// Differences from center
-		dvx = cvx - GameScreenSpriteHelper.getScreenViewX();
-		dvy = cvy - GameScreenSpriteHelper.getScreenViewY();
-		stableAccumulator = 0.0;
-
-		if ((pendingDx > 0.0 && dvx <= 0) || (pendingDx < 0.0 && dvx >= 0)) {
-			pendingDx = 0.0;
-		}
-		if ((pendingDy > 0.0 && dvy <= 0) || (pendingDy < 0.0 && dvy >= 0)) {
-			pendingDy = 0.0;
-		}
+		camera.setTarget(cvx, cvy);
 	}
 
 
 	@Override
 	public void center() {
-		GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dvx);
-		GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dvy);
-
-		dvx = 0;
-		dvy = 0;
-		speed = 0;
-		pendingDx = 0.0;
-		pendingDy = 0.0;
-		stableAccumulator = 0.0;
+		camera.snapToTarget();
+		syncCameraView();
 	}
 
 
@@ -669,8 +491,16 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		Graphics2D g2d = (Graphics2D) g;
-		int viewX = GameScreenSpriteHelper.getScreenViewX();
-		int viewY = GameScreenSpriteHelper.getScreenViewY();
+		final double renderViewX;
+		final double renderViewY;
+		synchronized (camera) {
+			renderViewX = camera.getX();
+			renderViewY = camera.getY();
+		}
+		final int viewX = (int) Math.round(renderViewX);
+		final int viewY = (int) Math.round(renderViewY);
+		final double renderOffsetX = viewX - renderViewX;
+		final double renderOffsetY = viewY - renderViewY;
 		GameScreenSpriteHelper.beginFrame(viewX, viewY);
 		try {
 			if (StendhalClient.get().isInTransfer()) {
@@ -693,14 +523,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 				int xAdjust = -viewX;
 				int yAdjust = -viewY;
+				final boolean fractionalCamera = Math.abs(renderOffsetX) > POSITION_EPSILON
+						|| Math.abs(renderOffsetY) > POSITION_EPSILON;
 
-				if (useTripleBuffer) {
+				if (useTripleBuffer || fractionalCamera) {
 					/*
-					 * Do the scaling in one pass to avoid artifacts at tile borders.
+					 * Render once at native resolution, then scale and apply the camera's
+					 * fractional remainder to the complete image. This avoids tile seams
+					 * and keeps entities, nameplates and map layers on one transform.
 					 */
 					final double scale = GameScreenSpriteHelper.getScale();
 					graphics.scale(scale, scale);
-					graphics.translate(xAdjust, yAdjust);
+					graphics.translate(renderOffsetX, renderOffsetY);
 					graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 					int width = stendhal.getDisplaySize().width;
@@ -719,7 +553,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 						} finally {
 							gr.dispose();
 						}
-						graphics.drawImage(buffer, -xAdjust, -yAdjust, null);
+						graphics.drawImage(buffer, 0, 0, null);
 					} while (buffer.contentsLost());
 				} else {
 					renderScene(graphics, xAdjust, yAdjust, fullRedraw);
@@ -729,8 +563,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			}
 
 			// Don't scale text to keep it readable
-			drawText(g2d, viewX, viewY);
-			drawEmojis(g2d, viewX, viewY);
+			drawText(g2d, viewX, viewY, renderOffsetX, renderOffsetY);
+			drawEmojis(g2d, viewX, viewY, renderOffsetX, renderOffsetY);
 			drawFpsCounter(g2d);
 
 			paintOffLineIfNeeded(g2d);
@@ -758,8 +592,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 		// Restrict the drawn area by the clip bounds. Smaller than gamescreen
 		// draw requests can come for example from dragging items
-		int startTileX = Math.max(0, (int) getViewX());
-		int startTileY = Math.max(0, (int) getViewY());
+		int startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);
+		int startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);
 
 		Rectangle clip = g.getClipBounds();
 		startTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);
@@ -826,28 +660,37 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 *
 	 * @param g2d destination graphics
 	 */
-	private void drawText(final Graphics2D g2d, final int viewX, final int viewY) {
+	private void drawText(final Graphics2D g2d, final int viewX, final int viewY,
+			final double renderOffsetX, final double renderOffsetY) {
 		/*
 		 * Text objects know their original placement relative to the screen,
-		 * not to the map. Pass them a shifted coordinate system.
+		 * not to the map. Pass them a shifted coordinate system and include the
+		 * same fractional camera movement used by the scene.
 		 */
-		g2d.translate(-viewX, -viewY);
+		final double scale = GameScreenSpriteHelper.getScale();
+		final Graphics2D movingText = (Graphics2D) g2d.create();
+		try {
+			movingText.translate(-viewX + renderOffsetX * scale,
+					-viewY + renderOffsetY * scale);
+			movingText.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-		final List<RemovableSprite> texts = GameScreenSpriteHelper.getTexts();
-		synchronized (texts) {
-			Iterator<RemovableSprite> it = texts.iterator();
-			while (it.hasNext()) {
-				RemovableSprite text = it.next();
-				if (!text.shouldBeRemoved()) {
-					text.draw(g2d);
-				} else {
-					it.remove();
+			final List<RemovableSprite> texts = GameScreenSpriteHelper.getTexts();
+			synchronized (texts) {
+				Iterator<RemovableSprite> it = texts.iterator();
+				while (it.hasNext()) {
+					RemovableSprite text = it.next();
+					if (!text.shouldBeRemoved()) {
+						text.draw(movingText);
+					} else {
+						it.remove();
+					}
 				}
 			}
+		} finally {
+			movingText.dispose();
 		}
 
-		// Restore the coordinates
-		g2d.translate(viewX, viewY);
 		// These are anchored to the screen, so they can use the usual proper
 		// coordinates.
 		synchronized (staticSprites) {
@@ -863,18 +706,29 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 	}
 
-	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY) {
-		final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
-		synchronized (emojis) {
-			Iterator<RemovableSprite> it = emojis.iterator();
-			while (it.hasNext()) {
-				RemovableSprite emoji = it.next();
-				if (!emoji.shouldBeRemoved()) {
-					emoji.drawEmoji(g2d, viewX, viewY);
-				} else {
-					it.remove();
+	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY,
+			final double renderOffsetX, final double renderOffsetY) {
+		final double scale = GameScreenSpriteHelper.getScale();
+		final Graphics2D movingEmojis = (Graphics2D) g2d.create();
+		try {
+			movingEmojis.translate(renderOffsetX * scale, renderOffsetY * scale);
+			movingEmojis.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+			final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
+			synchronized (emojis) {
+				Iterator<RemovableSprite> it = emojis.iterator();
+				while (it.hasNext()) {
+					RemovableSprite emoji = it.next();
+					if (!emoji.shouldBeRemoved()) {
+						emoji.drawEmoji(movingEmojis, viewX, viewY);
+					} else {
+						it.remove();
+					}
 				}
 			}
+		} finally {
+			movingEmojis.dispose();
 		}
 	}
 

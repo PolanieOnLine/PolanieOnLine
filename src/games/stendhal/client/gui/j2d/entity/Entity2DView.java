@@ -16,6 +16,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,6 +51,8 @@ import marauroa.common.game.RPObject;
  * @param <T> type of entity
  */
 public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
+	private static final double SUBPIXEL_EPSILON = 0.000001;
+
 	/**
 	 * The entity this view is for.
 	 */
@@ -81,9 +84,12 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	protected volatile boolean visibilityChanged;
 
 	/**
-	 * The screen X coordinate.
+	 * The screen X coordinate used by hit testing and clipping.
 	 */
 	private int x;
+
+	/** Fractional X coordinate kept for rendering. */
+	private double renderOffsetX;
 
 	/**
 	 * The X alignment offset.
@@ -91,9 +97,12 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	private int xoffset;
 
 	/**
-	 * The screen Y coordinate.
+	 * The screen Y coordinate used by hit testing and clipping.
 	 */
 	private int y;
+
+	/** Fractional Y coordinate kept for rendering. */
+	private double renderOffsetY;
 
 	/**
 	 * The Y alignment offset.
@@ -151,6 +160,8 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 
 		x = 0;
 		y = 0;
+		renderOffsetX = 0.0;
+		renderOffsetY = 0.0;
 		xoffset = 0;
 		yoffset = 0;
 
@@ -370,14 +381,32 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Composite oldComposite = g2d.getComposite();
+		final Graphics2D renderGraphics = createRenderGraphics(g2d);
+		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {
-			g2d.setComposite(entityComposite);
-			draw(g2d, r.x, r.y, r.width, r.height);
+			renderGraphics.setComposite(entityComposite);
+			draw(renderGraphics, r.x, r.y, r.width, r.height);
 		} finally {
-			g2d.setComposite(oldComposite);
+			if (renderGraphics == g2d) {
+				renderGraphics.setComposite(oldComposite);
+			} else {
+				renderGraphics.dispose();
+			}
 		}
+	}
+
+	private Graphics2D createRenderGraphics(final Graphics2D source) {
+		if (isContained() || (Math.abs(renderOffsetX) <= SUBPIXEL_EPSILON
+				&& Math.abs(renderOffsetY) <= SUBPIXEL_EPSILON)) {
+			return source;
+		}
+
+		final Graphics2D graphics = (Graphics2D) source.create();
+		graphics.translate(renderOffsetX, renderOffsetY);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		return graphics;
 	}
 
 	private boolean isOnScreen(Graphics2D g2d, Rectangle r) {
@@ -468,13 +497,18 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Composite oldComposite = g2d.getComposite();
+		final Graphics2D renderGraphics = createRenderGraphics(g2d);
+		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {
-			g2d.setComposite(entityComposite);
-			drawTop(g2d, r.x, r.y, r.width, r.height);
+			renderGraphics.setComposite(entityComposite);
+			drawTop(renderGraphics, r.x, r.y, r.width, r.height);
 		} finally {
-			g2d.setComposite(oldComposite);
+			if (renderGraphics == g2d) {
+				renderGraphics.setComposite(oldComposite);
+			} else {
+				renderGraphics.dispose();
+			}
 		}
 	}
 
@@ -651,7 +685,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	/**
 	 * Determine if this view is currently animatable.
 	 *
-	 * @return <code>true</code> if animating enabled.
+	 * @return <code>true</code> if animating enabled
 	 */
 	protected boolean isAnimating() {
 		// Allow sprites to animate by default
@@ -773,8 +807,18 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 
 		if (positionChanged) {
 			positionChanged = false;
-			x = (int) (IGameScreen.SIZE_UNIT_PIXELS * entity.getX());
-			y = (int) (IGameScreen.SIZE_UNIT_PIXELS * entity.getY());
+			final double pixelX = IGameScreen.SIZE_UNIT_PIXELS * entity.getX();
+			final double pixelY = IGameScreen.SIZE_UNIT_PIXELS * entity.getY();
+			x = (int) pixelX;
+			y = (int) pixelY;
+			renderOffsetX = pixelX - x;
+			renderOffsetY = pixelY - y;
+			if (Math.abs(renderOffsetX) <= SUBPIXEL_EPSILON) {
+				renderOffsetX = 0.0;
+			}
+			if (Math.abs(renderOffsetY) <= SUBPIXEL_EPSILON) {
+				renderOffsetY = 0.0;
+			}
 		}
 
 		if (visibilityChanged) {
