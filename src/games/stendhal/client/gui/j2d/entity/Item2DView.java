@@ -168,8 +168,8 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 
 	/**
 	 * Paint a soft rarity glow under an item lying on the map. The center is
-	 * strongest and fades to transparent before the edge of the 32x32 tile so
-	 * the item's original sprite stays readable.
+	 * strongest and fades towards the edge of the 32x32 tile while keeping
+	 * the item's original sprite readable.
 	 *
 	 * @param graphics destination graphics
 	 * @param rarity item rarity
@@ -189,11 +189,11 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 			final Color rarityColor = Color.decode(rarity.getColorHex());
 			final float strength = getGroundGlowStrength(rarity);
 			final Color center = withAlpha(rarityColor, strength);
-			final Color middle = withAlpha(rarityColor, strength * 0.45f);
+			final Color middle = withAlpha(rarityColor, strength * 0.62f);
 			final Color edge = withAlpha(rarityColor, 0.0f);
 			final float centerX = x + width / 2.0f;
 			final float centerY = y + height / 2.0f;
-			final float radius = Math.max(width, height) * 0.52f;
+			final float radius = Math.max(width, height) * 0.60f;
 
 			final Graphics2D glow = (Graphics2D) graphics.create();
 			try {
@@ -201,7 +201,7 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 						RenderingHints.VALUE_ANTIALIAS_ON);
 				glow.setPaint(new RadialGradientPaint(
 						new Point2D.Float(centerX, centerY), radius,
-						new float[] {0.0f, 0.58f, 1.0f},
+						new float[] {0.0f, 0.62f, 1.0f},
 						new Color[] {center, middle, edge}));
 				glow.fill(new Ellipse2D.Float(x + 1.0f, y + 1.0f,
 						width - 2.0f, height - 2.0f));
@@ -216,14 +216,14 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	private static float getGroundGlowStrength(final ItemRarity rarity) {
 		switch (rarity) {
 		case LEGENDARY:
-			return 0.26f;
+			return 0.38f;
 		case EPIC:
-			return 0.22f;
+			return 0.32f;
 		case RARE:
-			return 0.18f;
+			return 0.26f;
 		case COMMON:
 		default:
-			return 0.06f;
+			return 0.10f;
 		}
 	}
 

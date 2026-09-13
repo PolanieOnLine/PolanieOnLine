@@ -28,9 +28,11 @@ public class Item2DViewGroundRarityTest {
 		}
 
 		final Color center = new Color(image.getRGB(16, 16), true);
+		final Color shoulder = new Color(image.getRGB(16, 24), true);
 		final Color edge = new Color(image.getRGB(1, 1), true);
 		assertTrue(center.getAlpha() > edge.getAlpha());
-		assertTrue(center.getAlpha() > 0);
+		assertTrue(center.getAlpha() >= 60);
+		assertTrue(shoulder.getAlpha() >= 20);
 		assertTrue(center.getBlue() > center.getRed());
 		assertTrue(center.getBlue() > center.getGreen());
 	}
