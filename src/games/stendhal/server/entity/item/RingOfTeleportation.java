@@ -1,7 +1,7 @@
 /***************************************************************************
  *                 (C) Copyright 2019-2026 - PolanieOnLine                 *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TeleportNotifier;
+import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
@@ -35,6 +36,14 @@ public class RingOfTeleportation extends Item {
 	private static final String LAST_USE = "frequency";
 	private static final String OZO_MAZE = "7_labirynt";
 	private static final String HAIZEN_MAZE_NAME = "Labirynt Haizena";
+
+	/*
+	 * A successful zone transfer and a contained-item mutation must not be
+	 * published in the same server turn. Otherwise the client can interpret the
+	 * ring update as remove/add inside the bag, which moves it to the last slot
+	 * and leaves the old sprite visible until another full inventory refresh.
+	 */
+	private boolean returnCompletionPending;
 
 	public RingOfTeleportation(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
@@ -117,6 +126,13 @@ public class RingOfTeleportation extends Item {
 			return false;
 		}
 
+		/* Ignore a second click while the successful teleport is being finalized
+		 * on the next server turn. This flag is deliberately not an RPObject
+		 * attribute, so setting it cannot trigger another inventory delta. */
+		if (returnCompletionPending) {
+			return false;
+		}
+
 		final int secondsNeeded = getLastUsed() + getCoolingPeriod() - (int) (System.currentTimeMillis() / 1000);
 		if (secondsNeeded > 0) {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. "
@@ -166,14 +182,48 @@ public class RingOfTeleportation extends Item {
 			return false;
 		}
 
+		/*
+		 * Do not touch the contained ring in the same turn as Player.teleport().
+		 * The zone transfer publishes inventory changes of its own. Mixing the
+		 * ring's state/itemdata delta into that transfer makes the desktop client
+		 * briefly treat the item as removed and re-added, which puts it at the end
+		 * of the bag and leaves the active sprite cached. Finish the ring update on
+		 * the immediately following server turn instead.
+		 */
+		returnCompletionPending = true;
 		if (player.teleport(zone, saved.x, saved.y, null, player)) {
 			TeleportNotifier.get().notify(player, true);
+			scheduleSuccessfulReturnCompletion(player);
+			return true;
+		}
+
+		returnCompletionPending = false;
+		return false;
+	}
+
+	private void scheduleSuccessfulReturnCompletion(final Player player) {
+		SingletonRepository.getTurnNotifier().notifyInTurns(0, new TurnListener() {
+			@Override
+			public void onTurnReached(final int currentTurn) {
+				completeSuccessfulReturn(player);
+			}
+		});
+	}
+
+	/**
+	 * Finalize a successful return after the zone-transfer turn is complete.
+	 * Package visibility keeps the state transition directly testable without
+	 * exposing it as part of the item API.
+	 */
+	void completeSuccessfulReturn(final Player player) {
+		try {
 			setItemData(null);
 			storeLastUsed();
 			usedRing();
-			return true;
+			player.notifyWorldAboutChanges();
+		} finally {
+			returnCompletionPending = false;
 		}
-		return false;
 	}
 
 	private void invalidateSavedPosition(final Player player, final String message) {

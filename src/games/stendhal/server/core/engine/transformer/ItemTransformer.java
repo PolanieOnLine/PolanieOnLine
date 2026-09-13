@@ -19,6 +19,7 @@ import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
+import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.item.StackableItem;
@@ -50,6 +51,13 @@ public class ItemTransformer {
 				return null;
 			}
 
+			/*
+			 * Glyph effects are definition-owned. They deliberately refresh from
+			 * items XML on every restore so balance changes reach existing players
+			 * at login instead of preserving an old rarity-scaled copy forever.
+			 */
+			final boolean definitionAuthoritative = item instanceof Glyph;
+
 			// Keep the current definition template before saved instance data can
 			// replace it. It is used only when migrating an old exceptional weapon
 			// which predates persisted damage ranges.
@@ -71,7 +79,8 @@ public class ItemTransformer {
 			final boolean savedRarity = rpobject.has(Item.RARITY_ID);
 			final boolean legacyRarityItem = !savedRarity
 					&& ItemRarityService.getInstance().isEligible(item);
-			final boolean restoreAllAttributes = rpobject.has("persistent")
+			final boolean restoreAllAttributes = !definitionAuthoritative
+					&& rpobject.has("persistent")
 					&& (rpobject.getInt("persistent") == 1);
 			if (restoreAllAttributes) {
 				// keep [new] menu
@@ -99,15 +108,19 @@ public class ItemTransformer {
 				if (!item.has("menu") && menuvalue != null) {
 					item.put("menu", menuvalue);
 				}
-			} else if (savedRarity || legacyRarityItem) {
+			} else if (!definitionAuthoritative
+					&& (savedRarity || legacyRarityItem)) {
 				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
 			// Damage ranges are instance state even when rarity is disabled.
 			restoreDamageRangeInstanceAttributes(item, rpobject);
 			// Random affixes are also instance state and must survive RESTORE
-			// independently of current XML definitions and rarity modifiers.
-			ItemAffixState.restore(item, rpobject);
+			// independently of current XML definitions and rarity modifiers. Glyphs
+			// are definition-owned and intentionally discard any legacy affix state.
+			if (!definitionAuthoritative) {
+				ItemAffixState.restore(item, rpobject);
+			}
 
 			if (item instanceof StackableItem) {
 				int quantity = 1;
@@ -134,7 +147,8 @@ public class ItemTransformer {
 					"description", "bound", "undroppableondeath",
 					"uses", "improve", "max_improves", "persistent", "logid", "state"};
 			for (final String attribute : individualAttributes) {
-				if (rpobject.has(attribute)) {
+				if (rpobject.has(attribute)
+						&& !(definitionAuthoritative && "description".equals(attribute))) {
 					item.put(attribute, rpobject.get(attribute));
 				}
 			}

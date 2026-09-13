@@ -16,6 +16,7 @@ import java.util.Map;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.mapstuff.chest.Chest;
 
 /**
@@ -37,10 +38,14 @@ public class CommonChest implements ZoneConfigurator {
 	private void buildZakopaneCityAreaChest(final StendhalRPZone zone) {
 		final Chest chest = new Chest();
 		chest.setPosition(110, 45);
-		chest.add(SingletonRepository.getEntityManager().getItem("mieczyk"));
-		chest.add(SingletonRepository.getEntityManager().getItem("drewniana tarcza"));
-		chest.add(SingletonRepository.getEntityManager().getItem("skórzana zbroja"));
-		chest.add(SingletonRepository.getEntityManager().getItem("money"));
+		chest.add(SingletonRepository.getEntityManager().getItem("mieczyk",
+				ItemCreationContext.starter()));
+		chest.add(SingletonRepository.getEntityManager().getItem("drewniana tarcza",
+				ItemCreationContext.starter()));
+		chest.add(SingletonRepository.getEntityManager().getItem("skórzana zbroja",
+				ItemCreationContext.starter()));
+		chest.add(SingletonRepository.getEntityManager().getItem("money",
+				ItemCreationContext.starter()));
 		zone.add(chest);
 	}
 }
