@@ -12,7 +12,6 @@
  ***************************************************************************/
 package games.stendhal.client.sprite;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -36,10 +35,10 @@ public class TextSprite extends ImageSprite {
 	// needed only because there's no other reliable way to calculate
 	// string widths other than having a Graphics object
 	private static final Graphics graphics = (new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)).getGraphics();
+	/* Keep the legacy hinted glyph advances. Fractional positioning is applied
+	 * only while the already-laid-out glyph run is painted. */
 	private static final FontRenderContext SMOOTH_FONT_RENDER_CONTEXT =
-			new FontRenderContext(new AffineTransform(), true, true);
-	private static final BasicStroke SMOOTH_OUTLINE_STROKE = new BasicStroke(2.0f,
-			BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
+			new FontRenderContext(new AffineTransform(), false, false);
 
 	private final GlyphVector smoothGlyphs;
 	private final Color textColor;
@@ -79,9 +78,10 @@ public class TextSprite extends ImageSprite {
 	}
 
 	/**
-	 * Draw this text directly as vector outlines at a fractional position.
-	 * This avoids resampling a cached bitmap while a nameplate is moving and
-	 * therefore keeps glyph edges stable between adjacent pixel phases.
+	 * Draw text at a fractional position while keeping the old compact glyph
+	 * metrics and the legacy one-pixel, eight-direction outline. Using filled
+	 * glyph outlines lets the whole label move between pixels without changing
+	 * its layout or resampling a cached bitmap.
 	 *
 	 * @param source destination graphics
 	 * @param x left edge of the text sprite in user-space pixels
@@ -92,19 +92,31 @@ public class TextSprite extends ImageSprite {
 		try {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-					RenderingHints.VALUE_STROKE_PURE);
-			final Shape glyphShape = smoothGlyphs.getOutline((float) (x + 1.0),
-					(float) (y + baseline));
+
+			final float gx = (float) (x + 1.0);
+			final float gy = (float) (y + baseline);
 
 			g.setColor(outlineColor);
-			g.setStroke(SMOOTH_OUTLINE_STROKE);
-			g.draw(glyphShape);
+			fillGlyphs(g, gx - 1.0f, gy - 1.0f);
+			fillGlyphs(g, gx + 1.0f, gy + 1.0f);
+			fillGlyphs(g, gx - 1.0f, gy + 1.0f);
+			fillGlyphs(g, gx, gy - 1.0f);
+			fillGlyphs(g, gx + 1.0f, gy);
+			fillGlyphs(g, gx - 1.0f, gy);
+			fillGlyphs(g, gx, gy + 1.0f);
+			fillGlyphs(g, gx + 1.0f, gy - 1.0f);
+
 			g.setColor(textColor);
-			g.fill(glyphShape);
+			fillGlyphs(g, gx, gy);
 		} finally {
 			g.dispose();
 		}
+	}
+
+	private void fillGlyphs(final Graphics2D graphics2d, final float x,
+			final float y) {
+		final Shape shape = smoothGlyphs.getOutline(x, y);
+		graphics2d.fill(shape);
 	}
 
 	/**
@@ -113,10 +125,10 @@ public class TextSprite extends ImageSprite {
 	 * side from what would normal be drawn by drawString().
 	 *
 	 * @param image image to draw to
-	 * @param textColor The text color.
-	 * @param text The text to draw.
-	 * @param x X position.
-	 * @param y Y position.
+	 * @param textColor Color of the text
+	 * @param text The text to draw
+	 * @param x X position
+	 * @param y Y position
 	 */
 	private static void drawOutlineString(final Image image, final Color textColor,
 			final String text, final int x, final int y) {
@@ -138,18 +150,12 @@ public class TextSprite extends ImageSprite {
 	 * only with an outline border. The area drawn extends 1 pixel out on all
 	 * side from what would normal be drawn by drawString().
 	 *
-	 * @param image
-	 *            Image to draw to.
-	 * @param textColor
-	 *            The text color.
-	 * @param outlineColor
-	 *            The outline color.
-	 * @param text
-	 *            The text to draw.
-	 * @param x
-	 *            The X position.
-	 * @param y
-	 *            The Y position.
+	 * @param image image to draw to
+	 * @param textColor Color of the text
+	 * @param outlineColor Color of the outline
+	 * @param text The text to draw
+	 * @param x X position
+	 * @param y Y position
 	 */
 	private static void drawOutlineString(final Image image, final Color textColor,
 			final Color outlineColor, final String text, final int x,
