@@ -165,7 +165,7 @@
 
 	<item name="glif Strzyboga">
 		<type class="glyph" subclass="glyph_rate" tileid="-1"/>
-		<description>Sprawi iż twoje bronie staną się lżejsze, dając Ci przewagę w walce. Niezawodny towarzysz, który pomoże Ci w każdej sytuacji.</description>
+		<description>Oto glif Strzyboga. Sprawi iż twoje bronie staną się lżejsze, dając Ci przewagę w walce. Niezawodny towarzysz, który pomoże Ci w każdej sytuacji.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<rate_increase value="1"/>
