@@ -15,7 +15,6 @@ package games.stendhal.client.gui;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
@@ -37,22 +36,35 @@ public class ItemPanelTest {
 	private static final CursorRepository cursors = new CursorRepository();
 
 	@Test
-	public void rarityBorderFollowsTheSlotSpriteOutline() {
-		final BufferedImage image = new BufferedImage(40, 40,
+	public void rarityOutlineFollowsItemPixelsWithSinglePixelThickness() {
+		final BufferedImage source = new BufferedImage(7, 7,
 				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		ItemPanel.paintRarityBorder(graphics, ItemRarity.LEGENDARY, 40, 40);
-		graphics.dispose();
+		source.setRGB(3, 3, 0xffffffff);
 
+		final BufferedImage outline = ItemPanel.createRarityOutline(source,
+				ItemRarity.LEGENDARY);
 		final int rarityColor = Color.decode(
 				ItemRarity.LEGENDARY.getColorHex()).getRGB();
-		assertEquals(rarityColor, image.getRGB(5, 1));
-		assertEquals(rarityColor, image.getRGB(1, 5));
-		assertEquals(rarityColor, image.getRGB(34, 38));
-		assertEquals(rarityColor, image.getRGB(38, 34));
-		assertEquals(0, image.getRGB(1, 1));
-		assertEquals(0, image.getRGB(3, 1));
-		assertEquals(rarityColor, image.getRGB(4, 1));
+
+		// Source pixel is not covered by the rarity marker.
+		assertEquals(0, outline.getRGB(4, 4));
+		// All adjacent pixels use exactly the existing rarity color.
+		assertEquals(rarityColor, outline.getRGB(3, 4));
+		assertEquals(rarityColor, outline.getRGB(4, 3));
+		assertEquals(rarityColor, outline.getRGB(5, 5));
+		// There is no second outline layer for higher rarities.
+		assertEquals(0, outline.getRGB(2, 4));
+		assertEquals(0, outline.getRGB(4, 2));
+	}
+
+	@Test
+	public void missingRarityDoesNotCreateItemOutline() {
+		final BufferedImage source = new BufferedImage(3, 3,
+				BufferedImage.TYPE_INT_ARGB);
+		source.setRGB(1, 1, 0xffffffff);
+		final BufferedImage outline = ItemPanel.createRarityOutline(source, null);
+		assertEquals(0, outline.getRGB(1, 1));
+		assertEquals(0, outline.getRGB(2, 2));
 	}
 
 	/**
