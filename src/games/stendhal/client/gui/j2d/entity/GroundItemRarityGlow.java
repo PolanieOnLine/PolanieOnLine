@@ -132,14 +132,14 @@ final class GroundItemRarityGlow {
 	private static float getStrength(final ItemRarity rarity) {
 		switch (rarity) {
 		case LEGENDARY:
-			return 0.78f;
+			return 0.6f;
 		case EPIC:
-			return 0.66f;
+			return 0.4f;
 		case RARE:
-			return 0.55f;
+			return 0.5f;
 		case COMMON:
 		default:
-			return 0.16f;
+			return 0.6f;
 		}
 	}
 }
