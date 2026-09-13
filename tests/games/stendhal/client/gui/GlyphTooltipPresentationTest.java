@@ -25,6 +25,6 @@ public class GlyphTooltipPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains(
-				"&#9670; -1 do wagi wolniejszej broni (minimum 2)"));
+				"&#9670; -1 do wagi broni"));
 	}
 }

@@ -306,6 +306,40 @@ public class SourceObject extends MoveableObject {
 		super(player);
 	}
 
+	static String getPlayerFacingSlotName(final String slotName) {
+		if (slotName == null) {
+			return "tego miejsca";
+		}
+		if ("keyring".equals(slotName)) {
+			return "rzemyku";
+		}
+		if ("magicbag".equals(slotName)) {
+			return "magicznej torby";
+		}
+		if ("offensive_rune".equals(slotName)) {
+			return "slotu glifu ofensywnego";
+		}
+		if ("defensive_rune".equals(slotName)) {
+			return "slotu glifu obronnego";
+		}
+		if ("resistance_rune".equals(slotName)) {
+			return "slotu glifu odporności";
+		}
+		if ("utility_rune".equals(slotName)) {
+			return "slotu glifu użytkowego";
+		}
+		if ("healing_rune".equals(slotName)) {
+			return "slotu glifu leczenia";
+		}
+		if ("control_rune".equals(slotName)) {
+			return "slotu glifu kontroli";
+		}
+		if ("special_rune".equals(slotName)) {
+			return "slotu glifu specjalnego";
+		}
+		return slotName;
+	}
+
 	/**
 	 * moves this entity to the destination.
 	 *
@@ -316,16 +350,12 @@ public class SourceObject extends MoveableObject {
 	 * @return true if successful
 	 */
 	public boolean moveTo(final DestinationObject dest, final Player player) {
-		String targetSlot = dest.getContentSlotName();
+		final String targetSlot = dest.getContentSlotName();
 
 		if (!((EquipListener) item).canBeEquippedIn(targetSlot)) {
-			if (targetSlot.equals("keyring")) {
-				targetSlot = "rzemyku";
-			} else if (targetSlot.equals("magicbag")) {
-				targetSlot = "magicznej torby";
-			}
-			// give some feedback
-			player.sendPrivateText("Nie możesz wziąć " + item.getTitle() + " do " + targetSlot + ".");
+			// give some feedback without exposing internal slot identifiers
+			player.sendPrivateText("Nie możesz wziąć " + item.getTitle() + " do "
+					+ getPlayerFacingSlotName(targetSlot) + ".");
 			logger.warn("tried to equip an entity into disallowed slot: " + item.getClass() + "; equip rejected");
 			return false;
 		}

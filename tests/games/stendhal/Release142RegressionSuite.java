@@ -11,6 +11,7 @@ import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.client.gui.GlyphTooltipPresentationTest;
 import games.stendhal.client.gui.ItemRarityPresentationTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
+import games.stendhal.server.actions.equip.SourceObjectTest;
 import games.stendhal.server.core.engine.db.StendhalWebsiteDAOTest;
 import games.stendhal.server.core.engine.transformer.GlyphRestoreMigrationTest;
 import games.stendhal.server.core.events.seasonal.EasterEventPlanTest;
@@ -64,6 +65,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	ItemAffixGeneratorTest.class,
 	ItemAffixDropIntegrationTest.class,
 	EliteSummonActionTest.class,
+	SourceObjectTest.class,
 	StendhalWebsiteDAOTest.class,
 	StunnedStatusTest.class,
 	BleedingStatusTest.class,

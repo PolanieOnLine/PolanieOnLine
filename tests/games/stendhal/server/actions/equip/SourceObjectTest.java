@@ -252,5 +252,16 @@ public class SourceObjectTest {
 	}
 
 
+	@Test
+	public void runeSlotNamesArePlayerFacing() {
+		assertEquals("slotu glifu ofensywnego", SourceObject.getPlayerFacingSlotName("offensive_rune"));
+		assertEquals("slotu glifu obronnego", SourceObject.getPlayerFacingSlotName("defensive_rune"));
+		assertEquals("slotu glifu odporności", SourceObject.getPlayerFacingSlotName("resistance_rune"));
+		assertEquals("slotu glifu użytkowego", SourceObject.getPlayerFacingSlotName("utility_rune"));
+		assertEquals("slotu glifu leczenia", SourceObject.getPlayerFacingSlotName("healing_rune"));
+		assertEquals("slotu glifu kontroli", SourceObject.getPlayerFacingSlotName("control_rune"));
+		assertEquals("slotu glifu specjalnego", SourceObject.getPlayerFacingSlotName("special_rune"));
+		assertEquals("bag", SourceObject.getPlayerFacingSlotName("bag"));
+	}
 
 }
