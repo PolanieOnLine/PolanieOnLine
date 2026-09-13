@@ -381,19 +381,20 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Graphics2D renderGraphics = createRenderGraphics(g2d,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		final Composite oldComposite = renderGraphics.getComposite();
+		/*
+		 * World sprites are pixel art. Keep their destination locked to the
+		 * integer position used for hit testing instead of applying the
+		 * entity's fractional remainder. The remainder is still retained for
+		 * drawTop(), where nameplates can move smoothly without resampling the
+		 * sprite itself every frame.
+		 */
+		final Composite oldComposite = g2d.getComposite();
 
 		try {
-			renderGraphics.setComposite(entityComposite);
-			draw(renderGraphics, r.x, r.y, r.width, r.height);
+			g2d.setComposite(entityComposite);
+			draw(g2d, r.x, r.y, r.width, r.height);
 		} finally {
-			if (renderGraphics == g2d) {
-				renderGraphics.setComposite(oldComposite);
-			} else {
-				renderGraphics.dispose();
-			}
+			g2d.setComposite(oldComposite);
 		}
 	}
 
