@@ -38,19 +38,22 @@ public class Item2DViewGroundRarityTest {
 	}
 
 	@Test
-	public void higherRarityProducesStrongerOutlineGlow() {
+	public void everyRarityProducesVisibleOutlineGlow() {
 		final BufferedImage source = new BufferedImage(5, 5,
 				BufferedImage.TYPE_INT_ARGB);
 		source.setRGB(2, 2, 0xffffffff);
 
-		final BufferedImage common = GroundItemRarityGlow.createGlow(
-				source, ItemRarity.COMMON, 3);
-		final BufferedImage legendary = GroundItemRarityGlow.createGlow(
-				source, ItemRarity.LEGENDARY, 3);
+		for (final ItemRarity rarity : ItemRarity.values()) {
+			final BufferedImage glow = GroundItemRarityGlow.createGlow(
+					source, rarity, 3);
+			final Color pixel = new Color(glow.getRGB(4, 5), true);
+			final Color expected = Color.decode(rarity.getColorHex());
 
-		final int commonAlpha = new Color(common.getRGB(4, 5), true).getAlpha();
-		final int legendaryAlpha = new Color(legendary.getRGB(4, 5), true).getAlpha();
-		assertTrue(legendaryAlpha > commonAlpha);
+			assertTrue(rarity + " glow should be visible", pixel.getAlpha() > 0);
+			assertEquals(expected.getRed(), pixel.getRed());
+			assertEquals(expected.getGreen(), pixel.getGreen());
+			assertEquals(expected.getBlue(), pixel.getBlue());
+		}
 	}
 
 	@Test
