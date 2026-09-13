@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -321,7 +322,30 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		}
 
 		final BufferedImage outline = createRarityOutline(source, rarity);
-		graphics.drawImage(outline, -1, -1, null);
+		final Graphics2D outlineGraphics = (Graphics2D) graphics.create();
+		try {
+			outlineGraphics.setComposite(AlphaComposite.SrcOver.derive(
+					getRarityOutlineOpacity(rarity)));
+			outlineGraphics.drawImage(outline, -1, -1, null);
+		} finally {
+			outlineGraphics.dispose();
+		}
+	}
+
+	/**
+	 * Keep the existing rarity hue while softening the two brightest outlines.
+	 */
+	private static float getRarityOutlineOpacity(final ItemRarity rarity) {
+		switch (rarity) {
+		case RARE:
+			return 0.68f;
+		case LEGENDARY:
+			return 0.62f;
+		case COMMON:
+		case EPIC:
+		default:
+			return 1.0f;
+		}
 	}
 
 	/**
