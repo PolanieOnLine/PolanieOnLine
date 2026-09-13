@@ -100,7 +100,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	/**
 	 * The title image sprite.
 	 */
-	private Sprite titleSprite;
+	private TextSprite titleSprite;
 
 	/** The drawn height. */
 	protected int height;
@@ -260,7 +260,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 *
 	 * @return The title sprite.
 	 */
-	private Sprite createTitleSprite() {
+	private TextSprite createTitleSprite() {
 		final String titleType = entity.getTitleType();
 		final int adminlevel = entity.getAdminLevel();
 		Color nameColor = null;
@@ -423,10 +423,10 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 */
 	protected void drawTitle(final Graphics2D g2d, final int x, final int y, final int width) {
 		if (titleSprite != null) {
-			int tx = x + ((width - titleSprite.getWidth()) / 2);
-			int ty = y - getStatusBarHeight() + titleDrawYOffset;
+			final double tx = x + ((width - titleSprite.getWidth()) / 2.0);
+			final double ty = y - getStatusBarHeight() + titleDrawYOffset;
 
-			titleSprite.draw(g2d, tx, ty);
+			titleSprite.drawSmooth(g2d, tx, ty);
 		}
 	}
 

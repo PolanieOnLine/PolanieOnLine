@@ -393,9 +393,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/**
 	 * Move the camera towards its target using frame-rate independent
-	 * exponential smoothing. Rendering is deliberately snapped to whole map
-	 * pixels so pixel-art layers, sprites and nameplates share one stable
-	 * camera position without sub-pixel resampling.
+	 * exponential smoothing. World rendering is deliberately snapped to whole
+	 * map pixels, while screen-space entity overlays can consume the continuous
+	 * camera position without resampling the pixel-art scene.
 	 */
 	private void adjustView(final double deltaMillis) {
 		if (camera.isSettled()) {
@@ -493,9 +493,13 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		Graphics2D g2d = (Graphics2D) g;
 		final int viewX;
 		final int viewY;
+		final double smoothViewX;
+		final double smoothViewY;
 		synchronized (camera) {
 			viewX = camera.getPixelX();
 			viewY = camera.getPixelY();
+			smoothViewX = camera.getX();
+			smoothViewY = camera.getY();
 		}
 		GameScreenSpriteHelper.beginFrame(viewX, viewY);
 		try {
@@ -563,12 +567,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				}
 
 				/*
-				 * Nameplates and other top-layer UI are rendered after the scene
-				 * buffer has been transformed. Raster text must not be filtered as
-				 * part of the moving camera image, otherwise its glyph edges shimmer
-				 * between adjacent subpixel phases while the camera is moving.
+				 * Entity overlays use the continuous camera position so labels can
+				 * move smoothly without changing the pixel-aligned world buffer.
 				 */
-				renderTopLayer(graphics, xAdjust, yAdjust);
+				renderTopLayer(graphics, smoothViewX, smoothViewY, xAdjust, yAdjust);
 			} finally {
 				graphics.dispose();
 			}
@@ -633,22 +635,32 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/**
 	 * Render entity overlays and effects directly to the final destination.
-	 * They use the same integer camera offset as the world scene so cached
-	 * player names and health bars remain aligned without sub-pixel filtering.
+	 * Nameplates follow the continuous camera, while map-wide effects retain
+	 * the same whole-pixel camera transform as the world scene.
 	 *
 	 * @param source destination graphics
-	 * @param xAdjust x coordinate offset
-	 * @param yAdjust y coordinate offset
+	 * @param smoothViewX continuous camera X coordinate
+	 * @param smoothViewY continuous camera Y coordinate
+	 * @param xAdjust pixel-aligned world X offset
+	 * @param yAdjust pixel-aligned world Y offset
 	 */
-	private void renderTopLayer(final Graphics2D source, final int xAdjust,
-			final int yAdjust) {
-		final Graphics2D g = (Graphics2D) source.create();
+	private void renderTopLayer(final Graphics2D source, final double smoothViewX,
+			final double smoothViewY, final int xAdjust, final int yAdjust) {
+		final Graphics2D overlayGraphics = (Graphics2D) source.create();
 		try {
-			g.translate(xAdjust, yAdjust);
+			overlayGraphics.translate(-smoothViewX, -smoothViewY);
+			viewManager.drawTop(overlayGraphics);
+		} finally {
+			overlayGraphics.dispose();
+		}
+
+		final Graphics2D effectGraphics = (Graphics2D) source.create();
+		try {
+			effectGraphics.translate(xAdjust, yAdjust);
 
 			int startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);
 			int startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);
-			Rectangle clip = g.getClipBounds();
+			Rectangle clip = effectGraphics.getClipBounds();
 			if (clip == null) {
 				clip = new Rectangle(-xAdjust, -yAdjust, sw, sh);
 			}
@@ -657,20 +669,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			int layerWidth = Math.min(getViewWidth(), clip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;
 			int layerHeight = Math.min(getViewHeight(), clip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;
 
-			viewManager.drawTop(g);
-
 			// Effects remain above title bars, preserving the old darkening order.
 			Iterator<EffectLayer> it = globalEffects.iterator();
 			while (it.hasNext()) {
 				EffectLayer eff = it.next();
 				if (!eff.isExpired()) {
-					eff.draw(g, startTileX, startTileY, layerWidth, layerHeight);
+					eff.draw(effectGraphics, startTileX, startTileY, layerWidth, layerHeight);
 				} else {
 					it.remove();
 				}
 			}
 		} finally {
-			g.dispose();
+			effectGraphics.dispose();
 		}
 	}
 

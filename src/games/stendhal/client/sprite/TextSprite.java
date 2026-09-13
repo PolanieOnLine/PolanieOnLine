@@ -12,12 +12,19 @@
  ***************************************************************************/
 package games.stendhal.client.sprite;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import games.stendhal.client.gui.TransparencyMode;
@@ -29,9 +36,23 @@ public class TextSprite extends ImageSprite {
 	// needed only because there's no other reliable way to calculate
 	// string widths other than having a Graphics object
 	private static final Graphics graphics = (new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB)).getGraphics();
+	private static final FontRenderContext SMOOTH_FONT_RENDER_CONTEXT =
+			new FontRenderContext(new AffineTransform(), true, true);
+	private static final BasicStroke SMOOTH_OUTLINE_STROKE = new BasicStroke(2.0f,
+			BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
 
-	private TextSprite(Image image) {
+	private final GlyphVector smoothGlyphs;
+	private final Color textColor;
+	private final Color outlineColor;
+	private final int baseline;
+
+	private TextSprite(final Image image, final GlyphVector smoothGlyphs,
+			final Color textColor, final Color outlineColor, final int baseline) {
 		super(image);
+		this.smoothGlyphs = smoothGlyphs;
+		this.textColor = textColor;
+		this.outlineColor = outlineColor;
+		this.baseline = baseline;
 	}
 
 	/**
@@ -45,12 +66,45 @@ public class TextSprite extends ImageSprite {
 		final GraphicsConfiguration gc = getGC();
 		FontMetrics metrics = graphics.getFontMetrics();
 		LineMetrics lm = metrics.getLineMetrics(text, graphics);
+		final int baseline = Math.round(lm.getAscent());
 		final Image image = gc.createCompatibleImage(metrics.stringWidth(text)
 				+ 2, Math.round(lm.getHeight()) + 2, TransparencyMode.TRANSPARENCY);
+		final Color outlineColor = determineOutlineColor(textColor);
 
-		drawOutlineString(image, textColor, text, 1, Math.round(lm.getAscent()));
+		drawOutlineString(image, textColor, outlineColor, text, 1, baseline);
+		final GlyphVector smoothGlyphs = graphics.getFont().createGlyphVector(
+				SMOOTH_FONT_RENDER_CONTEXT, text);
 
-		return new TextSprite(image);
+		return new TextSprite(image, smoothGlyphs, textColor, outlineColor, baseline);
+	}
+
+	/**
+	 * Draw this text directly as vector outlines at a fractional position.
+	 * This avoids resampling a cached bitmap while a nameplate is moving and
+	 * therefore keeps glyph edges stable between adjacent pixel phases.
+	 *
+	 * @param source destination graphics
+	 * @param x left edge of the text sprite in user-space pixels
+	 * @param y top edge of the text sprite in user-space pixels
+	 */
+	public void drawSmooth(final Graphics2D source, final double x, final double y) {
+		final Graphics2D g = (Graphics2D) source.create();
+		try {
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+					RenderingHints.VALUE_STROKE_PURE);
+			final Shape glyphShape = smoothGlyphs.getOutline((float) (x + 1.0),
+					(float) (y + baseline));
+
+			g.setColor(outlineColor);
+			g.setStroke(SMOOTH_OUTLINE_STROKE);
+			g.draw(glyphShape);
+			g.setColor(textColor);
+			g.fill(glyphShape);
+		} finally {
+			g.dispose();
+		}
 	}
 
 	/**
@@ -66,19 +120,17 @@ public class TextSprite extends ImageSprite {
 	 */
 	private static void drawOutlineString(final Image image, final Color textColor,
 			final String text, final int x, final int y) {
+		drawOutlineString(image, textColor, determineOutlineColor(textColor), text, x, y);
+	}
+
+	private static Color determineOutlineColor(final Color textColor) {
 		/*
 		 * Use light gray as outline for colors < 25% bright. Luminance = 0.299R +
 		 * 0.587G + 0.114B
 		 */
-		final int lum = ((textColor.getRed() * 299) + (textColor.getGreen() * 587) + (textColor.getBlue() * 114)) / 1000;
-
-		Color outlineColor;
-		if (lum >= 64) {
-			outlineColor = Color.black;
-		} else {
-			outlineColor = Color.lightGray;
-		}
-		drawOutlineString(image, textColor, outlineColor, text, x, y);
+		final int lum = ((textColor.getRed() * 299) + (textColor.getGreen() * 587)
+				+ (textColor.getBlue() * 114)) / 1000;
+		return lum >= 64 ? Color.black : Color.lightGray;
 	}
 
 	/**

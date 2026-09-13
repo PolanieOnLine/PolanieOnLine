@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import games.stendhal.client.CameraSmootherTest;
+import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.client.gui.GlyphTooltipPresentationTest;
 import games.stendhal.client.gui.ItemRarityPresentationTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
@@ -52,6 +53,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CameraSmootherTest.class,
+	TextSpriteTest.class,
 	ItemRarityPresentationTest.class,
 	GlyphTooltipPresentationTest.class,
 	ItemRarityServiceTest.class,
