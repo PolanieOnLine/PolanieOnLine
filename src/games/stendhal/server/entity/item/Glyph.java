@@ -18,6 +18,16 @@ public class Glyph extends Item {
 		super(glyph);
 	}
 
+	/**
+	 * Glyphs have fixed effects defined by their item definition and never take
+	 * part in the item rarity or affix systems.
+	 */
+	@Override
+	public void configureRarity(final Boolean enabledOverride,
+			final String profile, final int baseValue) {
+		super.configureRarity(Boolean.FALSE, profile, baseValue);
+	}
+
 	@Override
 	public boolean onEquipped(final RPEntity entity, final String slot) {
 		if (entity instanceof Player && isGlyphSlot(slot)) {

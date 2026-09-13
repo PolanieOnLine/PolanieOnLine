@@ -166,12 +166,31 @@ public class RingOfTeleportation extends Item {
 			return false;
 		}
 
+		/*
+		 * Player.teleport() publishes the player and all contained slots before
+		 * returning. Put the ring into its final used state first so that this
+		 * very same update carries the dimmed sprite without a follow-up child
+		 * update that can make the client append the ring at the end of the bag.
+		 * If placement fails, restore the untouched active state.
+		 */
+		final String previousItemData = getItemData();
+		final boolean hadLastUse = has(LAST_USE);
+		final int previousLastUse = hadLastUse ? getInt(LAST_USE) : 0;
+		setItemData(null);
+		storeLastUsed();
+		usedRing();
+
 		if (player.teleport(zone, saved.x, saved.y, null, player)) {
 			TeleportNotifier.get().notify(player, true);
-			setItemData(null);
-			storeLastUsed();
-			usedRing();
 			return true;
+		}
+
+		setItemData(previousItemData);
+		activeRing();
+		if (hadLastUse) {
+			put(LAST_USE, previousLastUse);
+		} else if (has(LAST_USE)) {
+			remove(LAST_USE);
 		}
 		return false;
 	}

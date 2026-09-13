@@ -26,6 +26,7 @@ final class LegendaryAffixPresentation {
 		}
 
 		final StringBuilder result = new StringBuilder();
+		appendAttackRateReduction(result, object);
 		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
 				"dodatkowego ataku");
 		// Legacy saved/dev items keep their old materialized flat DEF line, but
@@ -163,6 +164,22 @@ final class LegendaryAffixPresentation {
 
 	private static boolean has(final RPObject object, final String key) {
 		return WeaponPerformanceCalculator.getTooltipValue(object, key) != null;
+	}
+
+	private static void appendAttackRateReduction(final StringBuilder result,
+			final RPObject object) {
+		final String raw = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.RATE_INCREASE);
+		if (raw == null) {
+			return;
+		}
+		final Integer value = parseInteger(raw);
+		if (value == null || value.intValue() == 0) {
+			return;
+		}
+		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
+				.append(Math.abs(value.intValue()))
+				.append(" do wagi wolniejszej broni (minimum 2)</font></div>");
 	}
 
 	private static void appendSpikedPlating(final StringBuilder result,
