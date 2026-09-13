@@ -34,9 +34,11 @@ import games.stendhal.client.StaticGameLayers;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.chatlog.EventLine;
+import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.spellcasting.DefaultGroundContainerMouseState;
 import games.stendhal.client.gui.spellcasting.GroundContainerMouseState;
 import games.stendhal.client.gui.styled.cursor.CursorRepository;
@@ -66,6 +68,8 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	private final JComponent canvas;
 
 	private GroundContainerMouseState state;
+	/** Entity currently supplying the ground tooltip. */
+	private IEntity tooltipEntity;
 
 	/**
 	 * Create a new GroundContainer.
@@ -87,11 +91,50 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 		state.mouseMoved(e);
 
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) != 0) {
+			clearGroundItemToolTip();
 			return;
 		}
 
+		updateGroundItemToolTip(e.getPoint());
 		StendhalCursor cursor = getCursor(e.getPoint());
 		canvas.setCursor(cursorRepository.get(cursor));
+	}
+
+	/**
+	 * Updates the standard Swing tooltip when the pointer is over a movable
+	 * item on the ground. The same structured tooltip is used by inventory
+	 * slots so rarity and item statistics cannot be hidden by dropping an item.
+	 */
+	private void updateGroundItemToolTip(final Point point) {
+		final Point2D location = screen.convertScreenViewToWorld(point);
+		final EntityView<?> view = screen.getMovableEntityViewAt(
+				location.getX(), location.getY());
+		final IEntity entity = view == null ? null : view.getEntity();
+		if (entity == tooltipEntity) {
+			return;
+		}
+		tooltipEntity = entity;
+		canvas.setToolTipText(buildGroundItemToolTip(entity));
+	}
+
+	private void clearGroundItemToolTip() {
+		if (tooltipEntity != null || canvas.getToolTipText() != null) {
+			tooltipEntity = null;
+			canvas.setToolTipText(null);
+		}
+	}
+
+	/**
+	 * Build the hover tooltip for a ground entity.
+	 *
+	 * @param entity entity under the pointer
+	 * @return item tooltip, or {@code null} for non-items
+	 */
+	static String buildGroundItemToolTip(final IEntity entity) {
+		if (!(entity instanceof Item)) {
+			return null;
+		}
+		return ItemRarityPresentation.buildItemToolTip(entity);
 	}
 
 	/**
@@ -321,6 +364,7 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		clearGroundItemToolTip();
 		state.mousePressed(e);
 	}
 
@@ -336,6 +380,7 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		clearGroundItemToolTip();
 		state.mouseExited(e);
 	}
 }
