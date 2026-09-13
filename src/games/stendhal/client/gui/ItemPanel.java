@@ -65,6 +65,9 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 */
 	private static final int POPUP_MENU_OFFSET = 10;
 	private static final int RARITY_OUTLINE_ALPHA_THRESHOLD = 16;
+	private static final int[][] RARITY_OUTLINE_NEIGHBORS = {
+		{0, -1}, {-1, 0}, {1, 0}, {0, 1}
+	};
 	private static final CursorRepository cursorRepository = new CursorRepository();
 
 	/**
@@ -322,7 +325,9 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	}
 
 	/**
-	 * Build a one-pixel outline around non-transparent item pixels.
+	 * Build a one-pixel, four-direction outline around non-transparent item
+	 * pixels. Diagonal pixels are deliberately excluded so the marker stays
+	 * visually thin on pixel-art sprites.
 	 */
 	static BufferedImage createRarityOutline(final BufferedImage source,
 			final ItemRarity rarity) {
@@ -349,22 +354,17 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 					continue;
 				}
 
-				for (int dy = -1; dy <= 1; dy++) {
-					for (int dx = -1; dx <= 1; dx++) {
-						if (dx == 0 && dy == 0) {
-							continue;
-						}
-						final int tx = sx + dx;
-						final int ty = sy + dy;
-						if (isOpaque(source, tx, ty)) {
-							continue;
-						}
-						final int ox = tx + 1;
-						final int oy = ty + 1;
-						if (ox >= 0 && oy >= 0 && ox < outline.getWidth()
-								&& oy < outline.getHeight()) {
-							outline.setRGB(ox, oy, rarityColor);
-						}
+				for (final int[] neighbor : RARITY_OUTLINE_NEIGHBORS) {
+					final int tx = sx + neighbor[0];
+					final int ty = sy + neighbor[1];
+					if (isOpaque(source, tx, ty)) {
+						continue;
+					}
+					final int ox = tx + 1;
+					final int oy = ty + 1;
+					if (ox >= 0 && oy >= 0 && ox < outline.getWidth()
+							&& oy < outline.getHeight()) {
+						outline.setRGB(ox, oy, rarityColor);
 					}
 				}
 			}

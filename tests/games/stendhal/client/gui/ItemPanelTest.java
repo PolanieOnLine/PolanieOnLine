@@ -36,7 +36,7 @@ public class ItemPanelTest {
 	private static final CursorRepository cursors = new CursorRepository();
 
 	@Test
-	public void rarityOutlineFollowsItemPixelsWithSinglePixelThickness() {
+	public void rarityOutlineUsesFourDirectionSinglePixelThickness() {
 		final BufferedImage source = new BufferedImage(7, 7,
 				BufferedImage.TYPE_INT_ARGB);
 		source.setRGB(3, 3, 0xffffffff);
@@ -48,10 +48,16 @@ public class ItemPanelTest {
 
 		// Source pixel is not covered by the rarity marker.
 		assertEquals(0, outline.getRGB(4, 4));
-		// All adjacent pixels use exactly the existing rarity color.
-		assertEquals(rarityColor, outline.getRGB(3, 4));
+		// Only the four orthogonal neighbours use the existing rarity color.
 		assertEquals(rarityColor, outline.getRGB(4, 3));
-		assertEquals(rarityColor, outline.getRGB(5, 5));
+		assertEquals(rarityColor, outline.getRGB(3, 4));
+		assertEquals(rarityColor, outline.getRGB(5, 4));
+		assertEquals(rarityColor, outline.getRGB(4, 5));
+		// Diagonal pixels stay empty, keeping the outline visually thin.
+		assertEquals(0, outline.getRGB(3, 3));
+		assertEquals(0, outline.getRGB(5, 3));
+		assertEquals(0, outline.getRGB(3, 5));
+		assertEquals(0, outline.getRGB(5, 5));
 		// There is no second outline layer for higher rarities.
 		assertEquals(0, outline.getRGB(2, 4));
 		assertEquals(0, outline.getRGB(4, 2));
