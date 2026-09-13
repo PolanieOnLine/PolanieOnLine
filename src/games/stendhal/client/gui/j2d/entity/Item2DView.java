@@ -14,10 +14,6 @@ package games.stendhal.client.gui.j2d.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -44,7 +40,6 @@ import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -157,79 +152,14 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	protected void draw(final Graphics2D g2d, final int x, final int y,
 			final int width, final int height) {
 		if (!isContained() && entity != null) {
-			paintGroundRarityGlow(g2d, entity.getRarity(), x, y, width, height);
+			GroundItemRarityGlow.paint(g2d, getSprite(), entity.getRarity(),
+					x, y, width, height);
 		}
 		super.draw(g2d, x, y, width, height);
 
 		if (showQuantity && (quantitySprite != null)) {
 			drawQuantity(g2d, x, y, width, height);
 		}
-	}
-
-	/**
-	 * Paint a soft rarity glow under an item lying on the map. The center is
-	 * strongest and fades towards the edge of the 32x32 tile while keeping
-	 * the item's original sprite readable.
-	 *
-	 * @param graphics destination graphics
-	 * @param rarity item rarity
-	 * @param x item x coordinate
-	 * @param y item y coordinate
-	 * @param width item width
-	 * @param height item height
-	 */
-	static void paintGroundRarityGlow(final Graphics2D graphics,
-			final ItemRarity rarity, final int x, final int y,
-			final int width, final int height) {
-		if (graphics == null || rarity == null || width < 4 || height < 4) {
-			return;
-		}
-
-		try {
-			final Color rarityColor = Color.decode(rarity.getColorHex());
-			final float strength = getGroundGlowStrength(rarity);
-			final Color center = withAlpha(rarityColor, strength);
-			final Color middle = withAlpha(rarityColor, strength * 0.62f);
-			final Color edge = withAlpha(rarityColor, 0.0f);
-			final float centerX = x + width / 2.0f;
-			final float centerY = y + height / 2.0f;
-			final float radius = Math.max(width, height) * 0.60f;
-
-			final Graphics2D glow = (Graphics2D) graphics.create();
-			try {
-				glow.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-						RenderingHints.VALUE_ANTIALIAS_ON);
-				glow.setPaint(new RadialGradientPaint(
-						new Point2D.Float(centerX, centerY), radius,
-						new float[] {0.0f, 0.62f, 1.0f},
-						new Color[] {center, middle, edge}));
-				glow.fill(new Ellipse2D.Float(x + 1.0f, y + 1.0f,
-						width - 2.0f, height - 2.0f));
-			} finally {
-				glow.dispose();
-			}
-		} catch (NumberFormatException e) {
-			// Presentation colors must never prevent an item from being drawn.
-		}
-	}
-
-	private static float getGroundGlowStrength(final ItemRarity rarity) {
-		switch (rarity) {
-		case LEGENDARY:
-			return 0.38f;
-		case EPIC:
-			return 0.32f;
-		case RARE:
-			return 0.26f;
-		case COMMON:
-		default:
-			return 0.10f;
-		}
-	}
-
-	private static Color withAlpha(final Color color, final float alpha) {
-		final int value = Math.max(0, Math.min(255, Math.round(alpha * 255.0f)));
-		return new Color(color.getRed(), color.getGreen(), color.getBlue(), value);
 	}
 
 	/**

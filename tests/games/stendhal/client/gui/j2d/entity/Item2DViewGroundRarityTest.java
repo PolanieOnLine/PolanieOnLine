@@ -7,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Test;
@@ -16,38 +15,51 @@ import games.stendhal.common.constants.ItemRarity;
 
 public class Item2DViewGroundRarityTest {
 	@Test
-	public void rareGroundGlowIsStrongestInCenterAndUsesRarityColor() {
-		final BufferedImage image = new BufferedImage(32, 32,
+	public void rareGroundGlowFollowsSpriteSilhouetteWithoutCoveringIt() {
+		final BufferedImage source = new BufferedImage(9, 9,
 				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		try {
-			Item2DView.paintGroundRarityGlow(graphics, ItemRarity.RARE,
-					0, 0, 32, 32);
-		} finally {
-			graphics.dispose();
+		for (int y = 3; y <= 5; y++) {
+			for (int x = 3; x <= 5; x++) {
+				source.setRGB(x, y, 0xffffffff);
+			}
 		}
 
-		final Color center = new Color(image.getRGB(16, 16), true);
-		final Color shoulder = new Color(image.getRGB(16, 24), true);
-		final Color edge = new Color(image.getRGB(1, 1), true);
-		assertTrue(center.getAlpha() > edge.getAlpha());
-		assertTrue(center.getAlpha() >= 60);
-		assertTrue(shoulder.getAlpha() >= 20);
-		assertTrue(center.getBlue() > center.getRed());
-		assertTrue(center.getBlue() > center.getGreen());
+		final BufferedImage glow = GroundItemRarityGlow.createGlow(
+				source, ItemRarity.RARE, 3);
+		final Color insideSprite = new Color(glow.getRGB(7, 7), true);
+		final Color besideSprite = new Color(glow.getRGB(5, 7), true);
+		final Color farAway = new Color(glow.getRGB(0, 0), true);
+
+		assertEquals(0, insideSprite.getAlpha());
+		assertTrue(besideSprite.getAlpha() >= 100);
+		assertTrue(besideSprite.getBlue() > besideSprite.getRed());
+		assertTrue(besideSprite.getBlue() > besideSprite.getGreen());
+		assertEquals(0, farAway.getAlpha());
 	}
 
 	@Test
-	public void missingRarityDoesNotPaintGroundGlow() {
-		final BufferedImage image = new BufferedImage(32, 32,
+	public void higherRarityProducesStrongerOutlineGlow() {
+		final BufferedImage source = new BufferedImage(5, 5,
 				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		try {
-			Item2DView.paintGroundRarityGlow(graphics, null, 0, 0, 32, 32);
-		} finally {
-			graphics.dispose();
-		}
+		source.setRGB(2, 2, 0xffffffff);
 
-		assertEquals(0, new Color(image.getRGB(16, 16), true).getAlpha());
+		final BufferedImage common = GroundItemRarityGlow.createGlow(
+				source, ItemRarity.COMMON, 3);
+		final BufferedImage legendary = GroundItemRarityGlow.createGlow(
+				source, ItemRarity.LEGENDARY, 3);
+
+		final int commonAlpha = new Color(common.getRGB(4, 5), true).getAlpha();
+		final int legendaryAlpha = new Color(legendary.getRGB(4, 5), true).getAlpha();
+		assertTrue(legendaryAlpha > commonAlpha);
+	}
+
+	@Test
+	public void missingRarityProducesTransparentGlow() {
+		final BufferedImage source = new BufferedImage(5, 5,
+				BufferedImage.TYPE_INT_ARGB);
+		source.setRGB(2, 2, 0xffffffff);
+
+		final BufferedImage glow = GroundItemRarityGlow.createGlow(source, null, 3);
+		assertEquals(0, new Color(glow.getRGB(4, 5), true).getAlpha());
 	}
 }
