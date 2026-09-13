@@ -337,12 +337,13 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 */
 	private static float getRarityOutlineOpacity(final ItemRarity rarity) {
 		switch (rarity) {
-		case RARE:
-			return 0.68f;
 		case LEGENDARY:
-			return 0.62f;
-		case COMMON:
+			return 0.4f;
 		case EPIC:
+			return 0.7f;
+		case RARE:
+			return 0.5f;
+		case COMMON:
 		default:
 			return 1.0f;
 		}
