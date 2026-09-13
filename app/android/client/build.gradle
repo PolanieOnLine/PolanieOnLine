@@ -10,7 +10,7 @@ android {
 		applicationId namespace
 		minSdk 21
 		targetSdk 32
-		versionCode 1041005
+		versionCode 1042000
 		versionName "1.42"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		targetSdkVersion 32
