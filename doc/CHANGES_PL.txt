@@ -49,13 +49,10 @@
 * Dodano cztery poziomy rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
 * Dodano trwałe dodatkowe właściwości dla rzadkich, epickich i legendarnych przedmiotów
 * Dodano wyjątkowe właściwości dla legendarnych przedmiotów zależne od rodzaju wyposażenia
-* Zmieniono wyposażenie startowe nowych postaci oraz przedmioty w publicznej skrzyni w Zakopanem, aby zawsze posiadały zwykłą rzadkość
 * Dodano zakres obrażeń broni wykorzystywany podczas walki
-* Zmieniono kwalifikujące się nagrody ekwipunkowe z zadań, przyznając im epicką rzadkość oraz dwie trwałe dodatkowe właściwości
-* Zmieniono starsze nagrody z ukończonych zadań tak, aby zachowywały dotychczasowe ulepszenia i pozostałe właściwości
-* Zmieniono pierścienie otrzymywane jako nagrody z zadań, pozostawiając je w zwykłej rzadkości
-* Zmieniono działanie zdobycznego hełmu z Deathmatchu, zachowując jego rozwój obrony poprzez kolejne zwycięstwa
-* Zmieniono przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość oraz dodatkowe właściwości użytego przedmiotu
+* Kwalifikujące się nagrody ekwipunkowe z zadań, przyznając im epicką rzadkość oraz dwie trwałe dodatkowe właściwości
+* Starsze nagrody z ukończonych zadań tak, aby zachowywały dotychczasowe ulepszenia i pozostałe właściwości
+* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość oraz dodatkowe właściwości użytego przedmiotu
 
 *walka i balans*
 ---
@@ -73,7 +70,6 @@
 * Rozbudowano krwawienie o kumulowanie ran oraz odporność na krwawienie
 * Dodano status ogłuszenia czasowo uniemożliwiający wykonywanie ataków
 * Dodano możliwość ogłuszania graczy przez wybrane potwory
-* Zmieniono balans wyposażenia dla początku gry oraz późniejszych etapów rozwoju postaci
 
 *elitarne potwory*
 ---
@@ -85,7 +81,7 @@
 
 *glify*
 ---
-* Wyłączono glify z systemu rzadkości i dodatkowych losowych właściwości
+* Glify są wyłączone z systemu rzadkości i dodatkowych losowych właściwości
 * Zmieniono odświeżanie glifów po zalogowaniu, aby istniejące egzemplarze korzystały z aktualnych wartości z definicji gry
 * Ułatwiono rozpoznawanie miejsc na poszczególne rodzaje glifów w Ołtarzu Runicznym za pomocą kolorystycznych oznaczeń i czytelnych nazw
 * Zmieniono wartości glifów ofensywnych, defensywnych i użytkowych
@@ -160,11 +156,11 @@
 * Poprawiono informacje dotyczące wymaganych przedmiotów w zadaniu Smoczy Amulet
 * Naprawiono Pierścień Powrotu, aby nie zapisywał niedozwolonych miejsc w wybranych labiryntach i prywatnych lokacjach
 * Naprawiono obsługę niedozwolonych miejsc zapisanych wcześniej w Pierścieniu Powrotu
-* Naprawiono Pierścień Powrotu, aby po teleportacji poprawnie odświeżał swój wygląd i zachowywał dotychczasową pozycję w plecaku
 * Naprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
 * Poprawiono koszt ulepszania wybranych broni dystansowych
 * Naprawiono drganie nazw postaci i pasków zdrowia podczas płynnego poruszania kamerą w kliencie Java
 * Naprawiono powitanie Racirada, aby poprawnie wyświetlało nazwę postaci gracza zamiast znacznika [name]
+
 
 1.41
 *klient*
