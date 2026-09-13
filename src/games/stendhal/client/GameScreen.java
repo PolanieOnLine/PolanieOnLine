@@ -393,9 +393,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/**
 	 * Move the camera towards its target using frame-rate independent
-	 * exponential smoothing. Logical screen coordinates stay pixel aligned,
-	 * while rendering consumes the fractional remainder so the whole scene,
-	 * including player nameplates, moves continuously at high frame rates.
+	 * exponential smoothing. Rendering is deliberately snapped to whole map
+	 * pixels so pixel-art layers, sprites and nameplates share one stable
+	 * camera position without sub-pixel resampling.
 	 */
 	private void adjustView(final double deltaMillis) {
 		if (camera.isSettled()) {
@@ -491,16 +491,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		Graphics2D g2d = (Graphics2D) g;
-		final double renderViewX;
-		final double renderViewY;
+		final int viewX;
+		final int viewY;
 		synchronized (camera) {
-			renderViewX = camera.getX();
-			renderViewY = camera.getY();
+			viewX = camera.getPixelX();
+			viewY = camera.getPixelY();
 		}
-		final int viewX = (int) Math.round(renderViewX);
-		final int viewY = (int) Math.round(renderViewY);
-		final double renderOffsetX = viewX - renderViewX;
-		final double renderOffsetY = viewY - renderViewY;
 		GameScreenSpriteHelper.beginFrame(viewX, viewY);
 		try {
 			if (StendhalClient.get().isInTransfer()) {
@@ -523,20 +519,17 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 				int xAdjust = -viewX;
 				int yAdjust = -viewY;
-				final boolean fractionalCamera = Math.abs(renderOffsetX) > POSITION_EPSILON
-						|| Math.abs(renderOffsetY) > POSITION_EPSILON;
 
-				if (useTripleBuffer || fractionalCamera) {
+				if (useTripleBuffer) {
 					/*
-					 * Render once at native resolution, then scale and apply the camera's
-					 * fractional remainder to the complete image. This avoids tile seams
-					 * and keeps the moving world layers on one transform.
+					 * Render once at native resolution and only scale the completed
+					 * pixel-art buffer. Camera movement itself remains aligned to whole
+					 * pixels, avoiding frame-to-frame sub-pixel resampling.
 					 */
 					final double scale = GameScreenSpriteHelper.getScale();
 					graphics.scale(scale, scale);
-					graphics.translate(renderOffsetX, renderOffsetY);
 					graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+						RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 					int width = stendhal.getDisplaySize().width;
 					int height = stendhal.getDisplaySize().height;
 					do {
@@ -580,9 +573,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				graphics.dispose();
 			}
 
-			// Don't scale text to keep it readable
-			drawText(g2d, viewX, viewY, renderOffsetX, renderOffsetY);
-			drawEmojis(g2d, viewX, viewY, renderOffsetX, renderOffsetY);
+			// Keep text and emojis on the exact same integer camera position.
+			drawText(g2d, viewX, viewY);
+			drawEmojis(g2d, viewX, viewY);
 			drawFpsCounter(g2d);
 
 			paintOffLineIfNeeded(g2d);
@@ -640,8 +633,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/**
 	 * Render entity overlays and effects directly to the final destination.
-	 * This keeps cached raster text such as player names out of the camera
-	 * buffer's bilinear resampling pass.
+	 * They use the same integer camera offset as the world scene so cached
+	 * player names and health bars remain aligned without sub-pixel filtering.
 	 *
 	 * @param source destination graphics
 	 * @param xAdjust x coordinate offset
@@ -708,20 +701,15 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 *
 	 * @param g2d destination graphics
 	 */
-	private void drawText(final Graphics2D g2d, final int viewX, final int viewY,
-			final double renderOffsetX, final double renderOffsetY) {
+	private void drawText(final Graphics2D g2d, final int viewX, final int viewY) {
 		/*
 		 * Text objects know their original placement relative to the screen,
-		 * not to the map. Pass them a shifted coordinate system and include the
-		 * same fractional camera movement used by the scene.
+		 * not to the map. Shift them by the same whole-pixel camera position as
+		 * the world scene so labels never alternate between sub-pixel phases.
 		 */
-		final double scale = GameScreenSpriteHelper.getScale();
 		final Graphics2D movingText = (Graphics2D) g2d.create();
 		try {
-			movingText.translate(-viewX + renderOffsetX * scale,
-					-viewY + renderOffsetY * scale);
-			movingText.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			movingText.translate(-viewX, -viewY);
 
 			final List<RemovableSprite> texts = GameScreenSpriteHelper.getTexts();
 			synchronized (texts) {
@@ -754,29 +742,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 	}
 
-	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY,
-			final double renderOffsetX, final double renderOffsetY) {
-		final double scale = GameScreenSpriteHelper.getScale();
-		final Graphics2D movingEmojis = (Graphics2D) g2d.create();
-		try {
-			movingEmojis.translate(renderOffsetX * scale, renderOffsetY * scale);
-			movingEmojis.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-
-			final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
-			synchronized (emojis) {
-				Iterator<RemovableSprite> it = emojis.iterator();
-				while (it.hasNext()) {
-					RemovableSprite emoji = it.next();
-					if (!emoji.shouldBeRemoved()) {
-						emoji.drawEmoji(movingEmojis, viewX, viewY);
-					} else {
-						it.remove();
-					}
+	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY) {
+		final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
+		synchronized (emojis) {
+			Iterator<RemovableSprite> it = emojis.iterator();
+			while (it.hasNext()) {
+				RemovableSprite emoji = it.next();
+				if (!emoji.shouldBeRemoved()) {
+					emoji.drawEmoji(g2d, viewX, viewY);
+				} else {
+					it.remove();
 				}
 			}
-		} finally {
-			movingEmojis.dispose();
 		}
 	}
 

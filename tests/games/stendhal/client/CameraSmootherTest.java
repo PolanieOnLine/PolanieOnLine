@@ -52,7 +52,7 @@ public class CameraSmootherTest {
 	}
 
 	@Test
-	public void retainsSubPixelProgressAtHighFrameRates() {
+	public void retainsSubPixelProgressWhileRenderCoordinatesStayPixelAligned() {
 		final CameraSmoother camera = new CameraSmoother();
 		camera.reset(0.0, 0.0);
 
@@ -60,6 +60,7 @@ public class CameraSmootherTest {
 		int previousPixel = camera.getPixelX();
 		double target = 0.0;
 		boolean repeatedPixel = false;
+		boolean fractionalPositionSeen = false;
 		for (int frame = 0; frame < 60; frame++) {
 			target += 0.35;
 			camera.setTarget(target, 0.0);
@@ -68,6 +69,11 @@ public class CameraSmootherTest {
 			final double currentPosition = camera.getX();
 			final int currentPixel = camera.getPixelX();
 			assertTrue("fractional camera position did not advance", currentPosition > previousPosition);
+			assertEquals("render coordinate must be rounded to a whole pixel",
+					(int) Math.round(currentPosition), currentPixel);
+			if (Math.abs(currentPosition - currentPixel) > 0.0001) {
+				fractionalPositionSeen = true;
+			}
 			if (currentPixel == previousPixel) {
 				repeatedPixel = true;
 			}
@@ -76,6 +82,7 @@ public class CameraSmootherTest {
 		}
 
 		assertTrue("test did not exercise sub-pixel movement", repeatedPixel);
+		assertTrue("test did not observe a fractional logical camera position", fractionalPositionSeen);
 	}
 
 	@Test
