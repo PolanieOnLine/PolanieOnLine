@@ -179,7 +179,7 @@ final class LegendaryAffixPresentation {
 		}
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
 				.append(Math.abs(value.intValue()))
-				.append(" do wagi wolniejszej broni (minimum 2)</font></div>");
+				.append(" do wagi broni</font></div>");
 	}
 
 	private static void appendSpikedPlating(final StringBuilder result,
