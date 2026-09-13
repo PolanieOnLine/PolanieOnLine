@@ -16,28 +16,6 @@ import games.stendhal.client.entity.Entity;
 
 public class Entity2DViewTest {
 	@Test
-	public void worldLayerIgnoresFractionalEntityOffset() {
-		final TestEntity entity = new TestEntity(0.2, 0.3);
-		final TestView view = new TestView();
-		view.initialize(entity);
-		view.applyChanges();
-
-		final BufferedImage image = new BufferedImage(64, 64,
-				BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D graphics = image.createGraphics();
-		try {
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			view.draw(graphics);
-		} finally {
-			graphics.dispose();
-		}
-
-		assertEquals(0.0, view.worldTranslateX, 0.0001);
-		assertEquals(0.0, view.worldTranslateY, 0.0001);
-	}
-
-	@Test
 	public void topLayerKeepsFractionalPositionWithoutBilinearFiltering() {
 		final TestEntity entity = new TestEntity(0.2, 0.3);
 		final TestView view = new TestView();
@@ -69,8 +47,6 @@ public class Entity2DViewTest {
 	}
 
 	private static final class TestView extends Entity2DView<TestEntity> {
-		private double worldTranslateX;
-		private double worldTranslateY;
 		private double translateX;
 		private double translateY;
 		private Object interpolationHint;
@@ -78,13 +54,6 @@ public class Entity2DViewTest {
 		@Override
 		protected void buildRepresentation(final TestEntity entity) {
 			// The test only needs positioning; no sprite is required.
-		}
-
-		@Override
-		protected void draw(final Graphics2D graphics, final int x,
-				final int y, final int width, final int height) {
-			worldTranslateX = graphics.getTransform().getTranslateX();
-			worldTranslateY = graphics.getTransform().getTranslateY();
 		}
 
 		@Override
