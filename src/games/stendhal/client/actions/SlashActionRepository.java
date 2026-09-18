@@ -98,7 +98,8 @@ public class SlashActionRepository {
 
 		actions.put(Actions.SENTENCE, new SentenceAction());
 		actions.put("status", new SentenceAction()); // Alias for /sentence
-		actions.put("settings", new SettingsAction());
+                actions.put("settings", new SettingsAction());
+                actions.put("skilltree", new SkillTreeAction());
 
 		actions.put("sound", new SoundAction());
 		actions.put("volume", new VolumeAction());
