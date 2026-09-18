@@ -56,6 +56,66 @@ create table if not exists character_stats
 
 CREATE INDEX IF NOT EXISTS i_character_stats_name ON character_stats(name);
 
+
+CREATE TABLE IF NOT EXISTS character_items
+  (
+  id integer auto_increment not null,
+  charname varchar(32) not null,
+  slot_path varchar(512) not null,
+  slot_name varchar(64) not null,
+  itemid integer,
+  item_name varchar(64) not null,
+  item_class varchar(64),
+  item_subclass varchar(64),
+  quantity integer not null,
+  rarity_id varchar(16) not null,
+  upgrade_level integer not null,
+  max_upgrade_level integer not null,
+  atk integer,
+  ratk integer,
+  def integer,
+  damage_min integer,
+  damage_max integer,
+  accuracy_bonus float,
+  attack_rate integer,
+  item_value integer,
+  lifesteal float,
+  timedate timestamp default CURRENT_TIMESTAMP,
+  primary key(id)
+  );
+
+CREATE INDEX IF NOT EXISTS i_character_items_charname ON character_items(charname);
+
+CREATE TABLE IF NOT EXISTS character_item_modifiers
+  (
+  id integer auto_increment not null,
+  charname varchar(32) not null,
+  slot_path varchar(512) not null,
+  itemid integer,
+  modifier_source varchar(16) not null,
+  modifier_name varchar(64) not null,
+  modifier_value varchar(128) not null,
+  timedate timestamp default CURRENT_TIMESTAMP,
+  primary key(id)
+  );
+
+CREATE INDEX IF NOT EXISTS i_character_item_modifiers_charname ON character_item_modifiers(charname);
+CREATE INDEX IF NOT EXISTS i_character_item_modifiers_item ON character_item_modifiers(charname, slot_path);
+
+CREATE TABLE IF NOT EXISTS character_quests
+  (
+  id integer auto_increment not null,
+  charname varchar(32) not null,
+  quest_name varchar(128) not null,
+  quest_state text,
+  completed integer not null,
+  timedate timestamp default CURRENT_TIMESTAMP,
+  primary key(id)
+  );
+
+CREATE INDEX IF NOT EXISTS i_character_quests_charname ON character_quests(charname);
+CREATE INDEX IF NOT EXISTS i_character_quests_quest_name ON character_quests(quest_name);
+
 create table if not exists halloffame
   (
   id integer auto_increment not null,

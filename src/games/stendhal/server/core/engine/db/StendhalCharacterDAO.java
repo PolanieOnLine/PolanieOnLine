@@ -31,6 +31,8 @@ public class StendhalCharacterDAO extends CharacterDAO {
 	private static Logger logger = Logger.getLogger(StendhalCharacterDAO.class);
 	private static final StendhalCharacterItemDAO characterItemDAO =
 			new StendhalCharacterItemDAO();
+	private static final StendhalCharacterQuestDAO characterQuestDAO =
+			new StendhalCharacterQuestDAO();
 
 	@Override
 	public void addCharacter(final DBTransaction transaction, final String username,
@@ -45,6 +47,7 @@ public class StendhalCharacterDAO extends CharacterDAO {
 				DAORegister.get().get(StendhalHallOfFameDAO.class).setHallOfFamePoints(transaction, instance.getName(), "T", instance.getTradescore());
 				DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
 				characterItemDAO.replaceInventorySnapshot(transaction, instance, timestamp);
+				characterQuestDAO.replaceQuestSnapshot(transaction, instance, timestamp);
 				DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
 			} else {
 				logger.error("player no instance of Player but: " + player, new Throwable());
@@ -70,6 +73,7 @@ public class StendhalCharacterDAO extends CharacterDAO {
 					DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
 				}
 				characterItemDAO.replaceInventorySnapshot(transaction, instance, timestamp);
+				characterQuestDAO.replaceQuestSnapshot(transaction, instance, timestamp);
 				DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
 			} catch (final SQLException sqle) {
 				logger.warn("error storing character", sqle);
