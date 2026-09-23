@@ -18,12 +18,17 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -41,27 +46,10 @@ final class StartupSettingsDialog extends JDialog {
 
 		int pad = SBoxLayout.COMMON_PADDING;
 		setLayout(new SBoxLayout(SBoxLayout.VERTICAL, pad));
-
-		JComponent settings = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		settings.setBorder(BorderFactory.createEmptyBorder(pad, pad, 0, pad));
-		settings.add(createWindowModeSelector(), SLayout.EXPAND_X);
-
-		final JSlider masterVolume = createMasterVolumeSlider(startupMusic);
-		final JCheckBox soundToggle = new JCheckBox("Włącz wszystkie dźwięki");
-		soundToggle.setSelected(startupMusic.isSoundEnabled());
-		soundToggle.setToolTipText("Włącza lub wycisza muzykę i pozostałe dźwięki klienta");
-		masterVolume.setEnabled(soundToggle.isSelected());
-		soundToggle.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				boolean enabled = soundToggle.isSelected();
-				startupMusic.setSoundEnabled(enabled);
-				masterVolume.setEnabled(enabled);
-			}
-		});
-		settings.add(soundToggle);
-		settings.add(createMasterVolumeRow(masterVolume), SLayout.EXPAND_X);
-		add(settings, SLayout.EXPAND_X);
+		JTabbedPane tabs = new JTabbedPane();
+		tabs.add("Obraz i dźwięk", createDisplayAndSoundSettings(startupMusic));
+		tabs.add("Połączenie", createConnectionSettings());
+		add(tabs, SLayout.EXPAND_X);
 
 		JButton closeButton = new JButton("Zamknij");
 		closeButton.setAlignmentX(RIGHT_ALIGNMENT);
@@ -80,6 +68,95 @@ final class StartupSettingsDialog extends JDialog {
 		setResizable(false);
 		pack();
 		setLocationRelativeTo(parent);
+	}
+
+	private JComponent createDisplayAndSoundSettings(final StartupMusicController startupMusic) {
+		int pad = SBoxLayout.COMMON_PADDING;
+		JComponent settings = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		settings.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+		settings.add(createWindowModeSelector(), SLayout.EXPAND_X);
+
+		final JSlider masterVolume = createMasterVolumeSlider(startupMusic);
+		final JCheckBox soundToggle = new JCheckBox("Włącz wszystkie dźwięki");
+		soundToggle.setSelected(startupMusic.isSoundEnabled());
+		soundToggle.setToolTipText("Włącza lub wycisza muzykę i pozostałe dźwięki klienta");
+		masterVolume.setEnabled(soundToggle.isSelected());
+		soundToggle.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean enabled = soundToggle.isSelected();
+				startupMusic.setSoundEnabled(enabled);
+				masterVolume.setEnabled(enabled);
+			}
+		});
+		settings.add(soundToggle);
+		settings.add(createMasterVolumeRow(masterVolume), SLayout.EXPAND_X);
+		return settings;
+	}
+
+	private JComponent createConnectionSettings() {
+		int pad = SBoxLayout.COMMON_PADDING;
+		JComponent settings = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		settings.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+
+		final JRadioButton official = new JRadioButton("Oficjalny serwer ("
+				+ StartupConnectionSettings.getOfficialHost() + ":"
+				+ StartupConnectionSettings.getOfficialPort() + ")");
+		final JRadioButton custom = new JRadioButton("Inny serwer");
+		ButtonGroup serverChoice = new ButtonGroup();
+		serverChoice.add(official);
+		serverChoice.add(custom);
+		custom.setSelected(StartupConnectionSettings.isCustom());
+		official.setSelected(!StartupConnectionSettings.isCustom());
+		settings.add(official);
+		settings.add(custom);
+
+		final JTextField hostField = new JTextField(StartupConnectionSettings.getCustomHost(), 24);
+		final JTextField portField = new JTextField(String.valueOf(StartupConnectionSettings.getCustomPort()), 7);
+		JComponent hostRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		hostRow.add(new JLabel("Adres serwera"));
+		hostRow.add(hostField);
+		settings.add(hostRow, SLayout.EXPAND_X);
+		JComponent portRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		portRow.add(new JLabel("Port"));
+		portRow.add(portField);
+		settings.add(portRow, SLayout.EXPAND_X);
+
+		ActionListener choiceListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				hostField.setEnabled(custom.isSelected());
+				portField.setEnabled(custom.isSelected());
+			}
+		};
+		official.addActionListener(choiceListener);
+		custom.addActionListener(choiceListener);
+		choiceListener.actionPerformed(null);
+
+		JLabel hint = new JLabel("Logowanie przez Steam działa tylko na oficjalnym serwerze.");
+		settings.add(hint);
+		JButton applyButton = new JButton("Zapisz połączenie");
+		applyButton.setAlignmentX(RIGHT_ALIGNMENT);
+		applyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (custom.isSelected()) {
+						StartupConnectionSettings.selectCustom(hostField.getText(),
+								StartupConnectionSettings.parsePort(portField.getText()));
+					} else {
+						StartupConnectionSettings.selectOfficial();
+					}
+					JOptionPane.showMessageDialog(StartupSettingsDialog.this,
+							"Połączenie zapisane. Będzie użyte przy następnym logowaniu bez wybranego profilu.");
+				} catch (IllegalArgumentException exception) {
+					JOptionPane.showMessageDialog(StartupSettingsDialog.this,
+							exception.getMessage(), "Nieprawidłowe połączenie", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		settings.add(applyButton);
+		return settings;
 	}
 
 	private JComponent createWindowModeSelector() {

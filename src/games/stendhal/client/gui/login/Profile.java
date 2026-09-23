@@ -66,7 +66,8 @@ public class Profile {
 		sbuf.append('\n');
 		sbuf.append(getUser());
 		sbuf.append('\n');
-		sbuf.append(getPassword());
+		// The profile file must never contain reusable login credentials.
+		sbuf.append("");
 		sbuf.append('\n');
 		sbuf.append(getPort());
 		sbuf.append('\n');

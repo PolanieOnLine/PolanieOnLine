@@ -75,19 +75,27 @@ class ProfileList implements Iterable<Profile >{
 	 * Load a list of profiles from an input stream. This will replace any
 	 * existing list.
 	 * @param in The Stream to read
+	 * @return whether legacy profiles contained saved passwords
 	 * @throws IOException if any IO operation fails
 	 */
-	void load(final InputStream in) throws IOException {
+	boolean load(final InputStream in) throws IOException {
 		final Encoder codec = new Encoder();
 		String s;
+		boolean hadSavedPasswords = false;
 
 		final BufferedReader r = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 
 		clear();
 
 		while ((s = r.readLine()) != null) {
-			add(Profile.decode(codec.decode(s)));
+			Profile profile = Profile.decode(codec.decode(s));
+			if (!profile.getPassword().isEmpty()) {
+				hadSavedPasswords = true;
+				profile.setPassword("");
+			}
+			add(profile);
 		}
+		return hadSavedPasswords;
 	}
 
 	/**

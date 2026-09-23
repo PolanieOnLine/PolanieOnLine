@@ -41,11 +41,11 @@ import org.apache.log4j.Logger;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.NumberDocumentFilter;
+import games.stendhal.client.gui.StartupConnectionSettings;
 import games.stendhal.client.gui.ProgressBar;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
-import games.stendhal.client.update.ClientGameConfiguration;
 import marauroa.client.BannedAddressException;
 import marauroa.client.LoginFailedException;
 import marauroa.client.TimeoutException;
@@ -118,12 +118,10 @@ public class CreateAccountDialog extends JDialog {
 		}
 
 		JLabel serverLabel = new JLabel("Nazwa serwera");
-		serverField = new JTextField(
-				ClientGameConfiguration.get("DEFAULT_SERVER"));
+		serverField = new JTextField(StartupConnectionSettings.getHost());
 		serverField.setEditable(true);
 		JLabel serverPortLabel = new JLabel("Port serwera");
-		serverPortField = new JTextField(
-				ClientGameConfiguration.get("DEFAULT_PORT"));
+		serverPortField = new JTextField(String.valueOf(StartupConnectionSettings.getPort()));
 		((AbstractDocument) serverPortField.getDocument()).setDocumentFilter(new NumberDocumentFilter(serverPortField, false));
 
 		JLabel usernameLabel = new JLabel("Wybierz imię wojownika");

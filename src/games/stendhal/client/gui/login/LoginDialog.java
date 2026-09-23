@@ -41,8 +41,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
@@ -54,8 +52,10 @@ import games.stendhal.client.StendhalClient;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.NumberDocumentFilter;
 import games.stendhal.client.gui.ProgressBar;
+import games.stendhal.client.gui.StartupConnectionSettings;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.layout.SBoxLayout;
+import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.update.ClientGameConfiguration;
@@ -79,8 +79,6 @@ public class LoginDialog extends JDialog {
 
 	private JCheckBox saveLoginBox;
 
-	private JCheckBox savePasswordBox;
-
 	private JTextField usernameField;
 
 	private JPasswordField passwordField;
@@ -88,6 +86,7 @@ public class LoginDialog extends JDialog {
 	private JTextField serverField;
 
 	private JTextField serverPortField;
+	private JLabel connectionLabel;
 
 	private JButton loginButton;
 
@@ -172,6 +171,13 @@ public class LoginDialog extends JDialog {
 		JComponent box = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 		profilesComboBox.setAlignmentY(Component.CENTER_ALIGNMENT);
 		box.add(profilesComboBox);
+		JButton newLoginButton = new JButton("Nowe");
+		newLoginButton.setToolTipText("Zaloguj inne konto, używając domyślnego połączenia");
+		newLoginButton.addActionListener(event -> {
+			profilesComboBox.setSelectedItem(null);
+			usernameField.requestFocusInWindow();
+		});
+		box.add(newLoginButton);
 		box.add(removeButton);
 
 		c.gridx = 1;
@@ -179,41 +185,48 @@ public class LoginDialog extends JDialog {
 		c.fill = GridBagConstraints.BOTH;
 		contentPane.add(box, c);
 
-		/*
-		 * Server Host
-		 */
-		l = new JLabel("Nazwa serwera");
+		l = new JLabel("Serwer");
 		c.insets = new Insets(4, 4, 4, 4);
-		// column
 		c.gridx = 0;
-		 // row
 		c.gridy = 1;
 		contentPane.add(l, c);
 
-		serverField = new JTextField(
-				ClientGameConfiguration.get("DEFAULT_SERVER"));
+		connectionLabel = new JLabel();
+		JButton changeConnectionButton = new JButton("Zmień");
+		JComponent connectionRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		connectionRow.add(connectionLabel);
+		connectionRow.add(changeConnectionButton);
 		c.gridx = 1;
 		c.gridy = 1;
 		c.fill = GridBagConstraints.BOTH;
-		contentPane.add(serverField, c);
+		contentPane.add(connectionRow, c);
 
-		/*
-		 * Server Port
-		 */
-		l = new JLabel("Port serwera");
-		c.insets = new Insets(4, 4, 4, 4);
-		c.gridx = 0;
-		c.gridy = 2;
-		contentPane.add(l, c);
-
-		serverPortField = new JTextField(
-				ClientGameConfiguration.get("DEFAULT_PORT"));
-		((AbstractDocument) serverPortField.getDocument()).setDocumentFilter(new NumberDocumentFilter(serverPortField, false));
+		serverField = new JTextField(StartupConnectionSettings.getHost(), 22);
+		serverPortField = new JTextField(String.valueOf(StartupConnectionSettings.getPort()), 7);
+		((AbstractDocument) serverPortField.getDocument()).setDocumentFilter(
+				new NumberDocumentFilter(serverPortField, false));
+		JComponent connectionFields = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		JComponent hostRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		hostRow.add(new JLabel("Adres serwera"));
+		hostRow.add(serverField);
+		connectionFields.add(hostRow, SLayout.EXPAND_X);
+		JComponent portRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		portRow.add(new JLabel("Port"));
+		portRow.add(serverPortField);
+		connectionFields.add(portRow, SLayout.EXPAND_X);
+		connectionFields.setVisible(false);
 		c.gridx = 1;
 		c.gridy = 2;
 		c.insets = new Insets(4, 4, 4, 4);
 		c.fill = GridBagConstraints.BOTH;
-		contentPane.add(serverPortField, c);
+		contentPane.add(connectionFields, c);
+		changeConnectionButton.addActionListener(event -> {
+			boolean show = !connectionFields.isVisible();
+			connectionFields.setVisible(show);
+			changeConnectionButton.setText(show ? "Ukryj" : "Zmień");
+			pack();
+			setLocationRelativeTo(getOwner());
+		});
 
 		/*
 		 * Username
@@ -251,26 +264,14 @@ public class LoginDialog extends JDialog {
 		/*
 		 * Save Profile/Login
 		 */
-		saveLoginBox = new JCheckBox("Zapisz profil logowania na dysku");
+		saveLoginBox = new JCheckBox("Zapamiętaj nazwę konta");
 		saveLoginBox.setSelected(false);
+		saveLoginBox.setToolTipText("Zapisuje nazwę konta i serwer, ale nigdy hasło");
 
 		c.gridx = 0;
 		c.gridy = 5;
 		c.fill = GridBagConstraints.NONE;
 		contentPane.add(saveLoginBox, c);
-
-		/*
-		 * Save Profile Password
-		 */
-		savePasswordBox = new JCheckBox("Zapamiętaj hasło");
-		savePasswordBox.setSelected(true);
-		savePasswordBox.setEnabled(false);
-
-		c.gridx = 0;
-		c.gridy = 6;
-		c.fill = GridBagConstraints.NONE;
-		c.insets = new Insets(0, 20, 0, 0);
-		contentPane.add(savePasswordBox, c);
 
 		loginButton = new JButton();
 		loginButton.setText("Zaloguj do serwera");
@@ -298,7 +299,7 @@ public class LoginDialog extends JDialog {
 
 		c.gridx = 1;
 		c.gridy = 5;
-		c.gridheight = 2;
+		c.gridheight = 1;
 		c.anchor = GridBagConstraints.LAST_LINE_END;
 		c.insets = new Insets(0, 0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING);
 		contentPane.add(buttonBox, c);
@@ -306,31 +307,28 @@ public class LoginDialog extends JDialog {
 		steamButton = new JButton("Zaloguj przez Steam");
 		steamButton.addActionListener(event -> steamButtonActionPerformed());
 		c.gridx = 1;
-		c.gridy = 7;
+		c.gridy = 6;
 		c.gridheight = 1;
 		c.insets = new Insets(8, 4, 4, 4);
 		c.fill = GridBagConstraints.HORIZONTAL;
 		contentPane.add(steamButton, c);
 
-		steamStatusLabel = new JLabel("Logowanie Steam otworzy przeglądarkę.");
-		c.gridy = 8;
+		steamStatusLabel = new JLabel();
+		steamStatusLabel.setVisible(false);
+		c.gridy = 7;
 		c.insets = new Insets(2, 4, 4, 4);
 		contentPane.add(steamStatusLabel, c);
 
 		// Before loading profiles so that we can catch the data filled from
 		// there
 		bindEditListener();
+		bindConnectionSummary();
 
 		/*
 		 * Load saved profiles
 		 */
 		profiles = loadProfiles();
 		populateProfiles(profiles);
-
-		/*
-		 * Add this callback after everything is initialized
-		 */
-		saveLoginBox.addChangeListener(new SaveProfileStateCB());
 
 		//
 		// Dialog
@@ -351,6 +349,32 @@ public class LoginDialog extends JDialog {
 		fieldValidator = new DataValidator(loginButton,
 				serverField.getDocument(), serverPortField.getDocument(),
 				usernameField.getDocument(), passwordField.getDocument());
+	}
+
+	private void bindConnectionSummary() {
+		DocumentListener listener = new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent event) {
+				updateConnectionSummary();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent event) {
+				updateConnectionSummary();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent event) {
+				updateConnectionSummary();
+			}
+		};
+		serverField.getDocument().addDocumentListener(listener);
+		serverPortField.getDocument().addDocumentListener(listener);
+		updateConnectionSummary();
+	}
+
+	private void updateConnectionSummary() {
+		connectionLabel.setText(serverField.getText().trim() + ":" + serverPortField.getText().trim());
 	}
 
 	/**
@@ -392,15 +416,12 @@ public class LoginDialog extends JDialog {
 		profile.setHost((serverField.getText()).trim());
 
 		try {
-			profile.setPort(Integer.parseInt(serverPortField.getText().trim()));
-
-			// Support for saving port number. Only save when input is a number
-			// intensifly@gmx.com
-
-		} catch (final NumberFormatException ex) {
+			profile.setPort(StartupConnectionSettings.parsePort(serverPortField.getText()));
+		} catch (final IllegalArgumentException ex) {
 			JOptionPane.showMessageDialog(this,
-					"Nieprawidłowy numer portu. Spróbuj ponownie.",
+					ex.getMessage(),
 					"Nieprawidłowy port", JOptionPane.WARNING_MESSAGE);
+			setEnabled(true);
 			return;
 		}
 
@@ -411,17 +432,15 @@ public class LoginDialog extends JDialog {
 		 * Save profile?
 		 */
 		if (saveLoginBox.isSelected()) {
-			profiles.add(profile);
+			Profile savedProfile = new Profile();
+			savedProfile.setHost(profile.getHost());
+			savedProfile.setPort(profile.getPort());
+			savedProfile.setUser(profile.getUser());
+			profiles.add(savedProfile);
 			populateProfiles(profiles);
-
-			if (savePasswordBox.isSelected()) {
-				saveProfiles(profiles);
-			} else {
-				final String pw = profile.getPassword();
-				profile.setPassword("");
-				saveProfiles(profiles);
-				profile.setPassword(pw);
-			}
+			profilesComboBox.setSelectedItem(savedProfile);
+			passwordField.setText(profile.getPassword());
+			saveProfiles(profiles);
 		}
 		setCurrentProfileAsDefault();
 
@@ -437,7 +456,7 @@ public class LoginDialog extends JDialog {
 	 */
 	private void removeButtonActionPerformed() {
 		// If this window isn't enabled, we shouldn't act.
-		if (!isEnabled() || (profiles.profiles.size() == 0)) {
+		if (!isEnabled() || profilesComboBox.getSelectedItem() == null) {
 			return;
 		}
 		setEnabled(false);
@@ -477,9 +496,9 @@ public class LoginDialog extends JDialog {
 		final String defaultHost = ClientGameConfiguration.get("DEFAULT_SERVER");
 		final int port;
 		try {
-			port = Integer.parseInt(serverPortField.getText().trim());
-		} catch (NumberFormatException exception) {
-			JOptionPane.showMessageDialog(this, "Nieprawidłowy port serwera.", "Logowanie Steam", JOptionPane.WARNING_MESSAGE);
+			port = StartupConnectionSettings.parsePort(serverPortField.getText());
+		} catch (IllegalArgumentException exception) {
+			JOptionPane.showMessageDialog(this, exception.getMessage(), "Logowanie Steam", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		if (!host.equalsIgnoreCase(defaultHost)
@@ -491,7 +510,9 @@ public class LoginDialog extends JDialog {
 
 		steamLoginRunning = true;
 		steamButton.setEnabled(false);
+		steamStatusLabel.setVisible(true);
 		steamStatusLabel.setText("Łączę się ze stroną...");
+		pack();
 		final Thread worker = new Thread(() -> {
 			try {
 				final SteamGameLoginClient website = new SteamGameLoginClient(
@@ -548,6 +569,8 @@ public class LoginDialog extends JDialog {
 		final int currentIndex = profilesComboBox.getSelectedIndex();
 		if (currentIndex >= 0) {
 			WtWindowManager.getInstance().setProperty(SELECTED_PROFILE_PROPERTY, String.valueOf(currentIndex));
+		} else {
+			WtWindowManager.getInstance().setProperty(SELECTED_PROFILE_PROPERTY, "new");
 		}
 	}
 
@@ -556,7 +579,7 @@ public class LoginDialog extends JDialog {
 		super.setEnabled(b);
 		// Enabling login button is conditional
 		fieldValidator.revalidate();
-		removeButton.setEnabled(b);
+		removeButton.setEnabled(b && profilesComboBox.getSelectedItem() != null);
 		if (steamButton != null) {
 			steamButton.setEnabled(b && !steamLoginRunning);
 		}
@@ -682,11 +705,24 @@ public class LoginDialog extends JDialog {
 		try {
 			final InputStream is = Persistence.get().getInputStream(false, stendhal.getGameFolder(),
 					"user.dat");
+			boolean hadSavedPasswords;
 
 			try {
-				tmpProfiles.load(is);
+				hadSavedPasswords = tmpProfiles.load(is);
 			} finally {
 				is.close();
+			}
+			if (hadSavedPasswords) {
+				// Replace legacy profiles that contained reversibly encoded passwords.
+				if (saveProfiles(tmpProfiles)) {
+					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this,
+							"Stare zapamiętane hasła zostały usunięte z profili. Wpisz hasło przy logowaniu.",
+							"Bezpieczeństwo konta", JOptionPane.INFORMATION_MESSAGE));
+				} else {
+					SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(this,
+							"Nie udało się usunąć starych haseł z pliku user.dat. Usuń ten plik ręcznie.",
+							"Bezpieczeństwo konta", JOptionPane.WARNING_MESSAGE));
+				}
 			}
 		} catch (final FileNotFoundException fnfe) {
 			// Ignore
@@ -717,6 +753,10 @@ public class LoginDialog extends JDialog {
 
 	private void selectDefaultProfile() {
 		String profileIndexProperty = WtWindowManager.getInstance().getProperty(SELECTED_PROFILE_PROPERTY, "-1");
+		if ("new".equals(profileIndexProperty)) {
+			profilesComboBox.setSelectedItem(null);
+			return;
+		}
 		int savedProfileIndex = MathHelper.parseIntDefault(profileIndexProperty, -1);
 		final int count = profilesComboBox.getItemCount();
 		if (savedProfileIndex >= 0 && savedProfileIndex < count) {
@@ -736,6 +776,9 @@ public class LoginDialog extends JDialog {
 
 		// This *should* be generic in swing, but it is not
 		profile = (Profile) profilesComboBox.getSelectedItem();
+		if (removeButton != null) {
+			removeButton.setEnabled(isEnabled() && profile != null);
+		}
 
 		if (profile != null) {
 			host = profile.getHost();
@@ -747,7 +790,8 @@ public class LoginDialog extends JDialog {
 			passwordField.setText(profile.getPassword());
 		} else {
 
-			serverPortField.setText(String.valueOf(Profile.DEFAULT_SERVER_PORT));
+			serverField.setText(StartupConnectionSettings.getHost());
+			serverPortField.setText(String.valueOf(StartupConnectionSettings.getPort()));
 
 			usernameField.setText("");
 			passwordField.setText("");
@@ -816,7 +860,7 @@ public class LoginDialog extends JDialog {
 	 * future, but it will work for now. comment: Thegeneral has added encoding
 	 * for password and username. Changed for multiple profiles.
 	 */
-	private void saveProfiles(final ProfileList profiles) {
+	private boolean saveProfiles(final ProfileList profiles) {
 		try {
 			final OutputStream os = Persistence.get().getOutputStream(false,
 					stendhal.getGameFolder(), "user.dat");
@@ -826,19 +870,14 @@ public class LoginDialog extends JDialog {
 			} finally {
 				os.close();
 			}
+			return true;
 		} catch (final IOException ioex) {
 			JOptionPane.showMessageDialog(this,
 					"Wystąpił błąd podczas zapisywania informacji o logowaniu",
 					"Błąd Zapisu Informacji Logowania",
 					JOptionPane.WARNING_MESSAGE);
+			return false;
 		}
-	}
-
-	/**
-	 * Called when save profile selection change.
-	 */
-	private void saveProfileStateCB() {
-		savePasswordBox.setEnabled(saveLoginBox.isSelected());
 	}
 
 	/**
@@ -872,13 +911,4 @@ public class LoginDialog extends JDialog {
 		}
 	}
 
-	/**
-	 * Save profile selection change.
-	 */
-	private class SaveProfileStateCB implements ChangeListener {
-		@Override
-		public void stateChanged(final ChangeEvent ev) {
-			saveProfileStateCB();
-		}
-	}
 }

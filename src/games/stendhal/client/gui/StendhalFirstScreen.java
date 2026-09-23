@@ -206,7 +206,7 @@ public class StendhalFirstScreen extends JFrame {
 		};
 		settingsAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
 		settingsAction.putValue(Action.SHORT_DESCRIPTION,
-				"Zmień tryb wyświetlania gry i ustawienia dźwięku.");
+				"Zmień tryb wyświetlania gry, dźwięk i połączenie.");
 
 		settingsButton = createTransparentButton();
 		settingsButton.setFont(font);
