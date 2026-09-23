@@ -12,7 +12,6 @@
 package games.stendhal.client.gui.login;
 
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.net.URI;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -90,12 +88,6 @@ public class LoginDialog extends JDialog {
 	private JTextField serverPortField;
 
 	private JButton loginButton;
-
-	private JButton steamButton;
-
-	private JLabel steamStatusLabel;
-
-	private volatile boolean steamLoginRunning;
 
 	private JButton removeButton;
 
@@ -303,20 +295,6 @@ public class LoginDialog extends JDialog {
 		c.insets = new Insets(0, 0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING);
 		contentPane.add(buttonBox, c);
 
-		steamButton = new JButton("Zaloguj przez Steam");
-		steamButton.addActionListener(event -> steamButtonActionPerformed());
-		c.gridx = 1;
-		c.gridy = 7;
-		c.gridheight = 1;
-		c.insets = new Insets(8, 4, 4, 4);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		contentPane.add(steamButton, c);
-
-		steamStatusLabel = new JLabel("Logowanie Steam otworzy przeglądarkę.");
-		c.gridy = 8;
-		c.insets = new Insets(2, 4, 4, 4);
-		contentPane.add(steamStatusLabel, c);
-
 		// Before loading profiles so that we can catch the data filled from
 		// there
 		bindEditListener();
@@ -381,7 +359,7 @@ public class LoginDialog extends JDialog {
 	 */
 	private void loginButtonActionPerformed() {
 		// If this window isn't enabled, we shouldn't act.
-		if (!isEnabled() || steamLoginRunning) {
+		if (!isEnabled()) {
 			return;
 		}
 		setEnabled(false);
@@ -469,81 +447,6 @@ public class LoginDialog extends JDialog {
 		setEnabled(true);
 	}
 
-	private void steamButtonActionPerformed() {
-		if (steamLoginRunning) {
-			return;
-		}
-		final String host = serverField.getText().trim();
-		final String defaultHost = ClientGameConfiguration.get("DEFAULT_SERVER");
-		final int port;
-		try {
-			port = Integer.parseInt(serverPortField.getText().trim());
-		} catch (NumberFormatException exception) {
-			JOptionPane.showMessageDialog(this, "Nieprawidłowy port serwera.", "Logowanie Steam", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		if (!host.equalsIgnoreCase(defaultHost)
-				|| port != Integer.parseInt(ClientGameConfiguration.get("DEFAULT_PORT"))) {
-			JOptionPane.showMessageDialog(this, "Logowanie Steam jest dostępne tylko na oficjalnym serwerze.",
-					"Logowanie Steam", JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-
-		steamLoginRunning = true;
-		steamButton.setEnabled(false);
-		steamStatusLabel.setText("Łączę się ze stroną...");
-		final Thread worker = new Thread(() -> {
-			try {
-				final SteamGameLoginClient website = new SteamGameLoginClient(
-						ClientGameConfiguration.get("STEAM_LOGIN_SITE"));
-				final SteamGameLoginClient.StartResult request = website.start();
-				SwingUtilities.invokeLater(() -> steamStatusLabel.setText("Kod do wpisania na stronie: " + request.code));
-				if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-					throw new IOException("Nie można otworzyć systemowej przeglądarki.");
-				}
-				Desktop.getDesktop().browse(URI.create(request.verificationUrl));
-				final long deadline = System.currentTimeMillis() + request.expiresInSeconds * 1000L;
-				while (System.currentTimeMillis() < deadline && isDisplayable()) {
-					Thread.sleep(3000L);
-					final SteamGameLoginClient.Credentials credentials = website.poll(request);
-					if (credentials != null) {
-						if (!isDisplayable()) {
-							return;
-						}
-						SwingUtilities.invokeLater(() -> steamStatusLabel.setText("Logowanie do gry..."));
-						final Profile profile = new Profile();
-						profile.setHost(host);
-						profile.setPort(port);
-						profile.setUser(credentials.username);
-						profile.setPassword("");
-						profile.setSeed(credentials.seed);
-						connect(profile);
-						return;
-					}
-				}
-				if (isDisplayable()) {
-					throw new IOException("Czas logowania Steam minął. Spróbuj ponownie.");
-				}
-			} catch (IOException | InterruptedException | RuntimeException exception) {
-				if (isDisplayable()) {
-					SwingUtilities.invokeLater(() -> {
-						steamStatusLabel.setText("Nie udało się zalogować przez Steam.");
-						JOptionPane.showMessageDialog(this, exception.getMessage(), "Logowanie Steam", JOptionPane.ERROR_MESSAGE);
-					});
-				}
-			} finally {
-				steamLoginRunning = false;
-				SwingUtilities.invokeLater(() -> {
-					if (isDisplayable()) {
-						steamButton.setEnabled(true);
-					}
-				});
-			}
-		}, "Steam login");
-		worker.setDaemon(true);
-		worker.start();
-	}
-
 	private void setCurrentProfileAsDefault() {
 		final int currentIndex = profilesComboBox.getSelectedIndex();
 		if (currentIndex >= 0) {
@@ -557,9 +460,6 @@ public class LoginDialog extends JDialog {
 		// Enabling login button is conditional
 		fieldValidator.revalidate();
 		removeButton.setEnabled(b);
-		if (steamButton != null) {
-			steamButton.setEnabled(b && !steamLoginRunning);
-		}
 	}
 
 	/**
@@ -636,8 +536,7 @@ public class LoginDialog extends JDialog {
 					"Błąd logowania");
 		} catch (final LoginFailedException e) {
 			handleError(e.getMessage(), "Nie powiodło się logowanie");
-			if (e.getReason() == MessageS2CLoginNACK.Reasons.SEED_WRONG
-					&& (profile.getSeed() == null || !profile.getSeed().startsWith("S_"))) {
+			if (e.getReason() == MessageS2CLoginNACK.Reasons.SEED_WRONG) {
 				System.exit(1);
 			}
 		} catch (final BannedAddressException e) {
