@@ -25,6 +25,7 @@ import games.stendhal.server.core.engine.db.PendingAchievementDAO;
 import games.stendhal.server.core.engine.db.PostmanDAO;
 import games.stendhal.server.core.engine.db.StendhalBuddyDAO;
 import games.stendhal.server.core.engine.db.StendhalCharacterDAO;
+import games.stendhal.server.core.engine.db.StendhalAccountDAO;
 import games.stendhal.server.core.engine.db.StendhalCreatureDAO;
 import games.stendhal.server.core.engine.db.StendhalGroupQuestDAO;
 import games.stendhal.server.core.engine.db.StendhalHallOfFameDAO;
@@ -40,6 +41,7 @@ import marauroa.server.db.DBTransaction;
 import marauroa.server.db.JDBCSQLHelper;
 import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.CharacterDAO;
+import marauroa.server.game.db.AccountDAO;
 import marauroa.server.game.db.DAORegister;
 
 /**
@@ -329,6 +331,7 @@ public class StendhalPlayerDatabase {
 
 		// define own version in replacement of marauroa's CharacterDAO
 		DAORegister.get().register(CharacterDAO.class, new StendhalCharacterDAO());
+		DAORegister.get().register(AccountDAO.class, new StendhalAccountDAO());
 
 		// define additional DAOs
 		DAORegister.get().register(PostmanDAO.class, new PostmanDAO());
