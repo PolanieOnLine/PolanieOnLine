@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import games.stendhal.common.constants.Events;
+import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -57,6 +58,7 @@ public final class NpcShopEvent extends RPEvent {
         attribute(type, "buy_descriptions", Type.VERY_LONG_STRING);
         attribute(type, "sell_price_values", Type.VERY_LONG_STRING);
         attribute(type, "buy_price_values", Type.VERY_LONG_STRING);
+        attribute(type, "currency_reformed", Type.INT);
     }
 
     private static void attribute(final RPClass type, final String name,
@@ -77,6 +79,7 @@ public final class NpcShopEvent extends RPEvent {
         final int money = MoneyUtils.getTotalMoneyInCopper(player);
         put("owned_money", money);
         put("owned_money_text", MoneyUtils.formatPrice(money));
+        put("currency_reformed", CurrencyReform.useReformedCurrency() ? 1 : 0);
         addItems("sell", seller);
         addItems("buy", buyer);
         if (requestToken != null) {
