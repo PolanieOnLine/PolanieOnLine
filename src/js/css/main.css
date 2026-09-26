@@ -2153,13 +2153,33 @@ td.number {
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
-    padding: 2px 3px;
+    padding: 10px 12px;
+    border: 1px solid #b7834e;
+    background: linear-gradient(rgba(30, 16, 7, .53), rgba(30, 16, 7, .18)), var(--background-url);
+    box-shadow: inset 0 1px 0 rgba(247, 196, 119, .36);
+}
+
+.npc-shop-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.npc-shop-title span {
+    color: var(--shop-gold);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .08em;
+    padding-right: 10px;
+    border-right: 1px solid #ae7640;
 }
 
 .npc-shop-header h3 {
     margin: 0;
     color: var(--shop-gold);
-    font-size: 18px;
+    font-size: 19px;
+    color: #ffefce;
 }
 
 .npc-shop-wallet {
@@ -2169,15 +2189,47 @@ td.number {
     overflow-wrap: anywhere;
 }
 
+.npc-shop-search-frame {
+    position: relative;
+    padding: 4px 5px;
+    border: 1px solid #b3804b;
+    background: linear-gradient(rgba(32, 17, 8, .59), rgba(32, 17, 8, .32)), var(--background-url);
+}
+
+.npc-shop-search-frame::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 18px;
+    top: 50%;
+    border: 2px solid #eac391;
+    border-radius: 50%;
+    transform: translateY(-67%);
+    pointer-events: none;
+}
+
+.npc-shop-search-frame::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 2px;
+    left: 29px;
+    top: calc(50% + 5px);
+    background: #eac391;
+    transform: rotate(48deg);
+    pointer-events: none;
+}
+
 .npc-shop-search {
     box-sizing: border-box;
     min-height: 35px;
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 12px 8px 47px;
     font-size: 13px;
     color: var(--shop-text);
-    background: rgba(28, 17, 10, .78);
-    border: 1px solid var(--border-top-color);
+    background: rgba(27, 15, 7, .83);
+    border: 1px solid #6d4628;
     border-radius: 2px;
 }
 
@@ -2203,17 +2255,20 @@ td.number {
     min-width: 103px;
     padding: 7px 12px;
     color: var(--shop-muted);
-    background: transparent;
-    border: 0;
-    border-bottom: 2px solid transparent;
+    background: rgba(43, 25, 12, .39);
+    border: 1px solid rgba(151, 99, 48, .61);
+    border-bottom: 3px solid transparent;
+    border-radius: 4px 4px 0 0;
     font-weight: bold;
     cursor: pointer;
 }
 
 .npc-shop-tabs button.active {
-    color: var(--shop-text);
+    color: #fff0cc;
+    border-color: #d9a360;
     border-bottom-color: var(--shop-gold);
-    background: rgba(30, 17, 9, .28);
+    background: linear-gradient(rgba(121, 69, 26, .78), rgba(81, 43, 20, .65));
+    box-shadow: inset 0 1px 0 rgba(246, 198, 127, .39);
 }
 
 .npc-shop-tabs button:hover:not(:disabled) {
@@ -2239,8 +2294,8 @@ td.number {
     flex-direction: column;
     min-width: 0;
     min-height: 0;
-    border: 1px solid #8e603b;
-    background: rgba(27, 17, 9, .20);
+    border: 1px solid #a57442;
+    background: linear-gradient(rgba(32, 18, 9, .48), rgba(32, 18, 9, .40)), var(--background-url);
 }
 
 .npc-shop-count {
@@ -2257,7 +2312,7 @@ td.number {
     min-height: 0;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #95693d rgba(37, 19, 9, .5);
+    scrollbar-color: #b0804b rgba(37, 19, 9, .5);
 }
 
 .npc-shop-row {
@@ -2270,20 +2325,21 @@ td.number {
     padding: 5px 10px;
     text-align: left;
     color: var(--shop-text);
-    background: transparent;
+    background: rgba(51, 30, 12, .30);
     border: 0;
-    border-bottom: 1px solid rgba(45, 26, 12, .45);
+    border-bottom: 1px solid rgba(195, 138, 72, .20);
     border-left: 3px solid transparent;
     cursor: pointer;
 }
 
 .npc-shop-row:hover:not(:disabled) {
-    background: rgba(24, 14, 7, .42);
+    background: rgba(75, 41, 17, .66);
 }
 
 .npc-shop-row.selected {
-    background: rgba(66, 41, 20, .73);
-    border-left-color: var(--shop-gold);
+    background: rgba(124, 72, 27, .78);
+    border-left-color: #ffcd7d;
+    box-shadow: inset 0 1px 0 rgba(243, 186, 100, .44);
 }
 
 .npc-shop-row-icon {
@@ -2291,6 +2347,9 @@ td.number {
     height: 40px;
     display: grid;
     place-items: center;
+    background: rgba(25, 13, 7, .87);
+    border: 1px solid #ae7c47;
+    border-radius: 4px;
 }
 
 .npc-shop-row-icon img {
@@ -2333,8 +2392,8 @@ td.number {
     min-width: 0;
     padding: 12px 13px;
     text-align: center;
-    background: rgba(34, 20, 11, .24);
-    border: 1px solid #8e603b;
+    background: linear-gradient(rgba(35, 19, 9, .52), rgba(35, 19, 9, .25)), var(--background-url);
+    border: 1px solid #a57442;
 }
 
 .npc-shop-detail-caption {
@@ -2352,7 +2411,9 @@ td.number {
     flex: none;
     display: grid;
     place-items: center;
-    background: url(/data/gui/slot.png) center / contain no-repeat;
+    background: url(/data/gui/slot.png) center / contain no-repeat,
+        rgba(21, 12, 7, .69);
+    border-radius: 4px;
 }
 
 .npc-shop-icon img {
@@ -2389,7 +2450,7 @@ td.number {
 }
 
 .npc-shop-quote {
-    color: #bce3b5;
+    color: var(--shop-gold);
     font-size: 12px;
     font-weight: bold;
     overflow-wrap: anywhere;
@@ -2454,8 +2515,9 @@ td.number {
 }
 
 .npc-shop-dialog .npc-shop-trade-actions button.npc-shop-btn-primary {
-    background: linear-gradient(#527f2d, #2d531e);
-    border-color: #bfa46e;
+    background: linear-gradient(#57892a, #2f5318);
+    border-color: #e8b76e;
+    box-shadow: inset 0 1px 0 rgba(235, 255, 178, .42);
 }
 
 .npc-shop-dialog .npc-shop-trade-actions button:hover:not(:disabled) {
