@@ -24,6 +24,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -335,7 +337,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final ShopButton confirm = new ShopButton("Potwierdź", true);
     private final ShopButton cancel = new ShopButton("Anuluj", false);
     private final ShopButton refresh = new ShopButton("Odśwież", false);
-    private final JPanel actions = solid(new java.awt.GridLayout(0, 1, 0, 7), PANEL);
+    private final JPanel actions = new JPanel();
 
     private int npcId;
     private String requestToken;
@@ -416,7 +418,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private JComponent createContent() {
         final JPanel content = solid(new BorderLayout(12, 12), BACKGROUND);
         content.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        content.setPreferredSize(new Dimension(710, 486));
+        content.setPreferredSize(new Dimension(710, 525));
 
         final JPanel header = solid(new BorderLayout(8, 10), BACKGROUND);
         final JPanel heading = solid(new BorderLayout(8, 0), BACKGROUND);
@@ -460,7 +462,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final JPanel iconWrapper = solid(new FlowLayout(FlowLayout.CENTER, 0, 0), PANEL);
         iconWrapper.add(preview);
         identityBody.add(iconWrapper, BorderLayout.NORTH);
-        final JPanel descriptions = solid(new java.awt.GridLayout(0, 1, 0, 5), PANEL);
+        final JPanel descriptions = solid(new java.awt.GridLayout(2, 1, 0, 5), PANEL);
         selectedName.setHorizontalAlignment(SwingConstants.CENTER);
         selectedName.setPreferredSize(new Dimension(210, 36));
         descriptions.add(selectedName);
@@ -468,9 +470,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         descriptions.add(unitPrice);
         quote.setHorizontalAlignment(SwingConstants.CENTER);
         quote.setVisible(false);
-        descriptions.add(quote);
         identityBody.add(descriptions, BorderLayout.CENTER);
         identity.add(identityBody, BorderLayout.CENTER);
+        identity.add(quote, BorderLayout.SOUTH);
         detail.add(identity, BorderLayout.NORTH);
 
         final JPanel quantity = solid(new FlowLayout(FlowLayout.CENTER, 10, 10), PANEL);
@@ -491,9 +493,18 @@ public final class NpcShopWindow extends InternalManagedWindow {
         center.add(quantity, BorderLayout.NORTH);
         detail.add(center, BorderLayout.CENTER);
 
-        actions.add(request);
-        actions.add(confirm);
-        actions.add(cancel);
+        actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
+        actions.setBackground(PANEL);
+        actions.setOpaque(true);
+        for (final ShopButton button : new ShopButton[] {request, confirm, cancel}) {
+            button.setAlignmentX(Component.CENTER_ALIGNMENT);
+            button.setMinimumSize(new Dimension(0, 38));
+            button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+            actions.add(button);
+            if (button == confirm) {
+                actions.add(Box.createVerticalStrut(7));
+            }
+        }
         detail.add(actions, BorderLayout.SOUTH);
 
         final JPanel body = solid(new BorderLayout(12, 0), BACKGROUND);
