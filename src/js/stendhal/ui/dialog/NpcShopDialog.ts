@@ -13,7 +13,7 @@ interface ShopEntry {
     stackable: boolean;
 }
 
-/** Okno zakupow i skupu, zasilane katalogiem wyslanym przez serwer. */
+/** Merchant catalogue shown from the NPC context menu. */
 export class NpcShopDialog extends DialogContentComponent {
     private static active?: NpcShopDialog;
 
@@ -22,15 +22,18 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly search = document.createElement("input");
     private readonly buyTab = document.createElement("button");
     private readonly sellTab = document.createElement("button");
+    private readonly listCount = document.createElement("div");
     private readonly listBox = document.createElement("div");
     private readonly detailIcon = document.createElement("img");
     private readonly detailName = document.createElement("h4");
     private readonly detailPrice = document.createElement("div");
+    private readonly quoteTotal = document.createElement("div");
     private readonly quantity = document.createElement("input");
     private readonly status = document.createElement("div");
     private readonly requestButton: HTMLButtonElement;
     private readonly confirmButton: HTMLButtonElement;
     private readonly cancelButton: HTMLButtonElement;
+    private readonly refreshButton: HTMLButtonElement;
 
     private npcId = 0;
     private mode: "buy" | "sell" = "buy";
@@ -41,64 +44,102 @@ export class NpcShopDialog extends DialogContentComponent {
     private pendingMode?: string;
     private pendingItem?: string;
     private pendingAmount = 0;
+    private waiting = false;
 
     private constructor() {
         super("empty-div-template");
         this.componentElement.classList.add("npc-shop-dialog");
+
         const header = document.createElement("div");
         header.className = "npc-shop-header";
+        this.wallet.className = "npc-shop-wallet";
         header.append(this.heading, this.wallet);
         this.componentElement.appendChild(header);
 
         this.search.type = "search";
-        this.search.placeholder = "Szukaj przedmiotu";
+        this.search.className = "npc-shop-search";
+        this.search.placeholder = "Szukaj przedmiotu...";
         this.search.setAttribute("aria-label", "Szukaj przedmiotu");
-        this.search.addEventListener("input", () => this.drawList());
+        this.search.addEventListener("input", () => {
+            this.selected = undefined;
+            this.drawList(true);
+        });
         this.componentElement.appendChild(this.search);
 
         const tabs = document.createElement("div");
         tabs.className = "npc-shop-tabs";
         this.buyTab.textContent = "Kup";
         this.sellTab.textContent = "Sprzedaj";
+        this.buyTab.type = "button";
+        this.sellTab.type = "button";
         this.buyTab.onclick = () => this.changeMode("buy");
         this.sellTab.onclick = () => this.changeMode("sell");
         tabs.append(this.buyTab, this.sellTab);
         this.componentElement.appendChild(tabs);
 
-        const content = document.createElement("div");
-        content.className = "npc-shop-layout";
+        const layout = document.createElement("div");
+        layout.className = "npc-shop-layout";
+
+        const catalogue = document.createElement("div");
+        catalogue.className = "npc-shop-catalogue";
+        this.listCount.className = "npc-shop-count";
         this.listBox.className = "npc-shop-list";
         this.listBox.setAttribute("role", "listbox");
-        content.appendChild(this.listBox);
+        this.listBox.setAttribute("aria-label", "Przedmioty handlarza");
+        catalogue.append(this.listCount, this.listBox);
+        layout.appendChild(catalogue);
 
         const detail = document.createElement("div");
         detail.className = "npc-shop-detail";
+
+        const caption = document.createElement("div");
+        caption.className = "npc-shop-detail-caption";
+        caption.textContent = "Wybrany przedmiot";
+
         const imageHolder = document.createElement("div");
         imageHolder.className = "npc-shop-icon";
         this.detailIcon.alt = "";
+        this.detailIcon.onerror = () => {
+            this.detailIcon.style.visibility = "hidden";
+        };
         imageHolder.appendChild(this.detailIcon);
+
         this.detailName.textContent = "Wybierz przedmiot";
+        this.detailPrice.className = "npc-shop-price";
+        this.quoteTotal.className = "npc-shop-quote";
+        this.quoteTotal.hidden = true;
+
         this.quantity.type = "number";
         this.quantity.min = "1";
         this.quantity.max = "1000";
+        this.quantity.step = "1";
         this.quantity.value = "1";
         this.quantity.setAttribute("aria-label", "Ilość");
+        this.quantity.addEventListener("input", () => this.updateButtons());
         const qtyLabel = document.createElement("label");
-        qtyLabel.textContent = "Ilość";
-        qtyLabel.appendChild(this.quantity);
-        detail.append(imageHolder, this.detailName, this.detailPrice, qtyLabel);
-        content.appendChild(detail);
-        this.componentElement.appendChild(content);
+        qtyLabel.className = "npc-shop-quantity";
+        const qtyText = document.createElement("span");
+        qtyText.textContent = "Ilość";
+        qtyLabel.append(qtyText, this.quantity);
+        detail.append(caption, imageHolder, this.detailName,
+                this.detailPrice, this.quoteTotal, qtyLabel);
+        layout.appendChild(detail);
+        this.componentElement.appendChild(layout);
 
         this.status.className = "npc-shop-status";
+        this.status.setAttribute("role", "status");
         this.status.setAttribute("aria-live", "polite");
         this.componentElement.appendChild(this.status);
 
         this.requestButton = this.addButton("Zapytaj o cenę", () => this.ask());
+        this.requestButton.classList.add("npc-shop-btn-primary", "npc-shop-btn-request");
         this.confirmButton = this.addButton("Potwierdź", () => this.answer(true));
+        this.confirmButton.classList.add("npc-shop-btn-primary");
         this.cancelButton = this.addButton("Anuluj", () => this.answer(false));
-        this.addButton("Odśwież", () => this.send("refresh"));
-        this.addCloseButton();
+        this.cancelButton.classList.add("npc-shop-btn-secondary");
+        this.refreshButton = this.addButton("Odśwież", () => this.send("refresh"));
+        this.refreshButton.classList.add("npc-shop-btn-secondary");
+        this.addCloseButton().classList.add("npc-shop-btn-secondary");
         this.updateButtons();
     }
 
@@ -124,32 +165,52 @@ export class NpcShopDialog extends DialogContentComponent {
     }
 
     private apply(data: ShopEventData): void {
+        const previousName = this.selected?.name;
         this.npcId = Number(data.npc_id || 0);
         this.heading.textContent = String(data.npc_name || "Sklep");
         this.wallet.textContent = "Posiadasz: " + String(data.owned_money_text || "0");
         this.selling = this.entries(data, "sell");
         this.buying = this.entries(data, "buy");
-        this.buyTab.disabled = !this.selling.length;
-        this.sellTab.disabled = !this.buying.length;
-        if (this.mode === "buy" && !this.selling.length && this.buying.length) {
-            this.mode = "sell";
-        } else if (this.mode === "sell" && !this.buying.length && this.selling.length) {
-            this.mode = "buy";
-        }
         this.token = data.request_token ? String(data.request_token) : undefined;
         this.pendingMode = data.pending_mode ? String(data.pending_mode) : undefined;
         this.pendingItem = data.pending_item ? String(data.pending_item) : undefined;
         this.pendingAmount = Number(data.pending_amount || 0);
-        const previouslySelected = this.selected?.name;
-        this.selected = this.current().find(item => item.name === previouslySelected);
+        this.waiting = false;
+
+        if (this.token) {
+            this.mode = this.pendingMode === "sell" ? "sell" : "buy";
+            if (this.pendingItem && !this.pendingItem.toLocaleLowerCase()
+                    .includes(this.search.value.trim().toLocaleLowerCase())) {
+                this.search.value = "";
+            }
+        } else if ((this.mode === "buy" && !this.selling.length && this.buying.length)
+                || (this.mode === "sell" && !this.buying.length && this.selling.length)) {
+            this.mode = this.mode === "buy" ? "sell" : "buy";
+        }
+
+        const target = this.token ? this.pendingItem : previousName;
+        this.selected = this.current().find(item => item.name === target);
         this.drawList();
-        if (data.phase === "offer" && this.token) {
-            this.status.textContent = "Oferta: " + this.pendingAmount + " x "
-                + this.pendingItem + ", " + String(data.pending_price_text)
-                + ". Potwierdź lub anuluj.";
+        if (this.token && data.phase === "offer") {
+            this.quantity.value = String(this.pendingAmount);
+            this.quoteTotal.textContent = (this.mode === "buy"
+                    ? "Do zapłaty: " : "Do otrzymania: ")
+                    + String(data.pending_price_text || "");
+            this.quoteTotal.hidden = false;
+            this.setStatus("Oferta gotowa. Potwierdź lub anuluj.", "offer");
         } else {
-            this.status.textContent = String(data.message
+            this.quoteTotal.hidden = true;
+            const message = String(data.message
                     || "Wybierz przedmiot i zapytaj handlarza o cenę.");
+            const isError = message.startsWith("Nie ")
+                    || message.startsWith("Nieprawidł")
+                    || message.startsWith("Oferta wygasła")
+                    || message.startsWith("Cena uległa")
+                    || message.includes("nie powiodła")
+                    || message.includes("jest niedostępny");
+            this.setStatus(message, isError ? "error"
+                    : data.phase === "result"
+                            && message === "Transakcja zakończona." ? "success" : "neutral");
         }
         this.updateButtons();
     }
@@ -180,49 +241,76 @@ export class NpcShopDialog extends DialogContentComponent {
     }
 
     private changeMode(mode: "buy" | "sell"): void {
+        if (this.waiting || this.token || this.mode === mode) return;
         this.mode = mode;
         this.selected = undefined;
-        this.drawList();
+        this.quantity.value = "1";
+        this.drawList(true);
     }
 
-    private drawList(): void {
+    private drawList(resetScroll = false): void {
         this.buyTab.classList.toggle("active", this.mode === "buy");
         this.sellTab.classList.toggle("active", this.mode === "sell");
+        this.buyTab.setAttribute("aria-pressed", String(this.mode === "buy"));
+        this.sellTab.setAttribute("aria-pressed", String(this.mode === "sell"));
         const filter = this.search.value.trim().toLocaleLowerCase();
+        const entries = this.current().filter(item =>
+                item.name.toLocaleLowerCase().includes(filter));
+        if (this.selected && !entries.includes(this.selected)) {
+            this.selected = undefined;
+        }
+        this.listCount.textContent = filter
+                ? "Widoczne: " + entries.length + " z " + this.current().length
+                : "Przedmioty: " + entries.length;
+
+        const previousScroll = resetScroll ? 0 : this.listBox.scrollTop;
         this.listBox.replaceChildren();
-        for (const entry of this.current()) {
-            if (!entry.name.toLocaleLowerCase().includes(filter)) continue;
+        if (!entries.length) {
+            const empty = document.createElement("div");
+            empty.className = "npc-shop-empty";
+            empty.textContent = filter ? "Nie znaleziono przedmiotów."
+                    : "Handlarz nie ma teraz żadnych ofert.";
+            this.listBox.appendChild(empty);
+        }
+        for (const entry of entries) {
             const row = document.createElement("button");
             row.type = "button";
             row.className = "npc-shop-row";
             row.setAttribute("role", "option");
             row.setAttribute("aria-selected", String(entry === this.selected));
+            row.title = entry.name + ", " + entry.price;
+            row.disabled = !!this.token || this.waiting;
             if (entry === this.selected) row.classList.add("selected");
+
+            const iconSlot = document.createElement("span");
+            iconSlot.className = "npc-shop-row-icon";
             if (entry.itemClass && entry.subclass) {
                 const icon = document.createElement("img");
                 icon.src = Paths.sprites + "/items/" + entry.itemClass
                         + "/" + entry.subclass + ".png";
                 icon.alt = "";
                 icon.onerror = () => { icon.style.visibility = "hidden"; };
-                row.appendChild(icon);
-            } else {
-                const placeholder = document.createElement("span");
-                placeholder.className = "npc-shop-icon-placeholder";
-                row.appendChild(placeholder);
+                iconSlot.appendChild(icon);
             }
             const description = document.createElement("span");
-            const label = document.createElement("strong");
-            label.textContent = entry.name;
+            description.className = "npc-shop-row-text";
+            const name = document.createElement("strong");
+            name.textContent = entry.name;
             const price = document.createElement("small");
             price.textContent = entry.price;
-            description.append(label, price);
-            row.appendChild(description);
+            description.append(name, price);
+            row.append(iconSlot, description);
             row.onclick = () => {
+                if (this.token || this.waiting) return;
+                if (this.selected !== entry) {
+                    this.quantity.value = "1";
+                }
                 this.selected = entry;
                 this.drawList();
             };
             this.listBox.appendChild(row);
         }
+        this.listBox.scrollTop = previousScroll;
         this.drawDetails();
     }
 
@@ -232,41 +320,63 @@ export class NpcShopDialog extends DialogContentComponent {
         this.detailPrice.textContent = entry
                 ? (this.mode === "buy" ? "Cena: " : "Cena bazowa: ") + entry.price
                 : "";
-        this.detailIcon.style.visibility = entry?.itemClass && entry?.subclass
-                ? "visible" : "hidden";
         if (entry?.itemClass && entry.subclass) {
             this.detailIcon.src = Paths.sprites + "/items/"
                     + entry.itemClass + "/" + entry.subclass + ".png";
+            this.detailIcon.style.visibility = "visible";
+        } else {
+            this.detailIcon.removeAttribute("src");
+            this.detailIcon.style.visibility = "hidden";
         }
         this.quantity.max = entry && !entry.stackable ? "1" : "1000";
         if (entry && !entry.stackable) this.quantity.value = "1";
         this.updateButtons();
     }
 
+    private setStatus(message: string, state: "neutral" | "offer" | "success" | "error"): void {
+        this.status.textContent = message;
+        this.status.dataset.state = state;
+    }
+
     private updateButtons(): void {
-        this.requestButton.disabled = !this.selected || !!this.token;
-        this.confirmButton.disabled = !this.token;
-        this.cancelButton.disabled = !this.token;
+        const offer = !!this.token;
+        const amount = Number(this.quantity.value);
+        const valid = !!this.selected && Number.isInteger(amount)
+                && amount >= 1 && amount <= (this.selected.stackable ? 1000 : 1);
+        this.requestButton.hidden = offer;
+        this.confirmButton.hidden = !offer;
+        this.cancelButton.hidden = !offer;
+        this.requestButton.disabled = !valid || this.waiting || offer;
+        this.confirmButton.disabled = !offer || this.waiting;
+        this.cancelButton.disabled = !offer || this.waiting;
+        this.refreshButton.disabled = this.waiting;
+        this.buyTab.disabled = !this.selling.length || offer || this.waiting;
+        this.sellTab.disabled = !this.buying.length || offer || this.waiting;
+        this.search.disabled = offer || this.waiting;
+        this.quantity.disabled = !this.selected || offer || this.waiting;
+        this.listBox.setAttribute("aria-busy", String(this.waiting));
+        this.listBox.classList.toggle("is-locked", offer || this.waiting);
     }
 
     private ask(): void {
-        if (!this.selected || this.token) return;
+        if (!this.selected || this.token || this.waiting) return;
         const input = Number(this.quantity.value);
         const max = this.selected.stackable ? 1000 : 1;
         if (!Number.isInteger(input) || input < 1 || input > max) {
-            this.status.textContent = "Wybierz poprawną ilość.";
+            this.setStatus("Wybierz poprawną ilość.", "error");
             return;
         }
-        this.requestButton.disabled = true;
-        this.status.textContent = "Czekam na ofertę handlarza.";
+        this.waiting = true;
+        this.updateButtons();
+        this.setStatus("Oczekiwanie na ofertę handlarza...", "neutral");
         this.send("request", this.mode, this.selected.name, input);
     }
 
     private answer(confirm: boolean): void {
-        if (!this.token) return;
-        this.confirmButton.disabled = true;
-        this.cancelButton.disabled = true;
-        this.status.textContent = "Czekam na odpowiedź handlarza.";
+        if (!this.token || this.waiting) return;
+        this.waiting = true;
+        this.updateButtons();
+        this.setStatus("Oczekiwanie na odpowiedź handlarza...", "neutral");
         this.send(confirm ? "confirm" : "cancel",
                 this.pendingMode, this.pendingItem, this.pendingAmount, this.token);
     }
