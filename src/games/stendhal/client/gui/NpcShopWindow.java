@@ -309,7 +309,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
             setSelectionColor(ROW_SELECTED);
             setSelectedTextColor(TEXT);
             setFont(getFont().deriveFont(13f));
-            setBorder(BorderFactory.createEmptyBorder(5, 9, 5, 9));
+            setBorder(nativeInsetBorder(3, 7, 3, 7));
             setToolTipText("Filtruj nazwy przedmiotów");
         }
 
@@ -447,8 +447,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private static JScrollPane scroll(final ShopList list) {
         final JScrollPane pane = new JScrollPane(list);
-        pane.setBorder(BorderFactory.createLineBorder(
-                new Color(169, 119, 64)));
+        pane.setBorder(StyleUtil.getStyle() == null
+                ? BorderFactory.createLineBorder(BORDER)
+                : StyleUtil.getStyle().getBorderDown());
         pane.getViewport().setBackground(LIST_BACKGROUND);
         pane.getViewport().setOpaque(false);
         pane.setOpaque(false);
