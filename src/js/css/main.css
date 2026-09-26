@@ -2228,7 +2228,7 @@ td.number {
     padding: 8px 12px 8px 47px;
     font-size: 13px;
     color: var(--shop-text);
-    background: rgba(27, 15, 7, .83);
+    background: rgb(60, 30, 0);
     border: 1px solid #6d4628;
     border-radius: 2px;
 }
@@ -2347,9 +2347,7 @@ td.number {
     height: 40px;
     display: grid;
     place-items: center;
-    background: rgba(25, 13, 7, .87);
-    border: 1px solid #ae7c47;
-    border-radius: 4px;
+    background: url(/data/gui/slot.png) center / 100% 100% no-repeat;
 }
 
 .npc-shop-row-icon img {
@@ -2491,7 +2489,7 @@ td.number {
     text-align: center;
     font-size: 13px;
     color: var(--shop-text);
-    background: rgba(28, 17, 10, .85);
+    background: rgb(60, 30, 0);
     border: 1px solid #a47749;
 }
 
