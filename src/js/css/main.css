@@ -2148,9 +2148,9 @@ td.number {
     flex-direction: column;
     gap: 12px;
     color: var(--shop-text);
-    background: rgba(36, 25, 17, .95);
-    border: 1px solid var(--shop-border);
-    border-radius: 5px;
+    background: var(--background-url);
+    border: 1px solid var(--border-bottom-color);
+    border-radius: 2px;
 }
 
 .npc-shop-header {
@@ -2174,9 +2174,9 @@ td.number {
     font-size: 12px;
     font-weight: bold;
     color: var(--shop-text);
-    background: #3d2c1e;
-    border: 1px solid #6b4e34;
-    border-radius: 5px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     overflow-wrap: anywhere;
 }
 
@@ -2184,8 +2184,8 @@ td.number {
 .npc-shop-dialog input[type="number"] {
     box-sizing: border-box;
     color: var(--shop-text);
-    background: #211913;
-    border: 1px solid var(--shop-border);
+    background: rgba(24, 16, 9, .76);
+    border: 1px solid var(--border-top-color);
     border-radius: 5px;
     padding: 9px 11px;
     font-size: 13px;
@@ -2216,24 +2216,26 @@ td.number {
 .npc-shop-tabs button {
     min-width: 105px;
     padding: 9px 16px;
-    border: 1px solid #725238;
-    border-radius: 5px 5px 2px 2px;
-    color: #d8c3a3;
-    background: #3b291c;
+    border: 1px solid var(--border-bottom-color);
+    border-top-color: var(--border-top-color);
+    border-left-color: var(--border-top-color);
+    border-radius: 1px;
+    color: #e2cfb4;
+    background: var(--background-url);
     font-weight: bold;
     cursor: pointer;
 }
 
 .npc-shop-tabs button:hover:not(:disabled) {
     color: var(--shop-text);
-    background: #59402a;
+    background: rgba(22, 14, 8, .45);
 }
 
 .npc-shop-tabs button.active {
-    color: var(--shop-gold);
-    background: #59402a;
-    border-color: #bd9157;
-    box-shadow: inset 0 -3px 0 var(--shop-gold);
+    color: #fff2d8;
+    background: var(--background-url);
+    border-color: #b98d5f;
+    box-shadow: inset 0 -2px 0 #bd965f;
 }
 
 .npc-shop-tabs button:disabled {
@@ -2271,9 +2273,9 @@ td.number {
     min-height: 0;
     padding: 3px;
     overflow-y: auto;
-    background: var(--shop-list);
-    border: 1px solid var(--shop-border);
-    border-radius: 4px;
+    background: var(--background-url);
+    border: 1px solid var(--border-bottom-color);
+    border-radius: 1px;
     scrollbar-width: thin;
     scrollbar-color: #87613b #261b13;
 }
@@ -2302,11 +2304,11 @@ td.number {
     margin: 0;
     text-align: left;
     color: var(--shop-text);
-    background: #3a2a1e;
+    background: rgba(25, 17, 10, .28);
     border: 0;
     border-left: 3px solid transparent;
-    border-bottom: 1px solid #513a29;
-    border-radius: 2px;
+    border-bottom: 1px solid rgba(30, 19, 12, .47);
+    border-radius: 1px;
     cursor: pointer;
 }
 
@@ -2315,19 +2317,19 @@ td.number {
 }
 
 .npc-shop-row:nth-child(even) {
-    background: #3f2e21;
+    background: rgba(45, 25, 12, .29);
 }
 
 .npc-shop-row:hover,
 .npc-shop-row:nth-child(even):hover {
-    background: #523b28;
+    background: rgba(24, 14, 7, .55);
 }
 
 .npc-shop-row.selected,
 .npc-shop-row.selected:nth-child(even) {
-    background: #604029;
-    border-left-color: var(--shop-gold);
-    box-shadow: inset 0 0 0 1px #b1834b;
+    background: rgba(20, 13, 7, .65);
+    border-left-color: #ffcf7b;
+    box-shadow: inset 0 0 0 1px #a0784a;
 }
 
 .npc-shop-row-icon {
@@ -2336,9 +2338,9 @@ td.number {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(24, 18, 13, .5);
-    border: 1px solid #745338;
-    border-radius: 5px;
+    background: rgba(27, 18, 11, .42);
+    border: 1px solid #9b734d;
+    border-radius: 3px;
 }
 
 .npc-shop-row-icon img {
@@ -2383,9 +2385,9 @@ td.number {
     padding: 14px 12px;
     box-sizing: border-box;
     text-align: center;
-    background: var(--shop-panel);
-    border: 1px solid var(--shop-border);
-    border-radius: 5px;
+    background: var(--background-url);
+    border: 1px solid var(--border-bottom-color);
+    border-radius: 1px;
 }
 
 .npc-shop-detail-caption {
@@ -2429,9 +2431,9 @@ td.number {
     overflow-wrap: anywhere;
     box-sizing: border-box;
     padding: 8px;
-    background: #423821;
-    color: #abe0ab;
-    border: 1px solid #797447;
+    background: rgba(28, 20, 11, .35);
+    color: #d9edc9;
+    border: 1px solid #98865a;
     border-radius: 4px;
     font-size: 13px;
     font-weight: bold;
@@ -2465,8 +2467,8 @@ td.number {
     padding: 10px 12px;
     box-sizing: border-box;
     color: var(--shop-muted);
-    background: #32241b;
-    border-left: 3px solid #94724b;
+    background: rgba(24, 16, 9, .4);
+    border-left: 3px solid #b58e62;
     border-radius: 3px;
     font-size: 12px;
     line-height: 1.45;
@@ -2508,24 +2510,25 @@ td.number {
 }
 
 .npc-shop-dialog .dialogbutton.npc-shop-btn-primary {
-    color: #291e15;
-    background: var(--shop-gold);
-    border: 1px solid #ffd99e;
+    color: #fff1d8;
+    background: var(--background-url);
+    border: 1px solid #c6a075;
 }
 
 .npc-shop-dialog .dialogbutton.npc-shop-btn-primary:hover:not(:disabled) {
-    background: #ffd68f;
+    background: rgba(30, 20, 11, .5);
     border-color: #ffe0ad;
 }
 
 .npc-shop-dialog .dialogbutton.npc-shop-btn-secondary {
     color: var(--shop-text);
-    background: #493423;
-    border: 1px solid #886543;
+    background: var(--background-url);
+    border: 1px solid var(--border-bottom-color);
+    border-top-color: var(--border-top-color);
 }
 
 .npc-shop-dialog .dialogbutton.npc-shop-btn-secondary:hover:not(:disabled) {
-    background: #65472c;
+    background: rgba(25, 16, 9, .4);
     border-color: #b68a55;
 }
 
