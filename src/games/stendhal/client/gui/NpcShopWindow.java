@@ -275,27 +275,28 @@ public final class NpcShopWindow extends InternalManagedWindow {
         }
     }
 
+    /** Draws the original equipment/bag slot instead of a custom tile. */
     private static final class ItemBadge extends JComponent {
         private static final long serialVersionUID = 1L;
+        private static final Sprite SLOT =
+                SpriteStore.get().getSprite("data/gui/slot.png");
         private final Sprite sprite;
 
         private ItemBadge(final Sprite sprite) {
             this.sprite = sprite;
-            setPreferredSize(new Dimension(44, 44));
+            final Dimension size = new Dimension(SLOT.getWidth(), SLOT.getHeight());
+            setPreferredSize(size);
+            setMinimumSize(size);
+            setOpaque(false);
         }
 
         @Override
         protected void paintComponent(final Graphics graphics) {
-            final Graphics2D g = (Graphics2D) graphics.create();
-            g.setColor(new Color(175, 137, 92, 215));
-            g.fillRoundRect(1, 1, 42, 42, 4, 4);
-            g.setColor(new Color(92, 59, 30));
-            g.drawRoundRect(1, 1, 42, 42, 5, 5);
+            SLOT.draw(graphics, 0, 0);
             if (sprite != null) {
-                sprite.draw(g, (getWidth() - sprite.getWidth()) / 2,
-                        (getHeight() - sprite.getHeight()) / 2);
+                sprite.draw(graphics, (SLOT.getWidth() - sprite.getWidth()) / 2,
+                        (SLOT.getHeight() - sprite.getHeight()) / 2);
             }
-            g.dispose();
         }
     }
 
@@ -303,7 +304,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         private static final long serialVersionUID = 1L;
 
         private SearchField() {
-            setBackground(new Color(31, 18, 10));
+            setBackground(KTextEdit.getChatBackgroundColor());
             setForeground(TEXT);
             setCaretColor(GOLD);
             setSelectionColor(ROW_SELECTED);
@@ -564,8 +565,13 @@ public final class NpcShopWindow extends InternalManagedWindow {
         plus.setPreferredSize(new Dimension(32, 30));
         amount.setPreferredSize(new Dimension(64, 30));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
+        amount.setBackground(KTextEdit.getChatBackgroundColor());
+        amount.setOpaque(true);
+        amount.setBorder(nativeInsetBorder(2, 4, 2, 4));
         amount.setForeground(TEXT);
         amount.setCaretColor(GOLD);
+        amount.setSelectionColor(ROW_SELECTED);
+        amount.setSelectedTextColor(TEXT);
         amount.setFont(amount.getFont().deriveFont(Font.BOLD, 14f));
         amount.setToolTipText("Ilość od 1 do 1000");
         minus.addActionListener(event -> changeAmount(-1));
