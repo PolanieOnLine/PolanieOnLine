@@ -53,7 +53,12 @@ export class NpcShopDialog extends DialogContentComponent {
         const header = document.createElement("div");
         header.className = "npc-shop-header";
         this.wallet.className = "npc-shop-wallet";
-        header.append(this.heading, this.wallet);
+        const shopTitle = document.createElement("div");
+        shopTitle.className = "npc-shop-title";
+        const shopLabel = document.createElement("span");
+        shopLabel.textContent = "SKLEP";
+        shopTitle.append(shopLabel, this.heading);
+        header.append(shopTitle, this.wallet);
         this.componentElement.appendChild(header);
 
         this.search.type = "search";
@@ -64,7 +69,10 @@ export class NpcShopDialog extends DialogContentComponent {
             this.selected = undefined;
             this.drawList(true);
         });
-        this.componentElement.appendChild(this.search);
+        const searchFrame = document.createElement("div");
+        searchFrame.className = "npc-shop-search-frame";
+        searchFrame.appendChild(this.search);
+        this.componentElement.appendChild(searchFrame);
 
         const tabs = document.createElement("div");
         tabs.className = "npc-shop-tabs";
