@@ -921,7 +921,11 @@ public final class NpcShopWindow extends InternalManagedWindow {
         actionLayout.show(actions, offer ? "offer" : "request");
         request.setText(sellingMode ? "Sprawdź ofertę" : "Sprawdź cenę");
         confirm.setText(sellingMode ? "Sprzedaj teraz" : "Kup teraz");
-        request.setEnabled(selected() != null && !waiting && !offer);
+        final Entry current = selected();
+        final int quantity = readAmount();
+        final boolean valid = current != null && quantity >= 1
+                && quantity <= (current.stackable ? 1000 : 1);
+        request.setEnabled(valid && !waiting && !offer);
         confirm.setEnabled(offer && !waiting);
         cancel.setEnabled(offer && !waiting);
         search.setEnabled(!offer && !waiting);
