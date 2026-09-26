@@ -11,6 +11,7 @@ interface ShopEntry {
     itemClass: string;
     subclass: string;
     stackable: boolean;
+    description: string;
 }
 
 /** Merchant catalogue shown from the NPC context menu. */
@@ -27,6 +28,9 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly detailIcon = document.createElement("img");
     private readonly detailName = document.createElement("h4");
     private readonly detailPrice = document.createElement("div");
+    private readonly detailDescription = document.createElement("p");
+    private readonly quantityMinus = document.createElement("button");
+    private readonly quantityPlus = document.createElement("button");
     private readonly quoteTotal = document.createElement("div");
     private readonly quantity = document.createElement("input");
     private readonly status = document.createElement("div");
@@ -105,24 +109,33 @@ export class NpcShopDialog extends DialogContentComponent {
         imageHolder.appendChild(this.detailIcon);
 
         this.detailName.textContent = "Wybierz przedmiot";
+        this.detailDescription.className = "npc-shop-description";
+        this.detailDescription.textContent = "Wybierz przedmiot, aby zobaczyć szczegóły.";
         this.detailPrice.className = "npc-shop-price";
         this.quoteTotal.className = "npc-shop-quote";
         this.quoteTotal.hidden = true;
 
-        this.quantity.type = "number";
-        this.quantity.min = "1";
-        this.quantity.max = "1000";
-        this.quantity.step = "1";
+        this.quantity.type = "text";
+        this.quantity.inputMode = "numeric";
+        this.quantity.pattern = "[0-9]*";
         this.quantity.value = "1";
         this.quantity.setAttribute("aria-label", "Ilość");
         this.quantity.addEventListener("input", () => this.updateButtons());
-        const qtyLabel = document.createElement("label");
-        qtyLabel.className = "npc-shop-quantity";
-        const qtyText = document.createElement("span");
-        qtyText.textContent = "Ilość";
-        qtyLabel.append(qtyText, this.quantity);
+        const quantityRow = document.createElement("div");
+        quantityRow.className = "npc-shop-quantity";
+        const qtyLabel = document.createElement("span");
+        qtyLabel.textContent = "Ilość";
+        this.quantityMinus.type = "button";
+        this.quantityMinus.textContent = "−";
+        this.quantityMinus.setAttribute("aria-label", "Zmniejsz ilość");
+        this.quantityMinus.onclick = () => this.changeAmount(-1);
+        this.quantityPlus.type = "button";
+        this.quantityPlus.textContent = "+";
+        this.quantityPlus.setAttribute("aria-label", "Zwiększ ilość");
+        this.quantityPlus.onclick = () => this.changeAmount(1);
+        quantityRow.append(qtyLabel, this.quantityMinus, this.quantity, this.quantityPlus);
         detail.append(caption, imageHolder, this.detailName,
-                this.detailPrice, this.quoteTotal, qtyLabel);
+                this.detailDescription, this.detailPrice, this.quoteTotal, quantityRow);
         layout.appendChild(detail);
         this.componentElement.appendChild(layout);
 
@@ -131,15 +144,18 @@ export class NpcShopDialog extends DialogContentComponent {
         this.status.setAttribute("aria-live", "polite");
         this.componentElement.appendChild(this.status);
 
-        this.requestButton = this.addButton("Zapytaj o cenę", () => this.ask());
+        this.requestButton = this.addButton("Sprawdź cenę", () => this.ask());
         this.requestButton.classList.add("npc-shop-btn-primary", "npc-shop-btn-request");
-        this.confirmButton = this.addButton("Potwierdź", () => this.answer(true));
+        this.confirmButton = this.addButton("Kup teraz", () => this.answer(true));
         this.confirmButton.classList.add("npc-shop-btn-primary");
         this.cancelButton = this.addButton("Anuluj", () => this.answer(false));
         this.cancelButton.classList.add("npc-shop-btn-secondary");
         this.refreshButton = this.addButton("Odśwież", () => this.send("refresh"));
         this.refreshButton.classList.add("npc-shop-btn-secondary");
-        this.addCloseButton().classList.add("npc-shop-btn-secondary");
+        const tradeActions = document.createElement("div");
+        tradeActions.className = "npc-shop-trade-actions";
+        tradeActions.append(this.requestButton, this.confirmButton, this.cancelButton);
+        detail.appendChild(tradeActions);
         this.updateButtons();
     }
 
@@ -221,12 +237,14 @@ export class NpcShopDialog extends DialogContentComponent {
         const classes = this.asList(data[prefix + "_classes"]);
         const subclasses = this.asList(data[prefix + "_subclasses"]);
         const stackable = this.asList(data.sell_stackable);
+        const descriptions = this.asList(data[prefix + "_descriptions"]);
         return names.map((name, index) => ({
             name,
             price: prices[index] || "",
             itemClass: classes[index] || "",
             subclass: subclasses[index] || "",
-            stackable: prefix === "buy" || stackable[index] === "1"
+            stackable: prefix === "buy" || stackable[index] === "1",
+            description: descriptions[index] || ""
         }));
     }
 
@@ -317,6 +335,9 @@ export class NpcShopDialog extends DialogContentComponent {
     private drawDetails(): void {
         const entry = this.selected;
         this.detailName.textContent = entry?.name || "Wybierz przedmiot";
+        this.detailDescription.textContent = !entry
+                ? "Wybierz przedmiot, aby zobaczyć szczegóły."
+                : entry.description || "Brak dodatkowego opisu.";
         this.detailPrice.textContent = entry
                 ? (this.mode === "buy" ? "Cena: " : "Cena bazowa: ") + entry.price
                 : "";
@@ -343,6 +364,10 @@ export class NpcShopDialog extends DialogContentComponent {
         const amount = Number(this.quantity.value);
         const valid = !!this.selected && Number.isInteger(amount)
                 && amount >= 1 && amount <= (this.selected.stackable ? 1000 : 1);
+        this.requestButton.textContent = this.mode === "buy"
+                ? "Sprawdź cenę" : "Sprawdź ofertę";
+        this.confirmButton.textContent = this.mode === "buy"
+                ? "Kup teraz" : "Sprzedaj teraz";
         this.requestButton.hidden = offer;
         this.confirmButton.hidden = !offer;
         this.cancelButton.hidden = !offer;
@@ -354,8 +379,20 @@ export class NpcShopDialog extends DialogContentComponent {
         this.sellTab.disabled = !this.buying.length || offer || this.waiting;
         this.search.disabled = offer || this.waiting;
         this.quantity.disabled = !this.selected || offer || this.waiting;
+        this.quantityMinus.disabled = !valid || offer || this.waiting || amount <= 1;
+        this.quantityPlus.disabled = !valid || offer || this.waiting
+                || amount >= (this.selected?.stackable ? 1000 : 1);
         this.listBox.setAttribute("aria-busy", String(this.waiting));
         this.listBox.classList.toggle("is-locked", offer || this.waiting);
+    }
+
+    private changeAmount(delta: number): void {
+        if (!this.selected || this.waiting || this.token) return;
+        const current = Number(this.quantity.value);
+        const maximum = this.selected.stackable ? 1000 : 1;
+        const safe = Number.isInteger(current) ? current : 1;
+        this.quantity.value = String(Math.max(1, Math.min(maximum, safe + delta)));
+        this.updateButtons();
     }
 
     private ask(): void {
