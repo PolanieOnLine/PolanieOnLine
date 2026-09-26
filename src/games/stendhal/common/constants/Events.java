@@ -75,4 +75,7 @@ public final class Events {
 	 * registry on the desktop client.
 	 */
 	public static final String ITEM_UPGRADE = "item_upgrade_event";
+
+	/** Merchant catalogue and shop responses. */
+	public static final String NPC_SHOP = "npc_shop_event";
 }

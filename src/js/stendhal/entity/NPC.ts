@@ -63,6 +63,18 @@ export class NPC extends RPEntity {
 
 	override buildActions(list: MenuItem[]) {
 		super.buildActions(list);
+		if (this.hasOwnProperty("job_item_merchant")) {
+			list.push({
+				title: "Sklep",
+				action: function(entity: NPC) {
+					marauroa.clientFramework.sendAction({
+						type: "npc_shop_action",
+						command: "open",
+						npc_id: String(entity["id"])
+					});
+				}
+			});
+		}
 		if (this.hasOwnProperty("job_item_upgrader")) {
 			list.push({
 				title: "Ulepsz przedmiot",

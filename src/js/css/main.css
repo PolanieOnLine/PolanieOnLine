@@ -2129,3 +2129,467 @@ table.shoptable tr.item-rarity span.logi {
 td.number {
 	text-align: right;
 }
+
+/* Sklep korzysta z tekstury i kolorów reszty interfejsu gry. */
+.npc-shop-dialog {
+    --shop-gold: #f2bf74;
+    --shop-text: #f9ecd4;
+    --shop-muted: #d6bea0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: min(710px, calc(100vw - 60px));
+    max-height: min(620px, calc(100vh - 80px));
+    padding: 11px;
+    overflow-y: auto;
+    background: var(--background-url);
+    color: var(--shop-text);
+}
+
+.npc-shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    border: 1px solid #b7834e;
+    background: linear-gradient(rgba(30, 16, 7, .53), rgba(30, 16, 7, .18)), var(--background-url);
+    box-shadow: inset 0 1px 0 rgba(247, 196, 119, .36);
+}
+
+.npc-shop-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.npc-shop-title span {
+    color: var(--shop-gold);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .08em;
+    padding-right: 10px;
+    border-right: 1px solid #ae7640;
+}
+
+.npc-shop-header h3 {
+    margin: 0;
+    color: var(--shop-gold);
+    font-size: 19px;
+    color: #ffefce;
+}
+
+.npc-shop-wallet {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--shop-text);
+    overflow-wrap: anywhere;
+}
+
+.npc-shop-search-frame {
+    position: relative;
+    padding: 4px 5px;
+    border: 1px solid #b3804b;
+    background: linear-gradient(rgba(32, 17, 8, .59), rgba(32, 17, 8, .32)), var(--background-url);
+}
+
+.npc-shop-search-frame::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 18px;
+    top: 50%;
+    border: 2px solid #eac391;
+    border-radius: 50%;
+    transform: translateY(-67%);
+    pointer-events: none;
+}
+
+.npc-shop-search-frame::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 2px;
+    left: 29px;
+    top: calc(50% + 5px);
+    background: #eac391;
+    transform: rotate(48deg);
+    pointer-events: none;
+}
+
+.npc-shop-search {
+    box-sizing: border-box;
+    min-height: 35px;
+    width: 100%;
+    padding: 8px 12px 8px 47px;
+    font-size: 13px;
+    color: var(--shop-text);
+    background: rgb(60, 30, 0);
+    border: 1px solid #6d4628;
+    border-radius: 2px;
+}
+
+.npc-shop-search::placeholder {
+    color: var(--shop-muted);
+    opacity: 1;
+}
+
+.npc-shop-dialog button:focus-visible,
+.npc-shop-dialog input:focus-visible {
+    outline: 2px solid var(--shop-gold);
+    outline-offset: 1px;
+}
+
+.npc-shop-tabs {
+    display: flex;
+    gap: 4px;
+    padding-bottom: 1px;
+    border-bottom: 1px solid #805432;
+}
+
+.npc-shop-tabs button {
+    min-width: 103px;
+    padding: 7px 12px;
+    color: var(--shop-muted);
+    background: rgba(43, 25, 12, .39);
+    border: 1px solid rgba(151, 99, 48, .61);
+    border-bottom: 3px solid transparent;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.npc-shop-tabs button.active {
+    color: #fff0cc;
+    border-color: #d9a360;
+    border-bottom-color: var(--shop-gold);
+    background: linear-gradient(rgba(121, 69, 26, .78), rgba(81, 43, 20, .65));
+    box-shadow: inset 0 1px 0 rgba(246, 198, 127, .39);
+}
+
+.npc-shop-tabs button:hover:not(:disabled) {
+    color: var(--shop-text);
+    background: rgba(27, 14, 7, .35);
+}
+
+.npc-shop-tabs button:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+.npc-shop-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 236px;
+    gap: 11px;
+    min-width: 0;
+    height: 348px;
+}
+
+.npc-shop-catalogue {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    border: 1px solid #a57442;
+    background: linear-gradient(rgba(32, 18, 9, .48), rgba(32, 18, 9, .40)), var(--background-url);
+}
+
+.npc-shop-count {
+    flex: none;
+    padding: 6px 10px;
+    color: var(--shop-muted);
+    font-size: 12px;
+    border-bottom: 1px solid rgba(170, 116, 63, .55);
+}
+
+.npc-shop-list {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #b0804b rgba(37, 19, 9, .5);
+}
+
+.npc-shop-row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 53px;
+    padding: 5px 10px;
+    text-align: left;
+    color: var(--shop-text);
+    background: rgba(51, 30, 12, .30);
+    border: 0;
+    border-bottom: 1px solid rgba(195, 138, 72, .20);
+    border-left: 3px solid transparent;
+    cursor: pointer;
+}
+
+.npc-shop-row:hover:not(:disabled) {
+    background: rgba(75, 41, 17, .66);
+}
+
+.npc-shop-row.selected {
+    background: rgba(124, 72, 27, .78);
+    border-left-color: #ffcd7d;
+    box-shadow: inset 0 1px 0 rgba(243, 186, 100, .44);
+}
+
+.npc-shop-row-icon {
+    flex: 0 0 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    background: url(/data/gui/slot.png) center / 100% 100% no-repeat;
+}
+
+.npc-shop-row-icon img {
+    max-width: 36px;
+    max-height: 36px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.npc-shop-row-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 3px;
+}
+
+.npc-shop-row-text strong {
+    color: #fff0d9;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.npc-shop-row-text small {
+    color: var(--shop-gold);
+    font-size: 12px;
+}
+
+.npc-shop-empty {
+    padding: 20px 12px;
+    color: var(--shop-muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+.npc-shop-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 12px 13px;
+    text-align: center;
+    background: linear-gradient(rgba(35, 19, 9, .52), rgba(35, 19, 9, .25)), var(--background-url);
+    border: 1px solid #a57442;
+}
+
+.npc-shop-detail-caption {
+    width: 100%;
+    padding-bottom: 7px;
+    border-bottom: 1px solid rgba(173, 111, 51, .6);
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--shop-text);
+}
+
+.npc-shop-icon {
+    width: 76px;
+    height: 76px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    background: url(/data/gui/slot.png) center / contain no-repeat,
+        rgba(21, 12, 7, .69);
+    border-radius: 4px;
+}
+
+.npc-shop-icon img {
+    max-width: 51px;
+    max-height: 51px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.npc-shop-detail h4 {
+    margin: 0;
+    color: var(--shop-text);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+.npc-shop-description {
+    min-height: 32px;
+    max-height: 61px;
+    margin: 0;
+    overflow-y: auto;
+    color: var(--shop-muted);
+    font-size: 12px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.npc-shop-price {
+    margin-top: auto;
+    padding-top: 5px;
+    color: var(--shop-gold);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.npc-shop-quote {
+    color: var(--shop-gold);
+    font-size: 12px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.npc-shop-quote[hidden] {
+    display: none;
+}
+
+.npc-shop-quantity {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
+    padding-top: 5px;
+    color: var(--shop-text);
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.npc-shop-quantity button {
+    width: 30px;
+    height: 30px;
+    flex: none;
+    padding: 0;
+    color: var(--shop-text);
+    background: var(--background-url);
+    border: 1px solid #a47749;
+    cursor: pointer;
+}
+
+.npc-shop-quantity input {
+    box-sizing: border-box;
+    width: 53px;
+    height: 30px;
+    padding: 4px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--shop-text);
+    background: rgb(60, 30, 0);
+    border: 1px solid #a47749;
+}
+
+.npc-shop-trade-actions {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.npc-shop-dialog .npc-shop-trade-actions button {
+    min-height: 38px;
+    min-width: 0;
+    flex: 1;
+    padding: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--shop-text);
+    border: 1px solid #c39a67;
+    background: var(--background-url);
+}
+
+.npc-shop-dialog .npc-shop-trade-actions button.npc-shop-btn-primary {
+    background: linear-gradient(#57892a, #2f5318);
+    border-color: #e8b76e;
+    box-shadow: inset 0 1px 0 rgba(235, 255, 178, .42);
+}
+
+.npc-shop-dialog .npc-shop-trade-actions button:hover:not(:disabled) {
+    filter: brightness(1.16);
+}
+
+.npc-shop-dialog .npc-shop-trade-actions button[hidden] {
+    display: none;
+}
+
+.npc-shop-status {
+    min-height: 22px;
+    padding: 8px 10px;
+    color: var(--shop-muted);
+    background: rgba(32, 18, 9, .36);
+    border-left: 2px solid #a1774a;
+    font-size: 12px;
+}
+
+.npc-shop-status[data-state="offer"] {
+    color: var(--shop-gold);
+    border-left-color: var(--shop-gold);
+}
+
+.npc-shop-status[data-state="success"] {
+    color: #b1e1aa;
+    border-left-color: #8cbf83;
+}
+
+.npc-shop-status[data-state="error"] {
+    color: #f4b1a8;
+    border-left-color: #d48c80;
+}
+
+.npc-shop-dialog .dialogbuttons {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    gap: 6px;
+}
+
+.npc-shop-dialog .dialogbuttons button {
+    padding: 7px 12px;
+    color: var(--shop-text);
+    background: var(--background-url);
+    border: 1px solid #9c764c;
+    cursor: pointer;
+}
+
+.npc-shop-dialog button:disabled {
+    opacity: .48;
+    cursor: default;
+}
+
+@media (max-width: 650px) {
+    .npc-shop-dialog {
+        width: min(430px, calc(100vw - 36px));
+        max-height: calc(100vh - 70px);
+    }
+    .npc-shop-layout {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+    .npc-shop-catalogue {
+        min-height: 190px;
+        height: min(250px, 35vh);
+    }
+    .npc-shop-detail {
+        min-height: 300px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .npc-shop-dialog * {
+        transition: none;
+    }
+}

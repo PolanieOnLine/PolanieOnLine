@@ -91,6 +91,11 @@ class KTextEdit extends JComponent {
 	private String name = "";
 	/** Background color when not highlighting unread messages. */
 	private static Color defaultBackground = new Color(60, 30 , 0);
+
+	/** Background used by the chat log and matching text fields. */
+	static Color getChatBackgroundColor() {
+		return defaultBackground;
+	}
 	// kolor pogrubienia poprzez #
 	private static final Color BOLD_COLOR = new Color(90, 170, 255);
 	// kolor czasu
