@@ -3,7 +3,6 @@ package games.stendhal.client.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.GradientPaint;
-import java.awt.Polygon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -18,38 +17,27 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ListSelectionModel;
-import javax.swing.plaf.basic.BasicButtonUI;
-import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -122,8 +110,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
             setSelectionBackground(ROW_SELECTED);
             setSelectionForeground(TEXT);
             setOpaque(true);
-            setFixedCellHeight(67);
-            setVisibleRowCount(5);
+            setFixedCellHeight(58);
+            setVisibleRowCount(6);
             setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             setCellRenderer(new RowRenderer());
             addMouseMotionListener(new MouseMotionAdapter() {
@@ -186,25 +174,11 @@ public final class NpcShopWindow extends InternalManagedWindow {
             }
             g.setColor(new Color(20, 9, 3, shade));
             g.fillRect(0, 0, getWidth(), getHeight());
-            if (framed) {
-                g.setColor(new Color(31, 14, 5));
+            if (framed && getWidth() > 5 && getHeight() > 5) {
+                g.setColor(new Color(32, 17, 8, 190));
                 g.drawRect(1, 1, getWidth() - 3, getHeight() - 3);
-                g.setColor(new Color(174, 116, 47));
-                g.drawRect(3, 3, getWidth() - 7, getHeight() - 7);
-                g.setColor(new Color(251, 199, 103, 185));
-                g.drawLine(5, 4, getWidth() - 6, 4);
-                g.setColor(new Color(20, 10, 4, 200));
-                g.drawLine(5, getHeight() - 5, getWidth() - 6,
-                        getHeight() - 5);
-                for (final int x : new int[] {10, getWidth() - 11}) {
-                    for (final int y : new int[] {10, getHeight() - 11}) {
-                        final Polygon diamond = new Polygon(
-                                new int[] {x, x + 3, x, x - 3},
-                                new int[] {y - 3, y, y + 3, y}, 4);
-                        g.setColor(GOLD);
-                        g.fillPolygon(diamond);
-                    }
-                }
+                g.setColor(new Color(158, 107, 57, 180));
+                g.drawLine(2, 2, getWidth() - 3, 2);
             }
             g.dispose();
         }
@@ -234,27 +208,38 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 final boolean focused) {
             final Entry entry = (Entry) value;
             final boolean hovered = ((ShopList) list).hovered == index;
-            final WoodPanel row = new WoodPanel(new BorderLayout(10, 0),
-                    selected ? 105 : hovered ? 85 : index % 2 == 0 ? 45 : 58,
-                    selected);
-            row.setBorder(BorderFactory.createEmptyBorder(5, 11, 5, 11));
+            final JPanel row = new JPanel(new BorderLayout(10, 0)) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                protected void paintComponent(final Graphics graphics) {
+                    if (selected || hovered) {
+                        graphics.setColor(selected
+                                ? new Color(105, 64, 29) : new Color(79, 46, 24));
+                        graphics.fillRect(0, 0, getWidth(), getHeight());
+                    }
+                    if (selected) {
+                        graphics.setColor(GOLD);
+                        graphics.fillRect(0, 0, 3, getHeight());
+                    }
+                }
+            };
+            row.setOpaque(false);
+            row.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 9));
             final JLabel name = label(entry.name, 14, TEXT, true);
             name.setToolTipText(entry.name);
             final JLabel price = label(entry.price, 12, GOLD, true);
             final PlainPanel priceRow = new PlainPanel(new FlowLayout(
                     FlowLayout.LEFT, 4, 0));
             priceRow.add(new SmallIcon(
-                    SpriteStore.get().getSprite("data/gui/goldencoin.png"), 18));
+                    SpriteStore.get().getSprite("data/gui/goldencoin.png"), 17));
             priceRow.add(price);
             final PlainPanel description = new PlainPanel(
                     new java.awt.GridLayout(2, 1, 0, 1));
             description.add(name);
             description.add(priceRow);
-            row.add(new SmallIcon(spriteFor(entry), 46), BorderLayout.WEST);
+            row.add(new SmallIcon(spriteFor(entry), 43), BorderLayout.WEST);
             row.add(description, BorderLayout.CENTER);
-            if (selected) {
-                row.add(label("◆", 15, GOLD, true), BorderLayout.EAST);
-            }
             return row;
         }
     }
@@ -389,16 +374,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JLabel quote = label("", 13, SUCCESS, true);
     private final JTextArea information = new JTextArea(2, 1);
     private final ItemIcon preview = new ItemIcon();
-    private final SpinnerNumberModel amountModel = new SpinnerNumberModel(1, 1, 1000, 1);
-    private final JSpinner amount = new JSpinner(amountModel);
+    private final JTextField amount = new JTextField("1", 3);
+    private final ShopButton minus = new ShopButton("-", false);
+    private final ShopButton plus = new ShopButton("+", false);
     private final ShopButton request = new ShopButton("Sprawdź cenę", true);
     private final ShopButton confirm = new ShopButton("Kup teraz", true);
     private final ShopButton cancel = new ShopButton("Anuluj", false);
     private final ShopButton refresh = new ShopButton("Odśwież", false);
-    private final JComboBox<String> sorting = new JComboBox<String>(new String[] {
-            "Nazwa A-Z", "Nazwa Z-A", "Cena rosnąco", "Cena malejąco"});
     private final JTextArea itemDescription = new JTextArea(3, 2);
-    private final JLabel searchHint = label("Szukaj", 12, MUTED, false);
     private final CardLayout actionLayout = new CardLayout();
     private final JPanel actions = new JPanel(actionLayout);
 
@@ -481,7 +464,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         // One title bar, one search bar. The wood texture is shared by
         // all parts of the window rather than alternating unrelated panels.
         final PlainPanel north = new PlainPanel(new BorderLayout(0, 7));
-        final WoodPanel heading = new WoodPanel(new BorderLayout(10, 0), 76, true);
+        final WoodPanel heading = new WoodPanel(new BorderLayout(10, 0), 48, false);
         heading.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
         final PlainPanel owner = new PlainPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         owner.add(label("Sklep", 22, GOLD, true));
@@ -502,7 +485,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         north.add(heading, BorderLayout.NORTH);
 
         final WoodPanel searchBar = new WoodPanel(
-                new BorderLayout(8, 0), 90, true);
+                new BorderLayout(8, 0), 65, false);
         searchBar.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
         searchBar.add(new SmallIcon(
                 SpriteStore.get().getSprite("data/gui/loupe.png"), 26),
@@ -528,17 +511,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final PlainPanel listHeading = new PlainPanel(new BorderLayout(8, 0));
         itemCount.setFont(itemCount.getFont().deriveFont(Font.BOLD, 12f));
         listHeading.add(itemCount, BorderLayout.WEST);
-        final PlainPanel ordering = new PlainPanel(
-                new FlowLayout(FlowLayout.RIGHT, 5, 0));
-        ordering.add(label("Sortuj", 12, MUTED, false));
-        sorting.setPreferredSize(new Dimension(135, 24));
-        sorting.addActionListener(event -> {
-            if (!applying) {
-                filter();
-            }
-        });
-        ordering.add(sorting);
-        listHeading.add(ordering, BorderLayout.EAST);
         final PlainPanel catalogueHeader = new PlainPanel(
                 new BorderLayout(0, 3));
         catalogueHeader.add(tabs, BorderLayout.NORTH);
@@ -561,11 +533,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final PlainPanel identity = new PlainPanel(new BorderLayout(0, 5));
         final PlainPanel imageRow = new PlainPanel(
                 new FlowLayout(FlowLayout.CENTER, 0, 0));
-        final WoodPanel imageFrame = new WoodPanel(
-                new FlowLayout(FlowLayout.CENTER, 0, 0), 85, true);
-        imageFrame.setBorder(BorderFactory.createEmptyBorder(4, 5, 4, 5));
-        imageFrame.add(preview);
-        imageRow.add(imageFrame);
+        imageRow.add(preview);
         identity.add(imageRow, BorderLayout.NORTH);
 
         final PlainPanel nameAndDescription = new PlainPanel(
@@ -585,8 +553,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         nameAndDescription.add(itemDescription, BorderLayout.CENTER);
         identity.add(nameAndDescription, BorderLayout.CENTER);
 
-        final WoodPanel priceFrame = new WoodPanel(
-                new java.awt.GridLayout(0, 1, 0, 3), 92, true);
+        final PlainPanel priceFrame = new PlainPanel(
+                new java.awt.GridLayout(0, 1, 0, 3));
         priceFrame.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
         unitPrice.setHorizontalAlignment(SwingConstants.CENTER);
         unitPrice.setFont(unitPrice.getFont().deriveFont(Font.BOLD, 14f));
@@ -602,19 +570,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final PlainPanel quantity = new PlainPanel(new FlowLayout(
                 FlowLayout.CENTER, 7, 0));
         quantity.add(label("Ilość", 13, TEXT, true));
-        final ShopButton minus = new ShopButton("-", false);
-        minus.setPreferredSize(new Dimension(30, 29));
-        final ShopButton plus = new ShopButton("+", false);
-        plus.setPreferredSize(new Dimension(30, 29));
-        amount.setPreferredSize(new Dimension(63, 29));
-        if (amount.getEditor() instanceof JSpinner.DefaultEditor) {
-            final JFormattedTextField field =
-                    ((JSpinner.DefaultEditor) amount.getEditor()).getTextField();
-            field.setForeground(TEXT);
-            field.setCaretColor(GOLD);
-            field.setFont(field.getFont().deriveFont(Font.BOLD, 14f));
-            field.setHorizontalAlignment(SwingConstants.CENTER);
-        }
+        minus.setPreferredSize(new Dimension(32, 30));
+        plus.setPreferredSize(new Dimension(32, 30));
+        amount.setPreferredSize(new Dimension(64, 30));
+        amount.setHorizontalAlignment(SwingConstants.CENTER);
+        amount.setForeground(TEXT);
+        amount.setCaretColor(GOLD);
+        amount.setFont(amount.getFont().deriveFont(Font.BOLD, 14f));
+        amount.setToolTipText("Ilość od 1 do 1000");
         minus.addActionListener(event -> changeAmount(-1));
         plus.addActionListener(event -> changeAmount(1));
         quantity.add(minus);
@@ -639,7 +602,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         content.add(body, BorderLayout.CENTER);
 
         final WoodPanel footer = new WoodPanel(
-                new BorderLayout(10, 0), 80, true);
+                new BorderLayout(10, 0), 60, false);
         footer.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 9));
         information.setLineWrap(true);
         information.setWrapStyleWord(true);
@@ -681,7 +644,20 @@ public final class NpcShopWindow extends InternalManagedWindow {
         confirm.addActionListener(event -> answer(true));
         cancel.addActionListener(event -> answer(false));
         refresh.addActionListener(event -> send("refresh", null, null, 0, null));
-        amount.addChangeListener(event -> refreshButtons());
+        amount.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent event) {
+                refreshButtons();
+            }
+            @Override
+            public void removeUpdate(final DocumentEvent event) {
+                refreshButtons();
+            }
+            @Override
+            public void changedUpdate(final DocumentEvent event) {
+                refreshButtons();
+            }
+        });
         updateTabs();
         refreshButtons();
         return content;
@@ -692,9 +668,10 @@ public final class NpcShopWindow extends InternalManagedWindow {
         if (entry == null || waiting || requestToken != null) {
             return;
         }
-        final int oldValue = ((Number) amount.getValue()).intValue();
+        final int oldValue = readAmount();
         final int maximum = entry.stackable ? 1000 : 1;
-        amount.setValue(Math.max(1, Math.min(maximum, oldValue + change)));
+        amount.setText(Integer.toString(
+                Math.max(1, Math.min(maximum, oldValue + change))));
     }
 
     private final class ItemIcon extends JComponent {
@@ -746,6 +723,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
             }
         }
         return sprite;
+    }
+
+    private int readAmount() {
+        try {
+            return Integer.parseInt(amount.getText().trim());
+        } catch (final NumberFormatException ignored) {
+            return 0;
+        }
     }
 
     private void switchMode(final boolean toSelling) {
@@ -890,31 +875,13 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private void fill(final List<Entry> source, final DefaultListModel<Entry> model,
             final ShopList list, final String previous) {
         final String term = search.getText().trim().toLowerCase(Locale.ROOT);
-        final List<Entry> shown = new ArrayList<Entry>();
+        model.clear();
         for (final Entry entry : source) {
             if (entry.name.toLowerCase(Locale.ROOT).contains(term)) {
-                shown.add(entry);
-            }
-        }
-        final int order = sorting.getSelectedIndex();
-        final Comparator<Entry> alphabetical = (a, b) ->
-                a.name.compareToIgnoreCase(b.name);
-        if (order == 1) {
-            Collections.sort(shown, alphabetical.reversed());
-        } else if (order == 2 || order == 3) {
-            Collections.sort(shown, (a, b) -> {
-                final int value = Long.compare(a.priceValue, b.priceValue);
-                return value != 0 ? (order == 3 ? -value : value)
-                        : alphabetical.compare(a, b);
-            });
-        } else {
-            Collections.sort(shown, alphabetical);
-        }
-        model.clear();
-        for (final Entry entry : shown) {
-            model.addElement(entry);
-            if (entry.name.equals(previous)) {
-                list.setSelectedIndex(model.size() - 1);
+                model.addElement(entry);
+                if (entry.name.equals(previous)) {
+                    list.setSelectedIndex(model.size() - 1);
+                }
             }
         }
     }
@@ -943,9 +910,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 : sellingMode ? "Cena bazowa: " + entry.price
                         : "Cena: " + entry.price);
         preview.setEntry(entry);
-        amountModel.setMaximum(entry != null && !entry.stackable ? 1 : 1000);
-        if (entry != null && !entry.stackable) {
-            amountModel.setValue(1);
+        if (entry != null && !entry.stackable && readAmount() != 1) {
+            amount.setText("1");
         }
         refreshButtons();
     }
@@ -959,10 +925,12 @@ public final class NpcShopWindow extends InternalManagedWindow {
         confirm.setEnabled(offer && !waiting);
         cancel.setEnabled(offer && !waiting);
         search.setEnabled(!offer && !waiting);
-        sorting.setEnabled(!offer && !waiting);
         sellList.setEnabled(!offer && !waiting);
         buyList.setEnabled(!offer && !waiting);
         amount.setEnabled(!offer && !waiting && selected() != null);
+        minus.setEnabled(!offer && !waiting && selected() != null && readAmount() > 1);
+        plus.setEnabled(!offer && !waiting && selected() != null
+                && readAmount() < (selected() != null && selected().stackable ? 1000 : 1));
         refresh.setEnabled(!waiting);
         updateTabs();
         actions.revalidate();
@@ -974,14 +942,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         if (entry == null || waiting || requestToken != null) {
             return;
         }
-        final int quantity;
-        try {
-            amount.commitEdit();
-            quantity = ((Number) amount.getValue()).intValue();
-        } catch (final ParseException e) {
-            setStatus("Podaj poprawną ilość.", ERROR);
-            return;
-        }
+        final int quantity = readAmount();
         if (quantity < 1 || quantity > (entry.stackable ? 1000 : 1)) {
             setStatus("Podaj poprawną ilość.", ERROR);
             return;
