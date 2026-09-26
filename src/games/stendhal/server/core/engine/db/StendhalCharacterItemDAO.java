@@ -56,7 +56,7 @@ public class StendhalCharacterItemDAO {
 					+ "item_value INTEGER, "
 					+ "lifesteal FLOAT, "
 					+ "timedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-					+ "PRIMARY KEY(id))", null);
+					+ "PRIMARY KEY(id));", null);
 			addColumnIfMissing(transaction, "atk", "INTEGER");
 			addColumnIfMissing(transaction, "ratk", "INTEGER");
 			addColumnIfMissing(transaction, "def", "INTEGER");
@@ -79,7 +79,7 @@ public class StendhalCharacterItemDAO {
 					+ "modifier_name VARCHAR(64) NOT NULL, "
 					+ "modifier_value VARCHAR(128) NOT NULL, "
 					+ "timedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-					+ "PRIMARY KEY(id))", null);
+					+ "PRIMARY KEY(id));", null);
 			transaction.execute("CREATE INDEX IF NOT EXISTS i_character_item_modifiers_charname "
 					+ "ON " + MODIFIER_TABLE_NAME + "(charname)", null);
 			transaction.execute("CREATE INDEX IF NOT EXISTS i_character_item_modifiers_item "
