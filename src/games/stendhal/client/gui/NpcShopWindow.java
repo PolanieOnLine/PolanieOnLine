@@ -160,7 +160,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         @Override
         protected void paintComponent(final Graphics graphics) {
             final Graphics2D g = (Graphics2D) graphics.create();
-            paintWood(g, getWidth(), getHeight(), 62);
+            paintWood(g, getWidth(), getHeight(), 0);
             g.dispose();
             super.paintComponent(graphics);
         }
@@ -170,32 +170,25 @@ public final class NpcShopWindow extends InternalManagedWindow {
      * Uses the same wood sprite as the current game skin. Cards have only a
      * shallow engraved edge so that all the parts belong to the same window.
      */
-    private static class WoodPanel extends JPanel {
+    /** Uses the client's standard StyledPanelUI instead of custom textures. */
+    private static final class WoodPanel extends JPanel {
         private static final long serialVersionUID = 1L;
-        private final int shade;
-        private final boolean framed;
 
         private WoodPanel(final LayoutManager layout, final int shade,
                 final boolean framed) {
             super(layout);
-            this.shade = shade;
-            this.framed = framed;
-            setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder(4, 5, 4, 5));
+            setOpaque(true);
         }
+    }
 
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            final Graphics2D g = (Graphics2D) graphics.create();
-            paintWood(g, getWidth(), getHeight(), shade);
-            if (framed && getWidth() > 5 && getHeight() > 5) {
-                g.setColor(new Color(32, 17, 8, 190));
-                g.drawRect(1, 1, getWidth() - 3, getHeight() - 3);
-                g.setColor(new Color(158, 107, 57, 180));
-                g.drawLine(2, 2, getWidth() - 3, 2);
-            }
-            g.dispose();
-        }
+    private static javax.swing.border.Border nativeInsetBorder(
+            final int top, final int left, final int bottom, final int right) {
+        final Style style = StyleUtil.getStyle();
+        final javax.swing.border.Border frame = style == null
+                ? BorderFactory.createLineBorder(BORDER)
+                : style.getBorderDown();
+        return BorderFactory.createCompoundBorder(frame,
+                BorderFactory.createEmptyBorder(top, left, bottom, right));
     }
 
     private static final class PlainPanel extends JPanel {
@@ -294,9 +287,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         @Override
         protected void paintComponent(final Graphics graphics) {
             final Graphics2D g = (Graphics2D) graphics.create();
-            g.setColor(new Color(29, 17, 10, 225));
-            g.fillRoundRect(1, 1, 42, 42, 5, 5);
-            g.setColor(new Color(165, 119, 71));
+            g.setColor(new Color(175, 137, 92, 215));
+            g.fillRoundRect(1, 1, 42, 42, 4, 4);
+            g.setColor(new Color(92, 59, 30));
             g.drawRoundRect(1, 1, 42, 42, 5, 5);
             if (sprite != null) {
                 sprite.draw(g, (getWidth() - sprite.getWidth()) / 2,
@@ -344,76 +337,29 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private static final class ShopButton extends JButton {
         private static final long serialVersionUID = 1L;
-        private final boolean primary;
         private final boolean tab;
-        private boolean active;
 
-        private ShopButton(final String caption, final boolean primary) {
-            super(caption);
-            this.primary = primary;
-            this.tab = "Kup".equals(caption) || "Sprzedaj".equals(caption);
+        private ShopButton(final String text, final boolean primary) {
+            super(text);
+            tab = "Kup".equals(text) || "Sprzedaj".equals(text);
             setFocusPainted(false);
-            setMargin(new java.awt.Insets(5, 10, 5, 10));
-            if (primary || tab) {
-                setContentAreaFilled(false);
-                setBorderPainted(false);
-                setOpaque(false);
-                setFont(getFont().deriveFont(Font.BOLD, tab ? 14f : 15f));
+            setMargin(new java.awt.Insets(3, 8, 3, 8));
+            if (primary) {
+                setFont(getFont().deriveFont(Font.BOLD));
             }
         }
 
         private void setActive(final boolean active) {
-            this.active = active;
-            setForeground(active ? new Color(255, 226, 166) : TEXT);
-            setBorder(BorderFactory.createEmptyBorder(2, 8, 3, 8));
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            if (!primary) {
-                if (tab) {
-                    final Graphics2D g = (Graphics2D) graphics.create();
-                    g.setColor(active ? new Color(113, 68, 32, 205)
-                            : new Color(44, 26, 13, 125));
-                    g.fillRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 5, 5);
-                    g.setColor(active ? GOLD : new Color(138, 91, 49));
-                    g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 5, 5);
-                    if (active) {
-                        g.fillRect(7, getHeight() - 4, getWidth() - 14, 2);
-                    }
-                    g.dispose();
-                }
-                super.paintComponent(graphics);
+            if (!tab) {
                 return;
             }
-            final Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            final boolean green = getText().contains("teraz");
-            final boolean enabled = isEnabled();
-            final Color top = !enabled ? new Color(92, 77, 59)
-                    : green ? new Color(76, 129, 30)
-                            : new Color(120, 73, 32);
-            final Color bottom = !enabled ? new Color(58, 47, 39)
-                    : green ? new Color(30, 74, 19)
-                            : new Color(65, 35, 15);
-            g.setPaint(new GradientPaint(0, 0, top, 0, getHeight(), bottom));
-            g.fillRoundRect(2, 2, getWidth() - 5, getHeight() - 5, 8, 8);
-            g.setColor(enabled ? GOLD : new Color(143, 117, 84));
-            g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 8, 8);
-            g.drawRoundRect(4, 4, getWidth() - 9, getHeight() - 9, 5, 5);
-            final String caption = getText();
-            final FontMetrics metrics = g.getFontMetrics(getFont());
-            final int x = (getWidth() - metrics.stringWidth(caption)) / 2;
-            final int y = (getHeight() + metrics.getAscent()
-                    - metrics.getDescent()) / 2;
-            g.setFont(getFont());
-            g.setColor(new Color(12, 8, 3));
-            g.drawString(caption, x + 1, y + 1);
-            g.setColor(enabled ? TEXT : MUTED);
-            g.drawString(caption, x, y);
-            g.dispose();
+            setFont(getFont().deriveFont(active ? Font.BOLD : Font.PLAIN));
+            setForeground(active ? GOLD : TEXT);
+            final Style style = StyleUtil.getStyle();
+            final javax.swing.border.Border base = style == null
+                    ? BorderFactory.createLineBorder(BORDER) : style.getBorder();
+            setBorder(active ? BorderFactory.createCompoundBorder(base,
+                    BorderFactory.createMatteBorder(0, 0, 2, 0, GOLD)) : base);
         }
     }
 
@@ -514,45 +460,27 @@ public final class NpcShopWindow extends InternalManagedWindow {
     }
 
     private JComponent createContent() {
-        final WoodPanel content = new WoodPanel(new BorderLayout(9, 9), 23, true);
+        final JPanel content = new JPanel(new BorderLayout(7, 7));
         content.setBorder(BorderFactory.createEmptyBorder(9, 10, 9, 10));
-        content.setPreferredSize(new Dimension(770, 505));
+        content.setPreferredSize(new Dimension(698, 448));
 
         // One title bar, one search bar. The wood texture is shared by
         // all parts of the window rather than alternating unrelated panels.
         final PlainPanel north = new PlainPanel(new BorderLayout(0, 7));
-        final WoodPanel heading = new WoodPanel(new BorderLayout(10, 0), 73, true);
-        heading.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
-        final PlainPanel owner = new PlainPanel(new FlowLayout(FlowLayout.LEFT, 9, 0));
-        owner.add(new SmallIcon(
-                SpriteStore.get().getSprite("data/gui/bag.png"), 32));
-        final PlainPanel shopName = new PlainPanel(
-                new java.awt.GridLayout(2, 1, 0, 2));
-        shopName.add(label("SKLEP", 11, GOLD, true));
-        merchant.setFont(merchant.getFont().deriveFont(Font.BOLD, 19f));
-        merchant.setForeground(TEXT);
-        shopName.add(merchant);
-        owner.add(shopName);
-        heading.add(owner, BorderLayout.WEST);
-        final PlainPanel funds = new PlainPanel(new FlowLayout(
-                FlowLayout.RIGHT, 5, 3));
-        funds.add(new SmallIcon(
-                SpriteStore.get().getSprite("data/gui/goldencoin.png"), 22));
-        wallet.setForeground(TEXT);
-        wallet.setFont(wallet.getFont().deriveFont(Font.BOLD, 13f));
-        funds.add(wallet);
-        heading.add(funds, BorderLayout.EAST);
+        final JPanel heading = new JPanel(new BorderLayout(8, 0));
+        heading.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
+        merchant.setFont(merchant.getFont().deriveFont(Font.BOLD, 14f));
+        heading.add(merchant, BorderLayout.WEST);
+        wallet.setFont(wallet.getFont().deriveFont(12f));
+        heading.add(wallet, BorderLayout.EAST);
         north.add(heading, BorderLayout.NORTH);
 
-        final WoodPanel searchBar = new WoodPanel(
-                new BorderLayout(8, 0), 100, false);
-        searchBar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(176, 120, 65)),
-                BorderFactory.createEmptyBorder(5, 12, 5, 12)));
+        final JPanel searchBar = new JPanel(new BorderLayout(7, 0));
+        searchBar.setBorder(BorderFactory.createEmptyBorder(2, 3, 2, 3));
         searchBar.add(new SmallIcon(
                 SpriteStore.get().getSprite("data/gui/loupe.png"), 26),
                 BorderLayout.WEST);
-        search.setPreferredSize(new Dimension(10, 30));
+        search.setPreferredSize(new Dimension(10, 28));
         searchBar.add(search, BorderLayout.CENTER);
         north.add(searchBar, BorderLayout.SOUTH);
         content.add(north, BorderLayout.NORTH);
@@ -561,11 +489,11 @@ public final class NpcShopWindow extends InternalManagedWindow {
         // supplied shop reference.
         final WoodPanel left = new WoodPanel(
                 new BorderLayout(0, 5), 34, true);
-        left.setBorder(BorderFactory.createEmptyBorder(7, 10, 10, 10));
+        left.setBorder(nativeInsetBorder(5, 6, 6, 6));
         final PlainPanel tabs = new PlainPanel(
                 new FlowLayout(FlowLayout.LEFT, 5, 0));
-        buyTab.setPreferredSize(new Dimension(116, 31));
-        sellTab.setPreferredSize(new Dimension(116, 31));
+        buyTab.setPreferredSize(new Dimension(94, 27));
+        sellTab.setPreferredSize(new Dimension(94, 27));
         tabs.add(buyTab);
         tabs.add(sellTab);
         buyTab.addActionListener(event -> switchMode(false));
@@ -585,9 +513,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         // Single engraved panel, with a clear image, description and price.
         final WoodPanel detail = new WoodPanel(
                 new BorderLayout(0, 5), 63, true);
-        detail.setPreferredSize(new Dimension(266, 0));
-        detail.setBorder(BorderFactory.createEmptyBorder(10, 12, 10, 12));
-        final JLabel section = label("Wybrany przedmiot", 15, TEXT, true);
+        detail.setPreferredSize(new Dimension(227, 0));
+        detail.setBorder(nativeInsetBorder(6, 7, 7, 7));
+        final JLabel section = label("Wybrany przedmiot", 13, TEXT, true);
         section.setHorizontalAlignment(SwingConstants.CENTER);
         section.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, GOLD));
         detail.add(section, BorderLayout.NORTH);
@@ -645,7 +573,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantity.add(amount);
         quantity.add(plus);
         controls.add(quantity, BorderLayout.NORTH);
-        request.setPreferredSize(new Dimension(10, 50));
+        request.setPreferredSize(new Dimension(10, 36));
         controls.add(request, BorderLayout.SOUTH);
         detail.add(controls, BorderLayout.SOUTH);
 
@@ -654,8 +582,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         body.add(detail, BorderLayout.EAST);
         content.add(body, BorderLayout.CENTER);
 
-        final WoodPanel footer = new WoodPanel(
-                new BorderLayout(10, 0), 60, false);
+        final JPanel footer = new JPanel(new BorderLayout(10, 0));
         footer.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 9));
         information.setLineWrap(true);
         information.setWrapStyleWord(true);
