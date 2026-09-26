@@ -88,18 +88,21 @@ public final class NpcShopAction implements ActionListener {
         }
         if (!inRange(player, npc)) {
             PENDING.remove(player);
-            player.sendPrivateText("Podejdź bliżej do handlarza.");
+            publish(player, npc, NpcShopEvent.REFRESH,
+                    "Podejdź bliżej do handlarza.", null);
             return;
         }
         if (npc.getAttending() != null && npc.getAttending() != player) {
-            player.sendPrivateText("Handlarz rozmawia teraz z innym graczem.");
+            publish(player, npc, NpcShopEvent.REFRESH,
+                    "Handlarz rozmawia teraz z innym graczem.", null);
             return;
         }
         if (npc.getAttending() == null) {
             npc.listenTo(player, "hi");
         }
         if (npc.getAttending() != player) {
-            player.sendPrivateText("Nie możesz teraz handlowac z tym NPC.");
+            publish(player, npc, NpcShopEvent.REFRESH,
+                    "Nie możesz teraz handlować z tym NPC.", null);
             return;
         }
 
@@ -110,7 +113,11 @@ public final class NpcShopAction implements ActionListener {
             cancelOffer(player, npc);
             publish(player, npc, NpcShopEvent.REFRESH, "Oferta odświeżona.", null);
         } else if ("request".equals(command)) {
-            request(player, npc, action);
+            request(player, npc, action, false);
+        } else if ("purchase".equals(command)) {
+            // One click uses the existing NPC quote and confirmation in one
+            // server action. The client never supplies a price or approval token.
+            request(player, npc, action, true);
         } else if ("confirm".equals(command)) {
             finish(player, npc, action, true);
         } else if ("cancel".equals(command)) {
@@ -119,7 +126,7 @@ public final class NpcShopAction implements ActionListener {
     }
 
     private void request(final Player player, final SpeakerNPC npc,
-            final RPAction action) {
+            final RPAction action, final boolean purchaseImmediately) {
         cancelOffer(player, npc);
         if (npc.getEngine().getCurrentState() != ConversationStates.ATTENDING
                 || !action.has("mode") || !action.has("item")
@@ -199,6 +206,12 @@ public final class NpcShopAction implements ActionListener {
 
         final PendingOffer pending = new PendingOffer(npc, mode, item, quantity, price);
         PENDING.put(player, pending);
+        if (purchaseImmediately) {
+            final RPAction confirmation = new RPAction();
+            confirmation.put("request_token", pending.token);
+            finish(player, npc, confirmation, true);
+            return;
+        }
         publish(player, npc, NpcShopEvent.OFFER,
                 "Oferta gotowa. Potwierdź lub anuluj w oknie.",
                 pending);
@@ -251,7 +264,12 @@ public final class NpcShopAction implements ActionListener {
         final Boolean success = RESULTS.remove(player);
         publish(player, npc, NpcShopEvent.RESULT,
                 success == null ? "Sprawdź odpowiedź handlarza."
-                        : success.booleanValue() ? "Transakcja zakończona."
+                        : success.booleanValue()
+                                ? ("buy".equals(pending.mode) ? "Zakup udany: "
+                                        : "Sprzedaż udana: ")
+                                        + pending.quantity + " x " + pending.item + " za "
+                                        + games.stendhal.server.entity.item.money.MoneyUtils
+                                                .formatPrice(pending.price)
                                 : "Transakcja nie powiodła się.", null);
     }
 
