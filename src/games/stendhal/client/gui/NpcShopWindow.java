@@ -553,16 +553,15 @@ public final class NpcShopWindow extends InternalManagedWindow {
         nameAndDescription.add(itemDescription, BorderLayout.CENTER);
         identity.add(nameAndDescription, BorderLayout.CENTER);
 
-        final PlainPanel priceFrame = new PlainPanel(
-                new java.awt.GridLayout(0, 1, 0, 3));
+        final PlainPanel priceFrame = new PlainPanel(new BorderLayout(0, 3));
         priceFrame.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
         unitPrice.setHorizontalAlignment(SwingConstants.CENTER);
         unitPrice.setFont(unitPrice.getFont().deriveFont(Font.BOLD, 14f));
-        priceFrame.add(unitPrice);
+        priceFrame.add(unitPrice, BorderLayout.NORTH);
         quote.setHorizontalAlignment(SwingConstants.CENTER);
         quote.setForeground(SUCCESS);
         quote.setVisible(false);
-        priceFrame.add(quote);
+        priceFrame.add(quote, BorderLayout.SOUTH);
         identity.add(priceFrame, BorderLayout.SOUTH);
         detail.add(identity, BorderLayout.CENTER);
 
@@ -632,11 +631,13 @@ public final class NpcShopWindow extends InternalManagedWindow {
         });
         sellList.addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && !applying && !sellingMode) {
+                amount.setText("1");
                 refreshDetails();
             }
         });
         buyList.addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && !applying && sellingMode) {
+                amount.setText("1");
                 refreshDetails();
             }
         });
@@ -738,6 +739,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
             return;
         }
         sellingMode = toSelling;
+        amount.setText("1");
         updateTabs();
         refreshDetails();
     }
