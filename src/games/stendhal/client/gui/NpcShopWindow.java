@@ -220,95 +220,18 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private static final class ShopButton extends JButton {
         private static final long serialVersionUID = 1L;
-        private final boolean primary;
-        private boolean active;
 
         private ShopButton(final String caption, final boolean primary) {
             super(caption);
-            this.primary = primary;
-            setUI(new BasicButtonUI());
-            setOpaque(false);
-            setContentAreaFilled(false);
-            setBorderPainted(false);
             setFocusPainted(false);
-            setRolloverEnabled(true);
-            setForeground(primary ? BACKGROUND : TEXT);
-            setFont(getFont().deriveFont(Font.BOLD, 13f));
-            setBorder(BorderFactory.createEmptyBorder(9, 12, 9, 12));
-            setMargin(new java.awt.Insets(7, 11, 7, 11));
-            setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            setMargin(new java.awt.Insets(5, 10, 5, 10));
         }
 
         private void setActive(final boolean active) {
-            this.active = active;
-            setForeground(active ? GOLD : primary ? BACKGROUND : TEXT);
-            repaint();
-        }
-
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            final Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            final Color fill;
-            if (!isEnabled()) {
-                fill = new Color(70, 58, 47);
-            } else if (active) {
-                fill = new Color(78, 54, 34);
-            } else if (getModel().isPressed()) {
-                fill = primary ? new Color(205, 148, 70) : ROW_SELECTED;
-            } else if (getModel().isRollover()) {
-                fill = primary ? new Color(255, 207, 123) : ROW_HOVER;
-            } else {
-                fill = primary ? GOLD : ROW_BACKGROUND;
-            }
-            g.setColor(fill);
-            g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 7, 7);
-            g.setColor(active ? GOLD : primary ? GOLD : BORDER);
-            g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 7, 7);
-            if (active) {
-                g.fillRoundRect(8, getHeight() - 4, getWidth() - 16, 3, 3, 3);
-            }
-            g.dispose();
-            super.paintComponent(graphics);
-        }
-    }
-
-    private static final class SlimScrollBarUI extends BasicScrollBarUI {
-        @Override
-        protected void paintTrack(final Graphics graphics, final JComponent component,
-                final Rectangle bounds) {
-            graphics.setColor(LIST_BACKGROUND);
-            graphics.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-        }
-
-        @Override
-        protected void paintThumb(final Graphics graphics, final JComponent component,
-                final Rectangle bounds) {
-            if (bounds.isEmpty()) {
-                return;
-            }
-            graphics.setColor(new Color(135, 100, 62));
-            graphics.fillRoundRect(bounds.x + 2, bounds.y + 2,
-                    Math.max(2, bounds.width - 4), Math.max(2, bounds.height - 4), 6, 6);
-        }
-
-        @Override
-        protected JButton createDecreaseButton(final int orientation) {
-            return invisibleButton();
-        }
-
-        @Override
-        protected JButton createIncreaseButton(final int orientation) {
-            return invisibleButton();
-        }
-
-        private JButton invisibleButton() {
-            final JButton button = new JButton();
-            button.setPreferredSize(new Dimension(0, 0));
-            button.setMinimumSize(new Dimension(0, 0));
-            button.setMaximumSize(new Dimension(0, 0));
-            return button;
+            setForeground(active ? GOLD : TEXT);
+            setBorder(active
+                    ? BorderFactory.createMatteBorder(0, 0, 2, 0, GOLD)
+                    : BorderFactory.createEmptyBorder(0, 0, 2, 0));
         }
     }
 
@@ -337,7 +260,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final ShopButton confirm = new ShopButton("Potwierdź", true);
     private final ShopButton cancel = new ShopButton("Anuluj", false);
     private final ShopButton refresh = new ShopButton("Odśwież", false);
-    private final JPanel actions = new JPanel();
+    private final CardLayout actionLayout = new CardLayout();
+    private final JPanel actions = new JPanel(actionLayout);
 
     private int npcId;
     private String requestToken;
@@ -386,10 +310,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     }
 
     private static JPanel solid(final LayoutManager layout, final Color color) {
-        final JPanel result = new JPanel(layout);
-        result.setBackground(color);
-        result.setOpaque(true);
-        return result;
+        return new JPanel(layout);
     }
 
     private static JLabel label(final String caption, final int size,
@@ -409,30 +330,28 @@ public final class NpcShopWindow extends InternalManagedWindow {
         pane.setBackground(LIST_BACKGROUND);
         pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         final JScrollBar bar = pane.getVerticalScrollBar();
-        bar.setPreferredSize(new Dimension(10, 0));
         bar.setUnitIncrement(28);
-        bar.setUI(new SlimScrollBarUI());
         return pane;
     }
 
     private JComponent createContent() {
-        final JPanel content = solid(new BorderLayout(12, 12), BACKGROUND);
-        content.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-        content.setPreferredSize(new Dimension(710, 525));
+        final JPanel content = solid(new BorderLayout(8, 8), BACKGROUND);
+        content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        content.setPreferredSize(new Dimension(690, 485));
 
-        final JPanel header = solid(new BorderLayout(8, 10), BACKGROUND);
+        final JPanel header = solid(new BorderLayout(6, 4), BACKGROUND);
         final JPanel heading = solid(new BorderLayout(8, 0), BACKGROUND);
         heading.add(merchant, BorderLayout.WEST);
         wallet.setHorizontalAlignment(SwingConstants.RIGHT);
-        wallet.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
+        wallet.setBorder(BorderFactory.createEmptyBorder(3, 4, 3, 4));
         heading.add(wallet, BorderLayout.EAST);
         header.add(heading, BorderLayout.NORTH);
         header.add(search, BorderLayout.SOUTH);
         content.add(header, BorderLayout.NORTH);
 
         final JPanel tabBar = solid(new FlowLayout(FlowLayout.LEFT, 5, 0), BACKGROUND);
-        buyTab.setPreferredSize(new Dimension(100, 34));
-        sellTab.setPreferredSize(new Dimension(100, 34));
+        buyTab.setPreferredSize(new Dimension(96, 27));
+        sellTab.setPreferredSize(new Dimension(96, 27));
         tabBar.add(buyTab);
         tabBar.add(sellTab);
         buyTab.addActionListener(event -> switchMode(false));
@@ -440,8 +359,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
         catalog.add(scroll(sellList), "buy");
         catalog.add(scroll(buyList), "sell");
-        final JPanel left = solid(new BorderLayout(0, 7), BACKGROUND);
-        final JPanel topLeft = solid(new BorderLayout(5, 5), BACKGROUND);
+        final JPanel left = solid(new BorderLayout(0, 3), BACKGROUND);
+        final JPanel topLeft = solid(new BorderLayout(4, 2), BACKGROUND);
         topLeft.add(tabBar, BorderLayout.NORTH);
         itemCount.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
         topLeft.add(itemCount, BorderLayout.SOUTH);
@@ -449,22 +368,20 @@ public final class NpcShopWindow extends InternalManagedWindow {
         left.add(catalog, BorderLayout.CENTER);
 
         final JPanel detail = solid(new BorderLayout(0, 12), PANEL);
-        detail.setPreferredSize(new Dimension(244, 0));
-        detail.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER),
-                BorderFactory.createEmptyBorder(14, 12, 12, 12)));
+        detail.setPreferredSize(new Dimension(223, 0));
+        detail.setBorder(BorderFactory.createEmptyBorder(8, 9, 8, 9));
 
-        final JPanel identity = solid(new BorderLayout(0, 8), PANEL);
-        final JLabel detailHeading = label("Wybrany przedmiot", 11, MUTED, false);
+        final JPanel identity = solid(new BorderLayout(0, 3), PANEL);
+        final JLabel detailHeading = label("Wybrany przedmiot", 12, TEXT, true);
         detailHeading.setHorizontalAlignment(SwingConstants.CENTER);
         identity.add(detailHeading, BorderLayout.NORTH);
-        final JPanel identityBody = solid(new BorderLayout(0, 7), PANEL);
+        final JPanel identityBody = solid(new BorderLayout(0, 3), PANEL);
         final JPanel iconWrapper = solid(new FlowLayout(FlowLayout.CENTER, 0, 0), PANEL);
         iconWrapper.add(preview);
         identityBody.add(iconWrapper, BorderLayout.NORTH);
-        final JPanel descriptions = solid(new java.awt.GridLayout(2, 1, 0, 5), PANEL);
+        final JPanel descriptions = solid(new java.awt.GridLayout(2, 1, 0, 2), PANEL);
         selectedName.setHorizontalAlignment(SwingConstants.CENTER);
-        selectedName.setPreferredSize(new Dimension(210, 36));
+        selectedName.setPreferredSize(new Dimension(196, 31));
         descriptions.add(selectedName);
         unitPrice.setHorizontalAlignment(SwingConstants.CENTER);
         descriptions.add(unitPrice);
@@ -473,10 +390,10 @@ public final class NpcShopWindow extends InternalManagedWindow {
         identityBody.add(descriptions, BorderLayout.CENTER);
         identity.add(identityBody, BorderLayout.CENTER);
         identity.add(quote, BorderLayout.SOUTH);
-        detail.add(identity, BorderLayout.NORTH);
+        detail.add(identity, BorderLayout.CENTER);
 
-        final JPanel quantity = solid(new FlowLayout(FlowLayout.CENTER, 10, 10), PANEL);
-        quantity.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, BORDER));
+        final JPanel quantity = solid(new FlowLayout(FlowLayout.CENTER, 8, 2), PANEL);
+        quantity.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
         quantity.add(label("Ilość", 13, TEXT, true));
         amount.setPreferredSize(new Dimension(80, 29));
         if (amount.getEditor() instanceof JSpinner.DefaultEditor) {
@@ -489,33 +406,26 @@ public final class NpcShopWindow extends InternalManagedWindow {
             field.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
         }
         quantity.add(amount);
-        final JPanel center = solid(new BorderLayout(), PANEL);
-        center.add(quantity, BorderLayout.NORTH);
-        detail.add(center, BorderLayout.CENTER);
+        final JPanel requestPanel = new JPanel(new BorderLayout());
+        requestPanel.add(request, BorderLayout.CENTER);
+        final JPanel offerPanel = new JPanel(new java.awt.GridLayout(1, 2, 6, 0));
+        offerPanel.add(confirm);
+        offerPanel.add(cancel);
+        actions.add(requestPanel, "request");
+        actions.add(offerPanel, "offer");
 
-        actions.setLayout(new BoxLayout(actions, BoxLayout.Y_AXIS));
-        actions.setBackground(PANEL);
-        actions.setOpaque(true);
-        for (final ShopButton button : new ShopButton[] {request, confirm, cancel}) {
-            button.setAlignmentX(Component.CENTER_ALIGNMENT);
-            button.setMinimumSize(new Dimension(0, 38));
-            button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-            actions.add(button);
-            if (button == confirm) {
-                actions.add(Box.createVerticalStrut(7));
-            }
-        }
-        detail.add(actions, BorderLayout.SOUTH);
+        final JPanel controls = new JPanel(new BorderLayout(0, 7));
+        controls.add(quantity, BorderLayout.NORTH);
+        controls.add(actions, BorderLayout.SOUTH);
+        detail.add(controls, BorderLayout.SOUTH);
 
-        final JPanel body = solid(new BorderLayout(12, 0), BACKGROUND);
+        final JPanel body = solid(new BorderLayout(9, 0), BACKGROUND);
         body.add(left, BorderLayout.CENTER);
         body.add(detail, BorderLayout.EAST);
         content.add(body, BorderLayout.CENTER);
 
         final JPanel bottom = solid(new BorderLayout(9, 0), PANEL);
-        bottom.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(BORDER),
-                BorderFactory.createEmptyBorder(7, 9, 7, 8)));
+        bottom.setBorder(BorderFactory.createEmptyBorder(6, 3, 3, 3));
         information.setLineWrap(true);
         information.setWrapStyleWord(true);
         information.setEditable(false);
@@ -571,8 +481,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 SpriteStore.get().getSprite("data/gui/slot.png");
 
         private ItemIcon() {
-            setPreferredSize(new Dimension(84, 84));
-            setMinimumSize(new Dimension(84, 84));
+            setPreferredSize(new Dimension(66, 66));
+            setMinimumSize(new Dimension(66, 66));
         }
 
         private void setEntry(final Entry entry) {
@@ -781,9 +691,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private void refreshButtons() {
         final boolean offer = requestToken != null;
-        request.setVisible(!offer);
-        confirm.setVisible(offer);
-        cancel.setVisible(offer);
+        actionLayout.show(actions, offer ? "offer" : "request");
         request.setEnabled(selected() != null && !waiting && !offer);
         confirm.setEnabled(offer && !waiting);
         cancel.setEnabled(offer && !waiting);
