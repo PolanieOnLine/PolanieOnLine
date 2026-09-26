@@ -31,6 +31,9 @@ public class NpcShopEventSerializationTest {
         assertNotNull(playerClass.getDefinition(
                 DefinitionClass.RPEVENT, Events.NPC_SHOP));
 
+        assertEquals(141, playerClass.getCode(DefinitionClass.ATTRIBUTE, "dead"));
+        assertEquals(216, playerClass.getCode(DefinitionClass.ATTRIBUTE, "npc_sales"));
+
         final RPObject player = new RPObject();
         player.setRPClass("player");
         final RPEvent shop = new RPEvent(Events.NPC_SHOP);
