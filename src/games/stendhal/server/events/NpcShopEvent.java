@@ -53,6 +53,10 @@ public final class NpcShopEvent extends RPEvent {
         attribute(type, "pending_price", Type.INT);
         attribute(type, "pending_price_text", Type.STRING);
         attribute(type, "request_token", Type.STRING);
+        attribute(type, "sell_descriptions", Type.VERY_LONG_STRING);
+        attribute(type, "buy_descriptions", Type.VERY_LONG_STRING);
+        attribute(type, "sell_price_values", Type.VERY_LONG_STRING);
+        attribute(type, "buy_price_values", Type.VERY_LONG_STRING);
     }
 
     private static void attribute(final RPClass type, final String name,
@@ -93,6 +97,8 @@ public final class NpcShopEvent extends RPEvent {
         Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
         final List<String> offeredNames = new ArrayList<String>();
         final List<String> prices = new ArrayList<String>();
+        final List<String> rawPrices = new ArrayList<String>();
+        final List<String> descriptions = new ArrayList<String>();
         final List<String> classes = new ArrayList<String>();
         final List<String> subclasses = new ArrayList<String>();
         final List<String> stackable = new ArrayList<String>();
@@ -112,6 +118,13 @@ public final class NpcShopEvent extends RPEvent {
             }
             offeredNames.add(name);
             prices.add(MoneyUtils.formatPrice(price));
+            rawPrices.add(Integer.toString(price));
+            String description = template != null && template.hasDescription()
+                    ? template.getDescription() : "";
+            if (description == null) {
+                description = "";
+            }
+            descriptions.add(description.replaceAll("\\s+", " ").trim());
             classes.add(template == null ? "" : template.getItemClass());
             subclasses.add(template == null ? "" : template.getItemSubclass());
             stackable.add(template instanceof StackableItem ? "1" : "0");
@@ -119,6 +132,8 @@ public final class NpcShopEvent extends RPEvent {
         if (!offeredNames.isEmpty()) {
             put(prefix + "_names", offeredNames);
             put(prefix + "_prices", prices);
+            put(prefix + "_price_values", rawPrices);
+            put(prefix + "_descriptions", descriptions);
             put(prefix + "_classes", classes);
             put(prefix + "_subclasses", subclasses);
             if ("sell".equals(prefix)) {
