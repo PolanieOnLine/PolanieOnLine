@@ -47,6 +47,7 @@ import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.common.constants.Actions;
+import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 
@@ -438,19 +439,12 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JTextField amount = new JTextField("1", 3);
     private final ShopButton minus = new ShopButton("-", false);
     private final ShopButton plus = new ShopButton("+", false);
-    private final ShopButton request = new ShopButton("Sprawdź cenę", true);
-    private final ShopButton confirm = new ShopButton("Kup teraz", true);
-    private final ShopButton cancel = new ShopButton("Anuluj", false);
+    private final ShopButton request = new ShopButton("Kup teraz", true);
     private final ShopButton refresh = new ShopButton("Odśwież", false);
     private final JTextArea itemDescription = new JTextArea(3, 2);
-    private final CardLayout actionLayout = new CardLayout();
-    private final JPanel actions = new JPanel(actionLayout);
+    private boolean currencyReformed;
 
     private int npcId;
-    private String requestToken;
-    private String pendingMode;
-    private String pendingItem;
-    private int pendingAmount;
     private boolean sellingMode;
     private boolean applying;
     private boolean waiting;
@@ -463,7 +457,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         addCloseListener(new CloseListener() {
             @Override
             public void windowClosed(final InternalWindow window) {
-                send("close", null, null, 0, requestToken);
+                send("close", null, null, 0);
                 instance = null;
             }
         });
@@ -651,16 +645,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantity.add(amount);
         quantity.add(plus);
         controls.add(quantity, BorderLayout.NORTH);
-        final PlainPanel requestPanel = new PlainPanel(new BorderLayout());
-        requestPanel.add(request, BorderLayout.CENTER);
-        final PlainPanel offeredActions = new PlainPanel(
-                new java.awt.GridLayout(2, 1, 0, 4));
-        offeredActions.add(confirm);
-        offeredActions.add(cancel);
-        actions.add(requestPanel, "request");
-        actions.add(offeredActions, "offer");
-        actions.setPreferredSize(new Dimension(10, 64));
-        controls.add(actions, BorderLayout.SOUTH);
+        request.setPreferredSize(new Dimension(10, 50));
+        controls.add(request, BorderLayout.SOUTH);
         detail.add(controls, BorderLayout.SOUTH);
 
         final PlainPanel body = new PlainPanel(new BorderLayout(10, 0));
@@ -709,10 +695,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 refreshDetails();
             }
         });
-        request.addActionListener(event -> ask());
-        confirm.addActionListener(event -> answer(true));
-        cancel.addActionListener(event -> answer(false));
-        refresh.addActionListener(event -> send("refresh", null, null, 0, null));
+        request.addActionListener(event -> purchase());
+        refresh.addActionListener(event -> send("refresh", null, null, 0));
         amount.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(final DocumentEvent event) {
@@ -734,7 +718,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private void changeAmount(final int change) {
         final Entry entry = selected();
-        if (entry == null || waiting || requestToken != null) {
+        if (entry == null || waiting) {
             return;
         }
         final int oldValue = readAmount();
@@ -803,7 +787,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     }
 
     private void switchMode(final boolean toSelling) {
-        if (waiting || requestToken != null || sellingMode == toSelling) {
+        if (waiting || sellingMode == toSelling) {
             return;
         }
         sellingMode = toSelling;
@@ -815,8 +799,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private void updateTabs() {
         buyTab.setActive(!sellingMode);
         sellTab.setActive(sellingMode);
-        buyTab.setEnabled(!selling.isEmpty() && requestToken == null && !waiting);
-        sellTab.setEnabled(!buying.isEmpty() && requestToken == null && !waiting);
+        buyTab.setEnabled(!selling.isEmpty() && !waiting);
+        sellTab.setEnabled(!buying.isEmpty() && !waiting);
         cards.show(catalog, sellingMode ? "sell" : "buy");
         final int count = sellingMode ? buying.size() : selling.size();
         final int visible = currentList().getModel().getSize();
@@ -836,23 +820,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
         buying.clear();
         readEntries(event, "sell", selling);
         readEntries(event, "buy", buying);
-        requestToken = event.has("request_token") ? event.get("request_token") : null;
-        pendingMode = event.has("pending_mode") ? event.get("pending_mode") : null;
-        pendingItem = event.has("pending_item") ? event.get("pending_item") : null;
-        pendingAmount = event.has("pending_amount") ? event.getInt("pending_amount") : 0;
-
-        if (requestToken != null) {
-            sellingMode = "sell".equals(pendingMode);
-            if (pendingItem != null && !pendingItem.toLowerCase(Locale.ROOT)
-                    .contains(search.getText().trim().toLowerCase(Locale.ROOT))) {
-                search.setText("");
-            }
-        } else if ((sellingMode && buying.isEmpty())
+        currencyReformed = event.has("currency_reformed")
+                && event.getInt("currency_reformed") == 1;
+        if ((sellingMode && buying.isEmpty())
                 || (!sellingMode && selling.isEmpty())) {
             sellingMode = selling.isEmpty() && !buying.isEmpty();
         }
         filter();
-        final String selectedName = requestToken != null ? pendingItem : previous;
+        final String selectedName = previous;
         if (selectedName != null) {
             final ShopList list = currentList();
             for (int i = 0; i < list.getModel().getSize(); i++) {
@@ -863,26 +838,19 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 }
             }
         }
-        if ("offer".equals(event.get("phase")) && requestToken != null) {
-            quote.setText((sellingMode ? "Do otrzymania: " : "Do zapłaty: ")
-                    + event.get("pending_price_text"));
-            quote.setVisible(true);
-            setStatus("Oferta gotowa. Potwierdź lub anuluj.", GOLD);
-        } else {
-            quote.setText("");
-            quote.setVisible(false);
-            final String message = event.has("message") ? event.get("message") : "";
-            final boolean error = message.startsWith("Nie ")
-                    || message.startsWith("Nieprawidł")
-                    || message.startsWith("Oferta wygasła")
-                    || message.startsWith("Cena uległa")
-                    || message.contains("nie powiodła");
-            final Color color = error ? ERROR
-                    : "result".equals(event.get("phase"))
-                            && "Transakcja zakończona.".equals(message) ? SUCCESS : MUTED;
-            setStatus(message.length() > 0 ? message
-                    : "Wybierz przedmiot i zapytaj handlarza o cenę.", color);
-        }
+        final String message = event.has("message") ? event.get("message") : "";
+        final boolean error = message.startsWith("Nie ")
+                || message.startsWith("Nieprawidł")
+                || message.startsWith("Oferta wygasła")
+                || message.startsWith("Cena uległa")
+                || message.contains("nie powiodła")
+                || message.startsWith("Podejdź");
+        final boolean success = "result".equals(event.get("phase"))
+                && (message.startsWith("Zakup udany:")
+                        || message.startsWith("Sprzedaż udana:"));
+        setStatus(message.length() > 0 ? message
+                : "Wybierz przedmiot, ustaw ilość i kup lub sprzedaj.",
+                error ? ERROR : success ? SUCCESS : MUTED);
         applying = false;
         updateTabs();
         refreshDetails();
@@ -986,61 +954,87 @@ public final class NpcShopWindow extends InternalManagedWindow {
         refreshButtons();
     }
 
-    private void refreshButtons() {
-        final boolean offer = requestToken != null;
-        actionLayout.show(actions, offer ? "offer" : "request");
-        request.setText(sellingMode ? "Sprawdź ofertę" : "Sprawdź cenę");
-        confirm.setText(sellingMode ? "Sprzedaj teraz" : "Kup teraz");
-        final Entry current = selected();
-        final int quantity = readAmount();
-        final boolean valid = current != null && quantity >= 1
-                && quantity <= (current.stackable ? 1000 : 1);
-        request.setEnabled(valid && !waiting && !offer);
-        confirm.setEnabled(offer && !waiting);
-        cancel.setEnabled(offer && !waiting);
-        search.setEnabled(!offer && !waiting);
-        sellList.setEnabled(!offer && !waiting);
-        buyList.setEnabled(!offer && !waiting);
-        amount.setEnabled(!offer && !waiting && selected() != null);
-        minus.setEnabled(!offer && !waiting && selected() != null && readAmount() > 1);
-        plus.setEnabled(!offer && !waiting && selected() != null
-                && readAmount() < (selected() != null && selected().stackable ? 1000 : 1));
-        refresh.setEnabled(!waiting);
-        updateTabs();
-        actions.revalidate();
-        actions.repaint();
+    private static String formatMoney(final long value, final boolean reformed) {
+        if (value > Integer.MAX_VALUE) {
+            return "Zbyt wysoka kwota";
+        }
+        final int amount = (int) value;
+        if (!reformed) {
+            return amount + " " + Grammar.polishQuantity("money", amount);
+        }
+        final List<String> parts = new ArrayList<String>();
+        final int dukaty = amount / 10000;
+        final int talary = amount % 10000 / 100;
+        final int miedziaki = amount % 100;
+        if (dukaty > 0) {
+            parts.add(dukaty + " " + Grammar.polishQuantity("dukat", dukaty));
+        }
+        if (talary > 0) {
+            parts.add(talary + " " + Grammar.polishQuantity("talar", talary));
+        }
+        if (miedziaki > 0 || parts.isEmpty()) {
+            parts.add(miedziaki + " "
+                    + Grammar.polishQuantity("miedziak", miedziaki));
+        }
+        if (parts.size() == 1) {
+            return parts.get(0);
+        }
+        if (parts.size() == 2) {
+            return parts.get(0) + " i " + parts.get(1);
+        }
+        return parts.get(0) + ", " + parts.get(1) + " i " + parts.get(2);
     }
 
-    private void ask() {
+    private void refreshButtons() {
+        final Entry current = selected();
+        final int quantity = readAmount();
+        final long total = current == null ? 0
+                : current.priceValue * quantity;
+        final boolean valid = current != null && quantity >= 1
+                && quantity <= (current.stackable ? 1000 : 1)
+                && (current.priceValue == 0 || total <= Integer.MAX_VALUE);
+        request.setText(sellingMode ? "Sprzedaj teraz" : "Kup teraz");
+        request.setEnabled(valid && !waiting);
+        search.setEnabled(!waiting);
+        sellList.setEnabled(!waiting);
+        buyList.setEnabled(!waiting);
+        amount.setEnabled(!waiting && current != null);
+        minus.setEnabled(!waiting && current != null && quantity > 1);
+        plus.setEnabled(!waiting && current != null
+                && quantity < (current.stackable ? 1000 : 1));
+        refresh.setEnabled(!waiting);
+        if (current != null && quantity > 1 && valid && current.priceValue > 0) {
+            quote.setText("<html><center>Razem orientacyjnie: "
+                    + formatMoney(total, currencyReformed) + "</center></html>");
+            quote.setVisible(true);
+        } else {
+            quote.setText("");
+            quote.setVisible(false);
+        }
+        updateTabs();
+    }
+
+    private void purchase() {
         final Entry entry = selected();
-        if (entry == null || waiting || requestToken != null) {
+        if (entry == null || waiting) {
             return;
         }
         final int quantity = readAmount();
-        if (quantity < 1 || quantity > (entry.stackable ? 1000 : 1)) {
+        if (quantity < 1 || quantity > (entry.stackable ? 1000 : 1)
+                || (entry.priceValue > 0
+                        && entry.priceValue * quantity > Integer.MAX_VALUE)) {
             setStatus("Podaj poprawną ilość.", ERROR);
             return;
         }
         waiting = true;
         refreshButtons();
-        setStatus("Oczekiwanie na ofertę handlarza...", MUTED);
-        send("request", sellingMode ? "sell" : "buy",
-                entry.name, quantity, null);
-    }
-
-    private void answer(final boolean accept) {
-        if (requestToken == null || waiting) {
-            return;
-        }
-        waiting = true;
-        refreshButtons();
         setStatus("Oczekiwanie na odpowiedź handlarza...", MUTED);
-        send(accept ? "confirm" : "cancel", pendingMode, pendingItem,
-                pendingAmount, requestToken);
+        send("purchase", sellingMode ? "sell" : "buy",
+                entry.name, quantity);
     }
 
     private void send(final String command, final String mode,
-            final String item, final int quantity, final String token) {
+            final String item, final int quantity) {
         if (npcId == 0) {
             return;
         }
@@ -1054,9 +1048,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
         if (item != null) {
             action.put("item", item);
             action.put("quantity", quantity);
-        }
-        if (token != null) {
-            action.put("request_token", token);
         }
         StendhalClient.get().send(action);
     }
