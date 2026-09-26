@@ -33,7 +33,7 @@ public class StendhalCharacterQuestDAO {
 					+ "quest_state TEXT, "
 					+ "completed INTEGER NOT NULL, "
 					+ "timedate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
-					+ "PRIMARY KEY(id))", null);
+					+ "PRIMARY KEY(id));", null);
 			transaction.execute("CREATE INDEX IF NOT EXISTS i_character_quests_charname "
 					+ "ON " + TABLE_NAME + "(charname)", null);
 			transaction.execute("CREATE INDEX IF NOT EXISTS i_character_quests_quest_name "
