@@ -47,7 +47,7 @@ public class ImageSplit {
      * @param tileSizeTarget size in px for the target files
      * @param offsetX offset for the x-coordinate in the target filenames
      * @param offsetY offset for the y-coordinate in the target filenames
-     * @param cutOff number of pixels to cut of at each side of the original image
+     * @param cutOff number of source pixels to skip from the top and left edges
      */
     public ImageSplit(String imageFilename, String targetFolder, String prefix, int tileSizeSource, int tileSizeTarget, int offsetX, int offsetY, int cutOff) {
         this.imageFilename = imageFilename;
@@ -68,8 +68,8 @@ public class ImageSplit {
         System.out.println(prefix);
         BufferedImage img = ImageIO.read(new File(imageFilename));
         Color bgColor = new Color(47, 53, 65);
-        for (int x = 0; x < divRoundingUp(img.getWidth(), tileSizeSource); x++) {
-            for (int y = 0; y < divRoundingUp(img.getHeight(), tileSizeSource); y++) {
+        for (int x = 0; x < divRoundingUp(img.getWidth() - cutOff, tileSizeSource); x++) {
+            for (int y = 0; y < divRoundingUp(img.getHeight() - cutOff, tileSizeSource); y++) {
                 BufferedImage target = new BufferedImage(tileSizeTarget, tileSizeTarget, BufferedImage.TYPE_INT_RGB);
                 Graphics2D graphics = target.createGraphics();
                 graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -109,13 +109,13 @@ public class ImageSplit {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-    	new ImageSplit("tmp/world.png", "tmp/map", "0-", 8192, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "1-", 4096, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "2-", 2048, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "3-", 1024, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world.png", "tmp/map", "4-",  512, 256, 0, 0, 64).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "5-", 1024, 256, 0, 0, 256).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "6-", 512, 256, 0, 0, 256).split();
-        new ImageSplit("tmp/world-large.png", "tmp/map", "7-", 256, 256, 0, 0, 256).split();
+        new ImageSplit("tmp/world.png", "tmp/map", "0-", 8192, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world.png", "tmp/map", "1-", 4096, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world.png", "tmp/map", "2-", 2048, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world.png", "tmp/map", "3-", 1024, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world.png", "tmp/map", "4-",  512, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world-large.png", "tmp/map", "5-", 1024, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world-large.png", "tmp/map", "6-", 512, 256, 0, 0, 0).split();
+        new ImageSplit("tmp/world-large.png", "tmp/map", "7-", 256, 256, 0, 0, 0).split();
     }
 }
