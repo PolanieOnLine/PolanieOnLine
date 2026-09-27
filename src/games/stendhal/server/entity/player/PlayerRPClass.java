@@ -183,5 +183,8 @@ public class PlayerRPClass {
 		// commerce
 		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
+
+		// Keep the new event last to preserve existing saved attribute codes.
+		player.addRPEvent(Events.NPC_SHOP, Definition.PRIVATE);
 	}
 }

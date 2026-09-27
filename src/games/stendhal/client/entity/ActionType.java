@@ -120,6 +120,16 @@ public enum ActionType {
 			return rpaction;
 		}
 	},
+	NPC_SHOP(Actions.NPC_SHOP, "Sklep") {
+		@Override
+		public RPAction fillTargetInfo(final IEntity entity) {
+			final RPAction action = new RPAction();
+			action.put(Actions.TYPE, Actions.NPC_SHOP);
+			action.put("command", "open");
+			action.put("npc_id", entity.getID().getObjectID());
+			return action;
+		}
+	},
 	ITEM_UPGRADE(Actions.ITEM_UPGRADE, "Ulepsz przedmiot") {
 		@Override
 		public RPAction fillTargetInfo(final IEntity entity) {

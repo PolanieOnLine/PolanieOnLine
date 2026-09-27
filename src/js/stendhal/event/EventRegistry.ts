@@ -20,6 +20,7 @@ import { GroupChangeEvent } from "./GroupChangeEvent";
 import { GroupInviteEvent } from "./GroupInviteEvent";
 import { ImageEvent } from "event/ImageEvent";
 import { ItemUpgradeEvent } from "./ItemUpgradeEvent";
+import { NpcShopEvent } from "./NpcShopEvent";
 import { PlayerLoggedOnEvent } from "./PlayerLoggedOnEvent";
 import { PlayerLoggedOutEvent } from "./PlayerLoggedOutEvent";
 import { PrivateTextEvent } from "event/PrivateTextEvent";
@@ -78,6 +79,7 @@ export class EventRegistry {
 		marauroa.rpeventFactory.register("group_invite_event", GroupInviteEvent);
 		marauroa.rpeventFactory.register("image_event", ImageEvent);
 		marauroa.rpeventFactory.register("item_upgrade_event", ItemUpgradeEvent);
+		marauroa.rpeventFactory.register("npc_shop_event", NpcShopEvent);
 		marauroa.rpeventFactory.register("player_logged_on", PlayerLoggedOnEvent);
 		marauroa.rpeventFactory.register("player_logged_out", PlayerLoggedOutEvent);
 		marauroa.rpeventFactory.register("private_text", PrivateTextEvent);
