@@ -51,11 +51,13 @@ import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.common.constants.CharacterSlots;
 import games.stendhal.common.constants.Testing;
 import marauroa.client.BannedAddressException;
 import marauroa.client.TimeoutException;
 import marauroa.common.game.CharacterResult;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.Result;
 import marauroa.common.net.InvalidVersionException;
 
 /**
@@ -77,10 +79,9 @@ public final class CharacterDialog extends JDialog implements Runnable {
 	/** Height of a player image in pixels */
 	private static final int IMAGE_HEIGHT = 64;
 	/**
-	 * Maximum number of characters / account. A soft limit since this
-	 * is client side.
+	 * Maximum number of characters per account, also enforced by the server.
 	 */
-	private static final int MAX_CHARACTERS = 8;
+	private static final int MAX_CHARACTERS = CharacterSlots.MAX_CHARACTERS;
 
 
 	/** Area containing buttons for each character */
@@ -387,7 +388,10 @@ public final class CharacterDialog extends JDialog implements Runnable {
 				// TODO: error handling, exceptions and return of false
 				CharacterResult result = StendhalClient.get().createCharacter(name, new RPObject());
 				if (result.getResult().failed()) {
-					JOptionPane.showMessageDialog(parent, result.getResult().getText());
+					JOptionPane.showMessageDialog(parent,
+							result.getResult() == Result.FAILED_TOO_MANY
+							? "Na jednym koncie może być maksymalnie " + MAX_CHARACTERS + " postaci."
+							: result.getResult().getText());
 				} else if (parent.characterSessionSelection) {
 					parent.chooseCharacter(name);
 				} else {

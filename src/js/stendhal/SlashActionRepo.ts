@@ -259,7 +259,7 @@ export class SlashActionRepo {
 
 		return {
 			info: [
-				"Aby uzyskać szczegółowe informacje, odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine_Przewodnik",
+				"Aby uzyskać szczegółowe informacje, odwiedź #https://polanieonline.eu/forum/wiedza?type=guide",
 				"Oto najczęściej używane polecenia:"
 			],
 			grouping: grouping
@@ -350,7 +350,7 @@ export class SlashActionRepo {
 		};
 		return {
 			info: [
-				"Aby uzyskać szczegółowe informacje, odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine:Administrowanie",
+				"Aby uzyskać szczegółowe informacje, odwiedź #https://polanieonline.eu/kontakt",
 				"Oto najczęściej używane polecenia GM:"
 			],
 			grouping: grouping
@@ -1459,7 +1459,7 @@ export class SlashActionRepo {
 
 	"atlas": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			window.location.href = "https://s1.polanieonline.eu/atlas.html?me="
+			window.location.href = "https://polanieonline.eu/atlas.html?me="
 				+ marauroa.currentZoneName + "." + marauroa.me.x + "." + marauroa.me.y;
 			return true;
 		},
@@ -1472,25 +1472,25 @@ export class SlashActionRepo {
 
 	"beginnersguide": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			window.location.href = "https://s1.polanieonline.eu/wiki/PolanieOnLine_Poradniki_dla_Początkujących";
+			window.location.href = "https://polanieonline.eu/forum/wiedza?type=guide";
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Otwiera stronę wiki z poradnikiem dla początkujących na polanieonline.eu."];
+			return ["", "Otwiera poradniki dla początkujących na polanieonline.eu."];
 		}
 	};
 
-	"characterselector" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/mycharacters.html");
+	"characterselector" = new OpenWebsiteAction("https://polanieonline.eu/profile?section=characters");
 
-	"faq" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLineFAQ");
+	"faq" = new OpenWebsiteAction("https://polanieonline.eu/faq");
 
-	"manual" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLine_Przewodnik/Sterowanie_i_Ustawienia_Gry");
+	"manual" = new OpenWebsiteAction("https://polanieonline.eu/forum/wiedza?type=guide&q=sterowanie");
 
 	"profile": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			var url = "https://s1.polanieonline.eu/character/";
+			var url = "https://polanieonline.eu/character/";
 			var name = marauroa.me["_name"] || singletons.getSessionManager().getCharName();
 
 			if (params.length > 0 && params[0] != null) {
@@ -1514,15 +1514,15 @@ export class SlashActionRepo {
 		}
 	};
 
-	"rules" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLine_Regulaminy");
+	"rules" = new OpenWebsiteAction("https://polanieonline.eu/forum/wiedza?q=regulamin");
 
-	"changepassword" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/change-password.html");
+	"changepassword" = new OpenWebsiteAction("https://polanieonline.eu/profile?section=settings");
 
-	"loginhistory" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/history.html");
+	"loginhistory" = new OpenWebsiteAction("https://polanieonline.eu/profile?section=settings");
 
-	"logout" = new OpenWebsiteAction("/account/logout.html");
+	"logout" = new OpenWebsiteAction("https://polanieonline.eu/profile?section=characters");
 
-	"halloffame" = new OpenWebsiteAction("https://s1.polanieonline.eu/aleja-slaw/active_overview.html");
+	"halloffame" = new OpenWebsiteAction("https://polanieonline.eu/aleja-slaw");
 
 	"storemessage": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {

@@ -30,14 +30,14 @@ class BareBonesBrowserLaunchCommandsFactory {
 		String server_page = ClientGameConfiguration.get("DEFAULT_SERVER_WEB");
 
 		commandsAndUrls = new HashMap<String, String>();
-		commandsAndUrls.put("beginnersguide", server_page + "/wprowadzenie.html");
-		commandsAndUrls.put("faq", server_page + "/faq.html");
-		commandsAndUrls.put("manual", server_page + "/wprowadzenie.html");
+		commandsAndUrls.put("beginnersguide", server_page + "/forum/wiedza?type=guide");
+		commandsAndUrls.put("faq", server_page + "/faq");
+		commandsAndUrls.put("manual", server_page + "/forum/wiedza?type=guide");
 		commandsAndUrls.put("rules", server_page + "/regulamin/regulamin-gry-polanieonline");
-		commandsAndUrls.put("changepassword", server_page + "/account/ustawienia.html");
-		commandsAndUrls.put("loginhistory", server_page + "/account/history.html");
-		commandsAndUrls.put("merge", server_page + "/account/ustawienia.html");
-		commandsAndUrls.put("halloffame", server_page + "/aleja-slaw/all_overview.html");
+		commandsAndUrls.put("changepassword", server_page + "/profile?section=settings");
+		commandsAndUrls.put("loginhistory", server_page + "/profile?section=settings");
+		commandsAndUrls.put("merge", server_page + "/profile?section=settings");
+		commandsAndUrls.put("halloffame", server_page + "/aleja-slaw");
 	}
 
 	/**

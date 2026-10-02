@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.engine.db.CharacterSlotsDAO.LimitReachedException;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.CharacterResult;
 import marauroa.common.game.RPObject;
@@ -95,14 +96,17 @@ public class CharacterCreator {
 
 			// monitor new account names
 			final String text = "Administrator: Została utworzona nowa postać zwana " + character + " (należąca do " + username + ").";
-			SingletonRepository.getRuleProcessor().sendMessageToSupporters(text);
 
 			// Finally we add it to database.
 			characterDAO.addCharacter(trans, username, character, object,
 					new Timestamp(System.currentTimeMillis()));
+			SingletonRepository.getRuleProcessor().sendMessageToSupporters(text);
 			transactionPool.commit(trans);
 
 			return new CharacterResult(Result.OK_CREATED, character, object);
+		} catch (final LimitReachedException e) {
+			transactionPool.rollback(trans);
+			return new CharacterResult(Result.FAILED_TOO_MANY, character, template);
 		} catch (final Exception e) {
 			transactionPool.rollback(trans);
 			logger.error("Can't create character", e);

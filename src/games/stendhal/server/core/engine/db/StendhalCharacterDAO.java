@@ -38,6 +38,7 @@ public class StendhalCharacterDAO extends CharacterDAO {
 	public void addCharacter(final DBTransaction transaction, final String username,
 			final String character, final RPObject player, Timestamp timestamp) throws SQLException, IOException {
 
+		CharacterSlotsDAO.requireFreeSlot(transaction, username);
 		super.addCharacter(transaction, username, character, player, timestamp);
 
 		// Here goes the Stendhal specific code.

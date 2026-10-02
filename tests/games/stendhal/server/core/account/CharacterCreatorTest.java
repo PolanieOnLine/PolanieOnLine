@@ -24,6 +24,8 @@ import marauroa.common.game.Result;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.DatabaseFactory;
+import marauroa.server.game.db.AccountDAO;
+import marauroa.server.game.db.DAORegister;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
@@ -35,6 +37,17 @@ public class CharacterCreatorTest {
 		new DatabaseFactory().initializeDatabase();
 		PlayerTestHelper.generatePlayerRPClasses();
 		ItemTestHelper.generateRPClasses();
+		final DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			final AccountDAO accounts = DAORegister.get().get(AccountDAO.class);
+			if (!accounts.hasPlayer(transaction, "user")) {
+				accounts.addPlayer(transaction, "user", new byte[16], "user@example.invalid");
+			}
+			TransactionPool.get().commit(transaction);
+		} catch (Exception e) {
+			TransactionPool.get().rollback(transaction);
+			throw e;
+		}
 	}
 
 	/**
@@ -50,6 +63,43 @@ public class CharacterCreatorTest {
 		assertEquals(Result.FAILED_PLAYER_EXISTS, cc.create().getResult());
 
 		cleanDB();
+	}
+
+	@Test
+	public void testFullAccountReturnsTooMany() throws Exception {
+		final TransactionPool pool = TransactionPool.get();
+		final DBTransaction setup = pool.beginWork();
+		try {
+			DAORegister.get().get(AccountDAO.class).addPlayer(
+					setup, "fullaccount", new byte[16], "fullaccount@example.invalid");
+			final int accountId = DAORegister.get().get(AccountDAO.class)
+					.getDatabasePlayerId(setup, "fullaccount");
+			for (int i = 0; i < 8; i++) {
+				setup.execute("INSERT INTO characters (player_id, charname, object_id, status, timedate)"
+						+ " VALUES (" + accountId + ", 'limitfixture" + i + "', 0, 'inactive', CURRENT_TIMESTAMP)", null);
+			}
+			pool.commit(setup);
+		} catch (Exception e) {
+			pool.rollback(setup);
+			throw e;
+		}
+		try {
+			assertEquals(Result.FAILED_TOO_MANY,
+					new CharacterCreator("fullaccount", "limitnewplayer", null).create().getResult());
+		} finally {
+			final DBTransaction cleanup = pool.beginWork();
+			try {
+				cleanup.execute("DELETE FROM characters WHERE player_id IN"
+						+ " (SELECT id FROM account WHERE username='fullaccount')", null);
+				cleanup.execute("DELETE FROM email WHERE player_id IN"
+						+ " (SELECT id FROM account WHERE username='fullaccount')", null);
+				cleanup.execute("DELETE FROM account WHERE username='fullaccount'", null);
+				pool.commit(cleanup);
+			} catch (Exception e) {
+				pool.rollback(cleanup);
+				throw e;
+			}
+		}
 	}
 
 	private void cleanDB() throws SQLException {

@@ -20,7 +20,7 @@
 			<name>Zejście do Smoczej Jaskini</name>
 			<type>dungeon</type>
 			<description>Jedna z najbardziej niebezpiecznych jaskiń zlokalizowanych blisko Wieliczki. Grasują w niej straszne oraz dwugłowe stworzenia ze skrzydłami!</description>
-			<url>https://s1.polanieonline.eu/wieliczka</url>
+			<url>https://polanieonline.eu/atlas?swiat=praslowianska&amp;x=514144&amp;y=18624&amp;zoom=6</url>
 		</point-of-interest>
 
 		<entity x="100" y="83">
@@ -116,7 +116,7 @@
 			<name>Wejście do kopalni soli</name>
 			<type>dungeon</type>
 			<description>Wejście do kopalni soli, Wieliczki. Należny w niej śmiertelnie uważać na siebie, nie wiadomo co zza roku wyskoczy...</description>
-			<url>https://s1.polanieonline.eu/wieliczka</url>
+			<url>https://polanieonline.eu/atlas?swiat=praslowianska&amp;x=514144&amp;y=18624&amp;zoom=6</url>
 		</point-of-interest>
 		<portal x="31" y="77" ref="mines_entrance">
 			<destination zone="-1_wieliczka_salt_mines_c" ref="mines_exit"/>
