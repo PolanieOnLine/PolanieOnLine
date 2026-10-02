@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/PolanieOnLine/PolanieOnLine/issues"
   },
-  "homepage": "https://s1.polanieonline.eu",
+  "homepage": "https://polanieonline.eu",
   "private": true,
   "devDependencies": {
 	"esbuild": "0.27.2",

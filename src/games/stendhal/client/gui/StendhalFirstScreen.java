@@ -183,7 +183,7 @@ public class StendhalFirstScreen extends JFrame {
 		Action helpAction = new AbstractAction("Pomoc") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BareBonesBrowserLaunch.openURL(ClientGameConfiguration.get("DEFAULT_SERVER_WEB") + "/wprowadzenie.html");
+				BareBonesBrowserLaunch.openURL(ClientGameConfiguration.get("DEFAULT_SERVER_WEB") + "/forum/wiedza?type=guide");
 			}
 		};
 		helpAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);
