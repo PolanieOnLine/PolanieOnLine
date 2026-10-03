@@ -52,9 +52,17 @@ public class PreferencesActivity extends AppCompatActivity {
 		instance = this;
 
 		// use same orientation as main activity
-		setRequestedOrientation(MainActivity.get().getRequestedOrientation());
+		if (MainActivity.get() != null) { setRequestedOrientation(MainActivity.get().getRequestedOrientation()); }
 
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 		setContentView(R.layout.activity_preferences);
+		android.view.View content = findViewById(android.R.id.content);
+		androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(content, (view, insets) -> {
+			androidx.core.graphics.Insets safe = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars()
+					| androidx.core.view.WindowInsetsCompat.Type.displayCutout() | androidx.core.view.WindowInsetsCompat.Type.ime());
+			view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+			return insets;
+		});
 
 		if (findViewById(R.id.preferencesFrame) != null) {
 			if (savedInstanceState != null) {
@@ -156,6 +164,7 @@ public class PreferencesActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		LOG.debug("{}.onDestroy() called", PreferencesActivity.class.getName());
+		if (instance == this) { instance = null; }
 		super.onDestroy();
 	}
 

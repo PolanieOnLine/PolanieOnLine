@@ -41,6 +41,30 @@
 		app:layout_constraintTop_toTopOf="parent">
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
+	<FrameLayout android:id="@+id/home_panel"
+		android:layout_width="0dp" android:layout_height="0dp"
+		android:background="#55040C12"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+	<LinearLayout android:id="@+id/reconnect_panel"
+		android:layout_width="0dp" android:layout_height="wrap_content"
+		android:orientation="horizontal" android:gravity="center_vertical"
+		android:background="#EE102631" android:padding="8dp"
+		android:visibility="gone"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent">
+		<TextView android:id="@+id/reconnect_text" android:layout_width="0dp"
+			android:layout_weight="1" android:layout_height="wrap_content"
+			android:textColor="#F2F5F7" android:textSize="14sp" />
+		<Button android:id="@+id/reconnect_button" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:minHeight="48dp"
+			android:text="@string/reconnect" android:textAllCaps="false" />
+	</LinearLayout>
+
 	<Toolbar android:id="@+id/menu_main"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -113,6 +137,12 @@
 				android:text="Ustawienia" android:textColor="#fffaf0"
 				android:textStyle="normal" android:textAllCaps="false" />
 
+			<Button android:id="@+id/btn_tools"
+				android:layout_width="134dp" android:layout_height="48dp"
+				android:layout_marginTop="6dp" android:background="@drawable/btn_wood"
+				android:text="@string/app_tools" android:textColor="#fffaf0"
+				android:textAllCaps="false" />
+
 			<Button android:id="@+id/btn_quit"
 				android:layout_width="134dp" android:layout_height="32dp"
 				android:layout_marginTop="6dp"
@@ -124,5 +154,13 @@
 		</LinearLayout>
 
 	</Toolbar>
+
+	<FrameLayout android:id="@+id/game_loading_panel"
+		android:layout_width="0dp" android:layout_height="0dp"
+		android:visibility="gone"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

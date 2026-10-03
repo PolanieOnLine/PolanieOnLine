@@ -16,7 +16,7 @@ package eu.polanieonline.client;
  */
 public enum ServerProfile {
 	/** Production environment. */
-	PROD("Prod", "https://s1.polanieonline.eu/", "client", false, false),
+	PROD("Prod", "https://polanieonline.eu/", "client", false, false),
 	/** Staging environment. */
 	STAGE("Stage", "https://stage.polanieonline.eu/", "client", false, true),
 	/** Test environment. */

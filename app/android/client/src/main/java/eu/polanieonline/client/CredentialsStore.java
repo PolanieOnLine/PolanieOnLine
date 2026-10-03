@@ -91,6 +91,19 @@ public final class CredentialsStore {
 		prefs.edit().remove(KEY_CREDENTIALS).remove(KEY_USERNAME_LEGACY).remove(KEY_PASSWORD_LEGACY).apply();
 	}
 
+	/** Deletes only the chosen local login; never deletes the game account. */
+	public static boolean remove(Context context, String username) {
+		SharedPreferences prefs = getPreferences(context);
+		if (prefs == null) { return false; }
+		return remove(prefs, username);
+	}
+	/** Separate storage operation for migration and deletion regression tests. */
+	static boolean remove(SharedPreferences prefs, String username) {
+		List<Credentials> accounts = loadAll(prefs);
+		boolean removed = accounts.removeIf(account -> account.matchesUsername(username));
+		return removed && prefs.edit().putString(KEY_CREDENTIALS, serialize(accounts)).commit();
+	}
+
 	/**
 	 * Loads most recently saved credentials if available.
 	 *

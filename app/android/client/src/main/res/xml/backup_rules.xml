@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Whitelist only settings. Credentials and WebView sessions are not backed up. -->
+    <include domain="sharedpref" path="eu.polanieonline.client_preferences.xml" />
+</full-backup-content>

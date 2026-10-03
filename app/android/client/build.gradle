@@ -4,17 +4,16 @@ plugins {
 
 android {
 	namespace "eu.polanieonline.client"
-	compileSdk 32
+	compileSdk 36
+	buildFeatures { buildConfig true }
 
 	defaultConfig {
 		applicationId namespace
 		minSdk 21
-		targetSdk 32
+		targetSdk 36
 		versionCode 1042000
 		versionName "1.42"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-		targetSdkVersion 32
-		minSdkVersion 21
 	}
 
 	// F-Droid doesn't allow encrypted DependencyInfoBlock in APK
@@ -57,10 +56,6 @@ android {
 				keyPassword keystoreProperties["keyPassword"]
 				keyAlias keystoreProperties["keyAlias"]
 				unsigned = false;
-			} else if (signingConfigs.debug.storeFile.exists()) {
-				// use debug key
-				initWith signingConfigs.debug
-				unsigned = false;
 			}
 		}
 
@@ -79,7 +74,8 @@ android {
 
 	buildTypes {
 		debug {
-			applicationIdSuffix ".debug"
+			// Optional isolated package for emulator QA; never changes the release application ID.
+			applicationIdSuffix project.hasProperty("qa-package") ? ".debug.qa" : ".debug"
 			versionNameSuffix "-debug"
 			// prevent automatic generation of ~/.android/debug.keystore
 			signingConfig null
@@ -109,22 +105,19 @@ android {
 
 	applicationVariants.all { variant ->
 		variant.outputs.all {
-			def buildRoot = "../../../../"
 			if (variant.name.equals("release")) {
 				// exclude "-release" suffix
 				outputFileName = outputFileName.replaceAll("(-release)(?!.*-release)", "")
 			}
-			// output to <source_root>/build
-			outputFileName = new File("${buildRoot}", "${outputFileName}")
 		}
 	}
 
 	compileOptions {
+		coreLibraryDesugaringEnabled true
 		sourceCompatibility JavaVersion.VERSION_11
 		targetCompatibility JavaVersion.VERSION_11
 	}
-	compileSdkVersion 32
-	buildToolsVersion '32.0.0'
+	buildToolsVersion '36.1.0'
 
 	packagingOptions {
 		resources {
@@ -132,9 +125,10 @@ android {
 		}
 	}
 
-	lintOptions {
-		abortOnError false
+	lint {
+		abortOnError true
 	}
+	testOptions { unitTests.includeAndroidResources = true }
 
 	// print some build info for debugging
 	println("Package:         " + namespace)
@@ -146,14 +140,19 @@ android {
 }
 
 dependencies {
-	implementation "androidx.appcompat:appcompat:1.4.1"
+	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+	// Last maintained WorkManager line supporting Android 5 (API 21).
+	implementation 'androidx.work:work-runtime:2.10.5'
+	implementation "androidx.appcompat:appcompat:1.7.1"
 	implementation "com.google.android.material:material:1.4.0"
-	implementation "androidx.preference:preference-ktx:1.2.0"
-	implementation "androidx.security:security-crypto:1.1.0-alpha03"
+	implementation "androidx.preference:preference:1.2.1"
+	implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+	implementation "androidx.security:security-crypto:1.1.0"
 	// Log4j 2 version compatible with minSdk 21 (avoids MethodHandle on API < 26)
 	implementation "org.apache.logging.log4j:log4j-api:2.3"
 	implementation "org.apache.logging.log4j:log4j-core:2.3"
-	//testImplementation 'junit:junit:4.+'
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation 'org.robolectric:robolectric:4.14.1'
 	//androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	//androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

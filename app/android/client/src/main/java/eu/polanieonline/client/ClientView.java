@@ -111,6 +111,7 @@ public class ClientView extends WebView {
 	private boolean registerMode = false;
 	private boolean autoLoginAttempted = false;
 	private boolean autoRegisterAttempted = false;
+	private long credentialGeneration;
 	private static final int AUTO_LOGIN_TIMEOUT_MS = 20000;
 	private static final int AUTO_LOGIN_MAX_ATTEMPTS = 5;
 
@@ -205,6 +206,7 @@ public class ClientView extends WebView {
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
+		disposeConnectionChecks();
 		stopConnectivityPolling();
 		if (networkCallback != null) {
 			final ConnectivityManager cm = (ConnectivityManager) getContext()
@@ -263,13 +265,17 @@ public class ClientView extends WebView {
 				@Override
 				public void onAvailable(final Network network) {
 					super.onAvailable(network);
-					checkServerReachabilityAsync();
+					post(() -> { if (!connectionDisposed && connectivityPollingEnabled) { checkServerReachabilityAsync(); } });
 				}
 
 				@Override
 				public void onLost(final Network network) {
 					super.onLost(network);
-					updateConnectivityBadge(ConnectivityStatus.ERROR, "Brak połączenia");
+					post(() -> {
+						if (connectionDisposed) { return; }
+						updateConnectivityBadge(ConnectivityStatus.ERROR, null, "Brak sieci");
+						if (gameWasConnected && isGameActive()) { MainActivity.get().showReconnect(true, "Utracono połączenie z siecią."); }
+					});
 				}
 			};
 			cm.registerDefaultNetworkCallback(networkCallback);
@@ -278,108 +284,129 @@ public class ClientView extends WebView {
 		}
 	}
 
+	private boolean connectionDisposed, siteCheckRunning, gameWasConnected;
+	private boolean viewDestroyed, loadingProbeRunning;
+	private final Runnable loadingProbeRunnable=this::checkLoadingSurface;
+	private long connectionGeneration;
+	private int transportState = -1;
+
+	/** Native activity lifecycle controls polling; a background game is not reloaded. */
+	void resumeConnectionChecks() {
+		if (!connectionDisposed) { startConnectivityPolling(); checkServerReachabilityAsync(); if(isGameActive()) { checkLoadingSurface(); } }
+	}
+	void pauseConnectionChecks() { stopConnectivityPolling(); connectivityHandler.removeCallbacks(loadingProbeRunnable); }
+	void disposeConnectionChecks() {
+		connectionDisposed = true; connectionGeneration++; stopConnectivityPolling();
+		connectivityHandler.removeCallbacks(loadingProbeRunnable);
+		if (networkCallback != null) {
+			ConnectivityManager cm = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+			try { if (cm != null) { cm.unregisterNetworkCallback(networkCallback); } } catch (IllegalArgumentException ignored) { }
+			networkCallback = null;
+		}
+	}
+	@Override public void destroy() {
+		if(viewDestroyed) { return; }
+		viewDestroyed=true; disposeConnectionChecks(); reset();
+		super.destroy();
+	}
+
+	void cancelLoginFlow() {
+		if(connectionDisposed) { return; }
+		connectionGeneration++; reset(); stopLoading(); loadTitleScreen();
+	}
+	private void checkLoadingSurface() {
+		MainActivity activity=MainActivity.get();
+		if(connectionDisposed || !connectivityPollingEnabled || activity==null || !activity.isLoading(this) || loadingProbeRunning) { return; }
+		loadingProbeRunning=true;
+		final long generation=connectionGeneration;
+		evaluateJavascript(GameLoadingProbe.SCRIPT,value->{
+			loadingProbeRunning=false;
+			if(connectionDisposed || !connectivityPollingEnabled || generation!=connectionGeneration || MainActivity.get()!=activity || !activity.isLoading(this)) { return; }
+			if("1".equals(value) || "2".equals(value)) { activity.hideLoading(this); }
+			else { connectivityHandler.removeCallbacks(loadingProbeRunnable); connectivityHandler.postDelayed(loadingProbeRunnable,1000); }
+		});
+	}
+	String connectionDescription() {
+		if (isGameActive()) {
+			if (transportState == 1) { return "gra połączona"; }
+			if (transportState == 2 || transportState == 3) { return "gra rozłączona"; }
+			return "oczekiwanie na połączenie z grą";
+		}
+		return onTitleScreen() ? "ekran startowy" : "logowanie lub strona";
+	}
 	private void checkServerReachabilityAsync() {
-		new Thread(() -> {
-			updateConnectivityBadge(ConnectivityStatus.CONNECTING);
-			final String host = UrlHelper.getDefaultServer();
+		if (Looper.myLooper() != Looper.getMainLooper()) { post(this::checkServerReachabilityAsync); return; }
+		if (connectionDisposed || !connectivityPollingEnabled) { return; }
+		if (isGameActive()) {
+			final long generation = connectionGeneration;
+			evaluateJavascript(GameTransportProbe.SCRIPT, value -> {
+				if (connectionDisposed || generation != connectionGeneration || !isGameActive()) { return; }
+				int state;
+				try { state = Integer.parseInt(value); } catch (Exception e) { state = -1; }
+				transportState = state;
+				if (state == 1) {
+					gameWasConnected = true; updateConnectivityBadge(ConnectivityStatus.ONLINE, null, "Gra połączona");
+					MainActivity.get().showReconnect(false, "");
+				} else if (state == 2 || state == 3) {
+					MainActivity.get().hideLoading(this);
+					updateConnectivityBadge(ConnectivityStatus.ERROR, null, "Gra rozłączona");
+					MainActivity.get().showReconnect(true, "Utracono połączenie z grą.");
+				} else {
+					updateConnectivityBadge(ConnectivityStatus.CONNECTING, null, state == 0 ? "Łączenie z grą" : "Sprawdzanie gry");
+				}
+			});
+			scheduleNextConnectivityCheck(); return;
+		}
+		if (siteCheckRunning) { scheduleNextConnectivityCheck(); return; }
+		siteCheckRunning = true;
+		final long generation = connectionGeneration;
+		final String host = UrlHelper.getDefaultServer();
+		SiteData.IO.execute(() -> {
+			boolean online = false;
 			HttpURLConnection connection = null;
 			try {
-				final URL url = new URL(host);
-				connection = (HttpURLConnection) url.openConnection();
-				connection.setConnectTimeout(3000);
-				connection.setReadTimeout(3000);
+				connection = (HttpURLConnection)new URL(host).openConnection();
+				connection.setConnectTimeout(3000); connection.setReadTimeout(3000);
 				connection.setRequestMethod("HEAD");
-				final long start = System.currentTimeMillis();
-				connection.connect();
-				final long pingMs = System.currentTimeMillis() - start;
-				final int code = connection.getResponseCode();
-				if (code >= 200 && code < 400) {
-					updateConnectivityBadge(ConnectivityStatus.ONLINE, null, pingMs + " ms");
-					return;
-				}
-				updateConnectivityBadge(ConnectivityStatus.ERROR, "Problem z serwerem (kod " + code + ")",
-						getContext().getString(R.string.connectivity_status_offline));
-			} catch (Exception e) {
-				updateConnectivityBadge(ConnectivityStatus.ERROR, "Błąd połączenia: " + e.getMessage(),
-						getContext().getString(R.string.connectivity_status_offline));
-			} finally {
-				if (connection != null) {
-					connection.disconnect();
-				}
-			}
-			scheduleNextConnectivityCheck();
-		}).start();
-	}
-
-	private void updateConnectivityBadge(final ConnectivityStatus status) {
-		updateConnectivityBadge(status, null, null);
-	}
-
-	private void updateConnectivityBadge(final ConnectivityStatus status, final String message) {
-		updateConnectivityBadge(status, message, null);
-	}
-
-	private void updateConnectivityBadge(final ConnectivityStatus status, final String message,
-			final String customLabel) {
-		connectivityStatus = status;
-		if (connectivityStatusIcon == null || connectivityStatusLabel == null) {
-			return;
-		}
-		int color = Color.YELLOW;
-		int textRes = R.string.connectivity_status_connecting;
-		switch (status) {
-		case ONLINE:
-			color = Color.GREEN;
-			textRes = R.string.connectivity_status_online;
-			break;
-		case ERROR:
-			color = Color.RED;
-			textRes = R.string.connectivity_status_offline;
-			break;
-		default:
-			break;
-		}
-		final String label = customLabel != null ? customLabel : getContext().getString(textRes);
-		final int badgeColor = color;
-		final String tooltip = message != null ? message : label;
-		connectivityStatusIcon.post(() -> {
-			final GradientDrawable bg = (GradientDrawable) connectivityStatusIcon.getBackground();
-			if (bg != null) {
-				bg.setColor(badgeColor);
-			}
-			connectivityStatusLabel.setText(label);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				connectivityStatusLabel.setTooltipText(tooltip);
-			} else {
-				TooltipCompat.setTooltipText(connectivityStatusLabel, tooltip);
-			}
+				int code = connection.getResponseCode(); online = code >= 200 && code < 400;
+			} catch (Exception ignored) { }
+			finally { if (connection != null) { connection.disconnect(); } }
+			final boolean reachable = online;
+			post(() -> {
+				siteCheckRunning = false;
+				if (connectionDisposed || generation != connectionGeneration) { return; }
+				if (!isGameActive()) { updateConnectivityBadge(reachable ? ConnectivityStatus.ONLINE : ConnectivityStatus.ERROR,
+						null, reachable ? "Strona dostępna" : "Brak połączenia"); }
+				scheduleNextConnectivityCheck();
+			});
 		});
-		if (message != null) {
-			connectivityStatusLabel.post(() -> Notifier.toast(message));
-		}
 	}
-
+	private void updateConnectivityBadge(final ConnectivityStatus status) { updateConnectivityBadge(status, null, null); }
+	private void updateConnectivityBadge(final ConnectivityStatus status, final String message) { updateConnectivityBadge(status, message, null); }
+	private void updateConnectivityBadge(final ConnectivityStatus status, final String message, final String customLabel) {
+		if (Looper.myLooper() != Looper.getMainLooper()) { post(() -> updateConnectivityBadge(status, message, customLabel)); return; }
+		if (connectionDisposed) { return; }
+		connectivityStatus = status;
+		if (connectivityStatusIcon == null || connectivityStatusLabel == null) { return; }
+		int color = status == ConnectivityStatus.ONLINE ? 0xff78cc95 : status == ConnectivityStatus.ERROR ? 0xffee9385 : 0xffdfbc78;
+		String label = customLabel != null ? customLabel : status == ConnectivityStatus.ONLINE ? "Połączono"
+				: status == ConnectivityStatus.ERROR ? "Brak połączenia" : "Sprawdzanie połączenia";
+		GradientDrawable bg = (GradientDrawable)connectivityStatusIcon.getBackground();
+		if (bg != null) { bg.setColor(color); }
+		connectivityStatusLabel.setText(label); TooltipCompat.setTooltipText(connectivityStatusLabel, message != null ? message : label);
+	}
 	private void startConnectivityPolling() {
-		if (connectivityPollingEnabled) {
-			return;
-		}
-		connectivityPollingEnabled = true;
-		scheduleNextConnectivityCheck();
+		if (connectivityPollingEnabled || connectionDisposed) { return; }
+		connectivityPollingEnabled = true; scheduleNextConnectivityCheck();
 	}
-
 	private void stopConnectivityPolling() {
-		connectivityPollingEnabled = false;
-		connectivityHandler.removeCallbacks(connectivityRunnable);
+		connectivityPollingEnabled = false; connectivityHandler.removeCallbacks(connectivityRunnable);
 	}
-
 	private void scheduleNextConnectivityCheck() {
-		if (!connectivityPollingEnabled) {
-			return;
-		}
+		if (!connectivityPollingEnabled || connectionDisposed) { return; }
 		connectivityHandler.removeCallbacks(connectivityRunnable);
-		connectivityHandler.postDelayed(connectivityRunnable, CONNECTIVITY_POLL_INTERVAL_MS);
+		connectivityHandler.postDelayed(connectivityRunnable, isGameActive() ? CONNECTIVITY_POLL_INTERVAL_MS : 30000L);
 	}
-
 	/**
 	 * Initializes method overrides to handle page loading.
 	 */
@@ -400,17 +427,25 @@ public class ClientView extends WebView {
 			public boolean shouldOverrideUrlLoading(final WebView view, final WebResourceRequest request) {
 				Uri uri = request.getUrl();
 				final Uri.Builder builder = uri.buildUpon();
-				if (UrlHelper.isLoginUri(uri)) {
+				if (UrlHelper.isInternalUri(uri) && UrlHelper.isLoginUri(uri)) {
 					builder.appendQueryParameter("build", AppInfo.getBuildType());
 					builder.appendQueryParameter("version", AppInfo.getBuildVersion());
 					builder.appendQueryParameter("state", stateId);
 					builder.appendQueryParameter("seed", seed);
 				}
 				uri = builder.build();
+				// The old webclient navigates here after a lost socket. Keep a native recovery action.
+				if (gameWasConnected && UrlHelper.isInternalUri(uri)
+						&& ("/account/mycharacters.html".equals(uri.getPath()) || "/profile".equals(uri.getPath()))) {
+					transportState = 3;
+					MainActivity.get().showReconnect(true, "Sesja gry została zakończona. Możesz połączyć się ponownie.");
+					return true;
+				}
 				if (!UrlHelper.isInternalUri(uri)) {
 					// open external links in default browser/app
 					// FIXME: should we ask for confirmation?
-					MainActivity.get().startActivity(new Intent(Intent.ACTION_VIEW, uri));
+					try { MainActivity.get().startActivity(new Intent(Intent.ACTION_VIEW, uri)); }
+					catch (android.content.ActivityNotFoundException unavailable) { Notifier.toast("Nie znaleziono aplikacji do otwarcia linku."); }
 					return true;
 				}
 				view.loadUrl(UrlHelper.checkClientUrl(uri.toString()));
@@ -426,8 +461,17 @@ public class ClientView extends WebView {
 			 */
 			@Override
 			public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
+				if(connectionDisposed) { return; }
+				connectionGeneration++;
+				loadingProbeRunning=false; connectivityHandler.removeCallbacks(loadingProbeRunnable);
+				transportState = -1;
+				credentialGeneration++;
+				if (registerMode && autoRegisterAttempted) { clearRegisterState(); }
 				MusicPlayer.stopMusic();
 				super.onPageStarted(view, url, favicon);
+				if(!gameWasConnected && !"about:blank".equals(url) && UrlHelper.isInternalUri(UrlHelper.toUri(url))) {
+					MainActivity.get().showLoading(ClientView.this);
+				}
 			}
 
 			/**
@@ -438,6 +482,7 @@ public class ClientView extends WebView {
 			 */
 			@Override
 			public void onPageFinished(final WebView view, final String url) {
+				if(connectionDisposed || !ServerUrlPolicy.samePage(url,view.getUrl())) { return; }
 				super.onPageFinished(view, url);
 				if (UrlHelper.isClientUrl(url)) {
 					setPage(PageId.WEBCLIENT);
@@ -455,12 +500,27 @@ public class ClientView extends WebView {
 					attemptAutoLogin(view, url);
 				}
 				Menu.get().updateButtons();
+				if(UrlHelper.isClientUrl(url)) { checkLoadingSurface(); }
+				else { MainActivity.get().hideLoading(ClientView.this); }
 				LOG.debug("page id: {}", currentPage);
+			}
+
+			@android.annotation.TargetApi(26)
+			@Override public boolean onRenderProcessGone(WebView view,android.webkit.RenderProcessGoneDetail detail) {
+				LOG.warn("WebView renderer exited. Crash: {}",detail!=null && detail.didCrash());
+				MainActivity activity=MainActivity.get();
+				if(activity!=null && getContext()==activity) { activity.recoverRenderer(ClientView.this); }
+				else {
+					if(getParent() instanceof ViewGroup) { ((ViewGroup)getParent()).removeView(ClientView.this); }
+					destroy();
+				}
+				return true;
 			}
 
 			@Override
 			public void onReceivedError(final WebView view, final WebResourceRequest request,
 					final android.webkit.WebResourceError error) {
+				if(connectionDisposed) { return; }
 				super.onReceivedError(view, request, error);
 				if (request != null && !request.isForMainFrame()) {
 					return;
@@ -474,8 +534,13 @@ public class ClientView extends WebView {
 			@SuppressWarnings("deprecation")
 			public void onReceivedError(final WebView view, final int errorCode, final String description,
 					final String failingUrl) {
+				if(connectionDisposed) { return; }
 				super.onReceivedError(view, errorCode, description, failingUrl);
 				handleLoadError(view, failingUrl);
+			}
+
+			@Override public void onReceivedHttpError(WebView view,WebResourceRequest request,android.webkit.WebResourceResponse response) {
+				if(!connectionDisposed && request!=null && request.isForMainFrame()) { MainActivity.get().hideLoading(ClientView.this); }
 			}
 		});
 	}
@@ -536,14 +601,19 @@ public class ClientView extends WebView {
 	 * @param intent Called login intent with state verification.
 	 */
 	public void checkLoginIntent(final Intent intent) {
-		final Uri intentUri = intent.getData();
+		final Uri intentUri = intent == null ? null : intent.getData();
+		if (!UrlHelper.isIntentUri(intentUri) || !intentUri.isHierarchical()) {
+			Notifier.showMessage("Nieprawidłowy adres powrotu do aplikacji.");
+			return;
+		}
 		final String url = intentUri.getQueryParameter("url");
 		final String loginseed = intentUri.getQueryParameter("loginseed");
 		final String intentStateId = intentUri.getQueryParameter("state");
 		if (stateId == null || intentStateId == null || url == null || "".equals(stateId)
-				|| !stateId.equals(intentStateId)) {
+				|| !stateId.equals(intentStateId) || loginseed == null || loginseed.isEmpty()
+				|| !UrlHelper.isClientUrl(url)) {
 			final String err = "Wystąpił błąd podczas weryfikacji logowania";
-			LOG.error("{} (\"{}\" == \"{}\")", err, stateId, intentStateId);
+			LOG.warn("Login callback validation failed.");
 			Notifier.showMessage(err);
 			if (currentPage == null || PageId.TITLE.equals(previousPage)) {
 				// reload title
@@ -551,7 +621,9 @@ public class ClientView extends WebView {
 			}
 			return;
 		}
-		String completeUrl = url + "&loginseed=" + loginseed + seed;
+		String completeUrl = Uri.parse(url).buildUpon().appendQueryParameter("loginseed", loginseed + seed).build().toString();
+		stateId = "";
+		seed = "";
 		loadUrl(UrlHelper.checkClientUrl(completeUrl));
 	}
 
@@ -606,6 +678,7 @@ public class ClientView extends WebView {
 	 * Resets selected client & server values to default.
 	 */
 	private void reset() {
+		credentialGeneration++;
 		stateId = "";
 		seed = "";
 		loginUser = "";
@@ -655,7 +728,8 @@ public class ClientView extends WebView {
 	 */
 	@Override
 	public void loadUrl(final String url) {
-		LOG.debug("Loading URL: {}", url);
+		if(connectionDisposed) { return; }
+		LOG.debug("Loading client page.");
 		super.loadUrl(url);
 	}
 
@@ -663,6 +737,9 @@ public class ClientView extends WebView {
 	 * Shows initial title screen.
 	 */
 	public void loadTitleScreen() {
+		if(connectionDisposed) { return; }
+		MainActivity.get().hideLoading(this);
+		connectivityHandler.removeCallbacks(loadingProbeRunnable);
 		reset();
 		setPage(PageId.TITLE);
 		SplashUtil.get().setVisible(true);
@@ -698,7 +775,7 @@ public class ClientView extends WebView {
 	 * @param profile Server profile to apply.
 	 */
 	public void applyServerProfile(final ServerProfile profile) {
-		if (profile == null) {
+		if (profile == null || (!BuildConfig.DEBUG && profile != ServerProfile.PROD)) {
 			return;
 		}
 		applyProfile(profile);
@@ -717,15 +794,19 @@ public class ClientView extends WebView {
 	}
 
 	private void startSessionForCurrentProfile() {
+		gameWasConnected = false;
+		transportState = -1;
+		MainActivity.get().showReconnect(false, "");
 		// create a unique state
 		stateId = generateRandomString();
 		seed = generateRandomString();
 		autoLoginAttempted = false;
 		// hide splash image
 		SplashUtil.get().setVisible(false);
+		MainActivity.get().showLoading(this);
 
 		final String initialPage = UrlHelper.getInitialPageUrl(clientUrlSuffix);
-		LOG.debug("Loading initial page: {}", initialPage);
+		LOG.debug("Loading initial client page.");
 		loadUrl(initialPage);
 		setPage(PageId.OTHER);
 		// hide menu after exiting title screen
@@ -868,6 +949,7 @@ public class ClientView extends WebView {
 	private void setPage(final PageId newPage) {
 		previousPage = currentPage;
 		currentPage = newPage;
+		if (newPage == PageId.TITLE) { gameWasConnected = false; transportState = -1; }
 		if (previousPage == null) {
 			previousPage = currentPage;
 		}
@@ -1031,20 +1113,20 @@ public class ClientView extends WebView {
 		}
 		final Uri uri = UrlHelper.toUri(url);
 		if (!UrlHelper.isInternalUri(uri)) {
-			LOG.debug("Auto-login skipped: external URL {}", url);
+			LOG.debug("Auto-login skipped: external page.");
 			return;
 		}
 		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
-			LOG.debug("Auto-login skipped: not a login/client URL {}", url);
+			LOG.debug("Auto-login skipped: not a login/client page.");
 			return;
 		}
 		autoLoginAttempted = true;
-		LOG.debug("Attempting auto-login for URL {}", url);
+		LOG.debug("Attempting native login form submission.");
 		final String js = "javascript:(function(){"
 				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
 				+ "fields:{username:false,password:false,submit:false,form:false},"
 				+ "observerActive:false,error:false,lastStatus:''};"
-				+ "try{"
+				+ "window.__poAutoLoginResult=result;try{"
 				+ "if(window.__po_autoLoginActive){result.finalStatus='alreadyActive';result.message='Auto-login already running';return result;}"
 				+ "window.__po_autoLoginActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
 				+ "var timeoutMs=" + AUTO_LOGIN_TIMEOUT_MS + ";" + "var attempts=0;" + "var observer=null;"
@@ -1077,35 +1159,9 @@ public class ClientView extends WebView {
 				+ "return result;"
 				+ "}catch(e){result.finalStatus='error';result.message=e&&e.message?e.message:String(e);result.error=true;result.attempts=attempts;window.__po_autoLoginActive=false;return result;}"
 				+ "})();";
-		view.evaluateJavascript(js, value -> {
-			if (value == null || "null".equals(value)) {
-				LOG.error("Auto-login returned null result for URL {}", url);
-				return;
-			}
-			try {
-				final JSONObject result = new JSONObject(value);
-				final String status = result.optString("finalStatus", "unknown");
-				final int attempts = result.optInt("attempts", 0);
-				final String message = result.optString("message", "");
-				final JSONObject fields = result.optJSONObject("fields");
-				final boolean observerActive = result.optBoolean("observerActive", false);
-				final String lastStatus = result.optString("lastStatus", "");
-				LOG.debug("Auto-login result: status={}, attempts={}, observerActive={}, fields={}, message=\"{}\"",
-						status, attempts, observerActive, (fields != null ? fields.toString() : "{}"), message);
-				if ("missingForm".equals(status) || "missingFields".equals(status) || "missingForm".equals(lastStatus)
-						|| "missingFields".equals(lastStatus)) {
-					autoLoginAttempted = false;
-				}
-				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
-					LOG.error("Auto-login failed with status={} message=\"{}\"", status, message);
-				}
-				if ("submitted".equals(status)) {
-					post(() -> CookieManager.getInstance().flush());
-				}
-			} catch (Exception e) {
-				LOG.error("Failed to parse auto-login result", e);
-			}
-		});
+		final long generation = credentialGeneration;
+		view.evaluateJavascript(js, value -> observeCredentialResult(view, url, false, generation,
+				android.os.SystemClock.uptimeMillis() + AUTO_LOGIN_TIMEOUT_MS + 1000));
 	}
 
 	private void attemptAutoRegister(final WebView view, final String url) {
@@ -1120,20 +1176,20 @@ public class ClientView extends WebView {
 		}
 		final Uri uri = UrlHelper.toUri(url);
 		if (!UrlHelper.isInternalUri(uri)) {
-			LOG.debug("Auto-register skipped: external URL {}", url);
+			LOG.debug("Auto-register skipped: external page.");
 			return;
 		}
 		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
-			LOG.debug("Auto-register skipped: not a login/client URL {}", url);
+			LOG.debug("Auto-register skipped: not a login/client page.");
 			return;
 		}
 		autoRegisterAttempted = true;
-		LOG.debug("Attempting auto-register for URL {}", url);
+		LOG.debug("Attempting native registration form submission.");
 		final String js = "javascript:(function(){"
 				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
 				+ "fields:{username:false,password:false,passwordrepeat:false,email:false,submit:false,form:false},"
 				+ "observerActive:false,error:false,createMode:false,lastStatus:'',createLinkClicked:false};"
-				+ "try{"
+				+ "window.__poAutoRegisterResult=result;try{"
 				+ "if(window.__po_autoRegisterActive){result.finalStatus='alreadyActive';result.message='Auto-register already running';return result;}"
 				+ "window.__po_autoRegisterActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
 				+ "var timeoutMs=" + AUTO_LOGIN_TIMEOUT_MS + ";" + "var attempts=0;" + "var observer=null;"
@@ -1149,9 +1205,8 @@ public class ClientView extends WebView {
 				+ "var submit=function(){"
 				+ "if(finalized){return true;}"
 				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-register attempts');return false;}"
-				+ "attempts++;result.attempted=true;"
 				+ "var f=document.querySelector('form.credential-dialog');"
-				+ "if(!f){finalize('missingForm','Credential form not found');return false;}"
+				+ "if(!f){setStatus('missingForm','Credential form not found');return false;}"
 				+ "var u=f.querySelector('#username');"
 				+ "var p=f.querySelector('#password');"
 				+ "var pr=f.querySelector('#passwordrepeat');"
@@ -1162,12 +1217,12 @@ public class ClientView extends WebView {
 				+ "result.createMode=!!isCreate;"
 				+ "if(!isCreate){"
 				+ "var createLink=document.querySelector('#createlink') || document.querySelector('a[href=\"#create\"]');"
-				+ "if(createLink){createLink.click();result.createLinkClicked=true;setStatus('createLinkClicked','Clicked create account link');return false;}"
-				+ "finalize('missingCreateLink','Create link not found');return false;}"
+				+ "if(createLink){if(!result.createLinkClicked){result.createLinkClicked=true;createLink.click();}setStatus('createLinkClicked','Clicked create account link');return false;}"
+				+ "setStatus('missingCreateLink','Create link not found');return false;}"
 				+ "result.fields.username=!!u;result.fields.password=!!p;result.fields.passwordrepeat=!!pr;"
 				+ "result.fields.email=!!em;result.fields.submit=!!b;result.fields.form=!!f;"
 				+ "if(!u||!p||!pr||!b){setStatus('missingFields','Registration fields not found');return false;}"
-				+ "u.value=uval;" + "p.value=pval;" + "pr.value=prval;" + "if(em){em.value=eval;}"
+				+ "attempts++;result.attempted=true;u.value=uval;" + "p.value=pval;" + "pr.value=prval;" + "if(em){em.value=eval;}"
 				+ "b.click();finalize('submitted','Submitted via button');return true;"
 				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-register attempts');}"
 				+ "return false;" + "};"
@@ -1180,32 +1235,42 @@ public class ClientView extends WebView {
 				+ "return result;"
 				+ "}catch(e){result.finalStatus='error';result.message=e&&e.message?e.message:String(e);result.error=true;result.attempts=attempts;window.__po_autoRegisterActive=false;return result;}"
 				+ "})();";
-		view.evaluateJavascript(js, value -> {
-			if (value == null || "null".equals(value)) {
-				LOG.error("Auto-register returned null result for URL {}", url);
-				return;
-			}
+		final long generation = credentialGeneration;
+		view.evaluateJavascript(js, value -> observeCredentialResult(view, url, true, generation,
+				android.os.SystemClock.uptimeMillis() + AUTO_LOGIN_TIMEOUT_MS + 1000));
+	}
+
+
+	/** Poll only the non-secret result while the asynchronous form observer runs. */
+	private void observeCredentialResult(WebView view, String url, boolean registration, long generation, long deadline) {
+		if (connectionDisposed || generation != credentialGeneration || !ServerUrlPolicy.samePage(url, view.getUrl())) {
+			return;
+		}
+		String key = registration ? "__poAutoRegisterResult" : "__poAutoLoginResult";
+		view.evaluateJavascript("window." + key + " || null", value -> {
+			if (connectionDisposed || generation != credentialGeneration || !ServerUrlPolicy.samePage(url, view.getUrl())) { return; }
 			try {
-				final JSONObject result = new JSONObject(value);
-				final String status = result.optString("finalStatus", "unknown");
-				final int attempts = result.optInt("attempts", 0);
-				final String message = result.optString("message", "");
-				final JSONObject fields = result.optJSONObject("fields");
-				final boolean observerActive = result.optBoolean("observerActive", false);
-				LOG.debug("Auto-register result: status={}, attempts={}, observerActive={}, fields={}, message=\"{}\"",
-						status, attempts, observerActive, (fields != null ? fields.toString() : "{}"), message);
-				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
-					LOG.error("Auto-register failed with status={} message=\"{}\"", status, message);
+				JSONObject outcome = value == null || "null".equals(value) ? new JSONObject() : new JSONObject(value);
+				String status = outcome.optString("finalStatus", "pending");
+				if ("pending".equals(status) || "alreadyActive".equals(status)) {
+					if (android.os.SystemClock.uptimeMillis() < deadline) {
+						view.postDelayed(() -> observeCredentialResult(view, url, registration, generation, deadline), 250);
+						return;
+					}
+					status = "timeout";
 				}
-				if ("notCreate".equals(status) || "missingForm".equals(status) || "missingCreateLink".equals(status)) {
-					autoRegisterAttempted = false;
-				}
+				LOG.debug("Native credential submission: registration={}, status={}", registration, status);
 				if ("submitted".equals(status)) {
-					clearRegisterState();
-					post(() -> CookieManager.getInstance().flush());
+					if (registration) { clearRegisterState(); }
+					else { loginPass = ""; }
+					CookieManager.getInstance().flush();
+				} else {
+					MainActivity.get().hideLoading(this);
+					Notifier.toast(registration ? "Nie udało się wypełnić formularza rejestracji. Spróbuj ponownie."
+							: "Nie udało się wypełnić formularza logowania. Spróbuj ponownie.");
 				}
-			} catch (Exception e) {
-				LOG.error("Failed to parse auto-register result", e);
+			} catch (org.json.JSONException e) {
+				LOG.warn("Unable to read credential submission status.");
 			}
 		});
 	}
@@ -1304,11 +1369,13 @@ public class ClientView extends WebView {
 	}
 
 	private void handleLoadError(final WebView view, final String failingUrl) {
+		if(connectionDisposed) { return; }
 		final String url = failingUrl != null ? failingUrl : "";
 		if (url.startsWith(OFFLINE_PAGE_URL)) {
 			return;
 		}
-		LOG.error("Page load error for URL: {}", url);
+		LOG.error("Client page load failed.");
+		MainActivity.get().hideLoading(this);
 		showOfflinePage(view);
 	}
 

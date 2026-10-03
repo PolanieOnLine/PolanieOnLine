@@ -11,4 +11,6 @@
 	<string name="connectivity_status_error">Błąd połączenia</string>
 	<string name="connectivity_status_offline">Offline</string>
 
+	<string name="reconnect">Połącz ponownie</string>
+	<string name="app_tools">Konta i pomoc</string>
 </resources>
