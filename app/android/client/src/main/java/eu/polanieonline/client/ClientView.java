@@ -1314,19 +1314,22 @@ public class ClientView extends WebView {
 	}
 
 	private void persistCredentials(final String username, final String password, final boolean remember) {
-		final SharedPreferences.Editor editor = PreferencesActivity.getSharedPreferences().edit();
-		editor.putBoolean("save_credentials", remember);
-		editor.apply();
-
 		if (!remember) {
-			CredentialsStore.clear(getContext());
+			// A choice for this login must not erase the other saved accounts.
+			if (!TextUtils.isEmpty(username)) { CredentialsStore.remove(getContext(), username.trim()); }
 			return;
 		}
-		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-			CredentialsStore.clear(getContext());
+		if (username == null || username.trim().isEmpty() || TextUtils.isEmpty(password)) {
 			return;
 		}
-		CredentialsStore.save(getContext(), username, password);
+		if (CredentialsStore.save(getContext(), username, password)) {
+			PreferencesActivity.getSharedPreferences().edit().putBoolean("save_credentials", true).commit();
+		} else {
+			String message = Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+					? "Zapamiętywanie kont wymaga Androida 6 lub nowszego."
+					: "Nie udało się zapisać konta. Sprawdź Zapisane konta w menu aplikacji. Logowanie będzie kontynuowane bez zapamiętania danych.";
+			android.widget.Toast.makeText(getContext(), message, android.widget.Toast.LENGTH_LONG).show();
+		}
 	}
 
 	private void clearRegisterState() {

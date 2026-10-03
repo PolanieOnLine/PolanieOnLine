@@ -51,30 +51,43 @@ public final class CredentialsStore {
 	 * @param username Username to store.
 	 * @param password Password to store.
 	 */
-	public static void save(final Context context, final String username, final String password) {
+	public static boolean save(final Context context, final String username, final String password) {
 		final SharedPreferences prefs = getPreferences(context);
 		if (prefs == null) {
 			LOG.warn("Encrypted preferences unavailable; skipping credential save.");
-			return;
+			return false;
 		}
-		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+		return save(prefs, username, password);
+	}
+
+	/** The result confirms a durable write, not just an in-memory preference update. */
+	static boolean save(final SharedPreferences prefs, final String username, final String password) {
+		if (username == null || username.trim().isEmpty() || TextUtils.isEmpty(password)) {
 			LOG.warn("Credentials missing username or password; skipping save.");
-			return;
+			return false;
 		}
-		final List<Credentials> credentials = loadAll(prefs);
-		final Credentials updated = new Credentials(username.trim(), password, System.currentTimeMillis());
-		final Iterator<Credentials> iterator = credentials.iterator();
-		while (iterator.hasNext()) {
-			final Credentials current = iterator.next();
-			if (current.matchesUsername(username)) {
-				iterator.remove();
+		try {
+			String stored = prefs.getString(KEY_CREDENTIALS, "");
+			if (!TextUtils.isEmpty(stored)) { new JSONArray(stored); }
+			final List<Credentials> credentials = loadAll(prefs);
+			final Credentials updated = new Credentials(username.trim(), password, System.currentTimeMillis());
+			final Iterator<Credentials> iterator = credentials.iterator();
+			while (iterator.hasNext()) {
+				final Credentials current = iterator.next();
+				if (current.matchesUsername(username.trim())) {
+					iterator.remove();
+				}
 			}
+			credentials.add(0, updated);
+			while (credentials.size() > MAX_ENTRIES) {
+				credentials.remove(credentials.size() - 1);
+			}
+			return prefs.edit().putString(KEY_CREDENTIALS, serialize(credentials)).commit();
+		} catch (final Exception e) {
+			// Never fall back to unencrypted storage or reset existing accounts on failure.
+			LOG.warn("Encrypted credential write failed: {}", e.getClass().getSimpleName());
+			return false;
 		}
-		credentials.add(0, updated);
-		while (credentials.size() > MAX_ENTRIES) {
-			credentials.remove(credentials.size() - 1);
-		}
-		prefs.edit().putString(KEY_CREDENTIALS, serialize(credentials)).apply();
 	}
 
 	/**
@@ -102,6 +115,21 @@ public final class CredentialsStore {
 		List<Credentials> accounts = loadAll(prefs);
 		boolean removed = accounts.removeIf(account -> account.matchesUsername(username));
 		return removed && prefs.edit().putString(KEY_CREDENTIALS, serialize(accounts)).commit();
+	}
+
+	/** Check encryption without treating an inaccessible store as an empty account list. */
+	static boolean isAvailable(Context context) { return getPreferences(context) != null; }
+
+	/** Only call after the user explicitly confirms removing unreadable local login data. */
+	static boolean resetUnreadableStorage(Context context) {
+		if (isAvailable(context)) { return false; }
+		try {
+			boolean cleared = context.getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE).edit().clear().commit();
+			return cleared && isAvailable(context);
+		} catch (RuntimeException e) {
+			LOG.warn("Credential storage reset failed: {}", e.getClass().getSimpleName());
+			return false;
+		}
 	}
 
 	/**
@@ -169,11 +197,16 @@ public final class CredentialsStore {
 			}
 			final MasterKey masterKey = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
 					.build();
-			return EncryptedSharedPreferences.create(context, PREF_FILE, masterKey,
+			SharedPreferences prefs = EncryptedSharedPreferences.create(context, PREF_FILE, masterKey,
 					EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
 					EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+			// Restored keysets can open successfully while individual values remain unreadable.
+			String stored = prefs.getString(KEY_CREDENTIALS, "");
+			if (!TextUtils.isEmpty(stored)) { new JSONArray(stored); }
+			prefs.getString(KEY_USERNAME_LEGACY, ""); prefs.getString(KEY_PASSWORD_LEGACY, "");
+			return prefs;
 		} catch (final Exception e) {
-			LOG.error("Unable to initialize encrypted preferences: {}", e.getMessage(), e);
+			LOG.warn("Encrypted credential storage unavailable: {}", e.getClass().getSimpleName());
 			return null;
 		}
 	}

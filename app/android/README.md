@@ -31,6 +31,12 @@ Całe okno, wraz z nagłówkiem i przyciskami, można przewijać przy małej ilo
 
 Panel zapisanych kont pokazuje tylko nazwy. Można usunąć pojedynczy zapis z telefonu,
 bez usuwania konta gry. Lista profili Stage/Test jest dostępna tylko w kompilacji debug.
+Zaloguj odczytuje pola i opcję zapamiętania przed zamknięciem formularza.
+Zapis jest potwierdzany dopiero po zapisaniu zaszyfrowanych danych na dysku.
+Niepowodzenie jest zgłaszane użytkownikowi, bez przechodzenia na zapis haseł jawnym tekstem.
+Nieczytelny magazyn pokazuje komunikat zamiast pustej listy. Można go odtworzyć dopiero
+po potwierdzeniu usunięcia lokalnych, nieczytelnych danych. Konta gry i pozostałe ustawienia nie są usuwane.
+Odznaczenie zapamiętania dotyczy wyłącznie wpisanego konta. Puste pola nie usuwają zapisanych kont.
 
 W czasie działania klienta status odczytuje stan istniejącego WebSocketu gry.
 Sam dostęp do strony nie oznacza połączenia z grą. Nieznany interfejs transportu pozostaje

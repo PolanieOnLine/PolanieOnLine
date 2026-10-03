@@ -11,6 +11,23 @@ final class SavedAccounts {
 	static void show(MainActivity activity) {
 		LinearLayout content=NativeUi.column(activity);
 		int pad=NativeUi.dp(activity,18); content.setPadding(pad,pad,pad,pad);
+		if(!CredentialsStore.isAvailable(activity)) {
+			if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+				content.addView(NativeUi.text(activity,"Zapamiętywanie kont wymaga Androida 6 lub nowszego.",15,NativeUi.MUTED));
+			} else {
+				content.addView(NativeUi.text(activity,"Nie można odczytać zaszyfrowanych danych logowania na tym telefonie.",15,NativeUi.MUTED));
+			}
+			AlertDialog problem=new AlertDialog.Builder(activity).setTitle("Zapisane konta").setView(content).setNegativeButton("Zamknij",null).create();
+			if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+				content.addView(NativeUi.button(activity,"Napraw zapisywanie kont",()->new AlertDialog.Builder(activity)
+					.setMessage("Usunąć nieczytelny zapis danych logowania z tego telefonu? Hasła trzeba będzie wpisać ponownie. Konta w grze i pozostałe ustawienia pozostaną bez zmian.")
+					.setNegativeButton("Anuluj",null).setPositiveButton("Napraw",(d,w)->{
+						if(CredentialsStore.resetUnreadableStorage(activity)) { problem.dismiss(); show(activity); }
+						else { Toast.makeText(activity,"Nie udało się naprawić zapisywania kont. Skontaktuj się z support@polanieonline.eu.",Toast.LENGTH_LONG).show(); }
+					}).show()));
+			}
+			problem.show(); return;
+		}
 		List<CredentialsStore.Credentials> accounts=CredentialsStore.loadAll(activity);
 		if(accounts.isEmpty()) { content.addView(NativeUi.text(activity,"Nie masz zapisanych kont. Możesz zapisać dane podczas logowania do gry.",15,NativeUi.MUTED)); }
 		ScrollView scroll=new ScrollView(activity); scroll.addView(content);
