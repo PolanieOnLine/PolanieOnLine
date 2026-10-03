@@ -15,7 +15,7 @@ Aktualizacja zachowuje dane aplikacji, w tym zapisane konta. Nie odinstalowuj po
 ## Pierwsze wydanie z updaterem
 
 Pierwsze APK z tą funkcją trzeba zainstalować normalnie, gdyż wcześniejsze wersje nie mają updatera.
-Bieżący kod aplikacji to `1042001`, a nazwa wersji gry pozostaje `1.42`.
+Bieżący kod aplikacji to `1042002`, a nazwa wersji gry pozostaje `1.42`.
 Każda kolejna paczka do aktualizacji musi mieć wyższy `versionCode` w `client/build.gradle`.
 Wszystkie aktualizacje muszą być podpisane tym samym kluczem produkcyjnym. Updater nie obsługuje rotacji klucza.
 Przechowuj klucz poza repozytorium. Skrypt przygotowujący publikację nie wymaga podania hasła klucza.
@@ -26,10 +26,10 @@ Zbuduj podpisany wariant `release` przez Eclipse/Ant lub Gradle, tak jak dotychc
 Uruchom skrypt, wskazując gotowy APK i katalog narzędzi Android SDK:
 
 ```powershell
-powershell -File app/android/ops/prepare-update.ps1 -Apk "build/build_android_client/outputs/apk/release/eu.polanieonline.client-1042001.apk" -BuildTools "C:/Users/Kamil Lewicki/AppData/Local/Android/Sdk/build-tools/36.1.0" -Notes "Opis zmian w tym wydaniu"
+powershell -File app/android/ops/prepare-update.ps1 -Apk "build/build_android_client/outputs/apk/release/eu.polanieonline.client-1042002.apk" -BuildTools "C:/Users/Kamil Lewicki/AppData/Local/Android/Sdk/build-tools/36.1.0" -Notes "Opis zmian w tym wydaniu"
 ```
 
-Domyślnie wynik trafia do `build/android-update-1042001`. Skrypt sprawdza podpis, odrzuca paczki debug i nie nadpisuje istniejącego katalogu.
+Domyślnie wynik trafia do `build/android-update-1042002`. Skrypt sprawdza podpis, odrzuca paczki debug i nie nadpisuje istniejącego katalogu.
 Opcjonalny `-OutputDirectory` pozwala wskazać inny, nowy katalog.
 
 1. Przetestuj APK na telefonie, również aktualizację bez odinstalowania wcześniejszej aplikacji.
