@@ -987,6 +987,7 @@ public class ClientView extends WebView {
 		final AutoCompleteTextView username = layout.findViewById(R.id.loginUsername);
 		final EditText password = layout.findViewById(R.id.loginPassword);
 		final CheckBox remember = layout.findViewById(R.id.loginRemember);
+		CredentialForm.connect(username,password);
 		final List<CredentialsStore.Credentials> savedCredentials = CredentialsStore.loadAll(getContext());
 		fillSavedCredentials(username, password, remember, savedCredentials);
 		if (defaultCredentials != null) {
@@ -996,10 +997,6 @@ public class ClientView extends WebView {
 			remember.setChecked(true);
 		}
 
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setTitle("Logowanie");
-		builder.setView(layout);
-		builder.setCancelable(true);
 		final Runnable loginAction = new Runnable() {
 			@Override
 			public void run() {
@@ -1010,33 +1007,17 @@ public class ClientView extends WebView {
 				startLoginFlow();
 			}
 		};
-		builder.setPositiveButton("Zaloguj", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				loginAction.run();
-			}
-		});
-		builder.setNegativeButton("Pomiń", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
+		final AlertDialog dialog=CredentialForm.dialog(MainActivity.get(),"Logowanie",layout,"Zaloguj",loginAction,"Pomiń",()->{
 				loginUser = "";
 				loginPass = "";
 				autoLoginAttempted = false;
 				startLoginFlow();
-			}
-		});
-		builder.setNeutralButton("Utwórz konto...", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				dialog.dismiss();
-				promptNativeRegister();
-			}
-		});
-		final AlertDialog dialog = builder.create();
+			},"Utwórz konto...",this::promptNativeRegister);
 		setupUsernameDropdown(username, password, remember, savedCredentials, loginAction, dialog);
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(final DialogInterface d) {
+				CredentialForm.fitDialog(dialog,MainActivity.get());
 				if (!autoSubmit && !savedCredentials.isEmpty()) {
 					username.requestFocus();
 					username.showDropDown();
@@ -1056,14 +1037,9 @@ public class ClientView extends WebView {
 		final EditText password = layout.findViewById(R.id.registerPassword);
 		final EditText passwordRepeat = layout.findViewById(R.id.registerPasswordRepeat);
 		final EditText email = layout.findViewById(R.id.registerEmail);
+		CredentialForm.connect(username,password,passwordRepeat,email);
 
-		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setTitle("Rejestracja");
-		builder.setView(layout);
-		builder.setCancelable(true);
-		builder.setPositiveButton("Utwórz konto", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
+		final AlertDialog dialog=CredentialForm.dialog(MainActivity.get(),"Rejestracja",layout,"Utwórz konto",()->{
 				registerUser = username.getText().toString().trim();
 				registerPass = password.getText().toString();
 				registerPassRepeat = passwordRepeat.getText().toString();
@@ -1072,15 +1048,9 @@ public class ClientView extends WebView {
 				autoRegisterAttempted = false;
 				autoLoginAttempted = false;
 				startLoginFlow();
-			}
-		});
-		builder.setNegativeButton("Zamknij", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
-				dialog.dismiss();
-			}
-		});
-		builder.create().show();
+			},"Zamknij",null,null,null);
+		dialog.show();
+		CredentialForm.fitDialog(dialog,MainActivity.get());
 	}
 
 	/**

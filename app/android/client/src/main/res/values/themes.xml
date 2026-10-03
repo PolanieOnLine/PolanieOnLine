@@ -2,6 +2,23 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+	<style name="NativeDialog" parent="android:style/Theme.Material.Dialog.Alert">
+		<item name="android:windowBackground">#0C151D</item>
+		<item name="android:colorAccent">#68CCD4</item>
+		<item name="android:textColorPrimary">#F2F5F7</item>
+		<item name="android:textColorSecondary">#ABBDC7</item>
+		<item name="android:windowFullscreen">false</item>
+	</style>
+	<style name="NativeCredentialField">
+		<item name="android:background">@drawable/native_input</item>
+		<item name="android:backgroundTint">@null</item>
+		<item name="android:textColor">#F2F5F7</item>
+		<item name="android:textColorHint">#ABBDC7</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:minHeight">48dp</item>
+		<item name="android:layout_marginBottom">8dp</item>
+	</style>
+
 	<!-- Base application theme. -->
 	<style name="Theme.Stendhal" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 		<!-- Primary brand color. -->

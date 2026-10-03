@@ -22,6 +22,12 @@ Publiczne aktualności i kalendarz są pobierane z `/api/v1/site/home` i
 `/api/v1/site/calendar` na polanieonline.eu. Nie przesyłają danych konta ani cookies.
 Po utracie dostępu do strony pozostaje ostatnia pobrana treść. Linki do strony otwierają
 przeglądarkę, a kalendarz natywny jest osobną aktywnością, bez przeładowania gry.
+Kalendarz używa tego samego zimowego tła, drewnianych przycisków, logo i ornamentów co menu.
+W poziomie wydarzenia są obok panelu sterowania, a w pionie pod nim. Pełny opis jest dostępny w szczegółach.
+
+Formularze logowania i rejestracji nie używają pełnoekranowego edytora klawiatury w poziomie.
+Przycisk Dalej przechodzi do następnego pola, a Gotowe zamyka klawiaturę bez wysyłania formularza.
+Całe okno, wraz z nagłówkiem i przyciskami, można przewijać przy małej ilości miejsca nad klawiaturą.
 
 Panel zapisanych kont pokazuje tylko nazwy. Można usunąć pojedynczy zapis z telefonu,
 bez usuwania konta gry. Lista profili Stage/Test jest dostępna tylko w kompilacji debug.
