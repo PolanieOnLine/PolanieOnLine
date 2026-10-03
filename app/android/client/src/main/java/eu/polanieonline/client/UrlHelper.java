@@ -14,7 +14,7 @@ package eu.polanieonline.client;
 import android.net.Uri;
 
 class UrlHelper {
-	private static final String defaultServer = "https://s1.polanieonline.eu/";
+	private static final String defaultServer = "https://polanieonline.eu/";
 	private static String serverBase = UrlHelper.defaultServer;
 	private static String clientUrlOverride = null;
 
@@ -176,12 +176,17 @@ class UrlHelper {
 	 * @return `true` if `url` links to "client" or "testclient".
 	 */
 	public static boolean isClientUrl(final String url) {
-		final String custom_client = PreferencesActivity.getString("client_url").trim();
-		if (!custom_client.equals("")) {
-			return url.contains(custom_client);
+		if (url == null) { return false; }
+		final Uri uri = Uri.parse(url);
+		if (!isInternalUri(uri) || !("https".equals(uri.getScheme()) || "http".equals(uri.getScheme()))) {
+			return false;
 		}
-		final String defaultHost = UrlHelper.stripHost(UrlHelper.getDefaultServerUri().getHost());
-		return url.contains(defaultHost + "/client/") || url.contains(defaultHost + "/testclient/");
+		final String custom_client = PreferencesActivity.getString("client_url").trim();
+		if (hasClientUrlOverride() || !custom_client.equals("")) {
+			return ServerUrlPolicy.samePage(url, getClientUrl());
+		}
+		return "/client/polanieonline.html".equals(uri.getPath())
+				|| "/testclient/polanieonline.html".equals(uri.getPath());
 	}
 
 	/**
@@ -240,21 +245,9 @@ class UrlHelper {
 	 *         localhost.
 	 */
 	public static boolean isInternalUri(final Uri uri) {
-		if ("file".equals(uri.getScheme())) {
-			// allow local assets (e.g. offline fallback page)
-			return true;
-		}
-		final String defaultHost = UrlHelper.stripHost(UrlHelper.getDefaultHost());
-		final String host = UrlHelper.stripHost(uri.getHost());
-		if (defaultHost.equals(host)) {
-			// allow pages from polanieonline.eu
-			return true;
-		}
-		final String cs = MainActivity.get().getActiveClientView().checkCustomServer();
-		if (cs != null) {
-			return UrlHelper.stripHost(cs).equals(host);
-		}
-		return "localhost".equals(host);
+		if (uri == null) { return false; }
+		return ServerUrlPolicy.isInternal(uri.toString(), serverBase,
+				getClientUrl(), BuildConfig.DEBUG);
 	}
 
 	/**
@@ -275,7 +268,7 @@ class UrlHelper {
 	 * @return `true` if URI's host is the intent scheme.
 	 */
 	public static boolean isIntentUri(final Uri uri) {
-		return AppInfo.getIntentUrlScheme().equals(UrlHelper.stripHost(uri.getHost()));
+		return uri != null && AppInfo.getIntentUrlScheme().equals(uri.getScheme()) && "callback".equals(uri.getHost());
 	}
 
 	/**
@@ -285,7 +278,7 @@ class UrlHelper {
 	 * @return `true` if URI's host is the intent scheme.
 	 */
 	public static boolean isIntentUrl(final String url) {
-		return UrlHelper.isIntentUri(UrlHelper.toUri(url));
+		return url != null && UrlHelper.isIntentUri(Uri.parse(url));
 	}
 
 	/**

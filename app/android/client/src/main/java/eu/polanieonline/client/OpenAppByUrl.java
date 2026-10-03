@@ -13,24 +13,23 @@ package eu.polanieonline.client;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import android.widget.Toast;
 
 public class OpenAppByUrl extends Activity {
-
-	private static final Logger LOG = LogManager.getLogger(OpenAppByUrl.class);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Intent intent = getIntent();
-		// String action = intent.getAction();
-		Uri data = intent.getData();
-		LOG.debug("URL: {}", data);
-		MainActivity.get().getActiveClientView().checkLoginIntent(intent);
+		MainActivity main = MainActivity.get();
+		if (main == null || main.isFinishing() || main.isDestroyed() || main.getActiveClientView() == null) {
+			// A callback cannot resume a login state lost when the process was closed.
+			startActivity(new Intent(this, MainActivity.class));
+			Toast.makeText(this, "Otwórz logowanie ponownie w aplikacji.", Toast.LENGTH_LONG).show();
+		} else {
+			main.getActiveClientView().checkLoginIntent(intent);
+		}
 		finish();
 	 }
 

@@ -90,6 +90,8 @@ public class QuickActionsPopup {
 		});
 
 		profileGroup = content.findViewById(R.id.quick_profile_group);
+		profileGroup.setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
+		content.findViewById(R.id.quick_profile_label).setVisibility(BuildConfig.DEBUG ? View.VISIBLE : View.GONE);
 		profileGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(final RadioGroup group, final int checkedId) {

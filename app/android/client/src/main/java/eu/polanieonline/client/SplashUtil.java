@@ -11,7 +11,6 @@
  ***************************************************************************/
 package eu.polanieonline.client;
 
-import android.content.res.Configuration;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
 import android.os.Build;
@@ -29,6 +28,7 @@ public class SplashUtil {
 
 	/** Singleton instance. */
 	private static SplashUtil instance;
+	static void reset() { instance = null; }
 
 
 	/**
@@ -60,6 +60,7 @@ public class SplashUtil {
 	 */
 	private void setImage(final int resId) {
 		splashForeground.setImageResource(resId);
+		splashForeground.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		splashBackground.setImageResource(resId);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 			splashBackground.setRenderEffect(RenderEffect.createBlurEffect(24.0f, 24.0f, Shader.TileMode.CLAMP));
@@ -67,17 +68,13 @@ public class SplashUtil {
 	}
 
 	/**
-	 * Sets splash image dependent on device orientation.
+	 * Refreshes the winter background, cropped to the current screen.
 	 */
 	public void update() {
 		if (!isVisible()) {
 			return;
 		}
-		int resId = R.drawable.splash;
-		if (MainActivity.get().getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
-			resId = R.drawable.splash_portrait;
-		}
-		setImage(resId);
+		setImage(R.drawable.title_winter_v2);
 	}
 
 	/**
@@ -91,6 +88,7 @@ public class SplashUtil {
 		splashForeground.setVisibility(visibility);
 		splashBackground.setVisibility(visibility);
 		splashDim.setVisibility(visibility);
+		MainActivity.get().showHome(visible);
 		update();
 	}
 

@@ -21,7 +21,11 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
 	private Menu menu;
 	/** Active clients. **/
 	private ViewGroup clientList;
+	private HomePanel home;
+	private GameLoadingPanel loading;
+	private boolean recoveryPending;
 
 	/** Static activity instance. */
 	private static MainActivity instance;
@@ -63,19 +70,44 @@ public class MainActivity extends AppCompatActivity {
 			super.onCreate(savedInstanceState);
 			// FIXME: may be considered unsafe as this is not technically a singleton
 			MainActivity.instance = this;
+			Menu.reset();
+			SplashUtil.reset();
 
 			LogConfigurator.configure(this);
 
+			androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 			setContentView(R.layout.activity_main);
+			NativeUi.darkBars(this);
+			android.view.View content = findViewById(R.id.content);
+			content.setBackgroundColor(NativeUi.INK);
+			content.post(() -> NativeUi.darkBars(this));
+			ViewCompat.setOnApplyWindowInsetsListener(content, (view, insets) -> {
+				Insets safe = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout()
+						| WindowInsetsCompat.Type.ime());
+				view.setPadding(safe.left, safe.top, safe.right, safe.bottom);
+				return insets;
+			});
 			clientList = findViewById(R.id.clientList);
+			home = new HomePanel(this);
+			loading = new GameLoadingPanel(this,findViewById(R.id.game_loading_panel));
+			findViewById(R.id.reconnect_button).setOnClickListener(v -> {
+				new AlertDialog.Builder(this).setMessage("Połączyć się ponownie? Bieżąca sesja zostanie zakończona.")
+					.setNegativeButton("Anuluj", null).setPositiveButton("Połącz", (d, w) -> loadLogin()).show();
+			});
 			createClientView();
 			// NOTE: client view instance must be created before initializing menu
 			menu = Menu.get();
+			getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+				@Override public void handleOnBackPressed() {
+					if (loading.visible()) { loading.cancel(); return; }
+					if (getActiveClientView()==null || getActiveClientView().onTitleScreen()) { onRequestQuit(); }
+					else { menu.toggleVisibility(); }
+				}
+			});
 			updateOrientation();
 		} catch (final Exception e) {
 			// TODO: add option to save to file or copy to clipboard the error
-			e.printStackTrace();
-			LOG.error(e.toString());
+			LOG.error("Activity initialization failed: {}",e.getClass().getSimpleName());
 			LOG.error("// -- //");
 			final StringBuilder sb = new StringBuilder();
 			for (final StackTraceElement ste: e.getStackTrace()) {
@@ -88,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
 			}
 			LOG.error("// -- //");
 			Notifier.showPrompt(
-				"Wystąpił nieobsłużony wyjątek: \"" + e.getMessage() + "\""
-				+ "\n\nMożesz zgłosić ten błąd tutaj: https://s1.polanieonline.eu/development/bug.html"
+				"Nie udało się uruchomić aplikacji. Typ błędu: " + e.getClass().getSimpleName()
+				+ "\n\nMożesz zgłosić ten błąd tutaj: https://github.com/PolanieOnLine/PolanieOnLine/issues"
 				+ "\n\nŚlad stosu:\n" + sb.toString(),
 				new Notifier.Action() {
 					@Override
@@ -98,14 +130,6 @@ public class MainActivity extends AppCompatActivity {
 					}
 				});
 		}
-	}
-
-	/**
-	 * Handles toggling menu when the system "back" button is pressed.
-	 */
-	@Override
-	public void onBackPressed() {
-		menu.toggleVisibility();
 	}
 
 	/**
@@ -162,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 		// default to first client view
-		return (ClientView) clientList.getChildAt(0);
+		return clientList.getChildCount()==0 ? null : (ClientView) clientList.getChildAt(0);
 	}
 
 	/**
@@ -183,7 +207,69 @@ public class MainActivity extends AppCompatActivity {
 	 * Attempts to connect to client host.
 	 */
 	public void loadLogin() {
-		getActiveClientView().loadLogin();
+		if(getActiveClientView()!=null) { getActiveClientView().loadLogin(); }
+	}
+
+	void showLoading(ClientView client) {
+		if(loading!=null && client==getActiveClientView()) { loading.begin(client,client::cancelLoginFlow); }
+	}
+	boolean isLoading(ClientView client) { return loading!=null && loading.owns(client); }
+	void hideLoading(ClientView client) { if(loading!=null) { loading.finish(client); } }
+
+	/** Only dispose the reported WebView. Other callbacks may follow for a shared renderer. */
+	void recoverRenderer(ClientView failed) {
+		hideLoading(failed);
+		if(clientList==null) { failed.destroy(); return; }
+		clientList.removeView(failed); failed.destroy();
+		if(isFinishing() || isDestroyed() || recoveryPending) { return; }
+		recoveryPending=true;
+		new android.os.Handler(android.os.Looper.getMainLooper()).post(()->{
+			recoveryPending=false; if(isFinishing() || isDestroyed()) { return; }
+			if(clientList.getChildCount()==0) { createClientView(); }
+			else {
+				if(getActiveClientView()==null || !getActiveClientView().isActive()) { setActiveClientView(0); }
+				SplashUtil.get().setVisible(getActiveClientView().onTitleScreen());
+			}
+			Menu.get().updateButtons();
+			new AlertDialog.Builder(this).setTitle("Widok gry został zamknięty")
+				.setMessage(getActiveClientView().onTitleScreen()
+					? "Wrócono do menu. Możesz zalogować się ponownie. Zapisane konta pozostały na telefonie."
+					: "Zamknięto uszkodzony widok. Pozostałe widoki i zapisane konta nie zostały usunięte.")
+				.setPositiveButton("OK",null).show();
+		});
+	}
+
+	void showHome(boolean visible) {
+		if (home != null) { home.show(visible); }
+		if (visible) { showReconnect(false, ""); }
+	}
+
+	void showReconnect(boolean visible, String reason) {
+		findViewById(R.id.reconnect_panel).setVisibility(visible ? android.view.View.VISIBLE : android.view.View.GONE);
+		((android.widget.TextView)findViewById(R.id.reconnect_text)).setText(reason);
+	}
+
+	void showTools() {
+		new AlertDialog.Builder(this).setTitle("PolanieOnLine").setItems(
+			new String[]{"Zapisane konta", "Kalendarz", "Zgłoś problem", "Pomoc na stronie"},
+			(d, which) -> {
+				if (which == 0) { SavedAccounts.show(this); }
+				else if (which == 1) { startActivity(new Intent(this, CalendarActivity.class)); }
+				else if (which == 2) { Diagnostics.show(this); }
+				else { NativeUi.openSite(this, "/faq"); }
+			}).setNegativeButton("Zamknij", null).show();
+	}
+
+	@Override protected void onResume() {
+		super.onResume();
+		if (clientList != null && clientList.getChildCount() > 0) { getActiveClientView().resumeConnectionChecks(); }
+		if (home != null && getActiveClientView()!=null && getActiveClientView().onTitleScreen()) { home.show(true); }
+		if(loading!=null) { loading.refresh(); }
+	}
+
+	@Override protected void onPause() {
+		if (clientList != null) { for (ClientView client : getClientViewList()) { client.pauseConnectionChecks(); } }
+		super.onPause();
 	}
 
 	/**
@@ -257,8 +343,10 @@ public class MainActivity extends AppCompatActivity {
 	public void onConfigurationChanged(final Configuration config) {
 		super.onConfigurationChanged(config);
 		final ClientView clientView = getActiveClientView();
+		if(loading!=null) { loading.refresh(); }
 		if (clientView != null && PageId.TITLE.equals(clientView.getCurrentPageId())) {
 			SplashUtil.get().update();
+			if (home != null) { home.render(); }
 		}
 	}
 
@@ -277,6 +365,15 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		LOG.debug("{}.onDestroy() called", MainActivity.class.getName());
+		if (home != null) { home.dispose(); }
+		if (loading != null) { loading.dispose(); }
+		if (clientList != null) {
+			List<ClientView> clients = getClientViewList();
+			clientList.removeAllViews();
+			for (ClientView client : clients) { client.disposeConnectionChecks(); client.destroy(); }
+		}
+		if (instance == this) { instance = null; Menu.reset(); SplashUtil.reset(); }
+		MusicPlayer.stopMusic();
 		super.onDestroy();
 	}
 

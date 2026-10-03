@@ -37,6 +37,7 @@ public class Menu {
 
 	/** Singleton instance. */
 	private static Menu instance;
+	static void reset() { instance = null; }
 
 
 	/**
@@ -89,6 +90,7 @@ public class Menu {
 	 * Toggles visible state of menu.
 	 */
 	public void toggleVisibility() {
+		if (MainActivity.get().getActiveClientView().onTitleScreen()) { return; }
 		if (nav.getVisibility() == View.GONE) {
 			nav.setVisibility(View.VISIBLE);
 		} else {
@@ -100,7 +102,8 @@ public class Menu {
 	 * Sets menu visibility to visible.
 	 */
 	public void show() {
-		nav.setVisibility(View.VISIBLE);
+		if(MainActivity.get().getActiveClientView()==null) { nav.setVisibility(View.GONE); return; }
+		nav.setVisibility(MainActivity.get().getActiveClientView().onTitleScreen() ? View.GONE : View.VISIBLE);
 	}
 
 	/**
@@ -114,6 +117,7 @@ public class Menu {
 	 * Refreshes displayed menu buttons.
 	 */
 	public void updateButtons() {
+		if(MainActivity.get().getActiveClientView()==null) { nav.setVisibility(View.GONE); return; }
 		final PageId page = MainActivity.get().getActiveClientView().getCurrentPageId();
 
 		btn_connect.setVisibility(View.GONE);
@@ -122,6 +126,7 @@ public class Menu {
 
 		if (page == PageId.TITLE) {
 			btn_connect.setVisibility(View.VISIBLE);
+			nav.setVisibility(View.GONE);
 		} else {
 			btn_title.setVisibility(View.VISIBLE);
 			btn_reload.setVisibility(View.VISIBLE);
@@ -133,6 +138,7 @@ public class Menu {
 	 */
 	private void initButtonHandlers() {
 		final MainActivity activity = MainActivity.get();
+		activity.findViewById(R.id.btn_tools).setOnClickListener(v -> activity.showTools());
 		quickActionsPopup = new QuickActionsPopup(activity);
 
 		btn_connect = (Button) activity.findViewById(R.id.btn_connect);
