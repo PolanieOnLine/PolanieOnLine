@@ -57,4 +57,23 @@ public class CredentialFormTest {
 		assertEquals(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE,dialog.getWindow().getAttributes().softInputMode & WindowManager.LayoutParams.SOFT_INPUT_MASK_ADJUST);
 		dialog.dismiss();
 	}
+	@Test public void loginReadsRememberAndFieldsBeforeDialogDismisses() {
+		Activity a=activity(); View form=LayoutInflater.from(a).inflate(R.layout.dialog_login,null);
+		EditText username=form.findViewById(R.id.loginUsername),password=form.findViewById(R.id.loginPassword);
+		android.widget.CheckBox remember=form.findViewById(R.id.loginRemember);
+		username.setText("qa-local-only"); password.setText("synthetic-local-only"); remember.setChecked(true);
+		String[] captured=new String[2]; boolean[] capturedRemember={false}; AlertDialog[] holder=new AlertDialog[1];
+		AlertDialog dialog=CredentialForm.dialog(a,"Logowanie",form,"Zaloguj",()->{
+			assertTrue(holder[0].isShowing());
+			captured[0]=username.getText().toString(); captured[1]=password.getText().toString(); capturedRemember[0]=remember.isChecked();
+		},"Pomiń",null,null,null);
+		holder[0]=dialog; dialog.show();
+		android.view.ViewParent parent=username.getParent();
+		while(!(parent instanceof android.widget.ScrollView)) { parent=parent.getParent(); }
+		android.widget.ScrollView scroll=(android.widget.ScrollView)parent;
+		android.view.ViewGroup body=(android.view.ViewGroup)scroll.getChildAt(0);
+		((android.view.ViewGroup)body.getChildAt(2)).getChildAt(0).performClick();
+		assertEquals("qa-local-only",captured[0]); assertEquals("synthetic-local-only",captured[1]); assertTrue(capturedRemember[0]);
+		assertFalse(dialog.isShowing());
+	}
 }

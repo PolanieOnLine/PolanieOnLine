@@ -51,7 +51,8 @@ final class CredentialForm {
 		ScrollView scroll=new ScrollView(activity); scroll.addView(body);
 		AlertDialog dialog=new AlertDialog.Builder(activity,R.style.NativeDialog).create();
 		dialog.setView(scroll,0,0,0,0);
-		body.addView(NativeUi.row(activity,NativeUi.woodButton(activity,confirmLabel,()->{ dialog.dismiss(); confirm.run(); }),
+		// Read and persist fields while the dialog is still attached, before autofill is dismissed.
+		body.addView(NativeUi.row(activity,NativeUi.woodButton(activity,confirmLabel,()->{ confirm.run(); dialog.dismiss(); }),
 			NativeUi.woodButton(activity,secondaryLabel,()->{ dialog.dismiss(); if(secondary!=null) { secondary.run(); } })));
 		if(extraLabel!=null) { body.addView(NativeUi.link(activity,extraLabel,()->{ dialog.dismiss(); extra.run(); })); }
 		resizeWithKeyboard(dialog); return dialog;
