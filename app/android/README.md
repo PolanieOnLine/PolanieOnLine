@@ -116,6 +116,10 @@ oraz usuwanie niekompletnych plików. Sprawdzają również limit oczekiwania be
 ponowienia, anulowanie, zachowanie czasu po przebudowie panelu i odzyskiwanie widoków po awarii.
 Nie zastępują sprawdzenia na urządzeniu.
 
+Drewniane przyciski w parach mają równe krawędzie niezależnie od liczby wierszy napisu.
+Ich wysokość uwzględnia dwa wiersze oraz rozmiar czcionki ustawiony w telefonie.
+Wyrównanie i brak obcinania napisów sprawdzają również testy z rzeczywistymi metrykami czcionki.
+
 Na odizolowanym emulatorze Androida 16.1 sprawdzono komunikat po 45 sekundach,
 powrót do menu, celowo wywołaną awarię renderera oraz znikanie panelu ładowania
 po pojawieniu się formularza logowania. Test nie obejmował logowania na konto gracza.

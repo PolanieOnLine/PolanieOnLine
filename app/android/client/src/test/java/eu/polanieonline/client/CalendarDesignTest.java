@@ -15,6 +15,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class) @Config(sdk=29)
+@org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
 public class CalendarDesignTest {
 	private CalendarActivity activity() { CalendarActivity a=Robolectric.buildActivity(CalendarActivity.class).get(); a.setTheme(R.style.Theme_Stendhal_FullScreen); return a; }
 	private List<View> all(View root) {

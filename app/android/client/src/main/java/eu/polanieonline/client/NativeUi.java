@@ -44,8 +44,11 @@ final class NativeUi {
 		button.setBackground(new android.graphics.drawable.InsetDrawable(androidx.core.content.ContextCompat.getDrawable(a,R.drawable.btn_wood),0,dp(a,5),0,dp(a,5)));
 		button.setBackgroundTintList(null); button.setTextColor(0xffffeed3); button.setTextSize(13);
 		button.setPadding(dp(a,10),dp(a,6),dp(a,10),dp(a,6));
+		button.setGravity(android.view.Gravity.CENTER); button.setIncludeFontPadding(false);
+		button.setMaxLines(2); button.setEllipsize(android.text.TextUtils.TruncateAt.END);
 		// The tiled bitmap has an 80dp intrinsic height. It must not determine button height.
-		button.getLayoutParams().height=dp(a,48); return button;
+		// Reserve two text lines at the current font scale, even when the neighbouring label is shorter.
+		button.getLayoutParams().height=Math.max(dp(a,48),2*button.getLineHeight()+button.getCompoundPaddingTop()+button.getCompoundPaddingBottom()); return button;
 	}
 	static Button link(Activity a, String label, Runnable action) {
 		Button button=new Button(a); button.setText(label); button.setTextSize(13); button.setTextColor(TEAL); button.setAllCaps(false);
@@ -62,6 +65,7 @@ final class NativeUi {
 	}
 	static LinearLayout row(Activity a, Button left, Button right) {
 		LinearLayout row=new LinearLayout(a);
+		row.setBaselineAligned(false); row.setGravity(android.view.Gravity.TOP);
 		int leftHeight=left.getLayoutParams().height, rightHeight=right.getLayoutParams().height;
 		left.setLayoutParams(new LinearLayout.LayoutParams(0,leftHeight,1));
 		LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,rightHeight,1); p.leftMargin=dp(a,8); right.setLayoutParams(p);
