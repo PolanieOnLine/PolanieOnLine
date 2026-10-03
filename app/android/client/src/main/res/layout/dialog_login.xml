@@ -1,25 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content" android:orientation="vertical"
-	android:padding="24dp">
+	android:layout_height="wrap_content" android:fillViewport="true">
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+	android:orientation="vertical" android:padding="24dp">
 
-	<AutoCompleteTextView android:id="@+id/loginUsername"
+	<AutoCompleteTextView android:id="@+id/loginUsername" style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:hint="Nazwa użytkownika"
-		android:inputType="textPersonName" android:maxLines="1"
+		android:inputType="textNoSuggestions" android:maxLines="1"
+		android:imeOptions="actionNext|flagNoExtractUi|flagNoFullscreen" android:nextFocusForward="@id/loginPassword"
 		android:singleLine="true" />
 
-	<EditText android:id="@+id/loginPassword"
+	<EditText android:id="@+id/loginPassword" style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" android:hint="Hasło"
 		android:inputType="textPassword" android:maxLines="1"
+		android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
 		android:singleLine="true" />
 
 	<CheckBox android:id="@+id/loginRemember"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="Zapamiętaj mnie" />
+		android:layout_height="wrap_content" android:text="Zapamiętaj mnie" android:textColor="#F2F5F7" android:buttonTint="#68CCD4" />
 
 </LinearLayout>
+</ScrollView>

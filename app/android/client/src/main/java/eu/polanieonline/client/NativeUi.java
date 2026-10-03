@@ -73,16 +73,36 @@ final class NativeUi {
 		catch (ActivityNotFoundException e) { Toast.makeText(a, "Nie znaleziono przeglądarki w telefonie.", Toast.LENGTH_LONG).show(); }
 	}
 	static ScrollView screen(Activity a, LinearLayout content) {
-		ScrollView scroll = new ScrollView(a); scroll.setFillViewport(true); scroll.setBackgroundColor(INK);
+		return screen(a,content,false);
+	}
+	static ScrollView screen(Activity a, LinearLayout content, boolean winter) {
+		ScrollView scroll = new ScrollView(a); scroll.setFillViewport(true);
 		content.setPadding(dp(a, 18), dp(a, 16), dp(a, 18), dp(a, 24)); scroll.addView(content);
+		FrameLayout stage=new FrameLayout(a); stage.setBackgroundColor(INK);
+		if(winter) {
+			ImageView background=new ImageView(a); background.setImageResource(R.drawable.title_winter_v2);
+			background.setScaleType(ImageView.ScaleType.CENTER_CROP); background.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+			stage.addView(background,new FrameLayout.LayoutParams(-1,-1));
+			View dim=new View(a); dim.setBackgroundColor(0xaa040c12); stage.addView(dim,new FrameLayout.LayoutParams(-1,-1));
+			// Limit reading width on tablets and landscape phones, while leaving the background full width.
+			scroll.removeView(content); FrameLayout holder=new FrameLayout(a) {
+				@Override protected void onMeasure(int width,int height) {
+					content.getLayoutParams().width=Math.min(dp(a,840),View.MeasureSpec.getSize(width));
+					super.onMeasure(width,height);
+				}
+			};
+			holder.addView(content,new FrameLayout.LayoutParams(-1,-2,android.view.Gravity.CENTER_HORIZONTAL));
+			scroll.addView(holder);
+		}
+		stage.addView(scroll,new FrameLayout.LayoutParams(-1,-1));
 		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(a.getWindow(), false);
 		darkBars(a);
-		androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(scroll, (v, insets) -> {
+		androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(stage, (v, insets) -> {
 			androidx.core.graphics.Insets safe = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.systemBars()
 					| androidx.core.view.WindowInsetsCompat.Type.displayCutout() | androidx.core.view.WindowInsetsCompat.Type.ime());
 			v.setPadding(safe.left, safe.top, safe.right, safe.bottom); return insets;
 		});
-		a.setContentView(scroll); return scroll;
+		a.setContentView(stage); return scroll;
 	}
 	static void darkBars(Activity a) {
 		a.getWindow().setNavigationBarColor(INK);

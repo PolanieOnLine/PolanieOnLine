@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<ScrollView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:orientation="vertical"
-	android:padding="24dp">
+	android:layout_height="wrap_content" android:fillViewport="true">
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+	android:orientation="vertical" android:padding="24dp">
 
 	<EditText
 		android:id="@+id/registerUsername"
+		style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="Nazwa użytkownika"
-		android:inputType="textPersonName"
+		android:inputType="textNoSuggestions"
+		android:imeOptions="actionNext|flagNoExtractUi|flagNoFullscreen" android:nextFocusForward="@id/registerPassword"
 		android:maxLength="20"
 		android:maxLines="1"
 		android:singleLine="true" />
 
 	<EditText
 		android:id="@+id/registerPassword"
+		style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="Hasło"
 		android:inputType="textPassword"
+		android:imeOptions="actionNext|flagNoExtractUi|flagNoFullscreen" android:nextFocusForward="@id/registerPasswordRepeat"
 		android:maxLength="50"
 		android:maxLines="1"
 		android:singleLine="true" />
 
 	<EditText
 		android:id="@+id/registerPasswordRepeat"
+		style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="Powtórz hasło"
 		android:inputType="textPassword"
+		android:imeOptions="actionNext|flagNoExtractUi|flagNoFullscreen" android:nextFocusForward="@id/registerEmail"
 		android:maxLength="50"
 		android:maxLines="1"
 		android:singleLine="true" />
 
 	<EditText
 		android:id="@+id/registerEmail"
+		style="@style/NativeCredentialField"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="Email"
 		android:inputType="textEmailAddress"
+		android:imeOptions="actionDone|flagNoExtractUi|flagNoFullscreen"
 		android:maxLines="1"
 		android:singleLine="true" />
 
 </LinearLayout>
+</ScrollView>
