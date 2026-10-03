@@ -11,6 +11,7 @@ import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class) @Config(sdk=29)
+@org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
 public class NativePanelsTest {
 	@Test public void enlargedLogoKeepsProportionsInBothHeaderWidths() {
 		CalendarActivity a=Robolectric.buildActivity(CalendarActivity.class).get();
@@ -47,6 +48,27 @@ public class NativePanelsTest {
 		String report=Diagnostics.report(c);
 		assertTrue(report.contains("Android:")); assertTrue(report.contains("WebView:"));
 		assertFalse(report.contains("SECRET")); assertFalse(report.contains("seed")); assertFalse(report.contains("cookie"));
+	}
+	@Test public void twoLineSavedAccountsDoesNotShiftOrClipComparedWithCalendar() {
+		checkTwoLineButtons(1);
+	}
+	@Test public void largerFontStillFitsBothLinesAndKeepsRowEdgesEqual() {
+		checkTwoLineButtons(1.6f);
+	}
+	private void checkTwoLineButtons(float scale) {
+		CalendarActivity a=Robolectric.buildActivity(CalendarActivity.class).get(); a.setTheme(R.style.Theme_Stendhal_FullScreen);
+		RuntimeEnvironment.setFontScale(scale);
+		android.widget.Button left=NativeUi.woodButton(a,"Zapisane\nkonta",()->{}),right=NativeUi.woodButton(a,"Kalendarz",()->{});
+		android.widget.LinearLayout row=NativeUi.row(a,left,right);
+		int width=NativeUi.dp(a,224);
+		row.measure(android.view.View.MeasureSpec.makeMeasureSpec(width,android.view.View.MeasureSpec.EXACTLY),
+			android.view.View.MeasureSpec.makeMeasureSpec(0,android.view.View.MeasureSpec.UNSPECIFIED));
+		row.layout(0,0,width,row.getMeasuredHeight());
+		assertFalse(row.isBaselineAligned()); assertEquals(left.getTop(),right.getTop()); assertEquals(left.getBottom(),right.getBottom());
+		assertEquals(2,left.getLineCount());
+		assertTrue(left.getLayout().getHeight()<=left.getHeight()-left.getCompoundPaddingTop()-left.getCompoundPaddingBottom());
+		assertTrue(left.getHeight()>=NativeUi.dp(a,48));
+		if(scale==1) { assertTrue(left.getHeight()<NativeUi.dp(a,64)); }
 	}
 	@Test public void websiteShortcutOpensExternalBrowserAtCanonicalOrigin() {
 		CalendarActivity a=Robolectric.buildActivity(CalendarActivity.class).get();
