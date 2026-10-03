@@ -4,6 +4,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<PreferenceCategory android:title="Ogólne">
+		<Preference android:key="check_updates" android:title="Aktualizacje aplikacji"
+			android:summary="Sprawdź, czy jest dostępna nowa wersja." />
 
 		<EditTextPreference android:key="client_url"
 			android:inputType="text" android:maxLines="1"

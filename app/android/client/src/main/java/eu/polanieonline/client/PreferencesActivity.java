@@ -180,6 +180,8 @@ public class PreferencesActivity extends AppCompatActivity {
 
 		private void initListeners() {
 			final PreferenceManager pm = getPreferenceManager();
+			final Preference updates=pm.findPreference("check_updates");
+			if(updates!=null) { updates.setOnPreferenceClickListener(pref->{ Updates.open(requireActivity()); return true; }); }
 
 			// FIXME: should update playing music
 			final Preference reset = pm.findPreference("reset");

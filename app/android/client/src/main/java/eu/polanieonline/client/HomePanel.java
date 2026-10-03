@@ -21,7 +21,7 @@ final class HomePanel {
 	}
 	void show(boolean visible) {
 		host.setVisibility(visible ? View.VISIBLE : View.GONE);
-		if (visible) { render(); refresh(); }
+		if (visible) { render(); refresh(); Updates.automatic(activity); }
 	}
 	void dispose() { disposed=true; }
 	void render() {
@@ -37,7 +37,7 @@ final class HomePanel {
 		LinearLayout menu=NativeUi.column(activity);
 		menu.setBackground(new NativeUi.Ornament(activity,false,true));
 		menu.setPadding(NativeUi.dp(activity,18),NativeUi.dp(activity,14),NativeUi.dp(activity,18),NativeUi.dp(activity,22));
-		menu.addView(NativeUi.text(activity,"Wersja "+BuildConfig.VERSION_NAME,12,NativeUi.MUTED));
+		menu.addView(NativeUi.link(activity,"Wersja "+BuildConfig.VERSION_NAME+" | Aktualizacje",()->Updates.open(activity)));
 		Button play=NativeUi.woodButton(activity,"Graj",activity::loadLogin); play.setTextSize(18); play.getLayoutParams().height=NativeUi.dp(activity,54);
 		play.setBackgroundResource(R.drawable.btn_wood); play.setBackgroundTintList(null); menu.addView(play);
 		menu.addView(NativeUi.row(activity,NativeUi.woodButton(activity,"Zapisane konta",()->SavedAccounts.show(activity)),
