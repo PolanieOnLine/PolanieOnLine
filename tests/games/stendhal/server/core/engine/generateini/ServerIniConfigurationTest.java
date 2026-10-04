@@ -48,7 +48,7 @@ public class ServerIniConfigurationTest extends TestCase {
             + "server_typeGame=polanieonline" + System.lineSeparator()
             + "server_name=polanieonline Marauroa server" + System.lineSeparator()
             + "server_version=1.38" + System.lineSeparator()
-            + "server_contact=https://s1.polanieonline.eu/kontakt-gmgags.html" + System.lineSeparator()
+            + "server_contact=https://polanieonline.eu/kontakt" + System.lineSeparator()
             + "" + System.lineSeparator()
             + "# Extensions configured on the server. Enable at will." + System.lineSeparator()
             + "#server_extension=xxx" + System.lineSeparator()
