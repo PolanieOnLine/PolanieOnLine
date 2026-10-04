@@ -51,7 +51,6 @@ export class ItemInventoryComponent extends Component {
 		this.componentElement.classList.remove("inventorypopup_" + this.oldSizeX);
 		this.componentElement.classList.add("inventorypopup_" + sizeX);
 		this.oldSizeX = sizeX;
-		this.componentElement.style.setProperty("--inventory-columns", String(sizeX));
 
 		let html = "";
 		for (let i = 0; i < sizeX * sizeY; i++) {
