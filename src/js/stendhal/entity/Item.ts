@@ -13,6 +13,7 @@ import { ItemMap } from "./ItemMap";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
+import { ItemRarityEffects } from "../sprite/ItemRarityEffects";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { ItemRarity } from "../data/ItemRarity";
@@ -93,8 +94,9 @@ export class Item extends Entity {
 	}
 
 	override draw(ctx: RenderingContext2D) {
-		this.sprite.offsetY = (this["state"] || 0) * 32
 		this.stepAnimation();
+		this.sprite.offsetY = (this["state"] || 0) * 32;
+		ItemRarityEffects.drawGround(ctx, this, this["x"] * 32, this["y"] * 32);
 
 		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
 	}

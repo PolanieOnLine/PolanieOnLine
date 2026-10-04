@@ -24,6 +24,7 @@ import { singletons } from "../../SingletonRepo";
 import { Point } from "../../util/Point";
 import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
+import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
@@ -196,12 +197,14 @@ export class ItemContainerImplementation {
 				if (!view.animated) {
 					if (!view.animationPending) {
 						this.animationSlots.splice(i, 1);
+						ItemRarityEffects.updateSlot(view.element, item);
 					}
 					continue;
 				}
 			}
 			item.stepAnimation(now);
 			this.updatePosition(view, item);
+			ItemRarityEffects.updateSlot(view.element, item);
 		}
 	}
 
@@ -342,6 +345,7 @@ export class ItemContainerImplementation {
 			}
 			view.item = item;
 			(element as any).dataItem = item;
+			ItemRarityEffects.updateSlot(element, item);
 		}
 		this.renderedObject = myobject;
 		this.dirty = false;
@@ -675,6 +679,9 @@ export class ItemContainerImplementation {
 		const rarity = item?.getRarity();
 		if (rarity) {
 			target.classList.add("item-rarity", rarity.cssClass);
+		}
+		if (target.classList.contains("itemSlot")) {
+			ItemRarityEffects.updateSlot(target, item);
 		}
 
 		if (ItemContainerImplementation.rarityToolTipTarget === target) {
