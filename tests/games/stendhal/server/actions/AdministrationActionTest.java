@@ -47,6 +47,7 @@ import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
+import marauroa.server.game.db.AccountDAO;
 import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
 import marauroa.server.game.db.DatabaseFactory;
@@ -682,6 +683,10 @@ public class AdministrationActionTest {
 
 		DBTransaction transaction = TransactionPool.get().beginWork();
 		try {
+			AccountDAO accountDAO = DAORegister.get().get(AccountDAO.class);
+			if (!accountDAO.hasPlayer(transaction, "offlineplayer")) {
+				accountDAO.addPlayer(transaction, "offlineplayer", new byte[16], "offlineplayer@example.invalid");
+			}
 			CharacterDAO characterDAO = DAORegister.get().get(CharacterDAO.class);
 			if (!characterDAO.hasCharacter(transaction, "offlineplayer", "offlineplayer")) {
 				RPObject rpobject = new RPObject();
@@ -690,8 +695,10 @@ public class AdministrationActionTest {
 				characterDAO.addCharacter(transaction, "offlineplayer", "offlineplayer", rpobject,
 						new Timestamp(System.currentTimeMillis()));
 			}
-		} finally {
 			TransactionPool.get().commit(transaction);
+		} catch (SQLException e) {
+			TransactionPool.get().rollback(transaction);
+			throw e;
 		}
 
 		player.clearEvents();

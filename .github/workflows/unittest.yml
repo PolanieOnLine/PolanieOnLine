@@ -16,13 +16,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Set up Android SDK tools
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
       - name: Install Android SDK components
         run: sdkmanager "platforms;android-36" "build-tools;36.1.0"
       - name: Check native login and registration scripts
         run: node --test app/android/tests/native-forms.test.cjs
       - name: Build and check unsigned Android release
         working-directory: app/android
-        run: bash gradlew --no-daemon --console=plain -Dandroid.home="$ANDROID_HOME" :client:assembleRelease :client:testReleaseUnitTest :client:lintRelease
+        run: bash gradlew --no-daemon --console=plain -Dorg.gradle.java.home="$JAVA_HOME" -Dandroid.home="$ANDROID_HOME" :client:assembleRelease :client:testReleaseUnitTest :client:lintRelease
       - name: Upload Android verification reports
         if: always()
         uses: actions/upload-artifact@v7
