@@ -44,6 +44,7 @@ export class ItemInventoryComponent extends Component {
 
 	setObject(object: any) {
 		this.itemContainerImplementation.object = object;
+		this.itemContainerImplementation.update();
 	}
 
 	setSize(sizeX: number, sizeY: number) {

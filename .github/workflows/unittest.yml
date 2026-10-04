@@ -64,6 +64,8 @@ jobs:
           cache: 'npm'
       - name: Compile TypeScript webclient
         run: ant -noinput -buildfile build.xml compilejs
+      - name: Check inventory animation and sprite preparation
+        run: npm run test:inventory
 
   balance-audit:
     runs-on: ubuntu-latest

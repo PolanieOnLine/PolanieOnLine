@@ -61,4 +61,11 @@ export class RunicAltarComponent extends Component {
 			slot.markDirty();
 		}
 	}
+
+	public animate() {
+		const now = Date.now();
+		for (const slot of this.inventory) {
+			slot.animate(now);
+		}
+	}
 }

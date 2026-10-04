@@ -19,6 +19,7 @@ export class SpriteImage extends Image {
 	// number of times the image has been accessed after initial creation
 	counter = 0;
 	bitmap?: ImageBitmap;
+	bitmapPromise?: Promise<void>;
 	bitmapWidth?: number;
 	bitmapHeight?: number;
 }
@@ -130,10 +131,14 @@ export class SpriteStore {
 			}
 			return Promise.resolve();
 		}
+		if (image.bitmapPromise) {
+			return image.bitmapPromise;
+		}
 		if (!image.complete) {
 			return Promise.resolve();
 		}
-		return createImageBitmap(image).then((bmp) => {
+		// Share conversion while renderers and load listeners access the same image.
+		image.bitmapPromise = createImageBitmap(image).then((bmp) => {
 			image.bitmap = bmp;
 			image.bitmapWidth = bmp.width;
 			image.bitmapHeight = bmp.height;
@@ -142,7 +147,10 @@ export class SpriteStore {
 				image.bitmapWidth = image.width;
 				image.bitmapHeight = image.height;
 			}
+		}).finally(() => {
+			image.bitmapPromise = undefined;
 		});
+		return image.bitmapPromise;
 	}
 
 	private getBestSource(image: SpriteImage): SpriteImage {

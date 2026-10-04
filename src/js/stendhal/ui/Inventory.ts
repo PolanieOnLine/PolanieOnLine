@@ -45,6 +45,13 @@ export class Inventory {
 		}
 	}
 
+	animate() {
+		const now = Date.now();
+		for (const inventory of this.inventory) {
+			inventory.animate(now);
+		}
+	}
+
 	getInventory(): ItemContainerImplementation[] {
 		return this.inventory;
 	}
@@ -72,12 +79,14 @@ export class Inventory {
 	remove(comp: ItemContainerImplementation) {
 		const idx = this.inventory.indexOf(comp);
 		if (idx > -1) {
+			comp.dispose();
 			this.inventory.splice(idx, 1);
 		}
 	}
 
 	removeIndex(idx: number) {
 		if (idx > -1 && idx < this.inventory.length) {
+			this.inventory[idx].dispose();
 			this.inventory.splice(idx, 1);
 		}
 	}
