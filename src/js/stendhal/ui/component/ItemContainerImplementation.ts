@@ -231,8 +231,8 @@ export class ItemContainerImplementation {
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
-		const position = (1 - item.getXFrameIndex() * 32) + "px "
-			+ (1 - (item["state"] || 0) * 32) + "px";
+		const position = (2 - item.getXFrameIndex() * 32) + "px "
+			+ (2 - (item["state"] || 0) * 32) + "px";
 		if (view.backgroundPosition !== position) {
 			view.element.style.backgroundPosition = position;
 			view.backgroundPosition = position;
@@ -327,9 +327,9 @@ export class ItemContainerImplementation {
 					element.textContent = "";
 					view.quantity = "";
 				}
-				if (view.backgroundPosition !== "1px 1px") {
-					element.style.backgroundPosition = "1px 1px";
-					view.backgroundPosition = "1px 1px";
+				if (view.backgroundPosition !== "2px 2px") {
+					element.style.backgroundPosition = "2px 2px";
+					view.backgroundPosition = "2px 2px";
 				}
 				if (changed) {
 					this.updateCursor(element);
