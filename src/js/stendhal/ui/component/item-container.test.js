@@ -8,11 +8,43 @@ const vm = require("node:vm");
 const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 
 const stendhalRoot = path.resolve(__dirname, "../..");
+const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
 for (const name of ["data/ItemRarity.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
+}
+
+// Source-backed CSS geometry, not a browser renderer. Pixel QA is separate.
+function itemSlotGeometry() {
+	const rule = mainCSS.replace(/\/\*[\s\S]*?\*\//g, "")
+		.match(/(?:^|\})\s*div\.itemSlot\s*\{([^}]+)\}/);
+	assert.ok(rule, "The actual inventory slot CSS rule exists");
+	const declarations = Object.fromEntries(rule[1].split(";").filter(value => value.trim()).map(value => {
+		const separator = value.indexOf(":");
+		return [value.slice(0, separator).trim(), value.slice(separator + 1).trim()];
+	}));
+	function px(property) {
+		assert.match(declarations[property], /^\d+px$/, `${property} remains a single pixel size`);
+		return Number.parseInt(declarations[property], 10);
+	}
+	assert.equal(declarations["box-sizing"] || "content-box", "content-box");
+	assert.equal(declarations["background-origin"] || "padding-box", "padding-box");
+	assert.match(declarations.border, /^\d+px solid transparent$/);
+	const border = Number.parseInt(declarations.border, 10);
+	const padding = px("padding");
+	const width = px("width");
+	const height = px("height");
+	const content = { x: border + padding, y: border + padding, width, height };
+	const borderBox = { x: 0, y: 0, width: width + 2 * (padding + border), height: height + 2 * (padding + border) };
+	const clips = declarations["background-clip"]?.split(",").map(value => value.trim());
+	assert.deepEqual(clips, ["content-box", "border-box"], "Only the icon is clipped; the fill keeps its original bounds");
+	assert.equal(declarations["background-image"], "none, none", "Uninitialized and material slots also retain two paint layers");
+	assert.equal(declarations["background-color"], "rgba(72, 43, 23, 0.85)");
+	assert.equal(declarations["border-radius"], "6px");
+	assert.equal(declarations["background-repeat"], "no-repeat !important");
+	return { border, content, borderBox };
 }
 
 function createHarness() {
@@ -165,6 +197,51 @@ function createHarness() {
 	};
 }
 
+test("the actual CSS crops every frame and state to exactly one 32 px icon", () => {
+	const { border, content } = itemSlotGeometry();
+	assert.deepEqual(content, { x: 3, y: 3, width: 32, height: 32 });
+	for (let state = 0; state < 3; state++) {
+		const h = createHarness();
+		const item = h.makeItem(1, { width: 96, height: 96, state });
+		const { container, parent } = h.makeContainer([item]);
+		const element = parent.elements[0];
+		assert.equal(element.style.backgroundImage, `url(${item.sprite.filename}), none`);
+		for (let frame = 0; frame < 3; frame++) {
+			container.animate(1000 + frame * 100);
+			assert.equal(item.getXFrameIndex(), frame);
+			const position = element.style.backgroundPosition.match(/^(-?\d+)px (-?\d+)px$/);
+			assert.ok(position, "The renderer keeps the unscaled source-sheet offset");
+			// Default background-origin is padding-box. Translate the actual clip
+			// rectangle into sheet coordinates; neither adjacent column nor row fits.
+			const sheetX = content.x - (border + Number(position[1]));
+			const sheetY = content.y - (border + Number(position[2]));
+			assert.deepEqual([sheetX, sheetY, sheetX + content.width, sheetY + content.height],
+				[frame * 32, state * 32, (frame + 1) * 32, (state + 1) * 32]);
+		}
+	}
+});
+
+test("empty and default slots keep a second layer for padding and border fill", () => {
+	const { content, borderBox } = itemSlotGeometry();
+	assert.deepEqual(borderBox, { x: 0, y: 0, width: 38, height: 38 });
+	assert.ok(content.x > borderBox.x && content.y > borderBox.y);
+	assert.ok(content.x + content.width < borderBox.width && content.y + content.height < borderBox.height,
+		"The bottom-layer clip includes the padding and transparent border, not just the icon");
+	for (const defaultImage of [undefined, "slot-head.png"]) {
+		const h = createHarness();
+		const { container, parent } = h.makeContainer([], { size: 1, defaultImage });
+		assert.equal(parent.elements[0].style.backgroundImage,
+			defaultImage ? "url(/gui/slot-head.png), none" : "none, none");
+		assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
+		h.resetMetrics();
+		container.update();
+		container.animate(1000);
+		assert.equal(h.metrics.imageWrites, 0);
+		assert.equal(h.metrics.positionWrites, 0);
+		assert.equal(h.metrics.steps, 0);
+	}
+});
+
 test("36 animated items need no inventory lookups or content writes in 60 world frames", () => {
 	const h = createHarness();
 	const items = Array.from({ length: 36 }, (_, index) => h.makeItem(index));
@@ -270,7 +347,7 @@ test("reorder and removal update dataItem and remove stale quantity and rarity",
 	assert.equal(parent.elements[0].dataItem, first);
 	assert.equal(parent.elements[1].dataItem, undefined);
 	assert.equal(parent.elements[1].textContent, "");
-	assert.equal(parent.elements[1].style.backgroundImage, "none");
+	assert.equal(parent.elements[1].style.backgroundImage, "none, none");
 	assert.equal(parent.elements[1].title, "");
 	assert.equal(parent.elements[1].classList.contains("item-rarity"), false);
 	h.resetMetrics();
@@ -380,7 +457,7 @@ test("an asynchronous image fallback updates a pending icon without a content re
 	h.resetMetrics();
 	h.images.set(item.sprite.filename, { width: 32, height: 32, src: "/sprites/failsafe.png" });
 	container.animate(1100);
-	assert.equal(parent.elements[0].style.backgroundImage, "url(/sprites/failsafe.png)");
+	assert.equal(parent.elements[0].style.backgroundImage, "url(/sprites/failsafe.png), none");
 	assert.equal(h.metrics.imageWrites, 1);
 	assert.equal(h.metrics.queries, 0);
 	assert.equal(h.metrics.itemLookups, 0);
@@ -400,7 +477,7 @@ test("an empty placeholder resets offsets left by an animated item state", () =>
 	owner.bag.items = [];
 	container.update();
 	assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
-	assert.equal(parent.elements[0].style.backgroundImage, "url(/gui/slot-head.png)");
+	assert.equal(parent.elements[0].style.backgroundImage, "url(/gui/slot-head.png), none");
 	assert.equal(parent.elements[0].dataItem, undefined);
 	assert.equal(parent.elements[0].classList.contains("item-rarity"), false);
 });
