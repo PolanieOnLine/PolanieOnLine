@@ -10,7 +10,8 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["data/ItemRarity.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts"]) {
+for (const name of ["data/ItemRarity.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts",
+	"ui/component/ItemInventoryComponent.ts", "ui/interaction/QuickSlots.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -46,6 +47,73 @@ function itemSlotGeometry() {
 	assert.equal(declarations["background-repeat"], "no-repeat !important");
 	return { border, content, borderBox };
 }
+
+test("inventory grids retain their column count when resized, including nonstandard sizes", () => {
+	const exports = {};
+	vm.runInNewContext(compiled.get("ui/component/ItemInventoryComponent.ts"), {
+		exports,
+		require: name => name === "../toolkit/Component" ? { Component: class {} } : {}
+	});
+	const grid = Object.create(exports.ItemInventoryComponent.prototype);
+	const classes = new Set();
+	const properties = new Map();
+	grid.componentElement = {
+		classList: { add: name => classes.add(name), remove: name => classes.delete(name) },
+		style: { setProperty: (name, value) => properties.set(name, value) }
+	};
+	grid.slot = "bag";
+	grid.suffix = "-test-";
+	grid.oldSizeX = 0;
+	for (const columns of [2, 3, 4, 5, 6, 8, 6]) {
+		grid.setSize(columns, 3);
+		assert.equal(properties.get("--inventory-columns"), String(columns));
+		assert.equal((grid.componentElement.innerHTML.match(/class='itemSlot'/g) || []).length, columns * 3);
+		assert.deepEqual([...classes], [`inventorypopup_${columns}`]);
+	}
+	assert.match(mainCSS, /grid-template-columns:\s*repeat\(var\(--inventory-columns\), 40px\)/);
+});
+
+test("quick slots keep source sheets unscaled and center icons and empty button layers", () => {
+	let atlas;
+	const exports = {};
+	vm.runInNewContext(compiled.get("ui/interaction/QuickSlots.ts"), {
+		exports,
+		require: name => {
+			if (name === "../toolkit/Component") return { Component: class {} };
+			if (name === "../../SingletonRepo") return { singletons: { getSpriteStore: () => ({
+				getItemIconAtlas: () => atlas, checkPath: filename => filename
+			}) } };
+			if (name === "../../data/Paths") return { Paths: { sprites: "/sprites", gui: "/gui" } };
+			if (name === "../component/ItemContainerImplementation") return { ItemContainerImplementation: {
+				updateCursorFor() {}, updateToolTipFor() {}
+			} };
+			return {};
+		}
+	});
+	const quick = Object.create(exports.QuickSlots.prototype);
+	const slot = { style: {} };
+	quick.slotCounts = new Map();
+	const item = { class: "food", subclass: "test", state: 2, sprite: { filename: "test.png" },
+		isAnimated: () => true, stepAnimation() {}, getXFrameIndex: () => 1 };
+	quick.updateSlotVisual(slot, item);
+	assert.equal(slot.style.backgroundPosition, "-28px -60px, center center");
+	assert.equal(slot.style.backgroundSize, "auto, contain");
+	item.isAnimated = () => false;
+	atlas = { dataUrl: "atlas.png", positions: new Map([["food/test/2", { x: 64, y: 32 }]]) };
+	quick.updateSlotVisual(slot, item);
+	assert.equal(slot.style.backgroundPosition, "-60px -28px, center center");
+	assert.equal(slot.style.backgroundSize, "auto, contain");
+	quick.setEmptySlotVisual(slot);
+	assert.equal(slot.style.backgroundImage, "none, url(/gui/panel/empty_btn.png)");
+	assert.equal(slot.style.backgroundPosition, "4px 4px, center center");
+	const rules = [...mainCSS.matchAll(/(?:^|\})\s*\.quick-slot\s*\{([^}]+)\}/g)];
+	assert.equal(rules.length, 1, "Touch devices do not shrink the 40px slot");
+	assert.match(rules[0][1], /box-sizing:\s*border-box/);
+	assert.match(rules[0][1], /width:\s*40px/);
+	assert.match(rules[0][1], /height:\s*40px/);
+	assert.match(rules[0][1], /padding:\s*4px/);
+	assert.match(rules[0][1], /background-clip:\s*content-box, border-box/);
+});
 
 function createHarness() {
 	const metrics = {
@@ -212,7 +280,7 @@ function createHarness() {
 
 test("the actual CSS crops every frame and state to exactly one 32 px icon", () => {
 	const { border, content } = itemSlotGeometry();
-	assert.deepEqual(content, { x: 3, y: 3, width: 32, height: 32 });
+	assert.deepEqual(content, { x: 4, y: 4, width: 32, height: 32 });
 	for (let state = 0; state < 3; state++) {
 		const h = createHarness();
 		const item = h.makeItem(1, { width: 96, height: 96, state });
@@ -234,9 +302,19 @@ test("the actual CSS crops every frame and state to exactly one 32 px icon", () 
 	}
 });
 
+test("rarity outline stays centered around the icon inside the 40px slot", () => {
+	const { border, content } = itemSlotGeometry();
+	const rule = mainCSS.match(/\.item-rarity-outline\s*\{([^}]+)\}/)[1];
+	const px = property => Number(rule.match(new RegExp(`\\b${property}:\\s*(\\d+)px`))[1]);
+	assert.equal(border + px("left"), content.x - 1);
+	assert.equal(border + px("top"), content.y - 1);
+	assert.equal(px("width"), content.width + 2);
+	assert.equal(px("height"), content.height + 2);
+});
+
 test("empty and default slots keep a second layer for padding and border fill", () => {
 	const { content, borderBox } = itemSlotGeometry();
-	assert.deepEqual(borderBox, { x: 0, y: 0, width: 38, height: 38 });
+	assert.deepEqual(borderBox, { x: 0, y: 0, width: 40, height: 40 });
 	assert.ok(content.x > borderBox.x && content.y > borderBox.y);
 	assert.ok(content.x + content.width < borderBox.width && content.y + content.height < borderBox.height,
 		"The bottom-layer clip includes the padding and transparent border, not just the icon");
@@ -245,7 +323,7 @@ test("empty and default slots keep a second layer for padding and border fill", 
 		const { container, parent } = h.makeContainer([], { size: 1, defaultImage });
 		assert.equal(parent.elements[0].style.backgroundImage,
 			defaultImage ? "url(/gui/slot-head.png), none" : "none, none");
-		assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
+		assert.equal(parent.elements[0].style.backgroundPosition, "2px 2px");
 		h.resetMetrics();
 		container.update();
 		container.animate(1000);
@@ -283,7 +361,7 @@ test("animation advances at 100 ms and only changed positions are written", () =
 	assert.equal(h.metrics.positionWrites, 0);
 	container.animate(1100);
 	assert.equal(item.getXFrameIndex(), 1);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.equal(parent.elements[0].style.backgroundPosition, "-30px 2px");
 	assert.equal(h.metrics.positionWrites, 1);
 	container.animate(1199);
 	assert.equal(h.metrics.steps, 1);
@@ -350,7 +428,7 @@ test("updates immediately reflect quantity, state and rarity changed on the same
 	const element = parent.elements[0];
 	assert.equal(element.dataItem, item);
 	assert.equal(element.textContent, "7");
-	assert.equal(element.style.backgroundPosition, "1px -63px");
+	assert.equal(element.style.backgroundPosition, "2px -62px");
 	assert.ok(element.classList.contains("item-rarity-epic"));
 	assert.equal(element.classList.contains("item-rarity-rare"), false);
 	assert.match(element.title, /Epicki/);
@@ -434,7 +512,7 @@ test("init after a DOM resize replaces cached elements and visibility observatio
 	container.animate(1000);
 	container.animate(1100);
 	assert.deepEqual(oldElements.map(element => element.style.backgroundPosition), oldPositions);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.equal(parent.elements[0].style.backgroundPosition, "-30px 2px");
 });
 
 test("visibility observations tolerate an absent slot element", () => {
@@ -503,7 +581,7 @@ test("an image not ready during render starts animating after it loads", () => {
 	assert.equal(h.metrics.steps, 1);
 	container.animate(1200);
 	assert.equal(item.getXFrameIndex(), 1);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.equal(parent.elements[0].style.backgroundPosition, "-30px 2px");
 	assert.equal(h.metrics.queries, 0);
 	assert.equal(h.metrics.itemLookups, 0);
 });
@@ -532,10 +610,10 @@ test("an empty placeholder resets offsets left by an animated item state", () =>
 	const { container, parent, owner } = h.makeContainer([item], { defaultImage: "slot-head.png" });
 	container.animate(1000);
 	container.animate(1100);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px -95px");
+	assert.equal(parent.elements[0].style.backgroundPosition, "-30px -94px");
 	owner.bag.items = [];
 	container.update();
-	assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
+	assert.equal(parent.elements[0].style.backgroundPosition, "2px 2px");
 	assert.equal(parent.elements[0].style.backgroundImage, "url(/gui/slot-head.png), none");
 	assert.equal(parent.elements[0].dataItem, undefined);
 	assert.equal(parent.elements[0].classList.contains("item-rarity"), false);
