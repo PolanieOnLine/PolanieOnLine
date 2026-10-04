@@ -31,6 +31,22 @@ import {
 	ItemTooltipLine
 } from "./ItemTooltipPresentation";
 
+interface InventorySlotView {
+	element: HTMLElement;
+	item?: Item;
+	spritePath?: string;
+	backgroundImage?: string;
+	backgroundPosition?: string;
+	quantity?: string;
+	toolTip?: string;
+	displayName?: string;
+	rarity?: ItemRarity;
+	tooltipStats?: string;
+	animated: boolean;
+	animationPending: boolean;
+	visible: boolean;
+}
+
 
 /**
  * a container for items like a bag or corpse
@@ -46,6 +62,11 @@ export class ItemContainerImplementation {
 
 	// marked for updating certain attributes
 	private dirty = false;
+	private slots: InventorySlotView[] = [];
+	private animationSlots: InventorySlotView[] = [];
+	private nextAnimationTime = 0;
+	private renderedObject: any;
+	private slotVisibilityObserver?: IntersectionObserver;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -67,9 +88,29 @@ export class ItemContainerImplementation {
 	}
 
 	public init(size: number) {
+		this.slotVisibilityObserver?.disconnect();
+		this.slots = [];
+		this.animationSlots = [];
+		this.nextAnimationTime = 0;
+		this.dirty = true;
+		if (typeof IntersectionObserver !== "undefined") {
+			this.slotVisibilityObserver = new IntersectionObserver(entries => {
+				for (const entry of entries) {
+					const slot = this.slots.find(view => view?.element === entry.target);
+					if (slot) {
+						slot.visible = entry.isIntersecting;
+					}
+				}
+			});
+		}
 		this.size = size;
 		for (let i = 0; i < size; i++) {
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
+			if (!e) {
+				continue;
+			}
+			this.slots[i] = {element: e, animated: false, animationPending: false, visible: true};
+			this.slotVisibilityObserver?.observe(e);
 			e.setAttribute("draggable", "true");
 			e.style.touchAction = "none";
 			e.addEventListener("dragstart", (event: DragEvent) => {
@@ -130,6 +171,79 @@ export class ItemContainerImplementation {
 		this.render();
 	}
 
+	/** Advances icon frames without scanning the live inventory on every world frame. */
+	public animate(now = Date.now()) {
+		if (now < this.nextAnimationTime) {
+			return;
+		}
+		this.nextAnimationTime = now + 100;
+		if (!this.isAnimationVisible()) {
+			return;
+		}
+		if (this.dirty || this.renderedObject !== (this.object || marauroa.me)) {
+			this.render();
+		}
+		for (let i = this.animationSlots.length - 1; i >= 0; i--) {
+			const view = this.animationSlots[i];
+			const item = view.item!;
+			if (!view.visible) {
+				continue;
+			}
+			if (view.animationPending) {
+				this.updateImage(view);
+				view.animated = item.isAnimated();
+				view.animationPending = !singletons.getSpriteStore().get(item.sprite.filename).height;
+				if (!view.animated) {
+					if (!view.animationPending) {
+						this.animationSlots.splice(i, 1);
+					}
+					continue;
+				}
+			}
+			item.stepAnimation(now);
+			this.updatePosition(view, item);
+		}
+	}
+
+	public dispose() {
+		this.slotVisibilityObserver?.disconnect();
+		for (const view of this.slots) {
+			if (view) {
+				ItemContainerImplementation.hideRarityToolTip(view.element);
+			}
+		}
+	}
+
+	private isAnimationVisible(): boolean {
+		const element = this.parentElement.nodeType === 9
+			? this.slots.find(view => !!view)?.element : this.parentElement as HTMLElement;
+		if (!element || document.visibilityState === "hidden"
+				|| element.closest("[hidden], [aria-hidden='true']")) {
+			return false;
+		}
+		if (typeof element.checkVisibility === "function") {
+			return element.checkVisibility({checkOpacity: true, checkVisibilityCSS: true});
+		}
+		return element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden";
+	}
+
+	private updatePosition(view: InventorySlotView, item: Item) {
+		const position = (1 - item.getXFrameIndex() * 32) + "px "
+			+ (1 - (item["state"] || 0) * 32) + "px";
+		if (view.backgroundPosition !== position) {
+			view.element.style.backgroundPosition = position;
+			view.backgroundPosition = position;
+		}
+	}
+
+	private updateImage(view: InventorySlotView) {
+		const image = "url(" + singletons.getSpriteStore().checkPath(view.spritePath!) + ")";
+		if (view.backgroundImage !== image) {
+			view.element.style.backgroundImage = image;
+			view.backgroundImage = image;
+		}
+	}
+
 	private findItem(predicate: (item: Item) => boolean): Item | undefined {
 		const myobject = this.object || marauroa.me;
 		const items = myobject?.[this.slot];
@@ -154,54 +268,82 @@ export class ItemContainerImplementation {
 	}
 
 	public render() {
-		let myobject = this.object || marauroa.me;
-		let cnt = 0;
-		if (myobject && myobject[this.slot]) {
-			for (let i = 0; i < myobject[this.slot].count(); i++) {
-				let o = myobject[this.slot].getByIndex(i);
-				let e = this.parentElement.querySelector("#" + this.slot + this.suffix + cnt) as HTMLElement;
-				if (!e) {
-					continue;
-				}
-
-				this.dirty = this.dirty || o !== (e as any).dataItem;
-				const item = <Item> o;
-				let xOffset = 0;
-				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated()) {
-					item.stepAnimation();
-					xOffset = -(item.getXFrameIndex() * 32);
-				}
-
-				e.style.backgroundImage = "url("
-						+ singletons.getSpriteStore().checkPath(Paths.sprites
-								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
-						+ ")";
-				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
-				e.textContent = o.formatQuantity();
-				if (this.dirty) {
-					this.updateCursor(e, item);
-					this.updateToolTip(e, item);
-				}
-				(e as any).dataItem = o;
-				cnt++;
+		const myobject = this.object || marauroa.me;
+		const items = myobject?.[this.slot];
+		const count = Math.min(items?.count() || 0, this.size);
+		this.animationSlots = [];
+		for (let i = 0; i < this.size; i++) {
+			const view = this.slots[i];
+			if (!view) {
+				continue;
 			}
-		}
-
-		for (let i = cnt; i < this.size; i++) {
-			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
-			if (this.defaultImage) {
-				e.style.backgroundImage = "url(" + Paths.gui + "/" + this.defaultImage + ")";
+			const item = i < count ? items.getByIndex(i) as Item : undefined;
+			const changed = this.dirty || view.item !== item || view.backgroundImage === undefined;
+			const element = view.element;
+			if (item) {
+				const path = Paths.sprites + "/items/" + item["class"] + "/" + item["subclass"] + ".png";
+				view.spritePath = path;
+				// A failed image can switch to the store's fallback without an item change.
+				this.updateImage(view);
+				this.updatePosition(view, item);
+				const quantity = String(item.formatQuantity());
+				if (view.quantity !== quantity) {
+					element.textContent = quantity;
+					view.quantity = quantity;
+				}
+				const toolTip = item.getToolTip();
+				const displayName = item.getDisplayName();
+				const rarity = item.getRarity();
+				// Maps can be mutated in place by a perception. Never fingerprint them per frame.
+				const tooltipStats = JSON.stringify(item["tooltip_stats"]);
+				const cursor = this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")
+					? "url(" + Paths.sprites + "/cursor/itempickupfromslot.png) 1 3, auto" : item.getCursor(0, 0);
+				if (changed || element.style.cursor !== cursor) {
+					this.updateCursor(element, item);
+				}
+				if (changed || view.toolTip !== toolTip || view.rarity !== rarity
+						|| view.tooltipStats !== tooltipStats || view.displayName !== displayName) {
+					this.updateToolTip(element, item);
+					view.toolTip = toolTip;
+					view.rarity = rarity;
+					view.tooltipStats = tooltipStats;
+					view.displayName = displayName;
+				}
+				view.animated = item.isAnimated();
+				view.animationPending = !view.animated && !singletons.getSpriteStore().get(item.sprite.filename).height;
+				if (view.animated || view.animationPending) {
+					this.animationSlots.push(view);
+				}
 			} else {
-				e.style.backgroundImage = "none";
+				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
+				if (view.backgroundImage !== image) {
+					element.style.backgroundImage = image;
+					view.backgroundImage = image;
+				}
+				if (view.quantity !== "") {
+					element.textContent = "";
+					view.quantity = "";
+				}
+				if (view.backgroundPosition !== "1px 1px") {
+					element.style.backgroundPosition = "1px 1px";
+					view.backgroundPosition = "1px 1px";
+				}
+				if (changed) {
+					this.updateCursor(element);
+					this.updateToolTip(element);
+				}
+				view.spritePath = undefined;
+				view.toolTip = undefined;
+				view.displayName = undefined;
+				view.rarity = undefined;
+				view.tooltipStats = undefined;
+				view.animated = false;
+				view.animationPending = false;
 			}
-			e.textContent = "";
-			// Empty slots must always drop cursor, tooltip and rarity decoration.
-			this.updateCursor(e);
-			this.updateToolTip(e);
-			(e as any).dataItem = undefined;
+			view.item = item;
+			(element as any).dataItem = item;
 		}
-
+		this.renderedObject = myobject;
 		this.dirty = false;
 	}
 

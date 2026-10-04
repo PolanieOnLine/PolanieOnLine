@@ -76,8 +76,16 @@ export class Item extends Entity {
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "class" || key === "subclass") {
-			this.sprite.filename = Paths.sprites + "/items/"
+			const filename = Paths.sprites + "/items/"
 				+ this["class"] + "/" + this["subclass"] + ".png";
+			if (this.sprite.filename !== filename) {
+				this.sprite.filename = filename;
+				this.animated = null;
+				this.xFrames = null;
+				this.yFrames = null;
+				this.frameTimeStamp = 0;
+				this.sprite.offsetX = 0;
+			}
 		}
 		if (key === "quantity") {
 			this.quantityTextSprite = new TextSprite(this.formatQuantity(), "white", "10px sans-serif");
@@ -102,8 +110,7 @@ export class Item extends Entity {
 		}
 	}
 
-	public stepAnimation() {
-		const currentTimeStamp = +new Date();
+	public stepAnimation(currentTimeStamp = Date.now()) {
 		if (this.frameTimeStamp == 0) {
 			this.frameTimeStamp = currentTimeStamp;
 			this.sprite.offsetX = 0;

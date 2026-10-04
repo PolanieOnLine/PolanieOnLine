@@ -82,6 +82,14 @@ export class PlayerEquipmentComponent extends Component {
 	}
 
 	public update() {
+		this.refreshInventories(false);
+	}
+
+	public animate() {
+		this.refreshInventories(true);
+	}
+
+	private refreshInventories(animationOnly: boolean) {
 		if (!this.isVisible()) {
 			this.pendingRefresh = true;
 			return;
@@ -94,8 +102,13 @@ export class PlayerEquipmentComponent extends Component {
 			this.pendingRefresh = false;
 		}
 
+		const now = Date.now();
 		for (const inv of this.inventory) {
-			inv.update();
+			if (animationOnly) {
+				inv.animate(now);
+			} else {
+				inv.update();
+			}
 		}
 
 		this.updateWindowTitle();

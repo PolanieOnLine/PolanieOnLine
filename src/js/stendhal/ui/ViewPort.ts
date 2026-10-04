@@ -19,6 +19,7 @@ import { UIComponentEnum } from "./UIComponentEnum";
 
 import { PlayerEquipmentComponent } from "./component/PlayerEquipmentComponent";
 import { MiniMapComponent } from "./component/MiniMapComponent";
+import { RunicAltarComponent } from "./component/RunicAltarComponent";
 
 import { ActionContextMenu } from "./dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "./dialog/DropQuantitySelectorDialog";
@@ -239,9 +240,10 @@ export class ViewPort {
 				this.drawTextSprites();
 				this.drawTextSprites(this.notifSprites);
 
-				// redraw inventory sprites
-				stendhal.ui.equip.update();
-				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+				// Content is refreshed after a perception; only icon frames change here.
+				stendhal.ui.equip.animate();
+				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).animate();
+				(ui.get(UIComponentEnum.RunicAltar) as RunicAltarComponent).animate();
 			}
 		}
 		requestAnimationFrame(() => {

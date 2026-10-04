@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/data/sprite-store.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -17,6 +17,7 @@ import { UIComponentEnum } from "ui/UIComponentEnum";
 import { MiniMapComponent } from "ui/component/MiniMapComponent";
 import { BuddyListComponent } from "ui/component/BuddyListComponent";
 import { PlayerEquipmentComponent } from "ui/component/PlayerEquipmentComponent";
+import { RunicAltarComponent } from "ui/component/RunicAltarComponent";
 import { singletons } from "SingletonRepo";
 import { Client } from "Client";
 
@@ -55,6 +56,7 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		stendhal.ui.equip.update();
 		singletons.getQuickSlotsController().update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+		(ui.get(UIComponentEnum.RunicAltar) as RunicAltarComponent).update();
 		if (!Client.get().loaded) {
 			Client.get().loaded = true;
 			stendhal.playerInGame = true;
