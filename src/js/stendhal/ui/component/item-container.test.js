@@ -117,6 +117,16 @@ function createHarness() {
 		checkPath: filename => images.get(filename)?.src || filename
 	};
 	const singletons = { getSpriteStore: () => spriteStore };
+	const raritySlotCalls = [], groundCalls = [];
+	const rarityEffects = { ItemRarityEffects: {
+		updateSlot(target, item) {
+			raritySlotCalls.push({ target, item, quantity: target.textContent,
+				frame: item?.getXFrameIndex(), state: item?.state, rarity: item?.getRarity()?.id });
+		},
+		drawGround(context, item, x, y) {
+			groundCalls.push({ context, item, x, y, offsetX: item.sprite.offsetX, offsetY: item.sprite.offsetY });
+		}
+	} };
 	function load(name, dependencies) {
 		const exports = {};
 		vm.runInNewContext(compiled.get(name), {
@@ -137,6 +147,7 @@ function createHarness() {
 	const { Item } = load("entity/Item.ts", {
 		"./ItemMap": { ItemMap: { getCursor: () => "itemdrop" } },
 		"./Entity": { Entity }, "../sprite/TextSprite": { TextSprite: class {} },
+		"../sprite/ItemRarityEffects": rarityEffects,
 		"../data/Paths": { Paths: { sprites: "/sprites" } },
 		"../data/ItemRarity": { ItemRarity }, "../SingletonRepo": { singletons },
 		marauroa: { marauroa }
@@ -147,7 +158,8 @@ function createHarness() {
 		"../dialog/ItemUpgradeDialog": {}, "../../entity/Item": { Item },
 		"../../SingletonRepo": { singletons }, "../../util/Point": {},
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
-		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {}
+		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
+		"../../sprite/ItemRarityEffects": rarityEffects
 	});
 	const updateToolTip = Container.updateToolTipFor;
 	Container.updateToolTipFor = (...args) => { metrics.tooltipUpdates++; updateToolTip(...args); };
@@ -176,6 +188,7 @@ function createHarness() {
 	function makeParent(size) {
 		const parent = new Element("bag-window");
 		parent.elements = Array.from({ length: size }, (_, index) => new Element(`bag${index}`));
+		for (const element of parent.elements) { element.classList.add("itemSlot"); }
 		for (const element of parent.elements) { element.parentElement = parent; }
 		parent.querySelector = selector => {
 			metrics.queries++;
@@ -191,7 +204,7 @@ function createHarness() {
 	}
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
-		metrics, document, marauroa, images, observers, Container, ItemRarity,
+		metrics, document, marauroa, images, observers, Container, ItemRarity, raritySlotCalls, groundCalls,
 		makeItem, makeOwner, makeParent, makeContainer, resetMetrics,
 		setNow: value => { now = value; }
 	};
@@ -277,6 +290,52 @@ test("animation advances at 100 ms and only changed positions are written", () =
 	container.animate(1200);
 	assert.equal(item.getXFrameIndex(), 2);
 	assert.equal(h.metrics.positionWrites, 2);
+});
+
+test("inventory rendering passes the active rarity frame and removes stale decorations", () => {
+	const h = createHarness(), item = h.makeItem(1, { rarity: "rare", height: 64, state: 1 });
+	const { container, parent, owner } = h.makeContainer([item]);
+	assert.equal(h.raritySlotCalls.at(-1).target, parent.elements[0]);
+	assert.equal(h.raritySlotCalls.at(-1).rarity, "rare");
+	container.animate(1000); container.animate(1100);
+	assert.equal(h.raritySlotCalls.at(-1).frame, 1);
+	assert.equal(h.raritySlotCalls.at(-1).state, 1);
+	const calls = h.raritySlotCalls.length;
+	h.document.visibilityState = "hidden"; container.animate(1200);
+	assert.equal(h.raritySlotCalls.length, calls);
+	h.document.visibilityState = "visible";
+	item.set("quantity", "7"); item.set("rarity_id", "legendary"); container.update();
+	assert.equal(h.raritySlotCalls.at(-1).quantity, "7");
+	assert.equal(h.raritySlotCalls.at(-1).rarity, "legendary");
+	owner.bag.items = []; container.update();
+	assert.equal(h.raritySlotCalls.at(-1).item, undefined);
+});
+
+test("a pending static rare item gets its outline immediately after the image loads", () => {
+	const h = createHarness(), item = h.makeItem(1, { rarity: "rare", width: 0, height: 0 });
+	const { container } = h.makeContainer([item]);
+	const calls = h.raritySlotCalls.length;
+	h.images.set(item.sprite.filename, { width: 32, height: 32 });
+	container.animate(1000);
+	assert.equal(h.raritySlotCalls.length, calls + 1);
+	assert.equal(h.raritySlotCalls.at(-1).rarity, "rare");
+	assert.equal(h.raritySlotCalls.at(-1).frame, 0);
+	container.animate(1100);
+	assert.equal(h.raritySlotCalls.length, calls + 1, "Loaded static icons leave the animation loop");
+});
+
+test("world item drawing decorates the current frame and state before painting the item", () => {
+	const h = createHarness(), item = h.makeItem(1, { rarity: "rare", height: 64, state: 1 });
+	item.x = 3; item.y = 4;
+	item.drawAt = () => { assert.equal(h.groundCalls.at(-1).item, item); };
+	const context = {};
+	item.draw(context);
+	assert.equal(h.groundCalls.at(-1).context, context);
+	assert.deepEqual([h.groundCalls.at(-1).x, h.groundCalls.at(-1).y], [96, 128]);
+	assert.equal(h.groundCalls.at(-1).offsetY, 32, "First frame retains the selected state row");
+	h.setNow(1100); item.draw(context);
+	assert.equal(h.groundCalls.at(-1).offsetX, 32);
+	assert.equal(h.groundCalls.at(-1).offsetY, 32);
 });
 
 test("updates immediately reflect quantity, state and rarity changed on the same Item", () => {

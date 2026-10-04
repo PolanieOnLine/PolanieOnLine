@@ -255,10 +255,18 @@ div.item-upgrade-material-slot {
 .item-upgrade-status:not([data-status="ready"]):not([data-status="success"])
 		:not([data-status="select_item"]) { color: #e75d50; }
 
-div.itemSlot.item-rarity {
-	border-image: none;
-	border-color: var(--item-rarity-color);
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7), 0 0 4px var(--item-rarity-color);
+div.itemSlot {
+	isolation: isolate;
+}
+
+.item-rarity-outline {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 34px;
+	height: 34px;
+	pointer-events: none;
+	z-index: -1;
 }
 
 .item-rarity-tooltip {
