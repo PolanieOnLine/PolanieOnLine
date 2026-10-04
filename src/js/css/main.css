@@ -153,13 +153,11 @@ ul.uniform {
 }
 
 div.itemSlot {
-	box-sizing: content-box;
 	width: 32px;
 	height: 32px;
 	position: relative;
 	float: left;
-	padding: 2px;
-	flex: none;
+	padding: 1px;
 	text-align: right;
 	color: #FFF;
 	font-weight: bold;
@@ -184,8 +182,6 @@ div.itemSlot {
 	background-repeat: no-repeat !important;
 	/* Clip the sprite to its 32px frame; the empty bottom layer preserves the slot fill. */
 	background-image: none, none;
-	background-origin: padding-box;
-	background-position: 2px 2px;
 	background-clip: content-box, border-box;
 }
 
@@ -265,8 +261,8 @@ div.itemSlot {
 
 .item-rarity-outline {
 	position: absolute;
-	left: 1px;
-	top: 1px;
+	left: 0;
+	top: 0;
 	width: 34px;
 	height: 34px;
 	pointer-events: none;
@@ -391,15 +387,10 @@ div.itemSlot {
 .item-tooltip-delta--worse { color: #ef6a62; }
 .item-tooltip-delta--equal { color: #f3efe7; }
 
-div#equipmentborder {
-	width: max-content;
-	min-width: 0;
-}
+div#equipmentborder { width: 147px; }
 
 .inventory-window {
-	/* Six 40px slots, five 2px gaps and the body's right border. */
-	width: max-content;
-	min-width: 251px;
+	width: 233px;
 	background: var(--background-url) repeat;
 	border-top: 1px solid var(--border-top-color);
 	border-left: 1px solid var(--border-top-color);
@@ -610,13 +601,13 @@ div.quickPickup div.itemSlot {
 
 .equipment-grid {
 	position: relative;
-	height: 218px;
-	width: 124px;
+	height: 210px;
+	width: 122px;
 }
 
 .runic-altar-grid {
 	position: relative;
-	width: 124px;
+	width: 122px;
 	height: 150px;
 	margin: 4px auto;
 }
@@ -693,44 +684,44 @@ div.quickPickup div.itemSlot {
 
 /* Right panel */
 #neck0 {position:absolute; top:20px; left:0px}
-#rhand0 {position:absolute; top:62px; left:0px}
-#finger0 {position:absolute; top:104px; left:0px}
-#fingerb0 {position:absolute; top:146px; left:0px}
+#rhand0 {position:absolute; top:60px; left:0px}
+#finger0 {position:absolute; top:100px; left:0px}
+#fingerb0 {position:absolute; top:140px; left:0px}
 /* Middle panel */
-#head0 {position:absolute; top:5px; left:42px}
-#armor0 {position:absolute; top:47px; left:42px}
-#pas0 {position:absolute; top:89px; left:42px}
-#legs0 {position:absolute; top:131px; left:42px}
-#feet0 {position:absolute; top:173px; left:42px}
+#head0 {position:absolute; top:5px; left:40px}
+#armor0 {position:absolute; top:45px; left:40px}
+#pas0 {position:absolute; top:85px; left:40px}
+#legs0 {position:absolute; top:125px; left:40px}
+#feet0 {position:absolute; top:165px; left:40px}
 /* Left panel */
-#cloak0 {position:absolute; top:20px; left:84px}
-#lhand0 {position:absolute; top:62px; left:84px}
-#glove0 {position:absolute; top:104px; left:84px}
-#pouch0 {position:absolute; top:146px; left:84px}
+#cloak0 {position:absolute; top:20px; left:80px}
+#lhand0 {position:absolute; top:60px; left:80px}
+#glove0 {position:absolute; top:100px; left:80px}
+#pouch0 {position:absolute; top:140px; left:80px}
 
 /* Runic altar slots (2-3-2 layout) */
 #control_rune0 {position:absolute; top:24px; left:0px}
 #utility_rune0 {position:absolute; top:84px; left:0px}
-#offensive_rune0 {position:absolute; top:6px; left:42px}
-#special_rune0 {position:absolute; top:54px; left:42px}
-#defensive_rune0 {position:absolute; top:102px; left:42px}
-#healing_rune0 {position:absolute; top:24px; left:84px}
-#resistance_rune0 {position:absolute; top:84px; left:84px}
+#offensive_rune0 {position:absolute; top:6px; left:40px}
+#special_rune0 {position:absolute; top:54px; left:40px}
+#defensive_rune0 {position:absolute; top:102px; left:40px}
+#healing_rune0 {position:absolute; top:24px; left:80px}
+#resistance_rune0 {position:absolute; top:84px; left:80px}
 
 /* Secondary equipment panel */
 #neck_set0 {position:absolute; top:20px; left:0px}
-#rhand_set0 {position:absolute; top:62px; left:0px}
-#finger_set0 {position:absolute; top:104px; left:0px}
-#fingerb_set0 {position:absolute; top:146px; left:0px}
-#head_set0 {position:absolute; top:5px; left:42px}
-#armor_set0 {position:absolute; top:47px; left:42px}
-#pas_set0 {position:absolute; top:89px; left:42px}
-#legs_set0 {position:absolute; top:131px; left:42px}
-#feet_set0 {position:absolute; top:173px; left:42px}
-#cloak_set0 {position:absolute; top:20px; left:84px}
-#lhand_set0 {position:absolute; top:62px; left:84px}
-#glove_set0 {position:absolute; top:104px; left:84px}
-#pouch_set0 {position:absolute; top:146px; left:84px}
+#rhand_set0 {position:absolute; top:60px; left:0px}
+#finger_set0 {position:absolute; top:100px; left:0px}
+#fingerb_set0 {position:absolute; top:140px; left:0px}
+#head_set0 {position:absolute; top:5px; left:40px}
+#armor_set0 {position:absolute; top:45px; left:40px}
+#pas_set0 {position:absolute; top:85px; left:40px}
+#legs_set0 {position:absolute; top:125px; left:40px}
+#feet_set0 {position:absolute; top:165px; left:40px}
+#cloak_set0 {position:absolute; top:20px; left:80px}
+#lhand_set0 {position:absolute; top:60px; left:80px}
+#glove_set0 {position:absolute; top:100px; left:80px}
+#pouch_set0 {position:absolute; top:140px; left:80px}
 
 #chat {
 	height: 100%;
@@ -1355,14 +1346,37 @@ body.mobile-floating-ui #viewport,
 }
 
 .inventorypopup {
-	--inventory-columns: 6;
-	display: grid;
-	grid-template-columns: repeat(var(--inventory-columns), 40px);
-	gap: 2px;
-	width: max-content;
+	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	align-content: flex-start;
 	background: transparent;
+}
+
+.inventorypopup_2 {
+	max-width: 82px;
+	width: 100%;
+	gap: 3px;
+}
+
+.inventorypopup_3 {
+	max-width: 126px;
+	width: 100%;
+	gap: 3px;
+}
+
+.inventorypopup_4 {
+	max-width: 170px;
+	width: 100%;
+	gap: 3px;
+}
+
+.inventorypopup_6 {
+	width: 232px;
+}
+
+.inventorypopup_5 {
+	width: 200px;
 }
 
 .popupdiv, .windowdiv {
@@ -1480,18 +1494,11 @@ button.windowtitleminimize:first-child {
 
 .quick-slot {
 	position: absolute;
-	box-sizing: border-box;
 	width: 40px;
 	height: 40px;
-	background: transparent;
-	background-image: none, url(/data/gui/panel/empty_btn.png);
-	background-position: 4px 4px, center center;
-	background-size: auto, contain;
-	background-repeat: no-repeat;
-	background-origin: padding-box;
-	background-clip: content-box, border-box;
+	background: transparent url(/data/gui/panel/empty_btn.png) center center / contain no-repeat;
 	border: none;
-	padding: 4px;
+	padding: 0;
 	pointer-events: auto;
 }
 
@@ -1512,6 +1519,11 @@ button.windowtitleminimize:first-child {
 }
 
 @media (hover: none) and (pointer: coarse) {
+	.quick-slot {
+		width: 36px;
+		height: 36px;
+	}
+
 	.quick-slot__count {
 		font-size: 11px;
 	}
