@@ -180,6 +180,9 @@ div.itemSlot {
 	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 	mask-image: radial-gradient(circle, white 90%, transparent 100%);
 	background-repeat: no-repeat !important;
+	/* Clip the sprite to its 32px frame; the empty bottom layer preserves the slot fill. */
+	background-image: none, none;
+	background-clip: content-box, border-box;
 }
 
 .item-rarity-common { --item-rarity-color: #9e9e9e; }

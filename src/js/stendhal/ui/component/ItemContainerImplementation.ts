@@ -237,7 +237,7 @@ export class ItemContainerImplementation {
 	}
 
 	private updateImage(view: InventorySlotView) {
-		const image = "url(" + singletons.getSpriteStore().checkPath(view.spritePath!) + ")";
+		const image = "url(" + singletons.getSpriteStore().checkPath(view.spritePath!) + "), none";
 		if (view.backgroundImage !== image) {
 			view.element.style.backgroundImage = image;
 			view.backgroundImage = image;
@@ -315,7 +315,7 @@ export class ItemContainerImplementation {
 					this.animationSlots.push(view);
 				}
 			} else {
-				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
+				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + "), none" : "none, none";
 				if (view.backgroundImage !== image) {
 					element.style.backgroundImage = image;
 					view.backgroundImage = image;

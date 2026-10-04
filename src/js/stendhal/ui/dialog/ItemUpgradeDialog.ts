@@ -238,7 +238,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			if (classes[index] && subclasses[index]) {
 				slot.style.backgroundImage = "url(" + singletons.getSpriteStore()
 						.checkPath(Paths.sprites + "/items/" + classes[index]
-								+ "/" + subclasses[index] + ".png") + ")";
+								+ "/" + subclasses[index] + ".png") + "), none";
 				slot.style.backgroundPosition = "1px 1px";
 			}
 			slot.textContent = need > 1 ? String(need) : "";
