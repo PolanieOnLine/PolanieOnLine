@@ -17,7 +17,7 @@ public class MineTownLanterns extends MineTownCollectionQuest {
 
 	public MineTownLanterns() {
 		super(QUEST_SLOT, QUEST_NAME, "Wolrad", "srebrna skrzynia", 12,
-				Collections.singletonMap("latarenka", REQUIRED_LANTERNS),
+				Collections.singletonMap(MineTownLanternSpawns.LANTERN_NAME, REQUIRED_LANTERNS),
 				"Wiatr porwał latarenki, które szykowałem na święto. Wypatruj ich przy drogach, na polanach i w innych zakątkach, którędy wiedzie cię wędrówka. Przynieś mi pięć moich zgub. Poznasz je po śladach jesiennej zawieruchy. Kupieckich nie potrzebuję. Gdy mi pomożesz, zajrzyj znów za dwanaście godzin.");
 	}
 
@@ -46,12 +46,12 @@ public class MineTownLanterns extends MineTownCollectionQuest {
 
 	@Override
 	protected boolean hasRequiredItems(final Player player) {
-		return player.isEquippedWithItemdata("latarenka", MineTownLanternSpawns.itemData(), REQUIRED_LANTERNS);
+		return player.isEquippedWithItemdata(MineTownLanternSpawns.LANTERN_NAME, MineTownLanternSpawns.itemData(), REQUIRED_LANTERNS);
 	}
 
 	@Override
 	protected void consumeRequiredItems(final Player player) {
-		player.dropWithItemdata("latarenka", MineTownLanternSpawns.itemData(), REQUIRED_LANTERNS);
+		player.dropWithItemdata(MineTownLanternSpawns.LANTERN_NAME, MineTownLanternSpawns.itemData(), REQUIRED_LANTERNS);
 	}
 
 	@Override

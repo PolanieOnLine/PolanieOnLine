@@ -2326,7 +2326,8 @@ public abstract class RPEntity extends CombatEntity {
 	 *         items matching name & itemdata.
 	 */
 	public boolean isEquippedWithItemdata(final String name, final String itemdata, final int amount) {
-		return getAllEquippedWithItemdata(name, itemdata).size() >= amount;
+		return isEquipped(item -> name.equals(item.getName())
+				&& itemdata.equalsIgnoreCase(item.getItemData()), amount);
 	}
 
 	/**

@@ -11,6 +11,7 @@ import games.stendhal.client.actions.BareBonesBrowserLaunchCommandsFactoryTest;
 import games.stendhal.client.gui.GlyphTooltipPresentationTest;
 import games.stendhal.client.gui.GroundItemTooltipTest;
 import games.stendhal.client.gui.ItemRarityPresentationTest;
+import games.stendhal.client.gui.SlotWindowCharacterSessionTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
 import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
@@ -18,6 +19,7 @@ import games.stendhal.server.actions.equip.SourceObjectTest;
 import games.stendhal.server.core.engine.db.StendhalWebsiteDAOTest;
 import games.stendhal.server.core.engine.db.CharacterSlotsDAOTest;
 import games.stendhal.server.core.engine.transformer.GlyphRestoreMigrationTest;
+import games.stendhal.server.core.engine.transformer.MineTownLanternRestoreTest;
 import games.stendhal.server.core.events.seasonal.EasterEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownConstructionEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownEventPlanTest;
@@ -61,6 +63,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	CameraSmootherTest.class,
+	SlotWindowCharacterSessionTest.class,
 	BareBonesBrowserLaunchCommandsFactoryTest.class,
 	TextSpriteTest.class,
 	ItemRarityPresentationTest.class,
@@ -70,6 +73,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	ItemRarityServiceTest.class,
 	GlyphRarityExclusionTest.class,
 	GlyphRestoreMigrationTest.class,
+	MineTownLanternRestoreTest.class,
 	ItemAffixStateTest.class,
 	ItemAffixSeedTest.class,
 	ItemAffixGeneratorTest.class,

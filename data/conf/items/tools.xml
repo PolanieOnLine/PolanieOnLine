@@ -128,6 +128,26 @@
 		</equipable>
 	</item>
 
+	<item name="zagubiona latarenka">
+		<type class="tool" subclass="lamp" tileid="-1"/>
+		<description>Oto zagubiona latarenka ze śladami jesiennej zawieruchy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="3.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="zaczarowane nożyczki">
 		<type class="tool" subclass="magical_scissors" tileid="-1"/>
 		<description>Oto zaczarowane nożyczki. Tylko pomyśl co nimi możesz uciąć!</description>

@@ -28,6 +28,7 @@ import marauroa.common.game.IRPZone;
 public final class MineTownLanternSpawns {
 	private static final Logger LOGGER = Logger.getLogger(MineTownLanternSpawns.class);
 	public static final int RESPAWN_SECONDS = 30 * 60;
+	public static final String LANTERN_NAME = "zagubiona latarenka";
 	private final List<LanternPoint> points = new ArrayList<LanternPoint>();
 
 	public static String itemData() {
@@ -196,9 +197,9 @@ public final class MineTownLanternSpawns {
 				TurnNotifier.get().notifyInSeconds(60, this);
 				return null;
 			}
-			final Item item = SingletonRepository.getEntityManager().getItem("latarenka");
+			final Item item = SingletonRepository.getEntityManager().getItem(LANTERN_NAME);
 			if (item == null) {
-				throw new IllegalStateException("Brakuje przedmiotu latarenka");
+				throw new IllegalStateException("Brakuje przedmiotu " + LANTERN_NAME);
 			}
 			setPosition(position.x, position.y);
 			notifyWorldAboutChanges();

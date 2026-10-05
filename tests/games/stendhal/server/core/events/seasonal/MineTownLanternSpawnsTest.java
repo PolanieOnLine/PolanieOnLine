@@ -20,6 +20,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.player.Player;
@@ -79,8 +80,9 @@ public class MineTownLanternSpawnsTest {
 		int count = 0;
 		for (final StendhalRPZone zone : list) {
 			for (final RPObject object : zone) {
-				if (object instanceof Item && "latarenka".equals(((Item) object).getName())) {
+				if (object instanceof Item && MineTownLanternSpawns.LANTERN_NAME.equals(((Item) object).getName())) {
 					assertEquals(MineTownLanternSpawns.itemData(), ((Item) object).getItemData());
+					assertTrue(object instanceof StackableItem);
 					count++;
 				}
 			}
@@ -122,10 +124,10 @@ public class MineTownLanternSpawnsTest {
 		TurnNotifier.get().dontNotify(point);
 		point.onTurnReached(1);
 		assertEquals(1, count(zones));
-		assertEquals(1, player.getNumberOfEquipped("latarenka"));
+		assertEquals(1, player.getNumberOfEquipped(MineTownLanternSpawns.LANTERN_NAME));
 		spawns.stop();
 		assertEquals(0, count(zones));
-		assertEquals(1, player.getNumberOfEquipped("latarenka"));
+		assertEquals(1, player.getNumberOfEquipped(MineTownLanternSpawns.LANTERN_NAME));
 		assertNull(collected.getPlantGrower());
 		// A stale callback after unloading cannot repopulate the world.
 		point.onTurnReached(2);
