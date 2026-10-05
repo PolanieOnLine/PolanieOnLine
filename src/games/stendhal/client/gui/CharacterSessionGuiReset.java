@@ -58,6 +58,11 @@ public final class CharacterSessionGuiReset {
 	}
 
 	private static void clearBindings(final Component component) {
+		if (component instanceof ReserveSetWindow) {
+			// Character owns and clears these panels, even though this window
+			// is attached to the game screen rather than the equipment sidebar.
+			return;
+		}
 		if (component instanceof SlotWindow) {
 			((SlotWindow) component).clearSlot();
 		}
@@ -68,8 +73,10 @@ public final class CharacterSessionGuiReset {
 		}
 		if (component instanceof Character) {
 			Character character = (Character) component;
-			character.setTitle("Character");
 			character.resetSession();
+			// The equipment window clears all its panels on the EDT, including
+			// reserve slots that are attached elsewhere in the component tree.
+			return;
 		}
 
 		if (component instanceof Container) {

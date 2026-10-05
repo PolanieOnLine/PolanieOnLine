@@ -12,6 +12,8 @@ import games.stendhal.client.gui.GlyphTooltipPresentationTest;
 import games.stendhal.client.gui.GroundItemTooltipTest;
 import games.stendhal.client.gui.ItemRarityPresentationTest;
 import games.stendhal.client.gui.SlotWindowCharacterSessionTest;
+import games.stendhal.client.gui.CharacterEquipmentSessionTest;
+import games.stendhal.client.gui.FeatureEnabledItemPanelTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
 import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
@@ -64,6 +66,8 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 @Suite.SuiteClasses({
 	CameraSmootherTest.class,
 	SlotWindowCharacterSessionTest.class,
+	CharacterEquipmentSessionTest.class,
+	FeatureEnabledItemPanelTest.class,
 	BareBonesBrowserLaunchCommandsFactoryTest.class,
 	TextSpriteTest.class,
 	ItemRarityPresentationTest.class,

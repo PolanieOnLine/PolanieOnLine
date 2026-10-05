@@ -12,6 +12,7 @@
 package games.stendhal.client.gui;
 
 import java.awt.Container;
+import javax.swing.SwingUtilities;
 
 import games.stendhal.client.UserContext;
 import games.stendhal.client.listener.FeatureChangeListener;
@@ -23,6 +24,7 @@ import games.stendhal.client.sprite.Sprite;
 public class FeatureEnabledItemPanel extends ItemPanel implements FeatureChangeListener {
 
 	final String feature;
+	private volatile boolean featureAvailable;
 
 	FeatureEnabledItemPanel(final String slotName, final Sprite placeholder) {
 		super(slotName, placeholder);
@@ -30,7 +32,8 @@ public class FeatureEnabledItemPanel extends ItemPanel implements FeatureChangeL
 		feature = slotName;
 
 		// only visible if the player has the feature
-		setVisible(UserContext.get().hasFeature(feature));
+		featureAvailable = UserContext.get().hasFeature(feature);
+		setVisible(featureAvailable);
 	}
 
 	FeatureEnabledItemPanel(final String slotName, final Sprite placeholder, final String featureName) {
@@ -39,20 +42,37 @@ public class FeatureEnabledItemPanel extends ItemPanel implements FeatureChangeL
 		feature = featureName;
 
 		// only visible if the player has the feature
-		setVisible(UserContext.get().hasFeature(feature));
+		featureAvailable = UserContext.get().hasFeature(feature);
+		setVisible(featureAvailable);
 	}
 
 	@Override
 	public void featureDisabled(final String name) {
 		if (name.equals(feature)) {
-			setVisible(false);
+			featureAvailable = false;
+			applyFeatureVisibility();
 		}
 	}
 
 	@Override
 	public void featureEnabled(final String name, final String value) {
 		if (name.equals(feature)) {
-			setVisible(true);
+			featureAvailable = true;
+			applyFeatureVisibility();
+		}
+	}
+
+	private void applyFeatureVisibility() {
+		if (SwingUtilities.isEventDispatchThread()) {
+			setVisible(featureAvailable);
+		} else {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					// A queued event from the old character must not reveal a slot.
+					setVisible(featureAvailable);
+				}
+			});
 		}
 	}
 
@@ -61,7 +81,7 @@ public class FeatureEnabledItemPanel extends ItemPanel implements FeatureChangeL
 		super.setVisible(visible);
 
 		final Container parent = getParent();
-		if (visible && !parent.isVisible()) {
+		if (visible && parent != null && !parent.isVisible()) {
 			// make sure the parent container is visible.
 			parent.setVisible(true);
 		}

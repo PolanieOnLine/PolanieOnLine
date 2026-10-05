@@ -80,7 +80,9 @@ class ReserveSetWindow extends InternalManagedWindow {
 		}
 
 		if (!tryAttach()) {
-			scheduleAttachRetry();
+			if (j2DClient.get() != null) {
+				scheduleAttachRetry();
+			}
 		}
 	}
 
