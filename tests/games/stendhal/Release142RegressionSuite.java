@@ -32,6 +32,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixStateTest;
 import games.stendhal.server.core.rule.rarity.ItemRarityServiceTest;
 import games.stendhal.server.entity.RPEntityGroupExperienceTest;
 import games.stendhal.server.entity.RPEntityWeaponDamageRollTest;
+import games.stendhal.server.entity.creature.MineTownPumpkinDropTest;
 import games.stendhal.server.entity.item.ChallengeArenaRewardChestTest;
 import games.stendhal.server.entity.item.RingOfTeleportationTest;
 import games.stendhal.server.entity.status.BleedingAttackerFactoryTest;
@@ -100,6 +101,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	SeasonalZonePlanTest.class,
 	EasterEventPlanTest.class,
 	MineTownEventPlanTest.class,
+	MineTownPumpkinDropTest.class,
 	MineTownConstructionEventPlanTest.class
 })
 public class Release142RegressionSuite {

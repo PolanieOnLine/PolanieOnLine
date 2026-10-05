@@ -31,6 +31,7 @@ import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.events.seasonal.SeasonalEventService;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
@@ -90,6 +91,8 @@ public class Creature extends NPC {
 	 */
 	private static final double SERVER_DROP_GENEROSITY = 1;
 	private static final String MIST_STONE_NAME = "mgielny kamień";
+	private static final String MINE_TOWN_PUMPKIN_NAME = "straszna dynia";
+	private static final int MINE_TOWN_PUMPKIN_DROP_PERCENT = 5;
 
 	private HealerBehavior healer = HealerBehaviourFactory.get(null);
 
@@ -744,7 +747,9 @@ public class Creature extends NPC {
 		}
 
 		for (final Item item : createDroppedItems(SingletonRepository.getEntityManager())) {
-			if (!corpse.isFull(isBoss())) {
+			// Keep all normal loot; the event item may use one of the spare corpse slots.
+			if (!corpse.isFull(isBoss()) || (MINE_TOWN_PUMPKIN_NAME.equals(item.getName())
+					&& !corpse.isFull(true))) {
 				corpse.add(item);
 				item.setFromCorpse(true);
 			} else {
@@ -925,7 +930,9 @@ public class Creature extends NPC {
 		final Player killerPlayer = getKillerPlayer();
 
 		for (final DropItem dropped : dropsItems) {
-			if (shouldSkipDropForKiller(dropped, killerPlayer)) {
+			// The event owns this drop, including legacy XML entries. Never roll it twice.
+			if (MINE_TOWN_PUMPKIN_NAME.equals(dropped.name)
+					|| shouldSkipDropForKiller(dropped, killerPlayer)) {
 				continue;
 			}
 			final double probability = Rand.rand(1000000) / 10000.0;
@@ -967,7 +974,25 @@ public class Creature extends NPC {
 				}
 			}
 		}
+		// Read the live event state at death, not when the creature spawns.
+		if (SeasonalEventService.get().isMineTownEnabled()
+				&& rollMineTownPumpkinChance() < MINE_TOWN_PUMPKIN_DROP_PERCENT) {
+			final Item pumpkin = createDroppedItem(defaultEntityManager, MINE_TOWN_PUMPKIN_NAME);
+			if (pumpkin != null) {
+				if (pumpkin instanceof StackableItem) {
+					((StackableItem) pumpkin).setQuantity(1);
+				}
+				list.add(pumpkin);
+			} else {
+				LOGGER.error("Unable to create event item: " + MINE_TOWN_PUMPKIN_NAME);
+			}
+		}
 		return list;
+	}
+
+	/** Uniform 0-99 roll; kept separate for deterministic event-drop tests. */
+	protected int rollMineTownPumpkinChance() {
+		return Rand.rand(100);
 	}
 
 	/**
