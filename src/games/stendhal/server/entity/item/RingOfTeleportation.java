@@ -202,7 +202,10 @@ public class RingOfTeleportation extends Item {
 	}
 
 	private void scheduleSuccessfulReturnCompletion(final Player player) {
-		SingletonRepository.getTurnNotifier().notifyInTurns(0, new TurnListener() {
+		// Use actions run before endTurn, while TurnNotifier still holds the
+		// previous turn. A delay of zero fires at the end of the teleport turn,
+		// before its perception is sent. Wait past that perception and its reset.
+		SingletonRepository.getTurnNotifier().notifyInTurns(1, new TurnListener() {
 			@Override
 			public void onTurnReached(final int currentTurn) {
 				completeSuccessfulReturn(player);
