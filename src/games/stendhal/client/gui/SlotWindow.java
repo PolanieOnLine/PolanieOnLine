@@ -38,7 +38,7 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	private static final int MAX_DISTANCE = 4;
 
 	private final SlotGrid content;
-	private IEntity parent;
+	private volatile IEntity parent;
 
 	/**
 	 * Create a new EntityContainer.
@@ -84,6 +84,9 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 					@Override
 					public void run() {
 						Component window = SwingUtilities.getRoot(getParent());
+						if (window == null) {
+							return;
+						}
 						window.doLayout();
 						window.revalidate();
 						window.repaint();
@@ -169,55 +172,36 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	 * 	open, <code>false</code> otherwise.
 	 */
 	public boolean isCloseEnough() {
+		final IEntity owner = parent;
 		final User user = User.get();
-
-		if ((user != null) && (parent != null)) {
-			// null checks are fixes for Bug 1825678:
-			// NullPointerException happened
-			// after double clicking one
-			// monster and a fast double
-			// click on another monster
-
-			// Check if the parent is user
-			RPObject root = parent.getRPObject().getBaseContainer();
-			// We don't want to close our own stuff
-			// The root entity may have been removed, but still if it was
-			// the user we do not want to close it.
-			// User may have been changed by the main thread, so we can not rely
-			// on user.getRPObject() being equal to root. (bug #3159058)
-			final String type = root.getRPClass().getName();
-			if (type.equals("player") && root.has("name")) {
-				if (StendhalClient.get().getCharacter().equalsIgnoreCase(
-						root.get("name"))) {
-					return true;
-				}
-			}
-
-			return isCloseEnough(user.getX(), user.getY());
-		}
-
-		return true;
+		return user == null || isCloseEnough(owner, StendhalClient.get().getCharacter(),
+				user.getX(), user.getY());
 	}
 
-	/**
-	 * Check if the user is close enough the parent entity of the slot. If
-	 * the user is too far away the window should not be opened, and it should
-	 * be closed if it was already open.
-	 *
-	 * @param x x coordinate of the user
-	 * @param y y coordinate of the user
-	 * @return <code>true</code> if the user is close enough to have the window
-	 * 	open, <code>false</code> otherwise.
-	 */
-	private boolean isCloseEnough(final double x, final double y) {
-		final int px = (int) x;
-		final int py = (int) y;
+	static boolean isCloseEnough(final IEntity owner, final String character,
+			final double x, final double y) {
+		// Selection clears the character before queued Swing repaints finish.
+		// Leave visibility intact while the old slot is being detached.
+		if (owner == null || character == null) {
+			return true;
+		}
 
-		final Rectangle2D orig = parent.getArea();
-		orig.setRect(orig.getX() - MAX_DISTANCE, orig.getY() - MAX_DISTANCE,
-				orig.getWidth() + MAX_DISTANCE * 2, orig.getHeight()
-						+ MAX_DISTANCE * 2);
-
-		return orig.contains(px, py);
+		final RPObject object = owner.getRPObject();
+		final RPObject root = object == null ? null : object.getBaseContainer();
+		// Compare names rather than object identities across character updates.
+		if (root != null && root.getRPClass() != null
+				&& "player".equals(root.getRPClass().getName()) && root.has("name")
+				&& character.equalsIgnoreCase(root.get("name"))) {
+			return true;
+		}
+		final Rectangle2D area = owner.getArea();
+		if (area == null) {
+			return true;
+		}
+		// Entity.getArea() is cached; never expand the entity's own rectangle.
+		final Rectangle2D reach = new Rectangle2D.Double(
+				area.getX() - MAX_DISTANCE, area.getY() - MAX_DISTANCE,
+				area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
+		return reach.contains((int) x, (int) y);
 	}
 }

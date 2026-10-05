@@ -181,15 +181,25 @@ public class MineTownQuestsTest {
 		for (int i = 0; i < 5; i++) { equip("latarenka", 1); }
 		accept();
 		assertFalse(quest.hasRequiredItems(player));
-		for (final Item item : player.getAllEquipped("latarenka")) {
-			item.setItemData("minetown_lantern_old_edition");
-		}
+		final Item oldEdition = SingletonRepository.getEntityManager().getItem(MineTownLanternSpawns.LANTERN_NAME);
+		oldEdition.setItemData("minetown_lantern_old_edition");
+		((StackableItem) oldEdition).setQuantity(5);
+		assertTrue(player.equipToInventoryOnly(oldEdition));
 		assertFalse(quest.hasRequiredItems(player));
-		for (int i = 0; i < 5; i++) {
-			equip("latarenka", 1).setItemData(MineTownLanternSpawns.itemData());
+		for (int i = 0; i < 7; i++) {
+			final Item lantern = SingletonRepository.getEntityManager().getItem(MineTownLanternSpawns.LANTERN_NAME);
+			lantern.setItemData(MineTownLanternSpawns.itemData());
+			assertTrue(player.equipToInventoryOnly(lantern));
 		}
+		assertEquals(2, player.getAllEquipped(MineTownLanternSpawns.LANTERN_NAME).size());
 		deliver();
 		assertEquals(5, player.getNumberOfEquipped("latarenka"));
+		assertEquals(7, player.getNumberOfEquipped(MineTownLanternSpawns.LANTERN_NAME));
+		assertEquals(5, oldEdition.getQuantity());
+		assertFalse(player.isEquippedWithItemdata(MineTownLanternSpawns.LANTERN_NAME,
+				MineTownLanternSpawns.itemData(), 3));
+		assertTrue(player.isEquippedWithItemdata(MineTownLanternSpawns.LANTERN_NAME,
+				MineTownLanternSpawns.itemData(), 2));
 		assertEquals(1, player.getNumberOfEquipped("srebrna skrzynia"));
 		assertEquals(player.getName(), player.getFirstEquipped("srebrna skrzynia").getBoundTo());
 		quest.time += 12 * 3600000L - 1;
@@ -311,7 +321,9 @@ public class MineTownQuestsTest {
 	public void collectionDialogsUseNaturalSpeechAndCorrectRewardNames() {
 		food(40);
 		for (int i = 0; i < MineTownLanterns.REQUIRED_LANTERNS; i++) {
-			equip("latarenka", 1).setItemData(MineTownLanternSpawns.itemData());
+			final Item lantern = SingletonRepository.getEntityManager().getItem(MineTownLanternSpawns.LANTERN_NAME);
+			lantern.setItemData(MineTownLanternSpawns.itemData());
+			assertTrue(player.equipToInventoryOnly(lantern));
 		}
 		equip("straszna dynia", 20);
 		final MineTownCollectionQuest[] quests = {

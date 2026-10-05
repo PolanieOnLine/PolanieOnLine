@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.events.seasonal.MineTownLanternSpawns;
 import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -42,7 +43,12 @@ public class ItemTransformer {
 		// We simply ignore corpses...
 		if (rpobject.get("type").equals("item")) {
 
-			final String name = UpdateConverter.updateItemName(rpobject.get("name"));
+			final String previousName = UpdateConverter.updateItemName(rpobject.get("name"));
+			// Only lanterns marked by the festival spawner become stackable.
+			final boolean festivalLantern = "latarenka".equals(previousName)
+					&& rpobject.has("itemdata")
+					&& rpobject.get("itemdata").matches("minetown_lantern_[0-9]{2}");
+			final String name = festivalLantern ? MineTownLanternSpawns.LANTERN_NAME : previousName;
 			final Item item = UpdateConverter.updateItem(name,
 					ItemCreationContext.restore());
 
@@ -126,7 +132,7 @@ public class ItemTransformer {
 				int quantity = 1;
 				if (rpobject.has("quantity")) {
 					quantity = rpobject.getInt("quantity");
-				} else {
+				} else if (!festivalLantern) {
 					logger.warn("Adding quantity=1 to "
 							+ rpobject
 							+ ". Most likely cause is that this item was not stackable in the past");
