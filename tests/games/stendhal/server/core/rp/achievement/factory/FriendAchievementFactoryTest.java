@@ -364,16 +364,37 @@ public class FriendAchievementFactoryTest extends AchievementTestHelper {
 		assertFalse(achievementReached(player, id));
 
 		addZones("int_admin_playground");
-		System.setProperty("stendhal.easterbunny", "");
-		System.setProperty("stendhal.santa", "");
-		System.setProperty("stendhal.guslarz", "");
-		loadQuests(new MeetBunny(), new MeetSanta(), new MeetGuslarz());
-		StillBelievingStub.doQuestBunny(player);
-		assertFalse(achievementReached(player, id));
-		StillBelievingStub.doQuestSanta(player);
-		assertFalse(achievementReached(player, id));
-		StillBelievingStub.doQuestGuslarz(player);
+		final String[] properties = { "stendhal.easterbunny", "stendhal.santa", "stendhal.guslarz" };
+		final String[] previous = new String[properties.length];
+		for (int i = 0; i < properties.length; i++) {
+			previous[i] = System.getProperty(properties[i]);
+		}
+		final IQuest[] seasonal = { new MeetBunny(), new MeetSanta(), new MeetGuslarz() };
+		try {
+			for (final String property : properties) {
+				System.setProperty(property, "");
+			}
+			loadQuests(seasonal);
+			StillBelievingStub.doQuestBunny(player);
+			assertFalse(achievementReached(player, id));
+			StillBelievingStub.doQuestSanta(player);
+			assertFalse(achievementReached(player, id));
+			StillBelievingStub.doQuestGuslarz(player);
 
-		assertTrue(achievementReached(player, id));
+			assertTrue(achievementReached(player, id));
+		} finally {
+			for (final IQuest quest : seasonal) {
+				if (quests.isLoaded(quest)) {
+					assertTrue(quests.unloadQuest(quest));
+				}
+			}
+			for (int i = 0; i < properties.length; i++) {
+				if (previous[i] == null) {
+					System.clearProperty(properties[i]);
+				} else {
+					System.setProperty(properties[i], previous[i]);
+				}
+			}
+		}
 	}
 }

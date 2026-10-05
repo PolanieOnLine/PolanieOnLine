@@ -56,7 +56,10 @@ public class StillBelievingStub {
 		assertNotNull(guslarz);
 		final Engine en = guslarz.getEngine();
 		en.step(player, "hi");
-		assertEquals(ConversationStates.IDLE, en.getCurrentState());
+		// The player can now continue talking about the Mine Town ritual.
+		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
 		assertEquals("done", player.getQuest(questSlot, 0));
+		en.step(player, "bye");
+		assertEquals(ConversationStates.IDLE, en.getCurrentState());
 	}
 }
