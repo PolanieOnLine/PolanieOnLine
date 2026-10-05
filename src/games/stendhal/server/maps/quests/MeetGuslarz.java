@@ -77,7 +77,7 @@ public class MeetGuslarz extends AbstractQuest {
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 								new QuestCompletedCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
-						"Witaj ponownie! Prezent już otrzymałeś. Podczas Mine Town zapytaj mnie o #zadanie.", null);
+						"Znów się spotykamy, wędrowcze. Usiądź przy ogniu. Jeśli nie lękasz się duchów, mam dla ciebie #zadanie.", null);
 
 				final List<ChatAction> reward = new LinkedList<ChatAction>();
 				reward.add(new EquipItemAction("skrzynka"));
@@ -89,9 +89,9 @@ public class MeetGuslarz extends AbstractQuest {
 					new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 							new QuestNotCompletedCondition(QUEST_SLOT)),
 					ConversationStates.ATTENDING,
-					"Witaj! Co nieszczęsny robisz w tych stronach? Ale skoro już mnie spotkałeś mam coś dla ciebie. Podczas Mine Town zapytaj mnie także o #zadanie.",
+					"Witaj, wędrowcze. Co cię sprowadza w te strony o takiej porze? Podejdź do ognia i przyjmij tę skrzynkę. Jeśli starczy ci odwagi, czeka na ciebie także #zadanie.",
 					new MultipleActions(reward));
-				addHelp("Podczas Mine Town możesz zapytać mnie o #zadanie i pomóc odprawić rytuał.");
+				addHelp("Jesienną porą duchy szukają drogi do naszych ognisk. Trzeba je godnie przyjąć. Zapytaj o #zadanie, jeśli zechcesz mi w tym pomóc.");
 				addGoodbye("Niech duchy prowadzą cię bezpiecznie.");
 			}
 		};

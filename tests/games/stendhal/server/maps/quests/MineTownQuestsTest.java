@@ -304,6 +304,80 @@ public class MineTownQuestsTest {
 	}
 
 	@Test
+	public void collectionDialogsUseNaturalSpeechAndCorrectRewardNames() {
+		food(40);
+		for (int i = 0; i < MineTownLanterns.REQUIRED_LANTERNS; i++) {
+			equip("latarenka", 1).setItemData(MineTownLanternSpawns.itemData());
+		}
+		equip("straszna dynia", 20);
+		final MineTownCollectionQuest[] quests = {
+				new MineTownFeast(), new MineTownLanterns(), new MineTownRitual()
+		};
+		final String[] offeredRewards = { "skrzynkę", "srebrną skrzynię", "złotą skrzynię" };
+		for (int i = 0; i < quests.length; i++) {
+			final SpeakerNPC speaker = SpeakerNPCTestHelper.createSpeakerNPC("festival_dialog_" + i);
+			try {
+				quests[i].attachDialog(speaker);
+				final Engine dialog = speaker.getEngine();
+				dialog.setCurrentState(ConversationStates.ATTENDING);
+				assertTrue(dialog.step(player, "nagroda"));
+				final String promise = getReply(speaker);
+				assertNaturalSpeech(promise);
+				assertTrue(promise, promise.contains(offeredRewards[i]));
+				assertTrue(dialog.step(player, "zadanie"));
+				assertEquals(ConversationStates.QUEST_OFFERED, dialog.getCurrentState());
+				assertNaturalSpeech(getReply(speaker));
+				assertTrue(dialog.step(player, "tak"));
+				assertNaturalSpeech(getReply(speaker));
+				assertTrue(dialog.step(player, "zadanie"));
+				assertEquals(ConversationStates.QUEST_ITEM_BROUGHT, dialog.getCurrentState());
+				assertNaturalSpeech(getReply(speaker));
+				assertTrue(dialog.step(player, "tak"));
+				final String thanks = getReply(speaker);
+				assertNaturalSpeech(thanks);
+				assertTrue(thanks, thanks.contains(offeredRewards[i]));
+				assertTrue(quests[i].isCompleted(player));
+				for (final String entry : quests[i].getHistory(player)) {
+					assertNaturalSpeech(entry);
+				}
+			} finally {
+				NPCList.get().remove(speaker.getName());
+			}
+		}
+	}
+
+	@Test
+	public void waitingDialogUsesFullPolishMinuteForms() {
+		final TimedFeast quest = new TimedFeast();
+		quest.attachDialog(npc);
+		food(40);
+		accept();
+		deliver();
+		final int[] minutes = { 1, 2, 12, 22, 60, 122, 300 };
+		final String[] phrases = {
+				"1 minutę", "2 minuty", "12 minut", "22 minuty",
+				"1 godzinę", "2 godziny i 2 minuty", "5 godzin"
+		};
+		for (int i = 0; i < minutes.length; i++) {
+			quest.time = TIME + 6 * 3600000L - minutes[i] * 60000L;
+			assertTrue(engine.step(player, "zadanie"));
+			final String reply = getReply(npc);
+			assertNaturalSpeech(reply);
+			assertTrue(reply, reply.contains(phrases[i]));
+		}
+	}
+
+	private static void assertNaturalSpeech(final String reply) {
+		assertNotNull(reply);
+		assertFalse(reply, reply.matches("(?s).*[:;\\-\u2013\u2014].*"));
+		for (final String technical : new String[] {
+				"edycji", "mapach", "Sklepowe", "dostępne", "Nagroda:", "przedmioty", " min."
+		}) {
+			assertFalse(reply, reply.contains(technical));
+		}
+	}
+
+	@Test
 	public void declinedQuestDoesNotStartOrTakeItems() {
 		new MineTownFeast().attachDialog(npc);
 		food(40);

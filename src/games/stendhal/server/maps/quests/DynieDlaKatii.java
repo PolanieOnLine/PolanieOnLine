@@ -117,7 +117,7 @@ public class DynieDlaKatii extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"To dobrze! Podczas wydarzenia Mine Town straszne dynie mogą wypaść z każdego pokonanego potwora. Przynieś mi 10 dyń, a otrzymasz srebrną skrzynię. Powodzenia w zbieraniu!",
+			"Dobrze, będę cię wypatrywała. Jesienią straszne dynie trafiają się wśród łupów po najróżniejszych stworach. Przynieś mi dziesięć, a odwdzięczę się srebrną skrzynią. Uważaj na siebie w drodze.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5));
 
 		// player is not willing to help

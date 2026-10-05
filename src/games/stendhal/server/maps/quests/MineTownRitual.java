@@ -15,7 +15,17 @@ public class MineTownRitual extends MineTownCollectionQuest {
 	public MineTownRitual() {
 		super(QUEST_SLOT, QUEST_NAME, "Guślarz", "złota skrzynia", 0,
 				Collections.singletonMap("straszna dynia", 20),
-				"Do rytuału potrzebuję 20 strasznych dyń. Najpierw pomóż Boguchwałowi przygotować festyn i oddaj Wolradowi zagubione latarenki. Nagrodę możesz otrzymać raz w tej edycji Mine Town.");
+				"W jesienne noce duchy podchodzą blisko naszych ognisk. Przynieś mi dwadzieścia strasznych dyń, a odprawimy gusła. Niech Boguchwał wpierw napełni stoły, a Wolrad rozświetli noc. Takiego daru duchy oczekują od ciebie tylko raz w roku.");
+	}
+
+	@Override
+	protected String rewardOffer() {
+		return "Za twoją pomoc oddam ci złotą skrzynię. Strzegłem jej, czekając na kogoś odważnego.";
+	}
+
+	@Override
+	protected String rewardThanks() {
+		return "Ogień płonie spokojnie. Duchy przyjęły nasz dar. Weź złotą skrzynię i wracaj do swoich. Niech przodkowie mają cię w opiece.";
 	}
 
 	@Override

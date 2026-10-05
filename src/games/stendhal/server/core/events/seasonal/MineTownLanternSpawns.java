@@ -204,7 +204,7 @@ public final class MineTownLanternSpawns {
 			notifyWorldAboutChanges();
 			item.setPosition(position.x, position.y);
 			item.setItemData(itemData());
-			item.setDescription("Oto latarenka zagubiona podczas Mine Town. Wolrad na południu Zakopanego zbiera je na festyn.");
+			item.setDescription("Oto latarenka ze śladami jesiennej zawieruchy. Pewnie jedna ze zgub Wolrada. Znajdziesz go przy Katii na południu Zakopanego.");
 			item.setPlantGrower(this);
 			item.setFromCorpse(true);
 			zone.add(item, false);

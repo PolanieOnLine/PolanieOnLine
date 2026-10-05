@@ -13,7 +13,17 @@ public class MineTownFeast extends MineTownCollectionQuest {
 
 	public MineTownFeast() {
 		super(QUEST_SLOT, QUEST_NAME, "Boguchwał", "skrzynka", 6, requirements(),
-				"Przygotowuję jedzenie na festyn. Przynieś 100 mięsa, 50 szynki, 100 sera i 40 steków. Możesz pomóc ponownie po 6 godzinach od oddania zapasów.");
+				"Gości przybywa, a spiżarnia pustoszeje. Przynieś mi sto porcji mięsa, pięćdziesiąt porcji szynki, sto kawałków sera i czterdzieści steków. Tyle wystarczy na sześć godzin biesiady. Potem znów przyda się twoja pomoc.");
+	}
+
+	@Override
+	protected String rewardOffer() {
+		return "Mam dla ciebie skrzynkę schowaną na tę okazję. Nie odejdziesz z pustymi rękami.";
+	}
+
+	@Override
+	protected String rewardThanks() {
+		return "Dzięki ci, dobry człowieku. Będzie czym nakarmić gości. Weź tę skrzynkę i sam też odpocznij przy ogniu.";
 	}
 
 	private static Map<String, Integer> requirements() {
@@ -29,6 +39,6 @@ public class MineTownFeast extends MineTownCollectionQuest {
 	public void addToWorld() {
 		super.addToWorld();
 		createFestivalNPC("body=0,dress=33,head=0,mouth=0,eyes=18,mask=0,hair=27,hat=1",
-				45, 16, "Przygotowuję posiłki dla uczestników festynu Mine Town.");
+				45, 16, "Doglądam strawy na święto. Pilnuję, żeby żaden gość nie odszedł głodny.");
 	}
 }
