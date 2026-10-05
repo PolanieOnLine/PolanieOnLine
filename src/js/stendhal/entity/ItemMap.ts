@@ -47,6 +47,10 @@ export const ItemMap: {[index: string]: any} = {
 	},
 
 	["name"]: {
+		["pierścień powrotu"]: {
+			cursor: "itemuse",
+			actions: [defaultUse]
+		},
 		["woda święcona z popiołem"]: {
 			actions: [defaultUse]
 		},

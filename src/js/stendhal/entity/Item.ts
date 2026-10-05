@@ -95,7 +95,7 @@ export class Item extends Entity {
 
 	override draw(ctx: RenderingContext2D) {
 		this.stepAnimation();
-		this.sprite.offsetY = (this["state"] || 0) * 32;
+		this.sprite.offsetY = this.getYFrameIndex() * 32;
 		ItemRarityEffects.drawGround(ctx, this, this["x"] * 32, this["y"] * 32);
 
 		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
@@ -116,7 +116,7 @@ export class Item extends Entity {
 		if (this.frameTimeStamp == 0) {
 			this.frameTimeStamp = currentTimeStamp;
 			this.sprite.offsetX = 0;
-			this.sprite.offsetY = 0;
+			this.sprite.offsetY = this.getYFrameIndex() * 32;
 		} else if (currentTimeStamp - this.frameTimeStamp >= 100) {
 			// FIXME: need proper FPS limit
 			this.setXFrameIndex(this.getXFrameIndex() + 1);
@@ -238,7 +238,12 @@ export class Item extends Entity {
 	}
 
 	public getYFrameIndex(): number {
-		return (this.sprite.offsetY || 0) / 32;
+		if (this["class"] === "ring" && this["name"] === "pierścień powrotu") {
+			// Match Java's BreakableRing and TeleportationRing2DView: amount
+			// selects the glowing first row or the inactive second row, not state.
+			return this["amount"] === undefined || Number(this["amount"]) > 0 ? 0 : 1;
+		}
+		return Number(this["state"]) || 0;
 	}
 
 	public override isDraggable(): boolean {
