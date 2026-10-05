@@ -21,6 +21,9 @@ import games.stendhal.server.maps.quests.GoodiesForRudolph;
 import games.stendhal.server.maps.quests.IQuest;
 import games.stendhal.server.maps.quests.MineTownRevivalWeeks;
 import games.stendhal.server.maps.quests.MineTownRevivalWeeksConstruction;
+import games.stendhal.server.maps.quests.MineTownFeast;
+import games.stendhal.server.maps.quests.MineTownLanterns;
+import games.stendhal.server.maps.quests.DynieDlaKatii;
 import games.stendhal.server.maps.zakopane.city.MariuszekNPC;
 import games.stendhal.server.util.ResetSpeakerNPC;
 
@@ -446,6 +449,13 @@ public final class SeasonalEventService {
 
 	private static void synchronizeMineTownQuest(final boolean enabled) {
 		final StendhalQuestSystem quests = StendhalQuestSystem.get();
+		for (final String name : new String[] { "Straszne Dynie", MineTownFeast.QUEST_NAME,
+				MineTownLanterns.QUEST_NAME }) {
+			final IQuest extra = quests.getQuest(name);
+			if (extra != null && !quests.unloadQuest(extra)) {
+				throw new IllegalStateException("Nie udało się odłączyć questa: " + name);
+			}
+		}
 		final IQuest current = quests.getQuest(MineTownRevivalWeeks.QUEST_NAME);
 		if (current != null && !quests.unloadQuest(current)) {
 			throw new IllegalStateException("Nie udało się odłączyć questa Mine Town Revival Weeks");
@@ -454,6 +464,14 @@ public final class SeasonalEventService {
 			quests.loadQuest(new MineTownRevivalWeeks());
 			if (quests.getQuest(MineTownRevivalWeeks.QUEST_NAME) == null) {
 				throw new IllegalStateException("Nie udało się załadować questa Mine Town Revival Weeks");
+			}
+			for (final IQuest extra : new IQuest[] { new DynieDlaKatii(),
+					new MineTownFeast(), new MineTownLanterns() }) {
+				quests.loadQuest(extra);
+				if (quests.getQuest(extra.getName()) == null) {
+					extra.removeFromWorld();
+					throw new IllegalStateException("Nie udało się załadować questa: " + extra.getName());
+				}
 			}
 		}
 	}

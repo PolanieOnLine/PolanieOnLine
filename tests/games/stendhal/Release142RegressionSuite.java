@@ -21,6 +21,7 @@ import games.stendhal.server.core.engine.transformer.GlyphRestoreMigrationTest;
 import games.stendhal.server.core.events.seasonal.EasterEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownConstructionEventPlanTest;
 import games.stendhal.server.core.events.seasonal.MineTownEventPlanTest;
+import games.stendhal.server.core.events.seasonal.MineTownLanternSpawnsTest;
 import games.stendhal.server.core.events.seasonal.SeasonalZonePlanTest;
 import games.stendhal.server.core.rp.group.GroupExperienceDistributorTest;
 import games.stendhal.server.core.rule.damage.CriticalHitServiceTest;
@@ -50,6 +51,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaStateTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaTierTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaViewOrbTest;
 import games.stendhal.server.maps.quests.BringMagicTest;
+import games.stendhal.server.maps.quests.MineTownQuestsTest;
 import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 
 /**
@@ -102,6 +104,8 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	EasterEventPlanTest.class,
 	MineTownEventPlanTest.class,
 	MineTownPumpkinDropTest.class,
+	MineTownLanternSpawnsTest.class,
+	MineTownQuestsTest.class,
 	MineTownConstructionEventPlanTest.class
 })
 public class Release142RegressionSuite {

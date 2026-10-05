@@ -319,6 +319,7 @@ public class StendhalQuestSystem {
 		 *          INNE         *
 		\**                     **/
 		loadQuest(new BiletTurystyczny());
+		loadQuest(new MineTownRitual());
 		loadQuest(new MeetGuslarz());
 		loadQuest(new FindDragons());
 		loadQuest(new KolekcjonerPasow());
@@ -327,6 +328,8 @@ public class StendhalQuestSystem {
 			loadQuest(new PaperChase()); // needs to be loaded before SemosMineTownRevivalWeeks
 			loadQuest(new MineTownRevivalWeeks());
 			loadQuest(new DynieDlaKatii());
+			loadQuest(new MineTownFeast());
+			loadQuest(new MineTownLanterns());
 		}
 		if (Occasion.MINETOWN_CONSTRUCTION) {
 			loadQuest(new MineTownRevivalWeeksConstruction());
