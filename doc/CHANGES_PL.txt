@@ -1,165 +1,147 @@
 ## Changelog
 ---------
 1.42
-*klient*
+*przedmioty i wyposażenie*
 ---
-* Dodano nowe okno ulepszania przedmiotów z podglądem następnego poziomu, szansy powodzenia, kosztu i wymaganych materiałów
-* Dodano akcje u kowala i na przedmiotach ułatwiające rozpoczęcie ulepszania wybranego wyposażenia
-* Zmieniono podpowiedzi przedmiotów, aby czytelniej prezentowały rzadkość, poziom ulepszenia, obrażenia, szybkość ataku, pancerz, odporności, kradzież życia, trafienia krytyczne i pozostałe właściwości
-* Dodano porównywanie oglądanego przedmiotu z aktualnie założonym wyposażeniem
-* Dodano kolorystyczne wyróżnianie lepszych i gorszych wartości podczas porównywania przedmiotów
-* Dodano ustawienie pozwalające wyłączyć porównywanie statystyk przedmiotów
-* Dodano wizualne wyróżnienie rzadkości przedmiotów w podpowiedziach, ekwipunku oraz na przedmiotach leżących na ziemi
-* Dodano pełne podpowiedzi dla przedmiotów leżących na ziemi, umożliwiające sprawdzenie ich rzadkości i właściwości przed podniesieniem
-* Dodano wizualizację ogłuszenia w postaci animowanych gwiazdek
-* Dodano złote oznaczenie nazwy, koronę i dodatkowy efekt wizualny dla elitarnych potworów
-* Dodano wizualną informację o skutecznym sparowaniu ataku
-* Dodano możliwość zmiany aktywnej postaci bez ponownego logowania do konta w kliencie desktopowym
-* Dodano osobne ustawienia klienta dostępne z ekranu startowego
-* Dodano tryb zwykłego okna, pełnego ekranu w oknie oraz pełnego ekranu
-* Dodano możliwość zmiany trybu wyświetlania podczas gry bez restartowania klienta
-* Dodano muzykę na ekranie startowym oraz regulację głównej głośności
-* Zmieniono menu otwierane klawiszem Escape, dodając Ustawienia, Zmień postać oraz Wyjdź z gry
-* Zmieniono działanie klawisza Escape, aby ponowne naciśnięcie zamykało otwarte menu
-* Zmieniono widoczność Zaklęć, Schowka, Magicznej torby oraz Rzemyka, aby pojawiały się dopiero po odblokowaniu ich przez postać
+* Dodano cztery stopnie rzadkości wyposażenia, od zwykłego przez rzadkie i epickie po legendarne
+* Rzadkie, epickie i legendarne przedmioty mogą mieć trwałe dodatkowe właściwości, a legendarne również wyjątkowe działanie zależne od rodzaju wyposażenia
+* Rzadkość wyposażenia wyróżnia teraz kolorowa obwódka wokół przedmiotu, widoczna także na ziemi w kliencie Java i przeglądarce
+* Dodano zakres obrażeń broni, dzięki czemu kolejne uderzenia mogą zadawać różne obrażenia
+* Dodano nowe okno ulepszania wyposażenia z podglądem następnego poziomu, szansy powodzenia, kosztu i potrzebnych materiałów
+* Ułatwiono rozpoczęcie ulepszania wybranego przedmiotu u kowala
+* Wybrane nagrody za zadania mają teraz epicką rzadkość i dwie dodatkowe właściwości. Zmiana obejmuje również wcześniej zdobyte nagrody, bez utraty ich ulepszeń
+* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje jego rzadkość i dodatkowe właściwości
 
-*web-klient i urządzenia mobilne*
+*walka*
 ---
-* Zmieniono interfejs web-klienta, aby dostosowywał się do mniejszych ekranów i obsługi dotykowej
-* Dodano możliwość wygodnego otwierania i zamykania paneli bocznych na urządzeniach mobilnych
-* Dodano obsługę podpowiedzi przedmiotów za pomocą dotyku
-* Dodano przeciąganie przedmiotów dotykiem pomiędzy wyposażeniem oraz szybkimi slotami
-* Zmieniono układ podpowiedzi przedmiotów na bardziej kompaktowy na mniejszych ekranach
-
-*odrodzenia*
----
-* Zmieniono system odrodzeń, umożliwiając wykonywanie ich bez limitu
-* Zmieniono system bonusów odrodzeń, ograniczając specjalne premie do pierwszych pięciu odrodzeń
-* Dodano 2 procent dodatkowej siły ataku za każde z pierwszych pięciu odrodzeń, maksymalnie 10 procent
-* Dodano 5 procent dodatkowego doświadczenia z walki za każde z pierwszych pięciu odrodzeń, maksymalnie 25 procent
-* Zmieniono bonus zdrowia z pierwszych pięciu odrodzeń do łącznej wartości 6000 punktów zdrowia
-* Zmieniono odrodzenia od szóstego wzwyż, aby nie przyznawały kolejnych bonusów ataku, doświadczenia ani zdrowia
-* Zachowano osiągnięcia i specjalne nagrody związane z pierwszymi pięcioma odrodzeniami
-* Dodano tarczę z liczbą odrodzeń wyświetlaną przy nazwie postaci
-* Dodano ustawienie pozwalające wyłączyć wyświetlanie tarcz odrodzeń
-
-*przedmioty i ulepszenia*
----
-* Dodano system ulepszania konkretnych egzemplarzy wyposażenia z podglądem możliwego rezultatu
-* Dodano cztery poziomy rzadkości przedmiotów: zwykły, rzadki, epicki oraz legendarny
-* Dodano trwałe dodatkowe właściwości dla rzadkich, epickich i legendarnych przedmiotów
-* Dodano wyjątkowe właściwości dla legendarnych przedmiotów zależne od rodzaju wyposażenia
-* Dodano zakres obrażeń broni wykorzystywany podczas walki
-* Kwalifikujące się nagrody ekwipunkowe z zadań, przyznając im epicką rzadkość oraz dwie trwałe dodatkowe właściwości
-* Starsze nagrody z ukończonych zadań tak, aby zachowywały dotychczasowe ulepszenia i pozostałe właściwości
-* Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość oraz dodatkowe właściwości użytego przedmiotu
-
-*walka i balans*
----
-* Dodano klasy pancerza przeciwników: brak pancerza, lekki, średni oraz ciężki
-* Zmieniono skuteczność różnych rodzajów broni w zależności od pancerza przeciwnika
-* Zmieniono sztylety, aby najlepiej sprawdzały się przeciw lekkim pancerzom
-* Zmieniono miecze, aby najlepiej sprawdzały się przeciw średnim pancerzom
-* Zmieniono topory i broń obuchową, aby lepiej radziły sobie z ciężkimi pancerzami
-* Dodano penetrację ograniczającą niekorzystne zestawienie rodzaju broni z pancerzem przeciwnika
-* Dodano mechanikę parowania ataków wręcz
-* Dodano limit 15 procent dla łącznej szansy parowania gracza
-* Rozszerzono działanie dodatkowych właściwości wyposażenia podczas walki
-* Dodano właściwości wpływające między innymi na odporności, oznaczanie przeciwników, walkę z silniejszym celem oraz walkę przy niskim poziomie zdrowia
-* Dodano właściwości ograniczające obrażenia otrzymywane od wyjątkowo silnego pojedynczego uderzenia
-* Rozbudowano krwawienie o kumulowanie ran oraz odporność na krwawienie
-* Dodano status ogłuszenia czasowo uniemożliwiający wykonywanie ataków
-* Dodano możliwość ogłuszania graczy przez wybrane potwory
+* Dodano lekkie, średnie i ciężkie pancerze przeciwników oraz przeciwników bez pancerza
+* Rodzaj broni ma teraz większe znaczenie. Sztylety lepiej radzą sobie z lekkim pancerzem, miecze ze średnim, a topory i broń obuchowa z ciężkim
+* Dodano przebijanie pancerza, które pomaga przy walce bronią mniej skuteczną przeciw danemu przeciwnikowi
+* Dodano parowanie ataków wręcz. Łączna szansa gracza na sparowanie ciosu może wynosić najwyżej 15 procent
+* Dodatkowe właściwości wyposażenia mogą wzmacniać odporności, oznaczać przeciwnika, pomagać w walce z silniejszym wrogiem lub przy niskim zdrowiu
+* Niektóre właściwości wyposażenia chronią przed wyjątkowo silnym pojedynczym uderzeniem
+* Rozbudowano krwawienie o nakładające się rany i odporność na ich działanie
+* Dodano ogłuszenie, które na krótko uniemożliwia atakowanie. Potrafią je wywołać także wybrane potwory
 
 *elitarne potwory*
 ---
-* Dodano losowe elitarne warianty potworów od 20 poziomu
-* Zwiększono zdrowie, atak i obronę elitarnych potworów względem ich zwykłych odpowiedników
-* Zwiększono doświadczenie otrzymywane za pokonanie elitarnego potwora
-* Zwiększono szansę na wyższą rzadkość przedmiotów wypadających z elitarnych przeciwników
-* Wyłączono bossów i wybrane specjalne stworzenia z losowego systemu elitarnych wariantów
+* Zwykłe potwory o poziomie co najmniej 20 mogą pojawiać się jako elitarni przeciwnicy
+* Elitarne potwory mają więcej zdrowia, silniej atakują i trudniej je zranić
+* Za pokonanie elitarnego przeciwnika można zdobyć więcej doświadczenia i ma się większą szansę na rzadsze wyposażenie
+* Elitarnego potwora można rozpoznać po złotej nazwie i koronie
+* Bossowie i wybrane specjalne stworzenia nie otrzymują losowej elitarnej odmiany
+
+*odrodzenia*
+---
+* Zniesiono limit odrodzeń postaci
+* Każde z pierwszych pięciu odrodzeń daje 2 procent dodatkowej siły ataku i 5 procent więcej doświadczenia z walki, do łącznie 10 i 25 procent
+* Kolejne odrodzenia nie zwiększają już premii do ataku, doświadczenia ani zdrowia
+* Dodano tarczę z liczbą odrodzeń przy nazwie postaci oraz możliwość ukrycia tych oznaczeń
 
 *glify*
 ---
-* Glify są wyłączone z systemu rzadkości i dodatkowych losowych właściwości
-* Zmieniono odświeżanie glifów po zalogowaniu, aby istniejące egzemplarze korzystały z aktualnych wartości z definicji gry
-* Ułatwiono rozpoznawanie miejsc na poszczególne rodzaje glifów w Ołtarzu Runicznym za pomocą kolorystycznych oznaczeń i czytelnych nazw
-* Zmieniono wartości glifów ofensywnych, defensywnych i użytkowych
-* Zmieniono Glif Daru Mokoszy, który zapewnia teraz 500 dodatkowego HP
-* Zmieniono Glif Tytana, który zapewnia 5 ATK, 5 DEF oraz 200 HP
-* Zmieniono Glif Jarowita, który zmniejsza podatność na kilka rodzajów obrażeń żywiołowych
-* Zmieniono Glif Czaszy, który zwiększa dodatkowe obrażenia trafień krytycznych
-* Zmieniono Glif Strzyboga, który zmniejsza wagę wolniejszych broni, ale nie poniżej wartości 2
-* Zmieniono działanie glifów Siły, Peruna, Tarczy, Swaroga, Kryzysu oraz Krwi
-* Zmieniono szanse znajdowania fragmentów glifów podczas wykopalisk
-* Rozbudowano historię wykopalisk związaną z Omarem i Zorykiem
+* Ułatwiono rozpoznawanie miejsc na glify w Ołtarzu Runicznym dzięki nazwom i kolorom
+* Zmieniono siłę wybranych glifów. Nowe wartości dotyczą także wcześniej zdobytych egzemplarzy
+* Glif Daru Mokoszy zapewnia teraz 500 dodatkowych punktów zdrowia
+* Glif Tytana zapewnia teraz 5 punktów ataku, 5 punktów obrony i 200 punktów zdrowia
+* Glif Jarowita zmniejsza obrażenia od ziemi, wody, ognia, lodu, mroku i światła o 15 procent
+* Poprawiono działanie glifów Siły, Peruna, Tarczy, Swaroga, Kryzysu i Czaszy podczas walki
+* Glif Krwi prawidłowo pozwala odzyskiwać zdrowie także podczas walki bez broni
+* Ograniczono działanie Glifu Strzyboga, aby wolniejsze bronie nie osiągały szybkości najszybszych
+* Glify nie otrzymują rzadkości ani losowych dodatkowych właściwości wyposażenia
+* Zmieniono szanse znajdowania poszczególnych rodzajów fragmentów glifów podczas wykopalisk
+* Rozbudowano opowieść Omara i Zoryka związaną z wykopaliskami
 
 *grupy*
 ---
-* Dodano tryb równego podziału doświadczenia w grupie
-* Dodano możliwość rozdzielania wspólnej puli doświadczenia pomiędzy zalogowanych członków grupy znajdujących się w tej samej strefie
+* Dodano możliwość równego podziału doświadczenia pomiędzy obecnych na tej samej mapie członków grupy
 
-*zadania*
+*zadania i mieszkańcy*
 ---
-* Przebudowano pełną drogę awansu społecznego od Mieszczanina do Magnata
-* Rozbudowano próbę Mieszczanina o nowe wydarzenia, miejsca i elementy świata przeznaczone dla wykonującego ją gracza
-* Zmieniono próbę Rycerza, wymagając odbycia pełnej warty oraz wykonania powierzonych celów
-* Rozbudowano próbę Barona o decyzje dotyczące granicy, spichlerza i wyroku oraz wykonanie ich konsekwencji
-* Rozbudowano próbę Magnata o obowiązki związane ze świadectwami wcześniejszych statusów, funduszem wspólnoty, poręczeniem i pieczą
-* Rozbudowano dialogi i historię całej drogi awansu społecznego
-* Zachowano postęp starszych postaci posiadających rozpoczęte lub ukończone próby statusowe
-* Zmieniono historie trzech zadań Gazdy Bartka, łącząc je w opowieść o rozwoju izby pamięci
-* Rozbudowano historie Eltefii oraz Anastazji związane ze zbieraniem wyposażenia
-* Rozbudowano historię zadania Królewski Płaszcz
-* Zmieniono zdobywanie zaufania Króla Kraka, zwiększając znaczenie pomocy mieszkańcom i straży
+* Przebudowano drogę awansu społecznego od Mieszczanina przez Rycerza i Barona do Magnata, nadając próbom wspólną historię
+* Próba Mieszczanina obejmuje pomoc osadzie, zdobycie lekarstw, odzyskanie narzędzi i wyprawę do leśnej kryjówki
+* Dodano mieszkańców osady przy Smoczych Rycerzach, Dobrawę, Stacha, Żywię i Miłosta
+* Próba Rycerza wymaga odbycia pełnej warty i wykonania powierzonych obowiązków
+* W próbie Barona trzeba podejmować decyzje dotyczące granicy, spichlerza i wyroku, a następnie zmierzyć się z ich skutkami
+* Próba Magnata wymaga świadectw wcześniejszych zasług, wsparcia wspólnoty, zdobycia poręczenia i objęcia pieczy
+* Trzy zadania Gazdy Bartka tworzą teraz wspólną opowieść o rozwoju izby pamięci
+* Rozbudowano historie Eltefii i Anastazji związane ze zbieraniem wyposażenia
+* Rozbudowano opowieść o Królewskim Płaszczu
+* Pomoc mieszkańcom i straży ma większe znaczenie przy zdobywaniu zaufania Króla Kraka
 * Dodano osiągnięcie Szlachcic Kraka
-* Połączono fabularnie Bilet Turystyczny Juhasa z magicznymi przejściami Ozo
-* Zmieniono dostęp do usług Ozo dla nowych postaci, wymagając wcześniejszego skorzystania z biletu Juhasa
-* Zachowano wcześniej uzyskany dostęp do Ozo dla starszych postaci
-* Zmieniono ciąg zadań Czarnoksiężnika: Wyczyszczenie Starej Wieży, Zguba Górskich Elfów oraz Magiczne Zasoby, tworząc bardziej spójną historię
-* Odświeżono zadania Magiczne Zasoby, Klucz Aligerna oraz Złoty Róg
-* Zmieniono skrzynie w zadaniu Odbicie Arsenału na prywatne dla poszczególnych graczy, umożliwiając równoczesne wykonywanie zadania przez kilka osób
+* Połączono historię Biletu Turystycznego Juhasa z przejściami Ozo. Nowe postacie muszą najpierw skorzystać z biletu, a wcześniej uzyskany dostęp pozostaje zachowany
+* Połączono Wyczyszczenie Starej Wieży, Zgubę Górskich Elfów i Magiczne Zasoby w spójniejszą opowieść Czarnoksiężnika
+* Odświeżono zadania Klucz Aligerna i Złoty Róg
+* W Odbiciu Arsenału każdy gracz przeszukuje własne skrzynie, dzięki czemu kilka osób może wykonywać zadanie jednocześnie
 
-*świat*
+*Mine Town*
 ---
-* Dodano możliwość zmiany aktywnych wydarzeń sezonowych podczas działania serwera
-* Zmieniono wydarzenia Bożego Narodzenia, Wielkanocy oraz odbudowy Mine Town tak, aby mogły dynamicznie zmieniać świat gry
-* Zmieniono Labirynt Haizena, dodając oddzielne rozgrywki dla poszczególnych graczy
-* Zmieniono nazwy lokalizacji wyświetlane przez polecenie /where na czytelne nazwy miejsc
-* Dodano czytelne nazwy dla prywatnych lokacji
-* Rozszerzono wykorzystanie prywatnych elementów świata przeznaczonych dla konkretnego gracza
+* Dodano trzy zadania dostępne podczas wydarzenia Mine Town
+* Boguchwał potrzebuje jedzenia na festyn. Za pomoc w Przygotowaniach do Mine Town nagradza skrzynką, a dostawy można powtarzać co 6 godzin
+* Wolrad zbiera zagubione latarenki. Za przyniesienie pięciu wręcza srebrną skrzynię, a zadanie można powtarzać co 12 godzin
+* Zagubione latarenki pojawiają się w różnych miejscach świata bez konieczności przyjmowania zadania. Zebrane odradzają się po 30 minutach i można przechowywać kilka razem w jednym miejscu plecaka
+* Guślarz potrzebuje 20 strasznych dyń do rytuału. Po wsparciu festynu i odnalezieniu latarenek można otrzymać od niego złotą skrzynię, raz w roku
+* Podczas Mine Town straszne dynie mogą wypadać ze wszystkich potworów z szansą 5 procent
 
 *Arena Wyzwań*
 ---
-* Dodano Arenę Wyzwań w Tarnowie przeznaczoną do samodzielnych walk z kolejnymi falami przeciwników
-* Dodano sześć poziomów wyzwania: Próba, Potyczka, Łowca, Weteran, Czempion i Legenda, różniących się wpisowym, liczbą fal i poziomem trudności
-* Dodano nagrody za ukończenie Areny w postaci doświadczenia i fragmentów glifów, a od poziomu Łowcy również skrzyni z jednym elementem wyposażenia
-* Dodano różne pule wyposażenia w skrzyniach Areny zależne od poziomu wyzwania oraz możliwość uzyskania różnych poziomów rzadkości
-* Dodano niewielką szansę na zdobycie wyposażenia mithrilowego na poziomie Legenda
-* Dodano ranking Hall of Fame Areny Wyzwań oparty na najwyższym ukończonym poziomie wyzwania i najlepszym czasie
-* Dodano własną muzykę walki dla Areny Wyzwań
-* Dodano bezpłatne kule w części obserwacyjnej Areny pozwalające oglądać obszar walki
+* Dodano Arenę Wyzwań w Tarnowie, gdzie samotny gracz mierzy się z kolejnymi falami przeciwników
+* Arena ma sześć poziomów trudności, Próbę, Potyczkę, Łowcę, Weterana, Czempiona i Legendę, różniących się wpisowym i liczbą fal
+* Za ukończenie wyzwania otrzymuje się doświadczenie i fragmenty glifów, a od poziomu Łowcy także skrzynię z jednym elementem wyposażenia
+* Zawartość i rzadkość wyposażenia w skrzyniach zależą od poziomu wyzwania. Na poziomie Legenda można również trafić na mithrilowe wyposażenie
+* Dodano ranking wyników według najwyższego ukończonego wyzwania i najlepszego czasu
+* Arenie towarzyszy własna muzyka walki
+* W części dla widzów można bezpłatnie korzystać z kul pozwalających obserwować walkę
 
-*produkcja i rzemiosło*
+*świat i rzemiosło*
 ---
-* Rozszerzono polecenia wykorzystywane podczas różnych rodzajów produkcji
-* Zmieniono nazewnictwo warzenia, mieszania, wytapiania, szycia, pieczenia, mielenia i szlifowania na bardziej naturalne określenia
-* Zmieniono przekuwanie mithrilowego wyposażenia na ciemnomithrilowe tak, aby zachowywało rzadkość i dodatkowe właściwości przedmiotu
+* Sezonowe miejsca, mieszkańcy i zadania mogą pojawiać się i znikać wraz z wydarzeniami Bożego Narodzenia, Wielkanocy i Mine Town
+* W Labiryncie Haizena każdy gracz przechodzi własną próbę
+* Polecenie /where pokazuje czytelne nazwy miejsc, także w lokacjach przeznaczonych dla pojedynczego gracza
+* Rzemieślnicy używają bardziej naturalnych określeń związanych z warzeniem, mieszaniem, wytapianiem, szyciem, pieczeniem, mieleniem i szlifowaniem
 
-*naprawiono błędy*
+*klient Java*
 ---
-* Naprawiono naliczanie bonusu obrażeń krytycznych podczas rzeczywistych ataków
-* Naprawiono naliczanie wybranych bonusów ataku pochodzących z glifów
-* Naprawiono działanie Glifu Krwi podczas walki bez broni, aby prawidłowo zapewniał kradzież życia
-* Poprawiono anulowanie wybranych rozpoczętych zadań
-* Zmieniono resetowanie postępu zadania tak, aby destrukcyjne wyzerowanie wymagało wyraźnego potwierdzenia
-* Poprawiono informacje dotyczące wymaganych przedmiotów w zadaniu Smoczy Amulet
-* Naprawiono Pierścień Powrotu, aby nie zapisywał niedozwolonych miejsc w wybranych labiryntach i prywatnych lokacjach
-* Naprawiono obsługę niedozwolonych miejsc zapisanych wcześniej w Pierścieniu Powrotu
-* Naprawiono powrót postaci po ponownym zalogowaniu w rejonie Zakopane Clouds
-* Poprawiono koszt ulepszania wybranych broni dystansowych
-* Naprawiono drganie nazw postaci i pasków zdrowia podczas płynnego poruszania kamerą w kliencie Java
-* Naprawiono powitanie Racirada, aby poprawnie wyświetlało nazwę postaci gracza zamiast znacznika [name]
+* Rozbudowano opisy przedmiotów o rzadkość, ulepszenia, zakres obrażeń, szybkość ataku, pancerz, odporności i dodatkowe właściwości
+* Dodano porównanie oglądanego przedmiotu z założonym wyposażeniem. Kolory wskazują lepsze i gorsze wartości, a porównanie można wyłączyć w ustawieniach
+* Właściwości przedmiotu można sprawdzić także wtedy, gdy leży on na ziemi
+* Dodano widoczne oznaczenia ogłuszenia i udanego parowania
+* Dodano zmianę postaci bez ponownego logowania do konta
+* Ustawienia gry są dostępne również na ekranie startowym
+* Dodano wybór gry w oknie, pełnym ekranie bez ramek i pełnym ekranie. Sposób wyświetlania można zmienić także podczas gry
+* Dodano muzykę na ekranie startowym i regulację głównej głośności
+* Menu pod klawiszem Escape pozwala otworzyć ustawienia, zmienić postać i zakończyć grę. Ponowne naciśnięcie zamyka menu
+* Zaklęcia, Schowek, Magiczna torba i Rzemyk pojawiają się dopiero po odblokowaniu przez postać
+* Poprawiono płynność nazw postaci i pasków zdrowia podczas ruchu
+
+*gra w przeglądarce*
+---
+* Dostosowano układ gry do mniejszych ekranów i obsługi dotykowej
+* Ułatwiono otwieranie i zamykanie paneli bocznych na telefonie
+* Dodano dotykowe oglądanie właściwości przedmiotów i przeciąganie ich między wyposażeniem a miejscami szybkiego dostępu
+* Opisy przedmiotów zajmują mniej miejsca na małych ekranach
+* Poprawiono płynność plecaków zawierających wiele animowanych przedmiotów
+* Dodano możliwość używania Pierścienia Powrotu
+
+*aplikacja Android*
+---
+* Odświeżono ekran startowy, dodając zimowy krajobraz, drewniane przyciski i ozdobne ramki
+* Na ekranie startowym można przeczytać aktualności i sprawdzić najbliższe wydarzenia
+* Dodano kalendarz wydarzeń z możliwością ustawiania przypomnień
+* Dodano listę zapisanych kont, z której można wybrać konto do logowania lub usunąć je z telefonu
+* Ułatwiono wpisywanie loginu i hasła oraz przechodzenie do kolejnego pola bez zasłaniania całego ekranu
+* Dodano czytelniejszy przebieg łączenia z grą, możliwość przerwania próby i ponownego połączenia
+* Dodano pomoc przy problemach z połączeniem, zgłaszanie problemów i naprawę uruchamiania gry
+* Dodano sprawdzanie i pobieranie nowszej wersji aplikacji zainstalowanej ze strony gry
+
+*pozostałe poprawki*
+---
+* Pierścień Powrotu od razu traci poświatę po wykorzystaniu zapisanego miejsca
+* Pierścień Powrotu nie zapisuje miejsc w niedozwolonych labiryntach i lokacjach. Poprawiono też korzystanie z pierścieni, w których takie miejsce zapisano wcześniej
+* Uporządkowano anulowanie wybranych zadań. Usunięcie ich postępu wymaga potwierdzenia
+* Poprawiono wskazówki dotyczące przedmiotów potrzebnych w Smoczym Amulecie
+* Poprawiono miejsce powrotu postaci po ponownym zalogowaniu w chmurach nad Zakopanem
+* Racirad prawidłowo zwraca się do gracza po imieniu
 
 
 1.41
