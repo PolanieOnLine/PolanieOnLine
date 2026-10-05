@@ -18,14 +18,24 @@ public class MineTownLanterns extends MineTownCollectionQuest {
 	public MineTownLanterns() {
 		super(QUEST_SLOT, QUEST_NAME, "Wolrad", "srebrna skrzynia", 12,
 				Collections.singletonMap("latarenka", REQUIRED_LANTERNS),
-				"Przynieś 5 latarenek zagubionych podczas tej edycji Mine Town. Szukaj ich na mapach świata, nawet jeśli nie przyjmiesz zadania. Sklepowe latarenki się nie liczą. Możesz pomóc ponownie po 12 godzinach.");
+				"Wiatr porwał latarenki, które szykowałem na święto. Wypatruj ich przy drogach, na polanach i w innych zakątkach, którędy wiedzie cię wędrówka. Przynieś mi pięć moich zgub. Poznasz je po śladach jesiennej zawieruchy. Kupieckich nie potrzebuję. Gdy mi pomożesz, zajrzyj znów za dwanaście godzin.");
+	}
+
+	@Override
+	protected String rewardOffer() {
+		return "Oddam ci za nie srebrną skrzynię. Niech i tobie coś dobrego przypadnie na święto.";
+	}
+
+	@Override
+	protected String rewardThanks() {
+		return "To moje zguby. Dobrze, że znów je mam. Weź srebrną skrzynię, jak obiecałem. Dzięki tobie rozświetlimy noc.";
 	}
 
 	@Override
 	public void addToWorld() {
 		super.addToWorld();
 		createFestivalNPC("body=0,dress=14,head=0,mouth=0,eyes=18,mask=0,hair=27,hat=0",
-				41, 16, "Odnajduję latarenki potrzebne do oświetlenia festynu.");
+				41, 16, "Rozwieszam latarenki przy miejscu biesiady, żeby nikt po zmroku nie zabłądził.");
 		try {
 			spawns.start();
 		} catch (final RuntimeException e) {

@@ -54,7 +54,7 @@ public class HalloweenSellerNPC implements ZoneConfigurator {
 				addGreeting("Oto dzielny rycerzyk! Witaj!");
 				addJob("Przebrałam się za czarownice i sprzedaje różne smakołyki!");
 				addHelp("Pomoc w #'zadaniu'? Cóż... Spytaj, a się dowiesz! Zapytaj mnie również o #'ofertę'!");
-				addReply(Arrays.asList("straszna dynia", "straszne dynie", "dynie", "dynia"), "Podczas Mine Town straszna dynia może wypaść z każdego pokonanego potwora. Szansa wynosi 5%. Powodzenia w zbieraniu!");
+				addReply(Arrays.asList("straszna dynia", "straszne dynie", "dynie", "dynia"), "Jesienią takie dynie trafiają się wśród łupów po najróżniejszych stworach. Rozglądaj się uważnie, gdy ruszysz w drogę. Chętnie przyjmę dziesięć, jeśli zechcesz mi pomóc.");
 				addGoodbye("Miłego zbierania cukierów!");
 			}
 		};

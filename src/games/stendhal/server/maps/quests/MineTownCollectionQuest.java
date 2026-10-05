@@ -65,15 +65,15 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 			}
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj na festynie Mine Town! Zapytaj mnie o #zadanie.");
+				addGreeting("Witaj, wędrowcze. Rąk do pomocy nigdy dość. Mam dla ciebie #zadanie, jeśli zechcesz się go podjąć.");
 				addJob(job);
 				addHelp(request);
-				addGoodbye("Do zobaczenia na festynie!");
+				addGoodbye("Bywaj zdrów. Niech ci droga lekką będzie.");
 			}
 		};
 		ownedNPC.setOutfit(outfit);
 		ownedNPC.initHP(100);
-		ownedNPC.setDescription("Oto " + npcName + ". " + job);
+		ownedNPC.setDescription("Oto " + npcName + ". Krząta się przy miejscu biesiady.");
 		Point position = null;
 		for (int radius = 0; radius <= 6 && position == null; radius++) {
 			for (int dx = -radius; dx <= radius && position == null; dx++) {
@@ -107,7 +107,7 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 						return;
 					}
 					player.setQuest(slot, "start;" + lastCompletion(player) + ";" + completionCount(player));
-					raiser.say(request + " Gdy przyniesiesz wszystko, zapytaj ponownie o #zadanie.");
+					raiser.say("Dobrze, będę cię wypatrywał. Gdy wrócisz, przypomnij mi nasze #zadanie. Bywaj zdrów.");
 				});
 		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Może innym razem.", null);
@@ -117,7 +117,7 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT, ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING, "Zachowaj je i wróć, gdy zechcesz pomóc.", null);
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("nagroda", "reward"), null,
-				ConversationStates.ATTENDING, "Za wykonanie zadania otrzymasz: " + rewardName + ".", null);
+				ConversationStates.ATTENDING, rewardOffer(), null);
 	}
 
 	private void offer(final Player player, final EventRaiser npc) {
@@ -126,33 +126,34 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 		}
 		if (isInProgress(player)) {
 			if (hasRequiredItems(player)) {
-				npc.say("Masz wszystko, czego potrzebuję. Czy chcesz przekazać mi przedmioty?");
+				npc.say("Widzę, że niczego nie brakuje. Oddasz mi to, co przyniosłeś?");
 				npc.setCurrentState(ConversationStates.QUEST_ITEM_BROUGHT);
 			} else {
 				npc.say(request);
 			}
 		} else {
-			npc.say(request + " Nagroda: " + rewardName + ". Czy pomożesz?");
+			npc.say(request + " " + rewardOffer() + " Pomożesz mi?");
 			npc.setCurrentState(ConversationStates.QUEST_OFFERED);
 		}
 	}
 
 	private boolean checkAvailability(final Player player, final EventRaiser npc) {
 		if (!SeasonalEventService.get().isMineTownEnabled()) {
-			npc.say("To zadanie jest dostępne tylko podczas Mine Town.");
+			npc.say("Z taką sprawą przyjdź do mnie w czas jesiennego święta.");
 			return false;
 		}
 		if (!prerequisitesMet(player)) {
-			npc.say("Najpierw pomóż Boguchwałowi przygotować festyn i przynieś Wolradowi zagubione latarenki w tej edycji Mine Town.");
+			npc.say("Najpierw pomóż Boguchwałowi napełnić stoły i Wolradowi odnaleźć zguby. Gdy obaj będą gotowi na tegoroczne święto, zajmiemy się gusłami.");
 			return false;
 		}
 		if (cooldownHours == 0 && completionCount(player) > 0) {
-			npc.say("Rytuał został już odprawiony. Kolejna złota skrzynia będzie dostępna w następnej edycji Mine Town.");
+			npc.say("Duchy przyjęły już nasz dar. Na ten rok gusła skończone. Wróć, gdy nadejdzie kolejna jesień.");
 			return false;
 		}
 		final long remaining = cooldownHours * 3600000L - (now() - lastCompletion(player));
 		if (completionCount(player) > 0 && remaining > 0) {
-			npc.say("Dziękuję za pomoc. Wróć za " + ((remaining + 59999) / 60000) + " min.");
+			final long minutes = (remaining + 59999) / 60000;
+			npc.say("Dobrze się spisałeś. Teraz odpocznij. Wróć za " + waitingTime(minutes) + ", jeśli zechcesz znów pomóc.");
 			return false;
 		}
 		return true;
@@ -164,12 +165,12 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 		}
 		// Recheck on confirmation: moving items after the offer must not grant a reward.
 		if (!hasRequiredItems(player)) {
-			npc.say("Nie masz przy sobie wszystkich potrzebnych przedmiotów. " + request);
+			npc.say("Poczekaj, jeszcze czegoś tu brakuje. " + request);
 			return;
 		}
 		final Item reward = SingletonRepository.getEntityManager().getItem(rewardName);
 		if (reward == null) {
-			npc.say("Nie mogę teraz przekazać nagrody. Zachowaj przedmioty i wróć później.");
+			npc.say("Nie mam teraz czym ci się odwdzięczyć. Niczego mi nie oddawaj. Zajrzyj później.");
 			return;
 		}
 		reward.setBoundTo(player.getName());
@@ -177,7 +178,32 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 		player.setQuest(slot, "done;" + now() + ";" + (completionCount(player) + 1));
 		player.equipOrPutOnGround(reward);
 		player.notifyWorldAboutChanges();
-		npc.say("Dziękuję za pomoc! Twoja nagroda: " + rewardName + ".");
+		npc.say(rewardThanks());
+	}
+
+	protected abstract String rewardOffer();
+
+	protected abstract String rewardThanks();
+
+	private static String waitingTime(final long minutes) {
+		final long hours = minutes / 60;
+		final long remainder = minutes % 60;
+		if (hours == 0) {
+			return minutes + " " + countedWord(minutes, "minutę", "minuty", "minut");
+		}
+		final String time = hours + " " + countedWord(hours, "godzinę", "godziny", "godzin");
+		return remainder == 0 ? time
+				: time + " i " + remainder + " " + countedWord(remainder, "minutę", "minuty", "minut");
+	}
+
+	private static String countedWord(final long count, final String singular,
+			final String few, final String many) {
+		if (count == 1) {
+			return singular;
+		}
+		final long lastTwo = count % 100;
+		final long last = count % 10;
+		return last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14) ? few : many;
 	}
 
 	protected boolean hasRequiredItems(final Player player) {
@@ -249,10 +275,12 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 		if (player.hasQuest(slot)) {
 			history.add(request);
 			if (completionCount(player) > 0) {
-				history.add("Liczba wykonań w tej edycji Mine Town: " + completionCount(player) + ".");
+				history.add(completionCount(player) == 1
+						? "Pomogłem już raz podczas tegorocznego święta."
+						: "Pomogłem już " + completionCount(player) + " razy podczas tegorocznego święta.");
 			}
 			if (isInProgress(player)) {
-				history.add("Przedmioty należy oddać: " + npcName + ".");
+				history.add("Na mój powrót czeka " + npcName + ".");
 			}
 		}
 		return history;
