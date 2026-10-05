@@ -117,7 +117,7 @@ public class DynieDlaKatii extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"To dobrze! Ostatnio podczas halloween, straszne dynie można zdobyć od szczurów, starców, wieśniaków, gajowych, zbójników leśnych, w tym banici oraz zbójników górskich! Powodzenia w zbieraniu!",
+			"To dobrze! Podczas wydarzenia Mine Town straszne dynie mogą wypaść z każdego pokonanego potwora. Przynieś mi 10 dyń, a otrzymasz srebrną skrzynię. Powodzenia w zbieraniu!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5));
 
 		// player is not willing to help
