@@ -68,7 +68,8 @@ Inspectable, ReserveSetWindow.Owner {
 
 	/** ItemPanels searchable by the respective slot name. */
 	private final Map<String, ItemPanel> slotPanels = new HashMap<String, ItemPanel>();
-	private User player;
+	private volatile User player;
+	private ContentChangeListener playerListener;
 
 	private JComponent specialSlots;
 	private JComponent setToggleRow;
@@ -81,15 +82,15 @@ Inspectable, ReserveSetWindow.Owner {
 	private volatile boolean reserveWindowAvailable;
 	private boolean pendingSetDrawerRefresh;
 
-	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
+	private final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
-	private static FeatureEnabledItemPanel pouch;
+	private FeatureEnabledItemPanel pouch;
 
 	/**
 	 * Create a new character window.
 	 */
 	public Character() {
-		super("character", "Character");
+		super("character", "Ekwipunek");
 		createLayout();
 		// Don't allow the user close this. There's no way to get it back.
 		setCloseable(false);
@@ -102,25 +103,40 @@ Inspectable, ReserveSetWindow.Owner {
 	 * @param userEntity new user
 	 */
 	public void setPlayer(final User userEntity) {
-		player = userEntity;
-		userEntity.addContentChangeListener(this);
-		final RPObject obj = userEntity.getRPObject();
-
-		updateSetToggleVisibility(obj);
-
-		// Compatibility. Show additional slots only if the user has those.
-		// This can be removed after a couple of releases (and specialSlots
-		// field moved to createLayout()).
-		if (obj.hasSlot("belt")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					specialSlots.setVisible(true);
-				}
-			});
+		if (player != null && playerListener != null) {
+			player.removeContentChangeListener(playerListener);
 		}
-
+		player = userEntity;
+		// Each subscription belongs to one character, including queued updates.
+		playerListener = new ContentChangeListener() {
+			@Override
+			public void contentAdded(final RPSlot slot) {
+				contentAddedFor(userEntity, slot);
+			}
+			@Override
+			public void contentRemoved(final RPSlot slot) {
+				contentRemovedFor(userEntity, slot);
+			}
+		};
+		userEntity.addContentChangeListener(playerListener);
+		updateSetToggleVisibility(userEntity);
 		refreshContents();
+	}
+
+	private void updateForPlayer(final User owner, final Runnable update) {
+		final Runnable guarded = new Runnable() {
+			@Override
+			public void run() {
+				if (player == owner) {
+					update.run();
+				}
+			}
+		};
+		if (SwingUtilities.isEventDispatchThread()) {
+			guarded.run();
+		} else {
+			SwingUtilities.invokeLater(guarded);
+		}
 	}
 
 	/**
@@ -216,7 +232,10 @@ Inspectable, ReserveSetWindow.Owner {
 			}
 		});
 		setToggleRow.add(reserveToggleButton, SBoxLayout.constraint(SLayout.EXPAND_AXIAL));
-		setToggleRow.setVisible(false);
+		// Keep the narrow gutter even while between characters. Hiding the
+		// entire row used to move every equipment slot sideways on each login.
+		reserveToggleButton.setVisible(false);
+		reserveToggleButton.setEnabled(false);
 
 		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		equipmentRow.add(setToggleRow, SBoxLayout.constraint(SLayout.EXPAND_PERPENDICULAR));
@@ -384,7 +403,8 @@ Inspectable, ReserveSetWindow.Owner {
 		setReserveWindowVisible(!reserveWindowVisible);
 	}
 
-	private void updateSetToggleVisibility(final RPObject obj) {
+	private void updateSetToggleVisibility(final User owner) {
+		final RPObject obj = owner.getRPObject();
 		boolean hasSetSlots = false;
 		if (obj != null) {
 			for (final String slotName : slotPanels.keySet()) {
@@ -395,13 +415,13 @@ Inspectable, ReserveSetWindow.Owner {
 			}
 		}
 
-		reserveWindowAvailable = hasSetSlots;
 		final boolean showToggle = hasSetSlots;
-		SwingUtilities.invokeLater(new Runnable() {
+		updateForPlayer(owner, new Runnable() {
 			@Override
 			public void run() {
-				setToggleRow.setVisible(showToggle);
+				reserveWindowAvailable = showToggle;
 				if (reserveToggleButton != null) {
+					reserveToggleButton.setVisible(showToggle);
 					reserveToggleButton.setEnabled(showToggle);
 				}
 				if (!showToggle) {
@@ -429,14 +449,26 @@ Inspectable, ReserveSetWindow.Owner {
 	}
 
 	void resetSession() {
+		if (player != null && playerListener != null) {
+			player.removeContentChangeListener(playerListener);
+		}
+		playerListener = null;
 		player = null;
-		reserveWindowAvailable = false;
-		setReserveWindowVisible(false);
-		SwingUtilities.invokeLater(new Runnable() {
+		updateForPlayer(null, new Runnable() {
 			@Override
 			public void run() {
-				setToggleRow.setVisible(false);
+				for (final ItemPanel panel : slotPanels.values()) {
+					panel.setEntity(null);
+					panel.setParent(null);
+				}
+				setTitle("Ekwipunek");
+				reserveWindowAvailable = false;
+				setReserveWindowVisible(false);
+				reserveToggleButton.setVisible(false);
+				reserveToggleButton.setEnabled(false);
 				specialSlots.setVisible(false);
+				revalidate();
+				repaint();
 			}
 		});
 	}
@@ -539,46 +571,44 @@ Inspectable, ReserveSetWindow.Owner {
 	 * Updates the player slot panels.
 	 */
 	private void refreshContents() {
-		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
-			final ItemPanel entitySlot = entry.getValue();
-
-			if (entitySlot != null) {
-				// Set the parent entity for all slots, even if they are not
-				// visible. They may become visible without zone changes
-				entitySlot.setParent(player);
-
-				final RPSlot slot = player.getSlot(entry.getKey());
-				if (slot == null) {
-					continue;
-				}
-
-				final Iterator<RPObject> iter = slot.iterator();
-
-				if (iter.hasNext()) {
-					final RPObject object = iter.next();
-
-					IEntity entity = GameObjects.getInstance().get(object);
-
-					entitySlot.setEntity(entity);
-				} else {
-					entitySlot.setEntity(null);
-				}
-			}
+		final User owner = player;
+		if (owner == null) {
+			return;
 		}
-
-		/*
-		 * Refresh gets called from outside the EDT.
-		 */
-		SwingUtilities.invokeLater(new Runnable() {
+		final Map<String, IEntity> contents = new HashMap<String, IEntity>();
+		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+			final RPSlot slot = owner.getSlot(entry.getKey());
+			final Iterator<RPObject> iter = slot == null ? null : slot.iterator();
+			contents.put(entry.getKey(), iter != null && iter.hasNext()
+					? GameObjects.getInstance().get(iter.next()) : null);
+		}
+		final String name = owner.getName();
+		final boolean hasBelt = owner.getRPObject().hasSlot("belt");
+		updateForPlayer(owner, new Runnable() {
 			@Override
 			public void run() {
-				setTitle(player.getName());
+				for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+					entry.getValue().setParent(owner);
+					// Clear slots absent on the next character as well as empty ones.
+					entry.getValue().setEntity(contents.get(entry.getKey()));
+				}
+				setTitle(name == null ? "Ekwipunek" : name);
+				specialSlots.setVisible(hasBelt);
+				revalidate();
+				repaint();
 			}
 		});
 	}
 
 	@Override
 	public void contentAdded(RPSlot added) {
+		contentAddedFor(player, added);
+	}
+
+	private void contentAddedFor(final User owner, final RPSlot added) {
+		if (owner == null || player != owner) {
+			return;
+		}
 		ItemPanel panel = slotPanels.get(added.getName());
 		if (panel == null) {
 			// Not a slot we are interested in
@@ -587,11 +617,11 @@ Inspectable, ReserveSetWindow.Owner {
 
 		String slotName = added.getName();
 		if (slotName.endsWith("_set")) {
-			updateSetToggleVisibility(player.getRPObject());
+			updateSetToggleVisibility(owner);
 		}
-		if (("belt".equals(slotName) || "back".equals(slotName)) && !player.getRPObject().hasSlot(slotName)) {
+		if (("belt".equals(slotName) || "back".equals(slotName)) && !owner.getRPObject().hasSlot(slotName)) {
 			// One of the new slots was added to the player. Set them visible.
-			SwingUtilities.invokeLater(new Runnable() {
+			updateForPlayer(owner, new Runnable() {
 				@Override
 				public void run() {
 					specialSlots.setVisible(true);
@@ -600,27 +630,33 @@ Inspectable, ReserveSetWindow.Owner {
 		}
 
 		for (RPObject obj : added) {
-			ID id = obj.getID();
-			IEntity entity = panel.getEntity();
-			if (entity != null && id.equals(entity.getRPObject().getID())) {
-				// Changed rather than added.
-				return;
-			}
-			// Actually added, fetch the corresponding entity
-			entity = GameObjects.getInstance().get(obj);
+			final IEntity entity = GameObjects.getInstance().get(obj);
 			if (entity == null) {
 				logger.error("Unable to find entity for: " + obj,
 						new Throwable("here"));
 				return;
 			}
 
-			panel.setEntity(entity);
+			updateForPlayer(owner, new Runnable() {
+				@Override
+				public void run() {
+					panel.setParent(owner);
+					panel.setEntity(entity);
+				}
+			});
 		}
 	}
 
 	@Override
 	public void contentRemoved(RPSlot removed) {
-		ItemPanel panel = slotPanels.get(removed.getName());
+		contentRemovedFor(player, removed);
+	}
+
+	private void contentRemovedFor(final User owner, final RPSlot removed) {
+		if (owner == null || player != owner) {
+			return;
+		}
+		final ItemPanel panel = slotPanels.get(removed.getName());
 		if (panel == null) {
 			// Not a slot we are interested in
 			return;
@@ -628,22 +664,20 @@ Inspectable, ReserveSetWindow.Owner {
 
 		String slotName = removed.getName();
 		if (slotName.endsWith("_set")) {
-			updateSetToggleVisibility(player.getRPObject());
+			updateSetToggleVisibility(owner);
 		}
 		for (RPObject obj : removed) {
-			ID id = obj.getID();
-			IEntity entity = panel.getEntity();
-			if (entity != null && id.equals(entity.getRPObject().getID())) {
-				if (obj.size() == 1) {
-					// The object was removed
-					panel.setEntity(null);
-					continue;
+			final ID id = obj.getID();
+			final boolean deleted = obj.size() == 1;
+			updateForPlayer(owner, new Runnable() {
+				@Override
+				public void run() {
+					final IEntity entity = panel.getEntity();
+					if (deleted && entity != null && id.equals(entity.getRPObject().getID())) {
+						panel.setEntity(null);
+					}
 				}
-			} else {
-				logger.error("Tried removing wrong object from a panel. "
-						+ "removing: " + obj + " , but panel contains: "
-						+ panel.getEntity(), new Throwable());
-			}
+			});
 		}
 	}
 
