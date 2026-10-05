@@ -232,7 +232,7 @@ export class ItemContainerImplementation {
 
 	private updatePosition(view: InventorySlotView, item: Item) {
 		const position = (1 - item.getXFrameIndex() * 32) + "px "
-			+ (1 - (item["state"] || 0) * 32) + "px";
+			+ (1 - item.getYFrameIndex() * 32) + "px";
 		if (view.backgroundPosition !== position) {
 			view.element.style.backgroundPosition = position;
 			view.backgroundPosition = position;
@@ -378,7 +378,8 @@ export class ItemContainerImplementation {
 				quantity: item.hasOwnProperty("quantity") ? item["quantity"] : 1
 			};
 
-			const img = singletons.getSpriteStore().getAreaOf(singletons.getSpriteStore().get(item.sprite.filename), 32, 32);
+			const img = singletons.getSpriteStore().getAreaOf(singletons.getSpriteStore().get(item.sprite.filename),
+				32, 32, item.getXFrameIndex() * 32, item.getYFrameIndex() * 32);
 			if (event instanceof DragEvent && event.dataTransfer) {
 				stendhal.ui.heldObject = heldObject;
 				event.dataTransfer.setDragImage(img, 0, 0);

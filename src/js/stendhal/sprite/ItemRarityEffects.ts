@@ -136,7 +136,7 @@ export class ItemRarityEffects {
 		const rarity = item?.getRarity();
 		const image = rarity && item ? singletons.getSpriteStore().get(item.sprite.filename) : undefined;
 		const effect = image && item && rarity ? this.getFrame(image,
-			item.getXFrameIndex() * 32, (item["state"] || 0) * 32, rarity, "outline") : undefined;
+			item.getXFrameIndex() * 32, item.getYFrameIndex() * 32, rarity, "outline") : undefined;
 		let slot = this.slots.get(target);
 		if (!effect) {
 			slot?.canvas.remove();

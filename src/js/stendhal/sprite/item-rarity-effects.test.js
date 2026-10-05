@@ -62,6 +62,7 @@ function harness() {
 		return {
 			sprite: { filename: "item.png", offsetX: 0, offsetY: 0 }, state: 0,
 			getRarity: () => rarity, getXFrameIndex() { return this.sprite.offsetX / 32; },
+			getYFrameIndex() { return this.state || 0; },
 			getWidth: () => 1, getHeight: () => 1
 		};
 	}
@@ -206,6 +207,19 @@ test("unknown rarity remains undecorated and removes a stale outline", () => {
 	h.Effects.updateSlot(target, item);
 	assert.equal(target.children.length, 0);
 	assert.equal(h.metrics.reads, reads);
+});
+
+test("slot outline takes the resolved sprite row rather than the raw state", () => {
+	const h = harness(), item = h.item({ width: 32, height: 64 }), target = new h.Element();
+	item.getYFrameIndex = () => 1;
+	h.Effects.updateSlot(target, item);
+	const reads = h.metrics.reads;
+	item.state = 1;
+	h.Effects.updateSlot(target, item);
+	assert.equal(h.metrics.reads, reads, "A contradictory state does not select a different outline");
+	item.getYFrameIndex = () => 0;
+	h.Effects.updateSlot(target, item);
+	assert.equal(h.metrics.reads, reads + 1, "The resolved active row selects a new outline");
 });
 
 test("ground glow uses the active frame and row, correct centering and skips contained items", () => {

@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["data/ItemRarity.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts"]) {
+for (const name of ["data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -109,14 +109,30 @@ function createHarness() {
 		}
 	}
 	const document = { visibilityState: "visible" };
-	const marauroa = { me: undefined };
-	const stendhal = { config: { getBoolean: () => false } };
+	const sentActions = [], dragFrames = [];
+	const marauroa = { me: undefined, currentZoneName: "0_test",
+		clientFramework: { sendAction: action => sentActions.push(action) } };
+	const stendhal = { config: { getBoolean: () => false },
+		ui: { touch: { isTouchEngaged: () => false }, html: { esc: text => text } } };
+	class DragEvent {
+		constructor(target) {
+			this.type = "dragstart";
+			this.target = target;
+			this.dataTransfer = { setDragImage: image => { this.image = image; } };
+		}
+		preventDefault() { this.prevented = true; }
+	}
 	const images = new Map();
 	const spriteStore = {
 		get: filename => images.get(filename) || { width: 0, height: 0 },
-		checkPath: filename => images.get(filename)?.src || filename
+		checkPath: filename => images.get(filename)?.src || filename,
+		getAreaOf: (image, width, height, x, y) => {
+			const frame = { image, width, height, x, y };
+			dragFrames.push(frame);
+			return frame;
+		}
 	};
-	const singletons = { getSpriteStore: () => spriteStore };
+	const singletons = { getSpriteStore: () => spriteStore, getConfigManager: () => stendhal.config };
 	const raritySlotCalls = [], groundCalls = [];
 	const rarityEffects = { ItemRarityEffects: {
 		updateSlot(target, item) {
@@ -131,7 +147,7 @@ function createHarness() {
 		const exports = {};
 		vm.runInNewContext(compiled.get(name), {
 			exports, Date: Clock, document, console,
-			HTMLElement: Element, IntersectionObserver: VisibilityObserver,
+			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent,
 			getComputedStyle: element => ({ visibility: element.visible ? "visible" : "hidden" }),
 			require: name => {
 				assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency: ${name}`);
@@ -143,9 +159,12 @@ function createHarness() {
 	const { ItemRarity } = load("data/ItemRarity.ts", {});
 	class Entity {
 		set(key, value) { this[key] = value; }
+		buildActions(list) { list.push({ title: "Zobacz", type: "look" }); }
+		getIdPath() { return `[7\tbag\t${this.id}]`; }
 	}
+	const { ItemMap } = load("entity/ItemMap.ts", { "../SingletonRepo": { singletons }, marauroa: { marauroa } });
 	const { Item } = load("entity/Item.ts", {
-		"./ItemMap": { ItemMap: { getCursor: () => "itemdrop" } },
+		"./ItemMap": { ItemMap },
 		"./Entity": { Entity }, "../sprite/TextSprite": { TextSprite: class {} },
 		"../sprite/ItemRarityEffects": rarityEffects,
 		"../data/Paths": { Paths: { sprites: "/sprites" } },
@@ -160,6 +179,12 @@ function createHarness() {
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
 		"../../sprite/ItemRarityEffects": rarityEffects
+	});
+	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
+		"../UI": { ui: {} }, "../UIComponentEnum": {}, "../component/ChatInputComponent": {},
+		"../toolkit/Component": { Component: class {
+			constructor() { this.componentElement = { addEventListener() {}, dispatchEvent() {} }; }
+		} }, marauroa: { marauroa }, "../../stendhal": { stendhal }
 	});
 	const updateToolTip = Container.updateToolTipFor;
 	Container.updateToolTipFor = (...args) => { metrics.tooltipUpdates++; updateToolTip(...args); };
@@ -205,7 +230,7 @@ function createHarness() {
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
 		metrics, document, marauroa, images, observers, Container, ItemRarity, raritySlotCalls, groundCalls,
-		makeItem, makeOwner, makeParent, makeContainer, resetMetrics,
+		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
 		setNow: value => { now = value; }
 	};
 }
@@ -620,4 +645,83 @@ test("changing the actual Item sprite resets its animation cache and frame count
 	item.set("subclass", "static");
 	assert.equal(item.isAnimated(), false, "Cached animation detection follows the new sprite");
 	assert.equal(item.getXFrameIndex(), 0);
+});
+
+function returnRing(h, amount = 0, state = 0) {
+	const item = h.makeItem(1, { width: 32, height: 64, quantity: "1", state });
+	item.set("class", "ring");
+	item.set("subclass", "ametyst-ring");
+	item.set("name", "pierścień powrotu");
+	item.set("amount", amount);
+	h.images.set(item.sprite.filename, { width: 32, height: 64 });
+	item._parent = {};
+	return item;
+}
+
+test("return ring offers Use first and sends the normal use action for its inventory path", () => {
+	const h = createHarness(), ring = returnRing(h);
+	h.marauroa.me = {};
+	const menu = new h.ActionContextMenu(ring);
+	assert.equal(menu.actions[0].title, "Użyj");
+	assert.equal(menu.actions[0].type, "use");
+	assert.equal(menu.actions.filter(action => action.type === "use").length, 1);
+	assert.match(ring.getCursor(0, 0), /\/cursor\/activity\.png/);
+	menu.executeFallbackAction(menu.actions[0].type);
+	assert.equal(h.sentActions.length, 1);
+	assert.equal(h.sentActions[0].type, "use");
+	assert.equal(h.sentActions[0].target_path, ring.getIdPath());
+	assert.equal(h.sentActions[0].zone, "0_test");
+	const ordinaryRing = h.makeItem(2);
+	ordinaryRing.set("class", "ring");
+	const actions = [];
+	ordinaryRing.buildActions(actions);
+	assert.equal(actions.some(action => action.type === "use"), false);
+});
+
+test("return ring follows amount, not state, for both numeric and wire-string values", () => {
+	const h = createHarness();
+	for (const [amount, state, row] of [[0, 0, 1], ["0", "1", 1], [1, 1, 0], ["1", "0", 0]]) {
+		const ring = returnRing(h, amount, state);
+		assert.equal(ring.getYFrameIndex(), row);
+		ring.stepAnimation(1000);
+		assert.equal(ring.sprite.offsetY, row * 32);
+		assert.equal(ring.isAnimated(), false, "Vertical rows are states, not animation frames");
+	}
+	const ring = returnRing(h);
+	delete ring.amount;
+	assert.equal(ring.getYFrameIndex(), 0, "Missing amount matches the Java working-ring default");
+});
+
+test("return ring updates bag and equipment icons immediately on save, return and reset", () => {
+	const h = createHarness(), ring = returnRing(h);
+	const bag = h.makeContainer([ring]), equipment = h.makeContainer([ring]);
+	for (const amount of [0, 1, 0, "1", "0"]) {
+		ring.set("amount", amount);
+		// Deliberately keep a contradictory state to guard against the old rendering.
+		ring.set("state", Number(amount));
+		bag.container.update(); equipment.container.update();
+		const expected = Number(amount) > 0 ? "1px 1px" : "1px -31px";
+		assert.equal(bag.parent.elements[0].style.backgroundPosition, expected);
+		assert.equal(equipment.parent.elements[0].style.backgroundPosition, expected);
+	}
+	h.resetMetrics();
+	bag.container.animate(1000);
+	assert.equal(h.metrics.steps, 0, "Static state changes do not add per-frame inventory work");
+});
+
+test("return ring uses the same state row on the ground and while dragging", () => {
+	const h = createHarness(), ring = returnRing(h);
+	const { container, parent } = h.makeContainer([ring]);
+	ring.drawAt = () => {};
+	ring.set("x", 2); ring.set("y", 3);
+	for (const amount of [0, 1, 0]) {
+		ring.set("amount", amount);
+		ring.draw({});
+		assert.equal(h.groundCalls.at(-1).offsetY, amount > 0 ? 0 : 32);
+		const event = new h.DragEvent(parent.elements[0]);
+		container.onDragStart(event);
+		assert.equal(h.dragFrames.at(-1).width, 32);
+		assert.equal(h.dragFrames.at(-1).height, 32);
+		assert.equal(h.dragFrames.at(-1).y, amount > 0 ? 0 : 32);
+	}
 });
