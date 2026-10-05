@@ -179,6 +179,16 @@ public class DynieDlaKatii extends AbstractQuest {
 	}
 
 	@Override
+	public boolean removeFromWorld() {
+		// Katia belongs exclusively to the seasonal configurator. A fresh NPC is
+		// created by the event plan before this quest is attached again.
+		if (npc != null && npc.getZone() != null) {
+			npc.getZone().remove(npc);
+		}
+		return true;
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {

@@ -71,13 +71,13 @@ public class MeetGuslarz extends AbstractQuest {
 
 			@Override
 			protected void createDialog() {
-				// Greet players who have a basket but go straight back to idle to give others a chance
+				// Keep a conversation open so players can also ask about the ritual.
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
 						new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 								new QuestCompletedCondition(QUEST_SLOT)),
-						ConversationStates.IDLE,
-						"Witaj ponownie! Co za dużo to nie zdrowo!", null);
+						ConversationStates.ATTENDING,
+						"Witaj ponownie! Prezent już otrzymałeś. Podczas Mine Town zapytaj mnie o #zadanie.", null);
 
 				final List<ChatAction> reward = new LinkedList<ChatAction>();
 				reward.add(new EquipItemAction("skrzynka"));
@@ -88,12 +88,15 @@ public class MeetGuslarz extends AbstractQuest {
 					ConversationPhrases.GREETING_MESSAGES,
 					new AndCondition(new GreetingMatchesNameCondition(super.getName()),
 							new QuestNotCompletedCondition(QUEST_SLOT)),
-					ConversationStates.IDLE,
-					"Witaj! Co nieszczęsny robisz w tych stronach? Ale skoro już mnie spotkałeś mam coś dla ciebie.",
+					ConversationStates.ATTENDING,
+					"Witaj! Co nieszczęsny robisz w tych stronach? Ale skoro już mnie spotkałeś mam coś dla ciebie. Podczas Mine Town zapytaj mnie także o #zadanie.",
 					new MultipleActions(reward));
+				addHelp("Podczas Mine Town możesz zapytać mnie o #zadanie i pomóc odprawić rytuał.");
+				addGoodbye("Niech duchy prowadzą cię bezpiecznie.");
 			}
 		};
 
+		new MineTownRitual().attachDialog(guslarz);
 		guslarz.setEntityClass("npcguslarz");
 		guslarz.initHP(100);
 		// times out twice as fast as normal NPCs

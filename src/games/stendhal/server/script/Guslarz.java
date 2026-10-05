@@ -49,6 +49,10 @@ public class Guslarz extends ScriptImpl {
 			admin.sendPrivateText("Guślarz został aktywowany.");
 			return;
 		}
+		// The startup quest can be registered without its NPC while the event is off.
+		if (StendhalQuestSystem.get().getQuest(MeetGuslarz.QUEST_NAME) != null) {
+			StendhalQuestSystem.get().unloadQuest(MeetGuslarz.QUEST_NAME);
+		}
 		System.setProperty("stendhal.guslarz", "true");
 		StendhalQuestSystem.get().loadQuest(new MeetGuslarz());
 	}
