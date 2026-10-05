@@ -261,6 +261,10 @@ public class MineTownQuestsTest {
 	public void runtimeGuslarzStartsFromInactiveRegisteredQuestAndKeepsBothRewards() throws Exception {
 		final String oldGuslarz = System.getProperty("stendhal.guslarz");
 		final StendhalQuestSystem system = StendhalQuestSystem.get();
+		// The full suite shares the quest registry between test classes.
+		if (system.getQuest(MeetGuslarz.QUEST_NAME) != null) {
+			assertTrue(system.unloadQuest(MeetGuslarz.QUEST_NAME));
+		}
 		assertNull(system.getQuest(MeetGuslarz.QUEST_NAME));
 		final StendhalRPZone existing = SingletonRepository.getRPWorld().getZone("int_admin_playground");
 		final StendhalRPZone playground = existing == null
