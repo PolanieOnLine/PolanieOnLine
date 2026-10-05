@@ -709,6 +709,38 @@ test("return ring updates bag and equipment icons immediately on save, return an
 	assert.equal(h.metrics.steps, 0, "Static state changes do not add per-frame inventory work");
 });
 
+test("a received return-ring perception dims the existing icon without losing its name or bag position", () => {
+	const h = createHarness(), ring = returnRing(h, 1, 1);
+	const before = h.makeItem(2), after = h.makeItem(3);
+	const { container, parent, owner } = h.makeContainer([before, ring, after]);
+	owner.id = 7;
+	owner.set = (key, value) => { owner[key] = value; };
+	owner.bag.get = id => owner.bag.items.find(item => String(item.id) === String(id));
+	owner.bag.del = id => { owner.bag.items = owner.bag.items.filter(item => String(item.id) !== String(id)); };
+	owner.bag.add = item => { owner.bag.items.push(item); };
+	h.marauroa.rpobjectFactory = { create: () => h.makeItem(99) };
+	// Exercise the actual Marauroa receiver extracted by compilejs, rather than
+	// setting amount directly. Hidden itemdata must not generate an ID-only
+	// deletion before this partial delta, which would recreate an unnamed ring.
+	const receiver = path.join(path.dirname(require.resolve("marauroa")), "perception.js");
+	vm.runInNewContext(readFileSync(receiver, "utf8"), { window: { marauroa: h.marauroa }, console });
+	h.marauroa.currentZone[7] = owner;
+	h.marauroa.perceptionListener.onPerceptionEnd = () => container.update();
+	assert.equal(parent.elements[1].style.backgroundPosition, "1px 1px");
+	h.marauroa.perceptionHandler.apply({ sync: false, s: 2, zoneid: "0_test", aM: {
+		c: "player", a: { id: 7 }, s: { bag: [{ c: "item", a: {
+			id: ring.id, class: "ring", subclass: "ametyst-ring", amount: "0", state: "0"
+		} }] }
+	} });
+	assert.equal(owner.bag.items[1], ring);
+	assert.deepEqual(owner.bag.items.map(item => item.id), [2, 1, 3]);
+	assert.equal(ring.name, "pierścień powrotu");
+	assert.equal(parent.elements[1].style.backgroundPosition, "1px -31px");
+	const actions = [];
+	ring.buildActions(actions);
+	assert.equal(actions[0].type, "use");
+});
+
 test("return ring uses the same state row on the ground and while dragging", () => {
 	const h = createHarness(), ring = returnRing(h);
 	const { container, parent } = h.makeContainer([ring]);

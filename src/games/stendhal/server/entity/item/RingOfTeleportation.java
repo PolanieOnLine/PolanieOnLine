@@ -38,10 +38,8 @@ public class RingOfTeleportation extends Item {
 	private static final String HAIZEN_MAZE_NAME = "Labirynt Haizena";
 
 	/*
-	 * A successful zone transfer and a contained-item mutation must not be
-	 * published in the same server turn. Otherwise the client can interpret the
-	 * ring update as remove/add inside the bag, which moves it to the last slot
-	 * and leaves the old sprite visible until another full inventory refresh.
+	 * Publish the destination's full perception before completing the contained
+	 * ring's state change, so it arrives as a separate inventory update.
 	 */
 	private boolean returnCompletionPending;
 
@@ -91,6 +89,21 @@ public class RingOfTeleportation extends Item {
 	public void activeRing() {
 		put("amount", 1);
 		put("state", 1);
+	}
+
+	@Override
+	public void setItemData(final String itemdata) {
+		// Removing this HIDDEN attribute produces a contained-object deletion
+		// with only its ID after client serialization. Both clients then remove
+		// the ring and recreate it from an incomplete state delta. Keep an empty
+		// server-only value instead, so the update preserves the existing item.
+		super.setItemData(itemdata == null ? "" : itemdata);
+	}
+
+	@Override
+	public String getItemData() {
+		final String itemdata = super.getItemData();
+		return itemdata == null || itemdata.isEmpty() ? null : itemdata;
 	}
 
 	@Override
@@ -184,11 +197,9 @@ public class RingOfTeleportation extends Item {
 
 		/*
 		 * Do not touch the contained ring in the same turn as Player.teleport().
-		 * The zone transfer publishes inventory changes of its own. Mixing the
-		 * ring's state/itemdata delta into that transfer makes the desktop client
-		 * briefly treat the item as removed and re-added, which puts it at the end
-		 * of the bag and leaves the active sprite cached. Finish the ring update on
-		 * the immediately following server turn instead.
+		 * The zone transfer publishes inventory changes of its own. Let clients
+		 * receive that full inventory first, then finish the ring update on the
+		 * immediately following server turn.
 		 */
 		returnCompletionPending = true;
 		if (player.teleport(zone, saved.x, saved.y, null, player)) {

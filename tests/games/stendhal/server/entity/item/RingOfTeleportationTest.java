@@ -3,25 +3,41 @@ package games.stendhal.server.entity.item;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.client.entity.BreakableRing;
+import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.factory.EntityFactory;
+import games.stendhal.client.gui.j2d.entity.Entity2DView;
+import games.stendhal.client.gui.j2d.entity.EntityView;
+import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
+import games.stendhal.client.sprite.Sprite;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import marauroa.common.game.DetailLevel;
 import marauroa.common.game.Perception;
 import marauroa.common.game.RPObject;
+import marauroa.common.net.InputSerializer;
+import marauroa.common.net.OutputSerializer;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
@@ -84,6 +100,25 @@ public class RingOfTeleportationTest {
 		assertReturnPublishesDimmedRing(true, "finger");
 	}
 
+	@Test
+	public void clearedDestinationRemainsEmptyAfterPersistenceAndCanBeSavedAgain() throws IOException {
+		final RingOfTeleportation ring = new RingOfTeleportation();
+		ring.setItemData("0_semos_plains_n 10 20");
+		ring.setItemData(null);
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		ring.writeObject(new OutputSerializer(bytes), DetailLevel.FULL);
+		final RPObject stored = new RPObject();
+		stored.readObject(new InputSerializer(new ByteArrayInputStream(bytes.toByteArray())));
+		final RingOfTeleportation restored = new RingOfTeleportation();
+		restored.fill(stored);
+		assertNull(restored.getItemData());
+		assertTrue(restored.isUsed());
+		restored.setItemData("0_semos_plains_n 5 6");
+		restored.activeRing();
+		assertEquals("0_semos_plains_n 5 6", restored.getItemData());
+		assertFalse(restored.isUsed());
+	}
+
 	private void assertReturnPublishesDimmedRing(final boolean sameZone, final String slot) {
 		final StendhalRPWorld world = MockStendlRPWorld.get();
 		final StendhalRPZone source = new StendhalRPZone("return_ring_source_" + slot, 30, 30);
@@ -98,6 +133,7 @@ public class RingOfTeleportationTest {
 		final TurnNotifier notifier = TurnNotifier.get();
 		final int transferTurn = notifier.getCurrentTurnForDebugging() + 1;
 		TurnListener completion = null;
+		EntityView<IEntity> clientView = null;
 		try {
 			player.setPosition(2, 3);
 			if ("bag".equals(slot)) {
@@ -136,9 +172,18 @@ public class RingOfTeleportationTest {
 			// before the transfer perception has been sent and its deltas reset.
 			assertFalse("Do not mutate the ring in the teleport perception", ring.isUsed());
 			destination.getPerception(player, Perception.SYNC);
-			final RPObject clientPlayer = new RPObject(player);
+			final RPObject clientPlayer = clientCopy(player);
 			final RPObject.ID ringId = ring.getID();
 			final List<Integer> originalOrder = itemOrder(clientPlayer, slot);
+			final RPObject clientRing = clientPlayer.getSlot(slot).get(ringId);
+			final BreakableRing clientEntity = (BreakableRing) EntityFactory.createEntity(clientRing);
+			clientView = EntityViewFactory.create(clientEntity);
+			assertNotNull(clientView);
+			clientView.setContained(true);
+			clientView.applyChanges();
+			final Sprite glowingSprite = ((Entity2DView<?>) clientView).getSprite();
+			assertNotNull(glowingSprite);
+			assertTrue(clientEntity.isWorking());
 			destination.nextTurn();
 
 			// The immediately following perception must contain the dimmed state,
@@ -148,16 +193,28 @@ public class RingOfTeleportationTest {
 			final Perception delta = destination.getPerception(player, Perception.DELTA);
 			assertEquals(1, delta.modifiedAddedList.size());
 			final RPObject added = delta.modifiedAddedList.get(0);
-			final RPObject removed = delta.modifiedDeletedList.get(0);
+			assertTrue("Clearing the hidden destination must not delete the contained item",
+					delta.modifiedDeletedList.isEmpty());
 			assertEquals(0, added.getSlot(slot).get(ringId).getInt("amount"));
 			assertEquals(0, added.getSlot(slot).get(ringId).getInt("state"));
-			clientPlayer.applyDifferences(added, removed);
+			assertWebRingDelta(added, slot);
+			final RPObject received = clientCopy(added);
+			clientEntity.onChangedAdded(clientRing, received.getSlot(slot).get(ringId));
+			clientPlayer.applyDifferences(received, null);
+			clientView.applyChanges();
+			assertFalse(clientEntity.isWorking());
+			assertNotSame("The Java view must switch sprites without a map reload",
+					glowingSprite, ((Entity2DView<?>) clientView).getSprite());
 			assertEquals(0, clientPlayer.getSlot(slot).get(ringId).getInt("amount"));
+			assertEquals("pierścień powrotu", clientPlayer.getSlot(slot).get(ringId).get("name"));
 			assertEquals("State deltas must not remove or reorder inventory items", originalOrder,
 					itemOrder(clientPlayer, slot));
 			assertNull(ring.getItemData());
 			assertTrue(ring.has("frequency"));
 		} finally {
+			if (clientView != null) {
+				clientView.release();
+			}
 			if (completion != null) {
 				notifier.dontNotify(completion);
 			}
@@ -177,5 +234,34 @@ public class RingOfTeleportationTest {
 			ids.add(item.getInt("id"));
 		}
 		return ids;
+	}
+
+	private RPObject clientCopy(final RPObject object) {
+		try {
+			final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			object.writeObject(new OutputSerializer(bytes), DetailLevel.PRIVATE);
+			final RPObject copy = new RPObject();
+			copy.readObject(new InputSerializer(new ByteArrayInputStream(bytes.toByteArray())));
+			return copy;
+		} catch (final IOException e) {
+			throw new AssertionError(e);
+		}
+	}
+
+	private void assertWebRingDelta(final RPObject added, final String slot) {
+		final StringBuilder json = new StringBuilder();
+		added.writeToJson(json, DetailLevel.PRIVATE);
+		try {
+			final Map<?, ?> packet = (Map<?, ?>) new JSONParser().parse("{" + json + "}");
+			final Map<?, ?> slots = (Map<?, ?>) packet.get("s");
+			final List<?> items = (List<?>) slots.get(slot);
+			final Map<?, ?> item = (Map<?, ?>) items.get(0);
+			final Map<?, ?> attributes = (Map<?, ?>) item.get("a");
+			assertEquals("0", String.valueOf(attributes.get("amount")));
+			assertEquals("0", String.valueOf(attributes.get("state")));
+			assertFalse("The saved destination stays server-only", attributes.containsKey("itemdata"));
+		} catch (final ParseException e) {
+			throw new AssertionError(e);
+		}
 	}
 }
