@@ -12,8 +12,8 @@
 		</attributes>
 		<weight value="34.0"/>
 		<value value="518616"/>
-		<susceptibility type="light" value="1.15"/>
-		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="light" value="1.25"/>
+		<susceptibility type="dark" value="0.96"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -267,8 +267,8 @@
 		</attributes>
 		<weight value="30.0"/>
 		<value value="718616"/>
-		<susceptibility type="dark" value="1.15"/>
-		<susceptibility type="light" value="0.9"/>
+		<susceptibility type="dark" value="1.25"/>
+		<susceptibility type="light" value="0.97"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

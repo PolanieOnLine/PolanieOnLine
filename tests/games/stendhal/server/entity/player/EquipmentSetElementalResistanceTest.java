@@ -38,9 +38,7 @@ public class EquipmentSetElementalResistanceTest {
 			"zbroja z mithrilu", "hełm z mithrilu", "płaszcz z mithrilu", "spodnie z mithrilu",
 			"buty z mithrilu", "tarcza z mithrilu", "rękawice z mithrilu", "pas z mithrilu" };
 	private static final double[] PROTECTION = { 0.9, 0.9, 0.9, 0.95, 0.95, 0.9, 0.98, 0.95 };
-	private static final double[] VULNERABILITY = { 1.2, 1.2, 1.2, 1.15, 1.15, 1.15, 1.15, 1.15 };
 	private static final double SET_PROTECTION = 0.55127326275;
-	private static final double SET_VULNERABILITY = 3.47562522;
 	private static final double EPSILON = 0.000000001;
 	private static final String[] ICE = {
 			"lodowa zbroja", "hełm lodowy", "lodowy płaszcz", "lodowe spodnie", "lodowe buty", "lodowa tarcza", "lodowe rękawice", "lodowy pas" };
@@ -62,12 +60,18 @@ public class EquipmentSetElementalResistanceTest {
 
 	@Test
 	public void blackSetProtectsAgainstDarkAndIsVulnerableToLight() {
-		assertSet(BLACK, Nature.DARK, Nature.LIGHT, 289);
+		assertSpecializedSet(BLACK, Nature.DARK, Nature.LIGHT, 0.481686993, 4.416984, 289);
+		assertPieceProfile(BLACK, Nature.DARK, Nature.LIGHT,
+				new double[] { 0.9, 0.85, 0.85, 0.95, 0.9, 0.96, 0.95, 0.95 },
+				new double[] { 1.2, 1.3, 1.3, 1.2, 1.2, 1.25, 1.1, 1.1 });
 	}
 
 	@Test
 	public void mithrilSetProtectsAgainstLightAndIsVulnerableToDark() {
-		assertSet(MITHRIL, Nature.LIGHT, Nature.DARK, 316);
+		assertSpecializedSet(MITHRIL, Nature.LIGHT, Nature.DARK, 0.51692970825, 4.785066, 316);
+		assertPieceProfile(MITHRIL, Nature.LIGHT, Nature.DARK,
+				new double[] { 0.9, 0.9, 0.9, 0.9, 0.9, 0.97, 0.95, 0.95 },
+				new double[] { 1.2, 1.3, 1.3, 1.3, 1.2, 1.25, 1.1, 1.1 });
 	}
 
 	@Test
@@ -108,22 +112,14 @@ public class EquipmentSetElementalResistanceTest {
 		}
 	}
 
-	private void assertSet(final String[] names, final Nature own, final Nature opposite,
-			final int expectedDefense) {
-		final Player player = PlayerTestHelper.createPlayer("equipment_resistance");
-		player.setLevel(597);
-		for (int i = 0; i < names.length; i++) {
-			final Item item = createItem(names[i]);
-			assertEquals(names[i], PROTECTION[i], item.getSusceptibility(own), EPSILON);
-			assertEquals(names[i], VULNERABILITY[i], item.getSusceptibility(opposite), EPSILON);
-			assertTrue(names[i], player.equip(SLOTS[i], item));
-		}
-		assertEquals(SET_PROTECTION, player.getSusceptibility(own), EPSILON);
-		assertEquals(SET_VULNERABILITY, player.getSusceptibility(opposite), EPSILON);
-		assertEquals(expectedDefense, player.getItemDef(), EPSILON);
-		for (final Nature nature : Nature.values()) {
-			if (nature != own && nature != opposite) {
-				assertEquals(nature.name(), 1.0, player.getSusceptibility(nature), EPSILON);
+	@Test
+	public void blackAndMithrilSetsDoNotAffectOtherElements() {
+		for (final String[] set : new String[][] { BLACK, MITHRIL }) {
+			final Player player = equipSet(set);
+			for (final Nature nature : Nature.values()) {
+				if (nature != Nature.DARK && nature != Nature.LIGHT) {
+					assertEquals(nature.name(), 1.0, player.getSusceptibility(nature), EPSILON);
+				}
 			}
 		}
 	}
@@ -212,19 +208,21 @@ public class EquipmentSetElementalResistanceTest {
 
 	@Test
 	public void additionalSetPiecesIncreaseBothProtectionAndOpposingVulnerability() {
-		final String[][] sets = { ICE, FIRE, SHADOW };
-		final Nature[] own = { Nature.ICE, Nature.FIRE, Nature.DARK };
-		final Nature[] opposite = { Nature.FIRE, Nature.ICE, Nature.LIGHT };
+		final String[][] sets = { ICE, FIRE, SHADOW, BLACK, MITHRIL };
+		final Nature[] own = { Nature.ICE, Nature.FIRE, Nature.DARK, Nature.DARK, Nature.LIGHT };
+		final Nature[] opposite = { Nature.FIRE, Nature.ICE, Nature.LIGHT, Nature.LIGHT, Nature.DARK };
+		final double[] baseProtection = { 0.63, 0.63, 0.352512, 0.5337252, 0.5727753 };
+		final double[] baseVulnerability = { 1.725, 1.725, 5.82924346875, 3.6504, 3.9546 };
 		for (int i = 0; i < sets.length; i++) {
 			final String[] base = sets[i].clone();
 			for (int slot = 0; slot < base.length; slot++) {
-				if (i == 2 ? slot >= 6 : slot != 0 && slot != 5) {
+				if (i >= 2 ? slot >= 6 : slot != 0 && slot != 5) {
 					base[slot] = null;
 				}
 			}
 			final Player basePlayer = equipSet(base);
-			assertEquals(i == 2 ? 0.352512 : 0.63, basePlayer.getSusceptibility(own[i]), EPSILON);
-			assertEquals(i == 2 ? 5.82924346875 : 1.725, basePlayer.getSusceptibility(opposite[i]), EPSILON);
+			assertEquals(baseProtection[i], basePlayer.getSusceptibility(own[i]), EPSILON);
+			assertEquals(baseVulnerability[i], basePlayer.getSusceptibility(opposite[i]), EPSILON);
 			final Player fullPlayer = equipSet(sets[i]);
 			assertTrue(fullPlayer.getSusceptibility(own[i]) < basePlayer.getSusceptibility(own[i]));
 			assertTrue(fullPlayer.getSusceptibility(opposite[i]) > basePlayer.getSusceptibility(opposite[i]));
