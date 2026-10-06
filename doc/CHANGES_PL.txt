@@ -117,6 +117,7 @@
 * Właściwości przedmiotu można sprawdzić także wtedy, gdy leży on na ziemi
 * Dodano widoczne oznaczenia ogłuszenia i udanego parowania
 * Dodano zmianę postaci bez ponownego logowania do konta
+* Poprawiono kończenie gry z okna wyboru postaci
 * Ustawienia gry są dostępne również na ekranie startowym
 * Dodano wybór gry w oknie, pełnym ekranie bez ramek i pełnym ekranie. Sposób wyświetlania można zmienić także podczas gry
 * Dodano muzykę na ekranie startowym i regulację głównej głośności
