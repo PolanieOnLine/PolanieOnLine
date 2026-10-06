@@ -442,7 +442,7 @@
 		<weight value="42.0"/>
 		<value value="323032"/>
 		<susceptibility type="dark" value="1.2"/>
-		<susceptibility type="light" value="0.8"/>
+		<susceptibility type="light" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

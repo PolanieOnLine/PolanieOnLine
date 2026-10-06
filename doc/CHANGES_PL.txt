@@ -11,6 +11,7 @@
 * Ułatwiono rozpoczęcie ulepszania wybranego przedmiotu u kowala
 * Wybrane nagrody za zadania mają teraz epicką rzadkość i dwie dodatkowe właściwości. Zmiana obejmuje również wcześniej zdobyte nagrody, bez utraty ich ulepszeń
 * Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje jego rzadkość i dodatkowe właściwości
+* Pełny czarny zestaw chroni przed mrokiem o około 45 procent, ale zwiększa obrażenia od światła o około 250 procent. Mithrilowy zestaw tak samo chroni przed światłem i zwiększa obrażenia od mroku
 
 *walka*
 ---
