@@ -18,6 +18,8 @@ import { Color } from "../data/color/Color";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { marauroa } from "marauroa";
+import { stendhal } from "../stendhal";
+import { drawQuestMarker, readQuestMarker, QUEST_MARKER_WIDTH } from "../ui/render/QuestMarkerRenderer";
 
 
 export class NPC extends RPEntity {
@@ -54,6 +56,15 @@ export class NPC extends RPEntity {
 		}
 		if (typeof (this["unnamed"]) == "undefined") {
 			this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
+			const marker = readQuestMarker(marauroa.me?.["quest_markers"], marauroa.currentZoneName,
+				typeof this["id"] === "object" ? this["id"]?.id : this["id"]);
+			if (marker) {
+				const headY = localY + this["height"] * 32 - this["drawHeight"]
+					+ this.statusBarYOffset + this.titleDrawYOffset;
+				// Keep clear of the NPC name and the existing idea bubble.
+				drawQuestMarker(ctx, marker, localX + (this["width"] * 32 - QUEST_MARKER_WIDTH) / 2,
+					Math.max(stendhal.ui.gamewindow.offsetY, headY - 38));
+			}
 		}
 	}
 

@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.j2d.entity;
 
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,6 +31,7 @@ import games.stendhal.client.gui.j2d.entity.helpers.VerticalAlignment;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.common.QuestMarker;
 import marauroa.common.game.RPAction;
 
 /**
@@ -48,6 +51,19 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	private Sprite ideaSprite;
 
 	private List<String> animatedSprites = Arrays.asList("love");
+
+	@Override
+	protected void drawTop(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		super.drawTop(g2d, x, y, width, height);
+		final QuestMarker marker = QuestMarkerRenderer.getMarker(entity);
+		if (marker != QuestMarker.NONE) {
+			final Rectangle clip = g2d.getClipBounds();
+			final int markerY = y + statusBarYOffset + titleDrawYOffset - 38;
+			QuestMarkerRenderer.draw(g2d, marker, x + (width - QuestMarkerRenderer.WIDTH) / 2,
+					clip == null ? markerY : Math.max(clip.y, markerY));
+		}
+	}
 
 	@Override
 	public void initialize(final T entity) {

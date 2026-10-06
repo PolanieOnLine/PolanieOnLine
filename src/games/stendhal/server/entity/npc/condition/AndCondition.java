@@ -76,6 +76,11 @@ public class AndCondition implements ChatCondition {
 		return true;
 	}
 
+	/** Children for read-only quest previews; callers cannot modify the condition. */
+	public List<ChatCondition> getConditions() {
+		return java.util.Collections.unmodifiableList(conditions);
+	}
+
 	@Override
 	public String toString() {
 		return conditions.toString();

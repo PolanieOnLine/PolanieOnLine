@@ -63,6 +63,11 @@ public class OrCondition implements ChatCondition {
 		return false;
 	}
 
+	/** Children for read-only quest previews; callers cannot modify the condition. */
+	public List<ChatCondition> getConditions() {
+		return java.util.Collections.unmodifiableList(conditions);
+	}
+
 	@Override
 	public String toString() {
 		return "or <" + conditions.toString() + ">";

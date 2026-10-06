@@ -22,6 +22,16 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public interface PostTransitionAction {
+	/** Read-only metadata for quests accepted without a separate offer dialog. */
+	default boolean startsQuest(final String slot) {
+		return false;
+	}
+
+	/** Read-only metadata. Never execute an action to preview a quest reward. */
+	default boolean completesQuest(final String slot) {
+		return false;
+	}
+
 
 	/**
 	 * does some action after a transition.

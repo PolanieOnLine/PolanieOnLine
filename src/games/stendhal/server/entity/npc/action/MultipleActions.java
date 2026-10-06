@@ -63,6 +63,26 @@ public class MultipleActions implements ChatAction {
 	}
 
 	@Override
+	public boolean completesQuest(final String slot) {
+		for (final ChatAction action : actions) {
+			if (action != null && action.completesQuest(slot)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean startsQuest(final String slot) {
+		for (final ChatAction action : actions) {
+			if (action != null && action.startsQuest(slot)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public String toString() {
 		return actions.toString();
 	}

@@ -56,6 +56,8 @@ jobs:
         run: ant -noinput -buildfile build.xml compilejs
       - name: Check inventory animation and sprite preparation
         run: npm run test:inventory
+      - name: Check quest marker rendering
+        run: npm run test:quest-markers
 
   build:
     runs-on: ubuntu-latest

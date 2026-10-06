@@ -22,6 +22,7 @@ import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
+import games.stendhal.server.entity.npc.fsm.TransitionContext;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.*;
 import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
@@ -380,7 +381,13 @@ public class StendhalQuestSystem {
 		}
 
 		logger.info("Loading Quest: " + quest.getName());
-		quest.addToWorld();
+		final IQuest previousMarkerQuest = TransitionContext.getMarkerQuest();
+		try {
+			TransitionContext.setMarkerQuest(quest);
+			quest.addToWorld();
+		} finally {
+			TransitionContext.setMarkerQuest(previousMarkerQuest);
+		}
 		quests.add(quest);
 	}
 

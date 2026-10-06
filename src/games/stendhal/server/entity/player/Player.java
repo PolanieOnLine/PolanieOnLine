@@ -112,6 +112,8 @@ public class Player extends DressedEntity implements UseListener {
 	private final List<Integer> unlockedPortals;
 
 	private final PlayerQuests quests = new PlayerQuests(this);
+	private int nextQuestMarkerTurn;
+	private String questMarkerZone;
 	private final PlayerDieer dieer = new PlayerDieer(this);
 	private final PlayerTrade trade = new PlayerTrade(this);
 	private final KillRecording killRec = new KillRecording(this);
@@ -2226,6 +2228,12 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		agePlayer(turn);
+		final String currentZone = getZone() == null ? null : getZone().getID().getID();
+		if (turn >= nextQuestMarkerTurn || !java.util.Objects.equals(questMarkerZone, currentZone)) {
+			QuestMarkerService.update(this);
+			nextQuestMarkerTurn = turn + 4;
+			questMarkerZone = currentZone;
+		}
 	}
 
 	private void agePlayer(final int turn) {

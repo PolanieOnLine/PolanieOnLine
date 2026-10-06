@@ -53,6 +53,7 @@
 				<pathelement path="${junit_jar}"/>
 				<pathelement path="${groovy_jar}"/>
 				<pathelement path="${simple_jar}"/>
+				<pathelement path="${jsonsimple_jar}"/>
 				<pathelement path="${easymock_jar}"/>
 				<pathelement path="${easymockclassextension_jar}"/>
 				<pathelement path="${build_server_script}"/>
@@ -85,7 +86,6 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 		</echo>
 	</target> <!-- prepare_serverini_for_tests -->
 
-
 	<!-- Run all tests. -->
 	<target name="run_tests">
 		<mkdir dir="${build_tests_report}"/>
@@ -111,6 +111,7 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 					<pathelement path="${junit_jar}"/>
 					<pathelement path="${groovy_jar}"/>
 					<pathelement path="${simple_jar}"/>
+					<pathelement path="${jsonsimple_jar}"/>
 					<pathelement path="${guava_jar}"/>
 					<pathelement path="${mysqldriver_jar}"/>
 					<pathelement path="${h2_jar}"/>

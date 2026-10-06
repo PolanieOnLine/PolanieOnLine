@@ -19,6 +19,8 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.common.QuestMarker;
+import games.stendhal.server.entity.player.QuestMarkerService;
 import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
@@ -29,6 +31,27 @@ public class PierscienBaronaTest {
 	private static SpeakerNPC edgard;
 	private static SpeakerNPC dobrawa;
 	private static SpeakerNPC zakonnik;
+
+	@Test
+	public void questMarkerRespectsPrerequisitesAndForgingWithoutGrantingRewards() {
+		final PierscienBarona quest = new PierscienBarona();
+		final Player player = eligiblePlayer("MarkerBaron");
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarkerForQuest(
+				player, edragon, quest, java.util.Collections.emptyList()));
+		final Player locked = PlayerTestHelper.createPlayer("MarkerLocked");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarkerForQuest(
+				locked, edragon, quest, java.util.Collections.emptyList()));
+		player.setQuest(PierscienBarona.QUEST_SLOT, "forging;" + System.currentTimeMillis());
+		assertEquals(QuestMarker.IN_PROGRESS, QuestMarkerService.getMarkerForQuest(
+				player, edragon, quest, java.util.Collections.emptyList()));
+		player.setQuest(PierscienBarona.QUEST_SLOT, "forging;0");
+		assertEquals(QuestMarker.READY, QuestMarkerService.getMarkerForQuest(
+				player, edragon, quest, java.util.Collections.emptyList()));
+		assertEquals("forging;0", player.getQuest(PierscienBarona.QUEST_SLOT));
+		player.setQuest(PierscienBarona.QUEST_SLOT, "done");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarkerForQuest(
+				player, edragon, quest, java.util.Collections.emptyList()));
+	}
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {

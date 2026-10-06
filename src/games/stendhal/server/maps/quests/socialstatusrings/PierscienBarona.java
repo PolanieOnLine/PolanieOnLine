@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -573,6 +574,21 @@ public class PierscienBarona extends AbstractQuest {
 	@Override
 	public String getSlotName() {
 		return QUEST_SLOT;
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC speaker) {
+		if (speaker != npc) {
+			return null;
+		}
+		// These two previews only read prerequisites and the forging timestamp.
+		if (newTrialCondition().fire(player, null, speaker)) {
+			return QuestMarker.AVAILABLE;
+		}
+		if (forgingCondition(true).fire(player, null, speaker)) {
+			return QuestMarker.READY;
+		}
+		return null;
 	}
 
 	@Override

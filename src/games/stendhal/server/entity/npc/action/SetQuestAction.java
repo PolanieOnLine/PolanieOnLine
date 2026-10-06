@@ -73,6 +73,17 @@ public class SetQuestAction implements ChatAction {
 	}
 
 	@Override
+	public boolean completesQuest(final String slot) {
+		return questname.equals(slot) && index <= 0 && state != null
+				&& ("done".equals(state) || state.startsWith("done;"));
+	}
+
+	@Override
+	public boolean startsQuest(final String slot) {
+		return questname.equals(slot) && index <= 0 && "start".equals(state);
+	}
+
+	@Override
 	public String toString() {
 		return "SetQuest<" + questname + "[" + index + "] = " + state + ">";
 	}

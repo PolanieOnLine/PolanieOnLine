@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -43,6 +44,12 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class DynieDlaKatii extends AbstractQuest {
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		return games.stendhal.server.core.events.seasonal.SeasonalEventService.get().isMineTownEnabled()
+				? null : QuestMarker.NONE;
+	}
+
 	private static final String QUEST_SLOT = "dynie_dla_katii";
 	private final SpeakerNPC npc = npcs.get("Katia");
 

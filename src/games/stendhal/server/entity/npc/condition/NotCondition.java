@@ -45,6 +45,10 @@ public class NotCondition implements ChatCondition {
 		return !condition.fire(player, sentence, entity);
 	}
 
+	public ChatCondition getCondition() {
+		return condition;
+	}
+
 	@Override
 	public String toString() {
 		return "NOT <" + condition + ">";

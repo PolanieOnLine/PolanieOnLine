@@ -110,7 +110,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	/** Status icon managers. */
 	private final List<AbstractStatusIconManager> iconManagers = new ArrayList<AbstractStatusIconManager>();
 	private HealthBar healthBar;
-	private int statusBarYOffset;
+	protected int statusBarYOffset;
 
 	/**
 	 * Flag for detecting if any of the icon manager managed icons have

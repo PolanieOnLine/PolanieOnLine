@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.creature.Creature;
@@ -123,6 +124,10 @@ public class DailyMonsterQuest extends AbstractQuest {
 	}
 
 	static class DailyQuestAction implements ChatAction {
+		@Override
+		public boolean startsQuest(final String slot) {
+			return QUEST_SLOT.equals(slot);
+		}
 		//private String debugString;
 
 		@Override
@@ -552,6 +557,18 @@ public class DailyMonsterQuest extends AbstractQuest {
 	public boolean isRepeatable(final Player player) {
 		return	new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 						 new TimePassedCondition(QUEST_SLOT,1,delay)).fire(player, null, null);
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		if (player.isBadBoy()) {
+			return QuestMarker.NONE;
+		}
+		if (isStarted(player) && !isCompleted(player)
+				&& new KilledForQuestCondition(QUEST_SLOT, 0).fire(player, null, npc)) {
+			return QuestMarker.READY;
+		}
+		return null;
 	}
 
 	/**

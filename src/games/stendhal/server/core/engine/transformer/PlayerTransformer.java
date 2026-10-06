@@ -134,6 +134,9 @@ public class PlayerTransformer implements Transformer {
 		 * them when persistence runs before the turn cleanup. Never replay a UI or
 		 * notification event restored from the character database. */
 		player.clearEvents();
+		// Some older persistence versions stored volatile maps. Never reuse NPC
+		// identifiers or quest indicators from a previous connection.
+		player.removeMap(games.stendhal.common.QuestMarker.ATTRIBUTE);
 		if (player.has(AWAY)) {
 			player.remove(AWAY);
 		}

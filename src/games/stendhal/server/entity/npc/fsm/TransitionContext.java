@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.fsm;
 
+import games.stendhal.server.maps.quests.IQuest;
+
 /**
  * manages the current context for transitions
  *
@@ -19,6 +21,19 @@ package games.stendhal.server.entity.npc.fsm;
 public class TransitionContext {
 
 	private static final ThreadLocal<String> currentLabel = new ThreadLocal<String>();
+	private static final ThreadLocal<IQuest> markerQuest = new ThreadLocal<IQuest>();
+
+	public static IQuest getMarkerQuest() {
+		return markerQuest.get();
+	}
+
+	public static void setMarkerQuest(final IQuest quest) {
+		if (quest == null) {
+			markerQuest.remove();
+		} else {
+			markerQuest.set(quest);
+		}
+	}
 
 	/**
 	 * sets the label for the current context

@@ -78,6 +78,17 @@ public class SetQuestAndModifyKarmaAction implements ChatAction {
 	}
 
 	@Override
+	public boolean completesQuest(final String slot) {
+		return questname.equals(slot) && (index == null || index == 0) && state != null
+				&& ("done".equals(state) || state.startsWith("done;"));
+	}
+
+	@Override
+	public boolean startsQuest(final String slot) {
+		return questname.equals(slot) && (index == null || index == 0) && "start".equals(state);
+	}
+
+	@Override
 	public String toString() {
 		String st = "SetQuestAndModifyKarma<" + questname;
 		if (index != null) {

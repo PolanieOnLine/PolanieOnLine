@@ -22,6 +22,8 @@ import games.stendhal.server.entity.npc.PlayerPrivateSpeakerNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.common.QuestMarker;
+import games.stendhal.server.entity.player.QuestMarkerService;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -32,6 +34,29 @@ public class PierscienMieszczaninaTest {
 	private static SpeakerNPC zywia;
 	private static SpeakerNPC stach;
 	private static SpeakerNPC milost;
+
+	@Test
+	public void questMarkerRespectsPrerequisitesAndForgingWithoutGrantingRewards() {
+		final PierscienMieszczanina quest = new PierscienMieszczanina();
+		final Player player = PlayerTestHelper.createPlayer("MarkerMieszczanin");
+		player.setLevel(150);
+		player.setQuest(PierscienMieszczanina.ZLOTA_CIUPAGA_QUEST_SLOT, "done");
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarkerForQuest(
+				player, marianek, quest, java.util.Collections.emptyList()));
+		final Player locked = PlayerTestHelper.createPlayer("MarkerLocked");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarkerForQuest(
+				locked, marianek, quest, java.util.Collections.emptyList()));
+		player.setQuest(PierscienMieszczanina.QUEST_SLOT, "forging;" + System.currentTimeMillis());
+		assertEquals(QuestMarker.IN_PROGRESS, QuestMarkerService.getMarkerForQuest(
+				player, marianek, quest, java.util.Collections.emptyList()));
+		player.setQuest(PierscienMieszczanina.QUEST_SLOT, "forging;0");
+		assertEquals(QuestMarker.READY, QuestMarkerService.getMarkerForQuest(
+				player, marianek, quest, java.util.Collections.emptyList()));
+		assertEquals("forging;0", player.getQuest(PierscienMieszczanina.QUEST_SLOT));
+		player.setQuest(PierscienMieszczanina.QUEST_SLOT, "done");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarkerForQuest(
+				player, marianek, quest, java.util.Collections.emptyList()));
+	}
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {

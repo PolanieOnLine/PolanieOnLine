@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -707,6 +708,20 @@ public class PierscienMieszczanina extends AbstractQuest {
 	@Override
 	public String getName() {
 		return "Pierścień Mieszczanina";
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC speaker) {
+		if (speaker != npc) {
+			return null;
+		}
+		if (newTrialCondition().fire(player, null, speaker)) {
+			return QuestMarker.AVAILABLE;
+		}
+		if (MieszczaninFinale.isRewardReady(player)) {
+			return QuestMarker.READY;
+		}
+		return null;
 	}
 
 	@Override
