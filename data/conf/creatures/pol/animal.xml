@@ -825,7 +825,7 @@
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
-			<hp value="1"/>
+			<hp value="20"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="1"/>
