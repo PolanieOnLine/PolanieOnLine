@@ -130,22 +130,31 @@ public class EquipmentSetElementalResistanceTest {
 
 
 	@Test
-	public void iceSetHasBalancedProtectionAndVulnerability() {
-		assertSpecializedSet(ICE, Nature.ICE, Nature.FIRE, SET_PROTECTION, SET_VULNERABILITY, 153);
+	public void iceSetExtendsStendhalArmorAndShieldWithSixAdditionalPieces() {
+		assertSpecializedSet(ICE, Nature.ICE, Nature.FIRE, 0.46310789109375, 3.055942725, 153);
+		assertPieceProfile(ICE, Nature.ICE, Nature.FIRE,
+				new double[] { 0.7, 0.95, 0.95, 0.95, 0.95, 0.9, 0.95, 0.95 },
+				new double[] { 1.5, 1.1, 1.1, 1.1, 1.1, 1.15, 1.1, 1.1 });
 		assertEquals(0.95, equipSet(ICE).getSusceptibility(Nature.WATER), EPSILON);
 	}
 
 	@Test
 	public void fireSetIsBalancedAcrossItsSixAvailablePieces() {
-		assertSpecializedSet(FIRE, Nature.FIRE, Nature.ICE, 0.559234125, 3.51, 128);
+		assertSpecializedSet(FIRE, Nature.FIRE, Nature.ICE, 0.5131389375, 2.5255725, 128);
+		assertPieceProfile(FIRE, Nature.FIRE, Nature.ICE,
+				new double[] { 0.7, 1.0, 1.0, 0.95, 0.95, 0.9, 0.95, 0.95 },
+				new double[] { 1.5, 1.0, 1.0, 1.1, 1.1, 1.15, 1.1, 1.1 });
 		final Player player = equipSet(FIRE);
 		assertEquals(0.9, player.getSusceptibility(Nature.EARTH), EPSILON);
 		assertEquals(1.1, player.getSusceptibility(Nature.WATER), EPSILON);
 	}
 
 	@Test
-	public void shadowSetHasBalancedProtectionAndVulnerability() {
-		assertSpecializedSet(SHADOW, Nature.DARK, Nature.LIGHT, SET_PROTECTION, SET_VULNERABILITY, 196);
+	public void shadowSetExtendsStendhalSixPieceProfileWithGlovesAndBelt() {
+		assertSpecializedSet(SHADOW, Nature.DARK, Nature.LIGHT, 0.31814208, 8.45997152, 196);
+		assertPieceProfile(SHADOW, Nature.DARK, Nature.LIGHT,
+				new double[] { 0.8, 0.85, 0.8, 0.9, 0.8, 0.9, 0.95, 0.95 },
+				new double[] { 1.4, 1.4, 1.4, 1.4, 1.4, 1.3, 1.1, 1.1 });
 	}
 
 	@Test
@@ -190,10 +199,39 @@ public class EquipmentSetElementalResistanceTest {
 		assertEquals(vulnerability, player.getSusceptibility(opposite), EPSILON);
 		assertEquals(1.0, player.getSusceptibility(Nature.CUT), EPSILON);
 		assertEquals(expectedDefense, player.getItemDef(), EPSILON);
-		assertTrue("Full-set elemental resistance must be between 40 and 50 percent",
-				protection >= 0.5 && protection <= 0.6);
-		assertTrue("Opposing element must deal about 250 percent more damage",
-				vulnerability >= 3.4 && vulnerability <= 3.6);
+	}
+
+
+	@Test
+	public void additionalSetPiecesIncreaseBothProtectionAndOpposingVulnerability() {
+		final String[][] sets = { ICE, FIRE, SHADOW };
+		final Nature[] own = { Nature.ICE, Nature.FIRE, Nature.DARK };
+		final Nature[] opposite = { Nature.FIRE, Nature.ICE, Nature.LIGHT };
+		for (int i = 0; i < sets.length; i++) {
+			final String[] base = sets[i].clone();
+			for (int slot = 0; slot < base.length; slot++) {
+				if (i == 2 ? slot >= 6 : slot != 0 && slot != 5) {
+					base[slot] = null;
+				}
+			}
+			final Player basePlayer = equipSet(base);
+			assertEquals(i == 2 ? 0.352512 : 0.63, basePlayer.getSusceptibility(own[i]), EPSILON);
+			assertEquals(i == 2 ? 6.991712 : 1.725, basePlayer.getSusceptibility(opposite[i]), EPSILON);
+			final Player fullPlayer = equipSet(sets[i]);
+			assertTrue(fullPlayer.getSusceptibility(own[i]) < basePlayer.getSusceptibility(own[i]));
+			assertTrue(fullPlayer.getSusceptibility(opposite[i]) > basePlayer.getSusceptibility(opposite[i]));
+		}
+	}
+
+	private void assertPieceProfile(final String[] names, final Nature own, final Nature opposite,
+			final double[] protection, final double[] vulnerability) {
+		for (int i = 0; i < names.length; i++) {
+			if (names[i] != null) {
+				final Item item = createItem(names[i]);
+				assertEquals(names[i], protection[i], item.getSusceptibility(own), EPSILON);
+				assertEquals(names[i], vulnerability[i], item.getSusceptibility(opposite), EPSILON);
+			}
+		}
 	}
 
 	private void assertUniversalSet(final String[] names, final double protection, final int expectedDefense) {
