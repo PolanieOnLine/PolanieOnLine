@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
+import games.stendhal.server.entity.npc.fsm.QuestMarkerConditions;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AbstractQuest;
 
@@ -126,6 +128,16 @@ public class BuiltQuest extends AbstractQuest {
 	@Override
 	public String getName() {
 		return questBuilder.info().getInternalName();
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		if (player.isQuestInState(questSlot, 0, "start")
+				&& Boolean.TRUE.equals(QuestMarkerConditions.evaluate(
+						questBuilder.task().buildQuestCompletedCondition(questSlot), player, null, npc))) {
+			return QuestMarker.READY;
+		}
+		return null;
 	}
 
 	@Override

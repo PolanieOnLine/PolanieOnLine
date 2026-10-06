@@ -66,6 +66,8 @@
 
 *zadania i mieszkańcy*
 ---
+* Nad postaciami z zadaniami pojawiają się oznaczenia nowych przygód, zadań powtarzalnych, trwających zadań i nagród gotowych do odebrania
+* Oznaczenia uwzględniają postępy gracza, wymagania zadań i czas oczekiwania na ich ponowne wykonanie
 * Przebudowano drogę awansu społecznego od Mieszczanina przez Rycerza i Barona do Magnata, nadając próbom wspólną historię
 * Próba Mieszczanina obejmuje pomoc osadzie, zdobycie lekarstw, odzyskanie narzędzi i wyprawę do leśnej kryjówki
 * Dodano mieszkańców osady przy Smoczych Rycerzach, Dobrawę, Stacha, Żywię i Miłosta

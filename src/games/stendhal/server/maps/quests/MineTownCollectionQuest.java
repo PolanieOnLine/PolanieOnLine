@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.seasonal.SeasonalEventService;
@@ -17,6 +18,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.fsm.TransitionContext;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
@@ -98,6 +100,16 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 
 	/** Also used each time the independently controlled Guślarz is recreated. */
 	public final void attachDialog(final SpeakerNPC npc) {
+		final IQuest previous = TransitionContext.getMarkerQuest();
+		try {
+			TransitionContext.setMarkerQuest(this);
+			attachQuestDialog(npc);
+		} finally {
+			TransitionContext.setMarkerQuest(previous);
+		}
+	}
+
+	private void attachQuestDialog(final SpeakerNPC npc) {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, null,
 				ConversationStates.ATTENDING, null,
 				(player, sentence, raiser) -> offer(player, raiser));
@@ -157,6 +169,20 @@ abstract class MineTownCollectionQuest extends AbstractQuest {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		if (!SeasonalEventService.get().isMineTownEnabled() || !prerequisitesMet(player)
+				|| (cooldownHours == 0 && completionCount(player) > 0)
+				|| (completionCount(player) > 0
+					&& now() - lastCompletion(player) < cooldownHours * 3600000L)) {
+			return QuestMarker.NONE;
+		}
+		if (isInProgress(player)) {
+			return hasRequiredItems(player) ? QuestMarker.READY : QuestMarker.IN_PROGRESS;
+		}
+		return cooldownHours > 0 ? QuestMarker.REPEATABLE : QuestMarker.AVAILABLE;
 	}
 
 	private void complete(final Player player, final EventRaiser npc) {

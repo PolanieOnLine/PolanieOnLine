@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.common.tiled.StendhalMapStructure;
 import games.stendhal.server.core.config.zone.ZoneMapUpdater;
@@ -144,6 +145,43 @@ public class MineTownQuestsTest {
 	}
 
 	@Test
+	public void feastMarkerTracksSuppliesCooldownAndEventAvailability() {
+		final TimedFeast quest = new TimedFeast();
+		quest.attachDialog(npc);
+		assertEquals(QuestMarker.REPEATABLE, quest.getNPCQuestMarker(player, npc));
+		accept();
+		assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, npc));
+		food(40);
+		assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, npc));
+		System.clearProperty("stendhal.minetown");
+		assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, npc));
+		System.setProperty("stendhal.minetown", "true");
+		deliver();
+		assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, npc));
+		quest.time += 6 * 3600000L;
+		assertEquals(QuestMarker.REPEATABLE, quest.getNPCQuestMarker(player, npc));
+	}
+
+	@Test
+	public void lanternMarkerOnlyCountsCurrentFestivalItems() {
+		final TimedLanterns quest = new TimedLanterns();
+		quest.attachDialog(npc);
+		accept();
+		for (int i = 0; i < MineTownLanterns.REQUIRED_LANTERNS; i++) { equip("latarenka", 1); }
+		assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, npc));
+		final StackableItem lanterns = (StackableItem) equip(
+				MineTownLanternSpawns.LANTERN_NAME, MineTownLanterns.REQUIRED_LANTERNS);
+		lanterns.setItemData("minetown_lantern_old_edition");
+		assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, npc));
+		lanterns.setItemData(MineTownLanternSpawns.itemData());
+		assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, npc));
+		deliver();
+		assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, npc));
+		quest.time += 12 * 3600000L;
+		assertEquals(QuestMarker.REPEATABLE, quest.getNPCQuestMarker(player, npc));
+	}
+
+	@Test
 	public void rechecksSuppliesAfterConfirmationOffer() {
 		final MineTownFeast quest = new MineTownFeast();
 		quest.attachDialog(npc);
@@ -214,6 +252,7 @@ public class MineTownQuestsTest {
 		quest.attachDialog(npc);
 		equip("straszna dynia", 20);
 		// A previous edition is not enough.
+		assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, npc));
 		player.setQuest(QuestUtils.evaluateQuestSlotName(MineTownFeast.QUEST_SLOT) + "_old", "done;1;1");
 		assertTrue(engine.step(player, "zadanie"));
 		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
@@ -221,8 +260,11 @@ public class MineTownQuestsTest {
 		assertFalse(quest.prerequisitesMet(player));
 		player.setQuest(MineTownLanterns.QUEST_SLOT, "start;1;1");
 		assertTrue(quest.prerequisitesMet(player));
+		assertEquals(QuestMarker.AVAILABLE, quest.getNPCQuestMarker(player, npc));
 		accept();
+		assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, npc));
 		deliver();
+		assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, npc));
 		assertEquals(0, player.getNumberOfEquipped("straszna dynia"));
 		assertEquals(1, player.getNumberOfEquipped("złota skrzynia"));
 		assertEquals(player.getName(), player.getFirstEquipped("złota skrzynia").getBoundTo());

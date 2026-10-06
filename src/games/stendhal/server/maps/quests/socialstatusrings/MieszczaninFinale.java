@@ -77,6 +77,12 @@ public final class MieszczaninFinale {
 		}
 	}
 
+	/** Read-only reward preview; does not finish forging or grant the ring. */
+	static boolean isRewardReady(final Player player) {
+		final String state = player.getQuest(PierscienMieszczanina.QUEST_SLOT);
+		return state != null && state.startsWith(FORGING_PREFIX) && isForgingReady(state);
+	}
+
 	private static long remainingForgingMillis(final Player player) {
 		final String state = player.getQuest(PierscienMieszczanina.QUEST_SLOT);
 		try {

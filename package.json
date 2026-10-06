@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+	"test:quest-markers": "node --test src/js/stendhal/ui/render/quest-marker-renderer.test.js",
 	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/data/sprite-store.test.js src/js/stendhal/sprite/item-rarity-effects.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

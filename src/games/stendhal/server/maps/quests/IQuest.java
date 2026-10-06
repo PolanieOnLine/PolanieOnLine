@@ -13,6 +13,8 @@ package games.stendhal.server.maps.quests;
 
 import java.util.List;
 
+import games.stendhal.common.QuestMarker;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -20,6 +22,15 @@ import games.stendhal.server.entity.player.Player;
  * AbstractQuest in order for the loader to recognize them.
  */
 public interface IQuest {
+	/**
+	 * Read-only marker override for quests whose checks happen inside actions.
+	 * Return null to use the guarded conversation transitions, or NONE to hide.
+	 * Implementations must not change the player, conversation or world.
+	 */
+	default QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		return null;
+	}
+
 
 	/**
 	 * function will return information about this quest

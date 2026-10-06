@@ -22,12 +22,19 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.IQuest;
 
 /**
  * A transition brings a conversation from one state to another one (or to the
  * same one); while doing so, other actions can take place.
  */
 public class Transition {
+	/** Quest which installed this transition; never changes FSM execution. */
+	private final IQuest markerQuest;
+
+	public IQuest getMarkerQuest() {
+		return markerQuest;
+	}
 
 	/** The state where this transition starts at .*/
 	private final ConversationStates state;
@@ -92,6 +99,7 @@ public class Transition {
 		this.reply = reply;
 		this.action = action;
 		this.label = TransitionContext.getWithFallback(label);
+		this.markerQuest = TransitionContext.getMarkerQuest();
 	}
 
 	/**
@@ -123,6 +131,7 @@ public class Transition {
 		this.reply = reply;
 		this.action = action;
 		this.label = TransitionContext.getWithFallback("");
+		this.markerQuest = TransitionContext.getMarkerQuest();
 	}
 
 	/**
@@ -139,6 +148,7 @@ public class Transition {
 		this.reply = tr.reply;
 		this.action = tr.action;
 		this.label = TransitionContext.getWithFallback(tr.label);
+		this.markerQuest = tr.markerQuest;
 	}
 
 	/**

@@ -103,6 +103,11 @@ public class StartRecordingRandomItemCollectionAction implements ChatAction {
 	}
 
 	@Override
+	public boolean startsQuest(final String slot) {
+		return questname.equals(slot) && index <= 0 && !items.isEmpty();
+	}
+
+	@Override
 	public String toString() {
 		return "StartRecordingRandomItemCollection<" + items.toString() + ">";
 	}

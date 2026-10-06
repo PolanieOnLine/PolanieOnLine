@@ -15,6 +15,7 @@ import static games.stendhal.common.constants.Actions.AUTOWALK;
 import static games.stendhal.common.constants.Actions.MOVE_CONTINUOUS;
 import static games.stendhal.server.entity.player.PlayerLootedItemsHandler.LOOTED_ITEMS;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.constants.Events;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -128,6 +129,8 @@ public class PlayerRPClass {
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 
 		player.addRPSlot("!quests", 1, Definition.HIDDEN);
+		player.addAttribute(QuestMarker.ATTRIBUTE, Type.MAP,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addRPSlot("!tutorial", 1, Definition.HIDDEN);
 
 		player.addAttribute("karma", Type.FLOAT, Definition.PRIVATE);

@@ -15,6 +15,7 @@ import games.stendhal.client.gui.SlotWindowCharacterSessionTest;
 import games.stendhal.client.gui.CharacterEquipmentSessionTest;
 import games.stendhal.client.gui.FeatureEnabledItemPanelTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
+import games.stendhal.client.gui.j2d.entity.QuestMarkerRendererTest;
 import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
 import games.stendhal.server.actions.equip.SourceObjectTest;
@@ -36,6 +37,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixSeedTest;
 import games.stendhal.server.core.rule.rarity.ItemAffixStateTest;
 import games.stendhal.server.core.rule.rarity.ItemRarityServiceTest;
 import games.stendhal.server.entity.RPEntityGroupExperienceTest;
+import games.stendhal.server.entity.player.QuestMarkerServiceTest;
 import games.stendhal.server.entity.RPEntityWeaponDamageRollTest;
 import games.stendhal.server.entity.creature.MineTownPumpkinDropTest;
 import games.stendhal.server.entity.item.ChallengeArenaRewardChestTest;
@@ -73,6 +75,8 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	ItemRarityPresentationTest.class,
 	GroundItemTooltipTest.class,
 	Item2DViewGroundRarityTest.class,
+	QuestMarkerRendererTest.class,
+	QuestMarkerServiceTest.class,
 	GlyphTooltipPresentationTest.class,
 	ItemRarityServiceTest.class,
 	GlyphRarityExclusionTest.class,
