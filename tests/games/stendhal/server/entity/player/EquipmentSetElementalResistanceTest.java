@@ -170,11 +170,11 @@ public class EquipmentSetElementalResistanceTest {
 
 	@Test
 	public void magicSetDistributesUniversalProtectionAcrossEightPieces() {
-		assertUniversalSet(MAGIC, 0.8199366537085031, 254);
+		assertUniversalSet(MAGIC, 0.8165659002209295, 254);
 		for (final String name : new String[] { MAGIC[6], MAGIC[7] }) {
 			final Item item = createItem(name);
 			for (final Nature nature : new Nature[] { Nature.FIRE, Nature.ICE, Nature.DARK, Nature.LIGHT }) {
-				assertEquals(name, 0.972, item.getSusceptibility(nature), EPSILON);
+				assertEquals(name, 0.97, item.getSusceptibility(nature), EPSILON);
 			}
 		}
 	}
@@ -260,6 +260,23 @@ public class EquipmentSetElementalResistanceTest {
 			}
 		}
 		return player;
+	}
+
+
+	@Test
+	public void balancedEquipmentUsesAtMostTwoDecimalPlacesForElementalValues() {
+		for (final String[] set : new String[][] { BLACK, MITHRIL, ICE, FIRE, SHADOW, ELVISH, MAGIC, ROYAL }) {
+			for (final String name : set) {
+				if (name == null) {
+					continue;
+				}
+				final Item item = createItem(name);
+				for (final Nature nature : Nature.values()) {
+					final double scaledValue = item.getSusceptibility(nature) * 100.0;
+					assertEquals(name + " " + nature, Math.rint(scaledValue), scaledValue, EPSILON);
+				}
+			}
+		}
 	}
 
 	private Item createItem(final String name) {
