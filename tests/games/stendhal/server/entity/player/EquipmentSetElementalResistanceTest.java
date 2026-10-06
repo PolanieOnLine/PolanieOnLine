@@ -60,18 +60,18 @@ public class EquipmentSetElementalResistanceTest {
 
 	@Test
 	public void blackSetProtectsAgainstDarkAndIsVulnerableToLight() {
-		assertSpecializedSet(BLACK, Nature.DARK, Nature.LIGHT, 0.481686993, 4.416984, 289);
+		assertSpecializedSet(BLACK, Nature.DARK, Nature.LIGHT, 0.51258968208, 3.79787616, 289);
 		assertPieceProfile(BLACK, Nature.DARK, Nature.LIGHT,
-				new double[] { 0.9, 0.85, 0.85, 0.95, 0.9, 0.96, 0.95, 0.95 },
-				new double[] { 1.2, 1.3, 1.3, 1.2, 1.2, 1.25, 1.1, 1.1 });
+				new double[] { 0.9, 0.85, 0.85, 0.95, 0.9, 0.96, 0.98, 0.98 },
+				new double[] { 1.2, 1.3, 1.3, 1.2, 1.2, 1.25, 1.02, 1.02 });
 	}
 
 	@Test
 	public void mithrilSetProtectsAgainstLightAndIsVulnerableToDark() {
-		assertSpecializedSet(MITHRIL, Nature.LIGHT, Nature.DARK, 0.51692970825, 4.785066, 316);
+		assertSpecializedSet(MITHRIL, Nature.LIGHT, Nature.DARK, 0.55009339812, 4.11436584, 316);
 		assertPieceProfile(MITHRIL, Nature.LIGHT, Nature.DARK,
-				new double[] { 0.9, 0.9, 0.9, 0.9, 0.9, 0.97, 0.95, 0.95 },
-				new double[] { 1.2, 1.3, 1.3, 1.3, 1.2, 1.25, 1.1, 1.1 });
+				new double[] { 0.9, 0.9, 0.9, 0.9, 0.9, 0.97, 0.98, 0.98 },
+				new double[] { 1.2, 1.3, 1.3, 1.3, 1.2, 1.25, 1.02, 1.02 });
 	}
 
 	@Test
@@ -226,6 +226,20 @@ public class EquipmentSetElementalResistanceTest {
 			final Player fullPlayer = equipSet(sets[i]);
 			assertTrue(fullPlayer.getSusceptibility(own[i]) < basePlayer.getSusceptibility(own[i]));
 			assertTrue(fullPlayer.getSusceptibility(opposite[i]) > basePlayer.getSusceptibility(opposite[i]));
+		}
+	}
+
+	@Test
+	public void blackAndMithrilExtraSlotsStayWithinFivePercentOfStendhalMultipliers() {
+		final String[][] sets = { BLACK, MITHRIL };
+		final Nature[] own = { Nature.DARK, Nature.LIGHT };
+		final Nature[] opposite = { Nature.LIGHT, Nature.DARK };
+		final double[] stendhalProtection = { 0.5337252, 0.5727753 };
+		final double[] stendhalVulnerability = { 3.6504, 3.9546 };
+		for (int i = 0; i < sets.length; i++) {
+			final Player player = equipSet(sets[i]);
+			assertTrue(player.getSusceptibility(own[i]) >= stendhalProtection[i] * 0.95);
+			assertTrue(player.getSusceptibility(opposite[i]) <= stendhalVulnerability[i] * 1.05);
 		}
 	}
 

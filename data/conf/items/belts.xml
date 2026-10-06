@@ -398,8 +398,8 @@
 			<def value="14"/>
 			<min_level value="120"/>
 		</attributes>
-		<susceptibility type="dark" value="0.95"/>
-		<susceptibility type="light" value="1.1"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="light" value="1.02"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -419,8 +419,8 @@
 			<min_level value="200"/>
 			<max_improves value="1"/>
 		</attributes>
-		<susceptibility type="dark" value="1.1"/>
-		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="dark" value="1.02"/>
+		<susceptibility type="light" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
