@@ -12,6 +12,8 @@
 * Wybrane nagrody za zadania mają teraz epicką rzadkość i dwie dodatkowe właściwości. Zmiana obejmuje również wcześniej zdobyte nagrody, bez utraty ich ulepszeń
 * Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje jego rzadkość i dodatkowe właściwości
 * Pełny czarny zestaw chroni przed mrokiem o około 45 procent, ale zwiększa obrażenia od światła o około 250 procent. Mithrilowy zestaw tak samo chroni przed światłem i zwiększa obrażenia od mroku
+* Uporządkowano odporności zestawów lodowego, ognistego, elfickiego i cieni. Całe zestawy chronią przed swoim żywiołem o około 45 procent, ale zwiększają obrażenia od przeciwnego o około 250 procent
+* Magiczny zestaw płytowy zapewnia około 17 procent ochrony przed ogniem, lodem, mrokiem i światłem, a monarchistyczny około 20 procent
 
 *walka*
 ---

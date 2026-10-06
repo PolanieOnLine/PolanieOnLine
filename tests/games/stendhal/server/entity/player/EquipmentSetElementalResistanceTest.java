@@ -42,6 +42,18 @@ public class EquipmentSetElementalResistanceTest {
 	private static final double SET_PROTECTION = 0.55127326275;
 	private static final double SET_VULNERABILITY = 3.47562522;
 	private static final double EPSILON = 0.000000001;
+	private static final String[] ICE = {
+			"lodowa zbroja", "hełm lodowy", "lodowy płaszcz", "lodowe spodnie", "lodowe buty", "lodowa tarcza", "lodowe rękawice", "lodowy pas" };
+	private static final String[] FIRE = {
+			"ognista zbroja", null, null, "ogniste spodnie", "ogniste buty", "ognista tarcza", "ogniste rękawice", "ognisty pas" };
+	private static final String[] SHADOW = {
+			"zbroja cieni", "hełm cieni", "płaszcz cieni", "spodnie cieni", "buty cieni", "tarcza cieni", "rękawice cieni", "pas cieni" };
+	private static final String[] ELVISH = {
+			"zbroja elficka", "hełm elficki", "płaszcz elficki", "spodnie elfickie", "buty elfickie", "tarcza elficka", "rękawice elfickie", "pas elficki" };
+	private static final String[] MAGIC = {
+			"magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz", "magiczne spodnie płytowe", "magiczne buty płytowe", "magiczna tarcza płytowa", "magiczne rękawice płytowe", "magiczny pas płytowy" };
+	private static final String[] ROYAL = {
+			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny", "spodnie monarchistyczne", "buty monarchistyczne", "tarcza monarchistyczna", null, null };
 
 	@BeforeClass
 	public static void setUpWorld() {
@@ -71,8 +83,11 @@ public class EquipmentSetElementalResistanceTest {
 
 	@Test
 	public void restoredUpgradedEquipmentUsesCurrentElementalDefinitions() throws IOException {
-		for (final String[] set : new String[][] { BLACK, MITHRIL }) {
+		for (final String[] set : new String[][] { BLACK, MITHRIL, ICE, FIRE, SHADOW, ELVISH, MAGIC, ROYAL }) {
 			for (final String name : set) {
+				if (name == null) {
+					continue;
+				}
 				final Item original = createItem(name);
 				original.setID(new ID(201, "equipment_resistance"));
 				if (original.has(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE)) {
@@ -111,6 +126,96 @@ public class EquipmentSetElementalResistanceTest {
 				assertEquals(nature.name(), 1.0, player.getSusceptibility(nature), EPSILON);
 			}
 		}
+	}
+
+
+	@Test
+	public void iceSetHasBalancedProtectionAndVulnerability() {
+		assertSpecializedSet(ICE, Nature.ICE, Nature.FIRE, SET_PROTECTION, SET_VULNERABILITY, 153);
+		assertEquals(0.95, equipSet(ICE).getSusceptibility(Nature.WATER), EPSILON);
+	}
+
+	@Test
+	public void fireSetIsBalancedAcrossItsSixAvailablePieces() {
+		assertSpecializedSet(FIRE, Nature.FIRE, Nature.ICE, 0.559234125, 3.51, 128);
+		final Player player = equipSet(FIRE);
+		assertEquals(0.9, player.getSusceptibility(Nature.EARTH), EPSILON);
+		assertEquals(1.1, player.getSusceptibility(Nature.WATER), EPSILON);
+	}
+
+	@Test
+	public void shadowSetHasBalancedProtectionAndVulnerability() {
+		assertSpecializedSet(SHADOW, Nature.DARK, Nature.LIGHT, SET_PROTECTION, SET_VULNERABILITY, 196);
+	}
+
+	@Test
+	public void elvishSetHasBalancedProtectionAndVulnerability() {
+		assertSpecializedSet(ELVISH, Nature.EARTH, Nature.FIRE, SET_PROTECTION, SET_VULNERABILITY, 159);
+	}
+
+	@Test
+	public void elvishHatKeepsTheSameElementalProfileAsElvishHelmet() {
+		final String[] alternative = ELVISH.clone();
+		alternative[1] = "kapelusz elficki";
+		assertSpecializedSet(alternative, Nature.EARTH, Nature.FIRE,
+				SET_PROTECTION, SET_VULNERABILITY, 153);
+	}
+
+	@Test
+	public void magicSetDistributesUniversalProtectionAcrossEightPieces() {
+		assertUniversalSet(MAGIC, 0.8334890961549375, 254);
+	}
+
+	@Test
+	public void royalSetKeepsTheStendhalUniversalProtection() {
+		assertUniversalSet(ROYAL, 0.7987202615, 252);
+	}
+
+	@Test
+	public void endgameNocturiumSetKeepsItsExistingProtectionWithoutVulnerability() {
+		final Player player = equipSet(new String[] {
+				"zbroja ciemnomithrilowa", "hełm ciemnomithrilowy", "płaszcz ciemnomithrilowy",
+				"spodnie ciemnomithrilowe", "buty ciemnomithrilowe", "tarcza ciemnomithrilowa",
+				null, "pas ciemnomithrilowy" });
+		assertEquals(0.4782969, player.getSusceptibility(Nature.DARK), EPSILON);
+		assertEquals(0.4782969, player.getSusceptibility(Nature.LIGHT), EPSILON);
+		assertEquals(1.0, player.getSusceptibility(Nature.FIRE), EPSILON);
+		assertEquals(1.0, player.getSusceptibility(Nature.ICE), EPSILON);
+	}
+
+	private void assertSpecializedSet(final String[] names, final Nature own, final Nature opposite,
+			final double protection, final double vulnerability, final int expectedDefense) {
+		final Player player = equipSet(names);
+		assertEquals(protection, player.getSusceptibility(own), EPSILON);
+		assertEquals(vulnerability, player.getSusceptibility(opposite), EPSILON);
+		assertEquals(1.0, player.getSusceptibility(Nature.CUT), EPSILON);
+		assertEquals(expectedDefense, player.getItemDef(), EPSILON);
+		assertTrue("Full-set elemental resistance must be between 40 and 50 percent",
+				protection >= 0.5 && protection <= 0.6);
+		assertTrue("Opposing element must deal about 250 percent more damage",
+				vulnerability >= 3.4 && vulnerability <= 3.6);
+	}
+
+	private void assertUniversalSet(final String[] names, final double protection, final int expectedDefense) {
+		final Player player = equipSet(names);
+		for (final Nature nature : Nature.values()) {
+			final boolean protectedElement = nature == Nature.FIRE || nature == Nature.ICE
+					|| nature == Nature.DARK || nature == Nature.LIGHT;
+			assertEquals(nature.name(), protectedElement ? protection : 1.0,
+					player.getSusceptibility(nature), EPSILON);
+		}
+		assertEquals(expectedDefense, player.getItemDef(), EPSILON);
+	}
+
+	private Player equipSet(final String[] names) {
+		final Player player = PlayerTestHelper.createPlayer("balanced_equipment");
+		player.setLevel(597);
+		for (int i = 0; i < names.length; i++) {
+			if (names[i] != null) {
+				assertTrue(names[i], player.equip(SLOTS[i], createItem(names[i])));
+			}
+		}
+		return player;
 	}
 
 	private Item createItem(final String name) {
