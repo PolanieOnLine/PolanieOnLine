@@ -38,7 +38,7 @@
 		<!-- alternative creature -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">dwugłowy czarny smok</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">60</parameter>
 			<parameter name="spawnY">10</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>

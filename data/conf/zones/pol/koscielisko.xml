@@ -30,7 +30,7 @@
 		<!-- alternative creature -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">pokutnik nocny</parameter>
-			<parameter name="factory">0.5</parameter>
+			<parameter name="factor">0.5</parameter>
 			<parameter name="spawnX">78</parameter>
 			<parameter name="spawnY">3</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
