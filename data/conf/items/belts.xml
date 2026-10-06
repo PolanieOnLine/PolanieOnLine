@@ -81,9 +81,9 @@
 			<def value="3"/>
 			<min_level value="4"/>
 		</attributes>
-		<susceptibility type="ice" value="0.8"/>
+		<susceptibility type="ice" value="0.95"/>
 		<susceptibility type="water" value="0.95"/>
-		<susceptibility type="fire" value="1.1"/>
+		<susceptibility type="fire" value="1.15"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -102,9 +102,9 @@
 			<def value="4"/>
 			<min_level value="5"/>
 		</attributes>
-		<susceptibility type="fire" value="0.8"/>
+		<susceptibility type="fire" value="0.9"/>
 		<susceptibility type="earth" value="0.9"/>
-		<susceptibility type="ice" value="1.1"/>
+		<susceptibility type="ice" value="1.2"/>
 		<susceptibility type="water" value="1.1"/>
 		<equipable>
 			<slot name="ground"/>
@@ -178,7 +178,8 @@
 			<def value="5"/>
 			<min_level value="7"/>
 		</attributes>
-		<susceptibility type="earth" value="0.9"/>
+		<susceptibility type="earth" value="0.95"/>
+		<susceptibility type="fire" value="1.15"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -213,8 +214,8 @@
 			<def value="6"/>
 			<min_level value="12"/>
 		</attributes>
-		<susceptibility type="dark" value="0.8"/>
-		<susceptibility type="light" value="1.1"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="1.15"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -342,10 +343,10 @@
 			<def value="9"/>
 			<min_level value="70"/>
 		</attributes>
-		<susceptibility type="fire" value="0.95"/>
-		<susceptibility type="ice" value="0.95"/>
-		<susceptibility type="dark" value="0.95"/>
-		<susceptibility type="light" value="0.95"/>
+		<susceptibility type="fire" value="0.98"/>
+		<susceptibility type="ice" value="0.98"/>
+		<susceptibility type="dark" value="0.98"/>
+		<susceptibility type="light" value="0.98"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
