@@ -343,10 +343,10 @@
 			<def value="9"/>
 			<min_level value="70"/>
 		</attributes>
-		<susceptibility type="fire" value="0.98"/>
-		<susceptibility type="ice" value="0.98"/>
-		<susceptibility type="dark" value="0.98"/>
-		<susceptibility type="light" value="0.98"/>
+		<susceptibility type="fire" value="0.972"/>
+		<susceptibility type="ice" value="0.972"/>
+		<susceptibility type="dark" value="0.972"/>
+		<susceptibility type="light" value="0.972"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

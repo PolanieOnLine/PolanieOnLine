@@ -150,16 +150,18 @@ public class EquipmentSetElementalResistanceTest {
 	}
 
 	@Test
-	public void shadowSetExtendsStendhalSixPieceProfileWithGlovesAndBelt() {
-		assertSpecializedSet(SHADOW, Nature.DARK, Nature.LIGHT, 0.31814208, 8.45997152, 196);
+	public void shadowSetKeepsProtectionWithAboutSixHundredPercentExtraLightDamage() {
+		assertSpecializedSet(SHADOW, Nature.DARK, Nature.LIGHT, 0.31814208, 7.0533845971875, 196);
 		assertPieceProfile(SHADOW, Nature.DARK, Nature.LIGHT,
 				new double[] { 0.8, 0.85, 0.8, 0.9, 0.8, 0.9, 0.95, 0.95 },
-				new double[] { 1.4, 1.4, 1.4, 1.4, 1.4, 1.3, 1.1, 1.1 });
+				new double[] { 1.35, 1.35, 1.35, 1.35, 1.35, 1.3, 1.1, 1.1 });
 	}
 
 	@Test
 	public void elvishSetHasBalancedProtectionAndVulnerability() {
-		assertSpecializedSet(ELVISH, Nature.EARTH, Nature.FIRE, SET_PROTECTION, SET_VULNERABILITY, 159);
+		assertSpecializedSet(ELVISH, Nature.EARTH, Nature.FIRE, SET_PROTECTION, 4.4189517409375, 159);
+		assertPieceProfile(ELVISH, Nature.EARTH, Nature.FIRE, PROTECTION,
+				new double[] { 1.3, 1.3, 1.3, 1.15, 1.15, 1.15, 1.15, 1.15 });
 	}
 
 	@Test
@@ -167,12 +169,18 @@ public class EquipmentSetElementalResistanceTest {
 		final String[] alternative = ELVISH.clone();
 		alternative[1] = "kapelusz elficki";
 		assertSpecializedSet(alternative, Nature.EARTH, Nature.FIRE,
-				SET_PROTECTION, SET_VULNERABILITY, 153);
+				SET_PROTECTION, 4.4189517409375, 153);
 	}
 
 	@Test
 	public void magicSetDistributesUniversalProtectionAcrossEightPieces() {
-		assertUniversalSet(MAGIC, 0.8334890961549375, 254);
+		assertUniversalSet(MAGIC, 0.8199366537085031, 254);
+		for (final String name : new String[] { MAGIC[6], MAGIC[7] }) {
+			final Item item = createItem(name);
+			for (final Nature nature : new Nature[] { Nature.FIRE, Nature.ICE, Nature.DARK, Nature.LIGHT }) {
+				assertEquals(name, 0.972, item.getSusceptibility(nature), EPSILON);
+			}
+		}
 	}
 
 	@Test
@@ -216,7 +224,7 @@ public class EquipmentSetElementalResistanceTest {
 			}
 			final Player basePlayer = equipSet(base);
 			assertEquals(i == 2 ? 0.352512 : 0.63, basePlayer.getSusceptibility(own[i]), EPSILON);
-			assertEquals(i == 2 ? 6.991712 : 1.725, basePlayer.getSusceptibility(opposite[i]), EPSILON);
+			assertEquals(i == 2 ? 5.82924346875 : 1.725, basePlayer.getSusceptibility(opposite[i]), EPSILON);
 			final Player fullPlayer = equipSet(sets[i]);
 			assertTrue(fullPlayer.getSusceptibility(own[i]) < basePlayer.getSusceptibility(own[i]));
 			assertTrue(fullPlayer.getSusceptibility(opposite[i]) > basePlayer.getSusceptibility(opposite[i]));

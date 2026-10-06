@@ -343,7 +343,7 @@
 		</attributes>
 		<weight value="25.0"/>
 		<value value="5103"/>
-		<susceptibility type="light" value="1.4"/>
+		<susceptibility type="light" value="1.35"/>
 		<susceptibility type="dark" value="0.9"/>
 		<equipable>
 			<slot name="ground"/>
