@@ -105,7 +105,7 @@
 		<!-- alternative creature -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">kula śnieżna</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">32</parameter>
 			<parameter name="spawnY">109</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>

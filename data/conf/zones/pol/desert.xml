@@ -20,7 +20,7 @@
 		<!-- alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">słoń</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">13</parameter>
 			<parameter name="spawnY">38</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -29,7 +29,7 @@
 
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">wielbłąd</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">89</parameter>
 			<parameter name="spawnY">93</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -38,7 +38,7 @@
 
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">wielbłąd</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">68</parameter>
 			<parameter name="spawnY">35</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -90,7 +90,7 @@
 		<!-- alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">uczeń mordercy</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">93</parameter>
 			<parameter name="spawnY">61</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -99,7 +99,7 @@
 
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">ninja</parameter>
-			<parameter name="factory">0.75</parameter>
+			<parameter name="factor">0.75</parameter>
 			<parameter name="spawnX">66</parameter>
 			<parameter name="spawnY">77</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -209,7 +209,7 @@
 		<!-- alternative creature -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">łucznik imperium lider</parameter>
-			<parameter name="factory">0.5</parameter>
+			<parameter name="factor">0.5</parameter>
 			<parameter name="spawnX">92</parameter>
 			<parameter name="spawnY">102</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>
@@ -343,7 +343,7 @@
 		<!-- alternative creature -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="creature">książę szkieletów</parameter>
-			<parameter name="factory">0.5</parameter>
+			<parameter name="factor">0.5</parameter>
 			<parameter name="spawnX">18</parameter>
 			<parameter name="spawnY">25</parameter>
 			<parameter name="dropItem">mgielny kamień</parameter>

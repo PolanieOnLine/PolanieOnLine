@@ -21,6 +21,7 @@
 
 *walka*
 ---
+* Wybrane mgielne potwory mają teraz właściwą siłę, poziom i wytrzymałość
 * Dodano lekkie, średnie i ciężkie pancerze przeciwników oraz przeciwników bez pancerza
 * Rodzaj broni ma teraz większe znaczenie. Sztylety lepiej radzą sobie z lekkim pancerzem, miecze ze średnim, a topory i broń obuchowa z ciężkim
 * Dodano przebijanie pancerza, które pomaga przy walce bronią mniej skuteczną przeciw danemu przeciwnikowi
