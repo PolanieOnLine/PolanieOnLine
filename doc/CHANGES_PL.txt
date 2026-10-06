@@ -11,8 +11,8 @@
 * Ułatwiono rozpoczęcie ulepszania wybranego przedmiotu u kowala
 * Wybrane nagrody za zadania mają teraz epicką rzadkość i dwie dodatkowe właściwości. Zmiana obejmuje również wcześniej zdobyte nagrody, bez utraty ich ulepszeń
 * Przekuwanie mithrilowego wyposażenia na ciemnomithrilowe zachowuje jego rzadkość i dodatkowe właściwości
-* Pełny czarny zestaw chroni przed mrokiem o około 52 procent, ale zwiększa obrażenia od światła o około 342 procent
-* Pełny mithrilowy zestaw chroni przed światłem o około 48 procent, ale zwiększa obrażenia od mroku o około 379 procent
+* Pełny czarny zestaw chroni przed mrokiem o około 49 procent, ale zwiększa obrażenia od światła o około 280 procent
+* Pełny mithrilowy zestaw chroni przed światłem o około 45 procent, ale zwiększa obrażenia od mroku o około 311 procent
 * Pełny elficki zestaw chroni przed ziemią o około 45 procent, ale zwiększa obrażenia od ognia o około 342 procent
 * Pełny lodowy zestaw chroni przed lodem o około 54 procent, ale zwiększa obrażenia od ognia o około 206 procent
 * Ognisty zestaw chroni przed ogniem o około 49 procent, ale zwiększa obrażenia od lodu o około 153 procent
