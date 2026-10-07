@@ -295,7 +295,44 @@ public class FightingAchievementFactoryTest extends AchievementTestHelper {
 	@Test
 	public void testDeepSeaFisherman() {
 		checkKillAnyEach(FightingAchievementFactory.ID_DEEPSEA, 500,
-				FightingAchievementFactory.ENEMIES_DEEPSEA);
+				"rekin", "kraken", "odrodzony kraken");
+	}
+
+	@Test
+	public void testDeepSeaFishermanRequiresExistingCreatures() {
+		for (final String name : FightingAchievementFactory.ENEMIES_DEEPSEA) {
+			assertNotNull("Unknown creature required by Deep Sea Fisherman: " + name,
+					SingletonRepository.getEntityManager().getCreature(name));
+		}
+	}
+
+	@Test
+	public void testDeepSeaFishermanCountsPreviouslyRecordedSoloAndSharedKills() {
+		for (final String name : new String[] {"rekin", "kraken", "odrodzony kraken"}) {
+			player.setSoloKillCount(name, 250);
+			player.setSharedKillCount(name, 250);
+		}
+		an.onKill(player);
+		assertTrue(achievementReached(player, FightingAchievementFactory.ID_DEEPSEA));
+		assertEquals(250, player.getSoloKill("odrodzony kraken"));
+		assertEquals(250, player.getSharedKill("odrodzony kraken"));
+	}
+
+	@Test
+	public void testDeepSeaFishermanRequiresFiveHundredOfEachSpecies() {
+		final String[] names = {"rekin", "kraken", "odrodzony kraken"};
+		for (final String missing : names) {
+			resetPlayer();
+			for (final String name : names) {
+				player.setSoloKillCount(name, 500);
+			}
+			player.setSoloKillCount(missing, 499);
+			an.onKill(player);
+			assertFalse(achievementReached(player, FightingAchievementFactory.ID_DEEPSEA));
+			player.setSharedKillCount(missing, 1);
+			an.onKill(player);
+			assertTrue(achievementReached(player, FightingAchievementFactory.ID_DEEPSEA));
+		}
 	}
 
 	@Test

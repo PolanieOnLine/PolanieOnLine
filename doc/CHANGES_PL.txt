@@ -148,6 +148,7 @@
 
 *pozostałe poprawki*
 ---
+* Osiągnięcie Głębinowy Rybak prawidłowo uwzględnia pokonane odrodzone krakeny
 * Pierścień Powrotu od razu traci poświatę po wykorzystaniu zapisanego miejsca
 * Pierścień Powrotu nie zapisuje miejsc w niedozwolonych labiryntach i lokacjach. Poprawiono też korzystanie z pierścieni, w których takie miejsce zapisano wcześniej
 * Uporządkowano anulowanie wybranych zadań. Usunięcie ich postępu wymaga potwierdzenia

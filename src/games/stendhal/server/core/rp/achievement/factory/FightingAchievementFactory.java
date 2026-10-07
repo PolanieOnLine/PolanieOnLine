@@ -114,7 +114,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	// enemies required for Deep Sea Fisherman
 	public static final String[] ENEMIES_DEEPSEA = {
-			"rekin", "kraken", "neo kraken"
+			"rekin", "kraken", "odrodzony kraken"
 	};
 	// enemies required for Zombie Apocalypse
 	public static final String[] ENEMIES_ZOMBIES = {
@@ -347,7 +347,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_DEEPSEA, "Głębinowy Rybak",
-				"Pokonano po 500 rekinów, krakenów oraz neo krakenów",
+				"Pokonano po 500 rekinów, krakenów oraz odrodzonych krakenów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(500, ENEMIES_DEEPSEA)));
 
