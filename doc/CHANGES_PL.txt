@@ -93,6 +93,7 @@
 * Zagubione latarenki pojawiają się w różnych miejscach świata bez konieczności przyjmowania zadania. Zebrane odradzają się po 30 minutach i można przechowywać kilka razem w jednym miejscu plecaka
 * Guślarz potrzebuje 20 strasznych dyń do rytuału. Po wsparciu festynu i odnalezieniu latarenek można otrzymać od niego złotą skrzynię, raz w roku
 * Podczas Mine Town straszne dynie mogą wypadać ze wszystkich potworów z szansą 5 procent
+* Po zakończeniu Mine Town znikają straszne dynie i zagubione latarenki, również z banków i schowków. U nieobecnych graczy zostają usunięte przy kolejnym wejściu do gry
 
 *Arena Wyzwań*
 ---
