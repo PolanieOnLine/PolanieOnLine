@@ -36,6 +36,7 @@ import { TextBubble } from "../sprite/TextBubble";
 import { Point } from "../util/Point";
 import { Canvas, RenderingContext2D } from "util/Types";
 import { Debug } from "../util/Debug";
+import { AdminDiagnostics } from "../util/AdminDiagnostics";
 import { TileMap } from "data/TileMap";
 import { UiStateStore } from "./mobile/UiStateStore";
 
@@ -202,6 +203,7 @@ export class ViewPort {
 		}
 
 		const now = performance.now();
+		const diagnostics = AdminDiagnostics.get("enabled");
 		if (this.lastFrameTime === undefined) {
 			this.lastFrameTime = now;
 		}
@@ -244,8 +246,10 @@ export class ViewPort {
 				stendhal.ui.equip.animate();
 				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).animate();
 				(ui.get(UIComponentEnum.RunicAltar) as RunicAltarComponent).animate();
+				if (diagnostics) { AdminDiagnostics.frame(now, performance.now()); }
 			}
 		}
+		if (document.visibilityState === "hidden") { AdminDiagnostics.frame(now, now); }
 		requestAnimationFrame(() => {
 			stendhal.ui.gamewindow.draw();
 		});

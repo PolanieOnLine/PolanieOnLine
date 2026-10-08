@@ -10,6 +10,7 @@
   "scripts": {
 	"test:quest-markers": "node --test src/js/stendhal/ui/render/quest-marker-renderer.test.js",
 	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/data/sprite-store.test.js src/js/stendhal/sprite/item-rarity-effects.test.js",
+	"test:admin-diagnostics": "node --test src/js/stendhal/util/admin-diagnostics.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

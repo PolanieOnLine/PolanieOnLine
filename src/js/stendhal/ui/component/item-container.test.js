@@ -112,6 +112,14 @@ function createHarness() {
 	const sentActions = [], dragFrames = [];
 	const marauroa = { me: undefined, currentZoneName: "0_test",
 		clientFramework: { sendAction: action => sentActions.push(action) } };
+	const diagnostics = { enabled: false, freezeIcons: false, revision: 0 };
+	const diagnosticCounts = new Map();
+	const AdminDiagnostics = {
+		get: key => diagnostics.enabled && !!diagnostics[key],
+		getRevision: () => diagnostics.revision,
+		inventory: (owner, visible, animated) => diagnosticCounts.set(owner, { visible, animated }),
+		removeInventory: owner => diagnosticCounts.delete(owner)
+	};
 	const stendhal = { config: { getBoolean: () => false },
 		ui: { touch: { isTouchEngaged: () => false }, html: { esc: text => text } } };
 	class DragEvent {
@@ -178,7 +186,8 @@ function createHarness() {
 		"../../SingletonRepo": { singletons }, "../../util/Point": {},
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
-		"../../sprite/ItemRarityEffects": rarityEffects
+		"../../sprite/ItemRarityEffects": rarityEffects,
+		"../../util/AdminDiagnostics": { AdminDiagnostics }
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
 		"../UI": { ui: {} }, "../UIComponentEnum": {}, "../component/ChatInputComponent": {},
@@ -230,6 +239,7 @@ function createHarness() {
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
 		metrics, document, marauroa, images, observers, Container, ItemRarity, raritySlotCalls, groundCalls,
+		diagnostics, diagnosticCounts,
 		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
 		setNow: value => { now = value; }
 	};
@@ -257,6 +267,42 @@ test("the actual CSS crops every frame and state to exactly one 32 px icon", () 
 				[frame * 32, state * 32, (frame + 1) * 32, (state + 1) * 32]);
 		}
 	}
+});
+
+test("local diagnostic freezes only inventory frames and restores them without reloading", () => {
+	const h = createHarness();
+	const item = h.makeItem(1), { container } = h.makeContainer([item]);
+	container.animate(1000);
+	container.animate(1100);
+	const frozenFrame = item.getXFrameIndex();
+	h.diagnostics.enabled = h.diagnostics.freezeIcons = true;
+	h.diagnostics.revision++;
+	h.resetMetrics();
+	container.animate(1200); container.animate(1300);
+	assert.equal(item.getXFrameIndex(), frozenFrame);
+	assert.equal(h.metrics.steps, 0);
+	assert.deepEqual(h.diagnosticCounts.get(container), { visible: 1, animated: 1 });
+	const context = { drawImage() {} };
+	item.drawSpriteAt = () => {};
+	item.quantityTextSprite = { getTextMetrics: () => ({ width: 1 }), draw() {} };
+	h.setNow(1400); item.draw(context);
+	assert.notEqual(item.getXFrameIndex(), frozenFrame, "World animation does not use diagnostic switches");
+	h.diagnostics.freezeIcons = false; h.diagnostics.revision++;
+	container.animate(1500);
+	assert.ok(h.metrics.steps > 0);
+	container.dispose();
+	assert.equal(h.diagnosticCounts.has(container), false);
+});
+
+test("diagnostic revision refreshes decorations on static items, including hidden-then-shown bags", () => {
+	const h = createHarness();
+	const { container, parent } = h.makeContainer([h.makeItem(1, { width: 32, rarity: "rare" })]);
+	h.raritySlotCalls.length = 0;
+	h.diagnostics.revision++;
+	parent.hidden = true; container.animate(1000);
+	assert.equal(h.raritySlotCalls.length, 0);
+	parent.hidden = false; container.animate(1100);
+	assert.ok(h.raritySlotCalls.length > 0);
 });
 
 test("empty and default slots keep a second layer for padding and border fill", () => {

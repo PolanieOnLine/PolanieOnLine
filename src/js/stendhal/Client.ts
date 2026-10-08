@@ -38,6 +38,7 @@ import { UiStateStore } from "./ui/mobile/UiStateStore";
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
+import { AdminDiagnostics } from "./util/AdminDiagnostics";
 import { DialogHandler } from "./util/DialogHandler";
 import { Globals } from "./util/Globals";
 import { TileMap } from "data/TileMap";
@@ -266,6 +267,7 @@ export class Client {
 	 */
 	registerMarauroaEventHandlers() {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _code: number, _wasClean: boolean) {
+			AdminDiagnostics.reset(true);
 			stendhal.playerInGame = false;
 			singletons.getQuickSlotsController().update();
 			if (!Client.instance.unloading) {
@@ -277,6 +279,7 @@ export class Client {
 		}.bind(this);
 
 		marauroa.clientFramework.onLoginRequired = function(config: Record<string, string>) {
+			AdminDiagnostics.reset(true);
 			stendhal.playerInGame = false;
 			singletons.getQuickSlotsController().update();
 			if (config["client_login_url"]) {

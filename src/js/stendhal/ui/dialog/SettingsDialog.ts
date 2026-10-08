@@ -15,6 +15,8 @@ import { GeneralTab } from "./settings/GeneralTab";
 import { InputTab } from "./settings/InputTab";
 import { SoundTab } from "./settings/SoundTab";
 import { VisualsTab } from "./settings/VisualsTab";
+import { AdminDiagnosticsTab } from "./settings/AdminDiagnosticsTab";
+import { AdminDiagnostics } from "../../util/AdminDiagnostics";
 
 import { TabDialogContentComponent } from "../toolkit/TabDialogContentComponent";
 import { Tooltip } from "../toolkit/Tooltip";
@@ -123,6 +125,9 @@ export class SettingsDialog extends TabDialogContentComponent {
 		this.addTab("Wizualne", new VisualsTab(this, this.child("#settings-visuals")!));
 		this.addTab("Dźwięki", new SoundTab(this, this.child("#settings-sound")!));
 		this.addTab("Sterowanie", new InputTab(this, this.child("#settings-input")!));
+		if (AdminDiagnostics.isAdministrator()) {
+			this.addTab("Diagnostyka (admin)", new AdminDiagnosticsTab());
+		}
 
 		/* *** buttons *** */
 		const btn_reload = this.addButton("Odśwież", () => {

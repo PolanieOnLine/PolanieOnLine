@@ -14,6 +14,7 @@ import type { Item } from "../entity/Item";
 import type { ItemRarity } from "../data/ItemRarity";
 import type { RenderingContext2D } from "../util/Types";
 import { singletons } from "../SingletonRepo";
+import { AdminDiagnostics } from "../util/AdminDiagnostics";
 
 type Effect = "outline" | "ground";
 type Pixels = { width: number; height: number; data: Uint8ClampedArray };
@@ -133,7 +134,7 @@ export class ItemRarityEffects {
 	}
 
 	public static updateSlot(target: HTMLElement, item?: Item) {
-		const rarity = item?.getRarity();
+		const rarity = AdminDiagnostics.get("hideRarity") ? undefined : item?.getRarity();
 		const image = rarity && item ? singletons.getSpriteStore().get(item.sprite.filename) : undefined;
 		const effect = image && item && rarity ? this.getFrame(image,
 			item.getXFrameIndex() * 32, item.getYFrameIndex() * 32, rarity, "outline") : undefined;

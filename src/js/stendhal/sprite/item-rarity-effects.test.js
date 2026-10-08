@@ -10,6 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 function harness() {
 	const metrics = { reads: 0, draws: 0, clears: 0, created: 0, appends: 0 };
 	const images = new Map();
+	const diagnostics = { hideRarity: false };
 	class Canvas {
 		constructor() { this.width = 0; this.height = 0; metrics.created++; }
 		setAttribute() {}
@@ -55,7 +56,8 @@ function harness() {
 	}
 	const { ItemRarity } = load("../data/ItemRarity.ts");
 	const { ItemRarityEffects: Effects } = load("ItemRarityEffects.ts", {
-		"../SingletonRepo": { singletons: { getSpriteStore: () => ({ get: filename => images.get(filename) }) } }
+		"../SingletonRepo": { singletons: { getSpriteStore: () => ({ get: filename => images.get(filename) }) } },
+		"../util/AdminDiagnostics": { AdminDiagnostics: { get: key => !!diagnostics[key] } }
 	});
 	function item(image, rarity = ItemRarity.RARE) {
 		images.set("item.png", image);
@@ -66,7 +68,7 @@ function harness() {
 			getWidth: () => 1, getHeight: () => 1
 		};
 	}
-	return { metrics, Effects, ItemRarity, item, Element };
+	return { metrics, Effects, ItemRarity, item, Element, diagnostics };
 }
 
 function source(width = 5, height = 5) {
@@ -207,6 +209,21 @@ test("unknown rarity remains undecorated and removes a stale outline", () => {
 	h.Effects.updateSlot(target, item);
 	assert.equal(target.children.length, 0);
 	assert.equal(h.metrics.reads, reads);
+});
+
+test("local diagnostic removes inventory outlines but leaves world effects unchanged", () => {
+	const h = harness(), item = h.item({ width: 32, height: 32 }), target = new h.Element();
+	h.Effects.updateSlot(target, item);
+	assert.equal(target.children.length, 1);
+	h.diagnostics.hideRarity = true;
+	h.Effects.updateSlot(target, item);
+	assert.equal(target.children.length, 0);
+	const calls = [];
+	h.Effects.drawGround({ drawImage: (...args) => calls.push(args) }, item, 0, 0);
+	assert.equal(calls.length, 1);
+	h.diagnostics.hideRarity = false;
+	h.Effects.updateSlot(target, item);
+	assert.equal(target.children.length, 1);
 });
 
 test("slot outline takes the resolved sprite row rather than the raw state", () => {
