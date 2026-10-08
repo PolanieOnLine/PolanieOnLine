@@ -186,6 +186,32 @@ div.itemSlot {
 }
 
 .item-rarity-common { --item-rarity-color: #9e9e9e; }
+/* Session-only administrator experiment; geometry and sprite clipping stay unchanged. */
+.admin-diagnostic-simple-slots div.itemSlot {
+	mask-image: none;
+	border-image: none;
+	box-shadow: none;
+	text-shadow: none;
+}
+.admin-diagnostic-hud {
+	position: fixed;
+	top: 4px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 100001;
+	max-width: 85vw;
+	padding: 4px 8px;
+	background: rgba(0, 0, 0, .85);
+	color: #8fffc2;
+	font: 12px monospace;
+	pointer-events: none;
+}
+.admin-diagnostic-settings { max-width: min(620px, 80vw); }
+.admin-diagnostic-settings label { display: block; padding: 8px 0; }
+.admin-diagnostic-settings input { margin-right: 8px; }
+.admin-diagnostic-settings input[type="text"] { width: 100%; box-sizing: border-box; }
+.admin-diagnostic-settings textarea { width: 100%; box-sizing: border-box; margin-top: 8px; }
+.admin-diagnostic-settings button { margin: 4px; min-height: 36px; }
 .item-rarity-rare { --item-rarity-color: #4a90e2; }
 .item-rarity-epic { --item-rarity-color: #9b59b6; }
 .item-rarity-legendary { --item-rarity-color: #ff8c00; }

@@ -25,6 +25,7 @@ import { Point } from "../../util/Point";
 import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
+import { AdminDiagnostics } from "../../util/AdminDiagnostics";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
@@ -68,6 +69,7 @@ export class ItemContainerImplementation {
 	private nextAnimationTime = 0;
 	private renderedObject: any;
 	private slotVisibilityObserver?: IntersectionObserver;
+	private diagnosticRevision = AdminDiagnostics.getRevision();
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -174,16 +176,27 @@ export class ItemContainerImplementation {
 
 	/** Advances icon frames without scanning the live inventory on every world frame. */
 	public animate(now = Date.now()) {
+		const revision = AdminDiagnostics.getRevision();
+		if (this.diagnosticRevision !== revision && this.isAnimationVisible()) {
+			this.diagnosticRevision = revision;
+			this.render();
+		}
 		if (now < this.nextAnimationTime) {
 			return;
 		}
 		this.nextAnimationTime = now + 100;
 		if (!this.isAnimationVisible()) {
+			AdminDiagnostics.inventory(this, 0, 0);
 			return;
 		}
 		if (this.dirty || this.renderedObject !== (this.object || marauroa.me)) {
 			this.render();
 		}
+		if (AdminDiagnostics.get("enabled")) {
+			AdminDiagnostics.inventory(this, this.slots.filter(view => view?.visible && view.item).length,
+				this.animationSlots.filter(view => view.visible && view.animated).length);
+		}
+		const freeze = AdminDiagnostics.get("freezeIcons");
 		for (let i = this.animationSlots.length - 1; i >= 0; i--) {
 			const view = this.animationSlots[i];
 			const item = view.item!;
@@ -202,13 +215,14 @@ export class ItemContainerImplementation {
 					continue;
 				}
 			}
-			item.stepAnimation(now);
+			if (!freeze) { item.stepAnimation(now); }
 			this.updatePosition(view, item);
 			ItemRarityEffects.updateSlot(view.element, item);
 		}
 	}
 
 	public dispose() {
+		AdminDiagnostics.removeInventory(this);
 		this.slotVisibilityObserver?.disconnect();
 		for (const view of this.slots) {
 			if (view) {
