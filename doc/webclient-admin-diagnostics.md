@@ -14,7 +14,7 @@ Domyślnie wyłączony. Testy dotyczą tylko bieżącej sesji przeglądarki/webk
    - zatrzymanie animacji ikon (animacje świata pozostają bez zmian),
    - uproszczenie slotów (bez masek, gradientowych ramek i cieni),
    - ukrycie obwódek rzadkości w ekwipunku (poświata przedmiotów na ziemi pozostaje bez zmian).
-6. Zaznacz i skopiuj raport; dopisz model telefonu i czy test był w Chrome czy APK.
+6. Naciśnij „Kopiuj raport”. Po potwierdzeniu skopiowania wklej tekst do wiadomości; dopisz model telefonu i czy test był w Chrome czy APK. Kopiowanie ma zapasowy mechanizm dla WebView bez Clipboard API. Gdy oba mechanizmy zostaną zablokowane, panel wyświetli informację o niepowodzeniu; pozostaje też ręczne zaznaczanie raportu.
 7. Użyj „Wyłącz testy i przywróć wygląd”.
 
 Każda zmiana przełącznika zeruje pomiar. W raporcie można zachować kilka nazwanych próbek. Po odświeżeniu strony raport znika — skopiuj go wcześniej.
