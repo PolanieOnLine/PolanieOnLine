@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS seasonal_item_cleanup
+  (
+  event_key VARCHAR(40) NOT NULL,
+  generation BIGINT NOT NULL,
+  PRIMARY KEY (event_key)
+  );
+
 create table if not exists character_stats
   (
   name varchar(32) not null,

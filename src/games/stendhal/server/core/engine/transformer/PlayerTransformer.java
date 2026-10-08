@@ -27,6 +27,7 @@ import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TutorialNotifier;
+import games.stendhal.server.core.events.seasonal.MineTownItemCleanup;
 import games.stendhal.server.core.rule.rarity.QuestRewardRarityMigrationService;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -83,6 +84,7 @@ public class PlayerTransformer implements Transformer {
 		loadItemsIntoSlots(player);
 		loadSpellsIntoSlots(player);
 		player.cancelTradeInternally(null);
+		MineTownItemCleanup.onLogin(player);
 
 		// buddy handling with maps
 		if(player.hasBuddies()) {

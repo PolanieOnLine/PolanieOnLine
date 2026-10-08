@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.ZoneGroupsXMLLoader;
+import games.stendhal.server.core.events.seasonal.MineTownItemCleanup;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
@@ -146,6 +147,7 @@ public class StendhalRPWorld extends RPWorld {
 					"/data/conf/zones.xml"));
 
 			loader.load();
+			MineTownItemCleanup.initialize();
 
 			validatePortals();
 			SingletonRepository.getAchievementNotifier().initialize();

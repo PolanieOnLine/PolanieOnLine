@@ -266,6 +266,10 @@ public final class SeasonalEventService {
 						}
 						stage.set("ponowne podpięcie dialogu Easter do Caroline");
 						reattachEasterQuestToCurrentCaroline();
+						if (!target.isEnabled()) {
+							stage.set("usunięcie przedmiotów zakończonego Mine Town");
+							MineTownItemCleanup.finishEvent();
+						}
 					}
 				},
 				new TransitionWork() {
@@ -364,9 +368,13 @@ public final class SeasonalEventService {
 		try {
 			apply.run(stage);
 			if (listener != null) {
-				listener.onResult(true, enabled
-						? "Event " + resultName + " został aktywowany bez restartu serwera."
-						: "Event " + resultName + " został wyłączony bez restartu serwera.");
+				try {
+					listener.onResult(true, enabled
+							? "Event " + resultName + " został aktywowany bez restartu serwera."
+							: "Event " + resultName + " został wyłączony bez restartu serwera.");
+				} catch (final RuntimeException e) {
+					LOGGER.error("Cannot deliver seasonal event result after successful transition", e);
+				}
 			}
 		} catch (final Exception e) {
 			LOGGER.error("Nie udało się zastosować eventu " + logName + " na etapie: "
