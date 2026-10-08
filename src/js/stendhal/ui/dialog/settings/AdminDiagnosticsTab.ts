@@ -1,6 +1,7 @@
 import { AbstractSettingsTab } from "./AbstractSettingsTab";
 import { AdminDiagnostics, DiagnosticSwitch } from "../../../util/AdminDiagnostics";
 import { stendhal } from "../../../stendhal";
+import { copyTextToClipboard } from "../../../util/Clipboard";
 
 /** Controls only this client. No configuration storage or server actions. */
 export class AdminDiagnosticsTab extends AbstractSettingsTab {
@@ -49,6 +50,9 @@ export class AdminDiagnosticsTab extends AbstractSettingsTab {
 		output.rows = 8;
 		output.value = AdminDiagnostics.getReports();
 		output.setAttribute("aria-label", "Zapisane próbki diagnostyczne");
+		const copyStatus = document.createElement("p");
+		copyStatus.setAttribute("role", "status");
+		copyStatus.setAttribute("aria-live", "polite");
 		const save = document.createElement("button");
 		save.textContent = "Zapisz próbkę do raportu";
 		save.addEventListener("click", () => {
@@ -56,6 +60,7 @@ export class AdminDiagnosticsTab extends AbstractSettingsTab {
 			AdminDiagnostics.saveReport(sampleLabel.value, stendhal.data.build);
 			output.value = AdminDiagnostics.getReports();
 			output.scrollTop = output.scrollHeight;
+			copyStatus.textContent = "";
 		});
 		const clear = document.createElement("button");
 		clear.textContent = "Zeruj pomiar";
@@ -63,11 +68,26 @@ export class AdminDiagnosticsTab extends AbstractSettingsTab {
 		const reset = document.createElement("button");
 		reset.textContent = "Wyłącz testy i przywróć wygląd";
 		reset.addEventListener("click", () => { AdminDiagnostics.reset(); refresh(); });
+		const copy = document.createElement("button");
+		copy.textContent = "Kopiuj raport";
+		copy.addEventListener("click", async () => {
+			const report = AdminDiagnostics.getReports();
+			if (!report) {
+				copyStatus.textContent = "Brak zapisanych próbek. Najpierw zapisz próbkę do raportu.";
+				return;
+			}
+			copy.disabled = true;
+			try {
+				const copied = await copyTextToClipboard(report);
+				copyStatus.textContent = copied ? "Raport skopiowany do schowka. Możesz go teraz wkleić."
+					: "Przeglądarka zablokowała kopiowanie. Spróbuj w Chrome lub zaznacz raport i użyj menu kopiowania.";
+			} finally { copy.disabled = false; }
+		});
 		const select = document.createElement("button");
 		select.textContent = "Zaznacz raport do skopiowania";
 		select.addEventListener("click", () => { output.focus(); output.select(); });
-		for (const button of [save, clear, reset, select]) { button.className = "dialogbutton"; }
-		element.append(save, clear, reset, select, output);
+		for (const button of [save, clear, reset, copy, select]) { button.className = "dialogbutton"; }
+		element.append(save, clear, reset, copy, select, copyStatus, output);
 		refresh();
 	}
 }

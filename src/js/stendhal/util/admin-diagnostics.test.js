@@ -14,7 +14,7 @@ function harness() {
 		remove() { if (this.parent) { this.parent.children = this.parent.children.filter(child => child !== this); } }
 		setAttribute(key, value) { this[key] = value; }
 		addEventListener(event, listener) { this.listeners.set(event, listener); }
-		click() { this.listeners.get("click")?.(); }
+		click() { return this.listeners.get("click")?.(); }
 		focus() { this.focused = true; }
 		select() { this.selected = true; }
 	}
@@ -28,6 +28,7 @@ function harness() {
 	};
 	const marauroa = { me: { name: "Admin", adminlevel: 5000 } };
 	const stendhal = { data: { build: { version: "1.42", build: "test" } } };
+	const clipboard = { texts: [], result: true };
 	function load(relative, dependencies) {
 		const code = ts.transpileModule(readFileSync(path.join(__dirname, relative), "utf8"), {
 			compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
@@ -41,7 +42,8 @@ function harness() {
 	const { AdminDiagnostics: D } = load("AdminDiagnostics.ts", { marauroa: { marauroa } });
 	const { AdminDiagnosticsTab: Tab } = load("../ui/dialog/settings/AdminDiagnosticsTab.ts", {
 		"./AbstractSettingsTab": { AbstractSettingsTab: class { constructor(element) { this.componentElement = element; } } },
-		"../../../util/AdminDiagnostics": { AdminDiagnostics: D }, "../../../stendhal": { stendhal }
+		"../../../util/AdminDiagnostics": { AdminDiagnostics: D }, "../../../stendhal": { stendhal },
+		"../../../util/Clipboard": { copyTextToClipboard: async text => { clipboard.texts.push(text); return clipboard.result; } }
 	});
 	const { SettingsDialog: Settings } = load("../ui/dialog/SettingsDialog.ts", {
 		"../../stendhal": { stendhal: { config: { get: () => "default" } } },
@@ -61,7 +63,7 @@ function harness() {
 		"../toolkit/Tooltip": {}, "../../data/enum/Layout": { Layout: { TOP: 0 } },
 		"../../util/Debug": {}, "../component/ToggleSwitch": {}
 	});
-	return { D, Tab, Settings, document, classes, listeners, marauroa };
+	return { D, Tab, Settings, document, classes, listeners, marauroa, clipboard };
 }
 
 test("diagnostics starts disabled, rejects ordinary players and cannot be preconfigured while disabled", () => {
@@ -144,11 +146,31 @@ test("administrator UI controls experiments immediately and accumulates copyable
 	const output = tab.componentElement.children.find(element => element.tag === "textarea");
 	h.D.frame(1000, 1001); h.D.frame(1020, 1021); buttons[0].click(); buttons[0].click();
 	assert.match(output.value, /FPS renderera: 50\.0/); assert.match(output.value, /\n---\n/);
-	buttons[3].click(); assert.equal(output.focused, true); assert.equal(output.selected, true);
+	buttons[4].click(); assert.equal(output.focused, true); assert.equal(output.selected, true);
 	buttons[2].click(); assert.equal(h.D.get("enabled"), false); assert.equal(freeze.checked, false);
 	assert.equal(freeze.disabled, true);
 	const reopened = new h.Tab().componentElement.children.find(element => element.tag === "textarea");
 	assert.equal(reopened.value, output.value, "Closing settings between samples preserves the report");
 	h.marauroa.me = { name: "Different admin", adminlevel: 5000 };
 	assert.equal(h.D.getReports(), "", "Reports do not leak to another character");
+});
+
+test("copy report button copies the complete saved report, reports failure honestly and rejects empty reports", async () => {
+	const h = harness(), tab = new h.Tab();
+	const buttons = tab.componentElement.children.filter(element => element.tag === "button");
+	const copy = buttons.find(button => button.textContent === "Kopiuj raport");
+	const status = tab.componentElement.children.find(element => element.role === "status");
+	await copy.click();
+	assert.match(status.textContent, /Brak zapisanych próbek/);
+	assert.equal(h.clipboard.texts.length, 0);
+	h.D.set("enabled", true);
+	h.D.frame(1000, 1001); h.D.frame(1020, 1021); buttons[0].click(); buttons[0].click();
+	await copy.click();
+	assert.equal(h.clipboard.texts[0], h.D.getReports());
+	assert.match(h.clipboard.texts[0], /\n---\n/);
+	assert.match(status.textContent, /skopiowany do schowka/);
+	assert.equal(copy.disabled, false);
+	h.clipboard.result = false; await copy.click();
+	assert.match(status.textContent, /zablokowała kopiowanie/);
+	assert.equal(copy.disabled, false);
 });
