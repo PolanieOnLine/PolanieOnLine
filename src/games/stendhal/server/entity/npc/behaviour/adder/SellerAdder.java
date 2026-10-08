@@ -19,6 +19,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
@@ -77,6 +78,7 @@ public class SellerAdder {
 
 		merchantsRegister.add(npc, sellerBehaviour);
 		npc.put("job_merchant", "");
+		npc.put("job_item_merchant", "");
 
 		if (offer) {
 			engine.add(
@@ -162,6 +164,7 @@ public class SellerAdder {
 
 							raiser.say(builder.toString());
 
+							NpcShopAction.invalidatePendingQuote(player);
 							currentBehavRes = res;
 							npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED); // success
 						} else {
@@ -180,6 +183,7 @@ public class SellerAdder {
 						logger.debug("Selling a " + itemName + " to player " + player.getName());
 
 						boolean success = sellerBehaviour.transactAgreedDeal(currentBehavRes, raiser, player);
+						NpcShopAction.recordTransactionResult(player, npc, success);
 						if (success) {
 							raiser.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 						}

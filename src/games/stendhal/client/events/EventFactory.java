@@ -129,6 +129,8 @@ class EventFactory {
 			event = new GlobalVisualEffectEvent();
 		} else if (name.equals(Events.ITEM_UPGRADE)) {
 			event = new ItemUpgradeEvent();
+		} else if (name.equals(Events.NPC_SHOP)) {
+			event = new NpcShopEvent();
 		}
 
 		if (event != null) {

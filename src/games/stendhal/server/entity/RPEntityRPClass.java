@@ -52,6 +52,7 @@ public class RPEntityRPClass {
 
 		// Jobs
 		entity.addAttribute("job_merchant", Type.FLAG, Definition.VOLATILE);
+		entity.addAttribute("job_item_merchant", Type.FLAG, Definition.VOLATILE);
 		entity.addAttribute("job_healer", Type.FLAG, Definition.VOLATILE);
 		entity.addAttribute("job_producer", Type.FLAG, Definition.VOLATILE);
 		entity.addAttribute("job_item_upgrader", Type.FLAG, Definition.VOLATILE);
