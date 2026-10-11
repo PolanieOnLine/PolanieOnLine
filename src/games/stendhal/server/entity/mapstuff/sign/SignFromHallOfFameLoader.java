@@ -12,7 +12,6 @@
  */
 package games.stendhal.server.entity.mapstuff.sign;
 
-import java.util.Iterator;
 import java.util.List;
 
 import games.stendhal.server.core.engine.dbcommand.ReadCharactersFromHallOfFameCommand;
@@ -32,6 +31,7 @@ public class SignFromHallOfFameLoader implements TurnListener {
 	private String introduction;
 	private ResultHandle handle;
 	private boolean lineBreaks;
+	private boolean numbered;
 
 
 	/**
@@ -45,10 +45,22 @@ public class SignFromHallOfFameLoader implements TurnListener {
 	 * @param lineBreaks should each player be put on a line by itself?
 	 */
 	public SignFromHallOfFameLoader(Sign sign, String introduction, String fametype, int max, boolean ascending, boolean lineBreaks) {
+		this(sign, introduction, fametype, max, ascending, lineBreaks, false);
+	}
+
+	/**
+	 * Creates a loader with optional place numbers on line-separated rankings.
+	 * Existing signs retain their original format unless numbering is requested.
+	 *
+	 * @param numbered prefix each line with its place, starting at one
+	 */
+	public SignFromHallOfFameLoader(Sign sign, String introduction, String fametype,
+			int max, boolean ascending, boolean lineBreaks, boolean numbered) {
 		this.sign = sign;
 		this.introduction = introduction;
 		this.handle = new ResultHandle();
 		this.lineBreaks = lineBreaks;
+		this.numbered = numbered;
 		DBCommand command = new ReadCharactersFromHallOfFameCommand(fametype, max, ascending);
 		DBCommandQueue.get().enqueueAndAwaitResult(command, handle);
 	}
@@ -65,20 +77,26 @@ public class SignFromHallOfFameLoader implements TurnListener {
 		// update the sign
 		List<String> players = command.getNames();
 
-		if (lineBreaks) {
-			StringBuilder builder = new StringBuilder();
-			Iterator<String> it = players.iterator();
-				while (it.hasNext()) {
-				builder.append(it.next());
-				if (it.hasNext()) {
-					builder.append("\n");
-				}
-			}
-			sign.setText(introduction + builder.toString());
-		} else {
-			sign.setText(introduction + players);
-		}
+		sign.setText(introduction + formatPlayers(players, lineBreaks, numbered));
 		sign.notifyWorldAboutChanges();
+	}
+
+	static String formatPlayers(final List<String> players, final boolean lineBreaks,
+			final boolean numbered) {
+		if (!lineBreaks) {
+			return players.toString();
+		}
+		final StringBuilder builder = new StringBuilder();
+		for (int index = 0; index < players.size(); index++) {
+			if (index > 0) {
+				builder.append('\n');
+			}
+			if (numbered) {
+				builder.append(index + 1).append(". ");
+			}
+			builder.append(players.get(index));
+		}
+		return builder.toString();
 	}
 
 }

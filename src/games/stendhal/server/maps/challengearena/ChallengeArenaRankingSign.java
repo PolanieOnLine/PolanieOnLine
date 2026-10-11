@@ -20,7 +20,7 @@ public final class ChallengeArenaRankingSign extends Sign {
 	public void updatePlayers() {
 		final SignFromHallOfFameLoader loader = new SignFromHallOfFameLoader(
 				this, "Najlepsi wojownicy Areny Wyzwań\n",
-				ChallengeArenaRankingService.FAME_TYPE, SIGN_LENGTH, false, true);
+				ChallengeArenaRankingService.FAME_TYPE, SIGN_LENGTH, false, true, true);
 		TurnNotifier.get().notifyInTurns(0, loader);
 	}
 }
