@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,19 +26,23 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
+import games.stendhal.client.gui.styled.Style;
+import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
@@ -52,9 +57,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static final Color ACCENT = new Color(255, 190, 64);
 	private static final Color AVAILABLE = new Color(92, 190, 105);
 	private static final Color UNAVAILABLE = new Color(225, 90, 75);
-	private static final Color PANEL_BORDER = new Color(130, 106, 75);
-	private static final int MATERIAL_CARD_WIDTH = 70;
-	private static final int MATERIAL_ROW_GAP = 2;
+	private static final int CONTENT_WIDTH = 420;
+	private static final int MATERIAL_CARD_WIDTH = 112;
+	private static final int MATERIAL_ROW_GAP = 6;
 	private static final Sprite SLOT_BACKGROUND =
 			SpriteStore.get().getSprite("data/gui/slot.png");
 	private static ItemUpgradeWindow instance;
@@ -62,10 +67,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private final ItemIcon icon = new ItemIcon();
 	private final JLabel itemName = centered("Przeciągnij tutaj przedmiot");
 	private final JLabel level = centered("Przedmiot pozostanie w ekwipunku.");
-	private final JPanel stats = new JPanel();
+	private final JPanel stats = plainPanel(new GridLayout(0, 1, 0, 4));
 	private final JLabel chance = centered("");
 	private final JLabel fee = centered("");
-	private final JPanel materials = new JPanel();
+	private final JPanel materials = plainPanel(new BorderLayout());
 	private final JLabel status = centered("Rozmawiaj z kowalem, aby odświeżyć okno.");
 	private final JButton upgrade = new JButton("Ulepsz");
 	private final JButton refresh = new JButton("Odśwież");
@@ -139,18 +144,21 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private JComponent buildContent() {
-		final JPanel content = new JPanel(new BorderLayout(8, 8));
+		final JPanel content = new LayoutPanel(new BorderLayout(0, 8)) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Dimension getPreferredSize() {
+				final Dimension size = super.getPreferredSize();
+				return new Dimension(Math.max(CONTENT_WIDTH, size.width), size.height);
+			}
+		};
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(420, 480));
 
-		final JPanel top = new JPanel(new BorderLayout(6, 6));
-		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
-
-		final JPanel identity = new JPanel(new BorderLayout(8, 2));
-		identity.setBorder(cardBorder());
-		icon.setBorder(BorderFactory.createLineBorder(PANEL_BORDER));
+		final JPanel identity = plainPanel(new BorderLayout(10, 2));
 		identity.add(icon, BorderLayout.WEST);
-		final JPanel names = new JPanel(new GridLayout(0, 1));
+		final JPanel names = plainPanel(new GridLayout(0, 1, 0, 4));
+		itemName.setHorizontalAlignment(SwingConstants.LEFT);
+		level.setHorizontalAlignment(SwingConstants.LEFT);
 		names.add(itemName);
 		names.add(level);
 		identity.add(names, BorderLayout.CENTER);
@@ -164,10 +172,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		icon.addMouseListener(selectionPopup);
 		itemName.addMouseListener(selectionPopup);
 		level.addMouseListener(selectionPopup);
-		top.add(identity, BorderLayout.CENTER);
-		content.add(top, BorderLayout.NORTH);
+		content.add(sectionPanel("Przedmiot do ulepszenia", identity), BorderLayout.NORTH);
 
-		final JPanel center = new JPanel(new GridBagLayout());
+		final JPanel center = plainPanel(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.weightx = 1.0;
@@ -175,36 +182,33 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		constraints.anchor = GridBagConstraints.NORTH;
 		constraints.insets = new Insets(0, 0, 3, 0);
 
-		stats.setLayout(new GridLayout(0, 1, 2, 2));
-		stats.setBorder(cardBorder());
-		final JPanel requirements = new JPanel(new GridLayout(0, 1, 2, 2));
-		requirements.setBorder(cardBorder());
+		final JPanel requirements = plainPanel(new GridLayout(0, 1, 0, 4));
 		requirements.add(chance);
 		requirements.add(fee);
-		materials.setBorder(cardBorder());
 
 		constraints.gridy = 0;
 		constraints.insets = new Insets(0, 0, 8, 0);
-		center.add(sectionPanel("Rezultat następnego ulepszenia", stats),
+		center.add(sectionPanel("Po ulepszeniu", stats),
 				constraints);
 		constraints.gridy++;
 		center.add(sectionPanel("Koszt i szansa", requirements), constraints);
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 0, 0);
-		center.add(sectionPanel("Materiały — posiadasz / wymagane", materials),
+		center.add(sectionPanel("Materiały (posiadasz / potrzebne)", materials),
 				constraints);
 
-		constraints.gridy++;
-		constraints.weighty = 1.0;
-		constraints.fill = GridBagConstraints.BOTH;
-		center.add(Box.createVerticalGlue(), constraints);
 		content.add(center, BorderLayout.CENTER);
 
-		final JPanel bottom = new JPanel(new BorderLayout(4, 4));
+		final JPanel bottom = plainPanel(new BorderLayout(0, 6));
+		bottom.add(new JSeparator(), BorderLayout.NORTH);
 		status.setVerticalAlignment(SwingConstants.TOP);
-		status.setBorder(cardBorder());
-		bottom.add(status, BorderLayout.NORTH);
-		final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		status.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+		bottom.add(status, BorderLayout.CENTER);
+		final JPanel buttons = plainPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+		refresh.setFocusable(false);
+		upgrade.setFocusable(false);
+		refresh.setMargin(new Insets(4, 12, 4, 12));
+		upgrade.setMargin(new Insets(4, 12, 4, 12));
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -254,14 +258,16 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		stats.removeAll();
 		stats.add(centered(
 				"Po wybraniu przedmiotu zobaczysz zmianę statystyk."));
-		chance.setText(htmlValue("Szansa powodzenia", "—"));
-		fee.setText(htmlValue("Koszt", "—"));
+		chance.setText(htmlValue("Szansa powodzenia", "brak danych"));
+		fee.setText(htmlValue("Koszt", "brak danych"));
 		showEmptyMaterials();
 		status.setForeground(ACCENT);
-		status.setText("Przeciągnij przedmiot z ekwipunku do slotu.");
+		status.setText(wrappedText("Przeciągnij tutaj przedmiot z ekwipunku.",
+				CONTENT_WIDTH - 40));
 		refresh.setEnabled(npcId != 0);
 		upgrade.setEnabled(false);
 		upgrade.setToolTipText("Najpierw wybierz przedmiot.");
+		setSize(getPreferredSize());
 		revalidate();
 		repaint();
 	}
@@ -318,10 +324,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			updateStats(event);
 			chance.setText(event.has("success_percent")
 					? htmlValue("Szansa powodzenia", event.getInt("success_percent") + "%")
-					: htmlValue("Szansa powodzenia", "—"));
+					: htmlValue("Szansa powodzenia", "brak danych"));
 			fee.setText(event.has("fee_text")
 					? htmlValue("Koszt", event.get("fee_text"))
-					: htmlValue("Koszt", "—"));
+					: htmlValue("Koszt", "brak danych"));
 			updateMaterials(event);
 		}
 
@@ -330,10 +336,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		upgrade.setEnabled(canUpgrade);
 		refresh.setEnabled(npcId != 0);
 		final String message = event.has("message") ? event.get("message") : "";
-		status.setText(message.length() > 0 ? message : statusText(state));
+		status.setText(wrappedText(message.length() > 0 ? message : statusText(state),
+				CONTENT_WIDTH - 40));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
 				? AVAILABLE : "SELECT_ITEM".equals(state) ? ACCENT : UNAVAILABLE);
 		upgrade.setToolTipText(canUpgrade ? "Wykonaj próbę ulepszenia" : statusText(state));
+		setSize(getPreferredSize());
 		revalidate();
 		repaint();
 	}
@@ -348,8 +356,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		if (currentByName.containsKey("damage_min")
 				&& currentByName.containsKey("damage_max")) {
 			stats.add(statRow("Obrażenia",
-					currentByName.get("damage_min") + "–" + currentByName.get("damage_max"),
-					upgradedByName.get("damage_min") + "–" + upgradedByName.get("damage_max")));
+					currentByName.get("damage_min") + "-" + currentByName.get("damage_max"),
+					upgradedByName.get("damage_min") + "-" + upgradedByName.get("damage_max")));
 		}
 		for (int index = 0; index < names.size(); index++) {
 			final String name = names.get(index);
@@ -379,8 +387,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			showEmptyMaterials();
 			return;
 		}
-		materials.setLayout(new FlowLayout(FlowLayout.CENTER, 4,
-				MATERIAL_ROW_GAP));
+		final int columns = Math.min(3, names.size());
+		materials.setLayout(new GridLayout(0, columns, MATERIAL_ROW_GAP, MATERIAL_ROW_GAP));
 		int rowHeight = 0;
 		for (int index = 0; index < names.size(); index++) {
 			final int have = index < owned.size() ? integer(owned.get(index)) : 0;
@@ -392,7 +400,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			materials.add(card);
 			rowHeight = Math.max(rowHeight, card.getPreferredSize().height);
 		}
-		setMaterialPanelHeight(rowHeight + MATERIAL_ROW_GAP * 2);
+		final int rows = (names.size() + columns - 1) / columns;
+		setMaterialPanelHeight(rows * rowHeight + (rows - 1) * MATERIAL_ROW_GAP);
 	}
 
 	private void showEmptyMaterials() {
@@ -417,17 +426,17 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final int required) {
 		final boolean available = owned >= required;
 		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
-		final JPanel card = new JPanel(new BorderLayout(0, 1));
-		final JPanel slot = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		final JPanel card = plainPanel(new BorderLayout(0, 3));
+		final JPanel slot = plainPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		slot.add(new MaterialIcon(itemClass, subclass, required));
 		card.add(slot, BorderLayout.NORTH);
 
-		final JPanel description = new JPanel(new GridLayout(0, 1, 0, 1));
-		description.add(centered(name));
-		final JLabel count = centered((available ? "✓ " : "✗ ")
-				+ owned + " / " + required);
+		final JPanel description = plainPanel(new BorderLayout(0, 2));
+		description.add(centered(wrappedText(name, MATERIAL_CARD_WIDTH)),
+				BorderLayout.CENTER);
+		final JLabel count = centered(owned + " / " + required);
 		count.setForeground(stateColor);
-		description.add(count);
+		description.add(count, BorderLayout.SOUTH);
 		card.add(description, BorderLayout.CENTER);
 		final String tooltip = name + ": posiadasz " + owned
 				+ ", wymagane " + required;
@@ -477,32 +486,58 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return new JLabel(text, SwingConstants.CENTER);
 	}
 
-	private static JLabel sectionTitle(final String text) {
-		final JLabel label = new JLabel(text);
-		label.setForeground(ACCENT);
-		label.setFont(label.getFont().deriveFont(Font.BOLD));
-		return label;
-	}
-
 	private static JPanel sectionPanel(final String title,
 			final JComponent body) {
-		final JPanel section = new JPanel(new BorderLayout(0, 3));
-		section.setOpaque(false);
-		section.add(sectionTitle(title), BorderLayout.NORTH);
+		final JPanel section = plainPanel(new BorderLayout());
+		final Style style = StyleUtil.getStyle();
+		final Border frame = style != null ? style.getBorderDown()
+				: BorderFactory.createEtchedBorder();
+		final TitledBorder border = BorderFactory.createTitledBorder(frame, title);
+		final Font font = style != null ? style.getFont() : new JLabel().getFont();
+		border.setTitleFont(font.deriveFont(Font.BOLD));
+		if (style != null) {
+			border.setTitleColor(style.getForeground());
+		}
+		section.setBorder(BorderFactory.createCompoundBorder(border,
+				BorderFactory.createEmptyBorder(4, 6, 6, 6)));
 		section.add(body, BorderLayout.CENTER);
 		return section;
 	}
 
-	private static javax.swing.border.Border cardBorder() {
-		return BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(PANEL_BORDER),
-				BorderFactory.createEmptyBorder(5, 6, 5, 6));
+	private static JPanel plainPanel(final LayoutManager layout) {
+		return new LayoutPanel(layout);
+	}
+
+	/**
+	 * Layout-only containers share the window's texture instead of repainting
+	 * and framing every nested panel through StyledPanelUI.
+	 */
+	private static class LayoutPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		LayoutPanel(final LayoutManager layout) {
+			super(layout);
+			setOpaque(false);
+			setBorder(BorderFactory.createEmptyBorder());
+		}
+		@Override
+		protected void paintComponent(final Graphics graphics) {
+			// The enclosing window paints the shared background.
+		}
+	}
+
+	private static String wrappedText(final String text, final int width) {
+		return "<html><table width='" + width + "' cellspacing='0' cellpadding='0'>"
+				+ "<tr><td align='center'>" + escapeHtml(text) + "</td></tr></table></html>";
+	}
+
+	private static String escapeHtml(final String text) {
+		return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 	}
 
 	private static JLabel statRow(final String name, final String current,
 			final String upgraded) {
-		return centered("<html><b>" + name + ":</b>&nbsp; " + current
-				+ " &nbsp;→&nbsp; <font color='#5cbe69'><b>" + upgraded
+		return centered("<html><b>" + name + ":</b>&nbsp; z " + current
+				+ " &nbsp;na&nbsp; <font color='#5cbe69'><b>" + upgraded
 				+ "</b></font></html>");
 	}
 
@@ -528,9 +563,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private static String statLabel(final String stat) {
-		if ("atk".equals(stat)) return "ATK";
-		if ("ratk".equals(stat)) return "RATK";
-		if ("def".equals(stat)) return "DEF";
+		if ("atk".equals(stat)) return "Atak";
+		if ("ratk".equals(stat)) return "Atak dystansowy";
+		if ("def".equals(stat)) return "Obrona";
 		if ("damage_min".equals(stat)) return "Obrażenia min.";
 		if ("damage_max".equals(stat)) return "Obrażenia max.";
 		if ("range".equals(stat)) return "Zasięg";
@@ -539,7 +574,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private static String statusText(final String state) {
-		if ("SELECT_ITEM".equals(state)) return "Przeciągnij przedmiot z ekwipunku do slotu.";
+		if ("SELECT_ITEM".equals(state)) return "Przeciągnij tutaj przedmiot z ekwipunku.";
 		if ("NO_UPGRADEABLE_ITEMS".equals(state)) return "Nie masz przedmiotu, który można ulepszyć.";
 		if ("READY".equals(state)) return "Wymagania są spełnione.";
 		if ("NOT_ENOUGH_MONEY".equals(state)) return "Brakuje pieniędzy.";
@@ -547,7 +582,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		if ("INVALID_ITEM".equals(state)) return "Tego przedmiotu nie można ulepszyć.";
 		if ("NOT_UPGRADEABLE".equals(state)) return "Tego przedmiotu nie można ulepszyć.";
 		if ("MAX_LEVEL".equals(state)) return "Osiągnięto maksymalny poziom.";
-		if ("STALE_PREVIEW".equals(state)) return "Podgląd wygasł — odświeżono stan.";
+		if ("STALE_PREVIEW".equals(state)) return "Dane się zmieniły. Sprawdź ponownie koszt i materiały.";
 		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać w pobliżu kowala.";
 		if ("FAILURE".equals(state)) return "Próba ulepszenia nie powiodła się.";
 		return "Nie można teraz ulepszyć przedmiotu.";
@@ -560,7 +595,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static String colorName(final String name, final String rarityId) {
 		final ItemRarity rarity = ItemRarity.fromIdOrCommon(rarityId);
 		return "<html><b><font color='" + rarity.getColorHex() + "'>"
-				+ name + "</font></b></html>";
+				+ escapeHtml(name) + "</font></b></html>";
 	}
 
 	private void selectItem(final Item item) {
@@ -568,13 +603,14 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		selectedPath = encodePath(item.getPath());
 		requestToken = null;
 		itemName.setText(item.getName());
-		level.setText("Pobieranie aktualnego podglądu…");
+		level.setText("Sprawdzanie przedmiotu...");
 		icon.setItem(item.getEntityClass(), item.getEntitySubclass());
 		icon.setToolTipText("Prawy przycisk myszy: wyczyść wybór.");
 		upgrade.setEnabled(false);
 		refresh.setEnabled(true);
 		status.setForeground(ACCENT);
-		status.setText("Pobieranie podglądu z serwera…");
+		status.setText(wrappedText("Sprawdzanie kosztu i materiałów...",
+				CONTENT_WIDTH - 40));
 		send("preview", selectedPath, null);
 	}
 
@@ -583,8 +619,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		private Sprite sprite;
 
 		private ItemIcon() {
-			setPreferredSize(new Dimension(56, 56));
-			setMinimumSize(new Dimension(56, 56));
+			setPreferredSize(new Dimension(48, 48));
+			setMinimumSize(new Dimension(48, 48));
 			setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
 		}
 
