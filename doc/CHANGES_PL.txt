@@ -1,36 +1,39 @@
 ## Changelog
 ---------
 1.42.1
-*pancerze przeciwników*
----
-* Przy pasku zdrowia wybranego przeciwnika pojawia się ikonka jego pancerza: skóra oznacza lekki, kolczuga średni, a zbroja płytowa ciężki
-* Rodzaj pancerza możesz też sprawdzić po najechaniu na potwora lub przez „Obejrzyj”, również na telefonie
-
 *polowania u Janisława*
 ---
-* U Janisława możesz wybrać łatwe, średnie lub trudne polowanie. Przed przyjęciem zadania poznasz przeciwnika, liczbę potworów do pokonania i nagrody
-* Bazowe premie doświadczenia ataku i obrony za polowania wynoszą teraz 5% za łatwe, 15% za średnie i 30% za trudne. Nagroda uwzględnia też liczbę i siłę potworów, więc szybkie polowanie na słabych przeciwników nie daje takiej samej premii jak wymagająca walka. Dokładną nagrodę poznasz przed przyjęciem zadania
-* Każde ukończone polowanie daje również Skrzynię Myśliwego. Za łatwe zadania znajdziesz w niej zapasy, za średnie wyposażenie z szansą na rzadkie, a za trudne co najmniej rzadkie wyposażenie z szansą na epickie
-* Możesz zrezygnować z polowania i wybrać inną trudność, ale za przerwane zadanie nie otrzymasz nagrody
-* Janisław nie zleca już polowań na bossów ani potwory z niedostępnych wydarzeń
+* Dodano wybór trudności polowania: łatwe, średnie lub trudne
+* Dodano nagrody w postaci doświadczenia ataku i obrony. Podstawowa premia wynosi 5% za łatwe, 15% za średnie i 30% za trudne polowanie; jej ostateczna wysokość zależy od liczby i siły przeciwników
+* Dodano Skrzynie Myśliwego za ukończone polowania. Łatwe polowania nagradzają zapasami, średnie wyposażeniem z szansą na rzadkie, a trudne co najmniej rzadkim wyposażeniem z szansą na epickie
+* Janisław przedstawia cel polowania i nagrody przed przyjęciem zadania. Dodano również możliwość rezygnacji z polowania
+* Z polowań wykluczono bossów i potwory z nieaktywnych wydarzeń
 
-*arena i łupy*
+*Arena Wyzwań i łupy*
 ---
-* Na Arenie Wyzwań w Tarnowie nie musisz już czekać, aż inny gracz skończy walkę. Każdy rozgrywa własną próbę, bez wzajemnego przeszkadzania
-* Potwory na arenie pozostawiają teraz przedmioty. Po zwycięstwie masz minutę na zebranie łupów
-* Dodano Kupca Areny, u którego możesz sprzedać zdobyte wyposażenie. Za rzadsze przedmioty otrzymasz więcej pieniędzy
-* Wyposażenie wypadające z bossów jest teraz co najmniej rzadkie. Dotyczy to także nagrody za najtrudniejszą próbę Areny Wyzwań i łupów jej końcowego przeciwnika
+* Każdy gracz walczy na własnej Arenie Wyzwań w Tarnowie, bez kolejki i bez przeszkadzania innym uczestnikom
+* Potwory na arenie pozostawiają łupy. Po zwycięstwie gracz ma minutę na ich zebranie
+* Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Ceny uwzględniają ich wycenę i rzadkość
+* Wyposażenie zdobyte z bossów jest co najmniej rzadkie. Taką samą gwarancję dodano do nagrody za najtrudniejszą próbę areny i łupów jej końcowego przeciwnika
 
-*przedmioty i schowek*
+*przedmioty i wyposażenie*
 ---
-* Kliknięcie przedmiotu w spisie otwiera teraz jego opis na nowej stronie, zamiast prowadzić do błędu „nie znaleziono strony”
-* Przedmioty leżące na ziemi mają teraz wyraźną kolorową obwódkę zamiast rozmytej poświaty, podobnie jak w plecaku
-* Opisy jedzenia i napojów pokazują, ile zdrowia przywracają i jak długo działają
-* Schowek wyposażenia nie przechowuje już pieniędzy. Monety pozostawione w jego starej sakwie wracają do sakwy postaci, bez utraty zgromadzonej kwoty
+* Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
+* Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
+* Dodano informacje o leczeniu i czasie działania jedzenia, napojów i eliksirów
+* Uzupełniono opisy wyposażenia o odporność na ogłuszenie oraz informację o przedmiotach przypisanych do postaci
+* Usunięto sakwę ze schowka rezerwowego wyposażenia. Pozostawione w niej monety są przenoszone do głównej sakwy postaci
 
-*gra w przeglądarce*
+*klient gry*
 ---
-* Ramki miejsc na przedmioty w plecaku i wyposażeniu pozostają nieruchome, nawet gdy same przedmioty są animowane
+* Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
+* Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
+* Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
+
+*administracja*
+---
+* Dodano możliwość przywoływania mgielnych potworów, również w wersji elitarnej
+* Dodano administratorom testy płynności gry w przeglądarce z możliwością skopiowania raportu, także na telefonie. Testy działają tylko u osoby, która je włączyła
 
 
 1.42
