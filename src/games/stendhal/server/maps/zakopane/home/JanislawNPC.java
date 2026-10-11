@@ -23,7 +23,7 @@ public class JanislawNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj młody podróżniku, potrzebujesz #pomocy?");
 				addJob("Jeszczę parę lat wstecz byłem jednym ze sławnych myśliwych w całej kranie, polowałem na potwory. Teraz to już jestem za stary na takie podróże.");
-				addHelp("Póki jesteś jeszcze młody, mogę Tobie zlecać #zadania na upolowania potworów.");
+				addHelp("Zlecam #zadania na polowanie: #łatwe, #średnie i #trudne. Dostaniesz dotychczasowe nagrody, PD ataku i obrony oraz Skrzynię Myśliwego. Zawsze najpierw pokażę Ci cel i nagrody.");
 				addGoodbye("Uważaj na drodze, wszędzie czają się złe stworzenia i czekają na dobrą chwilę, aby Cię zaatakować...");
 			}
 

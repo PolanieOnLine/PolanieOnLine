@@ -12,23 +12,28 @@
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import marauroa.common.game.IRPZone;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
+import games.stendhal.server.entity.item.HuntingRewardChest;
+import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.maps.quests.hunting.HuntingDifficulty;
+import games.stendhal.server.maps.quests.hunting.HuntingRewards;
 
-import org.apache.log4j.Logger;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.creature.Creature;
-import games.stendhal.server.entity.creature.LevelBasedComparator;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -42,11 +47,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.KillsForQuestCounter;
@@ -55,166 +56,90 @@ public class Hunting extends AbstractQuest {
 	private static final String QUEST_SLOT = "hunting";
 	private final SpeakerNPC npc = npcs.get("Janisław");
 
-	private static final Logger logger = Logger.getLogger(Hunting.class);
 
-	/** All creatures, sorted by level. */
-	private static List<Creature> sortedcreatures;
+	private static final String OFFER_SLOT = "hunting_offer";
+	private static final ChatCondition ACTIVE = (player, sentence, entity) ->
+			player.hasQuest(QUEST_SLOT) && player.getQuest(QUEST_SLOT, 0).split(",", -1).length == 5;
 
-	private static void refreshCreaturesList(final String excludedCreature) {
-		final Collection<Creature> creatures = SingletonRepository.getEntityManager().getCreatures();
-		sortedcreatures = new LinkedList<Creature>();
-		for (Creature creature : creatures) {
-			if (!creature.isAbnormal() && !creature.getName().equals(excludedCreature)) {
-				sortedcreatures.add(creature);
+	/** Only actual public respawns: disabled seasonal content and private arenas
+	 * cannot supply a target merely because their creature definition exists. */
+	static List<Creature> availableCreatures() {
+		Set<String> names = new HashSet<>();
+		for (IRPZone rawZone : SingletonRepository.getRPWorld()) {
+			StendhalRPZone zone = (StendhalRPZone) rawZone;
+			if (!zone.isPublicAccessible()) { continue; }
+			for (CreatureRespawnPoint point : zone.getRespawnPointList()) {
+				Creature creature = point.getPrototypeCreature();
+				if (!creature.isAbnormal() && !creature.isBoss()) { names.add(creature.getName()); }
 			}
 		}
-		Collections.sort(sortedcreatures, new LevelBasedComparator());
+		List<Creature> result = new ArrayList<>();
+		for (String name : names) {
+			Creature creature = SingletonRepository.getEntityManager().getCreature(name);
+			if (creature != null && !creature.isAbnormal() && !creature.isBoss()) { result.add(creature); }
+		}
+		return result;
 	}
 
-	/**
-	 * constructor for quest
-	 */
-	public Hunting() {
-		refreshCreaturesList(null);
+	private void offer(Player player, EventRaiser raiser, HuntingDifficulty difficulty) {
+		player.setQuest(OFFER_SLOT, null);
+		if (player.isBadBoy()) {
+			raiser.say("Z twej ręki zginął dzielny rycerz! Precz mi z oczu!");
+			raiser.setCurrentState(ConversationStates.ATTENDING);
+			return;
+		}
+		List<Creature> candidates = new ArrayList<>();
+		for (Creature creature : availableCreatures()) {
+			if (difficulty.accepts(player.getLevel(), creature.getLevel())) { candidates.add(creature); }
+		}
+		if (candidates.isEmpty()) {
+			raiser.say("Nie mam teraz dostępnych przeciwników na takie polowanie dla Twojego poziomu. Wybierz #łatwe, #średnie lub #trudne.");
+			raiser.setCurrentState(ConversationStates.ATTENDING);
+			return;
+		}
+		Creature creature = candidates.get(Rand.rand(candidates.size()));
+		int count = 20 + Rand.rand(11);
+		player.setQuest(OFFER_SLOT, difficulty.name() + ";" + creature.getName() + ";" + count + ";" + player.getLevel());
+		raiser.say("Polowanie " + difficulty.getLabel() + ": " + creature.getName() + " (poziom "
+				+ creature.getLevel() + "), " + count + " sztuk. Oprócz dotychczasowych nagród otrzymasz "
+				+ difficulty.getPercent() + "% PD pełnego poziomu ataku i obrony oraz Skrzynię Myśliwego. "
+				+ (difficulty == HuntingDifficulty.EASY ? "Skrzynia zawiera zapasy."
+				: difficulty == HuntingDifficulty.MEDIUM ? "Skrzynia zawiera wyposażenie: 25% szans na rzadkie."
+				: "Skrzynia zawiera co najmniej rzadkie wyposażenie: 10% szans na epickie.")
+				+ " Podejmujesz wyzwanie? #tak / #nie");
 	}
 
-	static class HuntingAction implements ChatAction {
-		//private String debugString;
-		@Override
-		public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-			if (player.isBadBoy()) {
-				raiser.say("Z twej ręki zginął dzielny, szlachetny i poważany rycerz! Precz mi z oczu!");
-			} else {
-				final String questInfo = player.getQuest(QUEST_SLOT);
-				String questCount = null;
-				String questLast = null;
-
-            	String previousCreature = null;
-
-				if (questInfo != null) {
-					final String[] tokens = (questInfo + ";0;0;0").split(";");
-					if(!"done".equals(tokens[0])) {
-						// can't use this method because this class is static
-						// previousCreature = getCreatureToKillFromPlayer(player);
-						String[] split = tokens[0].split(",");
-						previousCreature = split[0];
-					}
-					questLast = tokens[1];
-					questCount = tokens[2];
-				}
-
-				refreshCreaturesList(previousCreature);
-
-				// Creature selection magic happens here
-				final Creature pickedCreature = pickIdealCreature(player.getLevel(),
-						false, sortedcreatures);
-
-				// shouldn't happen
-				if (pickedCreature == null) {
-					raiser.say("Dziękuję, ale teraz nie mam dla Ciebie zadania.");
-					return;
-				}
-
-				String creatureName = pickedCreature.getName();
-
-				int randomKillCount = Rand.roll1D50();
-				String count;
-				if (randomKillCount == 1) {
-					count = " sztuki";
-				} else {
-					count = " sztuk";
-				}
-				raiser.say("Dobrze więc, upoluj dla mnie " + creatureName
-						+ " w ilości " + randomKillCount + count + " i powiedz #załatwione, gdy skończysz.");
-
-				questLast = "" + new Date().getTime();
-				player.setQuest(
-						QUEST_SLOT,
-						creatureName + ",0,"+
-						randomKillCount + "," +
-						player.getSoloKill(creatureName)+"," +
-						player.getSharedKill(creatureName)+";" +
-						questLast + ";" +
-						questCount);
+	private void acceptOffer(Player player, EventRaiser raiser) {
+		String offer = player.getQuest(OFFER_SLOT);
+		player.setQuest(OFFER_SLOT, null);
+		if (offer == null || ACTIVE.fire(player, null, null) || player.isBadBoy()) {
+			raiser.say("Poproś o #zadanie i wybierz trudność.");
+			return;
+		}
+		String[] parts = offer.split(";", -1);
+		try {
+			if (parts.length != 4) { throw new IllegalArgumentException(); }
+			HuntingDifficulty difficulty = HuntingDifficulty.valueOf(parts[0]);
+			int count = Integer.parseInt(parts[2]);
+			if (count < 20 || count > 30 || Integer.parseInt(parts[3]) != player.getLevel()) {
+				throw new IllegalArgumentException();
 			}
-  		}
-
-		// Returns a random creature near the players level, returns null if
-		// there is a bug.
-		// The ability to set a different level is for testing purposes
-		public Creature pickIdealCreature(final int level, final boolean testMode, final List<Creature> creatureList) {
-			// int level = player.getLevel();
-
-			// start = lower bound, current = upper bound, for the range of
-			// acceptable monsters for this specific player
-			int current = -1;
-			int start = 0;
-
-			boolean lowerBoundIsSet = false;
-			for (final Creature creature : creatureList) {
-				current++;
-				// Set the a little strongest creature
-				if (creature.getLevel() > level + 4) {
-					current--;
+			boolean available = false;
+			for (Creature creature : availableCreatures()) {
+				if (creature.getName().equals(parts[1]) && difficulty.accepts(player.getLevel(), creature.getLevel())) {
+					available = true;
 					break;
 				}
-				// Set the weakest creature
-				if (!lowerBoundIsSet && creature.getLevel() > 0
-						&& creature.getLevel() >= level - 10) {
-					start = current;
-					lowerBoundIsSet = true;
-				}
 			}
-
-			// possible with low lvl player and no low lvl creatures.
-			if (current < 0) {
-				current = 0;
-			}
-
-			// possible if the player is ~5 levels higher than the highest level
-			// creature
-			if (!lowerBoundIsSet) {
-				start = current;
-			}
-
-			// make sure the pool of acceptable monsters is at least
-			// minSelected, the additional creatures will be weaker
-			if (current >= start) {
-				final int minSelected = 10;
-				final int numSelected = current - start + 1;
-				if (numSelected < minSelected) {
-					start = start - (minSelected - numSelected);
-					// don't let the lower bound go too low
-					if (start < 0) {
-						start = 0;
-					}
-				}
-			}
-
-			// shouldn't happen
-			if (current < start || start < 0
-					|| current >= creatureList.size()) {
-				if (testMode) {
-					logger.debug("ERROR: <"+level + "> start=" + start +
-							", current=" + current);
-				}
-				return null;
-			}
-
-			// pick a random creature from the acceptable range.
-			final int result = start + new Random().nextInt(current - start + 1);
-			final Creature cResult = creatureList.get(result);
-
-			if (testMode) {
-				logger.debug("OK: <" + level + "> start=" + start
-						+ ", current=" + current + ", result=" + result
-						+ ", cResult=" + cResult.getName() + ". OPTIONS: ");
-				for (int i = start; i <= current; i++) {
-					final Creature cTemp = creatureList.get(i);
-					logger.debug(cTemp.getName() + ":" + cTemp.getLevel()	+ "; ");
-				}
-			}
-			return cResult;
+			if (!available) { throw new IllegalArgumentException(); }
+			int repetitions = player.hasQuest(QUEST_SLOT) ? player.getNumberOfRepetitions(QUEST_SLOT, 2) : 0;
+			player.setQuest(QUEST_SLOT, parts[1] + ",0," + count + "," + player.getSoloKill(parts[1])
+					+ "," + player.getSharedKill(parts[1]) + ";" + System.currentTimeMillis() + ";"
+					+ repetitions + ";" + difficulty.name());
+			raiser.say("Upoluj " + count + " sztuk: " + parts[1] + ". Powiedz #załatwione, gdy skończysz. "
+					+ "Zmiana trudności wymaga wcześniejszej rezygnacji: #rezygnuję.");
+		} catch (IllegalArgumentException e) {
+			raiser.say("Ta oferta nie jest już dostępna. Poproś o nowe #zadanie.");
 		}
 	}
 
@@ -241,36 +166,44 @@ public class Hunting extends AbstractQuest {
 	/**
 	 * player said "quest"
 	 */
-	private void step_1() {
-		// player asking for quest when he have active non-expired quest
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new OrCondition(
-						new QuestNotStartedCondition(QUEST_SLOT),
-						new QuestCompletedCondition(QUEST_SLOT)))),
-				ConversationStates.ATTENDING,
-				null,
-				new ChatAction() {
-					@Override
-					public void fire(Player player, Sentence sentence, EventRaiser npc) {
-						npc.say("Już " + player.getGenderVerb("dostałeś") + " zadanie na upolowanie " +
-								player.getQuest(QUEST_SLOT,0).split(",")[0] +
-								" w ilości " +
-								player.getQuest(QUEST_SLOT,0).split(",")[2] +
-								". Powiedz #załatwione kiedy to zrobisz!");
-					}
-				});
 
-		// player asked for quest first time or repeat it after passed proper time
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new OrCondition(
-						new QuestNotStartedCondition(QUEST_SLOT),
-						new AndCondition(
-								new QuestCompletedCondition(QUEST_SLOT))),
-				ConversationStates.ATTENDING,
-				null,
-				new HuntingAction());
+	private void step_1() {
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, ACTIVE,
+				ConversationStates.ATTENDING, null, (player, sentence, raiser) ->
+					raiser.say("Masz aktywne polowanie: " + getCreatureToKillFromPlayer(player) + ", "
+							+ getCountCreatureToKillFromPlayer(player) + " sztuk. Powiedz #załatwione lub #rezygnuję."));
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, new NotCondition(ACTIVE),
+				ConversationStates.ATTENDING, "Wybierz polowanie: #łatwe (10% PD ataku i obrony), "
+				+ "#średnie (15%) albo #trudne (20%). Każde daje również Skrzynię Myśliwego.", null);
+		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
+			List<String> words = difficulty == HuntingDifficulty.EASY ? Arrays.asList("łatwe", "latwe", "easy")
+					: difficulty == HuntingDifficulty.MEDIUM ? Arrays.asList("średnie", "srednie", "medium")
+					: Arrays.asList("trudne", "hard");
+			npc.add(ConversationStates.ATTENDING, words, new NotCondition(ACTIVE),
+					ConversationStates.QUESTION_1, null, (player, sentence, raiser) -> offer(player, raiser, difficulty));
+			npc.add(ConversationStates.ATTENDING, words, ACTIVE, ConversationStates.ATTENDING,
+					"Najpierw zakończ obecne polowanie albo powiedz #rezygnuję. Przerwane zadanie nie daje nagrody.", null);
+		}
+		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES, null,
+				ConversationStates.ATTENDING, null, (player, sentence, raiser) -> acceptOffer(player, raiser));
+		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES, null,
+				ConversationStates.ATTENDING, "Nie przyjmujesz zadania. Możesz wybrać inną trudność.",
+				(player, sentence, raiser) -> player.setQuest(OFFER_SLOT, null));
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("rezygnuję", "rezygnuje", "rezygnuj", "cancel"),
+				ACTIVE, ConversationStates.QUESTION_2,
+				"Chcesz przerwać polowanie bez nagrody? Dotychczasowy postęp tego zadania przepadnie. #tak / #nie", null);
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("rezygnuję", "rezygnuje", "rezygnuj", "cancel"),
+				new NotCondition(ACTIVE), ConversationStates.ATTENDING, "Nie masz aktywnego polowania.", null);
+		npc.add(ConversationStates.QUESTION_2, ConversationPhrases.YES_MESSAGES, null,
+				ConversationStates.ATTENDING, null, (player, sentence, raiser) -> {
+					if (ACTIVE.fire(player, null, null)) {
+						player.setQuest(QUEST_SLOT, 0, "cancelled");
+						player.setQuest(OFFER_SLOT, null);
+					}
+					raiser.say("Polowanie przerwane bez nagrody. Liczba ukończonych polowań jest zachowana. Wybierz #łatwe, #średnie lub #trudne.");
+				});
+		npc.add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null,
+				ConversationStates.ATTENDING, "Kontynuuj polowanie. Powiedz #załatwione, kiedy skończysz.", null);
 	}
 
 	private void step_2() {
@@ -284,7 +217,7 @@ public class Hunting extends AbstractQuest {
 		// player never asked for this quest
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
+				(player, sentence, entity) -> !player.hasQuest(QUEST_SLOT) || "cancelled".equals(player.getQuest(QUEST_SLOT, 0)) || "rejected".equals(player.getQuest(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Obawiam się, że jeszcze nie dałem Tobie #zadania.",
 				null);
@@ -301,8 +234,7 @@ public class Hunting extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(
-						new QuestStartedCondition(QUEST_SLOT),
-						new QuestNotCompletedCondition(QUEST_SLOT),
+						ACTIVE,
 						new NotCondition(
 						        new KilledForQuestCondition(QUEST_SLOT, 0))),
 				ConversationStates.ATTENDING,
@@ -320,6 +252,19 @@ public class Hunting extends AbstractQuest {
 		final List<ChatAction> rewards = new LinkedList<ChatAction>();
 		rewards.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
 		rewards.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
+		rewards.add((player, sentence, raiser) -> {
+			HuntingDifficulty difficulty = HuntingDifficulty.fromQuest(player.getQuest(QUEST_SLOT));
+			int atkBonus = HuntingRewards.skillXPBonus(player.getAtkXP(), difficulty);
+			int defBonus = HuntingRewards.skillXPBonus(player.getDefXP(), difficulty);
+			Item chest = SingletonRepository.getEntityManager().getItem(HuntingRewardChest.NAME, ItemCreationContext.quest());
+			chest.setBoundTo(player.getName());
+			chest.setItemData(HuntingRewardChest.createRewardData(difficulty, player.getLevel()));
+			player.addAtkXP(atkBonus);
+			player.addDefXP(defBonus);
+			player.equipOrPutOnGround(chest);
+			player.sendPrivateText("Nagroda polowania: +" + atkBonus + " PD ataku, +" + defBonus
+					+ " PD obrony i Skrzynia Myśliwego (" + difficulty.getLabel() + ").");
+		});
 		rewards.add(new ChatAction() {
 			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
@@ -401,8 +346,7 @@ public class Hunting extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(
-						new QuestStartedCondition(QUEST_SLOT),
-						new QuestNotCompletedCondition(QUEST_SLOT),
+						ACTIVE,
 				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Zasłużyłeś na odpowiednią nagrodę!",
@@ -412,9 +356,8 @@ public class Hunting extends AbstractQuest {
 	private String howManyWereKilled(final Player player, final String questState) {
 		KillsForQuestCounter killsCounter = new KillsForQuestCounter(questState);
 		final String creatureToKill = getCreatureToKillFromPlayer(player);
-		final String creatureCountToKill = getCountCreatureToKillFromPlayer(player);
-		int killed = Integer.parseInt(creatureCountToKill) - killsCounter.remainingKills(player, creatureToKill);
-		return "Wciąż muszę zabić " + Grammar.quantityplnoun(killed, creatureToKill) + ".";
+		int remaining = killsCounter.remainingKills(player, creatureToKill);
+		return "Wciąż muszę zabić " + Grammar.quantityplnoun(remaining, creatureToKill) + ".";
 	}
 
 	private List<String> howManyWereKilledFormatted(final Player player, final String questState) {
@@ -468,13 +411,18 @@ public class Hunting extends AbstractQuest {
 		final String[] parts = questStateFull.split(";");
 		final String questState = parts[0];
 
+		if ("cancelled".equals(questState)) {
+			res.add("Przerwane polowanie nie dało nagrody. Mogę wybrać nowe zadanie.");
+			return res;
+		}
 		if ("rejected".equals(questStateFull)) {
 			res.add("Nie chcę polować na zwierzyny i inne stworzenia.");
 			return res;
 		}
 
 		res.add("Chcę spróbować zapolować na stworzenia.");
-		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
+		if (ACTIVE.fire(player, null, null)) {
+			res.add("Trudność: " + HuntingDifficulty.fromQuest(questStateFull).getLabel() + ".");
 			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0).fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			final String creatureCountToKill = getCountCreatureToKillFromPlayer(player);
@@ -523,7 +471,17 @@ public class Hunting extends AbstractQuest {
 	}
 
 	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC targetNPC) {
+		if (!"Janisław".equals(targetNPC.getName()) || player.isBadBoy()) { return QuestMarker.NONE; }
+		if (ACTIVE.fire(player, null, null)) {
+			return new KilledForQuestCondition(QUEST_SLOT, 0).fire(player, null, null)
+					? QuestMarker.READY : QuestMarker.IN_PROGRESS;
+		}
+		return player.hasQuest(QUEST_SLOT) ? QuestMarker.REPEATABLE : QuestMarker.AVAILABLE;
+	}
+
+	@Override
 	public boolean isRepeatable(final Player player) {
-		return new QuestCompletedCondition(QUEST_SLOT).fire(player, null, null);
+		return player.hasQuest(QUEST_SLOT) && !ACTIVE.fire(player, null, null);
 	}
 }
