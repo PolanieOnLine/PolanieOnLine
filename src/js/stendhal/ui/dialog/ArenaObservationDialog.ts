@@ -6,6 +6,9 @@ import { stendhal } from "../../stendhal";
 /** A private server-controlled chooser, separate from NPC chat shortcuts. */
 export class ArenaObservationDialog extends DialogContentComponent {
 	private static active?: ArenaObservationDialog;
+	private static watching = false;
+
+	public static isWatching(): boolean { return this.watching; }
 	private readonly status = document.createElement("p");
 	private readonly players = document.createElement("select");
 	private readonly observe: HTMLButtonElement;
@@ -33,6 +36,7 @@ export class ArenaObservationDialog extends DialogContentComponent {
 	}
 
 	public static show(event: {[key: string]: any}): void {
+		this.watching = event.arena_phase === "watch";
 		const names = String(event.options || "").split("\t")
 			.map(entry => entry.split("|~|"))
 			.filter(parts => parts.length >= 2 && parts[1] !== "")

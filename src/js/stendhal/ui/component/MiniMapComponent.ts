@@ -113,11 +113,7 @@ export class MiniMapComponent extends Component {
 	}
 
 	public draw() {
-		if (marauroa.currentZoneName === this.map.currentZoneName
-			|| this.map.currentZoneName === "int_vault"
-			|| this.map.currentZoneName === "int_adventure_island"
-			|| this.map.currentZoneName === "int_adventure_cave"
-			|| this.map.currentZoneName === "tutorial_island") {
+		if (this.map.isForZone(marauroa.currentZoneName)) {
 
 			this.scale = 10;
 

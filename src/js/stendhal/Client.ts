@@ -371,6 +371,7 @@ export class Client {
 		marauroa.clientFramework.onTransfer = (items: any) => {
 			const data: Record<string, any> = {};
 			let zoneName = "";
+			let displayZoneName: string | undefined;
 			for (const key in items) {
 				const entry = items[key];
 				if (!entry || typeof entry.name !== "string") {
@@ -385,10 +386,10 @@ export class Client {
 				name = name.substring(dotIndex + 1);
 				data[name] = entry.data;
 				if (name === "data_map") {
-					this.onDataMap(entry.data);
+					displayZoneName = this.onDataMap(entry.data)["runtime_zone"];
 				}
 			}
-			TileMap.get().onTransfer(zoneName, data);
+			TileMap.get().onTransfer(zoneName, data, displayZoneName);
 		};
 
 		// update user interface on perceptions
@@ -528,6 +529,7 @@ export class Client {
 		}
 
 		singletons.getWeatherRenderer().update(zoneinfo["weather"]);
+		return zoneinfo;
 	}
 
 	private applyMobileUiClasses() {

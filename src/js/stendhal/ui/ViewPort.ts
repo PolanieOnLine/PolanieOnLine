@@ -56,6 +56,7 @@ export class ViewPort {
 	private cameraY = this.offsetY;
 	/** Prevents adjusting offset based on player position. */
 	private freeze = false;
+	private viewCenter?: { x: number; y: number };
 	/** Time of most recent frame, in milliseconds. */
 	private lastFrameTime?: number;
 	/** Most recent frame delta, clamped, in milliseconds. */
@@ -110,6 +111,11 @@ export class ViewPort {
 			width: canvas.width / scale,
 			height: canvas.height / scale,
 		};
+	}
+
+	public requestViewCenter(x: number, y: number): void {
+		this.viewCenter = { x, y };
+		this.freeze = true;
 	}
 
 	/** Drawing context. */
@@ -214,11 +220,7 @@ export class ViewPort {
 		this.lastFrameTime = now;
 
 		if (marauroa.me && document.visibilityState === "visible") {
-			if (marauroa.currentZoneName === this.map.currentZoneName
-				|| this.map.currentZoneName === "int_vault"
-				|| this.map.currentZoneName === "int_adventure_island"
-				|| this.map.currentZoneName === "int_adventure_cave"
-				|| this.map.currentZoneName === "tutorial_island") {
+			if (this.map.isForZone(marauroa.currentZoneName)) {
 				this.drawingError = false;
 
 				this.ctx.globalAlpha = 1.0;
@@ -785,8 +787,12 @@ export class ViewPort {
 
 		const viewportWidth = (this.logicalWidth || canvas.width / this.devicePixelRatio) / this.tileScale;
 		const viewportHeight = (this.logicalHeight || canvas.height / this.devicePixelRatio) / this.tileScale;
-		const targetX = this.freeze ? this.offsetX : playerX - viewportWidth / 2;
-		const targetY = this.freeze ? this.offsetY : playerY - viewportHeight / 2;
+		const targetX = this.freeze
+			? (this.viewCenter ? this.viewCenter.x * this.targetTileWidth - viewportWidth / 2 : this.offsetX)
+			: playerX - viewportWidth / 2;
+		const targetY = this.freeze
+			? (this.viewCenter ? this.viewCenter.y * this.targetTileHeight - viewportHeight / 2 : this.offsetY)
+			: playerY - viewportHeight / 2;
 
 		const maxX = mapWidth - viewportWidth;
 		const maxY = mapHeight - viewportHeight;

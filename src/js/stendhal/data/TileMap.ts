@@ -23,6 +23,7 @@ import { ParallaxBackground } from "../landscape/ParallaxBackground";
 export class TileMap {
 
 	public currentZoneName = "";
+	public displayZoneName = "";
 
 	public offsetX = 0;
 	public offsetY = 0;
@@ -111,8 +112,16 @@ export class TileMap {
 		}
 	}
 
-	onTransfer(zoneName: string, content: any) {
+	public isForZone(zoneName: string): boolean {
+		const displayZoneName = this.displayZoneName || this.currentZoneName;
+		return zoneName === displayZoneName || (displayZoneName === this.currentZoneName
+			&& ["int_vault", "int_adventure_island", "int_adventure_cave", "tutorial_island"]
+				.includes(this.currentZoneName));
+	}
+
+	onTransfer(zoneName: string, content: any, displayZoneName = zoneName) {
 		this.currentZoneName = zoneName;
+		this.displayZoneName = displayZoneName;
 		this.firstgids = [];
 		this.layers = [];
 		this.layerNames = [];

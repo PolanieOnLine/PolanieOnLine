@@ -11,6 +11,7 @@
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../stendhal";
+import { ArenaObservationDialog } from "../ui/dialog/ArenaObservationDialog";
 
 import { Entity } from "./Entity";
 import { Player } from "./Player";
@@ -242,6 +243,7 @@ export class User extends Player {
 	 *   movement.
 	 */
 	public setDirection(dir: Direction, cancelAutoWalk=false) {
+		if (ArenaObservationDialog.isWatching()) { return; }
 		if (dir == Direction.STOP) {
 			this.stop();
 			return;
@@ -282,6 +284,7 @@ export class User extends Player {
 	 */
 	public moveTo(x: number, y: number, zone?: string): void;
 	public moveTo(p1: object|number, p2?: number, p3?:string) {
+		if (ArenaObservationDialog.isWatching()) { return; }
 		// in case viewport frozen from view change event
 		stendhal.ui.viewport.freeze = false;
 		let action: any = {};
