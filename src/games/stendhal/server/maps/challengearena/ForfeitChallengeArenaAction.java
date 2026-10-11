@@ -13,7 +13,7 @@ public final class ForfeitChallengeArenaAction implements ChatAction {
 	@Override
 	public void fire(final Player player, final Sentence sentence,
 			final EventRaiser raiser) {
-		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo();
+		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo(player.getName());
 		final ChallengeArenaEngine engine = arenaInfo == null
 				? null : arenaInfo.getEngine();
 		if (engine == null || !engine.forfeit(player)) {

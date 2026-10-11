@@ -3,6 +3,8 @@
 1.42.1
 *arena i łupy*
 ---
+* Każdy gracz walczy na własnej, prywatnej Arenie Wyzwań w Tarnowie. Wspólne lobby, kupiec i ranking pozostają dostępne dla wszystkich, bez kolejki do walki i wzajemnego przeszkadzania
+* Południowa brama prywatnej areny pozwala się poddać lub wrócić po zwycięstwie bez utraty nagrody. Instancja jest sprzątana po wyjściu, śmierci albo wylogowaniu
 * Potwory na Arenie Wyzwań w Tarnowie pozostawiają teraz swoje normalne łupy. Po zwycięstwie gracz ma 60 sekund na ich zebranie
 * Dodano Kupca Areny, który automatycznie skupuje przedmioty dopuszczone do handlu według ich wartości, z uwzględnieniem rzadkości
 * Uporządkowano wartości przedmiotów na podstawie średnich cen skupu u kupców i wycen podobnego wyposażenia. Wyłączono pierścienie i walutę
@@ -17,10 +19,12 @@
 
 *klient Java*
 ---
+* Zastąpiono rozmytą poświatę przedmiotów leżących na ziemi cienkim, jednopikselowym obrysem zgodnym z plecakiem
 * Dodano informacje przedmiotom spożywczym / napojom ile leczą punktów wytrzymałości oraz jaki czas trwania posiadają
 
 *gra w przeglądarce*
 ---
+* Przedmioty na ziemi mają teraz taki sam cienki obrys rzadkości jak w plecaku. Obie prezentacje korzystają ze wspólnej pamięci podręcznej klatek animacji, bez dodatkowej poświaty
 * Dodano lokalną diagnostykę dla administratora z pomiarem płynności i raportem. Testowo można wyłączyć animacje ikon, dekoracje slotów i obwódki rzadkości bez wpływu na innych graczy
 * Raport diagnostyczny webklienta można kopiować bezpośrednio przyciskiem, również na telefonie. Dodano zapasowy sposób kopiowania dla przeglądarek bez obsługi standardowego schowka
 * Oddzielono animowane ikony przedmiotów od nieruchomych ramek slotów. Wspólna grafika slot.png zastępuje maski, gradientowe ramki i cienie CSS, zachowując rozmiary plecaków i wyposażenia

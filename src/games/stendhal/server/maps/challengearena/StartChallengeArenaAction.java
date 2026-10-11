@@ -25,14 +25,13 @@ public final class StartChallengeArenaAction implements ChatAction {
 			return;
 		}
 
-		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo();
-		if (arenaInfo == null) {
+		if (ChallengeArenaManager.getArenaInfo() == null) {
 			raiser.say("Arena nie jest teraz dostępna.");
 			return;
 		}
 
-		if (ChallengeArenaManager.isReserved() || !arenaInfo.isEmpty()) {
-			raiser.say("Arena Wyzwań jest teraz zajęta.");
+		if (ChallengeArenaManager.isReservedBy(player.getName())) {
+			raiser.say("Prowadzisz już własną walkę na Arenie Wyzwań.");
 			return;
 		}
 
@@ -49,8 +48,9 @@ public final class StartChallengeArenaAction implements ChatAction {
 			return;
 		}
 
-		if (!ChallengeArenaManager.reserve(player.getName())) {
-			raiser.say("Arena Wyzwań jest teraz zajęta.");
+		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.createSession(player);
+		if (arenaInfo == null) {
+			raiser.say("Nie udało się przygotować twojej areny. Wpisowe nie zostało pobrane.");
 			return;
 		}
 
@@ -62,18 +62,14 @@ public final class StartChallengeArenaAction implements ChatAction {
 
 		if (!arenaInfo.teleportIntoArena(player) || !arenaInfo.hasOnlyPlayer(player)) {
 			MoneyUtils.giveMoney(player, tier.getStake());
-			ChallengeArenaManager.release(player.getName());
-			if (arenaInfo.isInArena(player)) {
-				arenaInfo.teleportToLobby(player);
-			}
+			ChallengeArenaManager.returnAndRelease(player, arenaInfo);
 			raiser.say("Nie udało się wejść na arenę. Wpisowe zostało zwrócone.");
 			return;
 		}
 
 		if (!arenaInfo.startSession(player, tier)) {
 			MoneyUtils.giveMoney(player, tier.getStake());
-			ChallengeArenaManager.release(player.getName());
-			arenaInfo.teleportToLobby(player);
+			ChallengeArenaManager.returnAndRelease(player, arenaInfo);
 			raiser.say("Nie udało się rozpocząć walki. Wpisowe zostało zwrócone.");
 			return;
 		}

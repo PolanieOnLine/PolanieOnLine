@@ -17,7 +17,7 @@ public final class LeaveChallengeArenaAction implements ChatAction {
 	@Override
 	public void fire(final Player player, final Sentence sentence,
 			final EventRaiser raiser) {
-		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo();
+		final ChallengeArenaInfo arenaInfo = ChallengeArenaManager.getArenaInfo(player.getName());
 		if (arenaInfo != null && ChallengeArenaManager.isReservedBy(player.getName())) {
 			final ChallengeArenaEngine engine = arenaInfo.getEngine();
 			if (engine != null) {

@@ -13,16 +13,18 @@ public class ChallengeArenaManagerTest {
 	}
 
 	@Test
-	public void onePlayerCanReserveArenaUntilRelease() {
+	public void playersCanReserveIndependentArenasUntilRelease() {
 		assertTrue(ChallengeArenaManager.reserve("Alice"));
 		assertTrue(ChallengeArenaManager.isReserved());
 		assertTrue(ChallengeArenaManager.isReservedBy("Alice"));
-		assertFalse(ChallengeArenaManager.reserve("Bob"));
+		assertTrue(ChallengeArenaManager.reserve("Bob"));
 
 		ChallengeArenaManager.release("Alice");
 
+		assertFalse(ChallengeArenaManager.isReservedBy("Alice"));
+		assertTrue(ChallengeArenaManager.isReservedBy("Bob"));
+		ChallengeArenaManager.release("Bob");
 		assertFalse(ChallengeArenaManager.isReserved());
-		assertTrue(ChallengeArenaManager.reserve("Bob"));
 	}
 
 	@Test

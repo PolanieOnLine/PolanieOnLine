@@ -1,68 +1,72 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2026 - Stendhal                    *
+ *                   (C) Copyright 2026 - PolanieOnLine                   *
  ***************************************************************************/
 package games.stendhal.client.gui.j2d.entity;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import org.junit.Test;
 
+import games.stendhal.client.sprite.ImageSprite;
+import games.stendhal.client.sprite.ItemRarityOutline;
 import games.stendhal.common.constants.ItemRarity;
 
 public class Item2DViewGroundRarityTest {
 	@Test
-	public void rareGroundGlowFollowsSpriteSilhouetteWithoutCoveringIt() {
-		final BufferedImage source = new BufferedImage(9, 9,
-				BufferedImage.TYPE_INT_ARGB);
-		for (int y = 3; y <= 5; y++) {
-			for (int x = 3; x <= 5; x++) {
-				source.setRGB(x, y, 0xffffffff);
+	public void groundOutlineHasOnlyFourImmediateNeighborsAndDoesNotCoverTheSprite() {
+		final BufferedImage source = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
+		source.setRGB(2, 2, 0xffffffff);
+		final BufferedImage outline = ItemRarityOutline.create(source, ItemRarity.RARE);
+		assertEquals(7, outline.getWidth());
+		assertEquals(7, outline.getHeight());
+		int count = 0;
+		for (int y = 0; y < 7; y++) {
+			for (int x = 0; x < 7; x++) {
+				final int alpha = outline.getRGB(x, y) >>> 24;
+				final boolean neighbor = Math.abs(x - 3) + Math.abs(y - 3) == 1;
+				assertEquals(neighbor ? 255 : 0, alpha);
+				if (alpha > 0) { count++; }
 			}
 		}
-
-		final BufferedImage glow = GroundItemRarityGlow.createGlow(
-				source, ItemRarity.RARE, 3);
-		final Color insideSprite = new Color(glow.getRGB(7, 7), true);
-		final Color besideSprite = new Color(glow.getRGB(5, 7), true);
-		final Color farAway = new Color(glow.getRGB(0, 0), true);
-
-		assertEquals(0, insideSprite.getAlpha());
-		assertTrue(besideSprite.getAlpha() >= 100);
-		assertTrue(besideSprite.getBlue() > besideSprite.getRed());
-		assertTrue(besideSprite.getBlue() > besideSprite.getGreen());
-		assertEquals(0, farAway.getAlpha());
+		assertEquals(4, count);
+		assertEquals(0xffffffff, source.getRGB(2, 2));
 	}
 
 	@Test
-	public void everyRarityProducesVisibleOutlineGlow() {
-		final BufferedImage source = new BufferedImage(5, 5,
-				BufferedImage.TYPE_INT_ARGB);
+	public void groundOutlinePreservesInventoryHueOpacityAndDrawingCoordinates() {
+		final BufferedImage source = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
 		source.setRGB(2, 2, 0xffffffff);
-
-		for (final ItemRarity rarity : ItemRarity.values()) {
-			final BufferedImage glow = GroundItemRarityGlow.createGlow(
-					source, rarity, 3);
-			final Color pixel = new Color(glow.getRGB(4, 5), true);
-			final Color expected = Color.decode(rarity.getColorHex());
-
-			assertTrue(rarity + " glow should be visible", pixel.getAlpha() > 0);
-			assertEquals(expected.getRed(), pixel.getRed());
-			assertEquals(expected.getGreen(), pixel.getGreen());
-			assertEquals(expected.getBlue(), pixel.getBlue());
+		final int[] alphas = {255, 128, 179, 102};
+		final ItemRarity[] rarities = {ItemRarity.COMMON, ItemRarity.RARE, ItemRarity.EPIC, ItemRarity.LEGENDARY};
+		for (int i = 0; i < rarities.length; i++) {
+			final BufferedImage target = new BufferedImage(12, 12, BufferedImage.TYPE_INT_ARGB);
+			final Graphics2D graphics = target.createGraphics();
+			try {
+				ItemRarityOutline.paint(graphics, new ImageSprite(source), rarities[i], 4, 4);
+			} finally { graphics.dispose(); }
+			final Color pixel = new Color(target.getRGB(5, 6), true);
+			final Color color = Color.decode(rarities[i].getColorHex());
+			assertTrue(Math.abs(alphas[i] - pixel.getAlpha()) <= 1);
+			// Alpha compositing may round an unpremultiplied color by one unit.
+			assertTrue(Math.abs(color.getRed() - pixel.getRed()) <= 1);
+			assertTrue(Math.abs(color.getGreen() - pixel.getGreen()) <= 1);
+			assertTrue(Math.abs(color.getBlue() - pixel.getBlue()) <= 1);
+			assertEquals(0, target.getRGB(6, 6));
+			assertEquals(0, target.getRGB(4, 6));
 		}
 	}
 
 	@Test
-	public void missingRarityProducesTransparentGlow() {
-		final BufferedImage source = new BufferedImage(5, 5,
-				BufferedImage.TYPE_INT_ARGB);
-		source.setRGB(2, 2, 0xffffffff);
-
-		final BufferedImage glow = GroundItemRarityGlow.createGlow(source, null, 3);
-		assertEquals(0, new Color(glow.getRGB(4, 5), true).getAlpha());
+	public void transparentPixelsAndMissingRarityDoNotGenerateAnOutline() {
+		final BufferedImage source = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
+		source.setRGB(2, 2, 0x10ffffff);
+		assertEquals(0, ItemRarityOutline.create(source, ItemRarity.RARE).getRGB(2, 3));
+		source.setRGB(2, 2, 0x11ffffff);
+		assertNotEquals(0, ItemRarityOutline.create(source, ItemRarity.RARE).getRGB(2, 3));
+		assertEquals(0, ItemRarityOutline.create(source, null).getRGB(2, 3));
 	}
 }
