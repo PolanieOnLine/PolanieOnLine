@@ -38,6 +38,8 @@ final class ChallengeArenaInstanceFactory implements InstanceZoneFactory {
 		final StendhalRPZone zone = new StendhalRPZone(
 				descriptor.getRuntimeZoneIdString(), template.getZone());
 		zone.getAttributes().put("readable_name", "Arena Wyzwań w Tarnowie");
+		// Tile layers keep the template name; identify the private zone separately.
+		zone.getAttributes().put("runtime_zone", zone.getName());
 		zone.setPublicAccessible(false);
 		zone.setMoveToAllowed(false);
 		zone.disallowIn();

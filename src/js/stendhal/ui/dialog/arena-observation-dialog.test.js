@@ -53,6 +53,7 @@ test("chooser preserves names and sends silent observation controls instead of c
 	assert.equal(h.actions[0].text, undefined);
 	assert.equal(dialog.leave.hidden, true);
 	h.Dialog.show(event("watch", ["Alicja", "Bartek"], "Obserwujesz: Bartek"));
+	assert.equal(h.Dialog.isWatching(), true);
 	assert.equal(h.frames.length, 1); assert.equal(dialog.players.value, "Bartek");
 	assert.equal(dialog.status.textContent, "Obserwujesz: Bartek");
 	assert.equal(dialog.leave.hidden, false); dialog.leave.onclick();
@@ -89,6 +90,7 @@ test("closing sends a return once; server closure does not echo a new command", 
 	h.Dialog.show(event("open"));
 	h.queued.push(() => { h.viewport.freeze = true; });
 	h.Dialog.show(event("close", []));
+	assert.equal(h.Dialog.isWatching(), false);
 	assert.equal(h.actions.length, 1);
 	for (const run of h.queued) run();
 	assert.equal(h.viewport.freeze, false);

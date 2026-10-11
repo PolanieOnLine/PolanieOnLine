@@ -10,6 +10,7 @@
   "scripts": {
 	"test:arena-observation": "node --test src/js/stendhal/ui/dialog/arena-observation-dialog.test.js",
 	"test:viewport-input": "node --test src/js/stendhal/ui/viewport-input.test.js",
+	"test:arena-view": "node --test src/js/stendhal/ui/arena-view.test.js",
 	"test:entity-actions": "node --test src/js/stendhal/entity/entity-actions.test.js",
 	"test:creature-armor": "node --test src/js/stendhal/ui/render/creature-armor-renderer.test.js",
 	"test:quest-markers": "node --test src/js/stendhal/ui/render/quest-marker-renderer.test.js",

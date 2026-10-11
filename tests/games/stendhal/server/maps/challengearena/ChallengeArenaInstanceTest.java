@@ -75,6 +75,7 @@ public class ChallengeArenaInstanceTest {
 		new StartChallengeArenaAction(ChallengeArenaTier.TRIAL).fire(player, null, new EventRaiser(player));
 		final ChallengeArenaInfo info = ChallengeArenaManager.getArenaInfo(player.getName());
 		assertNotNull(info);
+		assertEquals(info.getZone().getName(), info.getZone().getAttributes().get("runtime_zone"));
 		assertTrue(info.isInArena(player));
 		assertNotNull(info.getEngine());
 		for (int x = 31; x <= 33; x++) {
