@@ -113,6 +113,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		});
 	}
 
+	/** A smith's preview cannot remain open after leaving the map. */
+	public static void closeOnZoneChange() {
+		SwingUtilities.invokeLater(() -> {
+			if (instance != null) {
+				instance.close();
+			}
+		});
+	}
+
 	/**
 	 * Check whether an inventory item can currently be selected from its
 	 * context menu.

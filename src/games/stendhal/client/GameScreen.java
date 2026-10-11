@@ -47,6 +47,7 @@ import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.DropTarget;
 import games.stendhal.client.gui.EffectLayer;
 import games.stendhal.client.gui.GroundContainer;
+import games.stendhal.client.gui.ItemUpgradeWindow;
 import games.stendhal.client.gui.j2d.AchievementBoxFactory;
 import games.stendhal.client.gui.j2d.RemovableSprite;
 import games.stendhal.client.gui.j2d.entity.Entity2DView;
@@ -993,6 +994,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	@Override
 	public void onZoneChange(Zone zone) {
 		removeAllObjects();
+		ItemUpgradeWindow.closeOnZoneChange();
 		SwingUtilities.invokeLater(globalEffects::clear);
 	}
 

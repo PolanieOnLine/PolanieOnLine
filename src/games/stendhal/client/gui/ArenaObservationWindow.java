@@ -3,6 +3,9 @@ package games.stendhal.client.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +36,23 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 		super("arena-observation", "Obserwacja areny");
 		setCloseable(true);
 		setMinimizable(false);
-		final JPanel content = new JPanel(new BorderLayout(8, 8));
-		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(360, 125));
+		final JPanel content = new LayoutPanel(new BorderLayout(6, 6)) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Dimension getPreferredSize() {
+				final Dimension size = super.getPreferredSize();
+				return new Dimension(Math.max(300, size.width), size.height);
+			}
+		};
+		content.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		content.add(status, BorderLayout.NORTH);
 		content.add(players, BorderLayout.CENTER);
-		final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 0));
+		final JPanel buttons = new LayoutPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
 		final JButton refresh = new JButton("Odśwież");
+		for (final JButton button : new JButton[] {observe, refresh, leave}) {
+			button.setMargin(new Insets(2, 8, 2, 8));
+			button.setFocusable(false);
+		}
 		buttons.add(observe);
 		buttons.add(refresh);
 		buttons.add(leave);
@@ -54,6 +67,20 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 			if (!serverClosing) { send("close", null); }
 			instance = null;
 		});
+	}
+
+	/** Layout containers use the enclosing window's background. */
+	private static class LayoutPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		LayoutPanel(final LayoutManager layout) {
+			super(layout);
+			setOpaque(false);
+			setBorder(BorderFactory.createEmptyBorder());
+		}
+		@Override
+		protected void paintComponent(final Graphics graphics) {
+			// Keep one shared background instead of painting nested panels.
+		}
 	}
 
 	static RPAction createAction(final String operation, final String target) {
@@ -84,7 +111,6 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 
 	public static void show(final RPEvent event) {
 		SwingUtilities.invokeLater(() -> {
-			final String phase = event.get("arena_phase");
 			if (shouldClose(event)) {
 				GameScreen.get().resumePlayerView();
 				if (instance != null) {
@@ -98,21 +124,28 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 				instance = new ArenaObservationWindow();
 				j2DClient.get().addWindow(instance);
 			}
-			final Object selected = instance.players.getSelectedItem();
-			final List<String> names = choices(event);
-			instance.players.removeAllItems();
-			for (final String name : names) {
-				instance.players.addItem(name);
-			}
-			if (selected != null && names.contains(selected)) { instance.players.setSelectedItem(selected); }
-			final boolean empty = instance.players.getItemCount() == 0;
-			instance.observe.setEnabled(!empty);
-			// Server text is plain text, never Swing's implicit HTML renderer.
-			instance.status.putClientProperty("html.disable", Boolean.TRUE);
-			instance.status.setText(empty ? "Nikt teraz nie walczy na arenie." : event.get("title"));
-			instance.leave.setVisible("watch".equals(phase));
+			instance.apply(event);
 			instance.setVisible(true);
 			instance.raise();
 		});
+	}
+
+	private void apply(final RPEvent event) {
+		final Object selected = players.getSelectedItem();
+		final List<String> names = choices(event);
+		players.removeAllItems();
+		for (final String name : names) {
+			players.addItem(name);
+		}
+		if (selected != null && names.contains(selected)) { players.setSelectedItem(selected); }
+		final boolean empty = players.getItemCount() == 0;
+		observe.setEnabled(!empty);
+		// Server text is plain text, never Swing's implicit HTML renderer.
+		status.putClientProperty("html.disable", Boolean.TRUE);
+		status.setText(empty ? "Nikt teraz nie walczy na arenie." : event.get("title"));
+		leave.setVisible("watch".equals(event.get("arena_phase")));
+		setSize(getPreferredSize());
+		revalidate();
+		repaint();
 	}
 }
