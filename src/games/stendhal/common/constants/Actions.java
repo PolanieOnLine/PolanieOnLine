@@ -20,6 +20,7 @@ import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_CONTINU
  */
 public final class Actions {
 	public static final String ACTION = "action";
+	public static final String ARENA_OBSERVATION = "arena_observation";
 
 	//forsake
 	public static final String SPECIES = "species";

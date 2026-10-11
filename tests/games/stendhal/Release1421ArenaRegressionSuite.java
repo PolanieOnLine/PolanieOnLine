@@ -22,6 +22,7 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaInfoTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaViewOrbTest;
 import games.stendhal.server.core.rp.group.GroupExperienceDistributorTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
+import games.stendhal.client.gui.ArenaObservationWindowTest;
 import games.stendhal.server.script.SummonMistCreatureTest;
 
 /** Focused regression suite shared by the 1.42.1 patch and master. */
@@ -40,6 +41,7 @@ import games.stendhal.server.script.SummonMistCreatureTest;
 	ChallengeArenaManagerTest.class,
 	ChallengeArenaInfoTest.class,
 	ChallengeArenaViewOrbTest.class,
+	ArenaObservationWindowTest.class,
 	GroupExperienceDistributorTest.class,
 	SignFromHallOfFameLoaderTest.class,
 	Item2DViewGroundRarityTest.class,

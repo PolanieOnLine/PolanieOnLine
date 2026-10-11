@@ -24,8 +24,18 @@ public final class ChallengeArenaPlayerGate extends OnePlayerArea {
 
 	@Override public void onEntered(final ActiveEntity entity, final StendhalRPZone zone,
 			final int x, final int y) {
-		if (entity instanceof Player && ((Player) entity).isArenaSpectator()) { return; }
+		if (entity instanceof Player) {
+			final Player player = (Player) entity;
+			if (player.isArenaSpectator()
+					|| (hasAdministrativeAccess(player) && !player.getName().equals(ownerName))) { return; }
+		}
 		super.onEntered(entity, zone, x, y);
+	}
+
+	static boolean hasAdministrativeAccess(final Player player) {
+		// Match teleportto's minimum privilege, not the lower support-only level.
+		// Entering through an observation orb still grants only a read-only view.
+		return player.getAdminLevel() >= 8 && !player.isArenaSpectator();
 	}
 
 	@Override
@@ -45,6 +55,6 @@ public final class ChallengeArenaPlayerGate extends OnePlayerArea {
 			return false;
 		}
 		// The lobby's empty ring has no owner. Paid fights use separate maps.
-		return !player.isGhost() && !player.getName().equals(ownerName);
+		return !player.isGhost() && !hasAdministrativeAccess(player) && !player.getName().equals(ownerName);
 	}
 }

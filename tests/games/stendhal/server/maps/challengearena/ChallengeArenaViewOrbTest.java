@@ -27,6 +27,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.util.Area;
 import marauroa.common.game.RPAction;
+import marauroa.common.game.RPClass;
 import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
@@ -111,16 +112,87 @@ public class ChallengeArenaViewOrbTest {
 		return found;
 	}
 
-	@Test public void emptyArenaOpensAnEmptyChooserInsteadOfAnEmptyCameraView() {
+	@Test public void emptyArenaDoesNotOpenAChooserOrAnEmptyCameraView() {
 		for (final int x : new int[] {27, 37}) {
 			final Player viewer = player("EmptyArenaViewer" + x);
 			open(viewer, x);
 			assertSame(lobby, viewer.getZone());
-			assertEquals("open", lastOptions(viewer).get("arena_phase"));
+			assertEquals("close", lastOptions(viewer).get("arena_phase"));
 			assertEquals("", lastOptions(viewer).get("options"));
 			assertFalse(viewer.isArenaSpectator());
 			for (final RPEvent event : viewer.events()) { assertNotEquals(Events.VIEW_CHANGE, event.getName()); }
 		}
+	}
+
+	private void observeAction(final Player player, final String operation, final String target) {
+		final RPAction action = newAction("arena_observation");
+		action.put("operation", operation);
+		if (target != null) { action.put("target", target); }
+		assertTrue(CommandCenter.execute(player, action));
+		assertFalse("Observation must not become public speech", player.has("text"));
+	}
+
+	@Test public void silentButtonsRefreshChooseSwitchAndCloseWithoutPublicSpeech() {
+		final Player alice = player("SilentAlice"), bob = player("SilentBob"), viewer = player("SilentViewer");
+		final ChallengeArenaInfo first = start(alice), second = start(bob);
+		open(viewer, 27);
+		observeAction(viewer, "list", null);
+		assertEquals("open", lastOptions(viewer).get("arena_phase"));
+		observeAction(viewer, "watch", alice.getName());
+		assertSame(first.getZone(), viewer.getZone());
+		observeAction(viewer, "list", null);
+		assertEquals("watch", lastOptions(viewer).get("arena_phase"));
+		observeAction(viewer, "watch", bob.getName());
+		assertSame(second.getZone(), viewer.getZone());
+		observeAction(viewer, "close", null);
+		assertSame(lobby, viewer.getZone());
+		assertFalse(viewer.isArenaSpectator());
+		assertEquals("close", lastOptions(viewer).get("arena_phase"));
+	}
+
+	@Test public void refreshClosesTheChooserAfterTheLastFightEnds() {
+		final Player owner = player("EmptyRefreshOwner"), viewer = player("EmptyRefreshViewer");
+		final ChallengeArenaInfo info = start(owner);
+		open(viewer, 27);
+		assertTrue(info.getEngine().forfeit(owner));
+		observeAction(viewer, "list", null);
+		assertEquals("close", lastOptions(viewer).get("arena_phase"));
+		assertSame(lobby, viewer.getZone());
+		observeAction(viewer, "watch", owner.getName());
+		assertFalse(viewer.isArenaSpectator());
+	}
+
+	@Test public void desktopRPClassChatCommandsAreConsumedBeforePublicChat() {
+		final Player owner = player("TypedChatOwner"), viewer = player("TypedChatViewer");
+		final ChallengeArenaInfo info = start(owner);
+		open(viewer, 27);
+		final RPAction action = new RPAction();
+		action.setRPClass(RPClass.getRPClass("chat"));
+		action.put("text", "obserwuj " + owner.getName());
+		assertFalse(action.has("type"));
+		assertTrue(CommandCenter.execute(viewer, action));
+		assertSame(info.getZone(), viewer.getZone());
+		assertFalse(viewer.has("text"));
+		action.put("text", "obserwuj powrot");
+		assertTrue(CommandCenter.execute(viewer, action));
+		assertSame(lobby, viewer.getZone());
+		assertFalse(viewer.has("text"));
+	}
+
+	@Test public void silentSelectionCannotBypassOrbValidationOrTreatNamesAsCommands() {
+		final Player owner = player("lista"), viewer = player("SilentValidationViewer");
+		final ChallengeArenaInfo info = start(owner);
+		observeAction(viewer, "watch", owner.getName());
+		assertSame(lobby, viewer.getZone());
+		open(viewer, 27);
+		viewer.setPosition(32, 60);
+		observeAction(viewer, "watch", owner.getName());
+		assertSame(lobby, viewer.getZone());
+		open(viewer, 27);
+		observeAction(viewer, "watch", owner.getName());
+		assertSame(info.getZone(), viewer.getZone());
+		observeAction(viewer, "return", null);
+		assertSame(lobby, viewer.getZone());
 	}
 
 	@Test public void choosesEitherPrivateFightAndSwitchesWithoutChangingTheirRuns() {
@@ -156,6 +228,7 @@ public class ChallengeArenaViewOrbTest {
 
 	@Test public void spectatorCannotAttackCastLootTradeOrExecuteUnknownCommands() {
 		final Player owner = player("WatchSafeOwner"), viewer = player("WatchSafeViewer");
+		viewer.setAdminLevel(5000); // The orb remains read-only even for an administrator.
 		final ChallengeArenaInfo info = start(owner);
 		final Item loot = SingletonRepository.getEntityManager().getItem("miecz");
 		info.getZone().add(loot);
@@ -203,6 +276,41 @@ public class ChallengeArenaViewOrbTest {
 		assertFalse(ChallengeArenaObservation.watch(viewer, owner.getName()));
 		assertSame(lobby, viewer.getZone());
 		assertFalse(viewer.isArenaSpectator());
+		assertEquals("close", lastOptions(viewer).get("arena_phase"));
+	}
+
+	@Test public void desktopTypedMovementReturnsInsteadOfMovingInsideThePrivateArena() {
+		final Player owner = player("TypedMoveOwner"), viewer = player("TypedMoveViewer");
+		start(owner);
+		open(viewer, 27);
+		observeAction(viewer, "watch", owner.getName());
+		final RPAction action = new RPAction();
+		action.setRPClass(RPClass.getRPClass("moveto"));
+		action.put("x", 32); action.put("y", 19);
+		assertFalse(action.has("type"));
+		assertTrue(CommandCenter.execute(viewer, action));
+		assertSame(lobby, viewer.getZone());
+		assertFalse(viewer.isArenaSpectator());
+	}
+
+	@Test public void malformedSilentControlsCannotMoveOrEndAnObservation() {
+		final Player owner = player("MalformedOwner"), viewer = player("MalformedViewer");
+		final ChallengeArenaInfo info = start(owner);
+		open(viewer, 27);
+		observeAction(viewer, "watch", owner.getName());
+		observeAction(viewer, "watch", null);
+		observeAction(viewer, "teleport", owner.getName());
+		final RPAction disguisedChat = newAction("look");
+		disguisedChat.setRPClass(RPClass.getRPClass("chat"));
+		disguisedChat.put("text", "hello");
+		assertTrue(CommandCenter.execute(viewer, disguisedChat));
+		assertFalse(viewer.has("text"));
+		assertTrue(CommandCenter.execute(viewer, newAction("arena_observation")));
+		assertTrue(viewer.isArenaSpectator());
+		assertSame(info.getZone(), viewer.getZone());
+		observeAction(viewer, "close", null);
+		observeAction(viewer, "close", null);
+		assertSame(lobby, viewer.getZone());
 	}
 
 	@Test public void multipleSpectatorsReturnWhenTheFighterWinsWithoutReceivingHisReward() {

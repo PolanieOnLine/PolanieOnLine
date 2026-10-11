@@ -50,8 +50,12 @@ final class ChallengeArenaInstanceFactory implements InstanceZoneFactory {
 		for (int x = 31; x <= 33; x++) {
 			final Portal exit = new Portal() {
 				@Override protected boolean usePortal(final Player player) {
-					if (player != owner || !nextTo(player)) {
+					if (!nextTo(player)) {
 						return false;
+					}
+					if (player != owner) {
+						// An administrative visit must never forfeit the fighter's run.
+						return ChallengeArenaPlayerGate.hasAdministrativeAccess(player) && info.teleportToLobby(player);
 					}
 					final ChallengeArenaEngine engine = info.getEngine();
 					return engine != null && engine.forfeit(player);
@@ -102,7 +106,7 @@ final class ChallengeArenaInstanceFactory implements InstanceZoneFactory {
 		}
 		stopRun();
 		final StendhalRPZone zone = (StendhalRPZone) destroyed;
-		// Administrators observing in ghost mode must not remain in a detached zone.
+		// Administrative visitors must not remain in a detached zone.
 		for (final Player visitor : new ArrayList<>(zone.getPlayers())) {
 			info.teleportToLobby(visitor);
 		}

@@ -90,10 +90,14 @@ public final class ChallengeArenaObservation implements TurnListener {
 		final Visit visit = viewers.get(player);
 		final String title = visit == null ? "Wybierz gracza do obserwacji"
 				: "Obserwujesz: " + visit.owner;
-		player.addEvent(ChatOptionsEvent.arenaObservation(phase, title, names));
-		if (names.isEmpty()) {
+		if (names.isEmpty() && visit == null) {
+			selections.remove(player);
+			closeWindow(player);
 			player.sendPrivateText("Nikt teraz nie walczy na arenie. Spróbuj ponownie za chwilę.");
-		} else if (visit == null) {
+			return;
+		}
+		player.addEvent(ChatOptionsEvent.arenaObservation(phase, title, names));
+		if (visit == null) {
 			player.sendPrivateText("Na arenie walczą: " + String.join(", ", names)
 					+ ". Wybierz gracza w oknie obserwacji albo wpisz: obserwuj " + names.get(0) + ".");
 		}
@@ -102,7 +106,22 @@ public final class ChallengeArenaObservation implements TurnListener {
 
 	/** Runs before ALL client commands, including forged inventory/admin actions. */
 	public static boolean handleAction(final Player player, final RPAction action) {
-		final String type = action.has(Actions.TYPE) ? action.get(Actions.TYPE) : "";
+		// Desktop clients encode known commands using RPClass instead of a type attribute.
+		final String encodedType = action.getRPClass().getName();
+		final String type = !encodedType.isEmpty() ? encodedType
+				: action.has(Actions.TYPE) ? action.get(Actions.TYPE) : "";
+		if (Actions.ARENA_OBSERVATION.equals(type)) {
+			final String operation = action.has("operation") ? action.get("operation") : "";
+			if ("close".equals(operation) || "return".equals(operation)) {
+				if (viewers.containsKey(player) || selections.containsKey(player)) { stopWatching(player); }
+			} else if ("list".equals(operation)) {
+				if (canChoose(player)) { showChoices(player, viewers.containsKey(player) ? "watch" : "open"); }
+			} else if ("watch".equals(operation) && action.has("target")) {
+				watch(player, action.get("target"));
+			}
+			// UI controls never pass through the public-chat or general action handlers.
+			return true;
+		}
 		if (Actions.CHAT.equals(type) && action.has(Actions.TEXT)) {
 			final String text = action.get(Actions.TEXT).trim();
 			if (text.toLowerCase(Locale.ROOT).startsWith("obserwuj ")
