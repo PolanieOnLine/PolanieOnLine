@@ -30,14 +30,10 @@
 ---
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
-* Naprawiono błąd, który mógł uniemożliwiać uruchomienie gry w przeglądarce
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
-* Uporządkowano okno ulepszania przedmiotów. Koszt, materiały i zmiany statystyk są czytelniejsze, a samo okno zajmuje mniej miejsca
-* Okno ulepszania przedmiotów zamyka się automatycznie po zmianie mapy
-* Zmniejszono okno obserwacji areny, żeby nie zasłaniało tyle ekranu
-* Poprawiono przesuwanie mapy oraz ograniczono migotanie drobnych wzorów podczas chodzenia
-* Poprawiono drganie własnej postaci, nicku, paska zdrowia i chmurek z tekstem podczas przesuwania kamery
-* Naprawiono ustawienie dopasowania widoku do okna. Gra nie powiększa już obrazu, gdy opcja skalowania jest wyłączona
+* Uporządkowano okno ulepszania przedmiotów. Zajmuje mniej miejsca, czytelniej pokazuje wymagania i zamyka się po opuszczeniu mapy
+* Poprawiono płynność przesuwania mapy i czytelność nazw postaci podczas chodzenia
+* Poprawiono działanie ustawienia dopasowania widoku gry do okna
 
 *administracja*
 ---
