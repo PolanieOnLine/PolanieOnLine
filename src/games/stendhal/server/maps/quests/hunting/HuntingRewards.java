@@ -80,7 +80,12 @@ public final class HuntingRewards {
 		for (Creature creature : creatures) {
 			for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
 				if (difficulty.accepts(level, creature.getLevel())) {
-					reference = Math.max(reference, strength(creature) * difficulty.getPercent() / 100.0 * 30 / 25.0);
+					// Keep the original strength calibration independent of payout changes.
+					// Otherwise lowering the bonus also lowers its divisor and cancels
+					// the reduction for the toughest targets.
+					double referenceShare = difficulty == HuntingDifficulty.EASY ? 0.10
+							: difficulty == HuntingDifficulty.MEDIUM ? 0.25 : 0.50;
+					reference = Math.max(reference, strength(creature) * referenceShare * 30 / 25.0);
 				}
 			}
 		}
