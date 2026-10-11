@@ -665,7 +665,8 @@ class SwingClientGUI implements J2DClientGUI {
 
 	@Override
 	public void beforePainting() {
-		screen.nextFrame();
+		// The logic thread cannot advance a camera for a future model position.
+		// GameScreen advances it on the EDT after capturing the painted frame.
 	}
 
 	@Override

@@ -26,7 +26,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.IGameScreen;
-import games.stendhal.client.PixelArtViewport;
+import games.stendhal.client.EntityRenderPosition;
+import games.stendhal.client.GameScreenSpriteHelper;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.EntityChangeListener;
@@ -125,6 +126,8 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	 * Some model value changed.
 	 */
 	private volatile boolean changed;
+	/** Position and other model changes are consumed only once per painted frame. */
+	private boolean frameFrozen;
 	/** Additional sprites attached to the view. */
 	private Collection<AttachedSprite> attachedSprites;
 
@@ -157,6 +160,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			this.entity.removeChangeListener(updateListener);
 		}
 		this.entity = entity;
+		frameFrozen = false;
 
 		x = 0;
 		y = 0;
@@ -192,10 +196,21 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	 */
 	@Override
 	public void applyChanges() {
-		if (changed) {
+		if (changed && !frameFrozen) {
 			changed = false;
 			update();
 		}
+	}
+
+	/** Capture before the camera is advanced; later draw calls cannot resample. */
+	public final EntityRenderPosition beginRenderFrame() {
+		applyChanges();
+		frameFrozen = true;
+		return new EntityRenderPosition(x + renderOffsetX, y + renderOffsetY, entity.getWidth());
+	}
+
+	public final void endRenderFrame() {
+		frameFrozen = false;
 	}
 
 	/**
@@ -402,7 +417,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			return source;
 		}
 
-		return PixelArtViewport.createSpriteGraphics(source, anchorX, anchorY,
+		return GameScreenSpriteHelper.createEntityGraphics(source, entity, x, y,
 				renderOffsetX, renderOffsetY);
 	}
 

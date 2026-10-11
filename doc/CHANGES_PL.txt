@@ -30,7 +30,8 @@
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
-* Poprawiono przesuwanie mapy, postaci, nazw i pasków zdrowia, aby ograniczyć drganie napisów oraz migotanie drobnych wzorów podczas chodzenia
+* Poprawiono przesuwanie mapy oraz ograniczono migotanie drobnych wzorów podczas chodzenia
+* Poprawiono drganie własnej postaci, nicku, paska zdrowia i chmurek z tekstem podczas przesuwania kamery
 * Naprawiono ustawienie dopasowania widoku do okna. Gra nie powiększa już obrazu, gdy opcja skalowania jest wyłączona
 
 *administracja*
