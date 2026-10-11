@@ -3,40 +3,28 @@
 1.42.1
 *polowania u Janisława*
 ---
-* Dodano wybór łatwych, średnich i trudnych polowań oraz podgląd celu i nagród przed potwierdzeniem zadania. Nowe polowania wymagają 20–30 zabójstw
-* Ukończenie polowania daje dodatkowo 10, 15 lub 20 procent PD pełnego bieżącego poziomu ataku i obrony, liczonych osobno dla obu umiejętności
-* Każde ukończone polowanie daje przypisaną graczowi Skrzynię Myśliwego. Łatwe: zapasy; średnie: wyposażenie z 25-procentową szansą na rzadkie; trudne: 90 procent rzadkich i 10 procent epickich
-* Skrzynie mają osobną pulę wyposażenia bez najcenniejszych nagród Areny Wyzwań. Poziom nagrody jest zapisywany przy ukończeniu zadania, nie przy otwarciu skrzyni
-* Zachowano rozpoczęte polowania, dotychczasowe nagrody i licznik ukończeń. Stare zadania otrzymują nowe dodatki jak polowanie średnie. Rezygnacja wymaga potwierdzenia i nie daje nagrody
-* Losowane cele muszą mieć miejsce odradzania w aktualnie dostępnych strefach publicznych; wykluczono bossów i prywatne instancje
+* U Janisława możesz wybrać łatwe, średnie lub trudne polowanie. Przed przyjęciem zadania poznasz przeciwnika, liczbę potworów do pokonania i nagrody
+* Za ukończone polowanie otrzymasz dodatkowe doświadczenie ataku i obrony: 10 procent za łatwe, 15 procent za średnie i 20 procent za trudne. To odpowiednia część doświadczenia potrzebnego na cały poziom każdej z tych umiejętności
+* Każde ukończone polowanie daje również Skrzynię Myśliwego. Za łatwe zadania znajdziesz w niej zapasy, za średnie wyposażenie z szansą na rzadkie, a za trudne co najmniej rzadkie wyposażenie z szansą na epickie
+* Możesz zrezygnować z polowania i wybrać inną trudność, ale za przerwane zadanie nie otrzymasz nagrody
+* Janisław nie zleca już polowań na bossów ani potwory z niedostępnych wydarzeń
 
 *arena i łupy*
 ---
-* Każdy gracz walczy na własnej, prywatnej Arenie Wyzwań w Tarnowie. Wspólne lobby, kupiec i ranking pozostają dostępne dla wszystkich, bez kolejki do walki i wzajemnego przeszkadzania
-* Południowa brama prywatnej areny pozwala się poddać lub wrócić po zwycięstwie bez utraty nagrody. Instancja jest sprzątana po wyjściu, śmierci albo wylogowaniu
-* Potwory na Arenie Wyzwań w Tarnowie pozostawiają teraz swoje normalne łupy. Po zwycięstwie gracz ma 60 sekund na ich zebranie
-* Dodano Kupca Areny, który automatycznie skupuje przedmioty dopuszczone do handlu według ich wartości, z uwzględnieniem rzadkości
-* Uporządkowano wartości przedmiotów na podstawie średnich cen skupu u kupców i wycen podobnego wyposażenia. Wyłączono pierścienie i walutę
-* Bossowie wyrzucają wyposażenie co najmniej rzadkie: 85 procent rzadkich, 13 procent epickich i 2 procent legendarnych. Nie zmieniono szansy na sam drop ani zwykłych materiałów i monet
-* Wyposażenie z nagrody najwyższej próby Areny Wyzwań oraz łupy jej końcowego czempiona nie mogą mieć zwykłej rzadkości
+* Na Arenie Wyzwań w Tarnowie nie musisz już czekać, aż inny gracz skończy walkę. Każdy rozgrywa własną próbę, bez wzajemnego przeszkadzania
+* Potwory na arenie pozostawiają teraz przedmioty. Po zwycięstwie masz minutę na zebranie łupów
+* Dodano Kupca Areny, u którego możesz sprzedać zdobyte wyposażenie. Za rzadsze przedmioty otrzymasz więcej pieniędzy
+* Wyposażenie wypadające z bossów jest teraz co najmniej rzadkie. Dotyczy to także nagrody za najtrudniejszą próbę Areny Wyzwań i łupów jej końcowego przeciwnika
 
-*schowek i administracja*
+*przedmioty i schowek*
 ---
-* Usunięto dodatkową sakwę ze schowka wyposażenia. Przy logowaniu stare monety są przenoszone do głównej sakwy i sumowane z jej zawartością, bez utraty pieniędzy
-* Zablokowano wkładanie nowych przedmiotów do starego slotu sakwy schowka oraz zamianę sakw przy przełączaniu zestawów
-* Dodano skrypt administratora do przywoływania mgielnych potworów, także w wersji elitarnej
-
-*klient Java*
----
-* Zastąpiono rozmytą poświatę przedmiotów leżących na ziemi cienkim, jednopikselowym obrysem zgodnym z plecakiem
-* Dodano informacje przedmiotom spożywczym / napojom ile leczą punktów wytrzymałości oraz jaki czas trwania posiadają
+* Przedmioty leżące na ziemi mają teraz wyraźną kolorową obwódkę zamiast rozmytej poświaty, podobnie jak w plecaku
+* Opisy jedzenia i napojów pokazują, ile zdrowia przywracają i jak długo działają
+* Schowek wyposażenia nie przechowuje już pieniędzy. Monety pozostawione w jego starej sakwie wracają do sakwy postaci, bez utraty zgromadzonej kwoty
 
 *gra w przeglądarce*
 ---
-* Przedmioty na ziemi mają teraz taki sam cienki obrys rzadkości jak w plecaku. Obie prezentacje korzystają ze wspólnej pamięci podręcznej klatek animacji, bez dodatkowej poświaty
-* Dodano lokalną diagnostykę dla administratora z pomiarem płynności i raportem. Testowo można wyłączyć animacje ikon, dekoracje slotów i obwódki rzadkości bez wpływu na innych graczy
-* Raport diagnostyczny webklienta można kopiować bezpośrednio przyciskiem, również na telefonie. Dodano zapasowy sposób kopiowania dla przeglądarek bez obsługi standardowego schowka
-* Oddzielono animowane ikony przedmiotów od nieruchomych ramek slotów. Wspólna grafika slot.png zastępuje maski, gradientowe ramki i cienie CSS, zachowując rozmiary plecaków i wyposażenia
+* Ramki miejsc na przedmioty w plecaku i wyposażeniu pozostają nieruchome, nawet gdy same przedmioty są animowane
 
 
 1.42
