@@ -33,6 +33,18 @@ public class LookActionItemTest {
 	}
 
 	@Test
+	public void boundItemLookShowsBindingAfterDescription() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("description", "Stary miecz z wyszczerbionym ostrzem.");
+		final Item item = new Item("miecz testowy", "sword", "test", attributes);
+		item.setBoundTo("Ala");
+
+		assertEquals("Stary miecz z wyszczerbionym ostrzem. "
+				+ "Oto specjalna nagroda dla Ala, która nie może być wykorzystana przez innych.",
+				LookAction.getLookDescription(item));
+	}
+
+	@Test
 	public void itemWithoutDescriptionGetsNeutralFallbackOnly() {
 		final Item item = new Item("miecz testowy", "sword", "test", null);
 		item.setRarity(ItemRarity.RARE);

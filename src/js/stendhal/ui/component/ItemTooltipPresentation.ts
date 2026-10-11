@@ -61,6 +61,7 @@ const SPECIAL_BONUSES: PercentageBonusDefinition[] = [
 	{key: "resist_shocked", label: "odporności na szok", fraction: true},
 	{key: "resist_confused", label: "odporności na dezorientację", fraction: true},
 	{key: "resist_heavy", label: "odporności na spowolnienie", fraction: true},
+	{key: "resist_stunned", label: "odporności na ogłuszenie", fraction: true},
 	{key: "critical_additional_bonus", label: "obrażeń krytycznych", fraction: false},
 	{key: "lifesteal", label: "kradzieży życia", fraction: true},
 	{key: "lifesteal_increase", label: "zwiększonej kradzieży życia", fraction: false},
@@ -124,6 +125,7 @@ export function buildStructuredItemTooltip(item: Item,
 	}
 	appendCoreStats(lines, current, equipped, weapon);
 	appendBonuses(lines, current, equipped, weapon, armour);
+	appendConsumableHealing(lines, current);
 	appendAffixes(lines, current);
 	appendFooter(lines, current);
 
@@ -287,6 +289,26 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	appendSection(lines, core);
 	appendSection(lines, resistances);
 	appendSection(lines, special);
+}
+
+function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<string, string>) {
+	const amount = intValue(current, "consumable_healing_amount");
+	if (amount <= 0) {
+		return;
+	}
+	const effect: ItemTooltipLine[] = [{
+		kind: "detail",
+		text: "Leczenie: +" + amount + " PW"
+	}];
+	if (current["consumable_healing_instant"] === "true") {
+		effect.push({kind: "detail", text: "Działanie: natychmiastowe"});
+	} else {
+		const duration = intValue(current, "consumable_healing_duration_seconds");
+		if (duration > 0) {
+			effect.push({kind: "detail", text: "Czas leczenia: " + duration + " s"});
+		}
+	}
+	appendSection(lines, effect);
 }
 
 function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>) {

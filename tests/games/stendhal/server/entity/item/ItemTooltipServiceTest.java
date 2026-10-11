@@ -104,6 +104,7 @@ public class ItemTooltipServiceTest {
 		attributes.put(ItemTooltip.RESIST_SHOCKED, "0.12");
 		attributes.put(ItemTooltip.RESIST_CONFUSED, "0.18");
 		attributes.put(ItemTooltip.RESIST_HEAVY, "0.25");
+		attributes.put(ItemTooltip.RESIST_STUNNED, "0.30");
 		final Item item = new Item("test affix armour", "armor", "test", attributes);
 
 		ItemTooltipService.update(item);
@@ -117,6 +118,39 @@ public class ItemTooltipServiceTest {
 		assertEquals("0.12", stat(item, ItemTooltip.RESIST_SHOCKED));
 		assertEquals("0.18", stat(item, ItemTooltip.RESIST_CONFUSED));
 		assertEquals("0.25", stat(item, ItemTooltip.RESIST_HEAVY));
+		assertEquals("0.3", stat(item, ItemTooltip.RESIST_STUNNED));
+	}
+
+	@Test
+	public void testFoodPublishesHealingAmountAndDuration() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("amount", "20");
+		attributes.put("regen", "3");
+		attributes.put("frequency", "5");
+		final Food item = new Food("jabłko testowe", "food", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("20", stat(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
+		assertEquals("35", stat(item,
+				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.CONSUMABLE_HEALING_INSTANT));
+	}
+
+	@Test
+	public void testElixirPublishesImmediateHealingWithoutDuration() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("amount", "50");
+		final ConsumableItem item = new ConsumableItem(
+				"eliksir zdrowia", "potion", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("50", stat(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
+		assertEquals("true", stat(item, ItemTooltip.CONSUMABLE_HEALING_INSTANT));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
 	}
 
 	@Test

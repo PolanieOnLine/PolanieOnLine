@@ -129,6 +129,7 @@ final class ItemRarityPresentation {
 		}
 		appendCoreStats(tooltip, object, comparisonItem, weapon);
 		appendBonuses(tooltip, object, comparisonItem, weapon, armour);
+		appendConsumableHealing(tooltip, object);
 		final String legendaryAffix = LegendaryAffixPresentation.build(object);
 		if (!legendaryAffix.isEmpty()) {
 			appendDivider(tooltip);
@@ -493,6 +494,9 @@ final class ItemRarityPresentation {
 				ItemTooltip.RESIST_HEAVY,
 				"odporności na spowolnienie", true);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.RESIST_STUNNED,
+				"odporności na ogłuszenie", true);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
@@ -643,6 +647,30 @@ final class ItemRarityPresentation {
 			value *= 100.0;
 		}
 		return value;
+	}
+
+	private static void appendConsumableHealing(final StringBuilder tooltip,
+			final RPObject object) {
+		final int amount = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.CONSUMABLE_HEALING_AMOUNT);
+		if (amount <= 0) {
+			return;
+		}
+		appendDivider(tooltip);
+		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
+				.append("Leczenie: <b>+").append(amount).append(" PW</b>");
+		final String instant = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.CONSUMABLE_HEALING_INSTANT);
+		if ("true".equals(instant)) {
+			tooltip.append(" (natychmiastowe)");
+		} else {
+			final int duration = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS);
+			if (duration > 0) {
+				tooltip.append("<br>Czas leczenia: ").append(duration).append(" s");
+			}
+		}
+		tooltip.append("</font>");
 	}
 
 	private static void appendFooter(final StringBuilder tooltip,

@@ -115,6 +115,29 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
+	public void testConsumableTooltipShowsHealingDurationAndInstantElixir() {
+		final RPObject food = ItemTestHelper.createItem("jabłko testowe");
+		food.put("class", "food");
+		putStat(food, ItemTooltip.CONSUMABLE_HEALING_AMOUNT, "20");
+		putStat(food, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS, "35");
+
+		final String foodTooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(food));
+		assertTrue(foodTooltip.contains("Leczenie: <b>+20 PW</b>"));
+		assertTrue(foodTooltip.contains("Czas leczenia: 35 s"));
+
+		final RPObject elixir = ItemTestHelper.createItem("eliksir zdrowia");
+		putStat(elixir, ItemTooltip.CONSUMABLE_HEALING_AMOUNT, "50");
+		putStat(elixir, ItemTooltip.CONSUMABLE_HEALING_INSTANT, "true");
+
+		final String elixirTooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(elixir));
+		assertTrue(elixirTooltip.contains("Leczenie: <b>+50 PW</b>"));
+		assertTrue(elixirTooltip.contains("(natychmiastowe)"));
+		assertFalse(elixirTooltip.contains("Czas leczenia:"));
+	}
+
+	@Test
 	public void testSlowWeaponGetsReadableSpeedLabel() {
 		final RPObject object = ItemTestHelper.createItem("powolny młot");
 		object.put("class", "club");

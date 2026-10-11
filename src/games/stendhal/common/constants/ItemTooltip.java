@@ -75,6 +75,7 @@ public final class ItemTooltip {
 	public static final String RESIST_SHOCKED = "resist_shocked";
 	public static final String RESIST_CONFUSED = "resist_confused";
 	public static final String RESIST_HEAVY = "resist_heavy";
+	public static final String RESIST_STUNNED = "resist_stunned";
 	public static final String DAMAGE_TYPE = "damage_type";
 	public static final String STATUS_ATTACK = "statusattack";
 	public static final String ACCURACY_BONUS = "accuracy_bonus";
@@ -86,6 +87,11 @@ public final class ItemTooltip {
 	public static final String CRITICAL_BONUS = "critical_additional_bonus";
 	public static final String LIFESTEAL_INCREASE = "lifesteal_increase";
 	public static final String HEALTH = "health";
+	/** Tooltip-only healing data for consumable items. */
+	public static final String CONSUMABLE_HEALING_AMOUNT = "consumable_healing_amount";
+	public static final String CONSUMABLE_HEALING_DURATION_SECONDS =
+			"consumable_healing_duration_seconds";
+	public static final String CONSUMABLE_HEALING_INSTANT = "consumable_healing_instant";
 	public static final String MIN_LEVEL = "min_level";
 	public static final String MIN_USE = "min_use";
 	/** Legacy wire key retained for compatibility with saved items and clients. */

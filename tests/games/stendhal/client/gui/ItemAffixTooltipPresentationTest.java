@@ -50,6 +50,7 @@ public class ItemAffixTooltipPresentationTest {
 		put(object, ItemTooltip.RESIST_SHOCKED, "0.12");
 		put(object, ItemTooltip.RESIST_CONFUSED, "0.18");
 		put(object, ItemTooltip.RESIST_HEAVY, "0.25");
+		put(object, ItemTooltip.RESIST_STUNNED, "0.30");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
@@ -61,6 +62,7 @@ public class ItemAffixTooltipPresentationTest {
 		assertTrue(tooltip.contains("+12% odporności na szok"));
 		assertTrue(tooltip.contains("+18% odporności na dezorientację"));
 		assertTrue(tooltip.contains("+25% odporności na spowolnienie"));
+		assertTrue(tooltip.contains("+30% odporności na ogłuszenie"));
 	}
 
 	@Test

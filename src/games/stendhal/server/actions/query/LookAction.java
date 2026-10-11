@@ -84,17 +84,20 @@ public class LookAction implements ActionListener {
 	}
 
 	/**
-	 * Item tooltips are responsible for presenting gameplay statistics. Looking
-	 * at an item should remain a purely descriptive action and therefore must
-	 * not expose rarity, value, improvements, bindings or combat parameters.
+	 * Keep item look output descriptive and avoid exposing rarity, value,
+	 * improvements or combat parameters. Bound items retain their ownership
+	 * notice after the item's normal description.
 	 */
 	static String getLookDescription(final Entity entity) {
 		if (entity instanceof Item) {
 			final Item item = (Item) entity;
-			if (item.hasDescription()) {
-				return item.getDescription();
+			String description = item.hasDescription()
+					? item.getDescription() : "Oto " + item.getTitle() + ".";
+			if (item.isBound()) {
+				description += " Oto specjalna nagroda dla " + item.getBoundTo()
+						+ ", która nie może być wykorzystana przez innych.";
 			}
-			return "Oto " + item.getTitle() + ".";
+			return description;
 		}
 		return entity.describe();
 	}
