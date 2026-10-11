@@ -80,7 +80,7 @@ function pixel(pixels, x, y) { return Array.from(pixels.data.slice((y * pixels.w
 test("slot outline follows four alpha neighbors, not diagonal pixels or the slot rectangle", () => {
 	const h = harness(), input = source();
 	opaque(input, 2, 2);
-	const result = h.Effects.createPixels(input, h.ItemRarity.COMMON, "outline");
+	const result = h.Effects.createPixels(input, h.ItemRarity.COMMON);
 	assert.deepEqual([result.width, result.height], [7, 7]);
 	for (const [x, y] of [[2, 3], [4, 3], [3, 2], [3, 4]]) { assert.deepEqual(pixel(result, x, y), [158, 158, 158, 255]); }
 	assert.equal(result.data.filter((value, index) => index % 4 === 3 && value > 0).length, 4);
@@ -92,41 +92,37 @@ test("outline uses Java's alpha threshold, colors and per-rarity opacity", () =>
 	const h = harness();
 	for (const [rarity, expectedAlpha] of [[h.ItemRarity.COMMON, 255], [h.ItemRarity.RARE, 128], [h.ItemRarity.EPIC, 179], [h.ItemRarity.LEGENDARY, 102]]) {
 		const input = source(); opaque(input, 2, 2, 16);
-		assert.ok(h.Effects.createPixels(input, rarity, "outline").data.every(value => value === 0));
+		assert.ok(h.Effects.createPixels(input, rarity).data.every(value => value === 0));
 		opaque(input, 2, 2, 17);
 		const color = rarity.colorHex.slice(1).match(/../g).map(value => parseInt(value, 16));
-		assert.deepEqual(pixel(h.Effects.createPixels(input, rarity, "outline"), 2, 3), [...color, expectedAlpha]);
+		assert.deepEqual(pixel(h.Effects.createPixels(input, rarity), 2, 3), [...color, expectedAlpha]);
 	}
 });
 
-test("ground glow fades over three pixels and never paints opaque source pixels", () => {
+test("ground and inventory share one-pixel silhouettes and warmed frame canvases", () => {
 	const h = harness(), input = source(); opaque(input, 2, 2); opaque(input, 3, 2);
-	const result = h.Effects.createPixels(input, h.ItemRarity.LEGENDARY, "ground");
-	assert.deepEqual([result.width, result.height], [11, 11]);
-	assert.deepEqual(pixel(result, 4, 5), [255, 140, 0, 153]);
-	assert.equal(pixel(result, 3, 5)[3], 102);
-	assert.equal(pixel(result, 2, 5)[3], 51);
-	assert.equal(pixel(result, 5, 5)[3], 0);
-	assert.equal(pixel(result, 6, 5)[3], 0);
-	assert.equal(pixel(result, 1, 5)[3], 0);
+	const result = h.Effects.createPixels(input, h.ItemRarity.LEGENDARY);
+	assert.deepEqual([result.width, result.height], [7, 7]);
+	assert.deepEqual(pixel(result, 2, 3), [255, 140, 0, 102]);
+	for (const [x, y] of [[1, 3], [2, 2], [3, 3], [4, 3]]) { assert.equal(pixel(result, x, y)[3], 0); }
+
+	const item = h.item({ width: 32, height: 32, src: "shared.png" });
+	const target = new h.Element();
+	h.Effects.updateSlot(target, item);
+	const cached = target.children[0].drawn.image, reads = h.metrics.reads;
+	const calls = [];
+	h.Effects.drawGround({ drawImage: (...args) => calls.push(args) }, item, 100, 200);
+	assert.equal(calls[0][0], cached, "Ground and slots use the exact same cached outline");
+	assert.equal(h.metrics.reads, reads, "Ground does not regenerate an inventory outline");
 });
 
-test("ground strength and source alpha match the Java rarity values", () => {
-	const h = harness(), input = source(); opaque(input, 2, 2);
-	for (const [rarity, alpha] of [[h.ItemRarity.COMMON, 153], [h.ItemRarity.RARE, 128], [h.ItemRarity.EPIC, 102], [h.ItemRarity.LEGENDARY, 153]]) {
-		assert.equal(pixel(h.Effects.createPixels(input, rarity, "ground"), 4, 5)[3], alpha);
-	}
-	opaque(input, 2, 2, 17);
-	assert.equal(pixel(h.Effects.createPixels(input, h.ItemRarity.COMMON, "ground"), 4, 5)[3], 10);
-});
-
-test("frames, states, rarity and effect mode have independent cached small canvases", () => {
+test("frames, states and rarity have independent cached small canvases", () => {
 	const h = harness(), image = { width: 96, height: 64, src: "sheet.png" };
-	const requests = [[0, 0, h.ItemRarity.RARE, "outline"], [32, 0, h.ItemRarity.RARE, "outline"],
-		[0, 32, h.ItemRarity.RARE, "outline"], [0, 0, h.ItemRarity.EPIC, "outline"], [0, 0, h.ItemRarity.RARE, "ground"]];
+	const requests = [[0, 0, h.ItemRarity.RARE], [32, 0, h.ItemRarity.RARE],
+		[0, 32, h.ItemRarity.RARE], [0, 0, h.ItemRarity.EPIC]];
 	const results = requests.map(args => h.Effects.getFrame(image, ...args));
 	assert.equal(new Set(results).size, requests.length);
-	assert.deepEqual(results.map(canvas => canvas.width), [34, 34, 34, 34, 38]);
+	assert.deepEqual(results.map(canvas => canvas.width), [34, 34, 34, 34]);
 	const reads = h.metrics.reads;
 	for (let repeat = 0; repeat < 100; repeat++) {
 		requests.forEach((args, index) => assert.equal(h.Effects.getFrame(image, ...args), results[index]));
@@ -136,31 +132,31 @@ test("frames, states, rarity and effect mode have independent cached small canva
 
 test("pending, invalid and unreadable images do not break normal rendering; fallback can recover", () => {
 	const h = harness(), image = { width: 64, height: 32, src: "sheet.png", complete: false };
-	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"), undefined);
+	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE), undefined);
 	assert.equal(h.metrics.reads, 0);
 	image.complete = true;
-	assert.ok(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"));
-	assert.equal(h.Effects.getFrame(image, 64, 0, h.ItemRarity.RARE, "outline"), undefined);
+	assert.ok(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE));
+	assert.equal(h.Effects.getFrame(image, 64, 0, h.ItemRarity.RARE), undefined);
 	image.src = "unreadable.png"; image.unreadable = true;
-	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"), undefined);
+	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE), undefined);
 	const reads = h.metrics.reads;
-	assert.equal(h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE, "outline"), undefined);
+	assert.equal(h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE), undefined);
 	assert.equal(h.metrics.reads, reads);
 	image.src = "fallback.png"; image.unreadable = false; image.width = 32;
-	assert.ok(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"));
+	assert.ok(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE));
 });
 
 test("36 animated rare items reuse their warmed frames without additional pixel readback", () => {
 	const h = harness();
 	const images = Array.from({ length: 36 }, (_, index) => ({ width: 256, height: 32, src: `item-${index}.png` }));
 	for (let frame = 0; frame < 8; frame++) {
-		for (const image of images) { h.Effects.getFrame(image, frame * 32, 0, h.ItemRarity.RARE, "outline"); }
+		for (const image of images) { h.Effects.getFrame(image, frame * 32, 0, h.ItemRarity.RARE); }
 	}
 	assert.equal(h.metrics.reads, 36 * 8);
 	const draws = h.metrics.draws, created = h.metrics.created;
 	for (let cycle = 0; cycle < 10; cycle++) {
 		for (let frame = 0; frame < 8; frame++) {
-			for (const image of images) { h.Effects.getFrame(image, frame * 32, 0, h.ItemRarity.RARE, "outline"); }
+			for (const image of images) { h.Effects.getFrame(image, frame * 32, 0, h.ItemRarity.RARE); }
 		}
 	}
 	assert.equal(h.metrics.reads, 36 * 8);
@@ -171,13 +167,13 @@ test("36 animated rare items reuse their warmed frames without additional pixel 
 test("effect cache has a bounded byte budget with least-recently-used eviction", () => {
 	const h = harness(), image = { width: 96, height: 32, src: "sheet.png" };
 	h.Effects.CACHE_BYTES = 34 * 34 * 4 * 2;
-	const first = h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline");
-	const second = h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE, "outline");
-	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"), first);
-	h.Effects.getFrame(image, 64, 0, h.ItemRarity.RARE, "outline");
+	const first = h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE);
+	const second = h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE);
+	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE), first);
+	h.Effects.getFrame(image, 64, 0, h.ItemRarity.RARE);
 	assert.ok(h.Effects.cacheBytes <= h.Effects.CACHE_BYTES);
-	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE, "outline"), first);
-	assert.notEqual(h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE, "outline"), second);
+	assert.equal(h.Effects.getFrame(image, 0, 0, h.ItemRarity.RARE), first);
+	assert.notEqual(h.Effects.getFrame(image, 32, 0, h.ItemRarity.RARE), second);
 });
 
 test("slot overlay is reused, follows animation and state, and survives quantity replacement", () => {
@@ -239,13 +235,13 @@ test("slot outline takes the resolved sprite row rather than the raw state", () 
 	assert.equal(h.metrics.reads, reads + 1, "The resolved active row selects a new outline");
 });
 
-test("ground glow uses the active frame and row, correct centering and skips contained items", () => {
+test("ground outline uses the active frame and row, correct centering and skips contained items", () => {
 	const h = harness(), item = h.item({ width: 64, height: 64 });
 	item.sprite.offsetX = item.sprite.offsetY = 32; item.getWidth = () => 2;
 	const calls = [], context = { drawImage: (...args) => calls.push(args) };
 	h.Effects.drawGround(context, item, 100, 200);
-	assert.deepEqual(calls[0].slice(1), [113, 197]);
-	assert.equal(calls[0][0].width, 38);
+	assert.deepEqual(calls[0].slice(1), [115, 199]);
+	assert.equal(calls[0][0].width, 34);
 	item._parent = {};
 	h.Effects.drawGround(context, item, 100, 200);
 	assert.equal(calls.length, 1);

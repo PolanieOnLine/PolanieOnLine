@@ -28,7 +28,7 @@ public final class ChallengeArenaNPC {
 			protected void createDialog() {
 				addGreeting("Witaj wojowniku. W Tarnowie sam wybierasz stawkę i trudność walki. Zapytaj mnie o #arenę.");
 				addJob("Prowadzę Arenę Wyzwań w Tarnowie.");
-				addHelp("Powiedz #arena aby wybrać stawkę. Po wybraniu próby powiedz #wejście albo #tak. O swoje dotychczasowe osiągnięcia zapytaj mówiąc #wyniki. Podczas walki możesz powiedzieć #rezygnuję. Wpisowe wtedy przepada.");
+				addHelp("Powiedz #arena aby wybrać stawkę. Po wybraniu próby powiedz #wejście albo #tak. Każdy walczy na własnej arenie, bez kolejki i pomocy innych graczy. O osiągnięcia zapytaj mówiąc #wyniki. Aby się poddać podczas walki, użyj południowej bramy. Wpisowe wtedy przepada. Po zwycięstwie masz 60 sekund na łupy; bramą możesz wrócić wcześniej bez utraty nagrody.");
 				addGoodbye("Wróć gdy będziesz gotowy na kolejną walkę.");
 
 				add(ConversationStates.ANY,

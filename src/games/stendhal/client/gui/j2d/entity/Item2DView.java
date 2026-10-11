@@ -36,6 +36,7 @@ import games.stendhal.client.gui.j2d.entity.helpers.HorizontalAlignment;
 import games.stendhal.client.gui.j2d.entity.helpers.VerticalAlignment;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.AnimatedSprite;
+import games.stendhal.client.sprite.ItemRarityOutline;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
@@ -152,8 +153,8 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 	protected void draw(final Graphics2D g2d, final int x, final int y,
 			final int width, final int height) {
 		if (!isContained() && entity != null) {
-			GroundItemRarityGlow.paint(g2d, getSprite(), entity.getRarity(),
-					x, y, width, height);
+			ItemRarityOutline.paint(g2d, getSprite(),
+					entity.getRarity(), x, y);
 		}
 		super.draw(g2d, x, y, width, height);
 

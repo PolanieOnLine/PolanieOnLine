@@ -26,6 +26,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 	private final LongSupplier clock;
 
 	private boolean running = true;
+	private boolean finishing;
 	private long nextWaveAt;
 	private long lootUntil;
 
@@ -50,6 +51,10 @@ public final class ChallengeArenaEngine implements TurnListener {
 	@Override
 	public void onTurnReached(final int currentTurn) {
 		if (!running) {
+			return;
+		}
+		if (finishing) {
+			finishAndReturnPlayer();
 			return;
 		}
 
@@ -167,7 +172,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		player.setQuest(ChallengeArenaState.QUEST_SLOT,
 				state.withLifecycle(ChallengeArenaState.Lifecycle.DONE).serialize());
 		lootUntil = clock.getAsLong() + LOOT_PERIOD_MILLIS;
-		player.sendPrivateText("Zwycięstwo! Masz 60 sekund na zebranie łupów, zanim wrócisz do kupca. Możesz wcześniej powiedzieć Mistrzowi Wyzwań #rezygnuję lub #wyjdź bez utraty nagrody.");
+		player.sendPrivateText("Zwycięstwo! Masz 60 sekund na zebranie łupów, zanim wrócisz do kupca. Możesz wcześniej opuścić arenę południową bramą bez utraty nagrody.");
 		SingletonRepository.getTurnNotifier().notifyInTurns(0, this);
 	}
 
@@ -186,14 +191,27 @@ public final class ChallengeArenaEngine implements TurnListener {
 	}
 
 	private void finishAndReturnPlayer() {
-		running = false;
+		finishing = true;
 		spawner.removeAllCreatures();
-		ChallengeArenaManager.release(player.getName());
-		arenaInfo.clearEngine(this);
-		if (!player.isDisconnected() && player.getHP() > 0
-				&& arenaInfo.isInArena(player)) {
-			arenaInfo.teleportToLobby(player);
+		if (!player.isDisconnected() && arenaInfo.isInZone(player)
+				&& !arenaInfo.teleportToLobby(player)) {
+			// Keep the map alive and retry rather than stranding its occupant.
+			SingletonRepository.getTurnNotifier().notifyInTurns(1, this);
+			return;
 		}
+		stop();
+		ChallengeArenaManager.release(player.getName(), arenaInfo);
+		// Legacy/test sessions do not have a registered private instance.
+		if (ChallengeArenaManager.getArenaInfo(player.getName()) == null) {
+			ChallengeArenaManager.release(player.getName());
+		}
+	}
+
+	void stop() {
+		running = false;
+		SingletonRepository.getTurnNotifier().dontNotify(this);
+		spawner.removeAllCreatures();
+		arenaInfo.clearEngine(this);
 	}
 
 	private void announceStart(final ChallengeArenaState state) {
@@ -203,6 +221,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		player.sendPrivateText("Arena Wyzwań rozpoczęta. Do pokonania "
 				+ state.getTier().getCreatureCount() + " przeciwników w "
 				+ state.getTier().getWaveCount() + " falach.");
+		player.sendPrivateText("To twoja prywatna arena. Aby się poddać, użyj południowej bramy. Podczas walki wpisowe przepada.");
 		if (!modifiers.isEmpty()) {
 			final StringBuilder text = new StringBuilder("Modyfikatory areny ");
 			for (int i = 0; i < modifiers.size(); i++) {

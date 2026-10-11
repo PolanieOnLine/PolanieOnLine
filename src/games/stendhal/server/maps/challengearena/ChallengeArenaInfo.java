@@ -44,6 +44,22 @@ public final class ChallengeArenaInfo {
 		return zone;
 	}
 
+	ChallengeArenaInfo forInstance(final StendhalRPZone instance) {
+		return new ChallengeArenaInfo(new Area(instance, arena.getShape().getBounds2D()),
+				instance, lobbyZone, lobbyX, lobbyY, startX, startY);
+	}
+
+	boolean isInZone(final Player player) {
+		return player != null && player.getZone() == zone && zone.has(player.getID());
+	}
+
+	/** Persist a permanent location when disconnecting from an ephemeral map. */
+	void saveLobbyPosition(final Player player) {
+		player.put("zoneid", lobbyZone);
+		player.put("x", lobbyX);
+		player.put("y", lobbyY);
+	}
+
 	public boolean isInArena(final Player player) {
 		return player != null && arena.contains(player);
 	}
