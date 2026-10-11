@@ -14,14 +14,18 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.Direction;
+import games.stendhal.common.tiled.StendhalMapStructure;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -39,7 +43,7 @@ public class ChallengeArenaNPCTest {
 	@Test
 	public void arenaBuyerQuotesAndBuysLootThroughNormalConversation() {
 		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-dialog", 64, 64);
-		ChallengeArenaBuyerNPC.create(zone, 40, 47);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
 		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
 		final Player player = PlayerTestHelper.createPlayer("ArenaSellerDialog");
 		zone.add(player);
@@ -59,6 +63,74 @@ public class ChallengeArenaNPCTest {
 		int paid = 0;
 		for (final Item money : player.getAllEquipped("money")) { paid += money.getQuantity(); }
 		assertEquals(item.getValue(), paid);
+	}
+
+	@Test
+	public void buyerHasMerchantClothesAndFacesLeftAtTheRequestedSpot() throws Exception {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-location", 64, 64);
+		final StendhalMapStructure map = TMXLoader.load("data/maps/interiors/tarnow/challenge_arena.tmx");
+		zone.addCollisionLayer(zone.getName() + ".collision", map.getLayer("collision"));
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		assertEquals(38, npc.getX());
+		assertEquals(50, npc.getY());
+		assertEquals(Direction.LEFT, npc.getDirection());
+		assertEquals("buyer2npc", npc.get("class"));
+		assertTrue(new java.io.File("data/sprites/npc/buyer2npc.png").isFile());
+		assertTrue("The buyer's tile must not be blocked", !zone.collisionMap.collides(38, 50));
+		assertTrue("Players must be able to approach from the left", !zone.collisionMap.collides(37, 50));
+	}
+
+	@Test
+	public void buyerOffersSoundLikeConversationAndExplainHowToSell() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-copy", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaBuyerCopy");
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		assertEquals("Witaj! Masz coś po walce? Chętnie odkupię twoje zdobycze.", getReply(npc));
+		engine.step(player, "oferta");
+		assertEquals("Chętnie odkupię broń, zbroje i inne łupy. Za rzadsze okazy zapłacę więcej. Monet, kluczy i rzeczy przypisanych do postaci nie biorę.", getReply(npc));
+		engine.step(player, "pomoc");
+		assertTrue(getReply(npc).contains("#'sprzedaj polano'"));
+	}
+
+	@Test
+	public void buyerQuotesOneAndSeveralLogsWithoutBrokenGenderOrCoinEndings() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-polano", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaLogSeller");
+		zone.add(player);
+		final StackableItem logs = (StackableItem) SingletonRepository.getEntityManager().getItem("polano");
+		logs.setQuantity(22);
+		player.getSlot("bag").add(logs);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj polano");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertEquals("Dam ci 1 monetę za „polano”. Sprzedajesz?", getReply(npc));
+		engine.step(player, "nie");
+		engine.step(player, "sprzedaj 22 polano");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertEquals("Dam ci 22 monety za „polano” (22 szt.). Sprzedajesz?", getReply(npc));
+		engine.step(player, "tak");
+		assertEquals(22, MoneyUtils.getTotalMoneyInCopper(player));
+		assertTrue(!player.isEquipped("polano"));
+	}
+
+	@Test
+	public void missingLootDoesNotPretendThatTheItemIsWorthless() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-missing", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaMissingLoot");
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj polano");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertEquals("Nie mogę odkupić tych rzeczy. Sprawdź, czy masz je przy sobie i czy nie są przypisane do postaci.", getReply(npc));
 	}
 
 	@Test

@@ -13,7 +13,7 @@
 ---
 * Każdy gracz walczy na własnej Arenie Wyzwań w Tarnowie, bez kolejki i bez przeszkadzania innym uczestnikom
 * Potwory na arenie pozostawiają łupy. Po zwycięstwie gracz ma minutę na ich zebranie
-* Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Ceny uwzględniają ich wycenę i rzadkość
+* Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Przed sprzedażą kupiec podaje cenę, uwzględniając rzadkość przedmiotu
 * Wyposażenie zdobyte z bossów jest co najmniej rzadkie. Taką samą gwarancję dodano do nagrody za najtrudniejszą próbę areny i łupów jej końcowego przeciwnika
 
 *przedmioty i wyposażenie*

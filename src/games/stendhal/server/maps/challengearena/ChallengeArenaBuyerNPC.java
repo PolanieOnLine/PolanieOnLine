@@ -18,20 +18,21 @@ public final class ChallengeArenaBuyerNPC {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj! Skupuję łupy za ich wartość. Powiedz #sprzedaj i nazwę przedmiotu.");
-				addJob("Odkupuję zdobycze wojowników Areny Wyzwań.");
-				addHelp("Powiedz np. #sprzedaj miecz albo #sprzedaj 3 miecz. Wycenę podam przed zatwierdzeniem. Rzadkość zwiększa cenę, ale nie kupuję monet, kluczy i przedmiotów przypisanych do postaci.");
-				addOffer("Skupuję przedmioty dopuszczone do handlu, mające dodatnią wartość. Nie musisz szukać ich na liście: powiedz #sprzedaj i nazwę zdobyczy.");
-				addGoodbye("Niech kolejne walki przyniosą ci cenne łupy!");
+				addGreeting("Witaj! Masz coś po walce? Chętnie odkupię twoje zdobycze.");
+				addJob("Skupuję łupy od wojowników. Oni wracają na arenę, a ja szukam kupców na ich zdobycze.");
+				addHelp("Chcesz coś sprzedać? Powiedz #sprzedaj i nazwę przedmiotu, na przykład #'sprzedaj polano'. Jeśli sprzedajesz kilka sztuk, podaj też ich liczbę. Najpierw zaproponuję cenę, a ty zdecydujesz.");
+				addOffer("Chętnie odkupię broń, zbroje i inne łupy. Za rzadsze okazy zapłacę więcej. Monet, kluczy i rzeczy przypisanych do postaci nie biorę.");
+				addGoodbye("Powodzenia na arenie! Wróć, jeśli znów nazbierasz łupów.");
 				new BuyerAdder().addBuyer(this, new ValueBuyerBehaviour(
 						SingletonRepository.getEntityManager().getDefaultItems()), false);
 			}
 		};
-		npc.setEntityClass("barracksbuyernpc");
+		npc.setEntityClass("buyer2npc");
 		npc.setGender("M");
 		npc.setPosition(x, y);
-		npc.setDirection(Direction.DOWN);
-		npc.setDescription("Oto Kupiec Areny, odkupujący łupy z tarnowskiej Areny Wyzwań.");
+		npc.setDirection(Direction.LEFT);
+		npc.setIdleDirection(Direction.LEFT);
+		npc.setDescription("Oto Kupiec Areny. Czeka na wojowników wracających z łupami.");
 		npc.initHP(100);
 		zone.add(npc);
 	}
