@@ -1,5 +1,16 @@
 ## Changelog
 ---------
+1.42.1
+*klient Java*
+---
+* Dodano informacje przedmiotom spożywczym / napojom ile leczą punktów wytrzymałości oraz jaki czas trwania posiadają
+
+*gra w przeglądarce*
+---
+* Dodano lokalną diagnostykę dla administratora z pomiarem płynności i raportem. Testowo można wyłączyć animacje ikon, dekoracje slotów i obwódki rzadkości bez wpływu na innych graczy
+* Raport diagnostyczny webklienta można kopiować bezpośrednio przyciskiem, również na telefonie. Dodano zapasowy sposób kopiowania dla przeglądarek bez obsługi standardowego schowka
+
+
 1.42
 *przedmioty i wyposażenie*
 ---
@@ -129,8 +140,6 @@
 
 *gra w przeglądarce*
 ---
-* Dodano lokalną diagnostykę dla administratora z pomiarem płynności i raportem. Testowo można wyłączyć animacje ikon, dekoracje slotów i obwódki rzadkości bez wpływu na innych graczy
-* Raport diagnostyczny webklienta można kopiować bezpośrednio przyciskiem, również na telefonie. Dodano zapasowy sposób kopiowania dla przeglądarek bez obsługi standardowego schowka
 * Dostosowano układ gry do mniejszych ekranów i obsługi dotykowej
 * Ułatwiono otwieranie i zamykanie paneli bocznych na telefonie
 * Dodano dotykowe oglądanie właściwości przedmiotów i przeciąganie ich między wyposażeniem a miejscami szybkiego dostępu
