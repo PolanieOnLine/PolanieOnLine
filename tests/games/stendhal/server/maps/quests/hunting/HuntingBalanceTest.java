@@ -22,9 +22,9 @@ public class HuntingBalanceTest {
 	@Test public void nominalRewardsHaveMeaningfulDifficultyDifference() {
 		Creature target = creature(30, 100);
 		double reference = HuntingRewards.strength(target);
-		assertEquals(1000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, target, reference));
-		assertEquals(2500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 25, target, reference));
-		assertEquals(5000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 25, target, reference));
+		assertEquals(500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, target, reference));
+		assertEquals(1500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 25, target, reference));
+		assertEquals(3000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 25, target, reference));
 	}
 	@Test public void rewardPerKillDoesNotFavourShorterRandomAssignments() {
 		Creature target = creature(30, 100);
@@ -38,8 +38,8 @@ public class HuntingBalanceTest {
 	@Test public void weakerMonsterPaysLessEvenAtSameDifficulty() {
 		Creature weak = creature(25, 20), strong = creature(25, 100);
 		double reference = HuntingRewards.strength(strong);
-		assertEquals(200, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, weak, reference));
-		assertEquals(1000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, strong, reference));
+		assertEquals(100, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, weak, reference));
+		assertEquals(500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, strong, reference));
 	}
 	@Test public void attackAndDefenceArePartOfTargetStrength() {
 		Creature target = creature(30, 100);
@@ -55,18 +55,22 @@ public class HuntingBalanceTest {
 		double reference = HuntingRewards.referenceStrength(30, Arrays.asList(easy, medium, hard));
 		int easyReward = HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, easy, reference);
 		int hardReward = HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 25, hard, reference);
-		assertTrue(hardReward / HuntingRewards.strength(hard) > 4.9 * easyReward / HuntingRewards.strength(easy));
-		assertEquals(10000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 30, hard, reference));
+		assertTrue(hardReward / HuntingRewards.strength(hard) > 5.9 * easyReward / HuntingRewards.strength(easy));
+		// The strongest hunt must be reduced too, not remain at its old 100% payout.
+		assertEquals(6000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 30, hard, reference));
 	}
 	@Test public void savedRewardDoesNotChangeWhenCreatureDefinitionsOrCharacterLevelChange() {
 		assertEquals(3375, HuntingRewards.questBasisPoints("szczur,0,30,0,0;0;2;HARD;3375"));
 		assertEquals(3375, HuntingRewards.questBasisPoints("done;0;3;HARD;3375"));
 		assertEquals("33,75%", HuntingRewards.percentageLabel(3375));
+		assertEquals(1000, HuntingRewards.questBasisPoints("szczur,0,25,0,0;0;2;EASY;1000"));
+		assertEquals(2500, HuntingRewards.questBasisPoints("szczur,0,25,0,0;0;2;MEDIUM;2500"));
+		assertEquals(5000, HuntingRewards.questBasisPoints("szczur,0,25,0,0;0;2;HARD;5000"));
 	}
 	@Test public void shortLegacyTasksCannotGiveAFullTaskBonus() {
-		assertEquals(100, HuntingRewards.questBasisPoints("szczur,0,1,0,0;0;2"));
-		assertEquals(200, HuntingRewards.questBasisPoints("szczur,0,2,0,0;0;2;MEDIUM"));
-		assertEquals(2500, HuntingRewards.questBasisPoints("szczur,0,25,0,0;0;2;MEDIUM"));
+		assertEquals(60, HuntingRewards.questBasisPoints("szczur,0,1,0,0;0;2"));
+		assertEquals(120, HuntingRewards.questBasisPoints("szczur,0,2,0,0;0;2;MEDIUM"));
+		assertEquals(1500, HuntingRewards.questBasisPoints("szczur,0,25,0,0;0;2;MEDIUM"));
 	}
 	@Test public void actualCreatureDefinitionsFavourHardHuntsPerEstimatedWork() {
 		List<Creature> creatures = new ArrayList<>();
@@ -91,7 +95,7 @@ public class HuntingBalanceTest {
 			}
 			if (easyMaximum > 0 && Double.isFinite(hardMinimum)) {
 				assertTrue("level " + level + ": easy " + easyMaximum + " hard " + hardMinimum,
-						hardMinimum > easyMaximum * 4.5);
+						hardMinimum > easyMaximum * 5.5);
 				checked++;
 			}
 		}
