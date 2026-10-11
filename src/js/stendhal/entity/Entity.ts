@@ -182,7 +182,7 @@ export class Entity extends RPObject {
 		// action replaces "Look" command (e. g. "look closely" on signs)
 		if (this["action"]) {
 			list.push({
-				title: stendhal.ui.html.niceName(this["action"]),
+				title: this["action"] === "use" ? "Użyj" : stendhal.ui.html.niceName(this["action"]),
 				type: this.actionAliasToAction(this["action"])
 			});
 		} else {
