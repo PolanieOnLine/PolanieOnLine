@@ -1,6 +1,15 @@
 ## Changelog
 ---------
 1.42.1
+*polowania u Janisława*
+---
+* Dodano wybór łatwych, średnich i trudnych polowań oraz podgląd celu i nagród przed potwierdzeniem zadania. Nowe polowania wymagają 20–30 zabójstw
+* Ukończenie polowania daje dodatkowo 10, 15 lub 20 procent PD pełnego bieżącego poziomu ataku i obrony, liczonych osobno dla obu umiejętności
+* Każde ukończone polowanie daje przypisaną graczowi Skrzynię Myśliwego. Łatwe: zapasy; średnie: wyposażenie z 25-procentową szansą na rzadkie; trudne: 90 procent rzadkich i 10 procent epickich
+* Skrzynie mają osobną pulę wyposażenia bez najcenniejszych nagród Areny Wyzwań. Poziom nagrody jest zapisywany przy ukończeniu zadania, nie przy otwarciu skrzyni
+* Zachowano rozpoczęte polowania, dotychczasowe nagrody i licznik ukończeń. Stare zadania otrzymują nowe dodatki jak polowanie średnie. Rezygnacja wymaga potwierdzenia i nie daje nagrody
+* Losowane cele muszą mieć miejsce odradzania w aktualnie dostępnych strefach publicznych; wykluczono bossów i prywatne instancje
+
 *arena i łupy*
 ---
 * Każdy gracz walczy na własnej, prywatnej Arenie Wyzwań w Tarnowie. Wspólne lobby, kupiec i ranking pozostają dostępne dla wszystkich, bez kolejki do walki i wzajemnego przeszkadzania
