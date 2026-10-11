@@ -11,6 +11,7 @@ import games.stendhal.server.entity.creature.EliteCreatureDropRarityTest;
 import games.stendhal.server.entity.npc.behaviour.impl.ValueBuyerBehaviourTest;
 import games.stendhal.server.entity.item.money.MoneyUtilsPaymentTest;
 import games.stendhal.server.entity.player.ReservePouchMigrationTest;
+import games.stendhal.server.entity.mapstuff.sign.SignFromHallOfFameLoaderTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaCreatureSpawnerTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaEngineLootPeriodTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaLootServiceTest;
@@ -36,6 +37,7 @@ import games.stendhal.server.script.SummonMistCreatureTest;
 	ChallengeArenaInstanceTest.class,
 	ChallengeArenaManagerTest.class,
 	ChallengeArenaInfoTest.class,
+	SignFromHallOfFameLoaderTest.class,
 	Item2DViewGroundRarityTest.class,
 	SummonMistCreatureTest.class
 })
