@@ -9,6 +9,7 @@
 ---
 * Dodano lokalną diagnostykę dla administratora z pomiarem płynności i raportem. Testowo można wyłączyć animacje ikon, dekoracje slotów i obwódki rzadkości bez wpływu na innych graczy
 * Raport diagnostyczny webklienta można kopiować bezpośrednio przyciskiem, również na telefonie. Dodano zapasowy sposób kopiowania dla przeglądarek bez obsługi standardowego schowka
+* Oddzielono animowane ikony przedmiotów od nieruchomych ramek slotów. Wspólna grafika slot.png zastępuje maski, gradientowe ramki i cienie CSS, zachowując rozmiary plecaków i wyposażenia
 
 
 1.42

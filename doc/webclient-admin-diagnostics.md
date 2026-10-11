@@ -12,12 +12,14 @@ Domyślnie wyłączony. Testy dotyczą tylko bieżącej sesji przeglądarki/webk
 4. Powtórz z otwartym, pełnym plecakiem.
 5. Powtórz z otwartym plecakiem, zmieniając tylko jeden eksperyment naraz:
    - zatrzymanie animacji ikon (animacje świata pozostają bez zmian),
-   - uproszczenie slotów (bez masek, gradientowych ramek i cieni),
+   - uproszczenie slotów (bez statycznej grafiki ramki i tła),
    - ukrycie obwódek rzadkości w ekwipunku (poświata przedmiotów na ziemi pozostaje bez zmian).
 6. Naciśnij „Kopiuj raport”. Po potwierdzeniu skopiowania wklej tekst do wiadomości; dopisz model telefonu i czy test był w Chrome czy APK. Kopiowanie ma zapasowy mechanizm dla WebView bez Clipboard API. Gdy oba mechanizmy zostaną zablokowane, panel wyświetli informację o niepowodzeniu; pozostaje też ręczne zaznaczanie raportu.
 7. Użyj „Wyłącz testy i przywróć wygląd”.
 
 Każda zmiana przełącznika zeruje pomiar. W raporcie można zachować kilka nazwanych próbek. Po odświeżeniu strony raport znika — skopiuj go wcześniej.
+
+Sloty korzystają teraz ze wspólnej grafiki `data/gui/slot.png`, wyświetlanej jako nieruchoma warstwa 38×38 px. Ikona 32×32 px, obwódka rzadkości i licznik są osobnymi warstwami; animacja nie zmienia tła ani ramki slotu. Nie są używane dawne maski i gradientowe ramki CSS. Dlatego wyniki testu wyłączenia dekoracji z wcześniejszych buildów nie są bezpośrednio porównywalne z obecnym przełącznikiem. Układ i rozmiary wyposażenia pozostają bez zmian.
 
 ## Co mierzymy
 

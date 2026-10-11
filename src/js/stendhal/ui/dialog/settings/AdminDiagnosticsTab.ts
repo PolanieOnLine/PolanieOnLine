@@ -34,7 +34,7 @@ export class AdminDiagnosticsTab extends AbstractSettingsTab {
 		};
 		add("enabled", " Włącz lokalną diagnostykę i licznik płynności");
 		add("freezeIcons", " Zatrzymaj animacje ikon w ekwipunku (nie w świecie gry)");
-		add("simpleSlots", " Wyłącz maski, gradientowe ramki i cienie slotów");
+		add("simpleSlots", " Wyłącz grafikę ramek i tła slotów (test)");
 		add("hideRarity", " Wyłącz obwódki rzadkości w ekwipunku");
 		const hint = document.createElement("p");
 		hint.textContent = "Porównaj po 10–15 sekund ruchu z zamkniętym i otwartym plecakiem. Zmieniaj jeden przełącznik naraz; każda zmiana zeruje pomiar. p95 to czas, którego nie przekracza 95% klatek — mniej znaczy płynniej.";
