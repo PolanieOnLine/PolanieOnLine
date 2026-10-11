@@ -20,6 +20,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.common.constants.ItemRarity;
 
 public class ChallengeArenaLootServiceTest {
 	private static final ChallengeArenaTier[] REWARD_TIERS = {
@@ -119,5 +120,14 @@ public class ChallengeArenaLootServiceTest {
 	public void rejectsOutOfRangeRewardRolls() {
 		ChallengeArenaLootService.selectRewardName(500,
 				ChallengeArenaTier.LEGEND, 1.0, 0.0);
+	}
+
+	@Test
+	public void legendEquipmentChestNeverAwardsCommon() {
+		for (int i = 0; i < 150; i++) {
+			final Item reward = ChallengeArenaLootService.createEquipmentReward(500, ChallengeArenaTier.LEGEND);
+			assertNotNull(reward);
+			assertTrue(reward.getRarity().ordinal() >= ItemRarity.RARE.ordinal());
+		}
 	}
 }

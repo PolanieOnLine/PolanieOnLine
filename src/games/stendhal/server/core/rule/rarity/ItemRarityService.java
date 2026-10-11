@@ -62,6 +62,7 @@ public final class ItemRarityService {
 		this.random = random;
 		this.affixGenerator = new ItemAffixGenerator(random);
 		registerProfile(ItemRarityProfile.defaultProfile());
+		registerProfile(ItemRarityProfile.bossProfile());
 	}
 
 	public static ItemRarityService getInstance() {
@@ -146,13 +147,17 @@ public final class ItemRarityService {
 
 		final String profileId = selectProfile(item, context);
 		final ItemRarityProfile profile = getProfile(profileId);
-		final ItemRarity rarity;
+		ItemRarity rarity;
 		if (context.getRarity() != null) {
 			rarity = context.getRarity();
 		} else if (context.getSource() == ItemCreationContext.Source.QUEST) {
 			rarity = ItemRarity.COMMON;
 		} else {
 			rarity = rollBestRarity(profile, context.getRarityRolls());
+		}
+		if (context.getMinimumRarity() != null
+				&& rarity.ordinal() < context.getMinimumRarity().ordinal()) {
+			rarity = context.getMinimumRarity();
 		}
 		final ItemRarityProfile.Tier tier = profile.getTier(rarity);
 		final ItemRarityModifiers fixed = context.getModifiers();

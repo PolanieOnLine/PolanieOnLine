@@ -24,7 +24,8 @@ export class PlayerEquipmentComponent extends Component {
 	private slotSizes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
 		"slot-ring.png", "slot-belt.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
-	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
+	private readonly secondarySlotNames = this.slotNames.filter((name) => name !== "pouch")
+		.map((name) => name + "_set");
 	private inventory: ItemContainerImplementation[] = [];
 
 	private pouchVisible = false;
@@ -149,8 +150,7 @@ export class PlayerEquipmentComponent extends Component {
 
 	private showPouch(show: boolean) {
 		const primaryChanged = this.showSlot("pouch0", show);
-		const secondaryChanged = this.showSlot("pouch_set0", show);
-		if (primaryChanged || secondaryChanged) {
+		if (primaryChanged) {
 			// resize the inventory window
 			var equip = document.getElementById("equipment")!;
 			if (show) {

@@ -13,7 +13,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="1"/>
+		<value value="2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -35,7 +35,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="5400"/>
+		<value value="7000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -57,7 +57,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="1"/>
-		<value value="10400"/>
+		<value value="4840"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -78,7 +78,7 @@
 			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="8533"/>
+		<value value="9"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -102,7 +102,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="1000000"/>
+		<value value="100000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -124,7 +124,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="12800"/>
+		<value value="8000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -145,7 +145,7 @@
 			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="5716"/>
+		<value value="10"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -167,7 +167,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="6250"/>
+		<value value="3111"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -189,7 +189,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="6250"/>
+		<value value="6321"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -212,7 +212,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="1000000"/>
+		<value value="100000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -235,7 +235,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="6250"/>
+		<value value="9877"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -257,7 +257,7 @@
 			<rate value="4"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="5400"/>
+		<value value="7031"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -281,7 +281,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="5400"/>
+		<value value="6321"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -303,7 +303,7 @@
 			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="5400"/>
+		<value value="2"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -327,7 +327,7 @@
 			<rate value="1"/>
 		</attributes>
 		<weight value="9.0"/>
-		<value value="457142"/>
+		<value value="144000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -350,7 +350,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="12800"/>
+		<value value="8000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -373,7 +373,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="12345"/>
+		<value value="3111"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -396,7 +396,7 @@
 			<rate value="3"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="12345"/>
+		<value value="3111"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -419,7 +419,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="11750"/>
+		<value value="4861"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -441,7 +441,7 @@
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
-		<value value="11750"/>
+		<value value="4861"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

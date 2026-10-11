@@ -10,7 +10,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="11"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -30,7 +30,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="225"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -50,7 +50,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="27"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -70,7 +70,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="300"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -90,7 +90,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="27"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

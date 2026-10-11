@@ -39,7 +39,7 @@ public class AlternativeCreatures implements ZoneConfigurator {
 			int x = Integer.parseInt(attributes.get("spawnX"));
 			int y = Integer.parseInt(attributes.get("spawnY"));
 
-			creatureAttributes(monster, factor);
+			applyMistVariant(monster, factor);
 			dropSpecialItem(monster, attributes);
 
 			final CreatureRespawnPoint spawnMonster = new CreatureRespawnPoint(zone, x, y, monster, 1);
@@ -53,7 +53,7 @@ public class AlternativeCreatures implements ZoneConfigurator {
 				if (c.isAbnormal()) {
 					continue;
 				}
-				creatureAttributes(c, factor);
+				applyMistVariant(c, factor);
 			}
 		}
 	}
@@ -85,8 +85,15 @@ public class AlternativeCreatures implements ZoneConfigurator {
 	 * @param c      The creature to be modified.
 	 * @param factor The factor by which to adjust the creature's attributes.
 	 */
-	private void creatureAttributes(Creature c, double factor) {
+	public static void applyMistVariant(final Creature c, final double factor) {
+		if (c == null || !Double.isFinite(factor) || factor < 0.0) {
+			throw new IllegalArgumentException("Mist factor must be finite and non-negative");
+		}
+		c.detachDropItemList();
 		c.setName("mgielny " + c.getName());
+		if (c.has("title")) {
+			c.put("title", "mgielny " + c.get("title"));
+		}
 		c.setAtk(calculateStat(c.getAtk(), factor, true));
 		c.setDef(calculateStat(c.getDef(), factor, true));
 		c.setBaseHP(calculateStat(c.getBaseHP(), factor, true));
@@ -104,7 +111,7 @@ public class AlternativeCreatures implements ZoneConfigurator {
 	 * @param factor        The factor by which to adjust the stat.
 	 * @return              The adjusted stat value.
 	 */
-	private int calculateStat(int value, double factor) {
+	private static int calculateStat(int value, double factor) {
 		return calculateStat(value, factor, false);
 	}
 
@@ -116,7 +123,7 @@ public class AlternativeCreatures implements ZoneConfigurator {
 	 * @param checkMaxValue  A flag indicating whether to check for the maximum value.
 	 * @return               The adjusted stat value.
 	 */
-	private int calculateStat(int value, double factor, boolean checkMaxValue) {
+	private static int calculateStat(int value, double factor, boolean checkMaxValue) {
 		int result = (int) (value * (1 + factor));
 		if (checkMaxValue && result > Short.MAX_VALUE) {
 			return Short.MAX_VALUE;

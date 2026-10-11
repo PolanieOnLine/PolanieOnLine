@@ -27,7 +27,7 @@
 		<attributes>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="250"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -45,7 +45,7 @@
 		<attributes>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="800"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

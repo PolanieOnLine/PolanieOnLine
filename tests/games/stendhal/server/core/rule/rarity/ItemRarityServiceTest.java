@@ -43,6 +43,31 @@ public class ItemRarityServiceTest {
 		}
 	}
 
+	@Test
+	public void bossProfileHasExactWeightsAndNoCommonOutcome() {
+		final ItemRarityProfile profile = ItemRarityProfile.bossProfile();
+		final int[] counts = new int[4];
+		for (int i = 0; i < 10000; i++) {
+			counts[profile.roll((i + 0.5) / 10000.0).ordinal()]++;
+		}
+		assertEquals(0, counts[0]);
+		assertEquals(8500, counts[1]);
+		assertEquals(1300, counts[2]);
+		assertEquals(200, counts[3]);
+	}
+
+	@Test
+	public void minimumRarityRaisesCommonWithoutRerollingStatsTwice() {
+		final Item item = combatItem();
+		new ItemRarityService(new CountingRandom(0.0)).initialize(item,
+				ItemCreationContext.builder(ItemCreationContext.Source.DROP)
+					.withMinimumRarity(ItemRarity.RARE).withRarityRolls(4)
+					.generateAffixes(false).randomizeModifiers(false).build());
+		assertSame(ItemRarity.RARE, item.getRarity());
+		assertEquals(108, item.getInt("atk"));
+		assertEquals(1200, item.getValue());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void rejectsProfilesWhoseWeightsDoNotAddUp() {
 		ItemRarityProfile.builder("invalid")

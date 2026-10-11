@@ -160,7 +160,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.05"/>
-		<value value="1"/>
+		<value value="50"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -180,7 +180,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="48"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -200,7 +200,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="8"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -240,7 +240,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="65"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -260,7 +260,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="15"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -285,7 +285,7 @@
 			<menu value="Potrząśnij|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1"/>
+		<value value="150"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -327,7 +327,7 @@
 			<autobind value=""/>
 		</attributes>
 		<weight value="0.03"/>
-		<value value="1"/>
+		<value value="800"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -379,7 +379,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="1500"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -419,7 +419,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="16"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -439,7 +439,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="7"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

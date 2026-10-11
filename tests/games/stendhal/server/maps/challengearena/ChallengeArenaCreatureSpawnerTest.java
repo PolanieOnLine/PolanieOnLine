@@ -6,6 +6,15 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.Collections;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.creature.ArenaCreature;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.Area;
+import games.stendhal.server.maps.MockStendlRPWorld;
+import utilities.PlayerTestHelper;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,7 +26,35 @@ import utilities.RPClass.CreatureTestHelper;
 public class ChallengeArenaCreatureSpawnerTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
+		MockStendlRPWorld.get();
 		CreatureTestHelper.generateRPClasses();
+	}
+
+	@Test
+	public void spawnedArenaMonsterRetainsTemplateLoot() {
+		final Creature template = SingletonRepository.getEntityManager().getCreature("kamienny golem");
+		template.clearDropItemList();
+		template.addDropItem("kolczuga", 100.0, 1);
+		final ChallengeArenaCreatureSpawner spawner = new ChallengeArenaCreatureSpawner(Collections.singletonList(template));
+		final StendhalRPZone zone = new StendhalRPZone("arena-loot-spawn", 40, 40);
+		final Player player = PlayerTestHelper.createPlayer("ArenaLoot");
+		zone.add(player);
+		player.setPosition(20, 20);
+		final ChallengeArenaInfo info = new ChallengeArenaInfo(new Area(zone,
+				new Rectangle2D.Double(1, 1, 38, 38)), zone, zone.getName(), 1, 1, 20, 20);
+		final Creature spawned = spawner.spawn(player, info, template.getLevel(), false,
+				false, ChallengeArenaTier.TRIAL, Collections.<ChallengeArenaModifier>emptyList());
+		assertTrue(spawned instanceof ArenaCreature);
+		spawned.onDead(player, true);
+		final Corpse corpse = ((ArenaCreature) spawned).getLootCorpse();
+		assertTrue(corpse.getSlot("content").size() > 0);
+		assertTrue("kolczuga".equals(((Item) corpse.getSlot("content").iterator().next()).getName()));
+		assertTrue(zone.has(corpse.getID()));
+		final Corpse unrelatedCorpse = new Corpse("player", 2, 2);
+		zone.add(unrelatedCorpse);
+		spawner.removeAllCreatures();
+		assertFalse(zone.has(corpse.getID()));
+		assertTrue(zone.has(unrelatedCorpse.getID()));
 	}
 
 	@Test

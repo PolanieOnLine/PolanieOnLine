@@ -42,6 +42,10 @@ import games.stendhal.server.entity.RPEntityGroupExperienceTest;
 import games.stendhal.server.entity.player.QuestMarkerServiceTest;
 import games.stendhal.server.entity.RPEntityWeaponDamageRollTest;
 import games.stendhal.server.entity.creature.MineTownPumpkinDropTest;
+import games.stendhal.server.entity.creature.EliteCreatureDropRarityTest;
+import games.stendhal.server.entity.npc.behaviour.impl.ValueBuyerBehaviourTest;
+import games.stendhal.server.entity.player.ReservePouchMigrationTest;
+import games.stendhal.server.script.SummonMistCreatureTest;
 import games.stendhal.server.entity.item.ChallengeArenaRewardChestTest;
 import games.stendhal.server.entity.item.RingOfTeleportationTest;
 import games.stendhal.server.entity.status.BleedingAttackerFactoryTest;
@@ -49,6 +53,7 @@ import games.stendhal.server.entity.status.BleedingAttackerTest;
 import games.stendhal.server.entity.status.BleedingStatusTest;
 import games.stendhal.server.entity.status.StunnedStatusTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaCreatureSpawnerTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaEngineLootPeriodTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaInfoTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaLootServiceTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaManagerTest;
@@ -89,6 +94,10 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	ItemAffixGeneratorTest.class,
 	ItemAffixDropIntegrationTest.class,
 	EliteSummonActionTest.class,
+	EliteCreatureDropRarityTest.class,
+	SummonMistCreatureTest.class,
+	ReservePouchMigrationTest.class,
+	ValueBuyerBehaviourTest.class,
 	SourceObjectTest.class,
 	StendhalWebsiteDAOTest.class,
 	CharacterSlotsDAOTest.class,
@@ -108,6 +117,7 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	ChallengeArenaModifierTest.class,
 	ChallengeArenaRankingServiceTest.class,
 	ChallengeArenaCreatureSpawnerTest.class,
+	ChallengeArenaEngineLootPeriodTest.class,
 	ChallengeArenaInfoTest.class,
 	ChallengeArenaNPCTest.class,
 	ChallengeArenaViewOrbTest.class,

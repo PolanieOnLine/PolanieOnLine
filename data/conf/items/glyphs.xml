@@ -109,7 +109,7 @@
 			<def value="20"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="278"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -151,7 +151,7 @@
 			<health value="200"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="17"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

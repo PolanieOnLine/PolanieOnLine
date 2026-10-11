@@ -25,9 +25,10 @@ import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.entity.creature.ArenaCreature;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.LevelBasedComparator;
+import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.player.Player;
 
-/** Spawns no-drop monsters for one Challenge Arena run. */
+/** Spawns monsters with their normal loot for one Challenge Arena run. */
 public final class ChallengeArenaCreatureSpawner {
 	private static final Logger logger = Logger.getLogger(
 			ChallengeArenaCreatureSpawner.class);
@@ -42,8 +43,10 @@ public final class ChallengeArenaCreatureSpawner {
 	private final List<Creature> currentWaveCreatures = new ArrayList<Creature>();
 
 	public ChallengeArenaCreatureSpawner() {
-		final Collection<Creature> creatures = SingletonRepository.getEntityManager()
-				.getCreatures();
+		this(SingletonRepository.getEntityManager().getCreatures());
+	}
+
+	ChallengeArenaCreatureSpawner(final Collection<Creature> creatures) {
 		for (final Creature creature : creatures) {
 			if (isUsableTemplate(creature)) {
 				sortedCreatures.add(creature);
@@ -102,7 +105,6 @@ public final class ChallengeArenaCreatureSpawner {
 
 		final ArenaCreature creature = new ArenaCreature(template.getNewInstance(),
 				arenaInfo.getArena().getShape());
-		creature.clearDropItemList();
 		if (forceElite || finalChampion) {
 			EliteCreatureService.promote(creature);
 		}
@@ -115,6 +117,9 @@ public final class ChallengeArenaCreatureSpawner {
 		}
 		if (finalChampion) {
 			ChallengeArenaChampionService.promote(creature, tier);
+			if (tier == ChallengeArenaTier.LEGEND) {
+				creature.setGuaranteedRareDrops(true);
+			}
 		}
 		creature.setTarget(player);
 
@@ -216,6 +221,13 @@ public final class ChallengeArenaCreatureSpawner {
 
 	void removeAllCreatures() {
 		for (final Creature creature : spawnedCreatures) {
+			if (creature instanceof ArenaCreature) {
+				final Corpse corpse =
+						((ArenaCreature) creature).getLootCorpse();
+				if (corpse != null && corpse.getZone() != null) {
+					corpse.getZone().remove(corpse);
+				}
+			}
 			final StendhalRPZone zone = creature.getZone();
 			if (zone != null) {
 				zone.remove(creature);

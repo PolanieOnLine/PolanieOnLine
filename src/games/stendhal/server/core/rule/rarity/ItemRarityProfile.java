@@ -22,6 +22,7 @@ import games.stendhal.common.constants.ItemRarity;
  */
 public final class ItemRarityProfile {
 	public static final String DEFAULT_ID = "default";
+	public static final String BOSS_ID = "boss";
 	private static final double EXPECTED_TOTAL_WEIGHT = 100.0;
 	private static final double WEIGHT_EPSILON = 0.000001;
 
@@ -49,6 +50,20 @@ public final class ItemRarityProfile {
 
 	public static Builder builder(final String id) {
 		return new Builder(id);
+	}
+
+	/** Boss equipment drops: Rare 85%, Epic 13%, Legendary 2%. */
+	public static ItemRarityProfile bossProfile() {
+		final Builder builder = builder(BOSS_ID);
+		final ItemRarityProfile base = defaultProfile();
+		final double[] weights = {0.0, 85.0, 13.0, 2.0};
+		for (final ItemRarity rarity : ItemRarity.values()) {
+			final Tier tier = base.getTier(rarity);
+			builder.tier(rarity, weights[rarity.ordinal()],
+					tier.getMinimumStatMultiplier(), tier.getMaximumStatMultiplier(),
+					tier.getValueMultiplier());
+		}
+		return builder.build();
 	}
 
 	public String getId() {

@@ -676,6 +676,11 @@ public class Creature extends NPC {
 		dropItemInstances.clear();
 	}
 
+	/** Detaches the template's shared loot table before adding instance-only loot. */
+	public void detachDropItemList() {
+		dropsItems = new ArrayList<DropItem>(dropsItems);
+	}
+
 	/**
 	 * adds a named item to the List of Items that will be dropped on dead if
 	 * clearDropItemList hasn't been called first, this will change all

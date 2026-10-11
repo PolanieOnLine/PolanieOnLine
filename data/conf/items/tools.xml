@@ -173,7 +173,7 @@
 		<attributes>
 		</attributes>
 		<weight value="0.5"/>
-		<value value="1"/>
+		<value value="1500"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

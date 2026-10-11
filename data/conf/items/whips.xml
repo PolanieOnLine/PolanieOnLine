@@ -14,7 +14,7 @@
 			<rate value="6"/>
 		</attributes>
 		<weight value="2.0"/>
-		<value value="17280"/>
+		<value value="17"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

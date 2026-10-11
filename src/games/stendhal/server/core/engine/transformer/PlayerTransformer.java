@@ -40,6 +40,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.SlotActivatedItem;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
+import games.stendhal.server.entity.player.ReservePouchMigration;
 import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.BankSlot;
 import games.stendhal.server.entity.slot.Banks;
@@ -115,6 +116,7 @@ public class PlayerTransformer implements Transformer {
 		}
 
 		UpdateConverter.updateMoneyPouch(player);
+		ReservePouchMigration.migrate(player);
 		RebornSystem.updateBaseHP(player);
 
 		// update player with 'outfit_ext' attribute

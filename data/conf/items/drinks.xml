@@ -316,7 +316,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="80"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -363,7 +363,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="40"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -386,7 +386,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="2"/>
+		<value value="60"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -409,7 +409,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="6"/>
+		<value value="550"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -432,7 +432,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="60"/>
+		<value value="1600"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -455,7 +455,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="300"/>
+		<value value="500"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -502,7 +502,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="500"/>
+		<value value="79"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -598,7 +598,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="2000"/>
+		<value value="199"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -622,7 +622,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="4000"/>
+		<value value="399"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -646,7 +646,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="12000"/>
+		<value value="1174"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -695,7 +695,7 @@
 	      <menu value="Wypij|Użyj" />
 	    </attributes>
 	    <weight value="1.0" />
-	    <value value="1" />
+	    <value value="200" />
 	    <equipable>
 	      <slot name="ground" />
 	      <slot name="content" />
@@ -876,7 +876,7 @@
 			<menu value="Wypij|Użyj"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1"/>
+		<value value="10"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

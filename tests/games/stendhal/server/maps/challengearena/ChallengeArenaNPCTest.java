@@ -18,6 +18,10 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.common.constants.ItemRarity;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -30,6 +34,31 @@ public class ChallengeArenaNPCTest {
 	@After
 	public void after() {
 		SingletonRepository.getNPCList().clear();
+	}
+
+	@Test
+	public void arenaBuyerQuotesAndBuysLootThroughNormalConversation() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-dialog", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, 40, 47);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaSellerDialog");
+		zone.add(player);
+		final Item item = SingletonRepository.getEntityManager().getItem("kolczuga",
+				ItemCreationContext.builder(ItemCreationContext.Source.DROP)
+				.withFactoryRarity(ItemRarity.RARE).generateAffixes(false).build());
+		player.getSlot("bag").add(item);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		engine.step(player, "sprzedaj kolczuga");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(item.getValue())));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(!player.isEquipped("kolczuga"));
+		int paid = 0;
+		for (final Item money : player.getAllEquipped("money")) { paid += money.getQuantity(); }
+		assertEquals(item.getValue(), paid);
 	}
 
 	@Test

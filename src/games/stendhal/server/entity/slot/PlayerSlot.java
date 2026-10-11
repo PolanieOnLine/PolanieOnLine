@@ -39,6 +39,15 @@ public class PlayerSlot extends EntitySlot {
 	}
 
 	@Override
+	public boolean isReachableForThrowingThingsIntoBy(final Entity entity) {
+		if ("pouch_set".equals(getName())) {
+			setErrorMessage("Schowek służy wyłącznie do wyposażenia, nie do przechowywania monet.");
+			return false;
+		}
+		return super.isReachableForThrowingThingsIntoBy(entity);
+	}
+
+	@Override
 	public boolean isReachableForTakingThingsOutOfBy(final Entity entity) {
 		setErrorMessage("Hej, żadnych kradzieży!");
 		return super.hasAsAncestor(entity);

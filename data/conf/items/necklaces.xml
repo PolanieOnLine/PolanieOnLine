@@ -10,7 +10,7 @@
 			<min_level value="0"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="4350"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -29,7 +29,7 @@
 			<min_level value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="9788"/>
 		<susceptibility type="light" value="1.1"/>
 		<susceptibility type="dark" value="0.95"/>
 		<equipable>
@@ -50,7 +50,7 @@
 			<min_level value="20"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="17400"/>
 		<susceptibility type="fire" value="1.1"/>
 		<susceptibility type="earth" value="0.95"/>
 		<equipable>
@@ -71,7 +71,7 @@
 			<min_level value="40"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="27188"/>
 		<susceptibility type="fire" value="1.1"/>
 		<susceptibility type="ice" value="0.95"/>
 		<equipable>
@@ -92,7 +92,7 @@
 			<min_level value="40"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="27188"/>
 		<susceptibility type="fire" value="0.95"/>
 		<susceptibility type="ice" value="1.1"/>
 		<equipable>
@@ -113,7 +113,7 @@
 			<min_level value="65"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="27188"/>
 		<susceptibility type="light" value="0.98"/>
 		<susceptibility type="dark" value="0.98"/>
 		<susceptibility type="fire" value="0.98"/>
@@ -138,7 +138,7 @@
 			<min_level value="100"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="16000"/>
 		<susceptibility type="light" value="0.98"/>
 		<susceptibility type="dark" value="0.98"/>
 		<equipable>
@@ -159,7 +159,7 @@
 			<min_level value="150"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="1234"/>
+		<value value="25000"/>
 		<susceptibility type="light" value="0.95"/>
 		<susceptibility type="dark" value="0.95"/>
 		<equipable>
@@ -183,6 +183,7 @@
 		</attributes>
 		<susceptibility type="light" value="0.8"/>
 		<susceptibility type="dark" value="1.2"/>
+        <value value="213150"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

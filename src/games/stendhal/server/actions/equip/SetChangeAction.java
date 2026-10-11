@@ -27,7 +27,7 @@ public class SetChangeAction implements ActionListener {
 
 	private static final List<String> EQUIPMENT_SLOTS = Arrays.asList(
 			"neck", "head", "cloak", "lhand", "armor", "rhand",
-			"finger", "pas", "legs", "glove", "fingerb", "feet", "pouch");
+			"finger", "pas", "legs", "glove", "fingerb", "feet");
 
 	private enum SwapOutcome {
 		NONE,

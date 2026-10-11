@@ -14,7 +14,7 @@
 			<min_level value="1"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="1"/>
+		<value value="3"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -38,7 +38,7 @@
 			<min_level value="0"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="10"/>
+		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -61,7 +61,7 @@
 			<min_level value="1"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="10"/>
+		<value value="3"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -84,7 +84,7 @@
 			<min_level value="2"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="270"/>
+		<value value="5"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -107,7 +107,7 @@
 			<min_level value="5"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="640"/>
+		<value value="10"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -131,7 +131,7 @@
 			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -155,7 +155,7 @@
 			<damagetype value="ice"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -180,7 +180,7 @@
 			<damagetype value="light"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -205,7 +205,7 @@
 			<damagetype value="dark"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -229,7 +229,7 @@
 			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -253,7 +253,7 @@
 			<damagetype value="light"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="45"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -276,7 +276,7 @@
 			<min_level value="5"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="110"/>
+		<value value="10"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -299,7 +299,7 @@
 			<min_level value="10"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="470"/>
+		<value value="16"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -322,7 +322,7 @@
 			<min_level value="20"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="1640"/>
+		<value value="35"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -346,7 +346,7 @@
 			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="2160"/>
+		<value value="45"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -370,7 +370,7 @@
 			<statusattack value="5,trucizna"/>
 		</attributes>
 		<weight value="0.1"/>
-		<value value="50"/>
+		<value value="4"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
