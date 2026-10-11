@@ -536,8 +536,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	private static JLabel statRow(final String name, final String current,
 			final String upgraded) {
-		return centered("<html><b>" + name + ":</b>&nbsp; z " + current
-				+ " &nbsp;na&nbsp; <font color='#5cbe69'><b>" + upgraded
+		return centered("<html><b>" + name + ":</b>&nbsp; " + current
+				+ " &nbsp;-&gt;&nbsp; <font color='#5cbe69'><b>" + upgraded
 				+ "</b></font></html>");
 	}
 
