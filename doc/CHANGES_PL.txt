@@ -23,6 +23,7 @@
 
 *przedmioty i schowek*
 ---
+* Kliknięcie przedmiotu w spisie otwiera teraz jego opis na nowej stronie, zamiast prowadzić do błędu „nie znaleziono strony”
 * Przedmioty leżące na ziemi mają teraz wyraźną kolorową obwódkę zamiast rozmytej poświaty, podobnie jak w plecaku
 * Opisy jedzenia i napojów pokazują, ile zdrowia przywracają i jak długo działają
 * Schowek wyposażenia nie przechowuje już pieniędzy. Monety pozostawione w jego starej sakwie wracają do sakwy postaci, bez utraty zgromadzonej kwoty

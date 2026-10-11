@@ -19,7 +19,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -57,6 +60,15 @@ public class ItemLogEvent extends Event<RPEntity> {
 	private static Logger logger = Logger.getLogger(ItemLogEvent.class);
 
 	private static ArrayList<String> itemClassList = new ArrayList<String>();
+
+	/** Builds the website catalogue address using the item's full identity. */
+	static String itemCatalogUrl(String website, String itemClass, String subclass, String name)
+			throws UnsupportedEncodingException {
+		String base = website.replaceAll("/+$", "");
+		String itemId = itemClass + ":" + subclass + ":" + name;
+		return base + "/przedmioty?klasa=" + URLEncoder.encode(itemClass, StandardCharsets.UTF_8.name())
+				+ "&item=" + URLEncoder.encode(itemId, StandardCharsets.UTF_8.name());
+	}
 
 	@Override
 	public void execute() {
@@ -164,17 +176,19 @@ public class ItemLogEvent extends Event<RPEntity> {
 				adjustRowHeights(table);
 
 				table.addMouseListener(new MouseAdapter() {
+					@Override
 					public void mouseClicked(MouseEvent e) {
+						int row = table.rowAtPoint(e.getPoint());
+						if (row < 0) {
+							return;
+						}
 						try {
-							int row = table.getSelectedRow();
-							String itemName = table.getValueAt(row, 1).toString();
-							String itemClass = getItemClass(itemName);
-							String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB")
-									+ "/przedmioty/" + itemClass + "/"
-									+ itemName.replace(" ", "_") + ".html";
+							String[] item = itemsList.get(table.convertRowIndexToModel(row)).split(",");
+							String url = itemCatalogUrl(ClientGameConfiguration.get("DEFAULT_SERVER_WEB"),
+									item[3], item[4], item[0]);
 							Desktop.getDesktop().browse(new URI(url));
 						} catch (Exception exc) {
-							exc.printStackTrace();
+							logger.warn("Could not open item catalogue", exc);
 						}
 					}
 				});
@@ -261,24 +275,6 @@ public class ItemLogEvent extends Event<RPEntity> {
 				ArrayList<String> sortedItemClassList = new ArrayList<>(itemClassSet);
 				Collections.sort(sortedItemClassList);
 				itemClassList = sortedItemClassList;
-			}
-
-			/**
-			 * Method finds an item with the same name, it returns its
-			 * class. If it doesn't find any, it returns an empty string.
-			 *
-			 * @param itemName
-			 * @return item class.
-			 */
-			private String getItemClass(final String itemName) {
-				for (int i = 0; i < getItemsList().size(); i++) {
-					String[] itemAttrs = getItemsList().get(i).split(",");
-					if (Arrays.stream(itemAttrs).anyMatch(itemName::equals)) {
-						return itemAttrs[3];
-					}
-				}
-
-				return "";
 			}
 
 			/**
