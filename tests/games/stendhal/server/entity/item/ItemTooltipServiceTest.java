@@ -134,6 +134,8 @@ public class ItemTooltipServiceTest {
 		assertEquals("3", stat(item, ItemTooltip.CONSUMABLE_HEALING_REGEN));
 		assertEquals("1.5", stat(item,
 				ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS));
+		assertEquals("10.5", stat(item,
+				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 				ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
@@ -153,6 +155,8 @@ public class ItemTooltipServiceTest {
 		assertEquals("true", stat(item, ItemTooltip.CONSUMABLE_HEALING_INSTANT));
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 				ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
 	}
 
 	@Test

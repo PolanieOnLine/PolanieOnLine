@@ -92,6 +92,8 @@ public final class ItemTooltip {
 	public static final String CONSUMABLE_HEALING_REGEN = "consumable_healing_regen";
 	public static final String CONSUMABLE_HEALING_FREQUENCY_SECONDS =
 			"consumable_healing_frequency_seconds";
+	public static final String CONSUMABLE_HEALING_DURATION_SECONDS =
+			"consumable_healing_duration_seconds";
 	public static final String CONSUMABLE_HEALING_INSTANT = "consumable_healing_instant";
 	public static final String MIN_LEVEL = "min_level";
 	public static final String MIN_USE = "min_use";

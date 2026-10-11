@@ -673,10 +673,17 @@ final class ItemRarityPresentation {
 		if (regen <= 0 || frequency <= 0.0) {
 			return;
 		}
+		final double duration = WeaponPerformanceCalculator.getDouble(object,
+				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS);
 		appendDivider(tooltip);
 		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
 				.append("Leczenie: <b>+").append(regen).append(" PW co ")
-				.append(formatCompact(frequency)).append(" s</b></font>");
+				.append(formatCompact(frequency)).append(" s</b>");
+		if (duration > 0.0) {
+			tooltip.append("<br>Czas leczenia: ")
+					.append(formatCompact(duration)).append(" s");
+		}
+		tooltip.append("</font>");
 	}
 
 	private static void appendFooter(final StringBuilder tooltip,
