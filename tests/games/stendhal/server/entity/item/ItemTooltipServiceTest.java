@@ -122,7 +122,7 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
-	public void testFoodPublishesHealingAmountAndDuration() {
+	public void testFoodPublishesHealingPerTickAndFrequency() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("amount", "20");
 		attributes.put("regen", "3");
@@ -131,9 +131,11 @@ public class ItemTooltipServiceTest {
 
 		ItemTooltipService.update(item);
 
-		assertEquals("20", stat(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
-		assertEquals("35", stat(item,
-				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
+		assertEquals("3", stat(item, ItemTooltip.CONSUMABLE_HEALING_REGEN));
+		assertEquals("1.5", stat(item,
+				ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 				ItemTooltip.CONSUMABLE_HEALING_INSTANT));
 	}
@@ -150,7 +152,7 @@ public class ItemTooltipServiceTest {
 		assertEquals("50", stat(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT));
 		assertEquals("true", stat(item, ItemTooltip.CONSUMABLE_HEALING_INSTANT));
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
-				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS));
+				ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS));
 	}
 
 	@Test

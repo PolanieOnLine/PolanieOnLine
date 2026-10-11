@@ -209,12 +209,11 @@ public final class ItemTooltipService {
 		if (regen <= 0 || frequency <= 0) {
 			return;
 		}
-		final long healingTicks = ((long) amount + regen - 1L) / regen;
-		final long durationSeconds = healingTicks * frequency;
-		put(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT,
-				Integer.toString(amount));
-		put(item, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS,
-				Long.toString(durationSeconds));
+		put(item, ItemTooltip.CONSUMABLE_HEALING_REGEN,
+				Integer.toString(regen));
+		final double frequencySeconds = frequency * GameTiming.SECONDS_PER_TURN;
+		put(item, ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS,
+				Double.toString(frequencySeconds));
 	}
 
 	private static void publishEquipmentSlots(final Item item) {

@@ -651,26 +651,32 @@ final class ItemRarityPresentation {
 
 	private static void appendConsumableHealing(final StringBuilder tooltip,
 			final RPObject object) {
-		final int amount = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.CONSUMABLE_HEALING_AMOUNT);
-		if (amount <= 0) {
+		final String instant = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.CONSUMABLE_HEALING_INSTANT);
+		if ("true".equals(instant)) {
+			final int amount = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.CONSUMABLE_HEALING_AMOUNT);
+			if (amount <= 0) {
+				return;
+			}
+			appendDivider(tooltip);
+			tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
+					.append("Leczenie: <b>+").append(amount)
+					.append(" PW</b> (natychmiastowe)</font>");
+			return;
+		}
+
+		final int regen = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.CONSUMABLE_HEALING_REGEN);
+		final double frequency = WeaponPerformanceCalculator.getDouble(object,
+				ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS);
+		if (regen <= 0 || frequency <= 0.0) {
 			return;
 		}
 		appendDivider(tooltip);
 		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
-				.append("Leczenie: <b>+").append(amount).append(" PW</b>");
-		final String instant = WeaponPerformanceCalculator.getTooltipValue(object,
-				ItemTooltip.CONSUMABLE_HEALING_INSTANT);
-		if ("true".equals(instant)) {
-			tooltip.append(" (natychmiastowe)");
-		} else {
-			final int duration = WeaponPerformanceCalculator.getInt(object,
-					ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS);
-			if (duration > 0) {
-				tooltip.append("<br>Czas leczenia: ").append(duration).append(" s");
-			}
-		}
-		tooltip.append("</font>");
+				.append("Leczenie: <b>+").append(regen).append(" PW co ")
+				.append(formatCompact(frequency)).append(" s</b></font>");
 	}
 
 	private static void appendFooter(final StringBuilder tooltip,

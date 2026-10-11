@@ -292,23 +292,27 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 }
 
 function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<string, string>) {
-	const amount = intValue(current, "consumable_healing_amount");
-	if (amount <= 0) {
+	if (current["consumable_healing_instant"] === "true") {
+		const amount = intValue(current, "consumable_healing_amount");
+		if (amount <= 0) {
+			return;
+		}
+		appendSection(lines, [
+			{kind: "detail", text: "Leczenie: +" + amount + " PW"},
+			{kind: "detail", text: "Działanie: natychmiastowe"}
+		]);
 		return;
 	}
-	const effect: ItemTooltipLine[] = [{
-		kind: "detail",
-		text: "Leczenie: +" + amount + " PW"
-	}];
-	if (current["consumable_healing_instant"] === "true") {
-		effect.push({kind: "detail", text: "Działanie: natychmiastowe"});
-	} else {
-		const duration = intValue(current, "consumable_healing_duration_seconds");
-		if (duration > 0) {
-			effect.push({kind: "detail", text: "Czas leczenia: " + duration + " s"});
-		}
+
+	const regen = intValue(current, "consumable_healing_regen");
+	const frequency = numberValue(current, "consumable_healing_frequency_seconds");
+	if (regen <= 0 || frequency <= 0) {
+		return;
 	}
-	appendSection(lines, effect);
+	appendSection(lines, [{
+		kind: "detail",
+		text: "Leczenie: +" + regen + " PW co " + formatCompact(frequency) + " s"
+	}]);
 }
 
 function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>) {
