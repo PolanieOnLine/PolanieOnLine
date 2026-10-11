@@ -16,6 +16,7 @@ import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.common.NotificationType;
+import games.stendhal.client.gui.ArenaObservationWindow;
 
 /**
  * Chat options
@@ -28,6 +29,11 @@ class ChatOptionsEvent extends Event<RPEntity> {
 	 */
 	@Override
 	public void execute() {
+		if (entity.equals(User.get()) && event.has("arena_phase")
+				&& "__arena_observation__".equals(event.get("npc"))) {
+			ArenaObservationWindow.show(event);
+			return;
+		}
 		if (!ClientSingletonRepository.getUserInterface().isDebugEnabled()) {
 			return;
 		}

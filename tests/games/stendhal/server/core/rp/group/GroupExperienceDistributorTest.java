@@ -105,4 +105,22 @@ public class GroupExperienceDistributorTest {
 		final List<Player> eligible = group.getOnlineMembersInSameZone(anna);
 		assertEquals(Arrays.asList(anna, bartek), eligible);
 	}
+
+	@Test
+	public void arenaSpectatorsCannotReceiveOrReduceTheFightersGroupExperience() {
+		final StendhalRPZone zone = new StendhalRPZone("group_exp_arena_observers", 64, 64);
+		final Player anna = PlayerTestHelper.createPlayer("anna");
+		final Player viewer = PlayerTestHelper.createPlayer("viewer");
+		ruleProcessor.addPlayer(anna); ruleProcessor.addPlayer(viewer);
+		zone.add(anna); zone.add(viewer);
+		viewer.setArenaSpectator(true);
+		group = SingletonRepository.getGroupManager().createGroup(anna.getName());
+		group.addMember(viewer.getName());
+		assertEquals(Arrays.asList(anna), group.getOnlineMembersInSameZone(anna));
+		assertEquals(anna, group.getLowestLevelMember(anna));
+		assertEquals(Integer.valueOf(100), GroupExperienceDistributor.splitEqually(
+				group.getOnlineMembersInSameZone(anna), 100).get(anna));
+		viewer.setArenaSpectator(false);
+		assertEquals(2, group.getOnlineMembersInSameZone(anna).size());
+	}
 }

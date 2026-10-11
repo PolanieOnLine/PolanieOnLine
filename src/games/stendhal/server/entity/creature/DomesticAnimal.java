@@ -125,6 +125,24 @@ public abstract class DomesticAnimal extends Creature {
 		return owner;
 	}
 
+	@Override public boolean isAttackable() {
+		return (owner == null || !owner.isArenaSpectator()) && super.isAttackable();
+	}
+
+	@Override public boolean isInvisibleToCreatures() {
+		return (owner != null && owner.isArenaSpectator()) || super.isInvisibleToCreatures();
+	}
+
+	/** Observing a fight must not let a companion fight or eat its loot. */
+	protected boolean suspendForArenaObservation() {
+		if (owner == null || !owner.isArenaSpectator()) { return false; }
+		stopAttack();
+		clearPath();
+		stop();
+		notifyWorldAboutChanges();
+		return true;
+	}
+
 	/**
 	 * Checks if this domestic animal was owned by a player,
 	 * regardless of whether it is owned at the moment.

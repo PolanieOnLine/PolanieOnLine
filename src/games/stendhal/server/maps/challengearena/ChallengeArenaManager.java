@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +38,34 @@ public final class ChallengeArenaManager {
 
 	public static synchronized ChallengeArenaInfo getArenaInfo(final String playerName) {
 		return sessions.get(playerName);
+	}
+
+	/** A snapshot; never expose the mutable session registry to the UI. */
+	static synchronized List<String> getObservablePlayers() {
+		final List<String> names = new ArrayList<>();
+		for (final Map.Entry<String, ChallengeArenaInfo> entry : sessions.entrySet()) {
+			if (isObservable(entry.getKey(), entry.getValue())) {
+				names.add(entry.getKey());
+			}
+		}
+		Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
+		return names;
+	}
+
+	static synchronized boolean isObservable(final String name, final ChallengeArenaInfo info) {
+		if (info == null || sessions.get(name) != info || info.getEngine() == null) {
+			return false;
+		}
+		for (final Player player : info.getZone().getPlayers()) {
+			if (name.equals(player.getName())) {
+				final ChallengeArenaState state = ChallengeArenaState.parse(
+						player.getQuest(ChallengeArenaState.QUEST_SLOT));
+				return !player.isDisconnected() && !player.isGhost() && player.getHP() > 0
+						&& info.isInArena(player) && state != null
+						&& state.getLifecycle() == ChallengeArenaState.Lifecycle.ACTIVE;
+			}
+		}
+		return false;
 	}
 
 	/** Acquire a fresh paid run; never reuse an already active player's session. */
@@ -110,6 +141,11 @@ public final class ChallengeArenaManager {
 					return;
 				}
 			}
+			if (!ChallengeArenaObservation.returnViewers(expected)) {
+				SingletonRepository.getTurnNotifier().notifyInTurns(1,
+						turn -> release(playerName, expected));
+				return;
+			}
 			try {
 				SingletonRepository.getRPWorld().getInstanceZoneManager().release(
 						expected.getZone().getID(), playerName);
@@ -137,6 +173,7 @@ public final class ChallengeArenaManager {
 	}
 
 	static synchronized void clearForTests() {
+		ChallengeArenaObservation.clearForTests();
 		activePlayers.clear();
 		sessions.clear();
 		arenaInfo = null;

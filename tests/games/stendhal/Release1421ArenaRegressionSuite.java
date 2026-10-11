@@ -19,6 +19,8 @@ import games.stendhal.server.maps.challengearena.ChallengeArenaNPCTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaInstanceTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaManagerTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaInfoTest;
+import games.stendhal.server.maps.challengearena.ChallengeArenaViewOrbTest;
+import games.stendhal.server.core.rp.group.GroupExperienceDistributorTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
 import games.stendhal.server.script.SummonMistCreatureTest;
 
@@ -37,6 +39,8 @@ import games.stendhal.server.script.SummonMistCreatureTest;
 	ChallengeArenaInstanceTest.class,
 	ChallengeArenaManagerTest.class,
 	ChallengeArenaInfoTest.class,
+	ChallengeArenaViewOrbTest.class,
+	GroupExperienceDistributorTest.class,
 	SignFromHallOfFameLoaderTest.class,
 	Item2DViewGroundRarityTest.class,
 	SummonMistCreatureTest.class

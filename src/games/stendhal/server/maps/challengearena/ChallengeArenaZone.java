@@ -16,7 +16,6 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
-import games.stendhal.server.entity.mapstuff.useable.ViewChangeEntity;
 import games.stendhal.server.util.Area;
 
 /** Configures the dedicated Challenge Arena in Tarnow. */
@@ -93,7 +92,7 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 	}
 
 	private static void addViewOrb(final StendhalRPZone zone, final int x) {
-		final ViewChangeEntity orb = ViewChangeEntity.unrestricted(COMBAT_X, COMBAT_Y);
+		final ChallengeArenaObservationOrb orb = new ChallengeArenaObservationOrb();
 		orb.setPosition(x, VIEW_ORB_Y);
 		zone.add(orb);
 	}

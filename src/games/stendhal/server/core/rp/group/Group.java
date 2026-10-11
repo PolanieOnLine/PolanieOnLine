@@ -279,6 +279,7 @@ public class Group {
 		return membersAndLastSeen.keySet().stream()
 			.map(ruleProcessor::getPlayer)
 			.filter(Objects::nonNull)
+			.filter(p -> !p.isArenaSpectator())
 			.filter(p -> (reference == null) || (reference.getZone() == null)
 					|| (p.getZone() == reference.getZone()))
 			.sorted(Comparator.comparing(Player::getName))

@@ -172,6 +172,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		player.setQuest(ChallengeArenaState.QUEST_SLOT,
 				state.withLifecycle(ChallengeArenaState.Lifecycle.DONE).serialize());
 		lootUntil = clock.getAsLong() + LOOT_PERIOD_MILLIS;
+		ChallengeArenaObservation.returnViewers(arenaInfo);
 		player.sendPrivateText("Zwycięstwo! Masz 60 sekund na zebranie łupów, zanim wrócisz do kupca. Możesz wcześniej opuścić arenę południową bramą bez utraty nagrody.");
 		SingletonRepository.getTurnNotifier().notifyInTurns(0, this);
 	}
@@ -209,6 +210,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 
 	void stop() {
 		running = false;
+		ChallengeArenaObservation.returnViewers(arenaInfo);
 		SingletonRepository.getTurnNotifier().dontNotify(this);
 		spawner.removeAllCreatures();
 		arenaInfo.clearEngine(this);

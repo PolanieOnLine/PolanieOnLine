@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.challengearena.ChallengeArenaObservation;
 import marauroa.common.game.RPObject;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.game.db.CharacterDAO;
@@ -63,7 +64,8 @@ public class StendhalCharacterDAO extends CharacterDAO {
 	public void storeCharacter(final DBTransaction transaction, final String username,
 			final String character, final RPObject player, Timestamp timestamp) throws SQLException, IOException {
 
-		super.storeCharacter(transaction, username, character, player, timestamp);
+		super.storeCharacter(transaction, username, character,
+				ChallengeArenaObservation.persistenceSnapshot(player), timestamp);
 
 		// Here goes the Stendhal specific code.
 		if (player instanceof Player) {

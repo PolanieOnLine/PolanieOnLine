@@ -12,6 +12,7 @@
 import { Chat } from "../util/Chat";
 import { ChatOptionsDialog } from "../ui/dialog/ChatOptionsDialog";
 import { RPEvent } from "marauroa"
+import { ArenaObservationDialog } from "../ui/dialog/ArenaObservationDialog";
 
 import { marauroa } from "marauroa"
 
@@ -23,9 +24,14 @@ export class ChatOptionsEvent extends RPEvent {
 	public npc!: string;
 	public title?: string;
 	public options!: string;
+	public arena_phase?: string;
 
 	public execute(entity: any): void {
 		if (entity !== marauroa.me) {
+			return;
+		}
+		if (this.npc === "__arena_observation__" && this.arena_phase) {
+			ArenaObservationDialog.show(this);
 			return;
 		}
 
