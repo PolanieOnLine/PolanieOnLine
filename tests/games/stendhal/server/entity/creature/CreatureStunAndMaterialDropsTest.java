@@ -76,7 +76,8 @@ public class CreatureStunAndMaterialDropsTest {
 		final String[] giants = {"amazonka olbrzymia", "olbrzym", "olbrzym starszy",
 			"olbrzym mistrz", "czarny olbrzym", "imperialny generał gigant",
 			"lodowy olbrzym", "lodowy starszy olbrzym", "mega mag", "szarak gigant",
-			"czarny szkielet gigant", "gigantyczne monstrum", "superczłowiek olbrzym"};
+			"czarny szkielet gigant", "gigantyczne monstrum", "superczłowiek olbrzym",
+			"kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka"};
 		for (final String name : weaker) {
 			assertStun(name, 5.0);
 		}
@@ -86,6 +87,23 @@ public class CreatureStunAndMaterialDropsTest {
 		assertStun("gigantyczna lili", 12.0);
 		// Existing stun users keep their authored probabilities.
 		assertStun("trol jaskiniowy", 8.0);
+	}
+
+	@Test
+	public void greatReapersKeepOtherAbilitiesAndOrdinaryReapersDoNotGainStun() {
+		final String[] great = {"kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka"};
+		for (final String name : great) {
+			assertEquals(name, "5", creature(name).getAIProfile("bleeding_attack"));
+			assertEquals(name, "0.05", creature(name).getAIProfile("lifesteal"));
+		}
+		assertEquals("35,50", creature("kostucha wielka").getAIProfile("heal"));
+		assertEquals("35,50", creature("kostucha różowa wielka").getAIProfile("heal"));
+		assertEquals("15,50", creature("kostucha złota wielka").getAIProfile("heal"));
+		assertTrue(creature("kostucha złota wielka").getAIProfiles().containsKey("boss"));
+		final String[] ordinary = {"kostucha", "kostucha różowa", "kostucha złota"};
+		for (final String name : ordinary) {
+			assertNull(name, creature(name).getAIProfile("status_attackers"));
+		}
 	}
 
 	@Test
