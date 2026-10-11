@@ -39,6 +39,7 @@ import { Debug } from "../util/Debug";
 import { AdminDiagnostics } from "../util/AdminDiagnostics";
 import { TileMap } from "data/TileMap";
 import { UiStateStore } from "./mobile/UiStateStore";
+import { Creature } from "../entity/Creature";
 
 /**
  * game window aka world view
@@ -168,6 +169,7 @@ export class ViewPort {
 		this.map = TileMap.get();
 		const element = this.getElement() as HTMLCanvasElement;
 		element.style.touchAction = "none";
+		element.addEventListener("mouseleave", () => element.removeAttribute("title"));
 		this.ctx = element.getContext("2d")!;
 
 		const { styles, maxHeight } = this.resolveInitialStyles(element);
@@ -1062,6 +1064,15 @@ export class ViewPort {
 		var y = pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY;
 		var entity = stendhal.zone.entityAt(x, y);
 		stendhal.ui.gamewindow.getElement().style.cursor = entity.getCursor(x, y);
+		const canvas = this.getElement();
+		const armorLabel = entity instanceof Creature ? entity.getArmorLabel() : undefined;
+		if (armorLabel) {
+			if (canvas.title !== armorLabel) {
+				canvas.title = armorLabel;
+			}
+		} else {
+			canvas.removeAttribute("title");
+		}
 	}
 
 	/**

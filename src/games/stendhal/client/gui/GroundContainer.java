@@ -33,6 +33,7 @@ import games.stendhal.client.IGameScreen;
 import games.stendhal.client.StaticGameLayers;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.Creature;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.User;
@@ -44,6 +45,7 @@ import games.stendhal.client.gui.spellcasting.GroundContainerMouseState;
 import games.stendhal.client.gui.styled.cursor.CursorRepository;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.common.Direction;
+import games.stendhal.common.CreatureArmor;
 import games.stendhal.common.EquipActionConsts;
 import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPAction;
@@ -101,20 +103,25 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	}
 
 	/**
-	 * Updates the standard Swing tooltip when the pointer is over a movable
-	 * item on the ground. The same structured tooltip is used by inventory
-	 * slots so rarity and item statistics cannot be hidden by dropping an item.
+	 * Shows armor information over creatures and the inventory-style tooltip
+	 * over movable ground items.
 	 */
 	private void updateGroundItemToolTip(final Point point) {
 		final Point2D location = screen.convertScreenViewToWorld(point);
-		final EntityView<?> view = screen.getMovableEntityViewAt(
-				location.getX(), location.getY());
+		EntityView<?> view = screen.getEntityViewAt(location.getX(), location.getY());
+		if (view == null || !(view.getEntity() instanceof Creature)) {
+			view = screen.getMovableEntityViewAt(
+					location.getX(), location.getY());
+		}
 		final IEntity entity = view == null ? null : view.getEntity();
-		if (entity == tooltipEntity) {
+		if (entity == tooltipEntity && !(entity instanceof Creature)) {
 			return;
 		}
 		tooltipEntity = entity;
-		canvas.setToolTipText(buildGroundItemToolTip(entity));
+		final String tooltip = buildGroundItemToolTip(entity);
+		if (!java.util.Objects.equals(tooltip, canvas.getToolTipText())) {
+			canvas.setToolTipText(tooltip);
+		}
 	}
 
 	private void clearGroundItemToolTip() {
@@ -128,9 +135,13 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	 * Build the hover tooltip for a ground entity.
 	 *
 	 * @param entity entity under the pointer
-	 * @return item tooltip, or {@code null} for non-items
+	 * @return item tooltip or creature armor label, otherwise {@code null}
 	 */
 	static String buildGroundItemToolTip(final IEntity entity) {
+		if (entity instanceof Creature) {
+			final CreatureArmor armor = ((Creature) entity).getArmorType();
+			return armor == null ? null : armor.getLabel();
+		}
 		if (!(entity instanceof Item)) {
 			return null;
 		}
