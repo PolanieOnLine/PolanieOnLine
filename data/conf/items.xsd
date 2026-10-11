@@ -93,6 +93,7 @@
 			<element name="resist_shocked" type="Q1:attribute" minOccurs="0"/>
 			<element name="resist_confused" type="Q1:attribute" minOccurs="0"/>
 			<element name="resist_heavy" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_stunned" type="Q1:attribute" minOccurs="0"/>
 			<element name="skill_atk" type="Q1:attribute" minOccurs="0"/>
 			<element name="atk_additional_bonus" type="Q1:attribute" minOccurs="0"/>
 			<element name="critical_additional_bonus" type="Q1:attribute" minOccurs="0"/>

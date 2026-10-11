@@ -145,6 +145,7 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);
 		copyDouble(item, ItemTooltip.RESIST_CONFUSED, ItemTooltip.RESIST_CONFUSED);
 		copyDouble(item, ItemTooltip.RESIST_HEAVY, ItemTooltip.RESIST_HEAVY);
+		copyDouble(item, ItemTooltip.RESIST_STUNNED, ItemTooltip.RESIST_STUNNED);
 		copyDouble(item, "accuracy_bonus", ItemTooltip.ACCURACY_BONUS);
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);
@@ -161,6 +162,7 @@ public final class ItemTooltipService {
 				ItemTooltip.MAX_UPGRADE_LEVEL);
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
+		publishConsumableHealing(item);
 
 		if (PUBLISH_ITEM_VALUE && item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));
@@ -177,6 +179,42 @@ public final class ItemTooltipService {
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static void publishConsumableHealing(final Item item) {
+		if (!(item instanceof ConsumableItem)) {
+			return;
+		}
+		final ConsumableItem consumable = (ConsumableItem) item;
+		final int amount = consumable.getAmount();
+		if (amount <= 0) {
+			return;
+		}
+
+		final String itemName = item.getName() == null ? ""
+				: item.getName().toLowerCase(Locale.ROOT);
+		if (itemName.contains("eliksir")) {
+			put(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT,
+					Integer.toString(amount));
+			put(item, ItemTooltip.CONSUMABLE_HEALING_INSTANT, "true");
+			return;
+		}
+		if ((!(item instanceof Food) && !(item instanceof Drink))
+				|| itemName.contains("mana")) {
+			return;
+		}
+
+		final int regen = consumable.getRegen();
+		final int frequency = consumable.getFrecuency();
+		if (regen <= 0 || frequency <= 0) {
+			return;
+		}
+		final long healingTicks = ((long) amount + regen - 1L) / regen;
+		final long durationSeconds = healingTicks * frequency;
+		put(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT,
+				Integer.toString(amount));
+		put(item, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS,
+				Long.toString(durationSeconds));
 	}
 
 	private static void publishEquipmentSlots(final Item item) {
