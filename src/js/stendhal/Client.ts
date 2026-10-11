@@ -447,7 +447,8 @@ export class Client {
 		gamewindow.addEventListener("mousedown", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
-		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
+		gamewindow.addEventListener("mousemove",
+			stendhal.ui.gamewindow.onMouseMove.bind(stendhal.ui.gamewindow));
 		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown, { passive: false });
 		gamewindow.addEventListener("touchend", stendhal.ui.gamewindow.onTouchEnd);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
