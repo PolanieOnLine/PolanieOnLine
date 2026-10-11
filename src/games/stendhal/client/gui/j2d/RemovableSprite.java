@@ -131,19 +131,19 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	}
 
 	public void drawEmoji(final Graphics g, final int viewX, final int viewY) {
-		final int sx = GameScreenSpriteHelper.convertWorldXToScaledScreen(owner.getX());
-		final int sy = GameScreenSpriteHelper.convertWorldYToScaledScreen(owner.getY());
+		final int sx = GameScreenSpriteHelper.getEntityScreenX(owner, false);
+		final int sy = GameScreenSpriteHelper.getEntityScreenY(owner);
 		sprite.draw(g, sx - viewX - 16, sy - viewY - 32);
 	}
 
 	private int getAttachedX() {
-		int sx = GameScreenSpriteHelper.convertWorldXToScaledScreen(owner.getX() + owner.getWidth());
+		int sx = GameScreenSpriteHelper.getEntityScreenX(owner, true);
 		sx = GameScreenSpriteHelper.keepSpriteOnMapX(sprite, sx);
 		return sx;
 	}
 
 	private int getAttachedY() {
-		int sy = GameScreenSpriteHelper.convertWorldYToScaledScreen(owner.getY());
+		int sy = GameScreenSpriteHelper.getEntityScreenY(owner);
 		sy -= sprite.getHeight();
 		sy = GameScreenSpriteHelper.keepSpriteOnMapY(sprite, sy);
 		return sy + offsetY;

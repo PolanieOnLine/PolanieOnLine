@@ -33,6 +33,14 @@ final class CameraSmoother {
 		targetY = y;
 	}
 
+	/** Move with the followed entity; smooth only a remaining recentering offset. */
+	synchronized void followTarget(final double targetX, final double targetY) {
+		x += targetX - this.targetX;
+		y += targetY - this.targetY;
+		this.targetX = targetX;
+		this.targetY = targetY;
+	}
+
 	synchronized void update(final double deltaMillis) {
 		if (isSettled()) {
 			return;

@@ -28,7 +28,7 @@ class ViewChangeEvent extends Event<Entity> {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				GameScreen.get().positionChanged(x, y);
+				GameScreen.get().requestViewCenter(x, y);
 			}
 		});
 	}

@@ -12,6 +12,12 @@
 package games.stendhal.client;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.awt.Graphics2D;
+import java.awt.geom.Point2D;
+
+import games.stendhal.client.entity.IEntity;
 
 import games.stendhal.client.gui.j2d.RemovableSprite;
 import games.stendhal.client.sprite.Sprite;
@@ -32,6 +38,7 @@ public class GameScreenSpriteHelper {
 	private static boolean frameActive;
 	private static int svy;
 	private static volatile PixelArtViewport renderedViewport;
+	private static Map<IEntity, EntityRenderPosition> renderedPositions = Collections.emptyMap();
 
 	private static double scale = 1.0;
 
@@ -59,10 +66,50 @@ public class GameScreenSpriteHelper {
 	private GameScreenSpriteHelper() {}
 
 	static void beginFrame(final PixelArtViewport viewport) {
+		beginFrame(viewport, Collections.<IEntity, EntityRenderPosition>emptyMap());
+	}
+
+	static void beginFrame(final PixelArtViewport viewport,
+			final Map<IEntity, EntityRenderPosition> positions) {
+		renderedPositions = positions;
 		renderedViewport = viewport;
 		frameViewX = (int) Math.round(viewport.getCameraX());
 		frameViewY = (int) Math.round(viewport.getCameraY());
 		frameActive = true;
+	}
+
+	public static Graphics2D createEntityGraphics(final Graphics2D source, final IEntity entity,
+			final int anchorX, final int anchorY, final double offsetX, final double offsetY) {
+		final PixelArtViewport viewport = renderedViewport;
+		if (frameActive && viewport != null && entity.isUser()) {
+			return viewport.createTrackedSpriteGraphics(source, anchorX, anchorY, offsetX, offsetY);
+		}
+		return PixelArtViewport.createSpriteGraphics(source, anchorX, anchorY, offsetX, offsetY);
+	}
+
+	/** Attach bubbles to the body from the displayed frame, never the live model. */
+	public static int getEntityScreenX(final IEntity entity, final boolean rightEdge) {
+		final EntityRenderPosition position = getEntityPosition(entity);
+		final double extra = rightEdge ? position.getWidth() * IGameScreen.SIZE_UNIT_PIXELS * scale : 0.0;
+		return (int) Math.round(getEntityScreenAnchor(entity, position).getX() + extra) + getActiveViewX();
+	}
+
+	public static int getEntityScreenY(final IEntity entity) {
+		return (int) Math.round(getEntityScreenAnchor(entity, getEntityPosition(entity)).getY()) + getActiveViewY();
+	}
+
+	private static EntityRenderPosition getEntityPosition(final IEntity entity) {
+		final EntityRenderPosition cached = renderedViewport == null ? null : renderedPositions.get(entity);
+		return cached != null ? cached : new EntityRenderPosition(
+				entity.getX() * IGameScreen.SIZE_UNIT_PIXELS,
+				entity.getY() * IGameScreen.SIZE_UNIT_PIXELS, entity.getWidth());
+	}
+
+	private static Point2D getEntityScreenAnchor(final IEntity entity, final EntityRenderPosition position) {
+		final PixelArtViewport viewport = renderedViewport;
+		return viewport != null ? viewport.entityToScreen(position, entity.isUser())
+				: new Point2D.Double((position.getPixelX() - getActiveViewX()) * scale,
+						(position.getPixelY() - getActiveViewY()) * scale);
 	}
 
 	static void endFrame() {
@@ -90,6 +137,7 @@ public class GameScreenSpriteHelper {
 	static void setScale(final double newScale) {
 		if (Math.abs(scale - newScale) > 0.000001) {
 			renderedViewport = null;
+			renderedPositions = Collections.emptyMap();
 		}
 		scale = newScale;
 	}
@@ -110,6 +158,7 @@ public class GameScreenSpriteHelper {
 	static void setWorldWidth(final int width) {
 		ww = width;
 		renderedViewport = null;
+		renderedPositions = Collections.emptyMap();
 	}
 
 	/**
@@ -128,6 +177,7 @@ public class GameScreenSpriteHelper {
 	static void setWorldHeight(final int height) {
 		wh = height;
 		renderedViewport = null;
+		renderedPositions = Collections.emptyMap();
 	}
 
 	/**

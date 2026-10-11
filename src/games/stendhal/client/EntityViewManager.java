@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -28,6 +29,7 @@ import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.gui.j2d.entity.EntityView;
+import games.stendhal.client.gui.j2d.entity.Entity2DView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
 
 /**
@@ -50,6 +52,31 @@ class EntityViewManager {
 	private final List<EntityView<IEntity>> views = new ArrayList<EntityView<IEntity>>();
 	/** Entities on the screen. */
 	private final List<EntityView<IEntity>> visibleViews = new ArrayList<EntityView<IEntity>>();
+	private final List<Entity2DView<?>> frameViews = new ArrayList<Entity2DView<?>>();
+
+	/** Freeze model positions before deriving the camera and visible area. */
+	Map<IEntity, EntityRenderPosition> beginRenderFrame() {
+		final Map<IEntity, EntityRenderPosition> positions = new IdentityHashMap<IEntity, EntityRenderPosition>();
+		synchronized (views) {
+			for (final EntityView<IEntity> view : views) {
+				if (view instanceof Entity2DView<?>) {
+					final Entity2DView<?> entityView = (Entity2DView<?>) view;
+					frameViews.add(entityView);
+					positions.put(view.getEntity(), entityView.beginRenderFrame());
+				} else {
+					view.applyChanges();
+				}
+			}
+		}
+		return positions;
+	}
+
+	void endRenderFrame() {
+		for (final Entity2DView<?> view : frameViews) {
+			view.endRenderFrame();
+		}
+		frameViews.clear();
+	}
 
 	/**
 	 * The entity to view map. May be accessed only in the game loop thread.

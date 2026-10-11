@@ -10,6 +10,41 @@ import org.junit.Test;
 
 public class CameraSmootherTest {
 	@Test
+	public void followedPlayerKeepsItsScreenOffsetAtDifferentRatesAndDirectionChanges() {
+		for (final int fps : new int[] {30, 60, 144}) {
+			final CameraSmoother camera = new CameraSmoother();
+			camera.reset(100.4, 200.7);
+			for (int frame = 0; frame < fps * 4; frame++) {
+				final double distance = Math.min(frame, fps * 2) * 160.0 / fps;
+				final double back = Math.max(0, frame - fps * 2) * 160.0 / fps;
+				final double playerX = 100.4 + distance - back;
+				final double playerY = 200.7 + distance - back;
+				camera.followTarget(playerX, playerY);
+				camera.update(1000.0 / fps);
+				assertEquals(playerX, camera.getX(), 0.000001);
+				assertEquals(playerY, camera.getY(), 0.000001);
+			}
+		}
+	}
+
+	@Test
+	public void followingAfterAStopOrTeleportDoesNotCreateASeparatePlayerLag() {
+		final CameraSmoother camera = new CameraSmoother();
+		camera.reset(100.4, 200.7);
+		camera.followTarget(101.3, 200.7);
+		camera.update(16.0);
+		for (int frame = 0; frame < 20; frame++) {
+			camera.followTarget(101.3, 200.7);
+			camera.update(16.0);
+			assertEquals(101.3, camera.getX(), 0.000001);
+		}
+		camera.followTarget(3000.6, 900.2);
+		camera.update(16.0);
+		assertEquals(3000.6, camera.getX(), 0.000001);
+		assertEquals(900.2, camera.getY(), 0.000001);
+	}
+
+	@Test
 	public void followsMovingTargetWithoutMicroStalls() {
 		final CameraSmoother camera = new CameraSmoother();
 		camera.reset(0.0, 0.0);

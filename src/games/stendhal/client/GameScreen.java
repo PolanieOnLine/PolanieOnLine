@@ -145,6 +145,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/** Frame-rate independent camera state kept in native map pixels. */
 	private final CameraSmoother camera = new CameraSmoother();
+	private final PlayerCameraFocus cameraFocus = new PlayerCameraFocus();
 	private long lastFrameNanos;
 
 	/**
@@ -263,7 +264,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			GameScreenSpriteHelper.setScale(1.0);
 		}
 		// Reset the view so that the player is in the center
-		calculateView(x, y);
+		calculateView(cameraFocus.followsPlayer() ? x : cameraFocus.getX(),
+				cameraFocus.followsPlayer() ? y : cameraFocus.getY());
 		center();
 	}
 
@@ -382,20 +384,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			return;
 		}
 
-		final double scale = GameScreenSpriteHelper.getScale();
-		final double viewWidth = sw / scale;
-		final double viewHeight = sh / scale;
-		final double playerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0) - camera.getX();
-		final double playerY = (y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0) - camera.getY();
-
-		/* Teleports and large corrections should not make the camera travel
-		 * across the whole map. */
-		if ((playerX < 0.0) || (playerX >= viewWidth)
-				|| (playerY < -SIZE_UNIT_PIXELS) || (playerY > viewHeight)) {
-			center();
-			return;
-		}
-
+		// followTarget already applies teleports and movement from this frame.
+		// Only a remaining explicit recentering offset needs smoothing here.
 		camera.update(deltaMillis);
 		syncCameraView();
 	}
@@ -415,6 +405,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * @param y preferred y of center, if the map is large enough
 	 */
 	private void calculateView(double x, double y) {
+		calculateView(x, y, false);
+	}
+
+	private void calculateView(double x, double y, boolean followPlayer) {
 		final double scale = GameScreenSpriteHelper.getScale();
 
 		final double centerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
@@ -436,7 +430,11 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			cvy = Math.max(0.0, Math.min(maxY, cvy));
 		}
 
-		camera.setTarget(cvx, cvy);
+		if (followPlayer) {
+			camera.followTarget(cvx, cvy);
+		} else {
+			camera.setTarget(cvx, cvy);
+		}
 	}
 
 
@@ -471,6 +469,35 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		Graphics2D g2d = (Graphics2D) g;
+		if (StendhalClient.get().isInTransfer()) {
+			// Never initialize entity images before zone colouring is ready.
+			lastFrameNanos = 0L;
+			return;
+		}
+		try {
+			final Map<IEntity, EntityRenderPosition> positions = viewManager.beginRenderFrame();
+			double playerX = x;
+			double playerY = y;
+			for (final Map.Entry<IEntity, EntityRenderPosition> entry : positions.entrySet()) {
+				if (entry.getKey().isUser()) {
+					playerX = entry.getValue().getPixelX() / SIZE_UNIT_PIXELS;
+					playerY = entry.getValue().getPixelY() / SIZE_UNIT_PIXELS;
+					break;
+				}
+			}
+			x = playerX;
+			y = playerY;
+			cameraFocus.capturePlayer(playerX, playerY);
+			calculateView(cameraFocus.getX(), cameraFocus.getY(), cameraFocus.followsPlayer());
+			nextFrame();
+			paintFrame(g2d, positions);
+		} finally {
+			viewManager.endRenderFrame();
+		}
+	}
+
+	private void paintFrame(final Graphics2D g2d,
+			final Map<IEntity, EntityRenderPosition> positions) {
 		final PixelArtViewport viewport;
 		synchronized (camera) {
 			viewport = new PixelArtViewport(g2d, GameScreenSpriteHelper.getScale(),
@@ -478,18 +505,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 		final int viewX = (int) Math.round(viewport.getCameraX());
 		final int viewY = (int) Math.round(viewport.getCameraY());
-		GameScreenSpriteHelper.beginFrame(viewport);
+		GameScreenSpriteHelper.beginFrame(viewport, positions);
 		try {
-			if (StendhalClient.get().isInTransfer()) {
-				/*
-				 * A hack to prevent proper drawing during zone change when the draw
-				 * request comes from paintChildren() of the parent. Those are not
-				 * caught by the paintImmediately() wrapper. Prevents entity view
-				 * images from being initialized before zone coloring is ready.
-				 */
-				return;
-			}
-
 			Graphics2D graphics = viewport.createWorldGraphics(g2d);
 			try {
 				if (graphics.getClipBounds() == null) {
@@ -727,6 +744,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * @param height The height width.
 	 */
 	private void setMaxWorldSize(final double width, final double height) {
+		cameraFocus.clearRemoteView();
 		GameScreenSpriteHelper.setWorldWidth((int) width);
 		GameScreenSpriteHelper.setWorldHeight((int) height);
 		calculateView(x, y);
@@ -890,8 +908,16 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			this.x = x;
 			this.y = y;
 
-			calculateView(x, y);
+			// Camera targets are derived from the rendered player snapshot.
+			// A queued logic-thread notification may describe an older position.
 		}
+	}
+
+	/** Explicit scrying/admin view; ordinary movement notifications cannot set this focus. */
+	public void requestViewCenter(final double x, final double y) {
+		cameraFocus.requestView(x, y);
+		calculateView(x, y);
+		center();
 	}
 
 	@Override
