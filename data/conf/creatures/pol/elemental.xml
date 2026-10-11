@@ -368,7 +368,7 @@
 		<corpse name="giant_humanoid"/>
 		<drops>
 			<item value="money" quantity="[10,800]" probability="100.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="85.0"/>
 			<item value="wielki eliksir" quantity="[2,6]" probability="40.0"/>
 			<item value="lodowa zbroja" quantity="[1,1]" probability="1.0"/>
 			<item value="lodowy młot bojowy" quantity="[1,1]" probability="1.0"/>
@@ -390,6 +390,7 @@
 			<susceptibility type="fire" value="1.7"/>
 		</abilities>
 		<ai>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>

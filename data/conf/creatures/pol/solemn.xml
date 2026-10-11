@@ -22,7 +22,6 @@
 		<drops>
 			<item value="money" quantity="[100,20000]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
 			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="3.0"/>
 			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
@@ -81,7 +80,6 @@
 		<drops>
 			<item value="money" quantity="[100,30000]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
 			<item value="czarny miecz" quantity="[1,1]" probability="5.0"/>
 			<item value="czarne rękawice" quantity="[1,1]" probability="5.0"/>
 			<item value="czarny pas" quantity="[1,1]" probability="1.0"/>
@@ -138,7 +136,6 @@
 		<drops>
 			<item value="money" quantity="[100,40000]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[2,14]" probability="40.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
 			<item value="pióro cherubina" quantity="[1,1]" probability="30.0"/>
 			<item value="magia mrozu" quantity="[11,222]" probability="40.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="5.0"/>
@@ -198,7 +195,6 @@
 		<drops>
 			<item value="money" quantity="[666,66666]" probability="100.0"/>
 			<item value="gigantyczny eliksir" quantity="[3,21]" probability="40.0"/>
-			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
 			<item value="pióro lilith" quantity="[1,1]" probability="30.0"/>
 			<item value="magia mroku" quantity="[11,99]" probability="40.0"/>
 			<item value="tarcza cieni" quantity="[1,1]" probability="1.5"/>

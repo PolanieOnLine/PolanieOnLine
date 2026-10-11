@@ -297,6 +297,7 @@
 			<susceptibility type="fire" value="1.7"/>
 		</abilities>
 		<ai>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>

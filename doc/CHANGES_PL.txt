@@ -18,6 +18,13 @@
 * Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Przed sprzedażą kupiec podaje cenę, uwzględniając rzadkość przedmiotu
 * Wyposażenie zdobyte z bossów jest co najmniej rzadkie. Taką samą gwarancję dodano do nagrody za najtrudniejszą próbę areny i łupów jej końcowego przeciwnika
 
+*potwory i łupy*
+---
+* Więcej olbrzymów i dużych humanoidów potrafi ogłuszyć przeciwnika
+* Szansa zdobycia pióra wynosi teraz 80% ze słabszych aniołów, 85% z silniejszych oraz 90% z cherubina i lilith
+* Serafin, azazel, cherubin, lilith i ich świąteczne odmiany nie pozostawiają już serc olbrzyma. Usunięto je również z łupów księcia szkieletów i szkieletu anioła
+* Lodowy starszy olbrzym, superczłowiek olbrzym, mega mag i gigantyczna lili mają teraz 85% szansy na pozostawienie serca olbrzyma
+
 *przedmioty i wyposażenie*
 ---
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
