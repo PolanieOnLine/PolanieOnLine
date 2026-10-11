@@ -3,8 +3,8 @@ package games.stendhal.server.maps.quests.hunting;
 /** Persisted names must remain stable: they are also stored on reward chests. */
 public enum HuntingDifficulty {
 	EASY("łatwe", 10, -10, -2),
-	MEDIUM("średnie", 15, -1, 2),
-	HARD("trudne", 20, 3, 8);
+	MEDIUM("średnie", 25, -1, 2),
+	HARD("trudne", 50, 3, 8);
 
 	private final String label;
 	private final int percent;

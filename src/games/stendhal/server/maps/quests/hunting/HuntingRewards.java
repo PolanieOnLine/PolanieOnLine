@@ -13,6 +13,7 @@ import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.creature.Creature;
 
 /** Modest, independent hunting loot pool; never uses the paid arena pool. */
 public final class HuntingRewards {
@@ -30,11 +31,94 @@ public final class HuntingRewards {
 
 	/** A percentage of the full current skill-level gap, capped at the skill limit. */
 	public static int skillXPBonus(int xp, HuntingDifficulty difficulty) {
+		return skillXPBonus(xp, difficulty.getPercent() * 100);
+	}
+
+	/** The same frozen task percentage is applied independently to each skill. */
+	public static int skillXPBonus(int xp, int basisPoints) {
+		if (basisPoints < 1 || basisPoints > 10000) {
+			throw new IllegalArgumentException("Invalid hunting bonus");
+		}
 		int skillLevel = Level.getLevel(xp);
 		if (skillLevel >= Level.maxLevel()) { return 0; }
 		long gap = (long) Level.getXP(skillLevel + 1) - Level.getXP(skillLevel);
-		long bonus = gap * difficulty.getPercent() / 100;
+		long bonus = gap * basisPoints / 10000;
 		return (int) Math.min(bonus, (long) Level.getXP(Level.maxLevel()) - xp);
+	}
+
+	/** Work estimate, not a combat simulation: HP represents hits to land;
+	 * attack and defence add a modest allowance for danger and resistance. */
+	public static double strength(Creature creature) {
+		int attack = Math.max(creature.getAtk(), creature.getRatk());
+		return Math.max(1, creature.getBaseHP())
+				* (1.0 + (Math.max(0, attack) + (double) Math.max(0, creature.getDef())) / 100.0);
+	}
+
+	/** Median public opponent near the character level, independent of the chosen
+	 * difficulty. A nearest-level fallback also supports the beginning of the game. */
+	public static double referenceStrength(int level, List<Creature> creatures) {
+		List<Double> scores = new ArrayList<>();
+		int nearest = Integer.MAX_VALUE;
+		for (Creature creature : creatures) {
+			if (HuntingDifficulty.MEDIUM.accepts(level, creature.getLevel())) {
+				scores.add(strength(creature));
+			}
+			nearest = Math.min(nearest, Math.abs(level - creature.getLevel()));
+		}
+		if (scores.isEmpty()) {
+			for (Creature creature : creatures) {
+				if (Math.abs(level - creature.getLevel()) == nearest) { scores.add(strength(creature)); }
+			}
+		}
+		if (scores.isEmpty()) { throw new IllegalArgumentException("No hunting reference creatures"); }
+		Collections.sort(scores);
+		int middle = scores.size() / 2;
+		double reference = scores.size() % 2 == 0 ? (scores.get(middle - 1) + scores.get(middle)) / 2 : scores.get(middle);
+		// Scale all three difficulties together if an unusually tough target
+		// would exceed the one-level safety limit. Capping only its reward would
+		// otherwise make that hard task pay less per unit of work than easy tasks.
+		for (Creature creature : creatures) {
+			for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
+				if (difficulty.accepts(level, creature.getLevel())) {
+					reference = Math.max(reference, strength(creature) * difficulty.getPercent() / 100.0 * 30 / 25.0);
+				}
+			}
+		}
+		return reference;
+	}
+
+	/** Normalised to 25 opponents; no fixed minimum payout for trivial targets.
+	 * A full skill-level gap per hunt is the safety limit, not several levels. */
+	public static int rewardBasisPoints(HuntingDifficulty difficulty, int count,
+			Creature target, double reference) {
+		if (count < 1 || count > 50 || !Double.isFinite(reference) || reference <= 0) {
+			throw new IllegalArgumentException("Invalid hunting task weight");
+		}
+		double bonus = difficulty.getPercent() * 100.0 * count / 25.0 * strength(target) / reference;
+		return (int) Math.max(1, Math.min(10000, Math.round(bonus)));
+	}
+
+	public static String percentageLabel(int basisPoints) {
+		return java.math.BigDecimal.valueOf(basisPoints, 2).stripTrailingZeros().toPlainString().replace('.', ',') + "%";
+	}
+
+	/** New hunts freeze their reward in field 4. Existing hunts are preserved,
+	 * but their kill count still matters; old one-kill tasks cannot pay a full hunt. */
+	public static int questBasisPoints(String quest) {
+		String[] parts = quest.split(";", -1);
+		if (parts.length > 4) {
+			try {
+				int saved = Integer.parseInt(parts[4]);
+				if (saved >= 1 && saved <= 10000) { return saved; }
+			} catch (NumberFormatException ignored) { /* Safely handle old quest data. */ }
+		}
+		String[] kills = parts[0].split(",", -1);
+		int count = 25;
+		if (kills.length == 5) {
+			try { count = Math.max(1, Math.min(50, Integer.parseInt(kills[2]))); }
+			catch (NumberFormatException ignored) { /* Use a standard hunt. */ }
+		}
+		return Math.min(10000, HuntingDifficulty.fromQuest(quest).getPercent() * 100 * count / 25);
 	}
 
 	public static ItemRarity rarityForRoll(HuntingDifficulty difficulty, int roll) {
