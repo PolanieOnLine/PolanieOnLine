@@ -1,6 +1,11 @@
 ## Changelog
 ---------
 1.42.1
+*pancerze przeciwników*
+---
+* Przy pasku zdrowia wybranego przeciwnika pojawia się ikonka jego pancerza: skóra oznacza lekki, kolczuga średni, a zbroja płytowa ciężki
+* Rodzaj pancerza możesz też sprawdzić po najechaniu na potwora lub przez „Obejrzyj”, również na telefonie
+
 *polowania u Janisława*
 ---
 * U Janisława możesz wybrać łatwe, średnie lub trudne polowanie. Przed przyjęciem zadania poznasz przeciwnika, liczbę potworów do pokonania i nagrody

@@ -379,6 +379,14 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		healthBar.draw(g2d, x + dx, y - healthBar.getHeight() + titleDrawYOffset);
 	}
 
+	protected int getHPBarWidth() {
+		return healthBar.getWidth();
+	}
+
+	protected int getHPBarHeight() {
+		return healthBar.getHeight();
+	}
+
 	/**
 	 * Draw the entity status bar. The status bar show the title and HP bar.
 	 *

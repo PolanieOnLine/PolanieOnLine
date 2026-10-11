@@ -17,6 +17,8 @@ import { Color } from "../data/color/Color";
 
 import { SkillEffect } from "../sprite/action/SkillEffect";
 import { Paths } from "../data/Paths";
+import { RenderingContext2D } from "util/Types";
+import { drawCreatureArmor, getCreatureArmorLabel } from "../ui/render/CreatureArmorRenderer";
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../stendhal";
@@ -26,6 +28,22 @@ export class Creature extends RPEntity {
 	override minimapStyle = Color.CREATURE;
 	override spritePath = "monsters";
 	override titleStyle = "#ffc8c8";
+
+	getArmorLabel(): string | undefined {
+		return getCreatureArmorLabel(this["armor_type"]);
+	}
+
+	override drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
+		if (this.hasOwnProperty("no_hpbar")) {
+			return;
+		}
+		super.drawHealthBar(ctx, x, y);
+		if (marauroa.me?.getAttackTarget() === this) {
+			const barX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
+			const barY = y + this["height"] * 32 - this["drawHeight"] - 6 + this.titleDrawYOffset;
+			drawCreatureArmor(ctx, this["armor_type"], barX, barY, this["drawWidth"], 4);
+		}
+	}
 
 
 	override set(key: string, value: any) {

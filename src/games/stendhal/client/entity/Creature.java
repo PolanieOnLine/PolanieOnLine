@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.common.CreatureArmor;
 import marauroa.common.game.RPObject;
 
 public class Creature extends RPEntity {
@@ -51,6 +52,13 @@ public class Creature extends RPEntity {
 
 	public String getDebug() {
 		return debug;
+	}
+
+	/** Reads live server updates; legacy servers without this field stay unknown. */
+	public CreatureArmor getArmorType() {
+		final RPObject object = getRPObject();
+		return object != null && object.has("armor_type")
+				? CreatureArmor.fromId(object.get("armor_type")) : null;
 	}
 
 	/**

@@ -21,6 +21,7 @@ import games.stendhal.client.ZoneInfo;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.Creature;
 import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
@@ -82,6 +83,18 @@ class Creature2DView extends RPEntity2DView<Creature> {
 		super.drawStatusBar(g2d, x, y, width);
 		EliteCreatureRenderer.drawTitleAndCrown(entity, g2d, x, y, width,
 				titleDrawYOffset);
+	}
+
+	@Override
+	protected void drawHPbar(final Graphics2D g2d, final int x, final int y,
+			final int width) {
+		super.drawHPbar(g2d, x, y, width);
+		if (User.get() != null && User.get().getAttackTarget() == entity) {
+			CreatureArmorRenderer.draw(entity.getArmorType(), g2d,
+					x + (width - getHPBarWidth()) / 2,
+					y - getHPBarHeight() + titleDrawYOffset,
+					getHPBarWidth(), getHPBarHeight());
+		}
 	}
 
 	@Override

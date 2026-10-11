@@ -24,6 +24,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.CreatureArmor;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Occasion;
@@ -167,6 +168,9 @@ public class Creature extends NPC {
 		setRPClass("creature");
 		put("type", "creature");
 		put("title_type", "enemy");
+		if (!has("armor_type")) {
+			put("armor_type", "none");
+		}
 		if (object.has("title_type")) {
 			put("title_type", object.get("title_type"));
 		}
@@ -300,6 +304,7 @@ public class Creature extends NPC {
 		setRPClass("creature");
 		put("type", "creature");
 		put("title_type", "enemy");
+		put("armor_type", "none");
 		dropsItems = new ArrayList<DropItem>();
 		dropItemInstances = new ArrayList<Item>();
 		setAIProfiles(new HashMap<String, String>());
@@ -411,7 +416,7 @@ public class Creature extends NPC {
 	/** Sets the semantic armor type used by weapon matchups. */
 	public void setArmorType(final String armorType) {
 		if (armorType == null || "none".equals(armorType)) {
-			remove("armor_type");
+			put("armor_type", "none");
 			return;
 		}
 		put("armor_type", armorType);
@@ -420,6 +425,12 @@ public class Creature extends NPC {
 	/** Returns the semantic armor type. Missing armor is explicitly none. */
 	public String getArmorType() {
 		return has("armor_type") ? get("armor_type") : "none";
+	}
+
+	@Override
+	public String describe() {
+		final CreatureArmor armor = CreatureArmor.fromId(getArmorType());
+		return super.describe() + (armor == null ? "" : " " + armor.getLabel() + ".");
 	}
 
 	public Creature getNewInstance() {
@@ -537,7 +548,7 @@ public class Creature extends NPC {
 			npc.isA("npc");
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
-			npc.addAttribute("armor_type", Type.STRING, Definition.HIDDEN);
+			npc.addAttribute("armor_type", Type.STRING);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);
