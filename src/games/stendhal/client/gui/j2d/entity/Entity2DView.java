@@ -16,7 +16,6 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +26,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.IGameScreen;
+import games.stendhal.client.PixelArtViewport;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.EntityChangeListener;
@@ -381,8 +381,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Graphics2D renderGraphics = createRenderGraphics(g2d,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		final Graphics2D renderGraphics = createRenderGraphics(g2d, r.x, r.y);
 		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {
@@ -398,25 +397,13 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 	}
 
 	private Graphics2D createRenderGraphics(final Graphics2D source,
-			final Object interpolationHint) {
+			final int anchorX, final int anchorY) {
 		if (isContained()) {
 			return source;
 		}
 
-		final boolean fractionalPosition = Math.abs(renderOffsetX) > SUBPIXEL_EPSILON
-				|| Math.abs(renderOffsetY) > SUBPIXEL_EPSILON;
-		final Object currentInterpolation = source.getRenderingHint(
-				RenderingHints.KEY_INTERPOLATION);
-		if (!fractionalPosition && interpolationHint.equals(currentInterpolation)) {
-			return source;
-		}
-
-		final Graphics2D graphics = (Graphics2D) source.create();
-		if (fractionalPosition) {
-			graphics.translate(renderOffsetX, renderOffsetY);
-		}
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, interpolationHint);
-		return graphics;
+		return PixelArtViewport.createSpriteGraphics(source, anchorX, anchorY,
+				renderOffsetX, renderOffsetY);
 	}
 
 	private boolean isOnScreen(Graphics2D g2d, Rectangle r) {
@@ -507,8 +494,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			}
 		}
 
-		final Graphics2D renderGraphics = createRenderGraphics(g2d,
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		final Graphics2D renderGraphics = createRenderGraphics(g2d, r.x, r.y);
 		final Composite oldComposite = renderGraphics.getComposite();
 
 		try {

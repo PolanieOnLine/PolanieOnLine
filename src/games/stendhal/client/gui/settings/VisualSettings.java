@@ -19,6 +19,8 @@ import static games.stendhal.client.gui.settings.SettingsProperties.ITEM_TOOLTIP
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.SCALE_SCREEN_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.SCALE_SCREEN_DEFAULT;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -100,7 +102,6 @@ class VisualSettings {
 	private static final String GAMESCREEN_NONUDE = "gamescreen.nonude";
 	private static final String GAMESCREEN_CURSORCLASSIC = "gamescreen.cursorclassic";
 
-	private static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
 	/** Property used for toggling map coloring on. */
 	private static final String MAP_COLOR_PROPERTY = "ui.colormaps";
 
@@ -249,7 +250,7 @@ class VisualSettings {
 			}
 		});
 
-		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, false,
+		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, SCALE_SCREEN_DEFAULT,
 				"Skaluj widok, aby pasował do okna",
 				"<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
 		rightColumn.add(scaleScreenToggle);

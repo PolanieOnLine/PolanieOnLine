@@ -55,4 +55,8 @@ public class SettingsProperties {
 	public static final String UI_RENDERING = "ui.rendering";
 
 	public static final String DISPLAY_SIZE_PROPERTY = "ui.display_size";
+
+	/** Shared by the renderer and settings UI; absent preferences never zoom the map. */
+	public static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
+	public static final boolean SCALE_SCREEN_DEFAULT = false;
 }

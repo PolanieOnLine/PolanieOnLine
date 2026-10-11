@@ -12,22 +12,20 @@
 package games.stendhal.client;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.SCALE_SCREEN_DEFAULT;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.FontMetrics;
 import java.awt.geom.Point2D;
-import java.awt.image.VolatileImage;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -153,16 +151,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * Flag for telling if the screen should be scaled if it's not of the
 	 * default size.
 	 */
-	private boolean useScaling = true;
-	/**
-	 * A flag for telling if the screen is being actually scaled. Used for
-	 * detecting if the ground layers will need triple buffering.
-	 */
-	private boolean useTripleBuffer;
-	/**
-	 * Buffer for drawing the ground layers when the screen is scaled.
-	 */
-	private VolatileImage buffer;
+	private boolean useScaling = SCALE_SCREEN_DEFAULT;
 
 	static {
 		offlineIcon = SpriteStore.get().getSprite("data/gui/offline.png");
@@ -206,6 +195,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 *            The client.
 	 */
 	private GameScreen(final StendhalClient client) {
+		setDoubleBuffered(true);
 		setSize(stendhal.getDisplaySize());
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -267,17 +257,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			// Scale by the dimension that needs more scaling
 			final double scale = Math.max(xScale, yScale);
 			GameScreenSpriteHelper.setScale(scale);
-			if (Math.abs(scale - 1.0) > 0.0001) {
-				useTripleBuffer = true;
-			} else {
-				useTripleBuffer = false;
-				buffer = null;
-			}
 		} else {
 			sw = Math.min(sw, screenSize.width);
 			sh = Math.min(sh, screenSize.height);
-			useTripleBuffer = false;
-			buffer = null;
+			GameScreenSpriteHelper.setScale(1.0);
 		}
 		// Reset the view so that the player is in the center
 		calculateView(x, y);
@@ -295,8 +278,6 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		this.useScaling = useScaling;
 		if (!useScaling) {
 			GameScreenSpriteHelper.setScale(1.0);
-			useTripleBuffer = false;
-			buffer = null;
 		} else {
 			onResized();
 		}
@@ -393,9 +374,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	/**
 	 * Move the camera towards its target using frame-rate independent
-	 * exponential smoothing. World rendering is deliberately snapped to whole
-	 * map pixels, while screen-space entity overlays can consume the continuous
-	 * camera position without resampling the pixel-art scene.
+	 * exponential smoothing. All layers consume one frame snapshot; only the
+	 * final device-pixel translation is rounded, never the logical camera state.
 	 */
 	private void adjustView(final double deltaMillis) {
 		if (camera.isSettled()) {
@@ -491,17 +471,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		Graphics2D g2d = (Graphics2D) g;
-		final int viewX;
-		final int viewY;
-		final double smoothViewX;
-		final double smoothViewY;
+		final PixelArtViewport viewport;
 		synchronized (camera) {
-			viewX = camera.getPixelX();
-			viewY = camera.getPixelY();
-			smoothViewX = camera.getX();
-			smoothViewY = camera.getY();
+			viewport = new PixelArtViewport(g2d, GameScreenSpriteHelper.getScale(),
+					camera.getX(), camera.getY());
 		}
-		GameScreenSpriteHelper.beginFrame(viewX, viewY);
+		final int viewX = (int) Math.round(viewport.getCameraX());
+		final int viewY = (int) Math.round(viewport.getCameraY());
+		GameScreenSpriteHelper.beginFrame(viewport);
 		try {
 			if (StendhalClient.get().isInTransfer()) {
 				/*
@@ -513,69 +490,37 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				return;
 			}
 
-			Graphics2D graphics = (Graphics2D) g2d.create();
+			Graphics2D graphics = viewport.createWorldGraphics(g2d);
 			try {
 				if (graphics.getClipBounds() == null) {
-					graphics.setClip(0, 0, getWidth(), getHeight());
-				}
-				Rectangle clip = graphics.getClipBounds();
-				boolean fullRedraw = (clip.width == sw && clip.height == sh);
-
-				int xAdjust = -viewX;
-				int yAdjust = -viewY;
-
-				if (useTripleBuffer) {
-					/*
-					 * Render once at native resolution and only scale the completed
-					 * pixel-art buffer. Camera movement itself remains aligned to whole
-					 * pixels, avoiding frame-to-frame sub-pixel resampling.
-					 */
-					final double scale = GameScreenSpriteHelper.getScale();
-					graphics.scale(scale, scale);
-					graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-						RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-					int width = stendhal.getDisplaySize().width;
-					int height = stendhal.getDisplaySize().height;
-					do {
-						GraphicsConfiguration gc = getGraphicsConfiguration();
-						if ((buffer == null) || (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
-							buffer = createVolatileImage(width, height);
-						}
-						Graphics2D gr = buffer.createGraphics();
-						try {
-							gr.setColor(Color.BLACK);
-							gr.fillRect(0, 0, width, height);
-							gr.setClip(0, 0, width, height);
-							renderScene(gr, xAdjust, yAdjust, fullRedraw);
-						} finally {
-							gr.dispose();
-						}
-						graphics.drawImage(buffer, 0, 0, null);
-					} while (buffer.contentsLost());
-				} else {
-					/*
-					 * renderScene translates its Graphics2D into world space. Keep
-					 * that transform isolated so renderTopLayer starts from the same
-					 * unshifted destination used by the buffered rendering path.
-					 */
-					final Graphics2D sceneGraphics = (Graphics2D) graphics.create();
+					// Set the destination clip before applying the world transform.
+					graphics.dispose();
+					final Graphics2D clipped = (Graphics2D) g2d.create();
 					try {
-						renderScene(sceneGraphics, xAdjust, yAdjust, fullRedraw);
+						clipped.setClip(0, 0, getWidth(), getHeight());
+						graphics = viewport.createWorldGraphics(clipped);
 					} finally {
-						sceneGraphics.dispose();
+						clipped.dispose();
 					}
 				}
-
-				/*
-				 * Entity overlays use the continuous camera position so labels can
-				 * move smoothly without changing the pixel-aligned world buffer.
-				 */
-				renderTopLayer(graphics, smoothViewX, smoothViewY, xAdjust, yAdjust);
+				final Rectangle destinationClip = g2d.getClipBounds();
+				final boolean fullRedraw = destinationClip == null
+						|| destinationClip.contains(0, 0, sw, sh);
+				final Rectangle tiles = getVisibleTiles(graphics.getClipBounds());
+				// Swing buffers the completed frame. Rendering directly in the final
+				// pixel grid keeps scaled map textures stable as the camera moves.
+				final Graphics2D sceneGraphics = (Graphics2D) graphics.create();
+				try {
+					renderScene(sceneGraphics, tiles, fullRedraw);
+				} finally {
+					sceneGraphics.dispose();
+				}
+				renderTopLayer(graphics, tiles);
 			} finally {
 				graphics.dispose();
 			}
 
-			// Keep text and emojis on the exact same integer camera position.
+			// Text/emoji placement uses this same frame's displayed camera.
 			drawText(g2d, viewX, viewY);
 			drawEmojis(g2d, viewX, viewY);
 			drawFpsCounter(g2d);
@@ -593,62 +538,37 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * Render the scalable parts of the screen.
 	 *
 	 * @param g graphics
-	 * @param xAdjust x coordinate offset
-	 * @param yAdjust y coordinate offset
+	 * @param tiles visible tile rectangle in world coordinates
 	 * @param fullRedraw <code>true</code> if this is called for a full game
 	 * 	screen redraw
 	 */
-	private void renderScene(Graphics2D g, int xAdjust, int yAdjust, boolean fullRedraw) {
-		// Adjust the graphics object so that the drawn objects do not need to
-		// know about converting the position to screen
-		g.translate(xAdjust, yAdjust);
-
-		// Restrict the drawn area by the clip bounds. Smaller than gamescreen
-		// draw requests can come for example from dragging items
-		int startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);
-		int startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);
-
-		Rectangle clip = g.getClipBounds();
-		startTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);
-		startTileY = Math.max(startTileY, clip.y / IGameScreen.SIZE_UNIT_PIXELS);
-		int layerWidth = getViewWidth();
-		int layerHeight = getViewHeight();
-		// +2 is needed to ensure the drawn area is covered by the tiles
-		layerWidth = Math.min(layerWidth, clip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;
-		layerHeight = Math.min(layerHeight, clip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;
-
-		viewManager.prepareViews(clip, fullRedraw);
+	private void renderScene(Graphics2D g, Rectangle tiles, boolean fullRedraw) {
+		viewManager.prepareViews(g.getClipBounds(), fullRedraw);
 
 		final String set = gameLayers.getAreaName();
-		gameLayers.drawLayers(g, set, "floor_bundle", startTileX,
-				startTileY, layerWidth, layerHeight, "blend_ground", "0_floor",
+		gameLayers.drawLayers(g, set, "floor_bundle", tiles.x,
+				tiles.y, tiles.width, tiles.height, "blend_ground", "0_floor",
 				"1_terrain", "2_object");
 
 		viewManager.draw(g);
 
-		gameLayers.drawLayers(g, set, "roof_bundle", startTileX,
-				startTileY, layerWidth, layerHeight, "blend_roof", "3_roof",
+		gameLayers.drawLayers(g, set, "roof_bundle", tiles.x,
+				tiles.y, tiles.width, tiles.height, "blend_roof", "3_roof",
 				"4_roof_add");
-		gameLayers.drawWeather(g, startTileX, startTileY, layerWidth, layerHeight);
+		gameLayers.drawWeather(g, tiles.x, tiles.y, tiles.width, tiles.height);
 
 	}
 
 	/**
 	 * Render entity overlays and effects directly to the final destination.
-	 * Nameplates follow the continuous camera, while map-wide effects retain
-	 * the same whole-pixel camera transform as the world scene.
+	 * Nameplates and map-wide effects share the exact world-scene transform.
 	 *
 	 * @param source destination graphics
-	 * @param smoothViewX continuous camera X coordinate
-	 * @param smoothViewY continuous camera Y coordinate
-	 * @param xAdjust pixel-aligned world X offset
-	 * @param yAdjust pixel-aligned world Y offset
+	 * @param tiles visible tile rectangle in world coordinates
 	 */
-	private void renderTopLayer(final Graphics2D source, final double smoothViewX,
-			final double smoothViewY, final int xAdjust, final int yAdjust) {
+	private void renderTopLayer(final Graphics2D source, final Rectangle tiles) {
 		final Graphics2D overlayGraphics = (Graphics2D) source.create();
 		try {
-			overlayGraphics.translate(-smoothViewX, -smoothViewY);
 			viewManager.drawTop(overlayGraphics);
 		} finally {
 			overlayGraphics.dispose();
@@ -656,25 +576,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 		final Graphics2D effectGraphics = (Graphics2D) source.create();
 		try {
-			effectGraphics.translate(xAdjust, yAdjust);
-
-			int startTileX = Math.max(0, -xAdjust / IGameScreen.SIZE_UNIT_PIXELS);
-			int startTileY = Math.max(0, -yAdjust / IGameScreen.SIZE_UNIT_PIXELS);
-			Rectangle clip = effectGraphics.getClipBounds();
-			if (clip == null) {
-				clip = new Rectangle(-xAdjust, -yAdjust, sw, sh);
-			}
-			startTileX = Math.max(startTileX, clip.x / IGameScreen.SIZE_UNIT_PIXELS);
-			startTileY = Math.max(startTileY, clip.y / IGameScreen.SIZE_UNIT_PIXELS);
-			int layerWidth = Math.min(getViewWidth(), clip.width / IGameScreen.SIZE_UNIT_PIXELS) + 2;
-			int layerHeight = Math.min(getViewHeight(), clip.height / IGameScreen.SIZE_UNIT_PIXELS) + 2;
-
 			// Effects remain above title bars, preserving the old darkening order.
 			Iterator<EffectLayer> it = globalEffects.iterator();
 			while (it.hasNext()) {
 				EffectLayer eff = it.next();
 				if (!eff.isExpired()) {
-					eff.draw(effectGraphics, startTileX, startTileY, layerWidth, layerHeight);
+					eff.draw(effectGraphics, tiles.x, tiles.y, tiles.width, tiles.height);
 				} else {
 					it.remove();
 				}
@@ -682,6 +589,15 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		} finally {
 			effectGraphics.dispose();
 		}
+	}
+
+	private Rectangle getVisibleTiles(final Rectangle clip) {
+		final int size = SIZE_UNIT_PIXELS;
+		final int tileX = Math.max(0, Math.floorDiv(clip.x, size));
+		final int tileY = Math.max(0, Math.floorDiv(clip.y, size));
+		return new Rectangle(tileX, tileY,
+				Math.min(getViewWidth(), (int) Math.ceil(clip.width / (double) size)) + 2,
+				Math.min(getViewHeight(), (int) Math.ceil(clip.height / (double) size)) + 2);
 	}
 
 	/**
@@ -713,9 +629,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 */
 	private void drawText(final Graphics2D g2d, final int viewX, final int viewY) {
 		/*
-		 * Text objects know their original placement relative to the screen,
-		 * not to the map. Shift them by the same whole-pixel camera position as
-		 * the world scene so labels never alternate between sub-pixel phases.
+		 * The helper returns final screen positions with this legacy offset
+		 * added. Remove the offset once; attached bubbles have already consumed
+		 * the same displayed viewport as the map and entity nameplates.
 		 */
 		final Graphics2D movingText = (Graphics2D) g2d.create();
 		try {
@@ -956,6 +872,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	@Override
 	public Point2D convertScreenViewToWorld(final int x, final int y) {
+		final PixelArtViewport viewport = GameScreenSpriteHelper.getRenderedViewport();
+		if (viewport != null) {
+			final Point2D nativePoint = viewport.screenToWorld(x, y);
+			return new Point.Double(nativePoint.getX() / SIZE_UNIT_PIXELS,
+					nativePoint.getY() / SIZE_UNIT_PIXELS);
+		}
 		final double scale = GameScreenSpriteHelper.getScale();
 		return new Point.Double(((x / scale) + GameScreenSpriteHelper.getScreenViewX()) / SIZE_UNIT_PIXELS,
 				((y / scale) + GameScreenSpriteHelper.getScreenViewY()) / SIZE_UNIT_PIXELS);
