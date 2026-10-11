@@ -90,7 +90,6 @@ class SwingClientGUI implements J2DClientGUI {
 	/** Scrolling speed when using the mouse wheel. */
 	private static final int SCROLLING_SPEED = 8;
 	/** Property name used to determine if scaling is wanted. */
-	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final String TOGGLE_SESSION_MENU = "toggleSessionMenu";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
 
@@ -166,7 +165,8 @@ class SwingClientGUI implements J2DClientGUI {
 
 		int divWidth = verticalSplit.getDividerSize();
 		WtWindowManager wm = WtWindowManager.getInstance();
-		wm.registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY, new ScalingSettingChangeListener(divWidth));
+		wm.registerSettingChangeListener(SettingsProperties.SCALE_SCREEN_PROPERTY,
+				new ScalingSettingChangeListener(divWidth));
 		wm.registerSettingChangeListener(DISPLAY_SIZE_PROPERTY, new DisplaySizeChangeListener());
 
 		/*
@@ -831,7 +831,9 @@ class SwingClientGUI implements J2DClientGUI {
 
 		ScalingSettingChangeListener(int divWidth) {
 			this.divWidth = divWidth;
-			changed(WtWindowManager.getInstance().getProperty(SCALE_PREFERENCE_PROPERTY, "true"));
+			changed(WtWindowManager.getInstance().getProperty(
+					SettingsProperties.SCALE_SCREEN_PROPERTY,
+					Boolean.toString(SettingsProperties.SCALE_SCREEN_DEFAULT)));
 		}
 
 		@Override

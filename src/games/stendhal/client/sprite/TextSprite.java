@@ -24,9 +24,11 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import games.stendhal.client.gui.TransparencyMode;
+import games.stendhal.client.PixelArtViewport;
 
 /**
  * Outlined text representation of a string.
@@ -44,6 +46,10 @@ public class TextSprite extends ImageSprite {
 	private final Color textColor;
 	private final Color outlineColor;
 	private final int baseline;
+	/** One antialiased device-size name image, rebuilt only when zoom/DPI changes. */
+	private BufferedImage alignedImage;
+	private double alignedScaleX;
+	private double alignedScaleY;
 
 	private TextSprite(final Image image, final GlyphVector smoothGlyphs,
 			final Color textColor, final Color outlineColor, final int baseline) {
@@ -111,6 +117,52 @@ public class TextSprite extends ImageSprite {
 		} finally {
 			g.dispose();
 		}
+	}
+
+	/**
+	 * Rasterize at the final device size once, then move the completed name by
+	 * whole pixels. This keeps smooth letter edges without re-antialiasing a
+	 * fractional glyph position or stretching a low-resolution text bitmap.
+	 */
+	public void drawPixelAligned(final Graphics2D source, final double x, final double y) {
+		final AffineTransform transform = source.getTransform();
+		if (transform.getShearX() != 0.0 || transform.getShearY() != 0.0
+				|| transform.getScaleX() <= 0.0 || transform.getScaleY() <= 0.0) {
+			final Graphics2D graphics = PixelArtViewport.createSpriteGraphics(source, 0, 0, x, y);
+			try {
+				drawSmooth(graphics, 0.0, 0.0);
+			} finally {
+				graphics.dispose();
+			}
+			return;
+		}
+		final BufferedImage image = getAlignedImage(transform.getScaleX(), transform.getScaleY());
+		final Point2D position = transform.transform(new Point2D.Double(x, y), null);
+		final Graphics2D graphics = (Graphics2D) source.create();
+		try {
+			graphics.setTransform(AffineTransform.getTranslateInstance(
+					Math.round(position.getX()), Math.round(position.getY())));
+			graphics.drawImage(image, 0, 0, null);
+		} finally {
+			graphics.dispose();
+		}
+	}
+
+	private synchronized BufferedImage getAlignedImage(final double scaleX, final double scaleY) {
+		if (alignedImage == null || alignedScaleX != scaleX || alignedScaleY != scaleY) {
+			alignedImage = new BufferedImage((int) Math.ceil(getWidth() * scaleX) + 2,
+					(int) Math.ceil(getHeight() * scaleY) + 2, BufferedImage.TYPE_INT_ARGB);
+			final Graphics2D graphics = alignedImage.createGraphics();
+			try {
+				graphics.scale(scaleX, scaleY);
+				drawSmooth(graphics, 0.0, 0.0);
+			} finally {
+				graphics.dispose();
+			}
+			alignedScaleX = scaleX;
+			alignedScaleY = scaleY;
+		}
+		return alignedImage;
 	}
 
 	private void fillGlyphs(final Graphics2D graphics2d, final float x,

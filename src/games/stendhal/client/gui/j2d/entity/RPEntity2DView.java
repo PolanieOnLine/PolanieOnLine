@@ -434,7 +434,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			final double tx = x + ((width - titleSprite.getWidth()) / 2.0);
 			final double ty = y - getStatusBarHeight() + titleDrawYOffset;
 
-			titleSprite.drawSmooth(g2d, tx, ty);
+			titleSprite.drawPixelAligned(g2d, tx, ty);
 		}
 	}
 

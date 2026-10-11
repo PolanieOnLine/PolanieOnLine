@@ -31,6 +31,7 @@ public class GameScreenSpriteHelper {
 	private static int frameViewY;
 	private static boolean frameActive;
 	private static int svy;
+	private static volatile PixelArtViewport renderedViewport;
 
 	private static double scale = 1.0;
 
@@ -57,9 +58,10 @@ public class GameScreenSpriteHelper {
 	 */
 	private GameScreenSpriteHelper() {}
 
-	static void beginFrame(final int viewX, final int viewY) {
-		frameViewX = viewX;
-		frameViewY = viewY;
+	static void beginFrame(final PixelArtViewport viewport) {
+		renderedViewport = viewport;
+		frameViewX = (int) Math.round(viewport.getCameraX());
+		frameViewY = (int) Math.round(viewport.getCameraY());
 		frameActive = true;
 	}
 
@@ -68,11 +70,15 @@ public class GameScreenSpriteHelper {
 	}
 
 	private static int getActiveViewX() {
-		return frameActive ? frameViewX : svx;
+		return getScreenViewX();
 	}
 
 	private static int getActiveViewY() {
-		return frameActive ? frameViewY : svy;
+		return getScreenViewY();
+	}
+
+	static PixelArtViewport getRenderedViewport() {
+		return renderedViewport;
 	}
 
 	/**
@@ -82,6 +88,9 @@ public class GameScreenSpriteHelper {
 	 *     Scaling to be applied.
 	 */
 	static void setScale(final double newScale) {
+		if (Math.abs(scale - newScale) > 0.000001) {
+			renderedViewport = null;
+		}
 		scale = newScale;
 	}
 
@@ -100,6 +109,7 @@ public class GameScreenSpriteHelper {
 	 */
 	static void setWorldWidth(final int width) {
 		ww = width;
+		renderedViewport = null;
 	}
 
 	/**
@@ -117,6 +127,7 @@ public class GameScreenSpriteHelper {
 	 */
 	static void setWorldHeight(final int height) {
 		wh = height;
+		renderedViewport = null;
 	}
 
 	/**
@@ -143,7 +154,9 @@ public class GameScreenSpriteHelper {
 	 *     The X coordinate of the left side.
 	 */
 	public static int getScreenViewX() {
-		return svx;
+		final PixelArtViewport viewport = renderedViewport;
+		return frameActive ? frameViewX
+				: viewport == null ? svx : (int) Math.round(viewport.getCameraX());
 	}
 
 	/**
@@ -163,7 +176,9 @@ public class GameScreenSpriteHelper {
 	 *     The Y coordinate of the left side.
 	 */
 	public static int getScreenViewY() {
-		return svy;
+		final PixelArtViewport viewport = renderedViewport;
+		return frameActive ? frameViewY
+				: viewport == null ? svy : (int) Math.round(viewport.getCameraY());
 	}
 
 	/**
@@ -252,8 +267,12 @@ public class GameScreenSpriteHelper {
 	 *     Pixel X coordinate on the screen.
 	 */
 	public static int convertWorldXToScaledScreen(final double x) {
-		int baseViewX = getActiveViewX();
-		return (int) (convertWorldToPixelUnits(x - baseViewX / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + baseViewX;
+		final int baseViewX = getActiveViewX();
+		final PixelArtViewport viewport = renderedViewport;
+		final double nativeX = x * IGameScreen.SIZE_UNIT_PIXELS;
+		final double screenX = viewport == null ? (nativeX - baseViewX) * scale
+				: viewport.worldToScreenX(nativeX);
+		return (int) Math.round(screenX) + baseViewX;
 	}
 
 	/**
@@ -266,8 +285,12 @@ public class GameScreenSpriteHelper {
 	 *     Pixel Y coordinate on the screen.
 	 */
 	public static int convertWorldYToScaledScreen(final double y) {
-		int baseViewY = getActiveViewY();
-		return (int) (convertWorldToPixelUnits(y - baseViewY / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + baseViewY;
+		final int baseViewY = getActiveViewY();
+		final PixelArtViewport viewport = renderedViewport;
+		final double nativeY = y * IGameScreen.SIZE_UNIT_PIXELS;
+		final double screenY = viewport == null ? (nativeY - baseViewY) * scale
+				: viewport.worldToScreenY(nativeY);
+		return (int) Math.round(screenY) + baseViewY;
 	}
 
 	/**
