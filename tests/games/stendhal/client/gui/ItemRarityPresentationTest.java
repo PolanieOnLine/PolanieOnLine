@@ -115,16 +115,17 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testConsumableTooltipShowsHealingDurationAndInstantElixir() {
+	public void testConsumableTooltipShowsHealingPerTickAndInstantElixir() {
 		final RPObject food = ItemTestHelper.createItem("jabłko testowe");
 		food.put("class", "food");
-		putStat(food, ItemTooltip.CONSUMABLE_HEALING_AMOUNT, "20");
-		putStat(food, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS, "35");
+		putStat(food, ItemTooltip.CONSUMABLE_HEALING_REGEN, "3");
+		putStat(food, ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS, "1.5");
 
 		final String foodTooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(food));
-		assertTrue(foodTooltip.contains("Leczenie: <b>+20 PW</b>"));
-		assertTrue(foodTooltip.contains("Czas leczenia: 35 s"));
+		assertTrue(foodTooltip.contains("Leczenie: <b>+3 PW co 1,5 s</b>"));
+		assertFalse(foodTooltip.contains("Czas leczenia:"));
+		assertFalse(foodTooltip.contains("+20 PW"));
 
 		final RPObject elixir = ItemTestHelper.createItem("eliksir zdrowia");
 		putStat(elixir, ItemTooltip.CONSUMABLE_HEALING_AMOUNT, "50");
