@@ -25,7 +25,7 @@ public final class Constants {
 	public static final String[] RESERVE_EQUIPMENT_SLOTS = {
 			"neck_set", "rhand_set", "finger_set", "fingerb_set",
 			"head_set", "armor_set", "pas_set", "legs_set", "feet_set",
-			"cloak_set", "lhand_set", "glove_set", "pouch_set"
+			"cloak_set", "lhand_set", "glove_set"
 	};
 
 	public static final String[] RUNE_SLOTS = {
@@ -43,7 +43,7 @@ public final class Constants {
 			"head", "cloak", "lhand", "armor", "rhand", "finger", "fingerb",
 			"glove", "pas", "legs", "feet",
 			"neck_set", "head_set", "cloak_set", "lhand_set", "armor_set", "rhand_set", "finger_set",
-			"fingerb_set", "glove_set", "pas_set", "legs_set", "feet_set", "pouch_set",
+			"fingerb_set", "glove_set", "pas_set", "legs_set", "feet_set",
 			"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
 			"control_rune", "special_rune"
 	};

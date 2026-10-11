@@ -153,6 +153,8 @@ public class PlayerRPClass {
 
 		// special slot to carry money
 		player.addRPSlot("pouch", 1, Definition.PRIVATE);
+		// Legacy schema only: needed to deserialize old characters before migration.
+		// New players never create this slot; deposits and set swaps are forbidden.
 		player.addRPSlot("pouch_set", 1, Definition.PRIVATE);
 
 		// The guild name

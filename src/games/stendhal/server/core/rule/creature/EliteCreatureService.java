@@ -57,6 +57,9 @@ public final class EliteCreatureService {
 	 * affix generation rules.
 	 */
 	public static ItemCreationContext getDropCreationContext(final Creature creature) {
+		if (creature != null && creature.isBoss()) {
+			return ItemCreationContext.bossDrop();
+		}
 		if (!isElite(creature)) {
 			return ItemCreationContext.drop();
 		}

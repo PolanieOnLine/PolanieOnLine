@@ -39,6 +39,7 @@ public final class ItemCreationContext {
 	private final Long affixSeed;
 	private final int rarityRolls;
 	private final String profile;
+	private final ItemRarity minimumRarity;
 
 	private ItemCreationContext(final Builder builder) {
 		this.source = builder.source;
@@ -51,6 +52,7 @@ public final class ItemCreationContext {
 		this.affixSeed = builder.affixSeed;
 		this.rarityRolls = builder.rarityRolls;
 		this.profile = builder.profile;
+		this.minimumRarity = builder.minimumRarity;
 	}
 
 	public static ItemCreationContext defaultCreation() {
@@ -169,6 +171,15 @@ public final class ItemCreationContext {
 		return profile;
 	}
 
+	public ItemRarity getMinimumRarity() {
+		return minimumRarity;
+	}
+
+	public static ItemCreationContext bossDrop() {
+		return builder(Source.DROP).withProfile(ItemRarityProfile.BOSS_ID)
+				.withMinimumRarity(ItemRarity.RARE).build();
+	}
+
 	public boolean isRestore() {
 		return source == Source.RESTORE;
 	}
@@ -188,6 +199,7 @@ public final class ItemCreationContext {
 				&& randomizeModifiers == other.randomizeModifiers
 				&& generateAffixes == other.generateAffixes
 				&& rarityRolls == other.rarityRolls
+				&& minimumRarity == other.minimumRarity
 				&& Objects.equals(modifiers, other.modifiers)
 				&& Objects.equals(affixSeed, other.affixSeed)
 				&& profile.equals(other.profile);
@@ -197,7 +209,7 @@ public final class ItemCreationContext {
 	public int hashCode() {
 		return Objects.hash(source, forcedRarity, questRarity, factoryRarity, modifiers,
 				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes),
-				affixSeed, Integer.valueOf(rarityRolls), profile);
+				affixSeed, Integer.valueOf(rarityRolls), profile, minimumRarity);
 	}
 
 	@Override
@@ -208,7 +220,7 @@ public final class ItemCreationContext {
 				+ ", modifiers=" + modifiers + ", randomizeModifiers="
 				+ randomizeModifiers + ", generateAffixes=" + generateAffixes
 				+ ", affixSeed=" + affixSeed + ", rarityRolls=" + rarityRolls
-				+ ", profile=" + profile + "]";
+				+ ", profile=" + profile + ", minimumRarity=" + minimumRarity + "]";
 	}
 
 	public static final class Builder {
@@ -222,6 +234,7 @@ public final class ItemCreationContext {
 		private Long affixSeed;
 		private int rarityRolls = 1;
 		private String profile = DEFAULT_PROFILE;
+		private ItemRarity minimumRarity;
 
 		private Builder(final Source source) {
 			if (source == null) {
@@ -319,6 +332,11 @@ public final class ItemCreationContext {
 				throw new IllegalArgumentException("Rarity profile must not be empty");
 			}
 			this.profile = profile.trim();
+			return this;
+		}
+
+		public Builder withMinimumRarity(final ItemRarity rarity) {
+			this.minimumRarity = Objects.requireNonNull(rarity, "Minimum rarity");
 			return this;
 		}
 

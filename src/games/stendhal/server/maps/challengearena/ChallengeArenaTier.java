@@ -8,8 +8,8 @@ package games.stendhal.server.maps.challengearena;
  *
  * <p>The stake is intentionally destroyed when a run starts. Higher tiers buy
  * more enemies, denser waves, stronger creature selection, forced elite
- * encounters and more arena modifiers. They do not guarantee a particular
- * item rarity.</p>
+ * encounters and more arena modifiers. The Legend equipment chest guarantees
+ * at least Rare equipment; lower tiers retain their normal rarity rolls.</p>
  */
 public enum ChallengeArenaTier {
 	TRIAL(100000, 10, 3, 2, 10, 0, 0, 0),

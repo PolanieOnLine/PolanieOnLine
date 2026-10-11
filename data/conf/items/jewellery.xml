@@ -10,7 +10,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="500"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -30,7 +30,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="200"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -50,7 +50,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="12000"/>
+		<value value="400"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -70,7 +70,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="20000"/>
+		<value value="600"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -90,7 +90,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="40000"/>
+		<value value="1000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -110,7 +110,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="30000"/>
+		<value value="800"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -130,7 +130,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="20000"/>
+		<value value="100"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -150,7 +150,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -170,7 +170,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -190,7 +190,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -210,7 +210,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -230,7 +230,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -250,7 +250,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="10000"/>
+		<value value="267"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

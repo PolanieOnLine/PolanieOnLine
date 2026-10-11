@@ -82,6 +82,7 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 		ChallengeArenaManager.configureRankingSign(rankingSign);
 
 		ChallengeArenaNPC.create(zone, NPC_X, NPC_Y);
+		ChallengeArenaBuyerNPC.create(zone, 40, 47);
 	}
 
 	static void configureViewOrbs(final StendhalRPZone zone) {

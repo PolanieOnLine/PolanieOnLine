@@ -14,7 +14,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="130"/>
+		<value value="10"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -37,7 +37,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="17280"/>
+		<value value="250"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -59,7 +59,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="27440"/>
+		<value value="300"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -81,7 +81,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="33750"/>
+		<value value="350"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -103,7 +103,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="17280"/>
+		<value value="450"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -125,7 +125,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
-		<value value="49130"/>
+		<value value="316"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -147,7 +147,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
-		<value value="92610"/>
+		<value value="780"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -170,7 +170,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="17280"/>
+		<value value="91837"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -194,7 +194,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
-		<value value="142610"/>
+		<value value="80000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -218,7 +218,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="3.5"/>
-		<value value="174240"/>
+		<value value="117959"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -242,7 +242,7 @@
 			<rate value="5"/>
 		</attributes>
 		<weight value="2.0"/>
-		<value value="14720"/>
+		<value value="347"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

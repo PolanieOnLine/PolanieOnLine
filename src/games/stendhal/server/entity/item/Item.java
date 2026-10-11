@@ -1263,6 +1263,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	@Override
 	public boolean canBeEquippedIn(final String slot) {
+		if ("pouch_set".equals(slot)) {
+			return false;
+		}
 		if (slot == null) {
 			// ground
 			return true;

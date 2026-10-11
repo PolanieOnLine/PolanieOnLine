@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -123,11 +124,13 @@ public final class ChallengeArenaLootService {
 			return null;
 		}
 
-		final ItemCreationContext context = ItemCreationContext
+		final ItemCreationContext.Builder context = ItemCreationContext
 				.builder(ItemCreationContext.Source.DROP)
-				.withRarityRolls(tier.getRewardRarityRolls())
-				.build();
-		return SingletonRepository.getEntityManager().getItem(itemName, context);
+				.withRarityRolls(tier.getRewardRarityRolls());
+		if (tier == ChallengeArenaTier.LEGEND) {
+			context.withMinimumRarity(ItemRarity.RARE);
+		}
+		return SingletonRepository.getEntityManager().getItem(itemName, context.build());
 	}
 
 	/**

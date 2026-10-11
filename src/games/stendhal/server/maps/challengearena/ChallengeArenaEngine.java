@@ -4,6 +4,7 @@
 package games.stendhal.server.maps.challengearena;
 
 import java.util.List;
+import java.util.function.LongSupplier;
 
 import org.apache.log4j.Logger;
 
@@ -16,16 +17,25 @@ import games.stendhal.server.entity.player.Player;
 public final class ChallengeArenaEngine implements TurnListener {
 	private static final Logger logger = Logger.getLogger(ChallengeArenaEngine.class);
 	private static final long WAVE_DELAY_MILLIS = 2500L;
+	private static final long LOOT_PERIOD_MILLIS = 60000L;
 
 	private final Player player;
 	private final ChallengeArenaInfo arenaInfo;
 	private final ChallengeArenaCreatureSpawner spawner;
 	private final List<ChallengeArenaModifier> modifiers;
+	private final LongSupplier clock;
 
 	private boolean running = true;
 	private long nextWaveAt;
+	private long lootUntil;
 
 	ChallengeArenaEngine(final Player player, final ChallengeArenaInfo arenaInfo) {
+		this(player, arenaInfo, System::currentTimeMillis);
+	}
+
+	ChallengeArenaEngine(final Player player, final ChallengeArenaInfo arenaInfo,
+			final LongSupplier clock) {
+		this.clock = clock;
 		this.player = player;
 		this.arenaInfo = arenaInfo;
 		this.spawner = new ChallengeArenaCreatureSpawner();
@@ -44,6 +54,16 @@ public final class ChallengeArenaEngine implements TurnListener {
 		}
 
 		final ChallengeArenaState state = getState();
+		if (lootUntil != 0) {
+			if (clock.getAsLong() >= lootUntil || player.isDisconnected()
+					|| player.getHP() <= 0 || !arenaInfo.isInArena(player)
+					|| !ChallengeArenaManager.isReservedBy(player.getName())) {
+				finishAndReturnPlayer();
+			} else {
+				SingletonRepository.getTurnNotifier().notifyInTurns(0, this);
+			}
+			return;
+		}
 		if (!isSessionValid(state)) {
 			failRun(state);
 			return;
@@ -56,7 +76,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		}
 
 		if (spawner.areAllCreaturesDead()
-				&& System.currentTimeMillis() >= nextWaveAt) {
+				&& clock.getAsLong() >= nextWaveAt) {
 			spawnNextWave(state);
 		}
 
@@ -69,6 +89,10 @@ public final class ChallengeArenaEngine implements TurnListener {
 		if (!running || requester == null || requester != player
 				|| !ChallengeArenaManager.isReservedBy(player.getName())) {
 			return false;
+		}
+		if (lootUntil != 0) {
+			finishAndReturnPlayer();
+			return true;
 		}
 		player.sendPrivateText("Poddajesz Arenę Wyzwań. Wpisowe przepada.");
 		failRun(getState());
@@ -127,7 +151,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 		final ChallengeArenaState updated = state.withSpawnedCreatures(
 				alreadySpawned + spawnedNow);
 		player.setQuest(ChallengeArenaState.QUEST_SLOT, updated.serialize());
-		nextWaveAt = System.currentTimeMillis() + WAVE_DELAY_MILLIS;
+		nextWaveAt = clock.getAsLong() + WAVE_DELAY_MILLIS;
 
 		player.sendPrivateText("Arena Wyzwań. Fala " + waveNumber + " z "
 				+ tier.getWaveCount() + ". Przeciwników w tej fali "
@@ -136,13 +160,15 @@ public final class ChallengeArenaEngine implements TurnListener {
 
 	private void completeRun(final ChallengeArenaState state) {
 		final long duration = Math.max(0L,
-				System.currentTimeMillis() - state.getStartedAt());
+				clock.getAsLong() - state.getStartedAt());
 		player.setQuest(ChallengeArenaState.QUEST_SLOT,
 				state.withLifecycle(ChallengeArenaState.Lifecycle.VICTORY).serialize());
 		ChallengeArenaRewardService.rewardVictory(player, state.getTier(), duration);
 		player.setQuest(ChallengeArenaState.QUEST_SLOT,
 				state.withLifecycle(ChallengeArenaState.Lifecycle.DONE).serialize());
-		finishAndReturnPlayer();
+		lootUntil = clock.getAsLong() + LOOT_PERIOD_MILLIS;
+		player.sendPrivateText("Zwycięstwo! Masz 60 sekund na zebranie łupów, zanim wrócisz do kupca. Możesz wcześniej powiedzieć Mistrzowi Wyzwań #rezygnuję lub #wyjdź bez utraty nagrody.");
+		SingletonRepository.getTurnNotifier().notifyInTurns(0, this);
 	}
 
 	private void failRun(final ChallengeArenaState state) {

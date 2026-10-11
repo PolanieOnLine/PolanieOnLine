@@ -10,6 +10,7 @@
 			<min_level value="0"/>
 		</attributes>
 		<susceptibility type="fire" value="1.1"/>
+        <value value="5"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -28,6 +29,7 @@
 			<min_level value="1"/>
 		</attributes>
 		<susceptibility type="fire" value="1.1"/>
+        <value value="18"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -45,6 +47,7 @@
 			<def value="2"/>
 			<min_level value="1"/>
 		</attributes>
+        <value value="18"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -63,6 +66,7 @@
 			<min_level value="2"/>
 		</attributes>
 		<susceptibility type="fire" value="0.9"/>
+        <value value="200"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -84,6 +88,7 @@
 		<susceptibility type="ice" value="0.95"/>
 		<susceptibility type="water" value="0.95"/>
 		<susceptibility type="fire" value="1.1"/>
+        <value value="200"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -106,6 +111,7 @@
 		<susceptibility type="earth" value="0.9"/>
 		<susceptibility type="ice" value="1.1"/>
 		<susceptibility type="water" value="1.1"/>
+        <value value="30"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -124,6 +130,7 @@
 			<min_level value="5"/>
 		</attributes>
 		<susceptibility type="light" value="0.98"/>
+        <value value="30"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -141,6 +148,7 @@
 			<def value="5"/>
 			<min_level value="7"/>
 		</attributes>
+        <value value="350"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -160,6 +168,7 @@
 			<min_level value="15"/>
 		</attributes>
 		<susceptibility type="fire" value="1.1"/>
+        <value value="1750"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -180,6 +189,7 @@
 		</attributes>
 		<susceptibility type="earth" value="0.95"/>
 		<susceptibility type="fire" value="1.15"/>
+        <value value="350"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -197,6 +207,7 @@
 			<def value="6"/>
 			<min_level value="10"/>
 		</attributes>
+        <value value="900"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -216,6 +227,7 @@
 		</attributes>
 		<susceptibility type="dark" value="0.95"/>
 		<susceptibility type="light" value="1.1"/>
+        <value value="3300"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -238,6 +250,7 @@
 		<susceptibility type="dark" value="0.95"/>
 		<susceptibility type="fire" value="0.95"/>
 		<susceptibility type="ice" value="0.95"/>
+        <value value="3300"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -255,6 +268,7 @@
 			<def value="7"/>
 			<min_level value="20"/>
 		</attributes>
+        <value value="3430"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -273,6 +287,7 @@
 			<min_level value="25"/>
 		</attributes>
 		<susceptibility type="fire" value="0.95"/>
+        <value value="4492"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -290,6 +305,7 @@
 			<def value="8"/>
 			<min_level value="40"/>
 		</attributes>
+        <value value="2100"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -309,6 +325,7 @@
 		</attributes>
 		<susceptibility type="dark" value="1.1"/>
 		<susceptibility type="light" value="0.95"/>
+        <value value="8000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -326,6 +343,7 @@
 			<def value="9"/>
 			<min_level value="60"/>
 		</attributes>
+        <value value="4000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -347,6 +365,7 @@
 		<susceptibility type="ice" value="0.97"/>
 		<susceptibility type="dark" value="0.97"/>
 		<susceptibility type="light" value="0.97"/>
+        <value value="4000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -364,6 +383,7 @@
 			<def value="10"/>
 			<min_level value="80"/>
 		</attributes>
+        <value value="4938"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -381,6 +401,7 @@
 			<def value="11"/>
 			<min_level value="100"/>
 		</attributes>
+        <value value="15434"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -400,6 +421,7 @@
 		</attributes>
 		<susceptibility type="dark" value="0.98"/>
 		<susceptibility type="light" value="1.02"/>
+        <value value="25000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -421,6 +443,7 @@
 		</attributes>
 		<susceptibility type="dark" value="1.02"/>
 		<susceptibility type="light" value="0.98"/>
+        <value value="32653"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -442,6 +465,7 @@
 		</attributes>
 		<susceptibility type="dark" value="0.9"/>
 		<susceptibility type="light" value="0.9"/>
+        <value value="138903"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -459,6 +483,7 @@
 			<def value="23"/>
 			<min_level value="0"/>
 		</attributes>
+        <value value="2381"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

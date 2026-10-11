@@ -364,12 +364,6 @@ Inspectable, ReserveSetWindow.Owner {
 		panel = createItemPanel(itemClass, store, "glove_set", "data/gui/slot-gloves.png");
 		right.add(panel);
 
-		FeatureEnabledItemPanel setPouch = new FeatureEnabledItemPanel("pouch_set", store.getSprite("data/gui/slot-pouch.png"));
-		slotPanels.put("pouch_set", setPouch);
-		setPouch.setAcceptedTypes(itemClass);
-		right.add(setPouch);
-		featureChangeListeners.add(setPouch);
-
 		column.add(row, SBoxLayout.constraint(SLayout.EXPAND_AXIAL));
 		column.add(Box.createVerticalStrut(PADDING));
 		column.add(setSwapButton, SBoxLayout.constraint(SLayout.EXPAND_PERPENDICULAR));

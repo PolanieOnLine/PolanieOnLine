@@ -11,7 +11,7 @@
 			<autobind value=""/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="100000"/>
+		<value value="60"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -30,7 +30,7 @@
 		<attributes>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="200000"/>
+		<value value="120"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -50,7 +50,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="1.0"/>
-		<value value="100000"/>
+		<value value="2500"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -71,7 +71,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1000"/>
+		<value value="1"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -204,7 +204,7 @@
 			<max_quantity value="2147483647"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="250000"/>
+		<value value="150"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

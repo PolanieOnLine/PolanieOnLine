@@ -302,7 +302,7 @@ public abstract class UpdateConverter {
 				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
 				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault",
 				"neck_set", "head_set", "cloak_set", "lhand_set", "armor_set", "rhand_set", "finger_set", "fingerb_set",
-				"glove_set", "pas_set", "legs_set", "feet_set", "pouch_set",
+				"glove_set", "pas_set", "legs_set", "feet_set",
 				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
 				"control_rune", "special_rune"};
 

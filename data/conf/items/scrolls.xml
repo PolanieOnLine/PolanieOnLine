@@ -196,7 +196,7 @@
 			<menu value="Zapisz|Użyj"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="4000"/>
+		<value value="1759"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -364,7 +364,7 @@
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
-		<value value="1000"/>
+		<value value="299"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -448,7 +448,7 @@
       		<quantity value="1"/>
     	</attributes>
     	<weight value="0.01"/>
-		<value value="10000"/>
+		<value value="699"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -469,7 +469,7 @@
       		<quantity value="1"/>
     	</attributes>
     	<weight value="0.01"/>
-		<value value="1000"/>
+		<value value="349"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

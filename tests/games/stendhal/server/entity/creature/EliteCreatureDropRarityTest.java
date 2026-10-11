@@ -10,6 +10,8 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
+import java.awt.geom.Rectangle2D;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,6 +59,37 @@ public class EliteCreatureDropRarityTest {
 		for (final ItemCreationContext context : contexts) {
 			assertEquals(1, context.getRarityRolls());
 		}
+	}
+
+	@Test
+	public void bossesUseGuaranteedRareProfileForEachDrop() {
+		final Creature creature = creatureWithThreeGuaranteedDrops();
+		final java.util.Map<String, String> profiles = new HashMap<String, String>();
+		profiles.put("boss", "");
+		creature.setAIProfiles(profiles);
+		final List<ItemCreationContext> contexts = new ArrayList<ItemCreationContext>();
+		creature.createDroppedItems(managerCapturing(contexts));
+		assertEquals(3, contexts.size());
+		for (final ItemCreationContext context : contexts) {
+			assertEquals(ItemCreationContext.bossDrop(), context);
+		}
+	}
+
+	@Test
+	public void legendChampionKeepsLootAndUsesBossRarityWithoutChangingTemplate() {
+		final Creature template = games.stendhal.server.core.engine.SingletonRepository
+				.getEntityManager().getCreature("kamienny golem");
+		template.clearDropItemList();
+		template.addDropItem("test reward", 100.0, 3);
+		final ArenaCreature champion = new ArenaCreature(template, new Rectangle2D.Double(0, 0, 20, 20));
+		champion.setGuaranteedRareDrops(true);
+		final List<ItemCreationContext> contexts = new ArrayList<ItemCreationContext>();
+		champion.createDroppedItems(managerCapturing(contexts));
+		assertEquals(3, contexts.size());
+		assertEquals(ItemCreationContext.bossDrop(), contexts.get(0));
+		contexts.clear();
+		template.createDroppedItems(managerCapturing(contexts));
+		assertEquals(ItemCreationContext.drop(), contexts.get(0));
 	}
 
 	private Creature creatureWithThreeGuaranteedDrops() {
