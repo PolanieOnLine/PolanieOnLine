@@ -20,18 +20,24 @@ export class ArenaObservationDialog extends DialogContentComponent {
 		this.players.style.width = "100%";
 		this.componentElement.appendChild(this.players);
 		this.observe = this.addButton("Obserwuj", () => {
-			if (this.players.value) { ArenaObservationDialog.send(this.players.value); }
+			if (this.players.value) { ArenaObservationDialog.send("watch", this.players.value); }
 		});
-		this.addButton("Odśwież", () => ArenaObservationDialog.send("lista"));
-		this.leave = this.addButton("Powrót do lobby", () => ArenaObservationDialog.send("powrot"));
+		this.addButton("Odśwież", () => ArenaObservationDialog.send("list"));
+		this.leave = this.addButton("Powrót do lobby", () => ArenaObservationDialog.send("return"));
 	}
 
-	private static send(choice: string): void {
-		marauroa.clientFramework.sendAction({type: "chat", text: "obserwuj " + choice} as any);
+	private static send(operation: string, target?: string): void {
+		const action: {[key: string]: string} = {type: "arena_observation", operation};
+		if (target !== undefined) { action.target = target; }
+		marauroa.clientFramework.sendAction(action as any);
 	}
 
 	public static show(event: {[key: string]: any}): void {
-		if (event.arena_phase === "close") {
+		const names = String(event.options || "").split("\t")
+			.map(entry => entry.split("|~|"))
+			.filter(parts => parts.length >= 2 && parts[1] !== "")
+			.map(parts => parts[1]);
+		if (event.arena_phase === "close" || (event.arena_phase === "open" && names.length === 0)) {
 			// Run after any earlier view-change event's deferred camera update.
 			queueMicrotask(() => { stendhal.ui.viewport.freeze = false; });
 			if (this.active) {
@@ -47,14 +53,11 @@ export class ArenaObservationDialog extends DialogContentComponent {
 		const dialog = this.active;
 		const selected = dialog.players.value;
 		dialog.players.replaceChildren();
-		for (const entry of String(event.options || "").split("\t")) {
-			const parts = entry.split("|~|");
-			if (parts.length >= 2) {
-				const option = document.createElement("option");
-				option.value = parts[1];
-				option.textContent = parts[1];
-				dialog.players.appendChild(option);
-			}
+		for (const name of names) {
+			const option = document.createElement("option");
+			option.value = name;
+			option.textContent = name;
+			dialog.players.appendChild(option);
 		}
 		if (Array.from(dialog.players.options).some(option => option.value === selected)) {
 			dialog.players.value = selected;
@@ -66,7 +69,7 @@ export class ArenaObservationDialog extends DialogContentComponent {
 	}
 
 	public override onParentClose(): void {
-		if (!this.serverClosing) { ArenaObservationDialog.send("zamknij"); }
+		if (!this.serverClosing) { ArenaObservationDialog.send("close"); }
 		ArenaObservationDialog.active = undefined;
 	}
 }

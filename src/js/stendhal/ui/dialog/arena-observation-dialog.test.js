@@ -43,32 +43,49 @@ function event(phase, names = ["Alicja", "Bartek"], title = "Wybierz gracza do o
 	return { arena_phase: phase, title, options: names.map(name => `obserwuj ${name}|~|${name}|~|`).join("\t") };
 }
 
-test("chooser preserves names and sends only the chosen observation command", () => {
+test("chooser preserves names and sends silent observation controls instead of chat", () => {
 	const h = harness(); h.Dialog.show(event("open"));
 	const dialog = h.frames[0].content;
 	assert.deepEqual(Array.from(dialog.players.options, option => option.textContent), ["Alicja", "Bartek"]);
 	dialog.players.value = "Bartek"; dialog.observe.onclick();
-	assert.equal(h.actions[0].type, "chat"); assert.equal(h.actions[0].text, "obserwuj Bartek");
+	assert.equal(h.actions[0].type, "arena_observation");
+	assert.equal(h.actions[0].operation, "watch"); assert.equal(h.actions[0].target, "Bartek");
+	assert.equal(h.actions[0].text, undefined);
 	assert.equal(dialog.leave.hidden, true);
 	h.Dialog.show(event("watch", ["Alicja", "Bartek"], "Obserwujesz: Bartek"));
 	assert.equal(h.frames.length, 1); assert.equal(dialog.players.value, "Bartek");
 	assert.equal(dialog.status.textContent, "Obserwujesz: Bartek");
 	assert.equal(dialog.leave.hidden, false); dialog.leave.onclick();
-	assert.equal(h.actions[1].text, "obserwuj powrot");
+	assert.equal(h.actions[1].type, "arena_observation"); assert.equal(h.actions[1].operation, "return");
+	assert.equal(h.actions[1].text, undefined);
 });
 
-test("empty lists disable observation but keep refresh available", () => {
+test("empty initial list never opens a window", () => {
 	const h = harness(); h.Dialog.show(event("open", []));
+	assert.equal(h.frames.length, 0); assert.equal(h.actions.length, 0);
+});
+
+test("refresh is silent and an emptied list closes the existing chooser without echo", () => {
+	const h = harness(); h.Dialog.show(event("open"));
 	const dialog = h.frames[0].content;
-	assert.equal(dialog.observe.disabled, true); assert.equal(dialog.players.options.length, 0);
-	assert.equal(dialog.status.textContent, "Nikt teraz nie walczy na arenie.");
 	dialog.buttons.find(button => button.label === "Odśwież").onclick();
-	assert.equal(h.actions[0].text, "obserwuj lista");
+	assert.equal(h.actions[0].type, "arena_observation"); assert.equal(h.actions[0].operation, "list");
+	assert.equal(h.actions[0].text, undefined);
+	h.Dialog.show(event("open", []));
+	assert.equal(h.Dialog.active, undefined); assert.equal(h.actions.length, 1);
+});
+
+test("watching keeps the return button available even if the refreshed list is empty", () => {
+	const h = harness(); h.Dialog.show(event("watch", []));
+	const dialog = h.frames[0].content;
+	assert.equal(dialog.observe.disabled, true); assert.equal(dialog.leave.hidden, false);
+	dialog.leave.onclick(); assert.equal(h.actions[0].operation, "return");
 });
 
 test("closing sends a return once; server closure does not echo a new command", () => {
 	const h = harness(); h.Dialog.show(event("watch")); h.frames[0].close();
-	assert.equal(h.actions.length, 1); assert.equal(h.actions[0].text, "obserwuj zamknij");
+	assert.equal(h.actions.length, 1); assert.equal(h.actions[0].type, "arena_observation");
+	assert.equal(h.actions[0].operation, "close"); assert.equal(h.actions[0].text, undefined);
 	h.Dialog.show(event("open"));
 	h.queued.push(() => { h.viewport.freeze = true; });
 	h.Dialog.show(event("close", []));

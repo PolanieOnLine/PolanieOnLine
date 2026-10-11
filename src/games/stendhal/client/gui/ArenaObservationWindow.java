@@ -3,6 +3,8 @@ package games.stendhal.client.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -13,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.GameScreen;
+import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 
@@ -43,27 +46,46 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 		content.add(buttons, BorderLayout.SOUTH);
 		setContent(content);
 		observe.addActionListener(event -> {
-			if (players.getSelectedItem() != null) { send(players.getSelectedItem().toString()); }
+			if (players.getSelectedItem() != null) { send("watch", players.getSelectedItem().toString()); }
 		});
-		refresh.addActionListener(event -> send("lista"));
-		leave.addActionListener(event -> send("powrot"));
+		refresh.addActionListener(event -> send("list", null));
+		leave.addActionListener(event -> send("return", null));
 		addCloseListener(window -> {
-			if (!serverClosing) { send("zamknij"); }
+			if (!serverClosing) { send("close", null); }
 			instance = null;
 		});
 	}
 
-	private static void send(final String choice) {
+	static RPAction createAction(final String operation, final String target) {
 		final RPAction action = new RPAction();
-		action.put("type", "chat");
-		action.put("text", "obserwuj " + choice);
-		StendhalClient.get().send(action);
+		action.put(Actions.TYPE, Actions.ARENA_OBSERVATION);
+		action.put("operation", operation);
+		if (target != null) { action.put("target", target); }
+		return action;
+	}
+
+	private static void send(final String operation, final String target) {
+		StendhalClient.get().send(createAction(operation, target));
+	}
+
+	static List<String> choices(final RPEvent event) {
+		final List<String> names = new ArrayList<>();
+		for (final String option : event.get("options").split("\t")) {
+			final String[] parts = option.split("\\|~\\|");
+			if (parts.length >= 2 && !parts[1].isEmpty()) { names.add(parts[1]); }
+		}
+		return names;
+	}
+
+	static boolean shouldClose(final RPEvent event) {
+		return "close".equals(event.get("arena_phase"))
+				|| ("open".equals(event.get("arena_phase")) && choices(event).isEmpty());
 	}
 
 	public static void show(final RPEvent event) {
 		SwingUtilities.invokeLater(() -> {
 			final String phase = event.get("arena_phase");
-			if ("close".equals(phase)) {
+			if (shouldClose(event)) {
 				GameScreen.get().resumePlayerView();
 				if (instance != null) {
 					instance.serverClosing = true;
@@ -77,12 +99,12 @@ public final class ArenaObservationWindow extends InternalManagedWindow {
 				j2DClient.get().addWindow(instance);
 			}
 			final Object selected = instance.players.getSelectedItem();
+			final List<String> names = choices(event);
 			instance.players.removeAllItems();
-			for (final String option : event.get("options").split("\t")) {
-				final String[] parts = option.split("\\|~\\|");
-				if (parts.length >= 2) { instance.players.addItem(parts[1]); }
+			for (final String name : names) {
+				instance.players.addItem(name);
 			}
-			if (selected != null) { instance.players.setSelectedItem(selected); }
+			if (selected != null && names.contains(selected)) { instance.players.setSelectedItem(selected); }
 			final boolean empty = instance.players.getItemCount() == 0;
 			instance.observe.setEnabled(!empty);
 			// Server text is plain text, never Swing's implicit HTML renderer.

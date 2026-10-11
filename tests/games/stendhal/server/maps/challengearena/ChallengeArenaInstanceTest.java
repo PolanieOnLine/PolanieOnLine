@@ -16,6 +16,8 @@ import org.junit.Test;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.actions.CommandCenter;
+import marauroa.common.game.RPAction;
 import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.common.tiled.StendhalMapStructure;
 import games.stendhal.server.entity.item.Item;
@@ -23,6 +25,7 @@ import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.util.Area;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
@@ -112,6 +115,70 @@ public class ChallengeArenaInstanceTest {
 		assertSame(lobby, stranger.getZone());
 		assertFalse(info.getZone().isPublicAccessible());
 		assertFalse(info.getZone().isTeleportInAllowed(32, 19));
+	}
+
+	@Test public void administratorCanTeleportWalkAndUseExitWithoutGhostMode() {
+		final Player owner = player("AdminVisitOwner"), admin = player("AdminArenaVisitor");
+		admin.setAdminLevel(8);
+		final ChallengeArenaInfo info = start(owner);
+		final String ownerState = owner.getQuest(ChallengeArenaState.QUEST_SLOT);
+		final int money = MoneyUtils.getTotalMoneyInCopper(admin);
+		MockStendhalRPRuleProcessor.get().addPlayer(owner);
+		final RPAction teleport = new RPAction();
+		teleport.put("type", "teleportto"); teleport.put("target", owner.getName());
+		assertTrue(CommandCenter.execute(admin, teleport));
+		assertSame(info.getZone(), admin.getZone());
+		assertFalse(admin.isGhost());
+		assertFalse(admin.isArenaSpectator());
+		assertTrue("The arena gate must allow administrative movement", admin.canMoveTo(34, 19));
+		for (final games.stendhal.server.entity.Entity entity : info.getZone().getEntitiesAt(0, 0)) {
+			if (entity instanceof ChallengeArenaPlayerGate) {
+				final ChallengeArenaPlayerGate gate = (ChallengeArenaPlayerGate) entity;
+				gate.onEntered(admin, info.getZone(), admin.getX(), admin.getY());
+				assertFalse(gate.isObstacle(admin));
+			}
+		}
+		admin.setPosition(32, ChallengeArenaInstanceFactory.EXIT_Y - 1);
+		assertTrue(info.getZone().getPortal(32, ChallengeArenaInstanceFactory.EXIT_Y).onUsed(admin));
+		assertSame(lobby, admin.getZone());
+		assertSame(info.getZone(), owner.getZone());
+		assertNotNull(info.getEngine());
+		assertEquals(ownerState, owner.getQuest(ChallengeArenaState.QUEST_SLOT));
+		assertEquals(money, MoneyUtils.getTotalMoneyInCopper(admin));
+		assertEquals(0, ChallengeArenaRewardService.getWins(admin));
+	}
+
+	@Test public void supportPrivilegesDoNotGrantPrivateArenaEntry() {
+		final Player owner = player("SupportVisitOwner"), support = player("SupportArenaVisitor");
+		support.setAdminLevel(1);
+		final ChallengeArenaInfo info = start(owner);
+		assertFalse(support.teleport(info.getZone(), 32, 19, null, null));
+		assertSame(lobby, support.getZone());
+	}
+
+	@Test public void anAdministratorFightingHisOwnTrialStillForfeitsThroughTheExit() {
+		final Player admin = player("AdminArenaFighter");
+		admin.setAdminLevel(8);
+		final ChallengeArenaInfo info = start(admin);
+		admin.setPosition(32, ChallengeArenaInstanceFactory.EXIT_Y - 1);
+		assertTrue(info.getZone().getPortal(32, ChallengeArenaInstanceFactory.EXIT_Y).onUsed(admin));
+		assertSame(lobby, admin.getZone());
+		assertEquals(ChallengeArenaState.Lifecycle.FAILED,
+				ChallengeArenaState.parse(admin.getQuest(ChallengeArenaState.QUEST_SLOT)).getLifecycle());
+		assertNull(ChallengeArenaManager.getArenaInfo(admin.getName()));
+		assertEquals(0, ChallengeArenaRewardService.getWins(admin));
+	}
+
+	@Test public void administrativeVisitorsReturnToLobbyWhenThePrivateArenaCloses() {
+		final Player owner = player("AdminReturnOwner"), admin = player("AdminReturnVisitor");
+		admin.setAdminLevel(8);
+		final ChallengeArenaInfo info = start(owner);
+		assertTrue(admin.teleport(info.getZone(), 34, 19, null, admin));
+		assertTrue(info.getEngine().forfeit(owner));
+		assertSame(lobby, admin.getZone());
+		assertSame(lobby, owner.getZone());
+		assertFalse(admin.isGhost());
+		assertEquals(0, ChallengeArenaRewardService.getWins(admin));
 	}
 
 	@Test public void logoutPersistsLobbyAndOnlyDestroysOwnArena() throws Exception {
