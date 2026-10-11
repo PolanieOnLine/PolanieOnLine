@@ -4,7 +4,7 @@
 *polowania u Janisława*
 ---
 * U Janisława możesz wybrać łatwe, średnie lub trudne polowanie. Przed przyjęciem zadania poznasz przeciwnika, liczbę potworów do pokonania i nagrody
-* Za ukończone polowanie otrzymasz dodatkowe doświadczenie ataku i obrony: 10 procent za łatwe, 15 procent za średnie i 20 procent za trudne. To odpowiednia część doświadczenia potrzebnego na cały poziom każdej z tych umiejętności
+* Trudniejsze polowania dają znacznie więcej dodatkowego doświadczenia ataku i obrony. Nagroda uwzględnia też liczbę i siłę potworów, więc szybkie polowanie na słabych przeciwników nie daje takiej samej premii jak wymagająca walka. Dokładną nagrodę poznasz przed przyjęciem zadania
 * Każde ukończone polowanie daje również Skrzynię Myśliwego. Za łatwe zadania znajdziesz w niej zapasy, za średnie wyposażenie z szansą na rzadkie, a za trudne co najmniej rzadkie wyposażenie z szansą na epickie
 * Możesz zrezygnować z polowania i wybrać inną trudność, ale za przerwane zadanie nie otrzymasz nagrody
 * Janisław nie zleca już polowań na bossów ani potwory z niedostępnych wydarzeń

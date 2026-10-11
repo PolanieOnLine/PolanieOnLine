@@ -141,10 +141,11 @@ public class HuntingTest {
 		player.setAtkXP(Level.getXP(20) + 5);
 		player.setDefXP(Level.getXP(5) + 5);
 		int atk = player.getAtkXP(), def = player.getDefXP(), level = player.getLevel();
+		int bonus = HuntingRewards.questBasisPoints(player.getQuest("hunting"));
 		kills();
 		assertTrue(engine.step(player, "załatwione"));
-		assertEquals(atk + HuntingRewards.skillXPBonus(atk, HuntingDifficulty.MEDIUM), player.getAtkXP());
-		assertEquals(def + HuntingRewards.skillXPBonus(def, HuntingDifficulty.MEDIUM), player.getDefXP());
+		assertEquals(atk + HuntingRewards.skillXPBonus(atk, bonus), player.getAtkXP());
+		assertEquals(def + HuntingRewards.skillXPBonus(def, bonus), player.getDefXP());
 		assertEquals(1, player.getNumberOfRepetitions("hunting", 2));
 		Item chest = player.getFirstEquipped(HuntingRewardChest.NAME);
 		assertNotNull(chest);
@@ -153,7 +154,7 @@ public class HuntingTest {
 		assertTrue(engine.step(player, "załatwione"));
 		assertEquals(1, player.getNumberOfRepetitions("hunting", 2));
 		assertEquals(1, chest.getQuantity());
-		assertEquals(atk + HuntingRewards.skillXPBonus(atk, HuntingDifficulty.MEDIUM), player.getAtkXP());
+		assertEquals(atk + HuntingRewards.skillXPBonus(atk, bonus), player.getAtkXP());
 	}
 	@Test public void legacyHuntKeepsProgressAndTenthHuntRing() {
 		player.setQuest("hunting", "szczur,0,2,0,0;0;9");
@@ -185,12 +186,29 @@ public class HuntingTest {
 	@Test public void allDifficultiesAwardTheirRespectiveSkillBonus() {
 		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
 			player.setQuest("hunting", "szczur,0,2,0,0;0;0;" + difficulty.name());
+			int bonus = HuntingRewards.questBasisPoints(player.getQuest("hunting"));
 			player.setSoloKillCount("szczur", 2);
 			player.setAtkXP(Level.getXP(25)); player.setDefXP(Level.getXP(10));
 			int atk = player.getAtkXP(), def = player.getDefXP();
 			assertTrue(engine.step(player, "załatwione"));
-			assertEquals(atk + HuntingRewards.skillXPBonus(atk, difficulty), player.getAtkXP());
-			assertEquals(def + HuntingRewards.skillXPBonus(def, difficulty), player.getDefXP());
+			assertEquals(atk + HuntingRewards.skillXPBonus(atk, bonus), player.getAtkXP());
+			assertEquals(def + HuntingRewards.skillXPBonus(def, bonus), player.getDefXP());
 		}
+	}
+	@Test public void acceptedHuntKeepsPromisedBonusAfterLevellingAndCreatureChanges() {
+		accept();
+		String savedBonus = player.getQuest("hunting", 4);
+		player.setLevel(player.getLevel() + 10);
+		zone.getRespawnPointList().clear();
+		kills();
+		engine.step(player, "załatwione");
+		assertEquals(savedBonus, player.getQuest("hunting", 4));
+	}
+	@Test public void invalidOfferRewardCannotBeAccepted() {
+		engine.step(player, "średnie");
+		String[] offer = player.getQuest("hunting_offer").split(";");
+		player.setQuest("hunting_offer", offer[0] + ";" + offer[1] + ";" + offer[2] + ";" + offer[3] + ";999999");
+		engine.step(player, "tak");
+		assertFalse(player.hasQuest("hunting"));
 	}
 }

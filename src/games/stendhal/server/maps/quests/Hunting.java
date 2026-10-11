@@ -89,7 +89,8 @@ public class Hunting extends AbstractQuest {
 			return;
 		}
 		List<Creature> candidates = new ArrayList<>();
-		for (Creature creature : availableCreatures()) {
+		List<Creature> available = availableCreatures();
+		for (Creature creature : available) {
 			if (difficulty.accepts(player.getLevel(), creature.getLevel())) { candidates.add(creature); }
 		}
 		if (candidates.isEmpty()) {
@@ -99,10 +100,12 @@ public class Hunting extends AbstractQuest {
 		}
 		Creature creature = candidates.get(Rand.rand(candidates.size()));
 		int count = 20 + Rand.rand(11);
-		player.setQuest(OFFER_SLOT, difficulty.name() + ";" + creature.getName() + ";" + count + ";" + player.getLevel());
+		int bonus = HuntingRewards.rewardBasisPoints(difficulty, count, creature,
+				HuntingRewards.referenceStrength(player.getLevel(), available));
+		player.setQuest(OFFER_SLOT, difficulty.name() + ";" + creature.getName() + ";" + count + ";" + player.getLevel() + ";" + bonus);
 		raiser.say("Polowanie " + difficulty.getLabel() + ": " + creature.getName() + " (poziom "
 				+ creature.getLevel() + "), " + count + " sztuk. Oprócz dotychczasowych nagród otrzymasz "
-				+ difficulty.getPercent() + "% PD pełnego poziomu ataku i obrony oraz Skrzynię Myśliwego. "
+				+ HuntingRewards.percentageLabel(bonus) + " PD pełnego poziomu ataku i obrony oraz Skrzynię Myśliwego. "
 				+ (difficulty == HuntingDifficulty.EASY ? "Skrzynia zawiera zapasy."
 				: difficulty == HuntingDifficulty.MEDIUM ? "Skrzynia zawiera wyposażenie: 25% szans na rzadkie."
 				: "Skrzynia zawiera co najmniej rzadkie wyposażenie: 10% szans na epickie.")
@@ -118,10 +121,11 @@ public class Hunting extends AbstractQuest {
 		}
 		String[] parts = offer.split(";", -1);
 		try {
-			if (parts.length != 4) { throw new IllegalArgumentException(); }
+			if (parts.length != 5) { throw new IllegalArgumentException(); }
 			HuntingDifficulty difficulty = HuntingDifficulty.valueOf(parts[0]);
 			int count = Integer.parseInt(parts[2]);
-			if (count < 20 || count > 30 || Integer.parseInt(parts[3]) != player.getLevel()) {
+			int bonus = Integer.parseInt(parts[4]);
+			if (count < 20 || count > 30 || bonus < 1 || bonus > 10000 || Integer.parseInt(parts[3]) != player.getLevel()) {
 				throw new IllegalArgumentException();
 			}
 			boolean available = false;
@@ -135,7 +139,7 @@ public class Hunting extends AbstractQuest {
 			int repetitions = player.hasQuest(QUEST_SLOT) ? player.getNumberOfRepetitions(QUEST_SLOT, 2) : 0;
 			player.setQuest(QUEST_SLOT, parts[1] + ",0," + count + "," + player.getSoloKill(parts[1])
 					+ "," + player.getSharedKill(parts[1]) + ";" + System.currentTimeMillis() + ";"
-					+ repetitions + ";" + difficulty.name());
+					+ repetitions + ";" + difficulty.name() + ";" + bonus);
 			raiser.say("Upoluj " + count + " sztuk: " + parts[1] + ". Powiedz #załatwione, gdy skończysz. "
 					+ "Zmiana trudności wymaga wcześniejszej rezygnacji: #rezygnuję.");
 		} catch (IllegalArgumentException e) {
@@ -173,8 +177,9 @@ public class Hunting extends AbstractQuest {
 					raiser.say("Masz aktywne polowanie: " + getCreatureToKillFromPlayer(player) + ", "
 							+ getCountCreatureToKillFromPlayer(player) + " sztuk. Powiedz #załatwione lub #rezygnuję."));
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, new NotCondition(ACTIVE),
-				ConversationStates.ATTENDING, "Wybierz polowanie: #łatwe (10% PD ataku i obrony), "
-				+ "#średnie (15%) albo #trudne (20%). Każde daje również Skrzynię Myśliwego.", null);
+				ConversationStates.ATTENDING, "Wybierz polowanie: #łatwe, #średnie albo #trudne. "
+				+ "Im trudniejsze polowanie, tym większa premia do PD ataku i obrony za pokonanie przeciwników. "
+				+ "Nagroda zależy też od ich liczby i siły. Przed przyjęciem zadania poznasz dokładną premię i zawartość skrzyni.", null);
 		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
 			List<String> words = difficulty == HuntingDifficulty.EASY ? Arrays.asList("łatwe", "latwe", "easy")
 					: difficulty == HuntingDifficulty.MEDIUM ? Arrays.asList("średnie", "srednie", "medium")
@@ -250,12 +255,17 @@ public class Hunting extends AbstractQuest {
 				});
 
 		final List<ChatAction> rewards = new LinkedList<ChatAction>();
+		// Resolve legacy counts while the kill record still exists. New task
+		// rewards are already frozen, so neither levelling nor event changes alter them.
+		rewards.add((player, sentence, raiser) -> player.setQuest(QUEST_SLOT, 4,
+				Integer.toString(HuntingRewards.questBasisPoints(player.getQuest(QUEST_SLOT)))));
 		rewards.add(new IncrementQuestAction(QUEST_SLOT, 2, 1));
 		rewards.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		rewards.add((player, sentence, raiser) -> {
 			HuntingDifficulty difficulty = HuntingDifficulty.fromQuest(player.getQuest(QUEST_SLOT));
-			int atkBonus = HuntingRewards.skillXPBonus(player.getAtkXP(), difficulty);
-			int defBonus = HuntingRewards.skillXPBonus(player.getDefXP(), difficulty);
+			int bonus = HuntingRewards.questBasisPoints(player.getQuest(QUEST_SLOT));
+			int atkBonus = HuntingRewards.skillXPBonus(player.getAtkXP(), bonus);
+			int defBonus = HuntingRewards.skillXPBonus(player.getDefXP(), bonus);
 			Item chest = SingletonRepository.getEntityManager().getItem(HuntingRewardChest.NAME, ItemCreationContext.quest());
 			chest.setBoundTo(player.getName());
 			chest.setItemData(HuntingRewardChest.createRewardData(difficulty, player.getLevel()));
@@ -423,6 +433,8 @@ public class Hunting extends AbstractQuest {
 		res.add("Chcę spróbować zapolować na stworzenia.");
 		if (ACTIVE.fire(player, null, null)) {
 			res.add("Trudność: " + HuntingDifficulty.fromQuest(questStateFull).getLabel() + ".");
+			res.add("Premia za ukończenie: " + HuntingRewards.percentageLabel(HuntingRewards.questBasisPoints(questStateFull))
+					+ " PD pełnego poziomu ataku i obrony.");
 			final boolean questDone = new KilledForQuestCondition(QUEST_SLOT, 0).fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			final String creatureCountToKill = getCountCreatureToKillFromPlayer(player);
