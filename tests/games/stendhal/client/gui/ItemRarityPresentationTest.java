@@ -120,11 +120,12 @@ public class ItemRarityPresentationTest {
 		food.put("class", "food");
 		putStat(food, ItemTooltip.CONSUMABLE_HEALING_REGEN, "3");
 		putStat(food, ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS, "1.5");
+		putStat(food, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS, "10.5");
 
 		final String foodTooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(food));
 		assertTrue(foodTooltip.contains("Leczenie: <b>+3 PW co 1,5 s</b>"));
-		assertFalse(foodTooltip.contains("Czas leczenia:"));
+		assertTrue(foodTooltip.contains("Czas leczenia: 10,5 s"));
 		assertFalse(foodTooltip.contains("+20 PW"));
 
 		final RPObject elixir = ItemTestHelper.createItem("eliksir zdrowia");

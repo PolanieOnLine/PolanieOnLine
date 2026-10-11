@@ -309,10 +309,18 @@ function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<strin
 	if (regen <= 0 || frequency <= 0) {
 		return;
 	}
-	appendSection(lines, [{
+	const duration = numberValue(current, "consumable_healing_duration_seconds");
+	const healing: ItemTooltipLine[] = [{
 		kind: "detail",
 		text: "Leczenie: +" + regen + " PW co " + formatCompact(frequency) + " s"
-	}]);
+	}];
+	if (duration > 0) {
+		healing.push({
+			kind: "detail",
+			text: "Czas leczenia: " + formatCompact(duration) + " s"
+		});
+	}
+	appendSection(lines, healing);
 }
 
 function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>) {
