@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -30,7 +30,6 @@ function itemSlotGeometry() {
 		return Number.parseInt(declarations[property], 10);
 	}
 	assert.equal(declarations["box-sizing"] || "content-box", "content-box");
-	assert.equal(declarations["background-origin"] || "padding-box", "padding-box");
 	assert.match(declarations.border, /^\d+px solid transparent$/);
 	const border = Number.parseInt(declarations.border, 10);
 	const padding = px("padding");
@@ -38,12 +37,11 @@ function itemSlotGeometry() {
 	const height = px("height");
 	const content = { x: border + padding, y: border + padding, width, height };
 	const borderBox = { x: 0, y: 0, width: width + 2 * (padding + border), height: height + 2 * (padding + border) };
-	const clips = declarations["background-clip"]?.split(",").map(value => value.trim());
-	assert.deepEqual(clips, ["content-box", "border-box"], "Only the icon is clipped; the fill keeps its original bounds");
-	assert.equal(declarations["background-image"], "none, none", "Uninitialized and material slots also retain two paint layers");
-	assert.equal(declarations["background-color"], "rgba(72, 43, 23, 0.85)");
+	assert.equal(declarations.background, "none", "The interactive slot does not paint an animated background");
+	assert.equal(declarations["mask-image"], undefined);
+	assert.equal(declarations["border-image"], undefined);
+	assert.equal(declarations["box-shadow"], undefined);
 	assert.equal(declarations["border-radius"], "6px");
-	assert.equal(declarations["background-repeat"], "no-repeat !important");
 	return { border, content, borderBox };
 }
 
@@ -64,13 +62,14 @@ function createHarness() {
 			this.visible = true;
 			this.attributes = new Map();
 			this.listeners = new Map();
+			this.children = [];
 			this.classes = new Set();
 			this.classList = {
 				add: (...values) => values.forEach(value => this.classes.add(value)),
 				remove: (...values) => values.forEach(value => this.classes.delete(value)),
 				contains: value => this.classes.has(value)
 			};
-			this.style = new Proxy({}, {
+			this.style = new Proxy({setProperty(key, value) { this[key] = value; }}, {
 				set: (style, key, value) => {
 					if (key === "backgroundImage") { metrics.imageWrites++; }
 					if (key === "backgroundPosition") { metrics.positionWrites++; }
@@ -79,8 +78,14 @@ function createHarness() {
 				}
 			});
 		}
-		set textContent(value) { metrics.quantityWrites++; this.text = value; }
-		get textContent() { return this.text || ""; }
+		set textContent(value) { metrics.quantityWrites++; this.replaceChildren(); this.text = value; }
+		get textContent() { return (this.text || "") + this.children.map(child => child.textContent).join(""); }
+		appendChild(child) { child.parentElement = this; this.children.push(child); return child; }
+		replaceChildren(...children) {
+			for (const child of this.children) { child.parentElement = null; }
+			this.children = []; this.text = "";
+			children.forEach(child => this.appendChild(child));
+		}
 		set title(value) { this.attributes.set("title", value); }
 		get title() { return this.attributes.get("title") || ""; }
 		setAttribute(key, value) { this.attributes.set(key, value); }
@@ -108,7 +113,7 @@ function createHarness() {
 			this.callback([{ target: element, isIntersecting: visible }]);
 		}
 	}
-	const document = { visibilityState: "visible" };
+	const document = { visibilityState: "visible", createElement: () => new Element() };
 	const sentActions = [], dragFrames = [];
 	const marauroa = { me: undefined, currentZoneName: "0_test",
 		clientFramework: { sendAction: action => sentActions.push(action) } };
@@ -179,6 +184,9 @@ function createHarness() {
 		"../data/ItemRarity": { ItemRarity }, "../SingletonRepo": { singletons },
 		marauroa: { marauroa }
 	});
+	const slotPresentation = load("ui/component/ItemSlotPresentation.ts", {
+		"../../data/Paths": { Paths: { gui: "/gui" } }
+	});
 	const { ItemContainerImplementation: Container } = load("ui/component/ItemContainerImplementation.ts", {
 		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {} },
 		"../dialog/ActionContextMenu": {}, "../dialog/DropQuantitySelectorDialog": {},
@@ -187,7 +195,8 @@ function createHarness() {
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
 		"../../sprite/ItemRarityEffects": rarityEffects,
-		"../../util/AdminDiagnostics": { AdminDiagnostics }
+		"../../util/AdminDiagnostics": { AdminDiagnostics },
+		"./ItemSlotPresentation": slotPresentation
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
 		"../UI": { ui: {} }, "../UIComponentEnum": {}, "../component/ChatInputComponent": {},
@@ -245,24 +254,70 @@ function createHarness() {
 	};
 }
 
+function iconOf(slot) { return slot.children.find(child => child.className === "item-slot-icon"); }
+
+test("animation and quantity updates never rewrite the static slot or replace its layers", () => {
+	const h = createHarness(), item = h.makeItem(1);
+	const { container, parent } = h.makeContainer([item]);
+	const slot = parent.elements[0], icon = iconOf(slot), label = slot.children[1];
+	const texture = slot.style["--item-slot-texture"];
+	for (let frame = 0; frame < 20; frame++) { container.animate(1000 + frame * 100); }
+	item.set("quantity", "150"); container.update();
+	assert.equal(iconOf(slot), icon);
+	assert.equal(slot.children[1], label);
+	assert.equal(slot.textContent, "150");
+	assert.equal(slot.style.backgroundImage, undefined);
+	assert.equal(slot.style.backgroundPosition, undefined);
+	assert.equal(slot.style["--item-slot-texture"], texture);
+	container.init(1);
+	assert.equal(iconOf(slot), icon, "Reinitializing a reused DOM slot does not duplicate layers");
+	assert.equal(slot.children.length, 2);
+});
+
+test("static texture, icon and quantity CSS retain independent paint and hit-test layers", () => {
+	function declarations(selector) {
+		const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+		const rule = mainCSS.match(new RegExp(escaped + "\\s*\\{([^}]+)\\}"));
+		assert.ok(rule, selector);
+		return Object.fromEntries(rule[1].split(";").filter(value => value.trim()).map(value => {
+			const colon = value.indexOf(":");
+			return [value.slice(0, colon).trim(), value.slice(colon + 1).trim()];
+		}));
+	}
+	const icon = declarations(".item-slot-icon"), texture = declarations("div.itemSlot::before");
+	assert.equal(icon.width, "32px"); assert.equal(icon.height, "32px");
+	assert.equal(icon.left, "1px"); assert.equal(icon.top, "1px");
+	assert.equal(icon["background-repeat"], "no-repeat");
+	assert.equal(texture.width, "38px"); assert.equal(texture.height, "38px");
+	assert.equal(texture.left, "-2px"); assert.equal(texture.top, "-2px");
+	assert.match(texture.background, /slot\.png/);
+	for (const layer of [icon, texture, declarations(".item-slot-quantity"), declarations(".item-rarity-outline")]) {
+		assert.equal(layer["pointer-events"], "none", "Only the original slot handles drag and touch events");
+		assert.equal(layer["mask-image"], undefined);
+		assert.equal(layer["border-image"], undefined);
+		assert.equal(layer["box-shadow"], undefined);
+	}
+	assert.equal(declarations(".item-rarity-outline")["z-index"], "2");
+	assert.equal(declarations(".item-slot-quantity")["z-index"], "3");
+});
+
 test("the actual CSS crops every frame and state to exactly one 32 px icon", () => {
-	const { border, content } = itemSlotGeometry();
+	const { content } = itemSlotGeometry();
 	assert.deepEqual(content, { x: 3, y: 3, width: 32, height: 32 });
 	for (let state = 0; state < 3; state++) {
 		const h = createHarness();
 		const item = h.makeItem(1, { width: 96, height: 96, state });
 		const { container, parent } = h.makeContainer([item]);
-		const element = parent.elements[0];
-		assert.equal(element.style.backgroundImage, `url(${item.sprite.filename}), none`);
+		const element = iconOf(parent.elements[0]);
+		assert.equal(element.style.backgroundImage, `url(${item.sprite.filename})`);
 		for (let frame = 0; frame < 3; frame++) {
 			container.animate(1000 + frame * 100);
 			assert.equal(item.getXFrameIndex(), frame);
 			const position = element.style.backgroundPosition.match(/^(-?\d+)px (-?\d+)px$/);
 			assert.ok(position, "The renderer keeps the unscaled source-sheet offset");
-			// Default background-origin is padding-box. Translate the actual clip
-			// rectangle into sheet coordinates; neither adjacent column nor row fits.
-			const sheetX = content.x - (border + Number(position[1]));
-			const sheetY = content.y - (border + Number(position[2]));
+			// The independent 32px icon has no padding or border and uses unscaled offsets.
+			const sheetX = 0 - Number(position[1]);
+			const sheetY = 0 - Number(position[2]);
 			assert.deepEqual([sheetX, sheetY, sheetX + content.width, sheetY + content.height],
 				[frame * 32, state * 32, (frame + 1) * 32, (state + 1) * 32]);
 		}
@@ -305,18 +360,19 @@ test("diagnostic revision refreshes decorations on static items, including hidde
 	assert.ok(h.raritySlotCalls.length > 0);
 });
 
-test("empty and default slots keep a second layer for padding and border fill", () => {
+test("empty and default slots preserve the shared static texture and original geometry", () => {
 	const { content, borderBox } = itemSlotGeometry();
 	assert.deepEqual(borderBox, { x: 0, y: 0, width: 38, height: 38 });
 	assert.ok(content.x > borderBox.x && content.y > borderBox.y);
 	assert.ok(content.x + content.width < borderBox.width && content.y + content.height < borderBox.height,
-		"The bottom-layer clip includes the padding and transparent border, not just the icon");
+		"The static texture surrounds the independent icon without changing slot geometry");
 	for (const defaultImage of [undefined, "slot-head.png"]) {
 		const h = createHarness();
 		const { container, parent } = h.makeContainer([], { size: 1, defaultImage });
-		assert.equal(parent.elements[0].style.backgroundImage,
-			defaultImage ? "url(/gui/slot-head.png), none" : "none, none");
-		assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
+		assert.equal(parent.elements[0].style["--item-slot-texture"], "url(/gui/slot.png)");
+		assert.equal(iconOf(parent.elements[0]).style.backgroundImage,
+			defaultImage ? "url(/gui/slot-head.png)" : "none");
+		assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "0px 0px");
 		h.resetMetrics();
 		container.update();
 		container.animate(1000);
@@ -354,7 +410,7 @@ test("animation advances at 100 ms and only changed positions are written", () =
 	assert.equal(h.metrics.positionWrites, 0);
 	container.animate(1100);
 	assert.equal(item.getXFrameIndex(), 1);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "-32px 0px");
 	assert.equal(h.metrics.positionWrites, 1);
 	container.animate(1199);
 	assert.equal(h.metrics.steps, 1);
@@ -421,7 +477,7 @@ test("updates immediately reflect quantity, state and rarity changed on the same
 	const element = parent.elements[0];
 	assert.equal(element.dataItem, item);
 	assert.equal(element.textContent, "7");
-	assert.equal(element.style.backgroundPosition, "1px -63px");
+	assert.equal(iconOf(element).style.backgroundPosition, "0px -64px");
 	assert.ok(element.classList.contains("item-rarity-epic"));
 	assert.equal(element.classList.contains("item-rarity-rare"), false);
 	assert.match(element.title, /Epicki/);
@@ -477,7 +533,7 @@ test("reorder and removal update dataItem and remove stale quantity and rarity",
 	assert.equal(parent.elements[0].dataItem, first);
 	assert.equal(parent.elements[1].dataItem, undefined);
 	assert.equal(parent.elements[1].textContent, "");
-	assert.equal(parent.elements[1].style.backgroundImage, "none, none");
+	assert.equal(iconOf(parent.elements[1]).style.backgroundImage, "none");
 	assert.equal(parent.elements[1].title, "");
 	assert.equal(parent.elements[1].classList.contains("item-rarity"), false);
 	h.resetMetrics();
@@ -501,11 +557,11 @@ test("init after a DOM resize replaces cached elements and visibility observatio
 	assert.equal(parent.elements[0].dataItem, items[0]);
 	assert.equal(parent.elements[1].dataItem, items[1]);
 	assert.equal(parent.elements[2].dataItem, undefined);
-	const oldPositions = oldElements.map(element => element.style.backgroundPosition);
+	const oldPositions = oldElements.map(element => iconOf(element).style.backgroundPosition);
 	container.animate(1000);
 	container.animate(1100);
-	assert.deepEqual(oldElements.map(element => element.style.backgroundPosition), oldPositions);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.deepEqual(oldElements.map(element => iconOf(element).style.backgroundPosition), oldPositions);
+	assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "-32px 0px");
 });
 
 test("visibility observations tolerate an absent slot element", () => {
@@ -574,7 +630,7 @@ test("an image not ready during render starts animating after it loads", () => {
 	assert.equal(h.metrics.steps, 1);
 	container.animate(1200);
 	assert.equal(item.getXFrameIndex(), 1);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px 1px");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "-32px 0px");
 	assert.equal(h.metrics.queries, 0);
 	assert.equal(h.metrics.itemLookups, 0);
 });
@@ -587,7 +643,7 @@ test("an asynchronous image fallback updates a pending icon without a content re
 	h.resetMetrics();
 	h.images.set(item.sprite.filename, { width: 32, height: 32, src: "/sprites/failsafe.png" });
 	container.animate(1100);
-	assert.equal(parent.elements[0].style.backgroundImage, "url(/sprites/failsafe.png), none");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundImage, "url(/sprites/failsafe.png)");
 	assert.equal(h.metrics.imageWrites, 1);
 	assert.equal(h.metrics.queries, 0);
 	assert.equal(h.metrics.itemLookups, 0);
@@ -603,11 +659,11 @@ test("an empty placeholder resets offsets left by an animated item state", () =>
 	const { container, parent, owner } = h.makeContainer([item], { defaultImage: "slot-head.png" });
 	container.animate(1000);
 	container.animate(1100);
-	assert.equal(parent.elements[0].style.backgroundPosition, "-31px -95px");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "-32px -96px");
 	owner.bag.items = [];
 	container.update();
-	assert.equal(parent.elements[0].style.backgroundPosition, "1px 1px");
-	assert.equal(parent.elements[0].style.backgroundImage, "url(/gui/slot-head.png), none");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundPosition, "0px 0px");
+	assert.equal(iconOf(parent.elements[0]).style.backgroundImage, "url(/gui/slot-head.png)");
 	assert.equal(parent.elements[0].dataItem, undefined);
 	assert.equal(parent.elements[0].classList.contains("item-rarity"), false);
 });
@@ -746,9 +802,9 @@ test("return ring updates bag and equipment icons immediately on save, return an
 		// Deliberately keep a contradictory state to guard against the old rendering.
 		ring.set("state", Number(amount));
 		bag.container.update(); equipment.container.update();
-		const expected = Number(amount) > 0 ? "1px 1px" : "1px -31px";
-		assert.equal(bag.parent.elements[0].style.backgroundPosition, expected);
-		assert.equal(equipment.parent.elements[0].style.backgroundPosition, expected);
+		const expected = Number(amount) > 0 ? "0px 0px" : "0px -32px";
+		assert.equal(iconOf(bag.parent.elements[0]).style.backgroundPosition, expected);
+		assert.equal(iconOf(equipment.parent.elements[0]).style.backgroundPosition, expected);
 	}
 	h.resetMetrics();
 	bag.container.animate(1000);
@@ -772,7 +828,7 @@ test("a received return-ring perception dims the existing icon without losing it
 	vm.runInNewContext(readFileSync(receiver, "utf8"), { window: { marauroa: h.marauroa }, console });
 	h.marauroa.currentZone[7] = owner;
 	h.marauroa.perceptionListener.onPerceptionEnd = () => container.update();
-	assert.equal(parent.elements[1].style.backgroundPosition, "1px 1px");
+	assert.equal(iconOf(parent.elements[1]).style.backgroundPosition, "0px 0px");
 	h.marauroa.perceptionHandler.apply({ sync: false, s: 2, zoneid: "0_test", aM: {
 		c: "player", a: { id: 7 }, s: { bag: [{ c: "item", a: {
 			id: ring.id, class: "ring", subclass: "ametyst-ring", amount: "0", state: "0"
@@ -781,7 +837,7 @@ test("a received return-ring perception dims the existing icon without losing it
 	assert.equal(owner.bag.items[1], ring);
 	assert.deepEqual(owner.bag.items.map(item => item.id), [2, 1, 3]);
 	assert.equal(ring.name, "pierścień powrotu");
-	assert.equal(parent.elements[1].style.backgroundPosition, "1px -31px");
+	assert.equal(iconOf(parent.elements[1]).style.backgroundPosition, "0px -32px");
 	const actions = [];
 	ring.buildActions(actions);
 	assert.equal(actions[0].type, "use");

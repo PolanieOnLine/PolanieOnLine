@@ -26,6 +26,7 @@ import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
+import { getItemSlotLayers, ItemSlotLayers } from "./ItemSlotPresentation";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
@@ -33,7 +34,7 @@ import {
 	ItemTooltipLine
 } from "./ItemTooltipPresentation";
 
-interface InventorySlotView {
+interface InventorySlotView extends ItemSlotLayers {
 	element: HTMLElement;
 	item?: Item;
 	spritePath?: string;
@@ -112,7 +113,7 @@ export class ItemContainerImplementation {
 			if (!e) {
 				continue;
 			}
-			this.slots[i] = {element: e, animated: false, animationPending: false, visible: true};
+			this.slots[i] = {element: e, ...getItemSlotLayers(e), animated: false, animationPending: false, visible: true};
 			this.slotVisibilityObserver?.observe(e);
 			e.setAttribute("draggable", "true");
 			e.style.touchAction = "none";
@@ -245,18 +246,18 @@ export class ItemContainerImplementation {
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
-		const position = (1 - item.getXFrameIndex() * 32) + "px "
-			+ (1 - item.getYFrameIndex() * 32) + "px";
+		const position = (-item.getXFrameIndex() * 32) + "px "
+			+ (-item.getYFrameIndex() * 32) + "px";
 		if (view.backgroundPosition !== position) {
-			view.element.style.backgroundPosition = position;
+			view.icon.style.backgroundPosition = position;
 			view.backgroundPosition = position;
 		}
 	}
 
 	private updateImage(view: InventorySlotView) {
-		const image = "url(" + singletons.getSpriteStore().checkPath(view.spritePath!) + "), none";
+		const image = "url(" + singletons.getSpriteStore().checkPath(view.spritePath!) + ")";
 		if (view.backgroundImage !== image) {
-			view.element.style.backgroundImage = image;
+			view.icon.style.backgroundImage = image;
 			view.backgroundImage = image;
 		}
 	}
@@ -305,7 +306,7 @@ export class ItemContainerImplementation {
 				this.updatePosition(view, item);
 				const quantity = String(item.formatQuantity());
 				if (view.quantity !== quantity) {
-					element.textContent = quantity;
+					view.quantityLabel.textContent = quantity;
 					view.quantity = quantity;
 				}
 				const toolTip = item.getToolTip();
@@ -332,18 +333,18 @@ export class ItemContainerImplementation {
 					this.animationSlots.push(view);
 				}
 			} else {
-				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + "), none" : "none, none";
+				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
 				if (view.backgroundImage !== image) {
-					element.style.backgroundImage = image;
+					view.icon.style.backgroundImage = image;
 					view.backgroundImage = image;
 				}
 				if (view.quantity !== "") {
-					element.textContent = "";
+					view.quantityLabel.textContent = "";
 					view.quantity = "";
 				}
-				if (view.backgroundPosition !== "1px 1px") {
-					element.style.backgroundPosition = "1px 1px";
-					view.backgroundPosition = "1px 1px";
+				if (view.backgroundPosition !== "0px 0px") {
+					view.icon.style.backgroundPosition = "0px 0px";
+					view.backgroundPosition = "0px 0px";
 				}
 				if (changed) {
 					this.updateCursor(element);

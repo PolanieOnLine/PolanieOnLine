@@ -12,6 +12,7 @@ import { ui } from "../UI";
 import { ActionContextMenu } from "./ActionContextMenu";
 import { FloatingWindow } from "../toolkit/FloatingWindow";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
+import { getItemSlotLayers } from "../component/ItemSlotPresentation";
 
 type UpgradeEventData = {[key: string]: any};
 
@@ -235,13 +236,14 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 			const slot = document.createElement("div");
 			slot.className = "itemSlot item-upgrade-material-slot";
+			const layers = getItemSlotLayers(slot);
 			if (classes[index] && subclasses[index]) {
-				slot.style.backgroundImage = "url(" + singletons.getSpriteStore()
+				layers.icon.style.backgroundImage = "url(" + singletons.getSpriteStore()
 						.checkPath(Paths.sprites + "/items/" + classes[index]
-								+ "/" + subclasses[index] + ".png") + "), none";
-				slot.style.backgroundPosition = "1px 1px";
+								+ "/" + subclasses[index] + ".png") + ")";
+				layers.icon.style.backgroundPosition = "0px 0px";
 			}
-			slot.textContent = need > 1 ? String(need) : "";
+			layers.quantityLabel.textContent = need > 1 ? String(need) : "";
 
 			const label = document.createElement("div");
 			label.textContent = name;
