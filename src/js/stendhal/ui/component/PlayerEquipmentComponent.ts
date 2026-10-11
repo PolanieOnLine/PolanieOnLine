@@ -39,6 +39,14 @@ export class PlayerEquipmentComponent extends Component {
 
 	constructor() {
 		super("equipment");
+		// Keep the main pouch usable when an older page layout omitted it.
+		// It must exist before its inventory container binds the slot.
+		if (!document.getElementById("pouch0")) {
+			const pouch = document.createElement("div");
+			pouch.id = "pouch0";
+			pouch.className = "itemSlot";
+			this.componentElement.appendChild(pouch);
+		}
 		this.inventory = [];
 		for (let i = 0; i < this.slotNames.length; i++) {
 			this.inventory.push(
@@ -136,8 +144,11 @@ export class PlayerEquipmentComponent extends Component {
 	}
 
 	private showSlot(id: string, show: boolean) {
-		var slot = document.getElementById(id)!;
-		var prevState = slot.style.display;
+		const slot = document.getElementById(id);
+		if (!slot) {
+			return false;
+		}
+		const prevState = slot.style.display;
 
 		if (show === true) {
 			slot.style.display = "block";
@@ -152,14 +163,9 @@ export class PlayerEquipmentComponent extends Component {
 		const primaryChanged = this.showSlot("pouch0", show);
 		if (primaryChanged) {
 			// resize the inventory window
-			var equip = document.getElementById("equipment")!;
-			if (show) {
-				equip.style.height = "210px";
-			} else {
-				equip.style.height = "210px";
-			}
-			this.pouchVisible = show;
+			this.componentElement.style.height = "210px";
 		}
+		this.pouchVisible = show && document.getElementById("pouch0") !== null;
 	}
 
 	private swapSets() {
