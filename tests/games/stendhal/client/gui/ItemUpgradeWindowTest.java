@@ -180,6 +180,7 @@ public class ItemUpgradeWindowTest {
 		onEdt(() -> {
 			apply(selected());
 			assertTrue(allText((Container) field("stats")).contains("Obrona"));
+			assertTrue(allText((Container) field("stats")).contains("-&gt;"));
 			final String text = allText(window);
 			for (final String unwanted : new String[] {"DEF", "ATK", "→", "—", "–", "✓", "✗"}) {
 				assertFalse(unwanted, text.contains(unwanted));
