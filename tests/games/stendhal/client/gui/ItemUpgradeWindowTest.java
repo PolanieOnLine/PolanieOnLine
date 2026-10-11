@@ -58,6 +58,9 @@ public class ItemUpgradeWindowTest {
 	public void tearDown() throws Exception {
 		if (previousLookAndFeel != null) {
 			onEdt(() -> {
+				final Field active = ItemUpgradeWindow.class.getDeclaredField("instance");
+				active.setAccessible(true);
+				if (active.get(null) == window) active.set(null, null);
 				UIManager.setLookAndFeel(previousLookAndFeel);
 				UIManager.put("StendhalStyle", previousStyle);
 			});
@@ -173,6 +176,33 @@ public class ItemUpgradeWindowTest {
 			assertTrue(label("status").getText().contains("&lt;test&gt; &amp;"));
 			assertTrue(label("itemName").getText().contains("&lt;test&gt; &amp;"));
 		});
+	}
+
+	@Test
+	public void changingMapClosesTheWindowAndIgnoresLatePreviews() throws Exception {
+		onEdt(() -> {
+			apply(selected());
+			final Field active = ItemUpgradeWindow.class.getDeclaredField("instance");
+			active.setAccessible(true);
+			active.set(null, window);
+			final Field npc = ItemUpgradeWindow.class.getDeclaredField("npcId");
+			npc.setAccessible(true);
+			npc.set(window, 0); // No live connection is needed for this UI test.
+			final JPanel parent = new JPanel();
+			parent.add(window);
+			window.setVisible(true);
+			assertTrue(ItemUpgradeWindow.isOpenForItemSelection());
+			ItemUpgradeWindow.closeOnZoneChange();
+		});
+		onEdt(() -> {
+			assertNull(window.getParent());
+			assertFalse(ItemUpgradeWindow.isOpenForItemSelection());
+		});
+		final RPEvent latePreview = selected();
+		latePreview.put("phase", "preview");
+		ItemUpgradeWindow.show(latePreview);
+		ItemUpgradeWindow.closeOnZoneChange(); // Closing twice is harmless.
+		onEdt(() -> assertFalse(ItemUpgradeWindow.isOpenForItemSelection()));
 	}
 
 	@Test
