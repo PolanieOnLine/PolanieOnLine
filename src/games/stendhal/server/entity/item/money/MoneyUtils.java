@@ -118,8 +118,30 @@ public final class MoneyUtils {
 	}
 
 	public static String formatPrice(int totalCopper) {
+		return formatPrice(totalCopper, false);
+	}
+
+	/** Currency names in the case needed after "dam ci" or "zapłacę". */
+	public static String formatPayment(int totalCopper) {
+		return formatPrice(totalCopper, true);
+	}
+
+	private static String quantityForm(String coin, int quantity, boolean payment) {
+		if (payment && quantity == 1) {
+			switch (coin) {
+				case MONEY: return "monetę";
+				case GOLD: return "dukata";
+				case SILVER: return "talara";
+				case COPPER: return "miedziaka";
+				default: break;
+			}
+		}
+		return Grammar.polishQuantity(coin, quantity);
+	}
+
+	private static String formatPrice(int totalCopper, boolean payment) {
 		if (!CurrencyReform.useReformedCurrency()) {
-			return totalCopper + " " + Grammar.polishQuantity(MONEY, totalCopper);
+			return totalCopper + " " + quantityForm(MONEY, totalCopper, payment);
 		}
 
 		Map<String, Integer> map = fromCopper(totalCopper);
@@ -129,9 +151,9 @@ public final class MoneyUtils {
 
 		List<String> parts = new ArrayList<>();
 
-		if (dukaty > 0) parts.add(dukaty + " " + Grammar.polishQuantity(GOLD, dukaty));
-		if (talary > 0) parts.add(talary + " " + Grammar.polishQuantity(SILVER, talary));
-		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + Grammar.polishQuantity(COPPER, miedziaki));
+		if (dukaty > 0) parts.add(dukaty + " " + quantityForm(GOLD, dukaty, payment));
+		if (talary > 0) parts.add(talary + " " + quantityForm(SILVER, talary, payment));
+		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + quantityForm(COPPER, miedziaki, payment));
 
 		if (parts.size() == 1) {
 			return parts.get(0);

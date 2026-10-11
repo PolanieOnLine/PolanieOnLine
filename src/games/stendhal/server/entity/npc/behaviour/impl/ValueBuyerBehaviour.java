@@ -1,6 +1,7 @@
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -9,6 +10,7 @@ import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.OwnedItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
@@ -16,6 +18,29 @@ import games.stendhal.server.entity.player.Player;
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
 	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions) {
 		super(createCatalogue(definitions));
+	}
+
+	@Override
+	public String getPriceOffer(final ItemParserResult res, final int price) {
+		final String payment = MoneyUtils.formatPayment(price);
+		final String quantity = res.getAmount() == 1 ? "" : " (" + res.getAmount() + " szt.)";
+		return "Dam ci " + payment + " za „" + res.getChosenItemName() + "”" + quantity + ". Sprzedajesz?";
+	}
+
+	@Override
+	public String getUnavailableOffer(final ItemParserResult res) {
+		return "Nie mogę odkupić tych rzeczy. Sprawdź, czy masz je przy sobie i czy nie są przypisane do postaci.";
+	}
+
+	@Override
+	public String getErrormessage(final ItemParserResult res, final List<String> userAction, final String npcAction) {
+		if (res.getChosenItemName() == null) {
+			return "Co chcesz sprzedać? Podaj nazwę przedmiotu.";
+		}
+		if (res.getMayBeItems() != null && !res.getMayBeItems().isEmpty()) {
+			return "Który przedmiot masz na myśli? Podaj jego pełną nazwę.";
+		}
+		return "Tego nie odkupię. Może znajdziesz innego kupca?";
 	}
 
 	private static Map<String, Integer> createCatalogue(final Collection<DefaultItem> definitions) {
@@ -65,7 +90,7 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 	public boolean transactAgreedDeal(final ItemParserResult res,
 			final EventRaiser seller, final Player player) {
 		if (getCharge(res, player) <= 0) {
-			seller.say("Nie mogę kupić tych przedmiotów. Sprawdź ilość, przypisanie do postaci i miejsce na monety.");
+			seller.say(getUnavailableOffer(res));
 			return false;
 		}
 		return super.transactAgreedDeal(res, seller, player);

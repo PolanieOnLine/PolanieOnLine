@@ -5,6 +5,7 @@ import java.util.Collections;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -30,6 +31,25 @@ public class ValueBuyerBehaviourTest {
 	private Item item(final ItemRarity rarity) {
 		return manager().getItem("miecz", ItemCreationContext.builder(ItemCreationContext.Source.DROP)
 				.withFactoryRarity(rarity).randomizeModifiers(false).generateAffixes(false).build());
+	}
+	@Test public void priceOfferAvoidsGuessingTheGenderOfItemNames() {
+		final String payment = CurrencyReform.useReformedCurrency() ? "1 miedziaka" : "1 monetę";
+		for (String name : new String[] { "polano", "kolczuga", "miecz", "spodnie kolcze" }) {
+			final ItemParserResult res = new ItemParserResult(true, name, 1, Collections.<String>emptySet());
+			assertEquals("Dam ci " + payment + " za „" + name + "”. Sprzedajesz?",
+					buyer().getPriceOffer(res, 1));
+		}
+	}
+	@Test public void priceOffersDeclineCoinsAndKeepStackSizeSeparateFromNames() {
+		final int[] amounts = { 2, 5, 12, 22 };
+		final String[] legacy = { "2 monety", "5 monet", "12 monet", "22 monety" };
+		final String[] reformed = { "2 miedziaki", "5 miedziaków", "12 miedziaków", "22 miedziaki" };
+		for (int i = 0; i < amounts.length; i++) {
+			final ItemParserResult res = new ItemParserResult(true, "polano", amounts[i], Collections.<String>emptySet());
+			assertEquals("Dam ci " + (CurrencyReform.useReformedCurrency() ? reformed[i] : legacy[i])
+					+ " za „polano” (" + amounts[i] + " szt.). Sprzedajesz?",
+					buyer().getPriceOffer(res, amounts[i]));
+		}
 	}
 	@Test public void catalogueAutomaticallyIncludesDefinitionsButNeverMoneyOrBoundChest() {
 		assertTrue(buyer().hasItem("miecz"));

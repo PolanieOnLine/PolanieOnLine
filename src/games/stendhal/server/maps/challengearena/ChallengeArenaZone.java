@@ -46,6 +46,8 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 
 	static final int NPC_X = 32;
 	static final int NPC_Y = 46;
+	static final int BUYER_X = 38;
+	static final int BUYER_Y = 50;
 	private static final int RANKING_X = 41;
 	private static final int RANKING_Y = 39;
 
@@ -82,7 +84,7 @@ public final class ChallengeArenaZone implements ZoneConfigurator {
 		ChallengeArenaManager.configureRankingSign(rankingSign);
 
 		ChallengeArenaNPC.create(zone, NPC_X, NPC_Y);
-		ChallengeArenaBuyerNPC.create(zone, 40, 47);
+		ChallengeArenaBuyerNPC.create(zone, BUYER_X, BUYER_Y);
 	}
 
 	static void configureViewOrbs(final StendhalRPZone zone) {

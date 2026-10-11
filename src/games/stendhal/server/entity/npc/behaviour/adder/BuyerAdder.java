@@ -19,7 +19,6 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -154,20 +153,12 @@ public class BuyerAdder {
 							final int price = buyerBehaviour.getCharge(res, player);
 
 							if (price != 0) {
-								String quantityplnounItem = Grammar.quantityplnoun(res.getAmount(), chosenItemName);
-								raiser.say(Grammar.capitalize(quantityplnounItem)
-										+ " " + Grammar.isare(res.getAmount()) + " "
-										+ Grammar.worthForm(quantityplnounItem, res.getAmount()) + " "
-										+ MoneyUtils.formatPrice(price) + ". Czy chcesz "
-										+ Grammar.itthem(res.getAmount()) + " sprzedać?");
+								raiser.say(buyerBehaviour.getPriceOffer(res, price));
 
 								currentBehavRes = res;
 								npc.setCurrentState(ConversationStates.SELL_PRICE_OFFERED); // success
 							} else {
-								raiser.say("Przepraszam " 
-										+ Grammar.thatthose(res.getAmount()) + " " 
-										+ Grammar.plnoun(res.getAmount(), chosenItemName)
-										+ " " + Grammar.isare(res.getAmount()) + " jest nic nie warte.");
+								raiser.say(buyerBehaviour.getUnavailableOffer(res));
 							}
 						} else {
 							raiser.say("Przepraszam, ile " + Grammar.plural(chosenItemName) + " chcesz sprzedać?!");

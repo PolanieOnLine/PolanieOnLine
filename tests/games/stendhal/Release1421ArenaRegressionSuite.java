@@ -9,6 +9,7 @@ import org.junit.runners.Suite;
 import games.stendhal.server.core.rule.rarity.ItemRarityServiceTest;
 import games.stendhal.server.entity.creature.EliteCreatureDropRarityTest;
 import games.stendhal.server.entity.npc.behaviour.impl.ValueBuyerBehaviourTest;
+import games.stendhal.server.entity.item.money.MoneyUtilsPaymentTest;
 import games.stendhal.server.entity.player.ReservePouchMigrationTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaCreatureSpawnerTest;
 import games.stendhal.server.maps.challengearena.ChallengeArenaEngineLootPeriodTest;
@@ -26,6 +27,7 @@ import games.stendhal.server.script.SummonMistCreatureTest;
 	ItemRarityServiceTest.class,
 	EliteCreatureDropRarityTest.class,
 	ValueBuyerBehaviourTest.class,
+	MoneyUtilsPaymentTest.class,
 	ReservePouchMigrationTest.class,
 	ChallengeArenaCreatureSpawnerTest.class,
 	ChallengeArenaEngineLootPeriodTest.class,
