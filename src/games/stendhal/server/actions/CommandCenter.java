@@ -56,6 +56,7 @@ import games.stendhal.server.actions.query.WhoAction;
 import games.stendhal.server.actions.spell.CastSpellAction;
 import games.stendhal.server.core.engine.Translate;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.challengearena.ChallengeArenaObservation;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 
@@ -153,6 +154,9 @@ public class CommandCenter {
 		try {
 			if (caster instanceof Player) {
 				final Player player = (Player) caster;
+				if (ChallengeArenaObservation.handleAction(player, action)) {
+					return true;
+				}
 				Translate.setThreadLanguage(player.getLanguage());
 				final ActionListener actionListener = getAction(action);
 				final String type = action.get(Actions.TYPE);

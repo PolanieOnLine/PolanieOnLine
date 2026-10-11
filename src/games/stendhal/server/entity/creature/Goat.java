@@ -362,6 +362,7 @@ public class Goat extends DomesticAnimal {
 	 */
 	@Override
 	public void logic() {
+		if (suspendForArenaObservation()) { return; }
 		if (!getZone().getPlayers().isEmpty()) {
 			hunger++;
 		}

@@ -233,6 +233,7 @@ public abstract class Pet extends DomesticAnimal {
 	 */
 	@Override
 	public void logic() {
+		if (suspendForArenaObservation()) { return; }
 		// call super class to perform common tasks like attacking targets
 		super.logic();
 

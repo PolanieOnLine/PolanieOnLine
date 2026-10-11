@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+	"test:arena-observation": "node --test src/js/stendhal/ui/dialog/arena-observation-dialog.test.js",
 	"test:creature-armor": "node --test src/js/stendhal/ui/render/creature-armor-renderer.test.js",
 	"test:quest-markers": "node --test src/js/stendhal/ui/render/quest-marker-renderer.test.js",
 	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/ui/component/player-equipment.test.js src/js/stendhal/data/sprite-store.test.js src/js/stendhal/sprite/item-rarity-effects.test.js",

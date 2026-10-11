@@ -75,12 +75,25 @@ import games.stendhal.server.entity.slot.Slots;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.maps.challengearena.ChallengeArenaObservation;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 import marauroa.common.game.SyntaxException;
 
 public class Player extends DressedEntity implements UseListener {
+	/** Server-only, transient protection: never grants or persists admin flags. */
+	private boolean arenaSpectator;
+
+	public boolean isArenaSpectator() { return arenaSpectator; }
+	public void setArenaSpectator(final boolean observing) { arenaSpectator = observing; }
+
+	@Override public int getResistance() { return arenaSpectator ? 0 : super.getResistance(); }
+	@Override public int getVisibility() { return arenaSpectator ? 0 : super.getVisibility(); }
+	@Override public boolean isAttackable() { return !arenaSpectator && super.isAttackable(); }
+	@Override public int damage(final int amount, final Killer attacker) {
+		return arenaSpectator ? 0 : super.damage(amount, attacker);
+	}
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(Player.class);
 
@@ -268,6 +281,7 @@ public class Player extends DressedEntity implements UseListener {
 		player.getZone().remove(player);
 
 		player.disconnected = true;
+		ChallengeArenaObservation.onLogout(player);
 
 		if (name != null) {
 			WordList.getInstance().unregisterSubjectName(name);
@@ -1046,7 +1060,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public boolean isInvisibleToCreatures() {
-		return has(INVISIBLE);
+		return arenaSpectator || has(INVISIBLE);
 	}
 
 	/**
@@ -1811,6 +1825,9 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public boolean teleport(final StendhalRPZone zone, final int x,
 			final int y, final Direction dir, final Player teleporter) {
+		if (arenaSpectator && !ChallengeArenaObservation.mayTeleport(this, zone, x, y)) {
+			return false;
+		}
 		if (StendhalRPAction.placeat(zone, this, x, y)) {
 			if (dir != null) {
 				this.setDirection(dir);
@@ -2317,8 +2334,10 @@ public class Player extends DressedEntity implements UseListener {
 		/*
 		 * Remember zones we've been in
 		 */
-		setKeyedSlot("!visited", zoneName,
-				Long.toString(System.currentTimeMillis()));
+		if (!arenaSpectator) {
+			setKeyedSlot("!visited", zoneName,
+					Long.toString(System.currentTimeMillis()));
+		}
 		trade.cancelTrade();
 
 		if((zoneName.equals("0_ados_city_n")) || (zoneName.equals("0_fado_city"))

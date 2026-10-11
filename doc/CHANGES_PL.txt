@@ -12,6 +12,7 @@
 *Arena Wyzwań i łupy*
 ---
 * Każdy gracz walczy na własnej Arenie Wyzwań w Tarnowie, bez kolejki i bez przeszkadzania innym uczestnikom
+* Kule w lobby pozwalają wybrać gracza i oglądać jego walkę na arenie. Widzowie nie mogą pomagać w walce ani zabierać łupów, a po jej zakończeniu wracają do lobby
 * Potwory na arenie pozostawiają łupy. Po zwycięstwie gracz ma minutę na ich zebranie
 * Tablica najlepszych wojowników Areny Wyzwań pokazuje miejsce każdego gracza w rankingu
 * Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Przed sprzedażą kupiec podaje cenę, uwzględniając rzadkość przedmiotu

@@ -40,6 +40,26 @@ import marauroa.common.game.RPClass;
 import marauroa.common.game.RPEvent;
 
 public class ChatOptionsEvent extends RPEvent {
+	public static final String ARENA_OBSERVATION = "__arena_observation__";
+
+	/** Uses the existing private dialog channel, without an attending NPC. */
+	public static ChatOptionsEvent arenaObservation(final String phase,
+			final String title, final List<String> players) {
+		final ChatOptionsEvent event = new ChatOptionsEvent();
+		event.put(NPC, ARENA_OBSERVATION);
+		event.put(TITLE, title);
+		event.put("arena_phase", phase);
+		final List<String> options = new LinkedList<>();
+		for (final String name : players) {
+			options.add("obserwuj " + name + "|~|" + name + "|~|");
+		}
+		event.put(OPTIONS, Joiner.on("\t").join(options));
+		return event;
+	}
+
+	private ChatOptionsEvent() {
+		super(Events.CHAT_OPTIONS);
+	}
 
 	private static final String NPC = "npc";
 	private static final String TITLE = "title";
@@ -198,6 +218,7 @@ public class ChatOptionsEvent extends RPEvent {
 		rpclass.addAttribute(NPC, Type.STRING);
 		rpclass.addAttribute(TITLE, Type.STRING);
 		rpclass.addAttribute(OPTIONS, Type.VERY_LONG_STRING);
+		rpclass.addAttribute("arena_phase", Type.STRING);
 	}
 
 	/**

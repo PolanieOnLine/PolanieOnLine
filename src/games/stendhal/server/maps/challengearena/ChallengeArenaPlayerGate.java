@@ -4,6 +4,8 @@
 package games.stendhal.server.maps.challengearena;
 
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.ActiveEntity;
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.area.OnePlayerArea;
 import games.stendhal.server.entity.player.Player;
 
@@ -20,12 +22,24 @@ public final class ChallengeArenaPlayerGate extends OnePlayerArea {
 		this.ownerName = ownerName;
 	}
 
+	@Override public void onEntered(final ActiveEntity entity, final StendhalRPZone zone,
+			final int x, final int y) {
+		if (entity instanceof Player && ((Player) entity).isArenaSpectator()) { return; }
+		super.onEntered(entity, zone, x, y);
+	}
+
 	@Override
 	public boolean isObstacle(final Entity entity) {
 		if (!(entity instanceof Player)) {
 			return false;
 		}
 		final Player player = (Player) entity;
+		// Observers are parked outside the ring and locked by the server action
+		// dispatcher. This admits their zone transfer, not normal arena entry.
+		if (player.isArenaSpectator()
+				&& ChallengeArenaObservation.isWatchingZone(player, getZone())) {
+			return false;
+		}
 		// Players saved in the former shared ring before upgrading can still leave.
 		if (ownerName == null && contains(player)) {
 			return false;

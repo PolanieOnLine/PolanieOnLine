@@ -920,6 +920,13 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		center();
 	}
 
+	/** Leave an explicit arena observation view without waiting for movement. */
+	public void resumePlayerView() {
+		cameraFocus.clearRemoteView();
+		calculateView(x, y);
+		center();
+	}
+
 	@Override
 	public void dropEntity(IEntity entity, int amount, Point point) {
 		// Just pass it to the ground container
