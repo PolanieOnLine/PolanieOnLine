@@ -88,18 +88,22 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 	public Player2DView() {
 		// shift hp bar & title to avoid overlap with other entities
 		titleDrawYOffset = 6;
-		addIconManager(new AbstractStatusIconManager(Player.PROP_AWAY, awaySprite,
+		final AbstractStatusIconManager awayManager = new AbstractStatusIconManager(Player.PROP_AWAY, awaySprite,
 				HorizontalAlignment.RIGHT, VerticalAlignment.TOP) {
 					@Override
 					boolean show(T player) {
 						return player.isAway();
-					}} );
-		addIconManager(new AbstractStatusIconManager(Player.PROP_GRUMPY, grumpySprite,
+					}};
+		awayManager.setOffsets(10, 6);
+		addIconManager(awayManager);
+		final AbstractStatusIconManager grumpyManager = new AbstractStatusIconManager(Player.PROP_GRUMPY, grumpySprite,
 				HorizontalAlignment.LEFT, VerticalAlignment.TOP) {
 					@Override
 					boolean show(T player) {
 						return player.isGrumpy();
-					}} );
+					}};
+		grumpyManager.setOffsets(0, 6);
+		addIconManager(grumpyManager);
 		addIconManager(new AbstractStatusIconManager(Player.PROP_PLAYER_KILLER, skullSprite,
 				HorizontalAlignment.LEFT, VerticalAlignment.TOP) {
 					@Override

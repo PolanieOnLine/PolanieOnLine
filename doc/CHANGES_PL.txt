@@ -43,6 +43,7 @@
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
 * Uporządkowano okno ulepszania przedmiotów. Zajmuje mniej miejsca, czytelniej pokazuje wymagania i zamyka się po opuszczeniu mapy
 * Poprawiono płynność przesuwania mapy i czytelność nazw postaci podczas chodzenia
+* Ikona zajętości nie nachodzi już na pasek zdrowia, a ikona nieobecności znajduje się po prawej stronie postaci
 * Poprawiono działanie ustawienia dopasowania widoku gry do okna
 
 *administracja*

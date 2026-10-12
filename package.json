@@ -8,6 +8,7 @@
     "test": "tests"
   },
   "scripts": {
+	"test:player-mood-icons": "node --test src/js/stendhal/entity/player-mood-icons.test.js",
 	"test:arena-observation": "node --test src/js/stendhal/ui/dialog/arena-observation-dialog.test.js",
 	"test:viewport-input": "node --test src/js/stendhal/ui/viewport-input.test.js",
 	"test:arena-view": "node --test src/js/stendhal/ui/arena-view.test.js",

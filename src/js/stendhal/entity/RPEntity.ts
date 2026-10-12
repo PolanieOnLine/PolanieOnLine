@@ -444,10 +444,21 @@ export class RPEntity extends ActiveEntity {
 			}
 		}
 		if (this.hasOwnProperty("away")) {
-			drawAnimatedIcon(Paths.sprites + "/ideas/away.png", 1500, x + 32 * this["width"], y - this["drawHeight"]);
+			const iconPath = Paths.sprites + "/ideas/away.png";
+			const icon = singletons.getSpriteStore().get(iconPath);
+			// Match the Java client's right/top anchor on the actual outfit bounds.
+			const spriteWidth = this["drawWidth"] || this["width"] * 32;
+			const spriteLeft = this["drawOffsetX"] ?? this["_x"] * 32
+				+ (this["width"] * 32 - spriteWidth) / 2;
+			const spriteTop = this["drawOffsetY"] ?? (this["_y"] + this["height"]) * 32 - this["drawHeight"];
+			drawAnimatedIcon(iconPath, 1500, spriteLeft + spriteWidth - icon.height + 10, spriteTop + 6);
 		}
 		if (this.hasOwnProperty("grumpy")) {
-			drawAnimatedIcon(Paths.sprites + "/ideas/grumpy.png", 1000, x + 5, y - this["drawHeight"]);
+			const spriteWidth = this["drawWidth"] || this["width"] * 32;
+			const spriteLeft = this["drawOffsetX"] ?? this["_x"] * 32
+				+ (this["width"] * 32 - spriteWidth) / 2;
+			const spriteTop = this["drawOffsetY"] ?? (this["_y"] + this["height"]) * 32 - this["drawHeight"];
+			drawAnimatedIcon(Paths.sprites + "/ideas/grumpy.png", 1000, spriteLeft, spriteTop + 6);
 		}
 		if (this.hasOwnProperty("last_player_kill_time")) {
 			drawAnimatedIconWithFrames(Paths.sprites + "/ideas/pk.png", 12, 300, x, y - this["drawHeight"]);
