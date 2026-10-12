@@ -342,7 +342,7 @@ class SwingClientGUI implements J2DClientGUI {
 		final JComponent buddyPane = buddyScroll.getComponent();
 		buddyPane.setBorder(null);
 
-		final JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL);
+		final JComponent leftColumn = createLeftColumn();
 		leftColumn.add(minimap.getComponent(), SLayout.EXPAND_X);
 		leftColumn.add(stats.getComponent(), SLayout.EXPAND_X);
 
@@ -366,6 +366,23 @@ class SwingClientGUI implements J2DClientGUI {
 		leftColumn.add(tabBackground, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
 
 		return leftColumn;
+	}
+
+	/** Keep statistics visible when the player narrows the left dock. */
+	static JComponent createLeftColumn() {
+		final JComponent column = new JComponent() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Dimension getMinimumSize() {
+				final Dimension minimum = super.getMinimumSize();
+				minimum.width = Math.max(180, minimum.width);
+				minimum.height = 0;
+				return minimum;
+			}
+		};
+		column.setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
+		return column;
 	}
 
 	private JFrame prepareMainWindow(JFrame splash) {
@@ -569,7 +586,6 @@ class SwingClientGUI implements J2DClientGUI {
 		 */
 		containerPanel.setMinimumSize(containerPanel.getPreferredSize());
 
-		leftColumn.setMinimumSize(new Dimension());
 		// Splitter between the left column and game screen
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftColumn, verticalSplit);
 		// Ensure that the limits are obeyed even when the component is resized

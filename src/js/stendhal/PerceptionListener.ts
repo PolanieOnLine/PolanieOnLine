@@ -12,11 +12,12 @@
 import { ui } from "ui/UI";
 import { stendhal } from "./stendhal";
 
-import { RPObject, PerceptionListener } from "marauroa";
+import { RPObject, PerceptionListener, marauroa } from "marauroa";
 import { UIComponentEnum } from "ui/UIComponentEnum";
 import { MiniMapComponent } from "ui/component/MiniMapComponent";
 import { BuddyListComponent } from "ui/component/BuddyListComponent";
 import { PlayerEquipmentComponent } from "ui/component/PlayerEquipmentComponent";
+import { PlayerStatsComponent } from "ui/component/PlayerStatsComponent";
 import { RunicAltarComponent } from "ui/component/RunicAltarComponent";
 import { singletons } from "SingletonRepo";
 import { Client } from "Client";
@@ -54,6 +55,9 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 		(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 		stendhal.ui.equip.update();
+		if (marauroa.me) {
+			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)?.update("money");
+		}
 		singletons.getQuickSlotsController().update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 		(ui.get(UIComponentEnum.RunicAltar) as RunicAltarComponent).update();

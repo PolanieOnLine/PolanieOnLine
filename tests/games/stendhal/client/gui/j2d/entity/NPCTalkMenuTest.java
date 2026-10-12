@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.NPC;
+import games.stendhal.client.entity.User;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 
@@ -58,5 +59,47 @@ public class NPCTalkMenuTest {
 		assertEquals("#17", action.get("target"));
 		assertEquals("talk_zone", action.get("zone"));
 		assertFalse(action.has("text"));
+	}
+
+	@Test
+	public void conversationStateMatchesOnlyTheCurrentPlayerAndCanBeRemoved() {
+		final NPC npc = npc(true);
+		assertFalse(npc.isTalkingTo("MenuPlayer"));
+		npc.getRPObject().put("conversation_player", "MenuPlayer");
+		assertTrue(npc.isTalkingTo("MenuPlayer"));
+		assertFalse(npc.isTalkingTo("OtherPlayer"));
+		assertFalse(npc.isTalkingTo(null));
+		npc.getRPObject().remove("conversation_player");
+		assertFalse(npc.isTalkingTo("MenuPlayer"));
+	}
+
+	@Test
+	public void activeConversationHidesTalkOnlyFromItsPlayer() throws Exception {
+		Assume.assumeFalse("Client views require a display", GraphicsEnvironment.isHeadless());
+		final java.lang.reflect.Field proxy = User.class.getDeclaredField("userProxy");
+		proxy.setAccessible(true);
+		final Object originalProxy = proxy.get(null);
+		try {
+			new User() {
+				@Override public String getName() { return "MenuPlayer"; }
+			};
+			final NPC2DView<NPC> view = new NPC2DView<NPC>();
+			view.entity = npc(true);
+			view.entity.getRPObject().put("conversation_player", "MenuPlayer");
+			final List<String> actions = new ArrayList<String>();
+			view.buildActions(actions);
+			assertFalse(actions.contains("Porozmawiaj"));
+			assertTrue(actions.contains("Zobacz"));
+			view.entity.getRPObject().put("conversation_player", "OtherPlayer");
+			actions.clear();
+			view.buildActions(actions);
+			assertTrue(actions.contains("Porozmawiaj"));
+			view.entity.getRPObject().remove("conversation_player");
+			actions.clear();
+			view.buildActions(actions);
+			assertTrue(actions.contains("Porozmawiaj"));
+		} finally {
+			proxy.set(null, originalProxy);
+		}
 	}
 }

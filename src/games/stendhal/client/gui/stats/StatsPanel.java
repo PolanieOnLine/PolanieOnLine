@@ -15,7 +15,6 @@ import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPE
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -353,7 +352,7 @@ class StatsPanel extends JPanel {
 		MoneyPanel() {
 			setOpaque(false);
 			setBorder(null);
-			setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			setLayout(new SBoxLayout(SBoxLayout.HORIZONTAL));
 
 			Style style = StyleUtil.getStyle();
 
@@ -446,6 +445,15 @@ class StatsPanel extends JPanel {
 			void setAmount(int amount) {
 				setText(Integer.toString(amount));
 				setToolTipText(amount + " " + Grammar.polishQuantity(coinName, amount));
+			}
+
+			@Override
+			public Dimension getMinimumSize() {
+				final Dimension minimum = super.getPreferredSize();
+				final java.awt.FontMetrics metrics = getFontMetrics(getFont());
+				minimum.width += Math.max(0, metrics.stringWidth(Integer.toString(Integer.MAX_VALUE))
+						- metrics.stringWidth(getText()));
+				return minimum;
 			}
 
 			private void setCoinIcon(String... iconPaths) {

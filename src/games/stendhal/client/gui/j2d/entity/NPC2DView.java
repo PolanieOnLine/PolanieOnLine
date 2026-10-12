@@ -143,7 +143,7 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	protected void buildActions(final List<String> list) {
 		super.buildActions(list);
-		if (entity.getRPObject().has("talkable")) {
+		if (entity.getRPObject().has("talkable") && !entity.isTalkingTo(User.getCharacterName())) {
 			list.add(0, ActionType.TALK.getRepresentation());
 		}
 		// NPC can't be pushed

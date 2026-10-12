@@ -73,7 +73,8 @@ export class NPC extends RPEntity {
 	}
 
 	override buildActions(list: MenuItem[]) {
-		if (this.hasOwnProperty("talkable")) {
+		if (this.hasOwnProperty("talkable")
+				&& !(marauroa.me && this["conversation_player"] === marauroa.me["name"])) {
 			list.push({ title: "Porozmawiaj", type: "talk" });
 		}
 		super.buildActions(list);
