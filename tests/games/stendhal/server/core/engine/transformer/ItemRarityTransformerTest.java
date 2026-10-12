@@ -89,6 +89,9 @@ public class ItemRarityTransformerTest {
 		legacy.put("atk", 137);
 		legacy.put("rate", 4);
 		legacy.setValue(777);
+		final Item definition = SingletonRepository.getEntityManager().getItem(
+				ITEM_NAME, ItemCreationContext.restore());
+		final int currentAttack = definition.getInt("atk");
 
 		final Item restored = new ItemTransformer().transform(serializedCopy(legacy));
 		final int minimum = restored.getInt("damage_min");
@@ -96,14 +99,14 @@ public class ItemRarityTransformerTest {
 		final Item secondLoad = new ItemTransformer().transform(serializedCopy(restored));
 
 		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
-		assertEquals(137, secondLoad.getInt("atk"));
-		assertTrue(minimum < 137);
-		assertTrue(maximum > 137);
-		assertEquals(137.0, restored.getAverageDamage(), 0.0);
+		assertEquals(currentAttack, secondLoad.getInt("atk"));
+		assertTrue(minimum < currentAttack);
+		assertTrue(maximum > currentAttack);
+		assertEquals(currentAttack, restored.getAverageDamage(), 1.0);
 		assertEquals(minimum, secondLoad.getInt("damage_min"));
 		assertEquals(maximum, secondLoad.getInt("damage_max"));
-		assertEquals(4, secondLoad.getInt("rate"));
-		assertEquals(777, secondLoad.getValue());
+		assertEquals(definition.getInt("rate"), secondLoad.getInt("rate"));
+		assertEquals(definition.getDefinitionValue(), secondLoad.getValue());
 		assertEquals(Double.valueOf(1.0), secondLoad.getRarityModifier("atk"));
 		assertEquals(Double.valueOf(1.0),
 				secondLoad.getRarityModifier("damage_min"));
@@ -140,7 +143,7 @@ public class ItemRarityTransformerTest {
 	}
 
 	@Test
-	public void savedStatisticSetRemainsAuthoritativeAcrossXmlChanges()
+	public void currentStatisticSetReplacesObsoleteXmlStatsWithoutReroll()
 			throws IOException {
 		final Item saved = SingletonRepository.getEntityManager().getItem(
 				ITEM_NAME, ItemRarity.RARE,
@@ -153,8 +156,11 @@ public class ItemRarityTransformerTest {
 
 		final Item restored = new ItemTransformer().transform(serializedCopy(saved));
 
-		assertEquals(42, restored.getInt("def"));
-		assertFalse(restored.has("rate"));
+		assertFalse(restored.has("def"));
+		final Item definition = SingletonRepository.getEntityManager().getItem(
+				ITEM_NAME, ItemCreationContext.restore());
+		assertEquals((int) Math.round(definition.getInt("rate") / 1.10), restored.getInt("rate"));
+		assertEquals(saved.getRarityModifiers(), restored.getRarityModifiers());
 	}
 
 	@Test

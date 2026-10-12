@@ -248,6 +248,7 @@ public class DefaultItem {
 		if (item != null) {
 			item.setEquipableSlots(slots);
 			item.setDescription(description);
+			item.put(Item.DEFINITION_DESCRIPTION, description == null ? "" : description);
 			if (damageType != null) {
 				item.setDamageType(damageType);
 			}
