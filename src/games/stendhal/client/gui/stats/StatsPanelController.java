@@ -14,7 +14,6 @@ package games.stendhal.client.gui.stats;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
@@ -50,10 +49,10 @@ public final class StatsPanelController {
 	private static	StatsPanelController instance;
 
 	/**
-	 * The money objects.
-	 * First level keys are the slot name. Second level is the object id.
+	 * A private inventory snapshot. Slot events contain partial item changes,
+	 * so coin identity must be read from the merged item, not from its price.
 	 */
-	private final HashMap<String, HashMap<String, CoinStack>> money = new HashMap<String, HashMap<String, CoinStack>>();
+	private final RPObject moneyInventory = new RPObject();
 
 	private int level;
 	private int xp;
@@ -88,6 +87,9 @@ public final class StatsPanelController {
 	 */
 	private StatsPanelController() {
 		panel = new StatsPanel();
+		for (String slot : MONEY_SLOTS) {
+			moneyInventory.addSlot(slot);
+		}
 	}
 
 	/**
@@ -367,94 +369,49 @@ public final class StatsPanelController {
 	}
 
 	/**
-	 * Called when there are additions to a potential money slot.
+	 * Merge an inventory delta using the same rules as the perception handler.
 	 *
-	 * @param slot
-	 * @param object
+	 * @param slot the changed slot
+	 * @param added whether this is an addition or a deletion
 	 */
-	private void addMoney(String slot, RPObject object) {
-		HashMap<String, CoinStack> set = money.get(slot);
-		boolean knownSet = set != null;
-		if (!knownSet) {
-			set = new HashMap<String, CoinStack>();
-		}
-
-		String id = object.get("id");
-		if (id == null) {
-			return;
-		}
-
-		CoinStack existing = set.get(id);
-		CoinDescriptor descriptor = identifyCoin(object, existing != null ? existing.descriptor : null);
-		if (descriptor == null) {
-			if (existing != null) {
-				set.remove(id);
-				if (set.isEmpty()) {
-					money.remove(slot);
-				}
-				updateMoney();
-			}
-
-			return;
-		}
-
-		int quantity = object.has("quantity") ? object.getInt("quantity") : (existing != null ? existing.quantity : 0);
-
-		if (existing == null) {
-			set.put(id, new CoinStack(descriptor, quantity));
-			if (!knownSet) {
-				money.put(slot, set);
-			}
-		} else {
-			existing.descriptor = descriptor;
-			existing.quantity = quantity;
-		}
-
-		updateMoney();
+	private void changeMoneySlot(RPSlot slot, boolean added) {
+		RPObject delta = new RPObject();
+		// Do not reparent objects belonging to the received perception.
+		delta.addSlot((RPSlot) slot.clone());
+		moneyInventory.applyDifferences(added ? delta : null, added ? null : delta);
+		moneyInventory.resetAddedAndDeleted();
 	}
 
 	/**
 	 * Remove all the money objects. Called at zone change.
 	 */
 	private void clearMoney() {
-		money.clear();
-		updateMoney();
-	}
-
-	/**
-	 * Called when items are removed from a potential money slot.
-	 *
-	 * @param slot
-	 * @param obj
-	 */
-	private void removeMoney(String slot, RPObject obj) {
-		HashMap<String, CoinStack> set = money.get(slot);
-		String id = obj.get("id");
-		if (set != null && id != null && set.remove(id) != null) {
-			if (set.isEmpty()) {
-				money.remove(slot);
-			}
-			updateMoney();
+		for (RPSlot slot : moneyInventory.slots()) {
+			slot.clear();
 		}
+		moneyInventory.resetAddedAndDeleted();
+		updateMoney();
 	}
 
 	/**
 	 * Count the money, and update the label text.
 	 */
 	private void updateMoney() {
-		int dukaty = 0;
-		int talary = 0;
-		int miedziaki = 0;
-		int totalCopper = 0;
+		long dukaty = 0;
+		long talary = 0;
+		long miedziaki = 0;
+		long totalCopper = 0;
 
-		for (HashMap<String, CoinStack> stack : money.values()) {
-			for (CoinStack coin : stack.values()) {
-				int quantity = coin.quantity;
+		for (RPSlot slot : moneyInventory.slots()) {
+			for (RPObject item : slot) {
+				CoinDescriptor descriptor = identifyCoin(item);
+				if (descriptor == null || !item.has("quantity")) {
+					continue;
+				}
+				int quantity = item.getInt("quantity");
 				if (quantity <= 0) {
 					continue;
 				}
-
-				CoinDescriptor descriptor = coin.descriptor;
 
 				switch (descriptor.bucket) {
 					case DUKAT:
@@ -469,8 +426,7 @@ public final class StatsPanelController {
 						break;
 				}
 
-				totalCopper += quantity * descriptor.copperValue;
-				continue;
+				totalCopper += (long) quantity * descriptor.copperValue;
 			}
 		}
 
@@ -480,10 +436,10 @@ public final class StatsPanelController {
 			miedziaki = totalCopper;
 		}
 
-		final int finalDukaty = dukaty;
-		final int finalTalary = talary;
-		final int finalMiedziaki = miedziaki;
-		final int finalTotalCopper = totalCopper;
+		final long finalDukaty = dukaty;
+		final long finalTalary = talary;
+		final long finalMiedziaki = miedziaki;
+		final long finalTotalCopper = totalCopper;
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -493,8 +449,8 @@ public final class StatsPanelController {
 		});
 	}
 
-	private CoinDescriptor identifyCoin(RPObject obj, CoinDescriptor fallback) {
-		String name = resolveCoinName(obj);
+	private CoinDescriptor identifyCoin(RPObject obj) {
+		String name = obj.get("name");
 		if (name != null) {
 			name = name.toLowerCase(Locale.ENGLISH);
 
@@ -510,32 +466,7 @@ public final class StatsPanelController {
 			return null;
 		}
 
-		if (obj.has("value")) {
-			int value = obj.getInt("value");
-			if (value == COPPER_PER_DUKAT) {
-				return CoinDescriptor.dukat();
-			}
-			if (value == COPPER_PER_TALAR) {
-				return CoinDescriptor.talar();
-			}
-			if (value > 0) {
-				return CoinDescriptor.customCopper(value);
-			}
-		}
-
-		return fallback;
-	}
-
-	private String resolveCoinName(RPObject obj) {
-		String name = obj.get("name");
-		if (name != null) {
-			return name;
-		}
-		name = obj.get("subclass");
-		if (name != null) {
-			return name;
-		}
-		return obj.get("class");
+		return null;
 	}
 
 	private static class CoinDescriptor {
@@ -569,19 +500,6 @@ public final class StatsPanelController {
 			return COPPER;
 		}
 
-		static CoinDescriptor customCopper(int copperValue) {
-			return new CoinDescriptor(Bucket.COPPER, copperValue);
-		}
-	}
-
-	private static class CoinStack {
-		private CoinDescriptor descriptor;
-		private int quantity;
-
-		CoinStack(CoinDescriptor descriptor, int quantity) {
-			this.descriptor = descriptor;
-			this.quantity = quantity;
-		}
 	}
 
 	/**
@@ -994,18 +912,14 @@ public final class StatsPanelController {
 
 			RPSlot slot = (RPSlot) event.getOldValue();
 			if (slot != null) {
-				for (final RPObject object : slot) {
-					removeMoney(slot.getName(), object);
-				}
+				changeMoneySlot(slot, false);
 			}
 
 			slot = (RPSlot) event.getNewValue();
 			if (slot != null) {
-				for (final RPObject object : slot) {
-					// add everything. let the panel figure out if it's money
-					addMoney(slot.getName(), object);
-				}
+				changeMoneySlot(slot, true);
 			}
+			updateMoney();
 		}
 	}
 }

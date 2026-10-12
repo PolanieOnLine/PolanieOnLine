@@ -51,7 +51,7 @@
 * Poprawiono płynność przesuwania mapy i czytelność nazw postaci podczas chodzenia
 * Ikona zajętości nie nachodzi już na pasek zdrowia, a ikona nieobecności znajduje się po prawej stronie postaci
 * Poprawiono działanie ustawienia dopasowania widoku gry do okna
-* Poprawiono czytelność lewego panelu w kliencie Java i grze przez przeglądarkę. Liczba posiadanych monet pozostaje widoczna także po zwężeniu panelu
+* Poprawiono lewy panel w kliencie Java i grze przez przeglądarkę. Liczba monet jest czytelna i prawidłowo odświeża się po sprzedaży, podnoszeniu i wyrzucaniu pieniędzy
 
 *administracja*
 ---

@@ -243,6 +243,10 @@ class StatsPanel extends JPanel {
 	 * @param money
 	 */
 	void setMoney(int dukaty, int talary, int miedziaki, int totalCopper) {
+		setMoney((long) dukaty, talary, miedziaki, totalCopper);
+	}
+
+	void setMoney(long dukaty, long talary, long miedziaki, long totalCopper) {
 		moneyPanel.setMoney(dukaty, talary, miedziaki, totalCopper);
 	}
 
@@ -385,14 +389,18 @@ class StatsPanel extends JPanel {
 		}
 
 		void setMoney(int dukaty, int talary, int miedziaki, int totalCopper) {
+			setMoney((long) dukaty, talary, miedziaki, totalCopper);
+		}
+
+		void setMoney(long dukaty, long talary, long miedziaki, long totalCopper) {
 			if (!CurrencyReform.useReformedCurrency()) {
 				if (legacyLabel != null) {
 					legacyLabel.setAmount(totalCopper);
 					legacyLabel.setToolTipText("Łącznie: " + totalCopper + " "
-						+ Grammar.polishQuantity("money", totalCopper));
+						+ coinQuantity("money", totalCopper));
 				}
 				setToolTipText("Łącznie: " + totalCopper + " "
-					+ Grammar.polishQuantity("money", totalCopper));
+					+ coinQuantity("money", totalCopper));
 				return;
 			}
 
@@ -412,7 +420,7 @@ class StatsPanel extends JPanel {
 			setToolTipText(tooltip.toString());
 		}
 
-		private boolean appendPart(StringBuilder tooltip, int amount, String coinName, boolean appended) {
+		private boolean appendPart(StringBuilder tooltip, long amount, String coinName, boolean appended) {
 			if (amount <= 0) {
 				return appended;
 			}
@@ -421,8 +429,14 @@ class StatsPanel extends JPanel {
 			}
 			tooltip.append(amount)
 				.append(' ')
-				.append(Grammar.polishQuantity(coinName, amount));
+				.append(coinQuantity(coinName, amount));
 			return true;
+		}
+
+		private static String coinQuantity(String coinName, long amount) {
+			// Above one, Polish coin forms depend only on the last two digits.
+			int quantity = amount <= Integer.MAX_VALUE ? (int) amount : 100 + (int) (amount % 100);
+			return Grammar.polishQuantity(coinName, quantity);
 		}
 
 		private static class CoinLabel extends JLabel {
@@ -442,9 +456,9 @@ class StatsPanel extends JPanel {
 				}
 			}
 
-			void setAmount(int amount) {
-				setText(Integer.toString(amount));
-				setToolTipText(amount + " " + Grammar.polishQuantity(coinName, amount));
+			void setAmount(long amount) {
+				setText(Long.toString(amount));
+				setToolTipText(amount + " " + coinQuantity(coinName, amount));
 			}
 
 			@Override
