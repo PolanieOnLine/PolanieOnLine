@@ -83,6 +83,20 @@ public class BuyerBehaviourRarityTest {
 				new ItemParserResult(true, "test blade", 2, null), player));
 	}
 
+	@Test
+	public void oldRareItemsUseTheNewMultiplierAtEveryCatalogueShop() {
+		final Player player = PlayerTestHelper.createPlayer("old rare seller");
+		final Item rare = item("test blade", ItemRarity.RARE, 1.20);
+		assertTrue(player.equipToInventoryOnly(rare));
+		final ItemParserResult request = new ItemParserResult(true, "test blade", 1, null);
+		final BuyerBehaviour first = new BuyerBehaviour(Collections.singletonMap("test blade", 100));
+		final BuyerBehaviour second = new BuyerBehaviour(Collections.singletonMap("test blade", 200));
+		assertEquals(125, first.getCharge(request, player));
+		assertEquals(250, second.getCharge(request, player));
+		assertEquals(125, first.getCharge(request, player));
+		assertEquals(Double.valueOf(1.25), rare.getRarityModifier("value"));
+	}
+
 	private Item item(final String name, final ItemRarity rarity,
 			final double valueMultiplier) {
 		final Item item = new Item(name, "sword", "test",

@@ -15,7 +15,7 @@ import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
-import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
+import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -100,12 +100,7 @@ public class BuyerBehaviour extends MerchantBehaviour {
 				break;
 			}
 			final int quantity = Math.min(remaining, item.getQuantity());
-			final Double savedMultiplier = item.getRarityModifier(
-					ItemRarityModifiers.VALUE);
-			final double multiplier = savedMultiplier != null
-					&& Double.isFinite(savedMultiplier.doubleValue())
-					&& savedMultiplier.doubleValue() > 0.0
-						? savedMultiplier.doubleValue() : 1.0;
+			final double multiplier = ItemValueService.getValueMultiplier(item);
 			final long adjustedUnitPrice = Math.min(Integer.MAX_VALUE,
 					Math.round(unitPrice * multiplier));
 			if (quantity > 0 && adjustedUnitPrice
