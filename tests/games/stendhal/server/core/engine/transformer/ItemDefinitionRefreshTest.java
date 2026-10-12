@@ -303,6 +303,102 @@ public class ItemDefinitionRefreshTest {
 		assertTrue(base.contains("def"));
 	}
 
+	@Test
+	public void oldAffixesAreLimitedAcrossRepeatedLoginsWithoutLosingProgress() throws Exception {
+		Item saved = definition("miecz chaosu");
+		saved.setID(new ID(740, "affix_balance"));
+		saved.setRarity(ItemRarity.LEGENDARY);
+		saved.setRarityModifier("atk", 1.25);
+		saved.setRarityModifier("accuracy_bonus", 1.35);
+		saved.put("improve", 3);
+		saved.setBoundTo("kokol");
+		saved.setPersistent(true);
+		final String[] attributes = {"accuracy_bonus", "critical_chance", "critical_damage_bonus", "lifesteal", "parry_chance"};
+		final double[] before = {15, 10, 0.30, 0.41, 0.15};
+		final double[] after = {8, 6, 0.15, 0.41, 0.15};
+		for (int i = 0; i < attributes.length; i++) {
+			saved.put(attributes[i], before[i]);
+			saved.put(ItemAffixState.ATTRIBUTE, attributes[i], saved.get(attributes[i]));
+		}
+		ItemAffixState.setSeed(saved, 54321L);
+		for (int login = 0; login < 3; login++) {
+			saved = restore(saved);
+			for (int i = 0; i < attributes.length; i++) {
+				assertEquals(attributes[i], after[i], saved.getDouble(attributes[i]), 0.000001);
+				assertEquals(saved.get(attributes[i]), ItemAffixState.getValues(saved).get(attributes[i]));
+			}
+			assertEquals(5, ItemAffixState.getValues(saved).size());
+			assertEquals(3, saved.getUpgradeLevel());
+			assertEquals(saved.getInt("atk") + 3, saved.getAttack());
+			assertEquals("kokol", saved.getBoundTo());
+			assertEquals(Long.valueOf(54321L), ItemAffixState.getSeed(saved));
+			assertEquals(Double.valueOf(1.25), saved.getRarityModifier("atk"));
+			assertEquals(Double.valueOf(1.35), saved.getRarityModifier("accuracy_bonus"));
+			assertEquals("8.0", saved.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.ACCURACY_BONUS));
+		}
+	}
+
+	@Test
+	public void flatAttackAndIntrinsicJewelleryBonusesRefreshExactlyOnce() throws Exception {
+		Item saved = definition("pierścień magnata");
+		saved.setID(new ID(741, "affix_balance"));
+		final int baseAttack = saved.has("atk") ? saved.getInt("atk") : 0;
+		saved.put("atk", baseAttack + 3);
+		saved.put("flat_attack_bonus", 3);
+		saved.put(ItemAffixState.ATTRIBUTE, "flat_attack_bonus", "3");
+		saved.put("accuracy_bonus", 25.0);
+		saved.setPersistent(true);
+		saved.put("improve", 2);
+		for (int login = 0; login < 3; login++) {
+			saved = restore(saved);
+			assertEquals(baseAttack + 2, saved.getInt("atk"));
+			assertEquals(baseAttack + 4, saved.getAttack());
+			assertEquals(2, saved.getUpgradeLevel());
+			assertEquals("2", ItemAffixState.getValues(saved).get("flat_attack_bonus"));
+		}
+		Item intrinsic = definition("pierścień czystości");
+		assertNotNull(intrinsic);
+		intrinsic.setID(new ID(742, "affix_balance"));
+		intrinsic.put("accuracy_bonus", 25.0);
+		intrinsic = restore(intrinsic);
+		assertEquals(5, intrinsic.getDouble("accuracy_bonus"), 0);
+		assertFalse(ItemAffixState.hasAny(intrinsic));
+	}
+
+	@Test
+	public void affixMigrationReachesBanksEquipmentAndNestedContainers() throws Exception {
+		final Player player = PlayerTestHelper.createPlayer("affix-refresh");
+		final java.util.List<String> slots = new java.util.ArrayList<>();
+		Collections.addAll(slots, "bag", "lhand", "lhand_set", "magicbag");
+		for (final Banks bank : Banks.values()) slots.add(bank.getSlotName());
+		for (final String slot : slots) player.getSlot(slot).add(oldAccuracyWeapon());
+		final Item container = definition("rzemyk");
+		container.setPersistent(true);
+		container.getSlot("content").add(oldAccuracyWeapon());
+		player.getSlot("bag").add(container);
+		new PlayerTransformer().loadItemsIntoSlots(player);
+		for (final String slot : slots) {
+			final Item updated = (Item) player.getSlot(slot).getFirst();
+			assertEquals(slot, 8, updated.getDouble("accuracy_bonus"), 0);
+			assertEquals(slot, 3, updated.getUpgradeLevel());
+		}
+		for (final RPObject object : player.getSlot("bag")) {
+			if (!"rzemyk".equals(object.get("name"))) continue;
+			assertEquals(1, object.getSlot("content").size());
+			final Item updated = (Item) object.getSlot("content").getFirst();
+			assertEquals(8, updated.getDouble("accuracy_bonus"), 0);
+			assertEquals(3, updated.getUpgradeLevel());
+		}
+	}
+
+	private Item oldAccuracyWeapon() {
+		final Item item = definition("miecz chaosu");
+		item.put("accuracy_bonus", 15.0);
+		item.put(ItemAffixState.ATTRIBUTE, "accuracy_bonus", "15.0");
+		item.put("improve", 3);
+		return item;
+	}
+
 	private Item definition(final String name) {
 		return SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
 	}

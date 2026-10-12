@@ -23,6 +23,7 @@ import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.core.rule.item.ItemDefinitionRefreshService;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemAffixBalanceService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Glyph;
@@ -208,6 +209,7 @@ public class ItemTransformer {
 
 			// Rebuild the volatile client presentation after all persisted and
 			// converted values have reached their final state.
+			ItemAffixBalanceService.enforce(item);
 			ItemValueService.refresh(item);
 			ItemTooltipService.update(item);
 			return item;

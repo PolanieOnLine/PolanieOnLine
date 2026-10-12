@@ -141,6 +141,7 @@ public final class ItemRarityService {
 		WeaponDamageRangeService.initialize(item, context);
 
 		if (context.isRestore() || item.has(Item.RARITY_ID) || !isEligible(item)) {
+			if (!context.isRestore()) ItemAffixBalanceService.enforce(item);
 			ItemTooltipService.update(item);
 			return;
 		}
@@ -209,6 +210,7 @@ public final class ItemRarityService {
 		// Random affixes are a second persistent instance layer. Fresh contexts
 		// generate according to their source/options; RESTORE never rerolls them.
 		affixGenerator.generate(item, context);
+		ItemAffixBalanceService.enforce(item);
 		ItemTooltipService.update(item);
 	}
 

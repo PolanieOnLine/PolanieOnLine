@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.rule.item.ItemDefinitionRefreshService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
 
@@ -89,6 +90,8 @@ public final class ItemRarityTransferSnapshot {
 				.build();
 		service.initialize(target, context);
 		restoreCompatibleAffixes(target, data);
+		ItemDefinitionRefreshService.replayFlatBonuses(target, target);
+		ItemAffixBalanceService.enforce(target);
 		if (target.hasUpgradeLimit()) {
 			target.setUpgradeLevel(Math.min(data.upgradeLevel,
 					target.getMaxUpgradeLevel()));

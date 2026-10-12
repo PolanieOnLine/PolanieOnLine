@@ -52,8 +52,8 @@ public class EquipmentAffixServiceTest {
 		assertTrue(ring.getInt(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)
 				>= 1);
 		assertTrue(ring.getInt(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)
-				<= 3);
-		assertTrue(ring.getInt("atk") >= 1 && ring.getInt("atk") <= 3);
+				<= 2);
+		assertTrue(ring.getInt("atk") >= 1 && ring.getInt("atk") <= 2);
 
 		assertTrue(EquipmentAffixService.applyFlatDefense(ring,
 				new Random(13L)));
@@ -73,21 +73,21 @@ public class EquipmentAffixServiceTest {
 		assertTrue(EquipmentAffixService.applyAccessoryAccuracy(accuracy,
 				new Random(17L)));
 		assertBetween(accuracy.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE),
-				3.0, 10.0);
+				3.0, 5.0);
 
 		assertTrue(EquipmentAffixService.applyAccessoryCriticalChance(
 				criticalChance, new Random(19L)));
 		assertBetween(criticalChance.getDouble(
-				CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE), 2.0, 7.0);
+				CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE), 2.0, 4.0);
 
 		assertTrue(EquipmentAffixService.applyAccessoryCriticalDamage(
 				criticalDamage, new Random(23L)));
 		assertBetween(criticalDamage.getDouble(
-				CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE), 0.05, 0.15);
+				CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE), 0.05, 0.07);
 	}
 
 	@Test
-	public void allCombatStatusResistanceRollsUseTenToTwentyFivePercent() {
+	public void allCombatStatusResistanceRollsUseTenToTwelvePercent() {
 		final StatusType[] statuses = {
 				StatusType.POISONED, StatusType.BLEEDING, StatusType.SHOCKED,
 				StatusType.CONFUSED, StatusType.HEAVY };
@@ -98,7 +98,7 @@ public class EquipmentAffixServiceTest {
 					new Random(31L + i)));
 			final String attribute = EquipmentStatusResistanceService
 					.getResistanceAttribute(status);
-			assertBetween(item.getDouble(attribute), 0.10, 0.25);
+			assertBetween(item.getDouble(attribute), 0.10, 0.12);
 		}
 	}
 

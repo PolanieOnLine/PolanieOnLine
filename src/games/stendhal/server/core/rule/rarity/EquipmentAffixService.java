@@ -25,19 +25,19 @@ public final class EquipmentAffixService {
 	public static final String GIANT_SLAYER_ATTRIBUTE = "giant_slayer";
 
 	public static final int MIN_ACCESSORY_ATTACK_BONUS = 1;
-	public static final int MAX_ACCESSORY_ATTACK_BONUS = 3;
+	public static final int MAX_ACCESSORY_ATTACK_BONUS = 2;
 	public static final int MIN_ACCESSORY_DEFENSE_BONUS = 1;
 	public static final int MAX_ACCESSORY_DEFENSE_BONUS = 3;
 	public static final int MIN_STATUS_RESISTANCE_PERCENT = 10;
-	public static final int MAX_STATUS_RESISTANCE_PERCENT = 25;
+	public static final int MAX_STATUS_RESISTANCE_PERCENT = 12;
 	public static final int MIN_ACCESSORY_ACCURACY_PERCENT = 3;
-	public static final int MAX_ACCESSORY_ACCURACY_PERCENT = 10;
+	public static final int MAX_ACCESSORY_ACCURACY_PERCENT = 5;
 	public static final int MIN_ACCESSORY_CRITICAL_CHANCE_PERCENT = 2;
-	public static final int MAX_ACCESSORY_CRITICAL_CHANCE_PERCENT = 7;
+	public static final int MAX_ACCESSORY_CRITICAL_CHANCE_PERCENT = 4;
 	public static final int MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 5;
-	public static final int MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 15;
+	public static final int MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 7;
 	public static final int MIN_SPIKED_PLATING_PERCENT = 2;
-	public static final int MAX_SPIKED_PLATING_PERCENT = 4;
+	public static final int MAX_SPIKED_PLATING_PERCENT = 3;
 
 	private static final Set<String> ARMOUR_CLASSES = classes("armor", "shield",
 			"helmet", "cloak", "boots", "glove", "gloves", "legs", "belt", "belts");
@@ -147,7 +147,7 @@ public final class EquipmentAffixService {
 		return true;
 	}
 
-	/** Rolls 2-4% melee damage reflection for body armour and shields. */
+	/** Rolls 2-3% melee damage reflection for body armour and shields. */
 	public static boolean applySpikedPlating(final Item item, final Random random) {
 		if (!isSpikedPlatingEligible(item)) {
 			return false;
@@ -170,7 +170,7 @@ public final class EquipmentAffixService {
 				isGiantSlayerEligible(item), random);
 	}
 
-	/** Rolls 10-25% resistance to one combat status and stores it as a fraction. */
+	/** Rolls 10-12% resistance to one combat status and stores it as a fraction. */
 	public static boolean applyStatusResistance(final Item item,
 			final StatusType statusType, final Random random) {
 		if (!isStatusResistanceEligible(item, statusType)) {
@@ -183,7 +183,7 @@ public final class EquipmentAffixService {
 		return true;
 	}
 
-	/** Rolls +3-10 percentage points of accessory accuracy. */
+	/** Rolls +3-5 percentage points of accessory accuracy. */
 	public static boolean applyAccessoryAccuracy(final Item item,
 			final Random random) {
 		if (!isAccessoryAccuracyEligible(item)) {
@@ -195,7 +195,7 @@ public final class EquipmentAffixService {
 		return true;
 	}
 
-	/** Rolls +2-7 percentage points of accessory critical-hit chance. */
+	/** Rolls +2-4 percentage points of accessory critical-hit chance. */
 	public static boolean applyAccessoryCriticalChance(final Item item,
 			final Random random) {
 		if (!isAccessoryCriticalChanceEligible(item)) {
@@ -207,7 +207,7 @@ public final class EquipmentAffixService {
 		return true;
 	}
 
-	/** Rolls +5-15% critical-hit damage for jewellery. */
+	/** Rolls +5-7% critical-hit damage for jewellery. */
 	public static boolean applyAccessoryCriticalDamage(final Item item,
 			final Random random) {
 		if (!isAccessoryCriticalDamageEligible(item)) {
