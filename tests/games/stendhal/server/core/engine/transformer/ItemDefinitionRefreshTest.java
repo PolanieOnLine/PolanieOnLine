@@ -361,7 +361,7 @@ public class ItemDefinitionRefreshTest {
 		intrinsic.setID(new ID(742, "affix_balance"));
 		intrinsic.put("accuracy_bonus", 25.0);
 		intrinsic = restore(intrinsic);
-		assertEquals(5, intrinsic.getDouble("accuracy_bonus"), 0);
+		assertEquals(7, intrinsic.getDouble("accuracy_bonus"), 0);
 		assertFalse(ItemAffixState.hasAny(intrinsic));
 	}
 

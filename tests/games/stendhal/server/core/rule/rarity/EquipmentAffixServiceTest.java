@@ -5,6 +5,7 @@ package games.stendhal.server.core.rule.rarity;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -73,7 +74,7 @@ public class EquipmentAffixServiceTest {
 		assertTrue(EquipmentAffixService.applyAccessoryAccuracy(accuracy,
 				new Random(17L)));
 		assertBetween(accuracy.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE),
-				3.0, 5.0);
+				2.0, 7.0);
 
 		assertTrue(EquipmentAffixService.applyAccessoryCriticalChance(
 				criticalChance, new Random(19L)));
@@ -83,11 +84,11 @@ public class EquipmentAffixServiceTest {
 		assertTrue(EquipmentAffixService.applyAccessoryCriticalDamage(
 				criticalDamage, new Random(23L)));
 		assertBetween(criticalDamage.getDouble(
-				CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE), 0.05, 0.07);
+				CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE), 0.04, 0.10);
 	}
 
 	@Test
-	public void allCombatStatusResistanceRollsUseTenToTwelvePercent() {
+	public void allCombatStatusResistanceRollsUseFiveToTwelvePercent() {
 		final StatusType[] statuses = {
 				StatusType.POISONED, StatusType.BLEEDING, StatusType.SHOCKED,
 				StatusType.CONFUSED, StatusType.HEAVY };
@@ -98,7 +99,7 @@ public class EquipmentAffixServiceTest {
 					new Random(31L + i)));
 			final String attribute = EquipmentStatusResistanceService
 					.getResistanceAttribute(status);
-			assertBetween(item.getDouble(attribute), 0.10, 0.12);
+			assertBetween(item.getDouble(attribute), 0.05, 0.12);
 		}
 	}
 
@@ -125,6 +126,33 @@ public class EquipmentAffixServiceTest {
 				ring, StatusType.POISONED));
 		assertTrue(EquipmentAffixService.isStatusResistanceEligible(
 				ring, StatusType.BLEEDING));
+	}
+
+	@Test
+	public void configuredEquipmentRangesIncludeBothRequestedEndpoints() {
+		for (final boolean maximum : new boolean[] {false, true}) {
+			final Random random = new Random(0L) {
+				@Override public int nextInt(final int bound) {
+					return maximum ? bound - 1 : 0;
+				}
+			};
+			final Item accuracy = item("ring", 0);
+			assertTrue(EquipmentAffixService.applyAccessoryAccuracy(accuracy, random));
+			assertEquals(maximum ? 7.0 : 2.0,
+					accuracy.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE), 0.0);
+			final Item criticalDamage = item("necklace", 0);
+			assertTrue(EquipmentAffixService.applyAccessoryCriticalDamage(criticalDamage, random));
+			assertEquals(maximum ? 0.10 : 0.04,
+					criticalDamage.getDouble(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE), 0.0);
+			final Item resistance = item("helmet", 20);
+			assertTrue(EquipmentAffixService.applyStatusResistance(resistance, StatusType.STUNNED, random));
+			assertEquals(maximum ? 0.12 : 0.05, resistance.getDouble(
+					EquipmentStatusResistanceService.getResistanceAttribute(StatusType.STUNNED)), 0.0);
+			final Item reflection = item("shield", 20);
+			assertTrue(EquipmentAffixService.applySpikedPlating(reflection, random));
+			assertEquals(maximum ? 0.04 : 0.02,
+					reflection.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE), 0.0);
+		}
 	}
 
 	private Item item(final String itemClass, final int defense) {

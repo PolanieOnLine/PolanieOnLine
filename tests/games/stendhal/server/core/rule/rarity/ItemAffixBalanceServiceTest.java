@@ -50,14 +50,14 @@ public class ItemAffixBalanceServiceTest {
 				"resist_confused", "resist_heavy", "resist_stunned"};
 		for (final String resistance : resistances) record(item, resistance, 0.25);
 		ItemAffixBalanceService.enforce(item);
-		assertEquals(5, item.getDouble("accuracy_bonus"), 0);
+		assertEquals(7, item.getDouble("accuracy_bonus"), 0);
 		assertEquals(4, item.getDouble("critical_chance"), 0);
-		assertEquals(0.07, item.getDouble("critical_damage_bonus"), 0);
+		assertEquals(0.10, item.getDouble("critical_damage_bonus"), 0);
 		for (final String resistance : resistances) assertEquals(0.12, item.getDouble(resistance), 0);
 		final Item shield = new Item("shield", "shield", "test", null);
 		record(shield, "spiked_plating", 0.04);
 		ItemAffixBalanceService.enforce(shield);
-		assertEquals(0.03, shield.getDouble("spiked_plating"), 0);
+		assertEquals(0.04, shield.getDouble("spiked_plating"), 0);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class ItemAffixBalanceServiceTest {
 		new ItemRarityService(new Random(1)).initialize(item,
 				ItemCreationContext.builder(ItemCreationContext.Source.QUEST)
 						.withRarity(ItemRarity.EPIC).randomizeModifiers(false).build());
-		assertEquals(5, item.getDouble("accuracy_bonus"), 0);
+		assertEquals(7, item.getDouble("accuracy_bonus"), 0);
 		assertFalse(ItemAffixState.has(item, "accuracy_bonus"));
 		assertEquals(Double.valueOf(1.15), item.getRarityModifier("accuracy_bonus"));
 	}
