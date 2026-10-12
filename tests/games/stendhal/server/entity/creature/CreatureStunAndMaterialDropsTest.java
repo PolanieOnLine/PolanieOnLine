@@ -44,7 +44,8 @@ public class CreatureStunAndMaterialDropsTest {
 		"stendhal/giant", "pol/giant", "stendhal/elemental", "pol/elemental",
 		"stendhal/troll", "pol/alien", "stendhal/kobold", "stendhal/gnome",
 		"stendhal/dwarf", "pol/wraith", "pol/beast", "stendhal/angel",
-		"pol/angel", "pol/solemn", "pol/dragon"
+		"pol/angel", "pol/solemn", "pol/dragon",
+		"stendhal/undead_skeleton", "stendhal/undead", "stendhal/hybrid"
 	};
 	private static final Map<String, Element> DEFINITIONS = new HashMap<>();
 
@@ -113,7 +114,18 @@ public class CreatureStunAndMaterialDropsTest {
 		assertEquals("30,50", creature("Smok Wawelski").getAIProfile("heal"));
 		assertTrue(creature("Smok Wawelski").getAIProfiles().containsKey("boss"));
 		assertEquals("5", creature("lilith").getAIProfile("bleeding_attack"));
-		assertNull(creature("szkielet anioła").getAIProfile("status_attackers"));
+	}
+
+	@Test
+	public void namedUndeadAndXenociumHaveOneTenPercentStunAttacker() {
+		final String[] names = {"gashadokuro", "necrosophia", "xenocium",
+			"szkielet anioła", "książę szkieletów", "czarny szkielet gigant"};
+		for (final String name : names) {
+			assertStun(name, 10.0);
+		}
+		assertEquals("5", creature("gashadokuro").getAIProfile("bleeding_attack"));
+		assertEquals("5", creature("szkielet anioła").getAIProfile("bleeding_attack"));
+		assertEquals("5", creature("książę szkieletów").getAIProfile("bleeding_attack"));
 	}
 
 	@Test
