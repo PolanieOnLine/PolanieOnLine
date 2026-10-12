@@ -22,21 +22,21 @@ public final class WeaponAffixService {
 	public static final int MIN_LIFESTEAL_PERCENT = 3;
 	public static final int MAX_LIFESTEAL_PERCENT = 10;
 	public static final int MIN_ACCURACY_PERCENT = 5;
-	public static final int MAX_ACCURACY_PERCENT = 15;
+	public static final int MAX_ACCURACY_PERCENT = 8;
 	public static final int MIN_CRITICAL_CHANCE_PERCENT = 3;
-	public static final int MAX_CRITICAL_CHANCE_PERCENT = 10;
+	public static final int MAX_CRITICAL_CHANCE_PERCENT = 6;
 	public static final int MIN_CRITICAL_DAMAGE_PERCENT = 10;
-	public static final int MAX_CRITICAL_DAMAGE_PERCENT = 30;
+	public static final int MAX_CRITICAL_DAMAGE_PERCENT = 15;
 	public static final int MIN_BLEED_ON_HIT_PERCENT = 5;
-	public static final int MAX_BLEED_ON_HIT_PERCENT = 15;
+	public static final int MAX_BLEED_ON_HIT_PERCENT = 8;
 	public static final int MIN_EXECUTE_DAMAGE_PERCENT = 10;
-	public static final int MAX_EXECUTE_DAMAGE_PERCENT = 25;
+	public static final int MAX_EXECUTE_DAMAGE_PERCENT = 15;
 	public static final int MIN_POISON_ON_HIT_PERCENT = 5;
-	public static final int MAX_POISON_ON_HIT_PERCENT = 12;
+	public static final int MAX_POISON_ON_HIT_PERCENT = 8;
 	public static final int MIN_DISTANCE_DAMAGE_PERCENT = 10;
-	public static final int MAX_DISTANCE_DAMAGE_PERCENT = 20;
+	public static final int MAX_DISTANCE_DAMAGE_PERCENT = 12;
 	public static final int MIN_ARMOR_PENETRATION_PERCENT = 10;
-	public static final int MAX_ARMOR_PENETRATION_PERCENT = 25;
+	public static final int MAX_ARMOR_PENETRATION_PERCENT = 15;
 
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
@@ -121,7 +121,7 @@ public final class WeaponAffixService {
 	}
 
 	/**
-	 * Rolls +5-15% accuracy. Accuracy uses whole percentage points in the
+	 * Rolls +5-8% accuracy. Accuracy uses whole percentage points in the
 	 * existing hit-chance implementation, so 12% is stored as 12.0.
 	 */
 	public static boolean applyAccuracy(final Item item, final Random random) {
@@ -134,7 +134,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls +3-10 percentage points of critical-hit chance. */
+	/** Rolls +3-6 percentage points of critical-hit chance. */
 	public static boolean applyCriticalChance(final Item item,
 			final Random random) {
 		if (!isEligible(item, CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE)) {
@@ -146,7 +146,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls +10-30% damage for successful critical hits. */
+	/** Rolls +10-15% damage for successful critical hits. */
 	public static boolean applyCriticalDamage(final Item item,
 			final Random random) {
 		if (!isCriticalDamageEligible(item)) {
@@ -158,7 +158,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls 5-15% chance to inflict bleeding on a damaging hit. */
+	/** Rolls 5-8% chance to inflict bleeding on a damaging hit. */
 	public static boolean applyBleedOnHit(final Item item, final Random random) {
 		if (!isBleedOnHitEligible(item)) {
 			return false;
@@ -169,7 +169,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls +10-25% damage against targets below 25% maximum HP. */
+	/** Rolls +10-15% damage against targets below 25% maximum HP. */
 	public static boolean applyExecuteDamage(final Item item,
 			final Random random) {
 		if (!isExecuteDamageEligible(item)) {
@@ -181,7 +181,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls 5-12% chance to poison on a damaging hit. */
+	/** Rolls 5-8% chance to poison on a damaging hit. */
 	public static boolean applyPoisonOnHit(final Item item, final Random random) {
 		if (!isPoisonOnHitEligible(item)) {
 			return false;
@@ -192,7 +192,7 @@ public final class WeaponAffixService {
 		return true;
 	}
 
-	/** Rolls +10-20% damage for attacks actually performed from distance. */
+	/** Rolls +10-12% damage for attacks actually performed from distance. */
 	public static boolean applyDistanceDamage(final Item item,
 			final Random random) {
 		if (!isDistanceDamageEligible(item)) {
@@ -205,7 +205,7 @@ public final class WeaponAffixService {
 	}
 
 	/**
-	 * Rolls 10-25% semantic armor penetration for weapon classes which have an
+	 * Rolls 10-15% semantic armor penetration for weapon classes which have an
 	 * armor matchup. It is stored as a fraction, e.g. 20% becomes 0.20.
 	 */
 	public static boolean applyArmorPenetration(final Item item,

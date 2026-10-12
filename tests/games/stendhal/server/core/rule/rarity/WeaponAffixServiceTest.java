@@ -41,7 +41,7 @@ public class WeaponAffixServiceTest {
 			assertTrue(WeaponAffixService.applyAccuracy(item, new Random(seed)));
 			final double value = item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE);
 			assertTrue(value >= 5.0);
-			assertTrue(value <= 15.0);
+			assertTrue(value <= 8.0);
 			assertEquals(Math.rint(value), value, 0.0);
 		}
 	}
@@ -53,7 +53,7 @@ public class WeaponAffixServiceTest {
 			assertTrue(WeaponAffixService.applyCriticalChance(item, new Random(seed)));
 			final double value = item.getDouble(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE);
 			assertTrue(value >= 3.0);
-			assertTrue(value <= 10.0);
+			assertTrue(value <= 6.0);
 			assertEquals(Math.rint(value), value, 0.0);
 		}
 	}
@@ -61,7 +61,7 @@ public class WeaponAffixServiceTest {
 	@Test
 	public void criticalDamageRollUsesPersistentFraction() {
 		assertFractionRoll("sword", CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE,
-				10, 30, new AffixApplier() {
+				10, 15, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyCriticalDamage(item, random);
 					}
@@ -71,7 +71,7 @@ public class WeaponAffixServiceTest {
 	@Test
 	public void bleedRollUsesPersistentFraction() {
 		assertFractionRoll("dagger", WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE,
-				5, 15, new AffixApplier() {
+				5, 8, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyBleedOnHit(item, random);
 					}
@@ -81,7 +81,7 @@ public class WeaponAffixServiceTest {
 	@Test
 	public void executeRollUsesPersistentFraction() {
 		assertFractionRoll("axe", WeaponAffixCombatService.EXECUTE_DAMAGE_ATTRIBUTE,
-				10, 25, new AffixApplier() {
+				10, 15, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyExecuteDamage(item, random);
 					}
@@ -91,7 +91,7 @@ public class WeaponAffixServiceTest {
 	@Test
 	public void poisonRollUsesPersistentFraction() {
 		assertFractionRoll("wand", WeaponAffixCombatService.POISON_ON_HIT_ATTRIBUTE,
-				5, 12, new AffixApplier() {
+				5, 8, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyPoisonOnHit(item, random);
 					}
@@ -101,7 +101,7 @@ public class WeaponAffixServiceTest {
 	@Test
 	public void distanceDamageRollUsesPersistentFraction() {
 		assertFractionRoll("ranged", WeaponAffixCombatService.DISTANCE_DAMAGE_ATTRIBUTE,
-				10, 20, new AffixApplier() {
+				10, 12, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyDistanceDamage(item, random);
 					}
@@ -112,7 +112,7 @@ public class WeaponAffixServiceTest {
 	public void armorPenetrationRollUsesPersistentFraction() {
 		assertFractionRoll("dagger",
 				WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE,
-				10, 25, new AffixApplier() {
+				10, 15, new AffixApplier() {
 					@Override public boolean apply(Item item, Random random) {
 						return WeaponAffixService.applyArmorPenetration(item, random);
 					}

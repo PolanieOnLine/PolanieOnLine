@@ -30,7 +30,8 @@
 ---
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
 * Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
-* Posiadane przedmioty otrzymują aktualne statystyki i opisy po zalogowaniu. Zachowują swoje ulepszenia, rzadkość i wylosowane bonusy
+* Posiadane przedmioty otrzymują aktualne statystyki i opisy po zalogowaniu. Zachowują swoje ulepszenia, rzadkość i rodzaje wylosowanych bonusów
+* Obniżono maksymalne bonusy wyposażenia do precyzji, trafień krytycznych, obrażeń i odporności. Zmiana obejmuje również wcześniej zdobyte przedmioty. Kradzież życia i parowanie pozostają bez zmian
 * Dodano informacje o leczeniu i czasie działania jedzenia, napojów i eliksirów
 * Uzupełniono opisy wyposażenia o odporność na ogłuszenie oraz informację o przedmiotach przypisanych do postaci
 * Usunięto sakwę ze schowka rezerwowego wyposażenia. Pozostawione w niej monety są przenoszone do głównej sakwy postaci

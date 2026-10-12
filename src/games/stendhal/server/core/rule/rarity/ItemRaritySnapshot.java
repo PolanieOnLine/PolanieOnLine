@@ -28,6 +28,7 @@ import java.util.Set;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 
 /**
  * Compact snapshot used by the few quest scripts which temporarily remove an
@@ -229,6 +230,8 @@ public final class ItemRaritySnapshot {
 			item.setValue(value);
 			item.setRarity(rarity);
 			item.put(Item.RARITY_PROFILE, profile);
+			ItemAffixBalanceService.enforce(item);
+			ItemTooltipService.update(item);
 		} catch (final IllegalArgumentException e) {
 			throw e;
 		} catch (final EOFException e) {
