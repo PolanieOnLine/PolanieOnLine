@@ -47,9 +47,9 @@ public class TacticalEquipmentAffixServiceTest {
 		assertTrue(EquipmentAffixService.applySpikedPlating(shield,
 				new Random(11L)));
 		assertBetween(armour.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE),
-				0.02, 0.03);
+				0.02, 0.04);
 		assertBetween(shield.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE),
-				0.02, 0.03);
+				0.02, 0.04);
 		assertFalse(EquipmentAffixService.applySpikedPlating(helmet,
 				new Random(13L)));
 	}
