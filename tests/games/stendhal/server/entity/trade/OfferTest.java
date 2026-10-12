@@ -20,6 +20,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
@@ -48,6 +49,7 @@ public class OfferTest {
 	@Test
 	public void testOffer() throws Exception {
 		Item item = SingletonRepository.getEntityManager().getItem("money");
+		ItemValueService.refresh(item);
 		Integer price = Integer.valueOf(1);
 		Player offerer = PlayerTestHelper.createPlayer(OFFERER_NAME);
 		Offer o = new Offer(item, price, offerer);
@@ -68,6 +70,7 @@ public class OfferTest {
 	@Test
 	public void testEquals() throws Exception {
 		Item item = SingletonRepository.getEntityManager().getItem("money");
+		ItemValueService.refresh(item);
 		Integer price = Integer.valueOf(1);
 		Player offerer = PlayerTestHelper.createPlayer(OFFERER_NAME);
 		Offer o = new Offer(item, price, offerer);
