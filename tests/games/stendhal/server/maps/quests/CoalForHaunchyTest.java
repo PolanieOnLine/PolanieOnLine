@@ -96,7 +96,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		barbarusEng.step(player, "hi");
 		assertEquals("Witaj!", getReply(barbarus));
 		barbarusEng.step(player, "buy kilof");
-		assertEquals("Kilof kosztuje 400 monet. Chcesz to kupić?", getReply(barbarus));
+		assertEquals("Za kilof zapłacisz 400 monet. Kupujesz?", getReply(barbarus));
 		barbarusEng.step(player, "yes");
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(barbarus));
 		barbarusEng.step(player, "bye");
@@ -105,7 +105,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		barbarusEng.step(player, "hi");
 		assertEquals("Witaj!", getReply(barbarus));
 		barbarusEng.step(player, "buy kilof");
-		assertEquals("Kilof kosztuje 400 monet. Chcesz to kupić?", getReply(barbarus));
+		assertEquals("Za kilof zapłacisz 400 monet. Kupujesz?", getReply(barbarus));
 		PlayerTestHelper.equipWithMoney(player, 400);
 		barbarusEng.step(player, "yes");
 		assertEquals("Gratulacje! Oto twój kilof!", getReply(barbarus));

@@ -139,7 +139,7 @@ public class SellerAdder {
 								if (item == null) {
 									logger.error("Trying to sell a nonexistent item: " + chosenItemName);
 								} else if (!(item instanceof StackableItem)) {
-									builder.append("Możesz kupić tylko pojedynczo " + chosenItemName + ". ");
+									builder.append("Ten przedmiot sprzedaję tylko pojedynczo. ");
 									res.setAmount(1);
 								}
 							}
@@ -148,17 +148,14 @@ public class SellerAdder {
 							if (player.isBadBoy()) {
 								price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
 								
-								builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
-								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
-							} else {
-								builder.append(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName)));
+								builder.append("Ponieważ grasz nieczysto, cena jest wyższa. ");
 							}
 
-							builder.append(" kosztuje ");
-							builder.append(MoneyUtils.formatPrice(price));
-							builder.append(". Chcesz ");
-							builder.append(Grammar.itthem(res.getAmount()));
-							builder.append(" kupić?");
+							builder.append("Za ");
+							builder.append(Grammar.itemQuantityAccusative(res.getAmount(), chosenItemName));
+							builder.append(" zapłacisz ");
+							builder.append(MoneyUtils.formatPayment(price));
+							builder.append(". Kupujesz?");
 
 							raiser.say(builder.toString());
 

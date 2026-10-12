@@ -49,17 +49,13 @@ public class BuyerBehaviour extends MerchantBehaviour {
 
 	/** Allows specialised buyers to phrase their own offer without changing other shops. */
 	public String getPriceOffer(final ItemParserResult res, final int price) {
-		final String quantity = Grammar.quantityplnoun(res.getAmount(), res.getChosenItemName());
-		return Grammar.capitalize(quantity) + " " + Grammar.isare(res.getAmount()) + " "
-				+ Grammar.worthForm(quantity, res.getAmount()) + " " + MoneyUtils.formatPrice(price)
-				+ ". Czy chcesz " + Grammar.itthem(res.getAmount()) + " sprzedać?";
+		return "Dam ci " + MoneyUtils.formatPayment(price) + " za "
+				+ Grammar.itemQuantityAccusative(res.getAmount(), res.getChosenItemName()) + ". Sprzedajesz?";
 	}
 
 	/** Reply when this buyer cannot quote the requested inventory. */
 	public String getUnavailableOffer(final ItemParserResult res) {
-		return "Przepraszam " + Grammar.thatthose(res.getAmount()) + " "
-				+ Grammar.plnoun(res.getAmount(), res.getChosenItemName()) + " "
-				+ Grammar.isare(res.getAmount()) + " jest nic nie warte.";
+		return "Nie mogę odkupić tych przedmiotów.";
 	}
 
 	/**

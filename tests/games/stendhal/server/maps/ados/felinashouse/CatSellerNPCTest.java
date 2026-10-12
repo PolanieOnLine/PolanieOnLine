@@ -84,7 +84,7 @@ public class CatSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertFalse(en.step(player, "quest"));
 
 		assertTrue(en.step(player, "buy"));
-		assertEquals("Cat kosztuje 100 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za kota zapłacisz 100 monet. Kupujesz?", getReply(npc));
 		assertTrue(en.step(player, "no"));
 		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
@@ -104,19 +104,19 @@ public class CatSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Nie sprzedaję hand full of peace.", getReply(npc));
 
 		assertTrue(en.step(player, "buy cat"));
-		assertEquals("Cat kosztuje 100 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za kota zapłacisz 100 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
 		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy cat"));
-		assertEquals("Cat kosztuje 100 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za kota zapłacisz 100 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Nie masz tyle pieniędzy.", getReply(npc));
 
 		assertTrue(en.step(player, "buy two cats"));
-		assertEquals("2 caty kosztuje 200 monet. Chcesz je kupić?", getReply(npc));
+		assertEquals("Za 2 koty zapłacisz 200 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Hmm... Nie sądzę, abyś mógł zaopiekować się więcej niż jednym kotem naraz.", getReply(npc));
@@ -124,7 +124,7 @@ public class CatSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		// equip with enough money to buy the cat
 		assertTrue(equipWithMoney(player, 500));
 		assertTrue(en.step(player, "buy cat"));
-		assertEquals("Cat kosztuje 100 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za kota zapłacisz 100 monet. Kupujesz?", getReply(npc));
 
 		assertFalse(player.hasPet());
 
