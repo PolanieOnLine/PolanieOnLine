@@ -33,6 +33,7 @@ public enum ActionType {
 		}
 	},
 	READ("look", "Przeczytaj"),
+	TALK(Actions.TALK, "Porozmawiaj"),
 	LOOK_CLOSELY("use", "Przyjrzyj się dokładnie"),
 	INSPECT("inspect", "Przeszukaj") {
 		@Override

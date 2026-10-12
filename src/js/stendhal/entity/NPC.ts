@@ -73,6 +73,9 @@ export class NPC extends RPEntity {
 	}
 
 	override buildActions(list: MenuItem[]) {
+		if (this.hasOwnProperty("talkable")) {
+			list.push({ title: "Porozmawiaj", type: "talk" });
+		}
 		super.buildActions(list);
 		if (this.hasOwnProperty("job_item_upgrader")) {
 			list.push({

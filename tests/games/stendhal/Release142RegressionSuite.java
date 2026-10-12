@@ -16,6 +16,8 @@ import games.stendhal.client.gui.CharacterEquipmentSessionTest;
 import games.stendhal.client.gui.FeatureEnabledItemPanelTest;
 import games.stendhal.client.gui.j2d.entity.Item2DViewGroundRarityTest;
 import games.stendhal.client.gui.j2d.entity.QuestMarkerRendererTest;
+import games.stendhal.client.gui.j2d.entity.NPCTalkMenuTest;
+import games.stendhal.server.actions.TalkActionTest;
 import games.stendhal.client.sprite.TextSpriteTest;
 import games.stendhal.server.actions.admin.EliteSummonActionTest;
 import games.stendhal.server.actions.equip.SourceObjectTest;
@@ -83,6 +85,8 @@ import games.stendhal.server.maps.zakopane.city.CommonChestTest;
 	GroundItemTooltipTest.class,
 	Item2DViewGroundRarityTest.class,
 	QuestMarkerRendererTest.class,
+	NPCTalkMenuTest.class,
+	TalkActionTest.class,
 	QuestMarkerServiceTest.class,
 	GlyphTooltipPresentationTest.class,
 	ItemRarityServiceTest.class,

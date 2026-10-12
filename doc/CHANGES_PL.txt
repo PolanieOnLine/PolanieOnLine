@@ -1,6 +1,10 @@
 ## Changelog
 ---------
 1.42.1
+*rozmowy z NPC*
+---
+* W kliencie Java i webkliencie dodano opcję Porozmawiaj w menu NPC. Rozmowę można rozpocząć bez wpisywania przywitania na czacie
+
 *polowania u Janisława*
 ---
 * Dodano wybór trudności polowania: łatwe, średnie lub trudne

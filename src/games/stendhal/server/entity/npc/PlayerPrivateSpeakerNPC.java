@@ -71,6 +71,7 @@ public class PlayerPrivateSpeakerNPC extends SpeakerNPC {
 			return;
 		}
 
+		clearConversationRequests();
 		if (getAttending() != null) {
 			setAttending(null);
 		}
@@ -86,5 +87,11 @@ public class PlayerPrivateSpeakerNPC extends SpeakerNPC {
 	@Override
 	public boolean isObstacle(final Entity entity) {
 		return entity instanceof RPEntity && isOwnedBy(entity);
+	}
+
+	@Override
+	public boolean canStartConversationWith(final Player player) {
+		return isOwnedBy(player) && (!hasPath() || isTalking())
+				&& super.canStartConversationWith(player);
 	}
 }
