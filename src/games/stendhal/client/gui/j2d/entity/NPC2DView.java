@@ -143,6 +143,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	protected void buildActions(final List<String> list) {
 		super.buildActions(list);
+		if (entity.getRPObject().has("talkable")) {
+			list.add(0, ActionType.TALK.getRepresentation());
+		}
 		// NPC can't be pushed
 		list.remove(ActionType.PUSH.getRepresentation());
 		if (entity.getRPObject().has("job_item_upgrader")) {
@@ -194,6 +197,7 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	public void onAction(final ActionType at) {
 		switch (at) {
+		case TALK:
 		case ITEM_UPGRADE:
 			at.send(at.fillTargetInfo(entity));
 			break;

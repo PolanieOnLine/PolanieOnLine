@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -197,6 +198,7 @@ public class SpeakerNPC extends PassiveNPC {
 
 	/** Keywords unique to this entity available in chat options. */
 	private List<String> knownChatOptions;
+	private final Set<Player> conversationRequests = new LinkedHashSet<Player>();
 
 	/**
 	 * Creates a new SpeakerNPC.
@@ -210,6 +212,7 @@ public class SpeakerNPC extends PassiveNPC {
 		lastMessageTurn = 0;
 
 		setName(name);
+		put("talkable", "");
 		knownChatOptions = new LinkedList<>();
 		createDialog();
 		createDefaultReplies();
@@ -429,6 +432,7 @@ public class SpeakerNPC extends PassiveNPC {
 	@Override
 	public void preLogic() {
 		if (this.getZone().getPlayerAndFriends().isEmpty() && !isTalking() && !actingAlone) {
+			clearConversationRequests();
 			return;
 		}
 
@@ -477,6 +481,16 @@ public class SpeakerNPC extends PassiveNPC {
 		}
 
 		// and finally react on anybody talking to us
+		if (!conversationRequests.isEmpty()) {
+			final Set<Player> requests = new LinkedHashSet<Player>(conversationRequests);
+			clearConversationRequests();
+			for (final Player requester : requests) {
+				if (canStartConversationWith(requester)
+						&& !(requester.equals(attending) && isTalking())) {
+					tell(requester, "hi");
+				}
+			}
+		}
 		final List<Player> speakers = getNearbyPlayersThatHaveSpoken(this, getPerceptionRange());
 		for (final Player speaker : speakers) {
 			tell(speaker, speaker.get("text"));
@@ -871,6 +885,33 @@ public class SpeakerNPC extends PassiveNPC {
 
 	public void listenTo(final Player player, final String text) {
 		tell(player, text);
+	}
+
+	/** Matches the normal greeting range and private NPC perception filter. */
+	public boolean canStartConversationWith(final Player player) {
+		if (player == null || getZone() == null || player.getZone() != getZone()
+				|| !getZone().getPlayers().contains(player)
+				|| player.isDisconnected()
+				|| Math.abs(player.getX() - getX()) >= getPerceptionRange()
+				|| Math.abs(player.getY() - getY()) >= getPerceptionRange()) {
+			return false;
+		}
+		if (has("#perception_key") && has("#perception_value")) {
+			final String key = get("#perception_key");
+			return player.has(key) && get("#perception_value").equals(player.get(key));
+		}
+		return true;
+	}
+
+	/** Queue the greeting for normal NPC logic without creating player speech. */
+	public void requestConversation(final Player player) {
+		if (canStartConversationWith(player)) {
+			conversationRequests.add(player);
+		}
+	}
+
+	protected void clearConversationRequests() {
+		conversationRequests.clear();
 	}
 
 	/**

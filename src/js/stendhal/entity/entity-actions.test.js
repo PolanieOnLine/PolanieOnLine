@@ -73,3 +73,41 @@ test("look and other action aliases preserve their commands", () => {
 	assert.equal(reading[0].title, "Read");
 	assert.equal(reading[0].type, "look");
 });
+
+test("only speaking NPCs offer a targeted conversation without player chat", () => {
+	class RPEntity {
+		buildActions(list) { list.push({ title: "Zobacz", type: "look" }); }
+	}
+	const exports = {};
+	const source = ts.transpileModule(readFileSync(path.join(__dirname, "NPC.ts"), "utf8"), {
+		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+	}).outputText;
+	vm.runInNewContext(source, { exports, require: name => name === "./RPEntity" ? { RPEntity } : name === "../data/color/Color" ? { Color: { NPC: "blue" } } : {} });
+	const speaking = new exports.NPC();
+	speaking.talkable = "";
+	const actions = [];
+	speaking.buildActions(actions);
+	assert.equal(actions[0].title, "Porozmawiaj");
+	assert.equal(actions[0].type, "talk");
+	assert.equal(actions[0].action, undefined, "uses the existing targeted action sender, not chat");
+	assert.equal(actions[1].type, "look");
+	const silent = new exports.NPC();
+	const silentActions = [];
+	silent.buildActions(silentActions);
+	assert.equal(silentActions.some(action => action.type === "talk"), false);
+});
+
+test("conversation menu sends one NPC id and its zone instead of a public greeting", () => {
+	const sent = [];
+	const marauroa = { currentZoneName: "npc_zone", clientFramework: { sendAction: action => sent.push(action) } };
+	const exports = {};
+	const source = ts.transpileModule(readFileSync(path.join(__dirname, "../ui/dialog/ActionContextMenu.ts"), "utf8"), {
+		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+	}).outputText;
+	vm.runInNewContext(source, { exports, require: name => name === "marauroa" ? { marauroa }
+		: name === "../toolkit/Component" ? { Component: class {} } : {} });
+	exports.ActionContextMenu.prototype.executeFallbackAction.call({ entity: { id: 17, getIdPath: () => "[17]" } }, "talk");
+	assert.equal(sent.length, 1);
+	assert.deepEqual(JSON.parse(JSON.stringify(sent[0])), { type: "talk", target_path: "[17]", zone: "npc_zone", target: "#17" });
+	assert.equal(sent[0].text, undefined);
+});

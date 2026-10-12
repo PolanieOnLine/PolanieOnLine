@@ -105,6 +105,7 @@ public class CommandCenter {
 		CastSpellAction.register();
 		ChallengePlayerAction.register();
 		ChatAction.register();
+		TalkAction.register();
 		ConditionalStopAction.register();
 		CStatusAction.register();
 		DisplaceAction.register();
