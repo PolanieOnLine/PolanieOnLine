@@ -235,6 +235,7 @@
 			<says>
 				<sound value="gasha-yell-01"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>

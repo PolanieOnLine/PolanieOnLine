@@ -673,6 +673,7 @@
 		<equips>
 		</equips>
 		<ai>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
