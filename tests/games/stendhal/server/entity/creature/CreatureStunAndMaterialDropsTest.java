@@ -10,8 +10,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,7 +44,7 @@ public class CreatureStunAndMaterialDropsTest {
 		"stendhal/giant", "pol/giant", "stendhal/elemental", "pol/elemental",
 		"stendhal/troll", "pol/alien", "stendhal/kobold", "stendhal/gnome",
 		"stendhal/dwarf", "pol/wraith", "pol/beast", "stendhal/angel",
-		"pol/angel", "pol/solemn"
+		"pol/angel", "pol/solemn", "pol/dragon"
 	};
 	private static final Map<String, Element> DEFINITIONS = new HashMap<>();
 
@@ -87,6 +94,59 @@ public class CreatureStunAndMaterialDropsTest {
 		assertStun("gigantyczna lili", 12.0);
 		// Existing stun users keep their authored probabilities.
 		assertStun("trol jaskiniowy", 8.0);
+	}
+
+	@Test
+	public void angelsAndArchangelsHaveTenPercentStunAndBossAngelsHaveTwelve() {
+		final String[] angels = {"aniołek", "anioł", "upadły anioł", "anioł ciemności",
+			"archanioł", "archanioł ciemności"};
+		for (final String name : angels) {
+			assertStun(name, 10.0);
+		}
+		final String[] stronger = {"serafin", "azazel", "cherubin", "lilith",
+			"świąteczny serafin", "świąteczny azazel", "świąteczny cherubin", "świąteczna lilith",
+			"Smok Wawelski", "świąteczny Smok Wawelski"};
+		for (final String name : stronger) {
+			assertStun(name, 12.0);
+		}
+		assertEquals("5", creature("Smok Wawelski").getAIProfile("bleeding_attack"));
+		assertEquals("30,50", creature("Smok Wawelski").getAIProfile("heal"));
+		assertTrue(creature("Smok Wawelski").getAIProfiles().containsKey("boss"));
+		assertEquals("5", creature("lilith").getAIProfile("bleeding_attack"));
+		assertNull(creature("szkielet anioła").getAIProfile("status_attackers"));
+	}
+
+	@Test
+	public void allNamedGiantsAndGiantHumanoidsAreCoveredExceptExplicitNonHumanoidExceptions() throws Exception {
+		final Set<String> exceptions = new HashSet<>(Arrays.asList("szczur olbrzymi",
+			"nietoperz olbrzymi", "nietoperz olbrzymi wampir", "orzeł gigant", "olbrzymia wieża"));
+		final Set<String> foundExceptions = new HashSet<>();
+		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		int checked = 0;
+		try (Stream<Path> files = Files.walk(Paths.get("data/conf/creatures"))) {
+			final Iterator<Path> iterator = files.filter(path -> path.toString().endsWith(".xml")).iterator();
+			while (iterator.hasNext()) {
+				final NodeList definitions = factory.newDocumentBuilder().parse(iterator.next().toFile())
+						.getElementsByTagNameNS("stendhal", "creature");
+				for (int i = 0; i < definitions.getLength(); i++) {
+					final String name = ((Element) definitions.item(i)).getAttribute("name");
+					if (!name.matches(".*(gigant|olbrzym).*")) continue;
+					if (exceptions.contains(name)) {
+						foundExceptions.add(name);
+						assertFalse(name, creature(name).getAllStatusAttackers().stream()
+								.anyMatch(attacker -> "stunned".equals(attacker.getStatusName())));
+					} else {
+						assertTrue(name, creature(name).getAllStatusAttackers().stream()
+								.anyMatch(attacker -> "stunned".equals(attacker.getStatusName())));
+						checked++;
+					}
+				}
+			}
+		}
+		assertTrue("No giant humanoid definitions were checked", checked >= 15);
+		assertEquals(exceptions, foundExceptions);
 	}
 
 	@Test

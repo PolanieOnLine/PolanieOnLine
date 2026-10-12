@@ -42,6 +42,7 @@
 				<noise state="idle follow fight" value="Moja wola niech będzie, na ziemi i w niebiosach!"/>
 				<noise state="idle follow fight" value="Mnie należy się chwała!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -97,6 +98,7 @@
 				<noise state="idle follow fight" value="Zmiażdżę cię z niewyobrażalną siłą!!"/>
 				<noise state="idle follow fight" value="Moja wola niech się stanie!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -142,6 +144,7 @@
 				<noise state="idle follow fight" value="Już po tobie!"/>
 				<noise state="idle follow fight" value="Przybyłem by zniszczyć ludzkość!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -190,6 +193,7 @@
 				<noise state="idle follow fight" value="Będę wszechmocny!"/>
 				<sound value="sneeze-baby-1"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="1"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
@@ -237,6 +241,7 @@
 				<noise state="idle follow fight" value="Idź na spotkanie swego Stwórcy!"/>
 				<noise state="idle follow fight" value="Podli śmiertelnicy, wyzwaliście mnie na swoją zgubę!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -291,6 +296,7 @@
 				<noise state="idle follow fight" value="Twego przeznaczenia nie znajdziesz tutaj."/>
 				<noise state="idle follow fight" value="Ni na ziemi, ni w niebie miejsca nie znajdziesz dla siebie..."/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,10;"/>
 			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
