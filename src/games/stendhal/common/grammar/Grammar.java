@@ -1514,4 +1514,9 @@ public class Grammar {
 
 		return "warty";
 	}
+
+	/** Item quantity in the case required after "za" in Polish trade offers. */
+	public static String itemQuantityAccusative(final int quantity, final String itemName) {
+		return PolishItemGrammar.accusativeQuantity(quantity, itemName);
+	}
 }

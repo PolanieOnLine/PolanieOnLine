@@ -14,6 +14,7 @@ import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
@@ -32,24 +33,33 @@ public class ValueBuyerBehaviourTest {
 		return manager().getItem("miecz", ItemCreationContext.builder(ItemCreationContext.Source.DROP)
 				.withFactoryRarity(rarity).randomizeModifiers(false).generateAffixes(false).build());
 	}
-	@Test public void priceOfferAvoidsGuessingTheGenderOfItemNames() {
+	@Test public void priceOfferUsesPolishCasesWithoutQuotes() {
 		final String payment = CurrencyReform.useReformedCurrency() ? "1 miedziaka" : "1 monetę";
-		for (String name : new String[] { "polano", "kolczuga", "miecz", "spodnie kolcze" }) {
+		final String[] names = { "polano", "kolczuga", "miecz", "spodnie kolcze" };
+		final String[] forms = { "polano", "kolczugę", "miecz", "parę spodni kolczych" };
+		for (int i = 0; i < names.length; i++) {
+			final String name = names[i];
 			final ItemParserResult res = new ItemParserResult(true, name, 1, Collections.<String>emptySet());
-			assertEquals("Dam ci " + payment + " za „" + name + "”. Sprzedajesz?",
+			assertEquals("Dam ci " + payment + " za " + forms[i] + ". Sprzedajesz?",
 					buyer().getPriceOffer(res, 1));
 		}
 	}
-	@Test public void priceOffersDeclineCoinsAndKeepStackSizeSeparateFromNames() {
+	@Test public void priceOffersDeclineCoinsAndItemQuantitiesTogether() {
 		final int[] amounts = { 2, 5, 12, 22 };
 		final String[] legacy = { "2 monety", "5 monet", "12 monet", "22 monety" };
 		final String[] reformed = { "2 miedziaki", "5 miedziaków", "12 miedziaków", "22 miedziaki" };
+		final String[] items = { "2 polana", "5 polan", "12 polan", "22 polana" };
 		for (int i = 0; i < amounts.length; i++) {
 			final ItemParserResult res = new ItemParserResult(true, "polano", amounts[i], Collections.<String>emptySet());
 			assertEquals("Dam ci " + (CurrencyReform.useReformedCurrency() ? reformed[i] : legacy[i])
-					+ " za „polano” (" + amounts[i] + " szt.). Sprzedajesz?",
+					+ " za " + items[i] + ". Sprzedajesz?",
 					buyer().getPriceOffer(res, amounts[i]));
 		}
+	}
+	@Test public void amethystOfferMatchesTheNaturalStackDescription() {
+		final ItemParserResult res = new ItemParserResult(true, "ametyst", 8, Collections.<String>emptySet());
+		final String payment = CurrencyReform.useReformedCurrency() ? "40 talarów" : "4000 monet";
+		assertEquals("Dam ci " + payment + " za 8 sztuk ametystu. Sprzedajesz?", buyer().getPriceOffer(res, 4000));
 	}
 	@Test public void catalogueAutomaticallyIncludesDefinitionsButNeverMoneyOrBoundChest() {
 		assertTrue(buyer().hasItem("miecz"));
@@ -112,9 +122,7 @@ public class ValueBuyerBehaviourTest {
 		zone.add(npc);
 		assertTrue(buyer().transactAgreedDeal(request(1), new EventRaiser(npc), player));
 		assertFalse(player.isEquipped("miecz"));
-		int money = 0;
-		for (final Item stack : player.getAllEquipped("money")) { money += stack.getQuantity(); }
-		assertEquals(sword.getValue(), money);
+		assertEquals(sword.getValue(), MoneyUtils.getTotalMoneyInCopper(player));
 	}
 	@Test public void refusesPaymentThatWouldOverflowMoneyStack() {
 		final Player player = PlayerTestHelper.createPlayer("value-test");

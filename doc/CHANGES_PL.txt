@@ -35,6 +35,7 @@
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
 * Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
 * Zwiększono cenę sprzedaży rzadkiego wyposażenia. Handlarze płacą za nie o 25% więcej niż za zwykłe, również w przypadku wcześniej zdobytych przedmiotów
+* Poprawiono odmianę nazw i ilości przedmiotów w rozmowach z handlarzami
 * Posiadane przedmioty otrzymują aktualne statystyki i opisy po zalogowaniu. Zachowują swoje ulepszenia, rzadkość i rodzaje wylosowanych bonusów
 * Obniżono maksymalne bonusy wyposażenia do precyzji, trafień krytycznych, obrażeń i odporności. Zmiana obejmuje również wcześniej zdobyte przedmioty. Kradzież życia i parowanie pozostają bez zmian
 * Dodano informacje o leczeniu i czasie działania jedzenia, napojów i eliksirów

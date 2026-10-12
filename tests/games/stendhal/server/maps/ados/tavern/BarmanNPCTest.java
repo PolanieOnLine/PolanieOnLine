@@ -68,7 +68,7 @@ public class BarmanNPCTest {
 		assertThat(getReply(dale),is("Cześć, wyglądasz świetnie..."));
 
 		engine.step(player,"buy 500 tabliczka czekolady");
-		assertThat(getReply(dale),is("500 tabliczka czekolady kosztuje 50000 monet. Chcesz je kupić?"));
+		assertThat(getReply(dale),is("Za 500 tabliczek czekolady zapłacisz 50000 monet. Kupujesz?"));
 		final Item item = ItemTestHelper.createItem("money", 50000);
 		player.getSlot("bag").add(item);
 

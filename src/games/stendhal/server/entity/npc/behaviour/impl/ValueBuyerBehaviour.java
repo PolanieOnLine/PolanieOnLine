@@ -10,7 +10,6 @@ import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.OwnedItem;
-import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
@@ -18,13 +17,6 @@ import games.stendhal.server.entity.player.Player;
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
 	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions) {
 		super(createCatalogue(definitions));
-	}
-
-	@Override
-	public String getPriceOffer(final ItemParserResult res, final int price) {
-		final String payment = MoneyUtils.formatPayment(price);
-		final String quantity = res.getAmount() == 1 ? "" : " (" + res.getAmount() + " szt.)";
-		return "Dam ci " + payment + " za „" + res.getChosenItemName() + "”" + quantity + ". Sprzedajesz?";
 	}
 
 	@Override

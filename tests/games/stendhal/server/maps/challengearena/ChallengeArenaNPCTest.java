@@ -110,11 +110,11 @@ public class ChallengeArenaNPCTest {
 		engine.step(player, "cześć");
 		engine.step(player, "sprzedaj polano");
 		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
-		assertEquals("Dam ci 1 monetę za „polano”. Sprzedajesz?", getReply(npc));
+		assertEquals("Dam ci 1 monetę za polano. Sprzedajesz?", getReply(npc));
 		engine.step(player, "nie");
 		engine.step(player, "sprzedaj 22 polano");
 		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
-		assertEquals("Dam ci 22 monety za „polano” (22 szt.). Sprzedajesz?", getReply(npc));
+		assertEquals("Dam ci 22 monety za 22 polana. Sprzedajesz?", getReply(npc));
 		engine.step(player, "tak");
 		assertEquals(22, MoneyUtils.getTotalMoneyInCopper(player));
 		assertTrue(!player.isEquipped("polano"));

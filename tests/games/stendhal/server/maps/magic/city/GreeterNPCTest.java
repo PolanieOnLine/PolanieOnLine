@@ -147,19 +147,19 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Jest więcej niż jeden zwój. Powiedz mi jaki rodzaj zwój chcesz użyć.", getReply(npc));
 
 		assertTrue(en.step(player, "buy zwój przywołania"));
-		assertEquals("Zwój przywołania kosztuje 300 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za zwój przywołania zapłacisz 300 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
 		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy zwój przywołania"));
-		assertEquals("Zwój przywołania kosztuje 300 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za zwój przywołania zapłacisz 300 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		assertTrue(en.step(player, "buy dwa zwój przywołania"));
-		assertEquals("2 zwój przywołania kosztuje 600 monet. Chcesz je kupić?", getReply(npc));
+		assertEquals("Za 2 zwoje przywołania zapłacisz 600 monet. Kupujesz?", getReply(npc));
 
 		// equip with enough money to buy the two scrolls
 		assertTrue(equipWithMoney(player, 600));
@@ -170,14 +170,14 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(player.isEquipped("zwój przywołania"));
 
 		assertTrue(en.step(player, "buy zwój semos"));
-		assertEquals("Zwój semos kosztuje 375 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za zwój semos zapłacisz 375 monet. Kupujesz?", getReply(npc));
 
 		assertTrue(equipWithMoney(player, 300));
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		assertTrue(en.step(player, "buy zwój semos"));
-		assertEquals("Zwój semos kosztuje 375 monet. Chcesz to kupić?", getReply(npc));
+		assertEquals("Za zwój semos zapłacisz 375 monet. Kupujesz?", getReply(npc));
 
 		// add another 75 coins to be able to buy the scroll
 		assertTrue(equipWithMoney(player, 75));
