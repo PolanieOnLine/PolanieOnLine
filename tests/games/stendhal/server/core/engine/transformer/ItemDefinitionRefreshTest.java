@@ -381,6 +381,8 @@ public class ItemDefinitionRefreshTest {
 			final Item updated = (Item) player.getSlot(slot).getFirst();
 			assertEquals(slot, 8, updated.getDouble("accuracy_bonus"), 0);
 			assertEquals(slot, 3, updated.getUpgradeLevel());
+			assertEquals(slot, Double.valueOf(1.25), updated.getRarityModifier("value"));
+			assertEquals(slot, (int) Math.round(updated.getDefinitionValue() * 1.25), updated.getValue());
 		}
 		for (final RPObject object : player.getSlot("bag")) {
 			if (!"rzemyk".equals(object.get("name"))) continue;
@@ -388,11 +390,14 @@ public class ItemDefinitionRefreshTest {
 			final Item updated = (Item) object.getSlot("content").getFirst();
 			assertEquals(8, updated.getDouble("accuracy_bonus"), 0);
 			assertEquals(3, updated.getUpgradeLevel());
+			assertEquals(Double.valueOf(1.25), updated.getRarityModifier("value"));
 		}
 	}
 
 	private Item oldAccuracyWeapon() {
 		final Item item = definition("miecz chaosu");
+		item.setRarity(ItemRarity.RARE);
+		item.setRarityModifier("value", 1.20);
 		item.put("accuracy_bonus", 15.0);
 		item.put(ItemAffixState.ATTRIBUTE, "accuracy_bonus", "15.0");
 		item.put("improve", 3);

@@ -77,6 +77,21 @@ public class ValueBuyerBehaviourTest {
 		assertEquals(attack, restored.getInt("atk"));
 		assertEquals(ItemRarity.LEGENDARY, restored.getRarity());
 	}
+	@Test public void oldRareLootUsesTheNewPriceWithoutApplyingTheMultiplierTwice() {
+		final Player player = PlayerTestHelper.createPlayer("old-value-test");
+		final Item rare = item(ItemRarity.RARE);
+		rare.setRarityModifier("value", 1.20);
+		rare.setValue((int) Math.round(rare.getDefinitionValue() * 1.20));
+		final int attack = rare.getInt("atk");
+		rare.put("improve", 2);
+		player.getSlot("bag").add(rare);
+		final int expected = (int) Math.round(rare.getDefinitionValue() * 1.25);
+		assertEquals(expected, buyer().getCharge(request(1), player));
+		assertEquals(expected, buyer().getCharge(request(1), player));
+		assertEquals(Double.valueOf(1.25), rare.getRarityModifier("value"));
+		assertEquals(attack, rare.getInt("atk"));
+		assertEquals(2, rare.getUpgradeLevel());
+	}
 	@Test public void refusesBoundItemsAndInvalidAmounts() {
 		final Player player = PlayerTestHelper.createPlayer("value-test");
 		final Item sword = item(ItemRarity.RARE);

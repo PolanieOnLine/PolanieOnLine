@@ -65,7 +65,7 @@ public class ItemRarityServiceTest {
 					.generateAffixes(false).randomizeModifiers(false).build());
 		assertSame(ItemRarity.RARE, item.getRarity());
 		assertEquals(108, item.getInt("atk"));
-		assertEquals(1200, item.getValue());
+		assertEquals(1250, item.getValue());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -166,7 +166,7 @@ public class ItemRarityServiceTest {
 		};
 		final double[] minimums = {1.05, 1.10, 1.20};
 		final double[] maximums = {1.10, 1.20, 1.35};
-		final int[] expectedValues = {1200, 1500, 2000};
+		final int[] expectedValues = {1250, 1500, 2000};
 
 		for (int tierIndex = 0; tierIndex < rarities.length; tierIndex++) {
 			final Item item = combatItem();
@@ -261,9 +261,9 @@ public class ItemRarityServiceTest {
 						.withForcedRarity(ItemRarity.RARE).build());
 
 		assertSame(ItemRarity.RARE, item.getRarity());
-		assertEquals(120, item.getValue());
+		assertEquals(125, item.getValue());
 		assertEquals(1, item.getRarityModifiers().size());
-		assertEquals(Double.valueOf(1.2), item.getRarityModifier("value"));
+		assertEquals(Double.valueOf(1.25), item.getRarityModifier("value"));
 	}
 
 	@Test

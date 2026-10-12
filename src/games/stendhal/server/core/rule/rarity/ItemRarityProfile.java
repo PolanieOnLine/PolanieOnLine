@@ -42,7 +42,7 @@ public final class ItemRarityProfile {
 	public static ItemRarityProfile defaultProfile() {
 		return builder(DEFAULT_ID)
 				.tier(ItemRarity.COMMON, 70.0, 1.00, 1.00, 1.00)
-				.tier(ItemRarity.RARE, 22.0, 1.05, 1.10, 1.20)
+				.tier(ItemRarity.RARE, 22.0, 1.05, 1.10, 1.25)
 				.tier(ItemRarity.EPIC, 6.0, 1.10, 1.20, 1.50)
 				.tier(ItemRarity.LEGENDARY, 2.0, 1.20, 1.35, 2.00)
 				.build();
