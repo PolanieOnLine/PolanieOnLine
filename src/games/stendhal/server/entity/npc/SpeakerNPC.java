@@ -347,6 +347,11 @@ public class SpeakerNPC extends PassiveNPC {
 	public void setAttending(final RPEntity rpentity) {
 		final RPEntity wasAttending = attending;
 		attending = rpentity;
+		if (rpentity instanceof Player) {
+			put("conversation_player", rpentity.getName());
+		} else if (has("conversation_player")) {
+			remove("conversation_player");
+		}
 		lastMessageTurn = SingletonRepository.getRuleProcessor().getTurn();
 		if (rpentity != null) {
 			stop();

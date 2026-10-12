@@ -82,7 +82,9 @@ test("only speaking NPCs offer a targeted conversation without player chat", () 
 	const source = ts.transpileModule(readFileSync(path.join(__dirname, "NPC.ts"), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText;
-	vm.runInNewContext(source, { exports, require: name => name === "./RPEntity" ? { RPEntity } : name === "../data/color/Color" ? { Color: { NPC: "blue" } } : {} });
+	const marauroa = { me: { name: "MenuPlayer" } };
+	vm.runInNewContext(source, { exports, require: name => name === "./RPEntity" ? { RPEntity }
+		: name === "marauroa" ? { marauroa } : name === "../data/color/Color" ? { Color: { NPC: "blue" } } : {} });
 	const speaking = new exports.NPC();
 	speaking.talkable = "";
 	const actions = [];
@@ -95,6 +97,16 @@ test("only speaking NPCs offer a targeted conversation without player chat", () 
 	const silentActions = [];
 	silent.buildActions(silentActions);
 	assert.equal(silentActions.some(action => action.type === "talk"), false);
+	for (const player of ["MenuPlayer", "OtherPlayer", undefined]) {
+		if (player === undefined) delete speaking.conversation_player;
+		else speaking.conversation_player = player;
+		const current = [];
+		speaking.buildActions(current);
+		assert.equal(current.some(action => action.type === "talk"), player !== "MenuPlayer");
+		assert.equal(current.some(action => action.type === "look"), true);
+	}
+	marauroa.me = null;
+	assert.doesNotThrow(() => speaking.buildActions([]));
 });
 
 test("conversation menu sends one NPC id and its zone instead of a public greeting", () => {

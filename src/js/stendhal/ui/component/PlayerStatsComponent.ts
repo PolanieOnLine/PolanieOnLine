@@ -82,6 +82,9 @@ export class PlayerStatsComponent extends Component {
 		}
 
 		const object = marauroa.me;
+		if (!object) {
+			return;
+		}
 		this.updateKarma(object["karma"]);
 		this.updateHp(object["hp"], object["base_hp"]);
 		this.updateOther(object);
@@ -139,12 +142,15 @@ export class PlayerStatsComponent extends Component {
 		// show dash for max level
 		let xpTNL: number|string = (lvl < this.getMaxLevel()) ? this.getTNL(lvl, xp) : "-";
 
-		this.otherText.innerText =
+		const text =
 			"ATK: " + atk + " x " + object["atk_item"] + "  (" + atkTNL + ")\r\n"
 			+ "OBR: " + def + " x " + object["def_item"] + " (" + defTNL + ")\r\n"
 			+ "PD: " + xp + "\r\n"
 			+ "Poziom: " + lvl + "  (" + xpTNL + ")\r\n"
 			+ "Pieniądze: " + this.calculateMoney();
+		if (this.otherText.innerText !== text) {
+			this.otherText.innerText = text;
+		}
 	}
 
 	/**
@@ -214,7 +220,10 @@ export class PlayerStatsComponent extends Component {
 						if (o instanceof Item) {
 							const i = <Item> o;
 							if (i["name"] === "money") {
-								mo += parseInt(i["quantity"]);
+								const quantity = Number(i["quantity"]);
+								if (Number.isSafeInteger(quantity) && quantity > 0) {
+									mo += quantity;
+								}
 							}
 						}
 					}

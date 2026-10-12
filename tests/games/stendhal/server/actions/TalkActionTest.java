@@ -71,6 +71,7 @@ public class TalkActionTest {
 		npc.preLogic();
 		other.preLogic();
 		assertSame(player, npc.getAttending());
+		assertEquals(player.getName(), npc.get("conversation_player"));
 		assertEquals("Witaj.", getReply(npc));
 		assertFalse(player.has("text"));
 		assertNull(other.getAttending());
@@ -101,8 +102,26 @@ public class TalkActionTest {
 		action.onAction(player, request(npc));
 		npc.preLogic();
 		assertSame(other, npc.getAttending());
+		assertEquals(other.getName(), npc.get("conversation_player"));
 		assertNotNull(getReply(npc));
 		assertFalse(player.has("text"));
+	}
+
+	@Test
+	public void conversationMarkerFollowsNormalGreetingsAndClearsOnGoodbyeOrDistance() {
+		assertFalse(npc.has("conversation_player"));
+		npc.addGoodbye("Do zobaczenia.");
+		npc.listenTo(player, "hi");
+		assertEquals(player.getName(), npc.get("conversation_player"));
+		npc.listenTo(player, "bye");
+		npc.preLogic();
+		assertFalse(npc.has("conversation_player"));
+		action.onAction(player, request(npc));
+		npc.preLogic();
+		assertEquals(player.getName(), npc.get("conversation_player"));
+		player.setPosition(30, 30);
+		npc.preLogic();
+		assertFalse(npc.has("conversation_player"));
 	}
 
 	@Test

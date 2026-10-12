@@ -48,6 +48,12 @@ public class NPC extends RPEntity {
 		return (idea != null);
 	}
 
+	/** Whether this NPC is already speaking to the given player. */
+	public boolean isTalkingTo(final String playerName) {
+		return playerName != null && rpObject != null && rpObject.has("conversation_player")
+				&& playerName.equals(rpObject.get("conversation_player"));
+	}
+
 	//
 	// Entity
 	//

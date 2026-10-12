@@ -877,9 +877,12 @@ div.quickPickup div.itemSlot {
 }
 
 #stats {
-	float: left;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
 	font-size: 0.9em;
-	white-space: pre;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 	padding: 0.1em;
 	border-top: 2px solid var(--border-top-color);
 		border-left: 2px solid var(--border-top-color);
@@ -900,6 +903,11 @@ div.quickPickup div.itemSlot {
 	margin-left: 2px;
 	margin-right: 5px;
 	margin-bottom: 3px;
+}
+
+#stats .statbar {
+	width: calc(100% - 7px);
+	min-width: 0;
 }
 
 #hpbar.statbar {
@@ -1128,7 +1136,7 @@ span.lognick {
 	flex-wrap: nowrap;
 	align-items: flex-start;
 	position: relative;
-	--left-panel-width: 170px;
+	--left-panel-width: 224px;
 	--right-panel-width: 258px;
 }
 
@@ -1142,7 +1150,8 @@ span.lognick {
 
 #leftColumn {
 	float: none;
-	flex: 0 0 207px;
+	flex: 0 0 var(--left-panel-width);
+	min-width: 0;
 	overflow: hidden;
 	opacity: 1;
 }
