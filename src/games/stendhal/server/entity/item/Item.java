@@ -61,6 +61,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	public static final String RARITY_MODIFIERS = "rarity_modifiers";
 	/** Persistent hidden profile identifier used when the instance was created. */
 	public static final String RARITY_PROFILE = "rarity_profile";
+	/** Last definition description, separate from an instance's personal text. */
+	public static final String DEFINITION_DESCRIPTION = "definition_description";
 	/** Persistent instance value after the rarity multiplier. */
 	public static final String VALUE = "value";
 	/** Legacy persistent key for the current item upgrade level. */
@@ -253,6 +255,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute(RARITY_ID, Type.STRING);
 		entity.addAttribute(RARITY_MODIFIERS, Type.MAP, Definition.HIDDEN);
 		entity.addAttribute(RARITY_PROFILE, Type.STRING, Definition.HIDDEN);
+		entity.addAttribute(DEFINITION_DESCRIPTION, Type.STRING, Definition.HIDDEN);
 		entity.addAttribute(VALUE, Type.INT);
 
 		// Some items have lifesteal values

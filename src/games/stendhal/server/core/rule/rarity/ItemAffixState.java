@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPObject;
@@ -88,6 +89,12 @@ public final class ItemAffixState {
 	 * without retroactively marking them as randomly rolled affixes.
 	 */
 	public static void restore(final Item item, final RPObject saved) {
+		restore(item, saved, Collections.<String>emptySet());
+	}
+
+	/** Replays affixes while leaving refreshed definition fields authoritative. */
+	public static void restore(final Item item, final RPObject saved,
+			final Set<String> refreshedBaseFields) {
 		if (item == null || saved == null) {
 			return;
 		}
@@ -99,11 +106,15 @@ public final class ItemAffixState {
 		if (!saved.hasMap(ATTRIBUTE)) {
 			for (final ItemAffixDefinition definition
 					: ItemAffixRegistry.getInstance().getDefinitions()) {
-				copyLegacyAttribute(item, saved, definition);
+				if (!refreshedBaseFields.contains(definition.getAttribute())) {
+					copyLegacyAttribute(item, saved, definition);
+				}
 			}
 			for (final ItemAffixDefinition definition
 					: LegendaryItemAffixRegistry.getInstance().getDefinitions()) {
-				copyLegacyAttribute(item, saved, definition);
+				if (!refreshedBaseFields.contains(definition.getAttribute())) {
+					copyLegacyAttribute(item, saved, definition);
+				}
 			}
 			return;
 		}

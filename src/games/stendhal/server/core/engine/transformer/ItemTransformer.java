@@ -11,12 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine.transformer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.events.seasonal.MineTownLanternSpawns;
 import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
+import games.stendhal.server.core.rule.item.ItemDefinitionRefreshService;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -64,6 +68,11 @@ public class ItemTransformer {
 			 * at login instead of preserving an old rarity-scaled copy forever.
 			 */
 			final boolean definitionAuthoritative = item instanceof Glyph;
+
+			// Build the current unmodified range before replaying this instance's
+			// saved multipliers. RESTORE itself never rolls rarity or affixes.
+			WeaponDamageRangeService.initialize(item, ItemCreationContext.defaultCreation());
+			final Item definition = new Item(item);
 
 			// Keep the current definition template before saved instance data can
 			// replace it. It is used only when migrating an old exceptional weapon
@@ -115,18 +124,19 @@ public class ItemTransformer {
 				if (!item.has("menu") && menuvalue != null) {
 					item.put("menu", menuvalue);
 				}
-			} else if (!definitionAuthoritative
-					&& (savedRarity || legacyRarityItem)) {
-				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
-			// Damage ranges are instance state even when rarity is disabled.
-			restoreDamageRangeInstanceAttributes(item, rpobject);
+			if (!definitionAuthoritative && savedRarity) {
+				restoreRarityMetadata(item, rpobject, savedRarity);
+			}
+			final Set<String> refreshedBaseFields = ItemDefinitionRefreshService.refresh(
+					item, definition, rpobject);
 			// Random affixes are also instance state and must survive RESTORE
 			// independently of current XML definitions and rarity modifiers. Glyphs
 			// are definition-owned and intentionally discard any legacy affix state.
 			if (!definitionAuthoritative) {
-				ItemAffixState.restore(item, rpobject);
+				ItemAffixState.restore(item, rpobject, refreshedBaseFields);
+				ItemDefinitionRefreshService.replayFlatBonuses(item, rpobject);
 			}
 
 			if (item instanceof StackableItem) {
@@ -151,11 +161,10 @@ public class ItemTransformer {
 
 			// make sure saved individual information is restored
 			final String[] individualAttributes = { "itemdata",
-					"description", "bound", "undroppableondeath",
-					"uses", "improve", "max_improves", "persistent", "logid", "state"};
+					"bound", "undroppableondeath", "owner",
+					"uses", "improve", "persistent", "logid", "state"};
 			for (final String attribute : individualAttributes) {
-				if (rpobject.has(attribute)
-						&& !(definitionAuthoritative && "description".equals(attribute))) {
+				if (rpobject.has(attribute)) {
 					item.put(attribute, rpobject.get(attribute));
 				}
 			}
@@ -165,11 +174,8 @@ public class ItemTransformer {
 				((MarkedScroll) item).applyDestInfo();
 			}
 
-			UpdateConverter.clampUpgradeLevel(item);
-
-			// Existing weapons without a saved range are migrated from their final
-			// restored ATK. The generated values are normal persistent attributes,
-			// so the conversion happens only once for each item instance.
+			// Fill any missing/invalid range after refreshing the current base and
+			// replaying saved modifiers. Already rebuilt valid ranges stay intact.
 			WeaponDamageRangeService.migrateRestored(item, definitionAttack,
 					definitionDamageMin, definitionDamageMax);
 
@@ -178,9 +184,25 @@ public class ItemTransformer {
 			}
 
 			for (RPSlot slot : rpobject.slots()) {
-				RPSlot itemSlot = item.getSlot(slot.getName());
+				final List<RPObject> contents = new ArrayList<RPObject>();
 				for (RPObject obj : slot) {
-					itemSlot.add(transform(obj));
+					contents.add(obj);
+				}
+				if (!item.hasSlot(slot.getName())) {
+					item.addSlot(new RPSlot(slot.getName()));
+				}
+				final RPSlot itemSlot = item.getSlot(slot.getName());
+				// fill() already copies persistent container contents. Replace that
+				// copy with the transformed children instead of duplicating them.
+				itemSlot.clear();
+				final RPSlot definitionSlot = definition.getSlot(slot.getName());
+				if (definitionSlot != null) {
+					final int capacity = definitionSlot.getCapacity();
+					itemSlot.setCapacity(capacity < 0 ? capacity : Math.max(capacity, contents.size()));
+				}
+				for (final RPObject obj : contents) {
+					final Item child = transform(obj);
+					if (child != null) itemSlot.add(child);
 				}
 			}
 
@@ -205,35 +227,9 @@ public class ItemTransformer {
 		return item.has(attribute) ? Integer.valueOf(item.getInt(attribute)) : null;
 	}
 
-	private void restoreDamageRangeInstanceAttributes(final Item item,
-			final RPObject saved) {
-		final String[] attributes = { "damage_min", "damage_max" };
-		for (final String attribute : attributes) {
-			if (saved.has(attribute)) {
-				item.put(attribute, saved.get(attribute));
-			} else if (item.has(attribute)) {
-				item.remove(attribute);
-			}
-		}
-	}
-
-	/**
-	 * Restores only fields owned by rarity. This keeps the item's unrelated XML
-	 * definition fields updateable, unlike the pre-existing persistent flag.
-	 */
-	private void restoreRarityInstanceAttributes(final Item item,
+	/** Restores the saved roll, never the obsolete materialized base stats. */
+	private void restoreRarityMetadata(final Item item,
 			final RPObject saved, final boolean savedRarity) {
-		for (final String statistic
-				: ItemRarityService.getInstance().getSupportedStatistics()) {
-			if (saved.has(statistic)) {
-				item.put(statistic, saved.get(statistic));
-			} else if (item.has(statistic)) {
-				item.remove(statistic);
-			}
-		}
-		if (saved.has(Item.VALUE)) {
-			item.put(Item.VALUE, saved.get(Item.VALUE));
-		}
 		if (!savedRarity) {
 			return;
 		}
