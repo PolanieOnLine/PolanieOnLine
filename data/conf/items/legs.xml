@@ -564,9 +564,9 @@
 			<min_level value="55"/>
 			<max_improves value="2"/>
 		</attributes>
+        <value value="12000"/>
 		<susceptibility type="fire" value="0.95"/>
 		<susceptibility type="ice" value="1.1"/>
-        <value value="12000"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>

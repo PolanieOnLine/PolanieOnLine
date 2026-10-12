@@ -501,9 +501,9 @@
 			<def value="7"/>
 			<min_level value="10"/>
 		</attributes>
+        <value value="300"/>
 		<susceptibility type="fire" value="0.95"/>
 		<susceptibility type="ice" value="1.1"/>
-        <value value="300"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -521,9 +521,9 @@
 			<def value="6"/>
 			<min_level value="5"/>
 		</attributes>
+        <value value="135"/>
 		<susceptibility type="fire" value="1.1"/>
 		<susceptibility type="ice" value="0.95"/>
-        <value value="135"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
