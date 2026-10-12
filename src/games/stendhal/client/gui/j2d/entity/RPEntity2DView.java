@@ -1123,6 +1123,8 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		/** Vertical alignment of the sprite. */
 		private final VerticalAlignment yAlign;
 		private int xOffset, yOffset;
+		/** Explicit offset retained when same-edge icons are stacked again. */
+		private int alignmentXOffset;
 		/**
 		 * For tracking changes that can have multiple "true" values (such
 		 * as away messages).
@@ -1193,12 +1195,12 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 
 		/**
 		 * Set the icon offsets compared to the normal position determined by
-		 * the alignment. <b>The horizontal offset will be ignored, unless
-		 * the icon is center aligned.</b>
+		 * the alignment, in addition to any same-edge icon stacking.
 		 * @param xOffset
 		 * @param yOffset
 		 */
 		void setOffsets(int xOffset, int yOffset) {
+			this.alignmentXOffset = xOffset;
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
 		}
@@ -1229,7 +1231,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			if (xAlign == HorizontalAlignment.CENTER) {
 				return;
 			}
-			xOffset = 0;
+			xOffset = alignmentXOffset;
 			for (int i = 0; i < iconManagers.size(); i++) {
 				AbstractStatusIconManager manager = iconManagers.get(i);
 				if (manager != this) {
