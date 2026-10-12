@@ -20,7 +20,7 @@
 
 *potwory i łupy*
 ---
-* Więcej olbrzymów i dużych humanoidów potrafi ogłuszyć przeciwnika. Ogłuszają również wielkie kostuchy
+* Więcej olbrzymów i dużych humanoidów potrafi ogłuszyć przeciwnika. Ogłuszają również wielkie kostuchy, anioły, archanioły, serafiny, azazele, cherubiny, lilith i Smok Wawelski
 * Szansa zdobycia pióra wynosi teraz 80% ze słabszych aniołów, 85% z silniejszych oraz 90% z cherubina i lilith
 * Serafin, azazel, cherubin, lilith i ich świąteczne odmiany nie pozostawiają już serc olbrzyma. Usunięto je również z łupów księcia szkieletów i szkieletu anioła
 * Lodowy starszy olbrzym, superczłowiek olbrzym, mega mag i gigantyczna lili mają teraz 85% szansy na pozostawienie serca olbrzyma

@@ -50,6 +50,7 @@
 			<says>
 				<noise state="idle follow fight" value="Niech twa dusza powróci na ziemię!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -106,6 +107,7 @@
 			<says>
 				<noise state="idle follow fight" value="Syn ognia nie będzie się kłaniał synowi ziemi!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -166,6 +168,7 @@
 			<says>
 				<noise state="idle follow fight" value="Grzechy twej duszy ranią naszego Stwórcę!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -226,6 +229,7 @@
 				<noise state="idle follow fight" value="Jestem wszystkim, czego nie możesz kontrolować."/>
 				<noise state="idle follow fight" value="Precz stąd nim spojrzę!"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
@@ -280,6 +284,7 @@
 				<sound value="pol-dragon-roar-scream"/>
 				<sound value="pol-dragon-roaring"/>
 			</says>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
