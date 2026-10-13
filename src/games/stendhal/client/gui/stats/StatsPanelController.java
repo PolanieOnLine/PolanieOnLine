@@ -48,12 +48,6 @@ public final class StatsPanelController {
 	private final StatsPanel panel;
 	private static	StatsPanelController instance;
 
-	/**
-	 * A private inventory snapshot. Slot events contain partial item changes,
-	 * so coin identity must be read from the merged item, not from its price.
-	 */
-	private final RPObject moneyInventory = new RPObject();
-
 	private int level;
 	private int xp;
 	private int hp;
@@ -87,9 +81,6 @@ public final class StatsPanelController {
 	 */
 	private StatsPanelController() {
 		panel = new StatsPanel();
-		for (String slot : MONEY_SLOTS) {
-			moneyInventory.addSlot(slot);
-		}
 	}
 
 	/**
@@ -159,11 +150,6 @@ public final class StatsPanelController {
 			pcs.addPropertyChangeListener("ratk_item", listener);
 		} else {
 			pcs.addPropertyChangeListener("atk_item", listener);
-		}
-
-		listener = new MoneyChangeListener();
-		for (String slot : MONEY_SLOTS) {
-			pcs.addPropertyChangeListener(slot, listener);
 		}
 
 		listener = new EatingChangeListener();
@@ -369,40 +355,22 @@ public final class StatsPanelController {
 	}
 
 	/**
-	 * Merge an inventory delta using the same rules as the perception handler.
+	 * Display coins from the current player inventory after perception changes are applied.
+	 * No independent inventory or balance is reconstructed from partial slot events.
 	 *
-	 * @param slot the changed slot
-	 * @param added whether this is an addition or a deletion
+	 * @param player the current complete player object, or null when no character is active
 	 */
-	private void changeMoneySlot(RPSlot slot, boolean added) {
-		RPObject delta = new RPObject();
-		// Do not reparent objects belonging to the received perception.
-		delta.addSlot((RPSlot) slot.clone());
-		moneyInventory.applyDifferences(added ? delta : null, added ? null : delta);
-		moneyInventory.resetAddedAndDeleted();
-	}
-
-	/**
-	 * Remove all the money objects. Called at zone change.
-	 */
-	private void clearMoney() {
-		for (RPSlot slot : moneyInventory.slots()) {
-			slot.clear();
-		}
-		moneyInventory.resetAddedAndDeleted();
-		updateMoney();
-	}
-
-	/**
-	 * Count the money, and update the label text.
-	 */
-	private void updateMoney() {
+	public void updateCarriedMoney(RPObject player) {
 		long dukaty = 0;
 		long talary = 0;
 		long miedziaki = 0;
 		long totalCopper = 0;
 
-		for (RPSlot slot : moneyInventory.slots()) {
+		for (String slotName : MONEY_SLOTS) {
+			if (player == null || !player.hasSlot(slotName)) {
+				continue;
+			}
+			RPSlot slot = player.getSlot(slotName);
 			for (RPObject item : slot) {
 				CoinDescriptor descriptor = identifyCoin(item);
 				if (descriptor == null || !item.has("quantity")) {
@@ -892,34 +860,4 @@ public final class StatsPanelController {
 		}
 	}
 
-	/**
-	 * Listener for money changes.
-	 * Due to there being no "money" property for the player, this
-	 * need to listen to all the slots where it's possible to store money.
-	 */
-	private class MoneyChangeListener implements PropertyChangeListener {
-		@Override
-		public void propertyChange(final PropertyChangeEvent event) {
-			if (event == null) {
-				/*
-				 * We get a null event when the player object is deleted. Clear
-				 * the money. For the situations where a zone change is
-				 * combined with a complete removal of a money stack.
-				 */
-				clearMoney();
-				return;
-			}
-
-			RPSlot slot = (RPSlot) event.getOldValue();
-			if (slot != null) {
-				changeMoneySlot(slot, false);
-			}
-
-			slot = (RPSlot) event.getNewValue();
-			if (slot != null) {
-				changeMoneySlot(slot, true);
-			}
-			updateMoney();
-		}
-	}
 }
