@@ -274,7 +274,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("kryształ szmaragdu", 7) && player.isEquipped("kryształ szafiru", 7) && player.isEquipped("kryształ rubinu", 7)) {
-						raiser.say("Ooo... super! Teraz proszę cię o wydobycia zupełnie nowego surowca! Są pogłoski iż gdzieś w tej kopalni znajduje się ruda cieni! Chcę, abyś " + player.getGenderVerb("przyniósł") + " mi 12 rud tego surowca.");
+						raiser.say("Świetnie! Teraz poszukaj rudy czarnego żelaza. Podobno można ją znaleźć głęboko w tej kopalni. Przynieś mi 12 sztuk.");
 						player.drop("kryształ szmaragdu", 7);
 						player.drop("kryształ szafiru", 7);
 						player.drop("kryształ rubinu", 7);
@@ -299,14 +299,14 @@ public class Gornictwo extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
-					if (player.isEquipped("ruda cieni", 12)) {
-						raiser.say("Ależ ten surowiec ma dziwne właściwości! Dziękuję, nie sądziłem, że to była prawda! Następnie chciałbym się prosić o wykopanie 10 rud srebra. Przynieś jeszcze 7 polan oraz kilof stalowy, a wtedy wykonam dla ciebie jeszcze mocniejszy kilof, dzięki niemu będziesz jeszcze szybciej " + player.getGenderVerb("kopał") + ".");
-						player.drop("ruda cieni", 12);
+					if (player.isEquipped("ruda czarnego żelaza", 12)) {
+						raiser.say("To naprawdę czarne żelazo! Dziękuję. Teraz potrzebuję 10 sztuk rudy srebra, 7 polan i kilofa stalowego. Przygotuję z nich mocniejszy kilof, którym będziesz szybciej " + player.getGenderVerb("kopał") + ".");
+						player.drop("ruda czarnego żelaza", 12);
 						player.incMiningXP(5000);
 						player.addXP(2200);
 						player.setQuest(QUEST_SLOT, "dig_silver");
 					} else {
-						raiser.say(noStones + "rudy cieni...");
+						raiser.say(noStones + "rudy czarnego żelaza...");
 					}
 				}
 			});
@@ -583,7 +583,7 @@ public class Gornictwo extends AbstractQuest {
 			res.add("Muszę wykopać po 7 kryształów szmaragdu, szafiru oraz rubinu.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "dig_shadow")) {
-			res.add("Muszę wykopać 12 rud cieni.");
+			res.add("Muszę wydobyć 12 sztuk rudy czarnego żelaza.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, 0, "dig_silver")) {
 			res.add("Muszę wykopać 10 rud srebra oraz przynieść 7 sztuk drewna.");

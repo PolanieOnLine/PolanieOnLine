@@ -100,14 +100,14 @@ public class DailyItemGdanskQuest extends AbstractQuest {
 		items.put("sztabka srebra", Rand.roll1D10());
 		items.put("sztabka złota", Rand.roll1D10());
 		items.put("sztabka miedzi", Rand.roll1D10());
-		items.put("sztabka cieni", Rand.roll1D10());
+		items.put("sztabka czarnego żelaza", Rand.roll1D10());
 		items.put("bryłka mithrilu", Rand.roll1D10());
 		items.put("bryłka złota", Rand.roll1D10());
 		items.put("ruda srebra", Rand.roll1D10());
 		items.put("ruda żelaza", Rand.roll1D20());
 		items.put("ruda miedzi", Rand.roll1D20());
 		items.put("ruda platyny", Rand.roll1D10());
-		items.put("ruda cieni", Rand.roll1D10());
+		items.put("ruda czarnego żelaza", Rand.roll1D10());
 		items.put("sztabka żelaza", Rand.roll1D20());
 		items.put("siarka", Rand.roll1D20());
 		items.put("sól", Rand.roll1D20());

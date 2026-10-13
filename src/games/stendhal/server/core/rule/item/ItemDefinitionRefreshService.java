@@ -142,6 +142,11 @@ public final class ItemDefinitionRefreshService {
 	private static void refreshDescription(final Item item, final Item definition,
 			final RPObject saved) {
 		final String base = definition.getDescription() == null ? "" : definition.getDescription();
+		// Replace the former shadow lore even on legacy stacks carrying itemdata.
+		// The material itself, its quantity and individual metadata stay intact.
+		final boolean renamedBlackIron = "resource".equals(item.getItemClass())
+				&& Arrays.asList("ruda czarnego żelaza", "sztabka czarnego żelaza").contains(item.getName())
+				&& !item.getName().equals(saved.get("name"));
 		final boolean recordedCustomText = saved.has(Item.DEFINITION_DESCRIPTION)
 				&& saved.has("description")
 				&& !saved.get("description").equals(saved.get(Item.DEFINITION_DESCRIPTION));
@@ -149,7 +154,7 @@ public final class ItemDefinitionRefreshService {
 		final boolean legacyPersonalText = !saved.has(Item.DEFINITION_DESCRIPTION)
 				&& (saved.has("itemdata") || Arrays.asList("key", "scroll", "book", "document")
 						.contains(item.getItemClass()));
-		if (!(item instanceof Glyph) && saved.has("description")
+		if (!renamedBlackIron && !(item instanceof Glyph) && saved.has("description")
 				&& (recordedCustomText || legacyPersonalText)) {
 			item.setDescription(saved.get("description"));
 		} else {

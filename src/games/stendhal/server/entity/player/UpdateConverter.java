@@ -87,6 +87,13 @@ public abstract class UpdateConverter {
 			"peleryna truskull", "peleryna lutinów", "magia mrozu"
 	);
 
+	private static final List<String> ITEM_NAMES_OLD_POL_1_43 = Arrays.asList(
+			"ruda cieni", "sztabka cieni"
+	);
+	private static final List<String> ITEM_NAMES_NEW_POL_1_43 = Arrays.asList(
+			"ruda czarnego żelaza", "sztabka czarnego żelaza"
+	);
+
 	private static final HashMap<String, String> ZONE_MAPPING = new HashMap<>();
 	static {
 		ZONE_MAPPING.put("0_deniran_n_w2", "0_deniran_forest_n2_w");
@@ -233,6 +240,11 @@ public abstract class UpdateConverter {
 				name = NOWE_NAZWY_POL_1_12.get(idx);
 			}
 
+			idx = ITEM_NAMES_OLD_POL_1_43.indexOf(name);
+			if (idx != -1) {
+				name = ITEM_NAMES_NEW_POL_1_43.get(idx);
+			}
+
 			if (value != null) {
 				name += "=" + value;
 			}
@@ -297,6 +309,7 @@ public abstract class UpdateConverter {
 	 *			RPObject representing a player
 	 */
 	public static void updatePlayerRPObject(final RPObject object) {
+		updateRenamedMaterialCounters(object);
 		final String[] slotsNormal = { "bag", "rhand", "rhand_set", "lhand", "lhand_set", "head", "head_set", "neck", "neck_set", "armor", "armor_set",
 				"legs", "legs_set", "glove", "glove_set", "feet", "feet_set", "finger", "finger_set", "cloak", "cloak_set", "fingerb", "fingerb_set", "pas", "pas_set", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
@@ -504,6 +517,30 @@ public abstract class UpdateConverter {
 			if (detailIndex > 1 && detailIndex < 5) {
 				tempOutfit = new Outfit("detail=1").putOver(tempOutfit);
 				object.put("outfit_ext", tempOutfit.toString());
+			}
+		}
+	}
+
+	/**
+	 * Preserve material counters before Player builds its cached item statistics.
+	 * @param object
+	 */
+	private static void updateRenamedMaterialCounters(final RPObject object) {
+		final String map = PlayerLootedItemsHandler.LOOTED_ITEMS;
+		if (!object.hasMap(map)) return;
+		for (final String key : new ArrayList<String>(object.getMap(map).keySet())) {
+			final int separator = key.indexOf('.');
+			final String prefix = separator < 0 ? "" : key.substring(0, separator + 1);
+			final String itemName = key.substring(prefix.length());
+			if (!ITEM_NAMES_OLD_POL_1_43.contains(ItemTools.itemNameToDisplayName(itemName))) continue;
+			final String newKey = prefix + updateItemName(itemName);
+			try {
+				final long oldCount = object.getInt(map, key);
+				final long currentCount = object.has(map, newKey) ? object.getInt(map, newKey) : 0;
+				object.put(map, newKey, (int) Math.min(Integer.MAX_VALUE, oldCount + currentCount));
+				object.remove(map, key);
+			} catch (final NumberFormatException e) {
+				logger.warn("Cannot rename invalid material counter: " + key);
 			}
 		}
 	}
