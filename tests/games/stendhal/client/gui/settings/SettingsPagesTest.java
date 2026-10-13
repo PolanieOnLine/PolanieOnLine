@@ -90,11 +90,38 @@ public class SettingsPagesTest {
 	}
 
 	@Test
+	public void changingDisplayLanguagePreservesSettingsAndOriginalLabels() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			SettingsPages pages = createPages();
+			JCheckBox blood = check(pages.getPage(SettingsPages.Category.APPEARANCE), "Pokaż krew i zwłoki");
+			boolean selected = blood.isSelected();
+			List<JSlider> sliders = find(pages, JSlider.class);
+			int volume = sliders.get(0).getValue();
+			manager.setProperty("ui.language", "en");
+			SettingsTranslation.apply(pages);
+			assertEquals("Show blood and corpses", blood.getText());
+			assertEquals("Close", games.stendhal.client.ClientLanguage.getText("Zamknij"));
+			assertEquals("Talk", games.stendhal.client.entity.ActionType.TALK.getRepresentation());
+			assertSame(games.stendhal.client.entity.ActionType.TALK, games.stendhal.client.entity.ActionType.getbyRep("Talk"));
+			assertSame(games.stendhal.client.entity.ActionType.TALK, games.stendhal.client.entity.ActionType.getbyRep("Porozmawiaj"));
+			javax.swing.border.CompoundBorder languageBorder = (javax.swing.border.CompoundBorder)
+					pages.addGroup(SettingsPages.Category.TEXT, "Język").getBorder();
+			assertEquals("Language", ((javax.swing.border.TitledBorder) languageBorder.getOutsideBorder()).getTitle());
+			manager.setProperty("ui.language", "pl");
+			SettingsTranslation.apply(pages);
+			assertEquals("Pokaż krew i zwłoki", blood.getText());
+			assertEquals(selected, blood.isSelected());
+			assertEquals(volume, sliders.get(0).getValue());
+			assertEquals("Język", ((javax.swing.border.TitledBorder) languageBorder.getOutsideBorder()).getTitle());
+		});
+	}
+
+	@Test
 	public void allExistingOptionsArePresentOnceAndInTheRightCategories() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			SettingsPages pages = createPages();
 			assertEquals(25, find(pages, JCheckBox.class).size());
-			assertEquals(10, find(pages, JComboBox.class).size());
+			assertEquals(11, find(pages, JComboBox.class).size());
 			assertEquals(6, find(pages, JSlider.class).size());
 			assertNotNull(check(pages.getPage(SettingsPages.Category.CONTROLS), "Ciągły ruch"));
 			assertNotNull(check(pages.getPage(SettingsPages.Category.DISPLAY), "Zapamiętaj rozmiar"));

@@ -20,10 +20,12 @@ import { AdminDiagnostics } from "../../util/AdminDiagnostics";
 
 import { TabDialogContentComponent } from "../toolkit/TabDialogContentComponent";
 import { Tooltip } from "../toolkit/Tooltip";
+import { FloatingWindow } from "../toolkit/FloatingWindow";
 
 import { Layout } from "../../data/enum/Layout";
 
 import { Debug } from "../../util/Debug";
+import { GameLanguage } from "../../util/GameLanguage";
 
 import { ToggleSwitch } from "../component/ToggleSwitch";
 
@@ -139,10 +141,16 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 		const btn_close = this.addCloseButton();
 		btn_close.title = "Zamknij to okno dialogowe bez odświeżenia strony";
+		GameLanguage.translateSettings(this.componentElement);
 	}
 
 	public override getConfigId(): string {
 		return "settings";
+	}
+
+	public override setFrame(frame: FloatingWindow): void {
+		super.setFrame(frame);
+		GameLanguage.translateSettings(this.componentElement);
 	}
 
 	/**

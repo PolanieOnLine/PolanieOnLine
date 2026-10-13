@@ -30,6 +30,7 @@ import { PlayerStatsComponent } from "../../component/PlayerStatsComponent";
 import { singletons } from "../../../SingletonRepo";
 
 import { Globals } from "../../../util/Globals";
+import { GameLanguage } from "../../../util/GameLanguage";
 
 
 export class GeneralTab extends AbstractSettingsTab {
@@ -37,6 +38,13 @@ export class GeneralTab extends AbstractSettingsTab {
 		super(element);
 		const config = singletons.getConfigManager();
 		const chatLog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
+		const languageSelector = this.child("#selectlanguage") as HTMLSelectElement | null;
+		if (languageSelector) {
+			languageSelector.value = GameLanguage.getLanguage();
+			languageSelector.addEventListener("change", () => {
+				marauroa.clientFramework.sendAction({type: "language", target: languageSelector.value});
+			});
+		}
 
 		/* *** left panel *** */
 		parent.createCheckBox("chk_speechcr", "speech.creature",

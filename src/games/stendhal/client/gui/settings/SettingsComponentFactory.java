@@ -72,6 +72,7 @@ class SettingsComponentFactory {
 			boolean expanded = !content.isVisible();
 			content.setVisible(expanded);
 			toggle.setText(expanded ? "Zaawansowane -" : "Zaawansowane +");
+			SettingsTranslation.apply(section);
 			section.revalidate();
 			section.repaint();
 		});

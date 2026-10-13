@@ -154,6 +154,7 @@ class StendhalPerceptionListener implements IPerceptionListener {
 		// Read the same complete object used by inventory windows, not slot deltas.
 		// At this point both public and private perception changes have been merged.
 		RPObject player = userContext.getPlayer();
+		if (player != null && world_objects.get(player.getID()) == player) ClientLanguage.synchronize(player);
 		StatsPanelController.get().updateCarriedMoney(player != null
 				&& world_objects.get(player.getID()) == player ? player : null);
 	}

@@ -16,6 +16,7 @@ import { StendhalPerceptionListener } from "./PerceptionListener";
 import { singletons } from "./SingletonRepo";
 
 import { Paths } from "./data/Paths";
+import { GameLanguage } from "./util/GameLanguage";
 
 import { Color } from "./data/color/Color";
 
@@ -180,6 +181,7 @@ export class Client {
 		stendhal.config.refreshTheme();
 		document.getElementById("body")!.style.setProperty("font-family", stendhal.config.get("font.body"));
 
+		void GameLanguage.load(Paths.data);
 		// initialize events
 		singletons.getEventRegistry().init();
 

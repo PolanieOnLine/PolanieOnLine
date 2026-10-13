@@ -21,6 +21,7 @@ import { PlayerStatsComponent } from "ui/component/PlayerStatsComponent";
 import { RunicAltarComponent } from "ui/component/RunicAltarComponent";
 import { singletons } from "SingletonRepo";
 import { Client } from "Client";
+import { GameLanguage } from "util/GameLanguage";
 
 
 /**
@@ -56,6 +57,7 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 		stendhal.ui.equip.update();
 		if (marauroa.me) {
+			GameLanguage.synchronize(marauroa.me["language"]);
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)?.update("money");
 		}
 		singletons.getQuickSlotsController().update();

@@ -69,6 +69,7 @@ public class PlayerRPClass {
 		player.addAttribute("teleclickmode", Type.FLAG, Definition.HIDDEN);
 
 		player.addAttribute("release", Type.STRING, Definition.PRIVATE);
+		player.addAttribute("language", Type.STRING, Definition.PRIVATE);
 
 		player.addAttribute("age", Type.INT, Definition.HIDDEN);
 

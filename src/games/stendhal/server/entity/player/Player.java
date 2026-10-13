@@ -153,11 +153,6 @@ public class Player extends DressedEntity implements UseListener {
 	private Set<String> reachedAchievements;
 
 	/**
-	 * preferred language
-	 */
-	private String language;
-
-	/**
 	 * version of the client
 	 */
 	private String clientVersion;
@@ -1106,7 +1101,11 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public void sendPrivateText(final NotificationType type, final String text) {
-		RPEvent event = new PrivateTextEvent(type, text);
+		boolean system = type == NotificationType.SERVER || type == NotificationType.ERROR
+				|| type == NotificationType.INFORMATION || type == NotificationType.DETAILED
+				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE;
+		RPEvent event = new PrivateTextEvent(type, system
+				? games.stendhal.common.Translation.getText(getLanguage(), text) : text);
 		this.addEvent(event);
 		this.notifyWorldAboutChanges();
 	}
@@ -3291,7 +3290,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public String getLanguage() {
-		return language;
+		return games.stendhal.common.Translation.normalize(has("language") ? get("language") : null);
 	}
 
 	/**
@@ -3301,7 +3300,7 @@ public class Player extends DressedEntity implements UseListener {
 	 *			language
 	 */
 	public void setLanguage(String language) {
-		this.language = language;
+		put("language", games.stendhal.common.Translation.normalize(language));
 	}
 
 	/**

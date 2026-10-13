@@ -158,6 +158,9 @@
 			</fileset>
 		</copy>
 		<copy todir="${build_client_data}/data/conf" file="data/conf/log4j.properties"/>
+		<copy todir="${build_client_data}/data/languages">
+			<fileset dir="data/languages" includes="pl.txt,en.txt"/>
+		</copy>
 
 		<!-- music data -->
 		<mkdir dir="${build_client_music_data}"/>
