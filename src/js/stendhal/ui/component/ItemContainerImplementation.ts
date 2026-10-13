@@ -608,6 +608,10 @@ export class ItemContainerImplementation {
 	private onMouseEnter(evt: MouseEvent) {
 		const target = evt.currentTarget as HTMLElement;
 		const item = (target as any).dataItem as Item|undefined;
+		// Coins use their live, exact stack quantity in the native slot tooltip.
+		if (item?.["name"] === "money") {
+			return;
+		}
 		if (item && (item.getRarity() || hasStructuredItemTooltip(item))) {
 			ItemContainerImplementation.showRarityToolTip(target, item, evt.clientX, evt.clientY);
 		}

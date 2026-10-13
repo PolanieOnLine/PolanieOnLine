@@ -206,6 +206,7 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 */
 	private void setEntityView(EntityView<?> view) {
 		this.view = view;
+		setToolTipText(null);
 		if (view != null) {
 			view.setContained(true);
 			view.setInspector(inspector);
@@ -230,6 +231,13 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			return view.getEntity();
 		}
 		return null;
+	}
+
+	@Override
+	public String getToolTipText(MouseEvent event) {
+		// Quantity may change while the pointer remains over the same slot.
+		String moneyTooltip = ItemRarityPresentation.buildMoneyToolTip(getEntity());
+		return moneyTooltip != null ? moneyTooltip : super.getToolTipText(event);
 	}
 
 	/**
