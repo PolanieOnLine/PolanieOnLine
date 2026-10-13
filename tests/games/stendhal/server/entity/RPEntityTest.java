@@ -24,13 +24,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -346,7 +349,22 @@ public class RPEntityTest {
 	 * Tests for attackCanHitreturnTruedamage30.
 	 */
 	@Test
-	public void testAttackCanHitreturnTruedamage30() {
+	public void testAttackCanHitreturnTruedamage30() throws Exception {
+		assertAttackDamageWithCriticalRoll(100, 30);
+	}
+
+	@Test
+	public void testAttackCanHitreturnTrueCriticalDamage60() throws Exception {
+		assertAttackDamageWithCriticalRoll(1, 60);
+	}
+
+	@Test
+	public void testAttackCriticalChanceBoundary() throws Exception {
+		assertAttackDamageWithCriticalRoll(2, 60);
+		assertAttackDamageWithCriticalRoll(3, 30);
+	}
+
+	private void assertAttackDamageWithCriticalRoll(final int criticalRoll, final int expectedDamage) throws Exception {
 		MockStendlRPWorld.get();
 		final StendhalRPZone zone = new StendhalRPZone("testzone");
 		final RPEntity attacker = new MockRPEntity() {
@@ -366,7 +384,7 @@ public class RPEntityTest {
 		final RPEntity defender = new MockRPEntity() {
 			@Override
 			public void onDamaged(final Entity attacker, final int damage) {
-				assertEquals(30, damage);
+				assertEquals(expectedDamage, damage);
 			}
 		};
 		defender.updateModifiedAttributes();
@@ -384,7 +402,7 @@ public class RPEntityTest {
 			assertFalse(ev instanceof AttackEvent);
 		}
 
-		assertTrue(attacker.attack());
+		assertTrue(attackWithCriticalRoll(attacker, criticalRoll));
 
 		assertNotNull(attacker.getAttackTarget());
 
@@ -398,7 +416,32 @@ public class RPEntityTest {
 		assertNotNull(attack);
 		assertTrue(attack.has("hit"));
 		assertTrue(attack.has("damage"));
-		assertThat("no damage done ", attack.get("damage"), is("30"));
+		assertThat("attack event damage", attack.get("damage"), is(Integer.toString(expectedDamage)));
+	}
+
+	/** Controls only this attack's critical roll and restores global randomness even on failure. */
+	private boolean attackWithCriticalRoll(final RPEntity attacker, final int roll) throws Exception {
+		final Field randomField = Rand.class.getDeclaredField("rand");
+		randomField.setAccessible(true);
+		final Random previous = (Random) randomField.get(null);
+		final int[] criticalRolls = { 0 };
+		randomField.set(null, new Random() {
+			@Override
+			public int nextInt(final int bound) {
+				if (bound == 100) {
+					criticalRolls[0]++;
+					return roll - 1;
+				}
+				return previous.nextInt(bound);
+			}
+		});
+		try {
+			final boolean result = attacker.attack();
+			assertEquals("one critical roll per attack", 1, criticalRolls[0]);
+			return result;
+		} finally {
+			randomField.set(null, previous);
+		}
 	}
 
 	/**
