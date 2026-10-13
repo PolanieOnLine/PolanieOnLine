@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -170,6 +170,7 @@ function createHarness() {
 		return exports;
 	}
 	const { ItemRarity } = load("data/ItemRarity.ts", {});
+	const { GameLanguage } = load("util/GameLanguage.ts", {});
 	class Entity {
 		set(key, value) { this[key] = value; }
 		buildActions(list) { list.push({ title: "Zobacz", type: "look" }); }
@@ -199,6 +200,7 @@ function createHarness() {
 		"./ItemSlotPresentation": slotPresentation
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
+		"../../util/GameLanguage": { GameLanguage },
 		"../UI": { ui: {} }, "../UIComponentEnum": {}, "../component/ChatInputComponent": {},
 		"../toolkit/Component": { Component: class {
 			constructor() { this.componentElement = { addEventListener() {}, dispatchEvent() {} }; }

@@ -87,6 +87,7 @@ class SettingsPages extends JPanel {
 		addGroup(Category.DISPLAY, "Ekran");
 		addGroup(Category.DISPLAY, "Płynność");
 		addGroup(Category.DISPLAY, "Rozmiar okna");
+		addGroup(Category.TEXT, "Język");
 		addGroup(Category.TEXT, "Czcionki");
 		addGroup(Category.TEXT, "Dymki");
 		addGroup(Category.TEXT, "Wiadomości prywatne");

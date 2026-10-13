@@ -16,6 +16,7 @@ import static games.stendhal.common.constants.Actions.LANGUAGE;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.common.Translation;
 import marauroa.common.game.RPAction;
 
 /**
@@ -38,6 +39,8 @@ public class LanguageAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		if (!action.has("target") || !Translation.isSupported(action.get("target"))) return;
 		player.setLanguage(action.get("target"));
+		player.notifyWorldAboutChanges();
 	}
 }

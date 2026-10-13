@@ -165,7 +165,6 @@ public class CommandCenter {
 					return false;
 				}
 				actionListener.onAction(player, action);
-				Translate.setThreadLanguage(null);
 				return true;
 			} else {
 				logger.error("caster is no Player; cannot execute action " + action +
@@ -176,6 +175,8 @@ public class CommandCenter {
 			logger.error("Cannot execute action " + action + " send by "
 					+ caster, e);
 			return false;
+		} finally {
+			Translate.setThreadLanguage(null);
 		}
 	}
 

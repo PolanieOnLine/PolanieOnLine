@@ -16,6 +16,7 @@ import { ChatInputComponent } from "../component/ChatInputComponent";
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../../stendhal";
+import { GameLanguage } from "../../util/GameLanguage";
 
 export class ActionContextMenu extends Component {
 	private entity: any;
@@ -34,7 +35,7 @@ export class ActionContextMenu extends Component {
 			const isAdmin = !!a.admin;
 
 			// jeśli ktoś jeszcze podaje "(*) ..." w tytule, wyczyść tylko do wyświetlenia:
-			const cleanTitle = String(a.title).replace(/^\(\*\)\s*/, "");
+			const cleanTitle = GameLanguage.getText(String(a.title).replace(/^\(\*\)\s*/, ""));
 
 			const extra = (i > 0 ? " sub-actionbutton" : "") + (isAdmin ? " admin" : "");
 			content += `<button class="actionbutton${extra}" id="actionbutton.${i}">`

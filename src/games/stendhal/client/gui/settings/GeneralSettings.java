@@ -29,6 +29,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.actions.MoveContinuousAction;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.chatlog.EventLine;
@@ -64,6 +65,16 @@ class GeneralSettings {
 		JComponent privateMessages = pages.addGroup(SettingsPages.Category.TEXT, "Wiadomości prywatne");
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
+		JComponent languageGroup = pages.addGroup(SettingsPages.Category.TEXT, "Język");
+		JComboBox<String> languageSelector = new JComboBox<>(new String[] {"Polski", "English"});
+		languageSelector.setName("language-selector");
+		languageSelector.setSelectedIndex("en".equals(ClientLanguage.getLanguage()) ? 1 : 0);
+		languageSelector.addActionListener(event -> {
+			String language = languageSelector.getSelectedIndex() == 1 ? "en" : "pl";
+			if (!language.equals(ClientLanguage.getLanguage())) ClientLanguage.choose(language);
+		});
+		languageGroup.add(SettingsComponentFactory.createSettingsRow("Język gry:", languageSelector), SLayout.EXPAND_X);
+		languageGroup.add(new JLabel("<html>Tłumaczenia są jeszcze uzupełniane.<br>Brakujący tekst pozostaje po polsku.</html>"));
 		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(
 				MovementKeyOption.values());
 		movementSchemeSelector.setToolTipText(

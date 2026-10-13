@@ -11,6 +11,7 @@
 
 import { Entity } from "entity/Entity";
 import { RPEvent } from "marauroa"
+import { GameLanguage } from "util/GameLanguage";
 
 /**
  * text events
@@ -21,10 +22,11 @@ export class TextEvent extends RPEvent {
 	public text!: string;
 
 	public execute(entity: Entity): void {
+		const text = entity["type"] === "npc" ? GameLanguage.getText(this["text"]) : this["text"];
 		if (this["range"]) {
-			entity.say(this["text"], parseInt(this["range"], 10));
+			entity.say(text, parseInt(this["range"], 10));
 		} else {
-			entity.say(this["text"]);
+			entity.say(text);
 		}
 	}
 

@@ -1031,6 +1031,7 @@ public abstract class RPEntity extends AudibleEntity {
 	 *     entire map).
 	 */
 	public void onTalk(String text, final int rangeSquared) {
+		if (this instanceof NPC) text = games.stendhal.client.ClientLanguage.getText(text);
 		if (User.isAdmin() || (rangeSquared < 0) || (isInHearingRange(rangeSquared))) {
 			final String ttext = trimText(text);
 			final EmojiStore emojiStore = ClientSingletonRepository.getEmojiStore();

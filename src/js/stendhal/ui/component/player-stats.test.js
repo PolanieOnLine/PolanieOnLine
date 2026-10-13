@@ -33,7 +33,7 @@ function harness() {
 		const source = ts.transpileModule(readFileSync(filename, "utf8"), {
 			compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 		}).outputText;
-		vm.runInNewContext(source, { exports, document: { getElementById: () => ({ style: {} }) },
+		vm.runInNewContext(source, { exports, document: { getElementById: () => ({ style: {} }), querySelectorAll: () => [] },
 			require: name => dependencies[name] || {} });
 		return exports;
 	}
@@ -45,15 +45,28 @@ function harness() {
 		"marauroa": { marauroa }, "../../stendhal": { stendhal }
 	});
 	stats = new PlayerStatsComponent();
+	const { GameLanguage } = load(path.join(__dirname, "../../util/GameLanguage.ts"), {});
 	const { StendhalPerceptionListener } = load(path.join(__dirname, "../../PerceptionListener.ts"), {
 		"marauroa": { marauroa, PerceptionListener: class {} }, "ui/UI": { ui },
 		"ui/UIComponentEnum": { UIComponentEnum: { PlayerStats: "stats" } },
 		"./stendhal": { stendhal }, "SingletonRepo": { singletons },
+		"util/GameLanguage": { GameLanguage },
 		"Client": { Client: { get: () => ({ loaded: true }) } }
 	});
-	return { stats, marauroa, Item, slot, elements, writes: () => writes,
+	return { stats, marauroa, Item, slot, elements, GameLanguage, writes: () => writes,
 		perception: () => new StendhalPerceptionListener().onPerceptionEnd(0, 0) };
 }
+
+test("character language is restored from the complete perception without changing money", () => {
+	const h = harness();
+	h.marauroa.me.language = "en";
+	h.perception();
+	assert.equal(h.GameLanguage.getLanguage(), "en");
+	assert.match(h.elements["#otherstats"].innerText, /Pieniądze: 92000138$/);
+	h.marauroa.me.language = "pl";
+	h.perception();
+	assert.equal(h.GameLanguage.getLanguage(), "pl");
+});
 
 test("money total includes only carried money, not reserve, storage or other items", () => {
 	const h = harness();

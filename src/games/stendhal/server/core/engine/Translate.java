@@ -1,118 +1,26 @@
-/***************************************************************************
- *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
- ***************************************************************************
- ***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+/* Copyright (C) 2003-2026 - Faiumoni e. V., PolanieOnLine; GPL version 2 or later. */
 package games.stendhal.server.core.engine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import games.stendhal.common.Translation;
 
-import org.apache.log4j.Logger;
-
-import marauroa.common.io.UnicodeSupportingInputStreamReader;
-
-/**
- * translation
- *
- * @author hendrik
- */
+/** Server context for the game's existing language dictionaries. */
 public class Translate {
-	private static Logger logger = Logger.getLogger(Translate.class);
+	private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
-	private static Map<String, Map<String, String>> texts = new HashMap<String, Map<String, String>>();
-
-	private static ThreadLocal<String> threadLocal = new ThreadLocal<String>();
-
-	/**
-	 * loads the language files
-	 */
 	public static void init() {
-		init("pl");
+		Translation.getText(Translation.DEFAULT_LANGUAGE, "");
 	}
 
-	/**
-	 * loads a lauguage file
-	 *
-	 * @param language language
-	 */
-	private static void init(String language) {
-		try {
-			final String file_locale = "data/languages/" + language + ".txt";
-			InputStream is = Translate.class.getClassLoader().getResourceAsStream(file_locale);
-			if (is == null) {
-				logger.warn("data/language/" + language + ".txt does not exist on classpath)");
-				return;
-			}
-			BufferedReader reader = new BufferedReader(new UnicodeSupportingInputStreamReader(is, "UTF-8"));
-
-			// we cannot use Properties.load because that does a) not support unicode and b) splits on the first space
-			Map<String, String> map = new HashMap<String, String>();
-			try {
-				String line = reader.readLine();
-				int lidx = 0;
-				while (line != null) {
-					lidx++;
-
-					// ignore empty lines & comments (because this code is executed during testing we cannot use `String.isBlank`
-					// from Java 11)
-					if ("".equals(line.replaceAll("\t| ", "")) || line.startsWith("#")) {
-						line = reader.readLine();
-						continue;
-					}
-
-					String[] tokens = line.split("=", 2);
-					if (tokens.length != 2) {
-						System.err.println("malformed line (" + lidx + ") in " + file_locale + ": " + line + "///" + Arrays.toString(tokens));
-					} else {
-						map.put(tokens[0], tokens[1]);
-					}
-					line = reader.readLine();
-				}
-			} finally {
-				reader.close();
-			}
-			texts.put(language, map);
-		} catch (IOException e) {
-			logger.error(e, e);
-		}
-	}
-
-	/**
-	 * translate a text
-	 *
-	 * @param text text to translate
-	 * @return translated text
-	 */
 	public static String getText(String text) {
-		String language = threadLocal.get();
-		String res = null;
-		Map<String, String> map = texts.get(language);
-		if (map != null) {
-			res = map.get(text);
-		}
-		if (res == null) {
-			res = text;
-		}
-		return res;
+		return Translation.getText(threadLocal.get(), text);
 	}
 
-	/**
-	 * sets the language for this thread
-	 *
-	 * @param language language
-	 */
+	public static String getText(String language, String text) {
+		return Translation.getText(language, text);
+	}
+
 	public static void setThreadLanguage(String language) {
-		threadLocal.set(language);
+		if (language == null) threadLocal.remove();
+		else threadLocal.set(Translation.normalize(language));
 	}
 }

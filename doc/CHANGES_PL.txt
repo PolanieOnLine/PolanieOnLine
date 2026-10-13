@@ -48,6 +48,7 @@
 ---
 * Dodano logowanie przez Google i Steam w kliencie Java. Konto można połączyć na stronie gry
 * Uporządkowano ustawienia klienta Java. Kategorie znajdują się po lewej, a opcje są pogrupowane, aby łatwiej było je znaleźć
+* Dodano wybór języka polskiego i angielskiego w ustawieniach gry. Wybór jest zapamiętywany dla postaci. Angielskie tłumaczenia są jeszcze uzupełniane
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry

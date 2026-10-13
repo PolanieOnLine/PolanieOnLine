@@ -3,6 +3,14 @@
 
 ___NOTE:__ localization is still a work-in-progress_
 
+PolanieOnLine currently supports `pl` and `en`. Polish is the default. The choice is stored on the character and shared by
+the Java and browser clients through the existing `language` action. Other files are retained as legacy translation data,
+but are not selectable. English coverage is incomplete; missing or blank entries leave the original text visible.
+
+The same UTF-8 `original=translation` dictionaries are bundled with the server and clients. Add Polish source text to
+`en.txt` when translating current game content into English. Keep internal item names, quest states, action codes and
+player messages unchanged. NPC speech is translated for display in each receiving client, not on the shared NPC object.
+
 
 ## Locale File Format
 

@@ -14,6 +14,7 @@ package games.stendhal.client.gui.settings;
 import java.awt.Frame;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,8 +22,12 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import javax.swing.SwingUtilities;
 
 import games.stendhal.client.gui.WindowUtils;
+import games.stendhal.client.ClientLanguage;
+import games.stendhal.client.gui.wt.core.SettingChangeListener;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.gui.layout.SBoxLayout;
 
 /**
@@ -30,6 +35,18 @@ import games.stendhal.client.gui.layout.SBoxLayout;
  */
 @SuppressWarnings("serial")
 public class SettingsDialog extends JDialog {
+	private final SettingChangeListener languageListener = value -> SwingUtilities.invokeLater(() -> {
+		setTitle(ClientLanguage.getText("Ustawienia"));
+		SettingsTranslation.apply(getContentPane());
+		getContentPane().revalidate();
+		Dimension required = getPreferredSize();
+		Dimension minimum = getMinimumSize();
+		int width = Math.max(minimum.width, required.width);
+		int height = Math.max(minimum.height, required.height);
+		setMinimumSize(new Dimension(width, height));
+		if (getWidth() < width || getHeight() < height) setSize(Math.max(getWidth(), width), Math.max(getHeight(), height));
+		getContentPane().repaint();
+	});
 
 	/**
 	 * Create a new SettingsDialog.
@@ -63,7 +80,16 @@ public class SettingsDialog extends JDialog {
 		}
 		WindowUtils.watchFontSize(this);
 		WindowUtils.trackLocation(this, "settings", false);
+		setTitle(ClientLanguage.getText("Ustawienia"));
+		SettingsTranslation.apply(getContentPane());
+		WtWindowManager.getInstance().registerSettingChangeListener(ClientLanguage.PROPERTY, languageListener);
 		pack();
 		setMinimumSize(getSize());
+	}
+
+	@Override
+	public void dispose() {
+		WtWindowManager.getInstance().deregisterSettingChangeListener(ClientLanguage.PROPERTY, languageListener);
+		super.dispose();
 	}
 }
