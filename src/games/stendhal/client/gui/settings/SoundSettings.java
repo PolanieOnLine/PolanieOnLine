@@ -15,14 +15,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JCheckBox;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -59,7 +64,6 @@ class SoundSettings {
 	 * Create sound settings page.
 	 */
 	SoundSettings(SettingsPages pages) {
-		int pad = SBoxLayout.COMMON_PADDING;
 		JComponent playback = pages.addGroup(SettingsPages.Category.AUDIO, "Odtwarzanie");
 		JComponent volumes = pages.addGroup(SettingsPages.Category.AUDIO, "Głośność");
 
@@ -80,77 +84,18 @@ class SoundSettings {
 		sliderComponents.add(selector);
 		playback.add(hbox, SLayout.EXPAND_X);
 
-		// Sliders for the sound channels
-		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		JLabel label = new JLabel("Główna");
-		row.add(label);
-		SBoxLayout.addSpring(row);
+		// Shared columns keep every track aligned, independent of percentage text.
+		JPanel tracks = new JPanel(new GridBagLayout());
+		tracks.setBorder(BorderFactory.createEmptyBorder());
+		volumes.add(tracks, SLayout.EXPAND_X);
 		JSlider masterVolume = createMasterVolumeSlider();
 		masterVolume.setToolTipText("Głośność wszystkich kanałów dźwięku");
-		row.add(masterVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(masterVolume);
-		addVolumeValue(row, label, masterVolume);
-
-		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		label = new JLabel("Interfejs");
-		row.add(label);
-		SBoxLayout.addSpring(row);
-		JSlider guiVolume = createVolumeSlider("gui");
-		guiVolume.setToolTipText("Głośność interaktywnych operacji jak zamykanie okien");
-		row.add(guiVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(guiVolume);
-		addVolumeValue(row, label, guiVolume);
-
-		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		label = new JLabel("Efekty");
-		row.add(label);
-		SBoxLayout.addSpring(row);
-		JSlider effectsVolume = createVolumeSlider("sfx");
-		effectsVolume.setToolTipText("Głośność walki i inne efekty");
-		row.add(effectsVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(effectsVolume);
-		addVolumeValue(row, label, effectsVolume);
-
-		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		label = new JLabel("Potwory");
-		row.add(label);
-		SBoxLayout.addSpring(row);
-		JSlider creaturesVolume = createVolumeSlider("creature");
-		creaturesVolume.setToolTipText("Głośność potworów");
-		row.add(creaturesVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(creaturesVolume);
-		addVolumeValue(row, label, creaturesVolume);
-
-		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		label = new JLabel("Otoczenie");
-		row.add(label);
-		SBoxLayout.addSpring(row);
-		JSlider ambientVolume = createVolumeSlider("ambient");
-		row.add(ambientVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(ambientVolume);
-		addVolumeValue(row, label, ambientVolume);
-
-		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		volumes.add(row, SLayout.EXPAND_X);
-		label = new JLabel("Muzyka");
-		row.add(label);
-		SBoxLayout.addSpring(row);
-		JSlider musicVolume = createVolumeSlider("music");
-		musicVolume.setToolTipText("Głośność dźwięku");
-		row.add(musicVolume);
-		sliderComponents.add(label);
-		sliderComponents.add(musicVolume);
-		addVolumeValue(row, label, musicVolume);
+		addVolumeRow(tracks, 0, "Główna", masterVolume);
+		addVolumeRow(tracks, 1, "Interfejs", createVolumeSlider("gui"));
+		addVolumeRow(tracks, 2, "Efekty", createVolumeSlider("sfx"));
+		addVolumeRow(tracks, 3, "Potwory", createVolumeSlider("creature"));
+		addVolumeRow(tracks, 4, "Otoczenie", createVolumeSlider("ambient"));
+		addVolumeRow(tracks, 5, "Muzyka", createVolumeSlider("music"));
 
 		// Disable the sliders if the sound is off
 		for (JComponent comp : sliderComponents) {
@@ -158,8 +103,13 @@ class SoundSettings {
 		}
 	}
 
-	private void addVolumeValue(JComponent row, JLabel label, JSlider slider) {
+	private void addVolumeRow(JPanel tracks, int rowIndex, String title, JSlider slider) {
+		JLabel label = new JLabel(title);
 		label.setLabelFor(slider);
+		slider.getAccessibleContext().setAccessibleName(title);
+		if (slider.getToolTipText() == null) {
+			slider.setToolTipText("Głośność: " + title);
+		}
 		JLabel value = new JLabel(slider.getValue() + "%") {
 			private static final long serialVersionUID = 1L;
 			@Override public java.awt.Dimension getPreferredSize() {
@@ -167,9 +117,29 @@ class SoundSettings {
 				size.width = getFontMetrics(getFont()).stringWidth("100%");
 				return size;
 			}
+			// Reserve the same space at every font size, including when all channels show 0%.
+			@Override public java.awt.Dimension getMinimumSize() { return getPreferredSize(); }
+			@Override public java.awt.Dimension getMaximumSize() { return getPreferredSize(); }
 		};
 		value.setHorizontalAlignment(JLabel.RIGHT);
-		row.add(value);
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = rowIndex;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets = new Insets(2, 0, 2, SBoxLayout.COMMON_PADDING);
+		tracks.add(label, constraints);
+		constraints.gridx = 1;
+		constraints.weightx = 1;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		tracks.add(slider, constraints);
+		constraints.gridx = 2;
+		constraints.weightx = 0;
+		constraints.fill = GridBagConstraints.NONE;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets = new Insets(2, 0, 2, 0);
+		tracks.add(value, constraints);
+		sliderComponents.add(label);
+		sliderComponents.add(slider);
 		sliderComponents.add(value);
 		slider.addChangeListener(event -> value.setText(slider.getValue() + "%"));
 	}

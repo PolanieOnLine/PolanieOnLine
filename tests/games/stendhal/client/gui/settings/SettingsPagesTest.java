@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.Point;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,6 +173,33 @@ public class SettingsPagesTest {
 			sliders.get(0).setValue(37);
 			assertEquals("37", manager.getProperty("sound.volume.master", ""));
 			assertTrue(find(sliders.get(0).getParent(), JLabel.class).stream().anyMatch(label -> "37%".equals(label.getText())));
+		});
+	}
+
+	@Test
+	public void volumeTracksStayAlignedWhenPercentagesAndFontSizeChange() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			SettingsPages pages = createPages();
+			pages.showCategory(SettingsPages.Category.AUDIO);
+			List<JSlider> sliders = find(pages.getPage(SettingsPages.Category.AUDIO), JSlider.class);
+			for (int size : new int[] {12, 16, 20}) {
+				setFonts(pages, size);
+				pages.setSize(pages.getPreferredSize());
+				Point original = null;
+				int originalWidth = 0;
+				for (int offset = 0; offset < 7; offset++) {
+					int[] values = {0, 1, 9, 10, 37, 99, 100};
+					for (int i = 0; i < sliders.size(); i++) sliders.get(i).setValue(values[(i + offset) % values.length]);
+					layout(pages);
+					for (JSlider slider : sliders) {
+						Point position = SwingUtilities.convertPoint(slider, 0, 0, pages);
+						if (original == null) { original = position; originalWidth = slider.getWidth(); }
+						assertEquals("All volume tracks start in the same column (font " + size + ", offset " + offset
+								+ ", value " + slider.getValue() + ", row " + slider.getParent().getBounds() + ")", original.x, position.x);
+						assertEquals("Changing 0% to 100% must not move a track", originalWidth, slider.getWidth());
+					}
+				}
+			}
 		});
 	}
 
