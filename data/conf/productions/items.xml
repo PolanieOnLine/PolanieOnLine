@@ -240,14 +240,14 @@
 
 	<!-- Zygfryd (Tatry) -->
 	<production name="zygfryd_cast_shadow" type="item">
-		<item name="sztabka cieni" minutes="7">
+		<item name="sztabka czarnego żelaza" minutes="7">
 			<resource name="polano" amount="2"/>
-			<resource name="ruda cieni"/>
+			<resource name="ruda czarnego żelaza"/>
 			<resource name="money" amount="70"/>
 		</item>
 
 		<producer name="Zygfryd" activities="cast,odlej"
-			message="Cześć! Jestem pomocnikiem tutejszego kowala. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę cieni' to daj znać!"/>
+			message="Cześć! Pomagam tutejszemu kowalowi i odlewam sztabki czarnego żelaza. Jeśli potrzebujesz sztabek, powiedz #odlej."/>
 	</production>
 
 	<!-- Kowal Wincenty (Wieliczka) -->

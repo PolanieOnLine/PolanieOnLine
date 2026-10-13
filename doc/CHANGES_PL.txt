@@ -32,6 +32,7 @@
 
 *przedmioty i wyposażenie*
 ---
+* Rudę i sztabki cieni zastąpiono rudą i sztabkami czarnego żelaza. Posiadane zapasy zachowują swoją ilość
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
 * Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
 * Zwiększono cenę sprzedaży rzadkiego wyposażenia. Handlarze płacą za nie o 25% więcej niż za zwykłe, również w przypadku wcześniej zdobytych przedmiotów

@@ -283,9 +283,9 @@
 		</equipable>
 	</item>
 
-	<item name="ruda cieni">
+	<item name="ruda czarnego żelaza">
 		<type class="resource" subclass="shadow_ore" tileid="-1"/>
-		<description>Oto ruda cieni. Niczym nie połyskuje.</description>
+		<description>Oto ruda czarnego żelaza. Ten ciemny, matowy surowiec wydobywa się głęboko w tatrzańskich kopalniach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
@@ -403,9 +403,9 @@
 		</equipable>
 	</item>
 
-	<item name="sztabka cieni">
+	<item name="sztabka czarnego żelaza">
 		<type class="resource" subclass="shadow_bar" tileid="-1"/>
-		<description>Oto sztabka cieni. Posiada specyficzne właściwości, potrafi powstrzymywać światło.</description>
+		<description>Oto sztabka czarnego żelaza. Odlewa się ją z rzadkiej rudy wydobywanej w Tatrach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

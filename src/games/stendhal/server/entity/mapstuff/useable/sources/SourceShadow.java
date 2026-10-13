@@ -29,7 +29,7 @@ public class SourceShadow extends SourceEntity {
 	 * Create a shadow source.
 	 */
 	public SourceShadow() {
-		this("ruda cieni");
+		this("ruda czarnego żelaza");
 	}
 
 	/**

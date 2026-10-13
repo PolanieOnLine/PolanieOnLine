@@ -52,15 +52,15 @@ public class ZygfrydNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addJob("Pomagam tutejszemu kowalowi. Nauczył mnie odlewać pewien minerał, sztabkę cieni.");
-				addHelp("Odlewam sztabki cieni. Jeżeli chcesz, abym wykonał dla Ciebie powiedz mi tylko #odlej.");
-				addOffer("Mogę odlać sztabkę cieni, jeśli przyniesiesz mi #polano, #'rudę cieni' oraz trochę pieniędzy. Powiedz tylko #odlej.");
+				addJob("Pomagam tutejszemu kowalowi i odlewam sztabki czarnego żelaza.");
+				addHelp("Jeśli potrzebujesz sztabek czarnego żelaza, powiedz #odlej. Przygotuj rudę, polana i trochę monet.");
+				addOffer("Mogę odlać sztabki czarnego żelaza z przyniesionej rudy. Potrzebuję też polan i trochę monet. Powiedz #odlej, jeśli mam zacząć.");
 				addGoodbye();
 
 				addReply(Arrays.asList("polano", "drewno"),
 						"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści.");
-				addReply(Arrays.asList("sztabka", "cieni", "sztabkę", "ruda", "rudę"),
-						"Rudę cieni znajdziesz w górach Zakopanego. Uważaj tam na siebie!");
+				addReply(Arrays.asList("sztabka", "sztabkę", "ruda", "rudę", "czarne żelazo", "czarnego żelaza"),
+						"Rudę czarnego żelaza znajdziesz głęboko w tatrzańskich kopalniach. Uważaj tam na siebie!");
 			}
 		};
 
