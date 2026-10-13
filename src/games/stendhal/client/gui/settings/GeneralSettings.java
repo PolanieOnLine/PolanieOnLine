@@ -22,23 +22,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.actions.MoveContinuousAction;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.chatlog.EventLine;
-import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
-import games.stendhal.client.gui.styled.Style;
-import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.NotificationType;
@@ -58,32 +52,22 @@ class GeneralSettings {
 
 	private static final String DIMENSIONS_PROPERTY = "ui.dimensions";
 
-	/** Container for the setting components. */
-	private final JComponent page;
-
 	/**
 	 * Create new GeneralSettings.
 	 */
-	GeneralSettings() {
-		int pad = SBoxLayout.COMMON_PADDING;
-		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
-
-		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		columns.add(leftColumn, SLayout.EXPAND_X);
-		columns.add(rightColumn, SLayout.EXPAND_X);
-		page.add(columns, SLayout.EXPAND_X);
+	GeneralSettings(SettingsPages pages) {
+		JComponent movement = pages.addGroup(SettingsPages.Category.CONTROLS, "Poruszanie się");
+		JComponent clicking = pages.addGroup(SettingsPages.Category.CONTROLS, "Klikanie");
+		JComponent experimental = pages.addGroup(SettingsPages.Category.CONTROLS, "Funkcje eksperymentalne");
+		JComponent messages = pages.addGroup(SettingsPages.Category.COMBAT, "Informacje o walce");
+		JComponent items = pages.addGroup(SettingsPages.Category.COMBAT, "Przedmioty");
+		JComponent privateMessages = pages.addGroup(SettingsPages.Category.TEXT, "Wiadomości prywatne");
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
-		JComponent movementSchemeBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JLabel movementSchemeLabel = new JLabel("Sterowanie ruchem (eksperymentalne):");
 		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(
 				MovementKeyOption.values());
 		movementSchemeSelector.setToolTipText(
 				"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD (eksperymentalne). WASD wyłącza automatyczne ustawianie fokusu na czacie.");
-		movementSchemeLabel.setToolTipText(movementSchemeSelector.getToolTipText());
 		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(windowManager
 				.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
 		movementSchemeSelector.setSelectedItem(selectedScheme);
@@ -100,27 +84,24 @@ class GeneralSettings {
 				}
 			}
 		});
-		movementSchemeBox.add(movementSchemeLabel);
-		movementSchemeBox.add(Box.createHorizontalStrut(pad));
-		movementSchemeBox.add(movementSchemeSelector);
-		leftColumn.add(movementSchemeBox, SLayout.EXPAND_X);
+		movement.add(SettingsComponentFactory.createSettingsRow("Sterowanie ruchem:", movementSchemeSelector), SLayout.EXPAND_X);
 
 		// click mode
 		JCheckBox clickModeToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_CLICK_PROPERTY, false,
 				"Tryb podwójnego klikania",
-				"Poruszanie i atak za pomocą podwójnego kliknięcia. Jeżeli nie zaznaczony to domyślnym jest pojedyńcze kliknięcie.");
-		leftColumn.add(clickModeToggle);
+				"Poruszanie i atak podwójnym kliknięciem zamiast pojedynczym.");
+		clicking.add(clickModeToggle);
 		clickModeToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				getState(e, "Tryb podwójnego klikania zostało ");
+				getState(e, "Podwójne klikanie zostało ");
 			}
 		});
 
 		// raising corpses
 		JCheckBox autoRaiseToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_AUTORAISECORPSE, true,
-				"Auto sprawdzanie zwłok", "Automatycznie otwiera okno zwłok potwora, z którego możesz wziąć swój łup");
-		leftColumn.add(autoRaiseToggle);
+				"Automatycznie sprawdzaj zwłoki", "Automatycznie otwiera okno zwłok potwora, z którego możesz wziąć swój łup");
+		items.add(autoRaiseToggle);
 		autoRaiseToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -131,7 +112,7 @@ class GeneralSettings {
 		// show healing messages
 		JCheckBox showHealingToggle = SettingsComponentFactory.createSettingsToggle(HEALING_MESSAGE_PROPERTY, false,
 				"Pokaż wiadomości o leczeniu", "Pokazuje wiadomości o leczeniu w oknie rozmowy");
-		leftColumn.add(showHealingToggle);
+		messages.add(showHealingToggle);
 		showHealingToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -142,7 +123,7 @@ class GeneralSettings {
 		// show poison messages
 		JCheckBox showPoisonToggle = SettingsComponentFactory.createSettingsToggle(POISON_MESSAGE_PROPERTY, false,
 				"Pokaż wiadomości o zatruciu", "Pokazuje wiadomości o zatruciu w oknie rozmowy");
-		leftColumn.add(showPoisonToggle);
+		messages.add(showPoisonToggle);
 		showPoisonToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -152,9 +133,10 @@ class GeneralSettings {
 
 		// Double-tap direction for auto-walk
 		JCheckBox doubleTapAutowalkToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_TAP_AUTOWALK_PROPERTY,
-				false, "Automatyczne chodzenie (zbugowane)",
+				false, "Automatyczne chodzenie",
 				"Włącza automatyczne chodzenie, gdy klawisz kierunkowy został podwójnie kliknięty");
-		leftColumn.add(doubleTapAutowalkToggle);
+		experimental.add(doubleTapAutowalkToggle);
+		experimental.add(new JLabel("Ta opcja może działać nieprawidłowo."));
 		doubleTapAutowalkToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -178,39 +160,28 @@ class GeneralSettings {
 						moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue));
 					}
 				});
-		rightColumn.add(moveContinuousToggle);
+		movement.add(moveContinuousToggle);
 
 		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(MSG_BLINK, true,
-				"Migaj przy wiadomości na kanale prywatnym",
+				"Migaj przy nowej wiadomości",
 				"Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
-		rightColumn.add(msgBlinkToggle);
+		privateMessages.add(msgBlinkToggle);
 
 		final JCheckBox msgSoundToggle = SettingsComponentFactory.createSettingsToggle(MSG_SOUND, true,
-				"Powiadomienie dźwiękowe o prywatnej wiadomości",
+				"Powiadomienie dźwiękowe",
 				"Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
-		rightColumn.add(msgSoundToggle);
+		privateMessages.add(msgSoundToggle);
 
 		// Client dimensions
-		JComponent clientSizeBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		TitledBorder titleB = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rozmiar Klienta");
-
-		// There seems to be no good way to change the default background color
-		// of all components. The color is needed for making the etched border.
-		Style style = StyleUtil.getStyle();
-		if (style != null) {
-			clientSizeBox.setBackground(style.getPlainColor());
-			titleB.setTitleColor(style.getForeground());
-		}
-		clientSizeBox.setBorder(
-				BorderFactory.createCompoundBorder(titleB, BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
+		JComponent clientSizeBox = pages.addGroup(SettingsPages.Category.DISPLAY, "Rozmiar okna");
 
 		// Save client dimensions
 		JCheckBox saveDimensionsToggle = SettingsComponentFactory.createSettingsToggle(DIMENSIONS_PROPERTY, true,
-				"Zapisz rozmiar", "Przywróć szerokość, wysokość i maksymalizuj klienta podczas przyszłych sesji");
+				"Zapamiętaj rozmiar", "Przywraca rozmiar okna i jego zmaksymalizowanie przy kolejnym uruchomieniu gry.");
 		clientSizeBox.add(saveDimensionsToggle);
 
 		// Reset client window to default dimensions
-		JButton resetDimensions = new JButton("Zresetuj");
+		JButton resetDimensions = new JButton("Przywróć rozmiar");
 		resetDimensions.setToolTipText("Zresetuj szerokość i wysokość klienta do domyślnych wymiarów");
 		resetDimensions.setActionCommand("reset_dimensions");
 		resetDimensions.addActionListener(new ActionListener() {
@@ -221,17 +192,6 @@ class GeneralSettings {
 		});
 		resetDimensions.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		clientSizeBox.add(resetDimensions);
-
-		rightColumn.add(clientSizeBox, SLayout.EXPAND_X);
-	}
-
-	/**
-	 * Get the component containing the general settings.
-	 *
-	 * @return general settings page
-	 */
-	JComponent getComponent() {
-		return page;
 	}
 
 	private void getState(ItemEvent e, String text) {

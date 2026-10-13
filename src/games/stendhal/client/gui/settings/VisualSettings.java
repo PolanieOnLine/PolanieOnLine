@@ -23,7 +23,6 @@ import static games.stendhal.client.gui.settings.SettingsProperties.SCALE_SCREEN
 import static games.stendhal.client.gui.settings.SettingsProperties.SCALE_SCREEN_DEFAULT;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
@@ -36,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -75,15 +73,6 @@ class VisualSettings {
 
 	private static final int[] FPS_OPTIONS = new int[] { 30, 60, 90, 120, 144, 165, 240 };
 
-	/** Containers that have components to be toggled */
-	// private JPanel colorsPanel;
-
-	/** Buttons for selecting either defined styles or custom styles */
-	/*
-	 * private JRadioButton definedStyleSelector; private JRadioButton
-	 * customStyleSelector;
-	 */
-
 	/** Default decorative font. */
 	private static final String DEFAULT_FONT = "AntykwaTorunska";
 	/** Default font size. */
@@ -105,42 +94,36 @@ class VisualSettings {
 	/** Property used for toggling map coloring on. */
 	private static final String MAP_COLOR_PROPERTY = "ui.colormaps";
 
-	/** Container for the setting components. */
-	private final JComponent page;
-
 	/**
 	 * Create new StyleSettings.
 	 */
-	VisualSettings() {
-		int pad = SBoxLayout.COMMON_PADDING;
-		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+	VisualSettings(SettingsPages pages) {
+		JComponent screen = pages.addGroup(SettingsPages.Category.DISPLAY, "Ekran");
+		JComponent performance = pages.addGroup(SettingsPages.Category.DISPLAY, "Płynność");
+		JComponent style = pages.addGroup(SettingsPages.Category.APPEARANCE, "Styl");
+		JComponent world = pages.addGroup(SettingsPages.Category.APPEARANCE, "Świat gry");
+		JComponent characters = pages.addGroup(SettingsPages.Category.APPEARANCE, "Postacie i kursor");
+		JComponent fonts = pages.addGroup(SettingsPages.Category.TEXT, "Czcionki");
+		JComponent bubbles = pages.addGroup(SettingsPages.Category.TEXT, "Dymki");
+		JComponent items = pages.addGroup(SettingsPages.Category.COMBAT, "Przedmioty");
 
-		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		columns.add(leftColumn, SLayout.EXPAND_X);
-		columns.add(rightColumn, SLayout.EXPAND_X);
-		page.add(columns, SLayout.EXPAND_X);
-
-		leftColumn.add(createStyleTypeSelector(), SLayout.EXPAND_X);
-		leftColumn.add(createRenderingSelector(), SLayout.EXPAND_X);
-		leftColumn.add(createTransparencySelector(), SLayout.EXPAND_X);
-		leftColumn.add(createWindowModeSelector(), SLayout.EXPAND_X);
-		leftColumn.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
-		leftColumn.add(createFpsSelector(), SLayout.EXPAND_X);
+		style.add(createStyleTypeSelector(), SLayout.EXPAND_X);
+		JComponent advanced = SettingsComponentFactory.createSettingsGroup("Wyświetlanie interfejsu");
+		advanced.add(createRenderingSelector(), SLayout.EXPAND_X);
+		advanced.add(createTransparencySelector(), SLayout.EXPAND_X);
+		pages.addComponent(SettingsPages.Category.DISPLAY, SettingsComponentFactory.createAdvancedSection(advanced));
+		screen.add(createWindowModeSelector(), SLayout.EXPAND_X);
+		screen.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
+		performance.add(createFpsSelector(), SLayout.EXPAND_X);
 
 		final JCheckBox fpsCounterToggle = SettingsComponentFactory.createSettingsToggle(FPS_COUNTER_PROPERTY, false,
 				"Pokaż licznik FPS", "Wyświetla aktualny licznik klatek na sekundę na ekranie gry.");
-		leftColumn.add(fpsCounterToggle);
-
-		// Disable widgets not in use
-		toggleComponents(page);
+		performance.add(fpsCounterToggle);
 
 		// Lighting effects
 		JCheckBox mapColoring = SettingsComponentFactory.createSettingsToggle(MAP_COLOR_PROPERTY, true,
 				"Efekty świetlne", "Pokaż nocne światła i inne kolorowe efekty");
-		leftColumn.add(mapColoring);
+		world.add(mapColoring);
 		// Coloring setting needs a map change to take an effect, so we need to
 		// inform the player about the delayed effect.
 		mapColoring.addItemListener(new ItemListener() {
@@ -157,7 +140,7 @@ class VisualSettings {
 
 		JCheckBox weather = SettingsComponentFactory.createSettingsToggle("ui.draw_weather", true, "Pokaż pogodę",
 				"Pokazuje efekty pogodowe.");
-		leftColumn.add(weather);
+		world.add(weather);
 		weather.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -172,7 +155,7 @@ class VisualSettings {
 		// shadows
 		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true, "Pokaż cienie",
 				"Pokazuje cienie pod różnymi obiektami.");
-		leftColumn.add(shadows);
+		world.add(shadows);
 		shadows.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -188,7 +171,7 @@ class VisualSettings {
 		// blood
 		JCheckBox showBloodToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_BLOOD, true,
 				"Pokaż krew i zwłoki", "Pokazuje plamy krwi podczas uderzenia w walce i zwłoki.");
-		rightColumn.add(showBloodToggle);
+		world.add(showBloodToggle);
 		// Inform players that some images won-t update until after client is restarted.
 		// FIXME: Can't images be updated via map change?
 		showBloodToggle.addItemListener(new ItemListener() {
@@ -206,7 +189,7 @@ class VisualSettings {
 		// no nude
 		JCheckBox noNudeToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_NONUDE, true,
 				"Pokaż bieliznę", "\"Nagie\" postacie zostaną pokryte bielizną.");
-		rightColumn.add(noNudeToggle);
+		characters.add(noNudeToggle);
 		noNudeToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -222,7 +205,7 @@ class VisualSettings {
 		// classic cursor
 		JCheckBox cursorClassicToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CURSORCLASSIC, false,
 				"Pokaż klasyczny kursor", "Klasyczny wygląd kursora.");
-		rightColumn.add(cursorClassicToggle);
+		characters.add(cursorClassicToggle);
 		cursorClassicToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -238,7 +221,7 @@ class VisualSettings {
 		// show creature speech bubbles
 		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH,
 				true, "Pokaż dymki potworów", "Pokazuje dymki z tekstem potworów w ekranie klienta");
-		rightColumn.add(showCreatureSpeechToggle);
+		bubbles.add(showCreatureSpeechToggle);
 		showCreatureSpeechToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -251,9 +234,9 @@ class VisualSettings {
 		});
 
 		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, SCALE_SCREEN_DEFAULT,
-				"Skaluj widok, aby pasował do okna",
-				"<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
-		rightColumn.add(scaleScreenToggle);
+				"Dopasuj widok gry do okna",
+				"Skaluje widok gry do dostępnego miejsca. Wyłącz, aby zachować oryginalny rozmiar grafiki.");
+		screen.add(scaleScreenToggle);
 		scaleScreenToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -274,12 +257,12 @@ class VisualSettings {
 				StatsPanelController.get().toggleHPBar(e.getStateChange() == ItemEvent.SELECTED);
 			}
 		});
-		rightColumn.add(showHPBarToggle);
+		characters.add(showHPBarToggle);
 
 		final JCheckBox showRebornBadgesToggle = SettingsComponentFactory.createSettingsToggle(
 				REBORN_BADGES_PROPERTY, true, "Pokaż odznaki odrodzeń",
 				"Pokazuje tarczę z liczbą odrodzeń przy nazwach wszystkich graczy.");
-		rightColumn.add(showRebornBadgesToggle);
+		characters.add(showRebornBadgesToggle);
 		showRebornBadgesToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
@@ -301,10 +284,12 @@ class VisualSettings {
 						"Zmiany zaczną działać po ponownym uruchomieniu klienta.", NotificationType.CLIENT));
 			}
 		});
-		rightColumn.add(overrideSystemFontAA);
+		fonts.add(createFontSizeSelector(), SLayout.EXPAND_X);
+		fonts.add(overrideSystemFontAA);
+		fonts.add(createFontSelector(), SLayout.EXPAND_X);
 
 		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, true,
-				"Ruchome dymki chatu", "Dymki chatu podążają za graczem i innymi obiektami.");
+				"Ruchome dymki czatu", "Dymki czatu podążają za graczem i innymi obiektami.");
 		chatBubblesToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
@@ -315,26 +300,13 @@ class VisualSettings {
 						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
-		rightColumn.add(chatBubblesToggle);
+		bubbles.add(chatBubblesToggle);
 
 		final JCheckBox itemTooltipComparisonToggle = SettingsComponentFactory.createSettingsToggle(
 				ITEM_TOOLTIP_COMPARISON_PROPERTY, true,
 				"Porównuj statystyki przedmiotów",
-				"Pokazuje w tooltipie różnice względem aktualnie założonego przedmiotu.");
-		rightColumn.add(itemTooltipComparisonToggle);
-
-		// Font stuff
-		rightColumn.add(createFontSizeSelector());
-		rightColumn.add(createFontSelector(), SLayout.EXPAND_X);
-	}
-
-	/**
-	 * Get the component containing the style settings.
-	 *
-	 * @return style settings page
-	 */
-	JComponent getComponent() {
-		return page;
+				"Pokazuje w opisie różnice względem aktualnie założonego przedmiotu.");
+		items.add(itemTooltipComparisonToggle);
 	}
 
 	/**
@@ -375,9 +347,6 @@ class VisualSettings {
 	 * @return component holding the selector and the related label
 	 */
 	private JComponent createTransparencySelector() {
-		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		JLabel label = new JLabel("Tryb przezroczystości:");
-		row.add(label);
 		final JComboBox<String> selector = new JComboBox<>();
 		final String[][] data = {
 				{ "Automatyczny (domyślny)", "auto",
@@ -423,7 +392,6 @@ class VisualSettings {
 								NotificationType.CLIENT));
 			}
 		});
-		row.add(selector);
 
 		StringBuilder toolTip = new StringBuilder("<html>Tryb przeźroczystości użyty dla grafiki. Dostępne opcje:<dl>");
 		for (String[] optionData : data) {
@@ -435,29 +403,9 @@ class VisualSettings {
 			toolTip.append("</dd>");
 		}
 		toolTip.append("</dl></html>");
-		row.setToolTipText(toolTip.toString());
 		selector.setToolTipText(toolTip.toString());
 
-		return row;
-	}
-
-	/**
-	 * Disables widgets not being used.
-	 *
-	 * @param container the container to look within
-	 */
-	private void toggleComponents(Container container) {
-		/*
-		 * boolean custom = false; if (this.customStyleSelector.isSelected()) { custom =
-		 * true; }
-		 * 
-		 * Component[] components = container.getComponents();
-		 * 
-		 * for (Component c : components) { if (c.getName() == "defined") {
-		 * c.setEnabled(!custom); } else if (c.getName() == "custom") {
-		 * c.setEnabled(custom); } if (c instanceof Container) {
-		 * toggleComponents((Container) c); } }
-		 */
+		return SettingsComponentFactory.createSettingsRow("Przezroczystość:", selector);
 	}
 
 	/**
@@ -466,8 +414,6 @@ class VisualSettings {
 	 * @return layout for styles widgets
 	 */
 	private JComponent createDisplaySizeSelector() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		JLabel label = new JLabel("Rozdzielczość obszaru gry:");
 		final JComboBox<DisplaySizeOption> combo = new JComboBox<DisplaySizeOption>();
 		final List<Dimension> sizes = stendhal.getAvailableDisplaySizes();
 		int maxIndex = Math.max(0, sizes.size() - 1);
@@ -479,7 +425,6 @@ class VisualSettings {
 		}
 		combo.setSelectedIndex(MathHelper.clamp(currentIndex, 0, combo.getItemCount() - 1));
 		combo.setToolTipText("Określ szerokość i wysokość pola gry w pikselach.");
-		label.setToolTipText(combo.getToolTipText());
 		combo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -490,10 +435,7 @@ class VisualSettings {
 				}
 			}
 		});
-		container.add(label);
-		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
-		container.add(combo);
-		return container;
+		return SettingsComponentFactory.createSettingsRow("Obszar gry:", combo);
 	}
 
 	/**
@@ -502,13 +444,9 @@ class VisualSettings {
 	 * @return row containing the client window mode selector
 	 */
 	private JComponent createWindowModeSelector() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
-				SBoxLayout.COMMON_PADDING);
-		JLabel label = new JLabel("Tryb wyświetlania gry");
 		final JComboBox<WindowMode> combo = new JComboBox<WindowMode>(WindowMode.values());
 		combo.setSelectedItem(WindowModeController.getConfiguredMode());
 		combo.setToolTipText("Wybierz okno, pełny ekran w oknie lub pełny ekran");
-		label.setToolTipText(combo.getToolTipText());
 		combo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -526,10 +464,7 @@ class VisualSettings {
 				}
 			}
 		});
-		container.add(label);
-		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
-		container.add(combo);
-		return container;
+		return SettingsComponentFactory.createSettingsRow("Tryb wyświetlania:", combo);
 	}
 
 	private static final class DisplaySizeOption {
@@ -552,8 +487,6 @@ class VisualSettings {
 	}
 
 	private JComponent createFpsSelector() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		JLabel label = new JLabel("Limit liczby klatek na sekundę:");
 		final JComboBox<Integer> combo = new JComboBox<Integer>();
 		int configured = Math.max(1,
 				WtWindowManager.getInstance().getPropertyInt(FPS_LIMIT_PROPERTY, stendhal.getFpsLimit()));
@@ -579,81 +512,13 @@ class VisualSettings {
 				}
 			}
 		});
-		container.add(label);
-		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
-		container.add(combo);
-		return container;
+		return SettingsComponentFactory.createSettingsRow("Limit klatek na sekundę:", combo);
 	}
 
 	private JComponent createStyleTypeSelector() {
-		int pad = SBoxLayout.COMMON_PADDING;
-
-		// Styles
-		JComponent styleBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		/*
-		 * styleBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.
-		 * createEtchedBorder(), BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
-		 * // Button group for selecting between defined and custom styles
-		 * definedStyleSelector = new JRadioButton("Use a pre-defined style", true);
-		 * customStyleSelector = new JRadioButton("Use a custom style"); ButtonGroup
-		 * styleTypeSelection = new ButtonGroup();
-		 * 
-		 * // Defined style selector styleTypeSelection.add(definedStyleSelector);
-		 */
-		JComponent definedStylesHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JLabel selectorLabel = new JLabel("Styl klienta:");
-		selectorLabel.setName("defined");
-		definedStylesHBox.add(selectorLabel);
 		JComponent selector = createStyleSelector();
-		selector.setName("defined");
-		definedStylesHBox.add(selector);
-		definedStylesHBox.setToolTipText("<html>Styl użyty do narysowania kontrolek w kliencie gry."
-				+ "<p>Wpływa to tylko na wygląd i nie zmienia zachowania gry.</html>");
-		/*
-		 * styleBox.add(definedStyleSelector);
-		 */
-		styleBox.add(definedStylesHBox);
-		/*
-		 * // Custom style options styleTypeSelection.add(customStyleSelector);
-		 * styleBox.add(customStyleSelector);
-		 * 
-		 * // Text and border colors final JPanel colorsPanel = new JPanel();
-		 * colorsPanel.setName("custom"); colorsPanel.setLayout(new GridLayout(2, 1));
-		 * List<JLabel> colorLabels = Arrays.asList( new JLabel("Text"), new
-		 * JLabel("Hightlight"), new JLabel("Shadow"), new JLabel("Border Color 1"), new
-		 * JLabel("Border Color 2"), new JLabel("Border Color 3"), new
-		 * JLabel("Border Color 4") ); int ccount; List<ColorSelector> colorButtons =
-		 * Arrays.asList( new ColorSelector(), new ColorSelector(), new ColorSelector(),
-		 * new ColorSelector(), new ColorSelector(), new ColorSelector(), new
-		 * ColorSelector() ); for (ccount = 0; ccount < colorLabels.size(); ccount++) {
-		 * colorsPanel.add(colorLabels.get(ccount)); } for (ccount = 0; ccount <
-		 * colorButtons.size(); ccount++) { colorsPanel.add(colorButtons.get(ccount)); }
-		 * 
-		 * styleBox.add(colorsPanel);
-		 * 
-		 * // Background image JLabel bgSelectorText = new JLabel("Background image");
-		 * bgSelectorText.setName("custom"); JButton bgSelectorButton = new
-		 * JButton("..."); bgSelectorButton.setName("custom"); JTextField
-		 * bgSelectorInput = new JTextField(); bgSelectorInput.setName("custom");
-		 * JComponent bgSelectorHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
-		 * pad); bgSelectorHBox.add(bgSelectorButton);
-		 * bgSelectorHBox.add(bgSelectorInput);
-		 * 
-		 * styleBox.add(bgSelectorText); styleBox.add(bgSelectorHBox);
-		 * 
-		 * bgSelectorButton.addActionListener( new ActionListener() { public void
-		 * actionPerformed(ActionEvent event) { selectBGImage(); } });
-		 * 
-		 * styleBox.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
-		 * 
-		 * // Add event handlers for the style selector radio buttons
-		 * definedStyleSelector.addActionListener( new ActionListener() { public void
-		 * actionPerformed(ActionEvent event) { toggleComponents(page);
-		 * toggleComponents(colorsPanel); } }); customStyleSelector.addActionListener(
-		 * new ActionListener() { public void actionPerformed(ActionEvent event) {
-		 * toggleComponents(page); toggleComponents(colorsPanel); } });
-		 */
-		return styleBox;
+		selector.setToolTipText("Zmienia wygląd okien i przycisków, bez zmiany działania gry.");
+		return SettingsComponentFactory.createSettingsRow("Wygląd klienta:", selector);
 	}
 
 	/**
@@ -731,20 +596,8 @@ class VisualSettings {
 			}
 		});
 
-		int pad = SBoxLayout.COMMON_PADDING;
-		JComponent renderingBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-
-		JComponent definedRenderingHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JLabel selectorLabel = new JLabel("Renderowanie UI:");
-		selectorLabel.setName("");
-		definedRenderingHBox.add(selectorLabel);
-		selector.setName("");
-		definedRenderingHBox.add(selector);
-		definedRenderingHBox.setToolTipText("<html>Metoda renderowania używana do rysowania klienta gry.</html>");
-
-		renderingBox.add(definedRenderingHBox);
-
-		return renderingBox;
+		selector.setToolTipText("Sposób rysowania okien i przycisków klienta gry.");
+		return SettingsComponentFactory.createSettingsRow("Rysowanie interfejsu:", selector);
 	}
 
 	/**
@@ -753,9 +606,6 @@ class VisualSettings {
 	 * @return component containing the selector
 	 */
 	private JComponent createFontSizeSelector() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		container.add(new JLabel("Rozmiar czcionki:"));
-
 		final JComboBox<Object> selector = new JComboBox<>();
 
 		// Fill the selector, and set current size as the selection
@@ -785,9 +635,8 @@ class VisualSettings {
 				}
 			}
 		});
-		container.add(selector);
-		container.setToolTipText("Domyślny rozmiar czcionki");
-		return container;
+		selector.setToolTipText("Rozmiar czcionki w oknach klienta.");
+		return SettingsComponentFactory.createSettingsRow("Rozmiar czcionki:", selector);
 	}
 
 	/**
@@ -808,16 +657,14 @@ class VisualSettings {
 			fontBox.setBackground(style.getPlainColor());
 		}
 
-		JCheckBox fontToggle = new JCheckBox("Niestandardowa czcionka dekoracyjna");
+		JCheckBox fontToggle = new JCheckBox("Czcionka dekoracyjna");
 		fontToggle.setToolTipText("Ustawia niestandardową czcionkę dla dziennika podróży i osiągnięć");
 		fontBox.add(fontToggle);
 
-		JComponent fontRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		SBoxLayout.addSpring(fontRow);
-		fontBox.add(fontRow, SLayout.EXPAND_X);
-		final JLabel label = new JLabel("Czcionka:");
-		fontRow.add(label);
 		final JComboBox<String> fontList = new JComboBox<>();
+		JComponent fontRow = SettingsComponentFactory.createSettingsRow("Czcionka:", fontList);
+		final JLabel label = (JLabel) fontRow.getComponent(0);
+		fontBox.add(fontRow, SLayout.EXPAND_X);
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		for (String font : ge.getAvailableFontFamilyNames()) {
 			fontList.addItem(font);
@@ -825,7 +672,6 @@ class VisualSettings {
 		// Show the user what's in use at the moment
 		String font = WtWindowManager.getInstance().getProperty(FONT_PROPERTY, DEFAULT_FONT);
 		fontList.setSelectedItem(font);
-		fontRow.add(fontList);
 
 		// Detect if the font property had been changed from the default.
 		boolean changed = fontChanged();
