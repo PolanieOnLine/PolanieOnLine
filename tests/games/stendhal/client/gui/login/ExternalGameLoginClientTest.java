@@ -15,6 +15,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import games.stendhal.client.update.ClientGameConfiguration;
+
 /** Exercises both desktop protocols without accessing real accounts or networks. */
 public class ExternalGameLoginClientTest {
 	private static final String ID = "11111111-2222-3333-4444-555555555555";
@@ -23,6 +25,11 @@ public class ExternalGameLoginClientTest {
 	private String startResponse(final String verificationUrl) {
 		return "{\"id\":\"" + ID + "\",\"secret\":\"" + SECRET
 				+ "\",\"code\":\"0123456789\",\"expires_in\":600,\"verification_url\":\"" + verificationUrl + "\"}";
+	}
+
+	@Test
+	public void desktopLoginUsesTheCanonicalWebsiteWithoutRedirects() {
+		assertEquals("https://polanieonline.eu", ClientGameConfiguration.get("STEAM_LOGIN_SITE"));
 	}
 
 	@Test
