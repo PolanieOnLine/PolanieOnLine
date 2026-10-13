@@ -18,7 +18,6 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -50,9 +49,6 @@ class SoundSettings {
 	/** Default value of the sound device property. */
 	private static final String DEFAULT_DEVICE = "auto - rekomendowane";
 
-	/** Container for the setting components. */
-	private final JComponent page;
-
 	/**
 	 * Container for the volume sliders. Exist to help turning them all, and their
 	 * labels easily on or off.
@@ -62,52 +58,44 @@ class SoundSettings {
 	/**
 	 * Create sound settings page.
 	 */
-	SoundSettings() {
+	SoundSettings(SettingsPages pages) {
 		int pad = SBoxLayout.COMMON_PADDING;
-		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+		JComponent playback = pages.addGroup(SettingsPages.Category.AUDIO, "Odtwarzanie");
+		JComponent volumes = pages.addGroup(SettingsPages.Category.AUDIO, "Głośność");
 
-		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		columns.add(leftColumn, SLayout.EXPAND_X);
-		columns.add(rightColumn, SLayout.EXPAND_X);
-		page.add(columns, SLayout.EXPAND_X);
-
-		JCheckBox muteToggle = new JCheckBox("Odtwórz dźwięki");
+		JCheckBox muteToggle = new JCheckBox("Włącz dźwięk");
 		boolean soundOn = WtWindowManager.getInstance().getPropertyBoolean(SOUND_PROPERTY, true);
 		muteToggle.setSelected(soundOn);
 		muteToggle.addItemListener(new MuteListener());
-		leftColumn.add(muteToggle);
+		playback.add(muteToggle);
 
 		// Device selector
-		JComponent hbox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		JComponent selectorLabel = new JLabel("Urządzenie dźwięku:");
-		hbox.add(selectorLabel);
 		JComponent selector = createDeviceSelector();
-		hbox.add(selector);
+		JComponent hbox = SettingsComponentFactory.createSettingsRow("Urządzenie:", selector);
+		JComponent selectorLabel = (JComponent) hbox.getComponent(0);
 		selector.setToolTipText("<html>Wyjściowe urządzenie dźwięku. <b>auto</b> powinno"
 				+ " działać u większości osób,<br>ale wypróbuj inne jeżeli nie możesz otrzymać"
 				+ " zadowalającego dźwięku</html>");
 		sliderComponents.add(selectorLabel);
 		sliderComponents.add(selector);
-		leftColumn.add(hbox);
+		playback.add(hbox, SLayout.EXPAND_X);
 
 		// Sliders for the sound channels
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
-		JLabel label = new JLabel("Główny");
+		volumes.add(row, SLayout.EXPAND_X);
+		JLabel label = new JLabel("Główna");
 		row.add(label);
 		SBoxLayout.addSpring(row);
 		JSlider masterVolume = createMasterVolumeSlider();
-		masterVolume.setToolTipText("Głośność wszystki kanałów dźwięku");
+		masterVolume.setToolTipText("Głośność wszystkich kanałów dźwięku");
 		row.add(masterVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(masterVolume);
+		addVolumeValue(row, label, masterVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
-		label = new JLabel("GUI");
+		volumes.add(row, SLayout.EXPAND_X);
+		label = new JLabel("Interfejs");
 		row.add(label);
 		SBoxLayout.addSpring(row);
 		JSlider guiVolume = createVolumeSlider("gui");
@@ -115,9 +103,10 @@ class SoundSettings {
 		row.add(guiVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(guiVolume);
+		addVolumeValue(row, label, guiVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
+		volumes.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Efekty");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -126,9 +115,10 @@ class SoundSettings {
 		row.add(effectsVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(effectsVolume);
+		addVolumeValue(row, label, effectsVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
+		volumes.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Potwory");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -137,9 +127,10 @@ class SoundSettings {
 		row.add(creaturesVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(creaturesVolume);
+		addVolumeValue(row, label, creaturesVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
+		volumes.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Otoczenie");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -147,9 +138,10 @@ class SoundSettings {
 		row.add(ambientVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(ambientVolume);
+		addVolumeValue(row, label, ambientVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		leftColumn.add(row, SLayout.EXPAND_X);
+		volumes.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Muzyka");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -158,6 +150,7 @@ class SoundSettings {
 		row.add(musicVolume);
 		sliderComponents.add(label);
 		sliderComponents.add(musicVolume);
+		addVolumeValue(row, label, musicVolume);
 
 		// Disable the sliders if the sound is off
 		for (JComponent comp : sliderComponents) {
@@ -165,13 +158,20 @@ class SoundSettings {
 		}
 	}
 
-	/**
-	 * Get the component containing the sound settings.
-	 *
-	 * @return sound settings page
-	 */
-	JComponent getComponent() {
-		return page;
+	private void addVolumeValue(JComponent row, JLabel label, JSlider slider) {
+		label.setLabelFor(slider);
+		JLabel value = new JLabel(slider.getValue() + "%") {
+			private static final long serialVersionUID = 1L;
+			@Override public java.awt.Dimension getPreferredSize() {
+				java.awt.Dimension size = super.getPreferredSize();
+				size.width = getFontMetrics(getFont()).stringWidth("100%");
+				return size;
+			}
+		};
+		value.setHorizontalAlignment(JLabel.RIGHT);
+		row.add(value);
+		sliderComponents.add(value);
+		slider.addChangeListener(event -> value.setText(slider.getValue() + "%"));
 	}
 
 	/**
