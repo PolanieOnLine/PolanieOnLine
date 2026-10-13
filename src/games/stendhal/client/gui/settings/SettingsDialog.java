@@ -53,6 +53,7 @@ public class SettingsDialog extends JDialog {
 		JButton closeButton = new JButton("Zamknij");
 		closeButton.addActionListener(event -> dispose());
 		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+		buttons.setBorder(BorderFactory.createEmptyBorder());
 		buttons.add(closeButton);
 		footer.add(buttons, BorderLayout.EAST);
 		add(footer, BorderLayout.SOUTH);
