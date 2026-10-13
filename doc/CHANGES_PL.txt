@@ -45,6 +45,7 @@
 
 *klient gry*
 ---
+* Dodano logowanie przez Google i Steam w kliencie Java. Konto można połączyć na stronie gry
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry

@@ -12,11 +12,24 @@ import java.nio.charset.StandardCharsets;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-/** Website bridge for Steam authentication in the desktop client. */
-final class SteamGameLoginClient {
+/** Website bridge for confirmed Google and Steam authentication in the desktop client. */
+final class ExternalGameLoginClient {
 	private final URI site;
+	private final ExternalLoginProvider provider;
+	private final ConnectionFactory connections;
 
-	SteamGameLoginClient(final String siteUrl) throws IOException {
+	interface ConnectionFactory {
+		HttpURLConnection open(URL url) throws IOException;
+	}
+
+	ExternalGameLoginClient(final String siteUrl, final ExternalLoginProvider provider) throws IOException {
+		this(siteUrl, provider, url -> (HttpURLConnection) url.openConnection());
+	}
+
+	ExternalGameLoginClient(final String siteUrl, final ExternalLoginProvider provider,
+			final ConnectionFactory connections) throws IOException {
+		this.provider = provider;
+		this.connections = connections;
 		try {
 			site = URI.create(siteUrl);
 			if (!"https".equalsIgnoreCase(site.getScheme()) || site.getHost() == null
@@ -24,12 +37,12 @@ final class SteamGameLoginClient {
 				throw new IllegalArgumentException("Invalid HTTPS site URL");
 			}
 		} catch (IllegalArgumentException exception) {
-			throw new IOException("Nieprawidłowy adres strony logowania Steam.", exception);
+			throw new IOException("Nieprawidłowy adres strony logowania " + provider.label + ".", exception);
 		}
 	}
 
 	StartResult start() throws IOException {
-		final JSONObject response = post("/api/v1/auth/game-steam/start", "{}", 201);
+		final JSONObject response = post(provider.apiPath() + "/start", "{}", 201);
 		final String id = requiredString(response, "id");
 		final String secret = requiredString(response, "secret");
 		final String code = requiredString(response, "code");
@@ -43,27 +56,29 @@ final class SteamGameLoginClient {
 		final URI verification = URI.create(verificationUrl);
 		if (!"https".equalsIgnoreCase(verification.getScheme())
 				|| !site.getHost().equalsIgnoreCase(verification.getHost())
-				|| verification.getUserInfo() != null) {
+				|| effectivePort(site) != effectivePort(verification)
+				|| verification.getUserInfo() != null
+				|| !verification.getPath().equals("/auth/external/" + provider.id + "/redirect")) {
 			throw new IOException("Strona zwróciła nieprawidłowy adres logowania.");
 		}
 		return new StartResult(id, secret, code, verificationUrl, ((Number) lifetime).longValue());
 	}
 
 	Credentials poll(final StartResult request) throws IOException {
-		final HttpResult result = postRaw("/api/v1/auth/game-steam/" + request.id + "/poll",
+		final HttpResult result = postRaw(provider.apiPath() + "/" + request.id + "/poll",
 				"{\"secret\":\"" + request.secret + "\"}");
 		if (result.status == 202) {
 			return null;
 		}
 		if (result.status == 410) {
-			throw new IOException("Czas logowania przez Steam minął. Spróbuj ponownie.");
+			throw new IOException("Czas logowania przez " + provider.label + " minął. Spróbuj ponownie.");
 		}
 		if (result.status == 403) {
 			final Object message = result.body.get("message");
-			throw new IOException(message instanceof String ? (String) message : "Logowanie przez Steam zostało odrzucone.");
+			throw new IOException(message instanceof String ? (String) message : "Logowanie przez " + provider.label + " zostało odrzucone.");
 		}
 		if (result.status != 200) {
-			throw new IOException("Nie udało się potwierdzić logowania Steam (HTTP " + result.status + ").");
+			throw new IOException("Nie udało się potwierdzić logowania " + provider.label + " (HTTP " + result.status + ").");
 		}
 		final String username = requiredString(result.body, "username");
 		final String seed = requiredString(result.body, "seed");
@@ -76,14 +91,16 @@ final class SteamGameLoginClient {
 	private JSONObject post(final String path, final String body, final int expectedStatus) throws IOException {
 		final HttpResult result = postRaw(path, body);
 		if (result.status != expectedStatus) {
-			throw new IOException("Usługa logowania Steam jest niedostępna (HTTP " + result.status + ").");
+			final Object message = result.body.get("message");
+			throw new IOException(message instanceof String ? (String) message
+					: "Usługa logowania " + provider.label + " jest niedostępna (HTTP " + result.status + ").");
 		}
 		return result.body;
 	}
 
 	private HttpResult postRaw(final String path, final String body) throws IOException {
 		final URL url = site.resolve(path).toURL();
-		final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		final HttpURLConnection connection = connections.open(url);
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Accept", "application/json");
 		connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
@@ -116,9 +133,13 @@ final class SteamGameLoginClient {
 	private static String requiredString(final JSONObject object, final String key) throws IOException {
 		final Object value = object.get(key);
 		if (!(value instanceof String) || ((String) value).isEmpty()) {
-			throw new IOException("Niepełna odpowiedź strony logowania Steam.");
+			throw new IOException("Niepełna odpowiedź strony logowania.");
 		}
 		return (String) value;
+	}
+
+	private static int effectivePort(final URI uri) {
+		return uri.getPort() == -1 ? 443 : uri.getPort();
 	}
 
 	static final class StartResult {
