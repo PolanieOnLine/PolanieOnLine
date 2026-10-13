@@ -12,6 +12,7 @@
 package games.stendhal.client.gui.login;
 
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URI;
+import java.util.function.BooleanSupplier;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -89,6 +92,13 @@ public class LoginDialog extends JDialog {
 
 	private JButton loginButton;
 
+	private JButton steamButton;
+	private JButton googleButton;
+
+	private JLabel externalStatusLabel;
+
+	private volatile boolean externalLoginRunning;
+
 	private JButton removeButton;
 
 	private final StendhalClient client;
@@ -104,16 +114,21 @@ public class LoginDialog extends JDialog {
 	 * @param client client
 	 */
 	public LoginDialog(final Frame owner, final StendhalClient client) {
+		this(owner, client, true);
+	}
+
+	/** Allows layout tests to avoid reading the user's saved login profiles. */
+	LoginDialog(final Frame owner, final StendhalClient client, final boolean loadSavedProfiles) {
 		super(owner, true);
 		this.client = client;
-		initializeComponent();
+		initializeComponent(loadSavedProfiles);
 		WindowUtils.closeOnEscape(this);
 	}
 
 	/**
 	 * Create the dialog contents.
 	 */
-	private void initializeComponent() {
+	private void initializeComponent(final boolean loadSavedProfiles) {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		if (getOwner() != null) {
 			addWindowListener(new WindowAdapter() {
@@ -289,11 +304,31 @@ public class LoginDialog extends JDialog {
 		buttonBox.add(loginButton);
 
 		c.gridx = 1;
-		c.gridy = 5;
-		c.gridheight = 2;
+		c.gridy = 6;
+		c.gridheight = 1;
 		c.anchor = GridBagConstraints.LAST_LINE_END;
 		c.insets = new Insets(0, 0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING);
 		contentPane.add(buttonBox, c);
+
+		final ExternalLoginButtons providers = new ExternalLoginButtons(
+				event -> externalButtonActionPerformed(ExternalLoginProvider.GOOGLE),
+				event -> externalButtonActionPerformed(ExternalLoginProvider.STEAM));
+		googleButton = providers.google;
+		steamButton = providers.steam;
+		c.gridx = 1;
+		c.gridy = 5;
+		c.gridheight = 1;
+		c.insets = new Insets(0, 4, 4, 4);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		contentPane.add(providers, c);
+
+		externalStatusLabel = new JLabel();
+		externalStatusLabel.setVisible(false);
+		c.gridx = 0;
+		c.gridwidth = 2;
+		c.gridy = 7;
+		c.insets = new Insets(2, 4, 4, 4);
+		contentPane.add(externalStatusLabel, c);
 
 		// Before loading profiles so that we can catch the data filled from
 		// there
@@ -302,7 +337,7 @@ public class LoginDialog extends JDialog {
 		/*
 		 * Load saved profiles
 		 */
-		profiles = loadProfiles();
+		profiles = loadSavedProfiles ? loadProfiles() : new ProfileList();
 		populateProfiles(profiles);
 
 		/*
@@ -326,7 +361,7 @@ public class LoginDialog extends JDialog {
 	 * Prepare the field validator and bind it to the relevant text fields.
 	 */
 	private void bindEditListener() {
-		fieldValidator = new DataValidator(loginButton,
+		fieldValidator = new DataValidator(loginButton, () -> isEnabled() && !externalLoginRunning,
 				serverField.getDocument(), serverPortField.getDocument(),
 				usernameField.getDocument(), passwordField.getDocument());
 	}
@@ -359,7 +394,7 @@ public class LoginDialog extends JDialog {
 	 */
 	private void loginButtonActionPerformed() {
 		// If this window isn't enabled, we shouldn't act.
-		if (!isEnabled()) {
+		if (!isEnabled() || externalLoginRunning) {
 			return;
 		}
 		setEnabled(false);
@@ -447,6 +482,94 @@ public class LoginDialog extends JDialog {
 		setEnabled(true);
 	}
 
+	private void externalButtonActionPerformed(final ExternalLoginProvider provider) {
+		if (!isEnabled() || externalLoginRunning) {
+			return;
+		}
+		final String host = serverField.getText().trim();
+		final String defaultHost = ClientGameConfiguration.get("DEFAULT_SERVER");
+		final int port;
+		try {
+			port = Integer.parseInt(serverPortField.getText().trim());
+		} catch (NumberFormatException exception) {
+			JOptionPane.showMessageDialog(this, "Nieprawidłowy port serwera.", "Logowanie " + provider.label, JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		if (!host.equalsIgnoreCase(defaultHost)
+				|| port != Integer.parseInt(ClientGameConfiguration.get("DEFAULT_PORT"))) {
+			JOptionPane.showMessageDialog(this, "Logowanie " + provider.label + " jest dostępne tylko na oficjalnym serwerze.",
+					"Logowanie " + provider.label, JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
+		externalLoginRunning = true;
+		steamButton.setEnabled(false);
+		googleButton.setEnabled(false);
+		loginButton.setEnabled(false);
+		externalStatusLabel.setText("Łączę się ze stroną...");
+		externalStatusLabel.setVisible(true);
+		pack();
+		final Thread worker = new Thread(() -> {
+			try {
+				final ExternalGameLoginClient website = new ExternalGameLoginClient(
+						ClientGameConfiguration.get("STEAM_LOGIN_SITE"), provider);
+				final ExternalGameLoginClient.StartResult request = website.start();
+				if (!isDisplayable()) return;
+				SwingUtilities.invokeLater(() -> {
+					if (isDisplayable()) {
+						externalStatusLabel.setText("Kod " + provider.label + " do wpisania na stronie: " + request.code);
+						pack();
+					}
+				});
+				if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+					throw new IOException("Nie można otworzyć systemowej przeglądarki.");
+				}
+				Desktop.getDesktop().browse(URI.create(request.verificationUrl));
+				final long deadline = System.currentTimeMillis() + request.expiresInSeconds * 1000L;
+				while (System.currentTimeMillis() < deadline && isDisplayable()) {
+					Thread.sleep(3000L);
+					if (!isDisplayable()) return;
+					final ExternalGameLoginClient.Credentials credentials = website.poll(request);
+					if (credentials != null) {
+						if (!isDisplayable()) {
+							return;
+						}
+						SwingUtilities.invokeLater(() -> externalStatusLabel.setText("Logowanie do gry..."));
+						final Profile profile = new Profile();
+						profile.setHost(host);
+						profile.setPort(port);
+						profile.setUser(credentials.username);
+						profile.setPassword("");
+						profile.setSeed(credentials.seed);
+						connect(profile);
+						return;
+					}
+				}
+				if (isDisplayable()) {
+					throw new IOException("Czas logowania " + provider.label + " minął. Spróbuj ponownie.");
+				}
+			} catch (IOException | InterruptedException | RuntimeException exception) {
+				if (isDisplayable()) {
+					SwingUtilities.invokeLater(() -> {
+						externalStatusLabel.setText("Nie udało się zalogować przez " + provider.label + ".");
+						JOptionPane.showMessageDialog(this, exception.getMessage(), "Logowanie " + provider.label, JOptionPane.ERROR_MESSAGE);
+					});
+				}
+			} finally {
+				externalLoginRunning = false;
+				SwingUtilities.invokeLater(() -> {
+					if (isDisplayable()) {
+						steamButton.setEnabled(isEnabled());
+						googleButton.setEnabled(isEnabled());
+						fieldValidator.revalidate();
+					}
+				});
+			}
+		}, provider.label + " login");
+		worker.setDaemon(true);
+		worker.start();
+	}
+
 	private void setCurrentProfileAsDefault() {
 		final int currentIndex = profilesComboBox.getSelectedIndex();
 		if (currentIndex >= 0) {
@@ -458,8 +581,12 @@ public class LoginDialog extends JDialog {
 	public void setEnabled(final boolean b) {
 		super.setEnabled(b);
 		// Enabling login button is conditional
-		fieldValidator.revalidate();
-		removeButton.setEnabled(b);
+		if (fieldValidator != null) fieldValidator.revalidate();
+		if (removeButton != null) removeButton.setEnabled(b);
+		if (steamButton != null) {
+			steamButton.setEnabled(b && !externalLoginRunning);
+		}
+		if (googleButton != null) googleButton.setEnabled(b && !externalLoginRunning);
 	}
 
 	/**
@@ -536,7 +663,8 @@ public class LoginDialog extends JDialog {
 					"Błąd logowania");
 		} catch (final LoginFailedException e) {
 			handleError(e.getMessage(), "Nie powiodło się logowanie");
-			if (e.getReason() == MessageS2CLoginNACK.Reasons.SEED_WRONG) {
+			if (e.getReason() == MessageS2CLoginNACK.Reasons.SEED_WRONG
+					&& (profile.getSeed() == null || !profile.getSeed().startsWith("S_"))) {
 				System.exit(1);
 			}
 		} catch (final BannedAddressException e) {
@@ -660,6 +788,7 @@ public class LoginDialog extends JDialog {
 	private static class DataValidator implements DocumentListener {
 		private final Document[] documents;
 		private final JComponent component;
+		private final BooleanSupplier canLogin;
 
 		/**
 		 * Create a new DataValidator.
@@ -668,8 +797,9 @@ public class LoginDialog extends JDialog {
 		 *  documents
 		 * @param docs documents
 		 */
-		DataValidator(JComponent component, Document... docs) {
+		DataValidator(JComponent component, BooleanSupplier canLogin, Document... docs) {
 			this.component = component;
+			this.canLogin = canLogin;
 			documents = docs;
 			for (Document doc : docs) {
 				doc.addDocumentListener(this);
@@ -699,6 +829,10 @@ public class LoginDialog extends JDialog {
 		 * to the result.
 		 */
 		final void revalidate() {
+			if (!canLogin.getAsBoolean()) {
+				component.setEnabled(false);
+				return;
+			}
 			for (Document doc : documents) {
 				if (doc.getLength() == 0) {
 					component.setEnabled(false);
