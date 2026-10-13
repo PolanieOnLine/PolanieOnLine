@@ -390,19 +390,19 @@ public class KanmararnSoldiers extends AbstractQuest {
 		// quest related stuff
 		james.addHelp("Pomyśl potrzebuję małej pomocy. Moja #drużyna została wybita, a #jeden uciekł. Nie dobrze, bo on miał #mapę.");
 		james.addQuest("Znajdź mojego zaginionego żołnierza i przyprowadź go do mnie ... lub przynieś mi #mapę, która ma przy sobie.");
-		james.addReply(Arrays.asList("group", "drużna"),
+		james.addReply(Arrays.asList("group", "drużna", "drużyna", "drużyny", "drużynę", "drużynie"),
 			"Było nas pięciu, trzech z nas nie żyje. Pewnie widziałeś ich zwłoki.");
 		james.addReply(Arrays.asList("one", "henry", "jeden"),
 			"Tak mój najmłodszy żołnierz. On uciekł.");
 		james.addReply(Arrays.asList("mapa", "mapę"),
 			"Mapa #skarbów, która wiedzie do serca #królestwa #krasnali.");
-		james.addReply(Arrays.asList("treasure", "skarbów"),
+		james.addReply(Arrays.asList("treasure", "skarbów", "skarb", "skarbu", "skarby"),
 			"Wielki skarb jest gdzieś ukryty w tych podziemiach.");
-		james.addReply(Arrays.asList("dwarf", "dwarves", "dwarven", "krasnali"),
+		james.addReply(Arrays.asList("dwarf", "dwarves", "dwarven", "krasnali", "krasnal", "krasnale", "krasnalach"),
 			"Są silnymi przeciwnikami! Jesteśmy w ich #królestwie.");
 		james.addReply(Arrays.asList("peter", "tom", "charles"),
 			"Był dobrym żołnierzem i walczył dzielnie.");
-		james.addReply(Arrays.asList("kingdom", "kanmararn", "królestwa", "królestwie"),
+		james.addReply(Arrays.asList("kingdom", "kanmararn", "królestwa", "królestwie", "królestwo"),
 			"Kanmararn jest legendarnym królestwem #krasnali.");
 		james.addReply("dreamscape",
 			"Jest pewien mężczyzna na wschód od miasta. On zna drogę.");

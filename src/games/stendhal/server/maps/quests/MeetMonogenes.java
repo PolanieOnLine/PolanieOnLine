@@ -121,7 +121,7 @@ public class MeetMonogenes extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			"mapa", null, ConversationStates.ATTENDING,
+			Arrays.asList("mapa", "mapę", "mapy", "mapie"), null, ConversationStates.ATTENDING,
 			"Zaznaczyłem poniższe lokalizacje na mojej mapie:\n"
 			+ "1 Ratusz, mieszka tam Burmistrz,   2 Biblioteka,   3 Bank,   4 Magazyn,\n"
 			+ "5 Piekarnia,   6 Kowal, Carmen,   7 Hotel, Margaret \n"
@@ -157,7 +157,9 @@ public class MeetMonogenes extends AbstractQuest {
 			Arrays.asList("blacksmith", "kowal", "kowala", "kuźni"),
 			"Prosto na południowy-zachód, aby dostać się do kowala. Obok drzwi wisi obrazek z kowadłem. Powinieneś zauważyć.");
 
-		npc.addReply(Arrays.asList("public", "public chest", "community chest", "chest"),
+		npc.addReply(Arrays.asList("public", "public chest", "community chest", "chest",
+			"publiczna skrzynia", "publicznej skrzyni", "publiczną skrzynię", "publiczna",
+			"skrzynia", "skrzyni", "skrzynię"),
 			"Podążaj za pomarańczową ścieżką na mapie, aby dotrzeć do publicznej skrzyni. Mieszkańcy Faiumoni i odważni wojownicy wrzucają trochę przydatnych przedmiotów, któe można wziąć za darmo. Pamiętaj: Zawsze dobrze jest się podzielić i dać to, czego już więcej nie potrzebujesz.");
 		
 		npc.addReply(

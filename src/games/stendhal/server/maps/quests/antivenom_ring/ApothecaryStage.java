@@ -44,6 +44,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
+import games.stendhal.server.entity.npc.condition.TriggerExactlyInListCondition;
 
 public class ApothecaryStage extends AVRStage {
 	private final SpeakerNPC apothecary;
@@ -386,19 +387,24 @@ public class ApothecaryStage extends AVRStage {
 		apothecary.addReply(
 				Arrays.asList("ring", "rings", "pierścień", "pierścienie"),
 				"Jest wiele rodzai pierścieni.");
-		apothecary.addReply(
-				Arrays.asList("medicinal ring", "medicinal rings", "pierścień leczniczy"),
-				"Niektóre trujące potwory noszą go ze sobą.");
-		apothecary.addReply(
-				Arrays.asList("antivenom ring", "antivenom rings", "pierścień antyjadowy", "pierścienie antyjadowy"),
-				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #'pierścień leczniczy'.");
+		final List<String> medicinalRingNames = Arrays.asList("medicinal ring", "medicinal rings",
+				"pierścień leczniczy", "pierścienia leczniczego", "pierścienie lecznicze", "pierścieniu leczniczym");
+		final List<String> antivenomRingNames = Arrays.asList("antivenom ring", "antivenom rings",
+				"pierścień antyjadowy", "pierścienie antyjadowy", "pierścienia antyjadowego", "pierścienie antyjadowe", "pierścieniu antyjadowym");
+		// Prefer the full item name over the generic ring hint.
+		apothecary.add(ConversationStates.ATTENDING, medicinalRingNames,
+				new TriggerExactlyInListCondition(medicinalRingNames), ConversationStates.ATTENDING,
+				"Niektóre trujące potwory noszą go ze sobą.", null);
+		apothecary.add(ConversationStates.ATTENDING, antivenomRingNames,
+				new TriggerExactlyInListCondition(antivenomRingNames), ConversationStates.ATTENDING,
+				"Jeżeli przyniesiesz mi to co potrzebuję to będę mógł wzmocnić #'pierścień leczniczy'.", null);
 		/* this item is not available
 		apothecary.addReply(
 				Arrays.asList("antitoxin ring", "antitoxin rings", "pierścień antytoksyczny", "pierścienie antytoksyczne"),
 				"Heh! Oto ostateczna ochroną przed zatruciami. Powodzenia w zdobyciu!");
 		*/
 		apothecary.addReply(
-				Arrays.asList("venom", "cobra venom", "jad", "jad kobry"),
+				Arrays.asList("venom", "cobra venom", "jad", "jad kobry", "jadu", "jadu kobry"),
 				"Ktoś specjalizujący się w zwierzętach może wiedzieć, jak to zdobyć."
 				+ " Proponuję odwiedzić sanktuarium w Ados.");
 		apothecary.addReply(
@@ -410,11 +416,11 @@ public class ApothecaryStage extends AVRStage {
 				+ " nie sprawdzałem tego. Ten rodzaj pracy lepiej pozostawić podróżnikom.");
 		apothecary.addReply(
 				Arrays.asList("mandragora", "mandragoras", "root of mandragora", "roots of mandragora", "root of mandragoras", "roots of mandragoras",
-						"mandragory", "korzeń mandragory", "korzenie mandragory"),
+						"mandragory", "mandragorę", "korzeń mandragory", "korzenie mandragory"),
 				"To mój ulubiony z pośród wszystkich ziół i ten z najrzadszych. W Faimouni jest tylko"
 				+ " kilka miejsc, w których rośnie. Miej czujne oko, bo przegapisz je.");
 		apothecary.addReply(
-				Arrays.asList("cake", "fairy cake", "mufinka"),
+				Arrays.asList("cake", "fairy cake", "mufinka", "mufinki", "mufinkę", "mufinek"),
 				"Och, są one najlepszą przekąską jaką próbowałem. Tylko najbardziej niebiańskie istoty mogły zrobić tak nieziemskie jedzenie.");
 	}
 }

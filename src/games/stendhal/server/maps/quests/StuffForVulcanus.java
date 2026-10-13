@@ -125,7 +125,7 @@ public class StuffForVulcanus extends AbstractQuest {
 			"Och, zapomnij o tym jeżeli nie potrzebujesz miecza nieśmiertelnych...",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 
-		npc.addReply("exact",
+		npc.addReply(Arrays.asList("exact", "dokładnie", "kolejność", "kolejności"),
 			"Ta archaiczna magia potrzebuje tych składników w dokładnie podanej kolejności.");
 	}
 

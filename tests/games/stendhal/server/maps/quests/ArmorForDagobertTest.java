@@ -27,6 +27,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
@@ -48,6 +49,7 @@ public class ArmorForDagobertTest {
 
 	@Before
 	public void setUp() {
+		SingletonRepository.getNPCList().remove("Dagobert");
 		StendhalRPZone zone = new StendhalRPZone("admin_test");
 		new CustomerAdvisorNPC().configureZone(zone, null);
 
@@ -62,6 +64,17 @@ public class ArmorForDagobertTest {
 	/**
 	 * Tests for quest.
 	 */
+	@Test
+	public void polishKirysFormsGiveHintsWithoutChangingQuestProgress() {
+		for (String phrase : new String[] {"skórzany kirys", "skórzanego kirysu", "skórzanym kirysie",
+				"skórzanym kirysem", "kirys", "kirysu", "kirysie", "kirysem", "leather cuirass"}) {
+			en.setCurrentState(ConversationStates.ATTENDING);
+			assertTrue(phrase, en.step(player, phrase));
+			assertEquals("Skórzany kirys to tradycyjna zbroja cyklopa. Niektórzy cyklopi żyją w lochach głęboko pod miastem.", getReply(npc));
+			assertFalse(player.hasQuest("armor_dagobert"));
+		}
+	}
+
 	@Test
 	public void testQuest() {
 		en.step(player, "hi");

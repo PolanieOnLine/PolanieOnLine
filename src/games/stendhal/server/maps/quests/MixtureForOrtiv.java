@@ -138,26 +138,26 @@ public class MixtureForOrtiv extends AbstractQuest {
 			"Mysłałem, że mi pomożesz... Ale myliłem się, niestety... ",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
-		npc.addReply("jabłko", "Jabłka są ulubionym przysmakiem zabójców. Widziałem parę jabłoni na wschód " +
+		npc.addReply(Arrays.asList("jabłko", "jabłka", "jabłek"), "Jabłka są ulubionym przysmakiem zabójców. Widziałem parę jabłoni na wschód " +
 				"Semos blisko Orril i Nalwor river.");
 
-			npc.addReply("butelka", "Słyszałem o młodej kobiecie w Semos, która je sprzedaje.");
+			npc.addReply(Arrays.asList("butelka", "butelki", "butelkę", "butelek"), "Słyszałem o młodej kobiecie w Semos, która je sprzedaje.");
 
-			npc.addReply("muchomor", "Toadstools są trujące. Słyszałem, że jacyś myśliwi raz je zjedli" +
+			npc.addReply(Arrays.asList("muchomor", "muchomora", "muchomory", "muchomorów"), "Muchomory są trujące. Słyszałem, że jacyś myśliwi raz je zjedli" +
 					" i przez kilka dni byli chorzy.");
 
-			npc.addReply("arandula", "Na północ od Semos, nie daleko wzgórza z drzewami rosną zioła zwane arandula. Powiedzieli mi to moi przyjaciele.");
+			npc.addReply(Arrays.asList("arandula", "aranduli", "arandulę"), "Na północ od Semos, nie daleko wzgórza z drzewami rosną zioła zwane arandula. Powiedzieli mi to moi przyjaciele.");
 
-			npc.addReply("skrzydlica","Skrzydlica jest ciężka do znalezienia...jest okryta białymi prążkami na przemian z czerwonymi, zielonymi " +
+			npc.addReply(Arrays.asList("skrzydlica", "skrzydlicy", "skrzydlicę", "skrzydlice"),"Skrzydlica jest ciężka do znalezienia...jest okryta białymi prążkami na przemian z czerwonymi, zielonymi " +
 					" lub brązowymi. Słyszałem o miejscach w Faiumoni gdzie możesz ją złowić, ale uważaj. Każdy kolec jest trujący!");
 
-			npc.addReply("kokuda","Kokuda ciężko jest znaleźć. Byłbym wdzięczny, gdybyś zdobył jakąś z wyspy Athor...");
+			npc.addReply(Arrays.asList("kokuda", "kokudy", "kokudę"),"Kokuda ciężko jest znaleźć. Byłbym wdzięczny, gdybyś zdobył jakąś z wyspy Athor...");
 
-			npc.addReply("lukrecja", "To małe ciągotki, które w mieście magów sprzedaje młoda dziewczyna. Są wspaniałe i słodkie.");
+			npc.addReply(Arrays.asList("lukrecja", "lukrecji", "lukrecję"), "To małe ciągotki, które w mieście magów sprzedaje młoda dziewczyna. Są wspaniałe i słodkie.");
 
-			npc.addReply("napój z winogron", "Hmm nie ma nic lepszego niż połączenie dwóch rzeczy razem podczas delektowania się szklanką tego napoju *kaszlnięcie*, ale potrzebuję też mikstury... Założe się, że możesz kupić go w tawernie lub pubie...");
+			npc.addReply(Arrays.asList("napój z winogron", "napoju z winogron", "napoje z winogron"), "Hmm nie ma nic lepszego niż połączenie dwóch rzeczy razem podczas delektowania się szklanką tego napoju *kaszlnięcie*, ale potrzebuję też mikstury... Założe się, że możesz kupić go w tawernie lub pubie...");
 
-			npc.addReply("czosnek", "Znam zabójców i bandytów i nie są wampirami, ale staram się używać tego także przeciwko nim. Jest miła ogrodniczka w Kalavan City Gardens, która może sprzedać kilka główek jej hodowli.");
+			npc.addReply(Arrays.asList("czosnek", "czosnku"), "Znam zabójców i bandytów i nie są wampirami, ale staram się używać tego także przeciwko nim. Jest miła ogrodniczka w Kalavan City Gardens, która może sprzedać kilka główek jej hodowli.");
 
 			npc.addReply(Arrays.asList("pestle","mortar","moździerz","moździerz z tłuczkiem"), "Może jakiś piekarz lub kucharz używa tego.");
 	}
