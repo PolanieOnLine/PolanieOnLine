@@ -148,6 +148,11 @@ export class Item extends Entity {
 	}
 
 	public getToolTip(): string {
+		if (this["name"] === "money") {
+			const quantity = Number(this["quantity"]);
+			return Number.isSafeInteger(quantity) && quantity >= 0
+					? "Monety w stosie: " + String(quantity).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "";
+		}
 		const lines: string[] = [];
 		const rarity = this.getRarity();
 		const upgradeLevel = this.getUpgradeValue("improve");

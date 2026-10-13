@@ -256,6 +256,42 @@ function createHarness() {
 
 function iconOf(slot) { return slot.children.find(child => child.className === "item-slot-icon"); }
 
+test("only money stacks show their full quantity even while the icon still says 992M", () => {
+	const h = createHarness(), item = h.makeItem(1, {width: 32, quantity: "992550648"});
+	item.set("name", "money");
+	item.set("class", "money");
+	const {container, parent} = h.makeContainer([item]);
+	const slot = parent.elements[0];
+	assert.equal(slot.textContent, "992M");
+	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+	item.set("quantity", "992550348");
+	container.update();
+	assert.equal(slot.textContent, "992M");
+	assert.equal(slot.title, "Monety w stosie: 992 550 348");
+	assert.equal(slot.attributes.get("aria-label"), slot.title);
+	item.set("quantity", "2147483647");
+	container.update();
+	assert.equal(slot.title, "Monety w stosie: 2 147 483 647");
+	item.set("quantity", "1");
+	container.update();
+	assert.equal(slot.title, "Monety w stosie: 1");
+	item.set("name", "polano");
+	container.update();
+	assert.equal(slot.title, "");
+});
+
+test("the money quantity tooltip is not hidden by structured item tooltip metadata", () => {
+	const h = createHarness(), item = h.makeItem(1, {width: 32, quantity: "992550648"});
+	item.set("name", "money");
+	item.set("tooltip_stats", {category: "other", value: "1"});
+	const {parent} = h.makeContainer([item]);
+	const slot = parent.elements[0];
+	for (const listener of slot.listeners.get("mouseenter") || []) {
+		listener({currentTarget: slot, clientX: 0, clientY: 0});
+	}
+	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+});
+
 test("animation and quantity updates never rewrite the static slot or replace its layers", () => {
 	const h = createHarness(), item = h.makeItem(1);
 	const { container, parent } = h.makeContainer([item]);

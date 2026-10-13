@@ -91,6 +91,10 @@ final class ItemRarityPresentation {
 		if (entity == null) {
 			return null;
 		}
+		final String moneyTooltip = buildMoneyToolTip(entity);
+		if (moneyTooltip != null) {
+			return moneyTooltip;
+		}
 		final RPObject comparisonItem = compareWithEquipment ? equippedItem : null;
 
 		final String scrollDestination = getScrollDestination(entity);
@@ -138,6 +142,16 @@ final class ItemRarityPresentation {
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
 		return tooltip.toString();
+	}
+
+	/** Exact stack size; the small inventory icon can continue using K/M labels. */
+	static String buildMoneyToolTip(final IEntity entity) {
+		if (!(entity instanceof Item) || !"money".equals(entity.getName())) {
+			return null;
+		}
+		final int quantity = Math.max(0, ((Item) entity).getQuantity());
+		final String amount = String.format(Locale.ROOT, "%,d", quantity).replace(',', ' ');
+		return "<html>Monety w stosie: <b>" + amount + "</b></html>";
 	}
 
 	static String resolveCategory(final RPObject object) {
