@@ -4,6 +4,7 @@
 *rozmowy z NPC*
 ---
 * W kliencie Java i webkliencie dodano opcję Porozmawiaj w menu NPC. Rozmowę można rozpocząć bez wpisywania przywitania na czacie
+* Poprawiono rozmowy w zadaniach. NPC rozpoznają więcej polskich nazw przedmiotów i ich odmian, dzięki czemu łatwiej zapytać o wskazówki
 
 *polowania u Janisława*
 ---

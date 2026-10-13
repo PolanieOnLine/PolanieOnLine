@@ -68,7 +68,7 @@ public class ZoologistStage extends AVRStage {
 		zoologist.addJob(jobInfo);
 		zoologist.addHelp(jobInfo);
 		zoologist.addOffer(jobInfo);
-		zoologist.addReply(Arrays.asList("venomous", "jadowitych"), "Mogę użyć mojego sprzętu do #ekstrakcji trucizny z jadowitych zwierząt.");
+		zoologist.addReply(Arrays.asList("venomous", "jadowitych", "jadowity", "jadowite", "jadowite zwierzęta"), "Mogę użyć mojego sprzętu do #ekstrakcji trucizny z jadowitych zwierząt.");
 		zoologist.addQuest("Nie potrzebuję niczego w tym momencie. Ale może mógłbyś mi pomóc #wydoić niektóre #węże.");
 
 		// player speaks to Zoey after starting antivenom ring quest

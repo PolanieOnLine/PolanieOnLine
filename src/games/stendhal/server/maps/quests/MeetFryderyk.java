@@ -126,7 +126,7 @@ public class MeetFryderyk extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			"mapa", null, ConversationStates.ATTENDING, "Mapa miasta Zakopane\n"
+			Arrays.asList("mapa", "mapę", "mapy", "mapie"), null, ConversationStates.ATTENDING, "Mapa miasta Zakopane\n"
 			+ "1 Domek, tu stawiamy pierwsze kroki,   2 Bank,   3 Kuźnia,   4 Boisko,\n"
 			+ "A do burmistrza,   B szpital C dom gier, \n"
 			+ "D Długa droga, cały czas prosto do Krakowa, \n"
@@ -134,35 +134,35 @@ public class MeetFryderyk extends AbstractQuest {
 			new ExamineChatAction("map-zakopane-city.png", "Miasto Zakopane", "Mapa miasta Zakopane"));
 
 		npc.addReply(
-			Arrays.asList("bank", "Bank"),
+			Arrays.asList("bank", "Bank", "banku"),
 			"Wyjdziesz z tego budynku i patrząc na wschód#(prawo #na #mapie) widzisz małą rzeczkę oraz most, przez który możesz iść. Gdy go przejdziesz będziesz koło boiska gdzie będzie chodził Herold, z którym możesz zamienić parę słów, jeżeli masz ochotę rzecz jasna. Idąc dalej na wschód#(prawo #na #mapie) zobaczysz budynek, który będzie miał z boku żółty napis #BANK. To jest budynek, o który pytałeś przed chwilą.");
 
 		npc.addReply(
-			Arrays.asList("szpital", "Szpital"),
+			Arrays.asList("szpital", "Szpital", "szpitala", "szpitalu"),
 			"Skieruj się na północ, lecz nie wchodź na most, tylko skieruj się w górę po prawej stronie mostu. Zobaczysz rzekę skieruj się wydłuż niej na północ po czasie zobaczysz, iż rzeka się kończy, lecz po prawo masz budynek z czerwonym krzyżem. Tak, właśnie tak jak już się domyśliłeś to szpital.");
 
 		npc.addReply(
-			Arrays.asList("burmistrz Zakopanego", "Burmistrz Zakopanego"),
+			Arrays.asList("burmistrz Zakopanego", "Burmistrz Zakopanego", "burmistrza Zakopanego", "burmistrzu Zakopanego"),
 			"Gazdę Wojtka znajdziesz nad boiskiem w zakopanem:)");
 
 		npc.addReply(
-			Arrays.asList("dom gier", "Dom gier"),
+			Arrays.asList("dom gier", "Dom gier", "domu gier"),
 			"Idąc na północ wymijasz most z prawej strony potem wciąż idąc na wschód trafiasz na małą rzeczkę, przez którą prowadzi most. Przekrocz most i pokieruj się na północ natrafisz na mały domek, który jest domem gier.");
 
 		npc.addReply(
-			Arrays.asList("boisko", "Boisko"),
+			Arrays.asList("boisko", "Boisko", "boiska", "boisku"),
 			"Już opuszczając ten budynek powinieneś go dostrzec na mini mapce. Boisko znajduje się na wschód z stąd za małą rzeczką. Herold, który ta chodzi zajmuje się wystawianiem znaków.");
 
 		npc.addReply(
-			Arrays.asList("kuźnia", "Kuźnia"),
+			Arrays.asList("kuźnia", "Kuźnia", "kuźni", "kuźnię"),
 			"Wychodząc stąd pokierujesz się na północny-zachód, aby dotrzeć do kowala. Nad drzwi wisi obrazek z kowadłem. Powinieneś trafić bez większego problemu.");
 
 		npc.addReply(
-			Arrays.asList("kościelisko", "Kościelisko"),
+			Arrays.asList("kościelisko", "Kościelisko", "kościeliska", "kościelisku"),
 			"Wychodząc z tego budynku po lewej masz ścieżkę. Idą nią na południe dojdziesz do kościeliska Se. Lecz gdy pójdziesz na zachód natrafisz koło rzeki na ścieżkę, która zaprowadzi cię na kościelisko E. Idą dalej po niej dojdziesz do kościeliska Ne.");
 
 		npc.addReply(
-			Arrays.asList("kraków", "Kraków"),
+			Arrays.asList("kraków", "Kraków", "krakowa", "krakowie"),
 			"Idź na północ przekrocz most i skieruj się lewą stroną torów aż do przejścia, które przechodzisz naturalnie i dalej idziesz na północ jeszcze spory kawałek.  Natrafisz na ścieżkę, która będzie prowadziła na wchód i zachód. Skieruj się na wschód i idź nią cały czas bez ustanku aż dojdziesz do mostu. Potem już od ciebie zależy gdzie pójdziesz dalej.");
 
 		/** Give the reward to the polite newcomer user */

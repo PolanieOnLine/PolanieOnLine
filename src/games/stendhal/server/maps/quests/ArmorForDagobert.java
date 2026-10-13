@@ -79,7 +79,10 @@ public class ArmorForDagobert implements QuestManuscript {
 			.remind("Na szczęście nie okradziono mnie, kiedy cię nie było. Chętnie przyjmę skórzany kirys. Tak czy inaczej, jak mogę #pomóc?");
 
 		SpeakerNPC npc = NPCList.get().get("Dagobert");
-		npc.addReply(Arrays.asList("leather cuirass", "leather", "cuirass"), "Skórzany kirys to tradycyjna zbroja cyklopa. Niektórzy cyklopi żyją w lochach głęboko pod miastem.");
+		npc.addReply(Arrays.asList("leather cuirass", "leather", "cuirass",
+				"skórzany kirys", "skórzanego kirysu", "skórzanym kirysie", "skórzanym kirysem",
+				"kirys", "kirysu", "kirysie", "kirysem", "skórzany", "skórzanego"),
+				"Skórzany kirys to tradycyjna zbroja cyklopa. Niektórzy cyklopi żyją w lochach głęboko pod miastem.");
 
 		quest.task()
 			.requestItem(1, "skórzany kirys")

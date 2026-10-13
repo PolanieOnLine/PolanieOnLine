@@ -71,8 +71,8 @@ class MakingFabric {
 	private void makeThreadStep() {
     	final SpeakerNPC npc = npcs.get("Vincento Price");
 		
-		npc.addReply("przędza","Bądź cicho. Dobrze? Utkam jedwabną nici pochodzącą z #'gruczołów przędzy' królowej pająków. Jeżeli chcesz, abym to zrobił to powiedz #zrób.");
-		npc.addReply("gruczołów przędzy","Jak już powiedziałam pochodzą od królowa pająków."); 
+		npc.addReply(Arrays.asList("przędza", "przędzy", "przędzę"),"Bądź cicho. Dobrze? Utkam jedwabną nici pochodzącą z #'gruczołów przędzy' królowej pająków. Jeżeli chcesz, abym to zrobił to powiedz #zrób.");
+		npc.addReply(Arrays.asList("gruczołów przędzy", "gruczoł przędzy", "gruczołu przędzy", "gruczoły przędzy"),"Jak już powiedziałam pochodzą od królowa pająków.");
 				
 		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 		requiredResources.put("gruczoł przędzy", Integer.valueOf(1));
@@ -303,10 +303,10 @@ class MakingFabric {
 	private void makeMithrilThreadStep() {
 		final SpeakerNPC npc = npcs.get("Kampusch");
 
-		npc.addReply("balonik","Aha! Gubione są przez czarujące małe aniołki, które żyją na Kikareukin Islands. Potrzebuję jednego dla mojej córki.");
-		npc.addReply("przędzy jedwabnej","To jest jedwab z gruczołów gigantycznych pająków. Potrzebujesz 40 szpulek prządzy jedwabnej, aby zrobić coś większego jak płaszcz.");
-		npc.addReply("przędza","To jest jedwab z gruczołów gigantycznych pająków.");
-		npc.addReply("bryłek mithrilu","Możesz sam je znaleźć.");
+		npc.addReply(Arrays.asList("balonik", "balonika", "baloniki", "baloników"),"Aha! Gubione są przez czarujące małe aniołki, które żyją na Kikareukin Islands. Potrzebuję jednego dla mojej córki.");
+		npc.addReply(Arrays.asList("przędzy jedwabnej", "przędza jedwabna", "przędzę jedwabną", "przędza", "przędzy", "przędzę"),
+				"To jest jedwab z gruczołów gigantycznych pająków. Potrzebujesz 40 szpulek przędzy jedwabnej, aby zrobić coś większego jak płaszcz.");
+		npc.addReply(Arrays.asList("bryłek mithrilu", "bryłka mithrilu", "bryłkę mithrilu", "bryłki mithrilu"),"Możesz sam je znaleźć.");
 		npc.addReply("Whiggins","Znajdź czarodzieja Whiggins w domku w magicznym mieście.");
 		npc.addReply("naukowiec","Słyszałem o eksperymentach głęboko w zamku Kalavan. Naukowcy są szaleni, ale poszukaj naukowca Vincento Price. Może on będzie na tyle normalny, aby Ci pomóc.");
 

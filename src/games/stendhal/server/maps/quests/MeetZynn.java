@@ -39,7 +39,7 @@ public class MeetZynn extends AbstractQuest {
 		 * for players higher than level 15.
 		 */
 		npc.addReply(
-					Arrays.asList("history", "historii"),
+					Arrays.asList("history", "historii", "historia", "historię"),
 					"Obecnie znajdują się dwie znaczące potęgi w Faiumoni Imperium Deniran i mroczne legiony Blordroughta. Blordrought rządzi południową wyspą i ma we władaniu kilka kopalni żelaza oraz wielkie kopalnie złota. Obecnie, Deniran wciąż kontroluje centralną i północną część Faiumoni, w której znajduje się kilka kopalni złota i żelaza.");
 
 		npc.addReply(
@@ -47,12 +47,12 @@ public class MeetZynn extends AbstractQuest {
 					"Imperium Deniran aktualnie szuka łowców przygód, aby wstąpili do wojska jako najemnicy i pomogli odebrać południowe Faiumoni siłom Blordroughta. Niestety Blordrought wciąż stawia zacięty opór i odpiera wszelkie ataki.");
 
 		npc.addReply(
-					Arrays.asList("geography", "geografii"),
+					Arrays.asList("geography", "geografii", "geografia", "geografię"),
 					"Porozmawiajmy o różnych #miejscach, które możesz odwiedzić na Faiumoni! Mogę Ci także pomóc #zdobyć mapę i nauczyć Cię z niej #skorzystać, albo dać Tobie radę jak używać psychicznego systemu #SPPOL.");
 
 		npc.addReply(
-					Arrays.asList("places", "miejscach"),
-					"Najważniejsze lokacje to #Faiumoni, Zamek #Or'ril, #Semos, #Ados, #Narwol, i oczywiście Miasto #Deniran.");
+					Arrays.asList("places", "miejscach", "miejsce", "miejsca", "miejsc"),
+					"Najważniejsze lokacje to #Faiumoni, Zamek #Or'ril, #Semos, #Ados, #Nalwor, i oczywiście Miasto #Deniran.");
 
 		npc.addReply(
 					"Faiumoni",
@@ -91,7 +91,7 @@ public class MeetZynn extends AbstractQuest {
 					"Mapy są podzielone na poziomy zaczynając od najwyższych znajdujących się powyżej powierzchni ziemi do najniższych będących pod ziemią. Obszary na powierzchni ziemi mają poziom 0. Numer poziomu znajduje się na początku nazwy mapy. Na przykład #Semos jest na powierzchni ziemi i dlatego ma poziom 0, a mapa nazywa się \"0_semos_city\". Pierwszy poziom podziemi jest na poziomie -1 i mapa nazywa się \"-1_semos_dungeon\". Powinieneś zapamiętać, że mapy budynków mają poziom położenia na końcu nazwy, a zaczynają się od skrótu \"int\" (od \"interior\"). Na przykład wyższe piętro oberży będzie oznaczone jako \"int_semos_tavern_1\".");
 
 		npc.addReply(
-					Arrays.asList("naming", "nazewnictw"),
+					Arrays.asList("naming", "nazewnictw", "nazewnictwo", "nazewnictwa"),
 					"Zazwyczaj każda mapa jest podzielona na \"zestawy\" stref. Centralna strefa jest używana jako punkt odniesienia. Strefy otaczające centralną strefę są nazywane wg położenia od niej. Na przykład od centralnej strefy \"0_semos_city\" możesz podróżować na zachód do starej wioski, która jest w \"0_semos_village_w\" lub możesz podróżować przez dwie strefy na północ i raz na zachód do gór w \"0_semos_mountain_n2_w\".");
 
 		npc.addReply(
