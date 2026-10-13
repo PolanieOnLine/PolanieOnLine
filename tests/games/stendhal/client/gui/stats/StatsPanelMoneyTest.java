@@ -2,7 +2,6 @@ package games.stendhal.client.gui.stats;
 
 import static org.junit.Assert.assertEquals;
 
-import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Field;
 
 import javax.swing.JLabel;
@@ -15,18 +14,21 @@ import games.stendhal.common.constants.CurrencyReform;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
-/** Checks money through the same slot events used by UserController. */
+/** Reads the current inventory, without maintaining a second balance or item snapshot. */
 public class StatsPanelMoneyTest {
 
 	private StatsPanelController controller;
-	private PropertyChangeSupport changes;
+	private RPObject player;
 
 	@Before
 	public void setUp() throws Exception {
 		controller = StatsPanelController.get();
-		changes = new PropertyChangeSupport(this);
-		controller.registerListeners(changes);
-		changes.getPropertyChangeListeners("bag")[0].propertyChange(null);
+		resetPlayer();
+	}
+
+	private void resetPlayer() {
+		player = new RPObject();
+		controller.updateCarriedMoney(player);
 	}
 
 	private RPObject item(int id, String name, int quantity, int value) {
@@ -45,11 +47,14 @@ public class StatsPanelMoneyTest {
 
 	private void change(String slotName, boolean added, RPObject... items) {
 		RPSlot slot = new RPSlot(slotName);
-		new RPObject().addSlot(slot);
+		RPObject changes = new RPObject();
+		changes.addSlot(slot);
 		for (RPObject item : items) {
 			slot.addPreservingId(item);
 		}
-		changes.firePropertyChange(slotName, added ? null : slot, added ? slot : null);
+		RPObject delta = (RPObject) changes.clone();
+		player.applyDifferences(added ? delta : null, added ? null : delta);
+		controller.updateCarriedMoney(player);
 	}
 
 	private void assertMoney(long copper) throws Exception {
@@ -158,9 +163,7 @@ public class StatsPanelMoneyTest {
 	@Test
 	public void playerRemovalResetsAllSlots() throws Exception {
 		change("bag", true, item(1, "money", 201, 1));
-		for (java.beans.PropertyChangeListener listener : changes.getPropertyChangeListeners("bag")) {
-			listener.propertyChange(null);
-		}
+		resetPlayer();
 		assertMoney(0);
 		change("bag", true, item(1, "polano", 1, 1));
 		assertMoney(0);
@@ -240,10 +243,33 @@ public class StatsPanelMoneyTest {
 	@Test
 	public void fullInventoryAfterMapChangeDoesNotKeepOldMoney() throws Exception {
 		change("bag", true, item(1, "money", 201, 1));
-		changes.getPropertyChangeListeners("bag")[0].propertyChange(null);
+		resetPlayer();
 		change("bag", true, item(1, "polano", 70, 1), item(2, "szmaragd", 2, 200));
 		assertMoney(0);
 		change("pouch", true, item(1, "money", 50, 1));
 		assertMoney(50);
+	}
+
+	@Test
+	public void replacementInventoryCannotKeepAnOld992MillionCoinStack() throws Exception {
+		change("bag", true, item(1, "money", 992550648, 1));
+		assertMoney(992550648);
+		player = new RPObject();
+		change("bag", true, item(12, "money", 992550648, 1));
+		assertMoney(992550648);
+		change("bag", true, item(12, "money", 992550348, 1));
+		assertMoney(992550348);
+		player.getSlot("bag").clear();
+		controller.updateCarriedMoney(player);
+		assertMoney(0);
+	}
+
+	@Test
+	public void repeatedRefreshesAndMissingPlayerCannotPreserveAPhantomBalance() throws Exception {
+		change("pouch", true, item(1, "money", 201, 1));
+		for (int i = 0; i < 10; i++) controller.updateCarriedMoney(player);
+		assertMoney(201);
+		controller.updateCarriedMoney(null);
+		assertMoney(0);
 	}
 }
