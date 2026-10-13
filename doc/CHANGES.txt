@@ -1,12 +1,6 @@
 Changelog
 ---------
 
-1.42.1
-*arena and clients*
-- Tarnow Challenge Arena fights now use separate player instances with a shared lobby, buyer and ranking. Players can fight simultaneously without interference.
-- The south gate forfeits an unfinished run or ends post-victory looting without losing the reward. Private maps are cleaned up on exit, death or logout.
-- Ground item rarity halos are replaced with the same one-pixel alpha-silhouette outlines used in the Java and webclient inventories. Webclient slots and ground items share cached animation-frame outlines.
-
 1.28
 *client*
 - sprites & tiles replaced with images suffixed with "-noblood" when blood disabled
