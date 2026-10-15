@@ -131,6 +131,74 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			"fragment glifu", 3
 		));
 
+		glyphConfig.put("glif świętego dębu", createResourceMap(
+			"fragment glifu", 3,
+			"magia ziemi", 800,
+			"bryłka mithrilu", 20,
+			"szafir", 12
+		));
+		glyphConfig.put("glif żywej wody", createResourceMap(
+			"fragment glifu", 4,
+			"magia deszczu", 800,
+			"serce olbrzyma", 40,
+			"cudowna krew", 3
+		));
+		glyphConfig.put("glif Rodzanic", createResourceMap(
+			"fragment glifu", 4,
+			"serce olbrzyma", 60,
+			"smocza krew", 24,
+			"bursztyn", 20
+		));
+		glyphConfig.put("glif wichru", createResourceMap(
+			"glif Strzyboga", 1,
+			"fragment glifu", 2,
+			"magia wiatru", 600,
+			"ametyst", 16,
+			"pióro anioła", 20
+		));
+		glyphConfig.put("glif wytrwałości", createResourceMap(
+			"glif Strzyboga", 1,
+			"fragment glifu", 2,
+			"serce olbrzyma", 40,
+			"ametyst", 16,
+			"cudowna krew", 2
+		));
+		glyphConfig.put("glif ogniska", createResourceMap(
+			"fragment glifu", 3,
+			"magia płomieni", 1000,
+			"bursztyn", 30,
+			"kryształ obsydianu", 8
+		));
+		glyphConfig.put("glif korzeni", createResourceMap(
+			"fragment glifu", 3,
+			"magia ziemi", 800,
+			"magia deszczu", 800,
+			"kryształ obsydianu", 8
+		));
+		glyphConfig.put("glif zmory", createResourceMap(
+			"fragment glifu", 3,
+			"magia mroku", 800,
+			"wampirza krew", 24,
+			"truchło nietoperza", 12,
+			"obsydian", 16
+		));
+		glyphConfig.put("glif Świętowita", createResourceMap(
+			"fragment glifu", 5,
+			"glif siły", 1,
+			"glif tarczy", 1,
+			"diament", 8,
+			"rubin", 12,
+			"szafir", 12
+		));
+		glyphConfig.put("glif przodków", createResourceMap(
+			"fragment glifu", 5,
+			"glif tarczy", 1,
+			"serce olbrzyma", 50,
+			"cudowna krew", 4,
+			"magia ziemi", 400,
+			"magia światła", 400
+		));
+
 		glyphConfig.forEach((glyphName, resources) -> {
 			Glyph glyph = glyphManager.createGlyph(glyphName);
 			resources.forEach(glyph::addResource);
@@ -357,6 +425,26 @@ public class RuneMasterNPC implements ZoneConfigurator {
 						return "glif zwiększający szansę na atak krytyczny o 15%";
 					case "glif krwi":
 						return "glif zwiększający leczenie z kradzieży życia o 20%";
+					case "glif świętego dębu":
+						return "zmniejsza dodatkową część obrażeń trafienia krytycznego o 25%";
+					case "glif żywej wody":
+						return "po 10 sekundach bez zadawania i otrzymywania obrażeń odnawia co 5 sekund 1% maksymalnego zdrowia, nie więcej niż 20 punktów";
+					case "glif rodzanic":
+						return "zwiększa leczenie z jedzenia, napojów i mikstur o 20%";
+					case "glif wichru":
+						return "zmniejsza wagę wolniejszych broni o 1, do minimum 2, oraz daje 5% szansy uniku zwykłego, niekrytycznego fizycznego ciosu";
+					case "glif wytrwałości":
+						return "zmniejsza wagę wolniejszych broni o 1, do minimum 2; poniżej 35% zdrowia redukuje otrzymywane obrażenia o 10%";
+					case "glif ogniska":
+						return "zmniejsza otrzymywane obrażenia od ognia o 35%";
+					case "glif korzeni":
+						return "zmniejsza otrzymywane obrażenia od ziemi i wody o 25%";
+					case "glif zmory":
+						return "daje 10% szansy na zmniejszenie obrażeń zadawanych przez trafioną istotę o 10% przez 6 sekund; czas odnowienia wynosi 12 sekund dla źródła i efekt nie kumuluje się";
+					case "glif świętowita":
+						return "dodaje 3 punkty ataku, 5 punktów obrony i 5 punktów procentowych szansy na trafienie krytyczne";
+					case "glif przodków":
+						return "dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejsza obrażenia od wszystkich sześciu żywiołów o 5%";
 					default:
 						return "potężny glif o nieopisanej mocy";
 				}

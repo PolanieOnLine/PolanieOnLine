@@ -86,6 +86,13 @@ public final class ItemTooltip {
 	public static final String CRITICAL_CHANCE = "critical_chance";
 	public static final String CRITICAL_BONUS = "critical_additional_bonus";
 	public static final String LIFESTEAL_INCREASE = "lifesteal_increase";
+	/** Glyph effects expressed in percentage points, not fractions. */
+	public static final String CRITICAL_BONUS_REDUCTION = "critical_bonus_reduction";
+	public static final String OUT_OF_COMBAT_REGEN = "out_of_combat_regen";
+	public static final String CONSUMABLE_HEALING_BONUS = "consumable_healing_bonus";
+	public static final String PHYSICAL_DODGE_CHANCE = "physical_dodge_chance";
+	public static final String LOW_HEALTH_DAMAGE_REDUCTION = "low_health_damage_reduction";
+	public static final String NIGHTMARE_CHANCE = "nightmare_chance";
 	public static final String HEALTH = "health";
 	/** Tooltip-only healing data for consumable items. */
 	public static final String CONSUMABLE_HEALING_AMOUNT = "consumable_healing_amount";

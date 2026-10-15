@@ -50,8 +50,12 @@ public final class ItemTooltipService {
 			return;
 		}
 
-		if (item.has(ItemTooltip.ATTRIBUTE)) {
-			item.remove(ItemTooltip.ATTRIBUTE);
+		if (item.hasMap(ItemTooltip.ATTRIBUTE)) {
+			// removeMap only schedules deletion until the next RPObject reset.
+			// Clear entries now so rebuilding this map cannot retain old effects.
+			for (final String key : item.getMap(ItemTooltip.ATTRIBUTE).keySet()) {
+				item.remove(ItemTooltip.ATTRIBUTE, key);
+			}
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
@@ -154,6 +158,12 @@ public final class ItemTooltipService {
 		copyDouble(item, "critical_chance", ItemTooltip.CRITICAL_CHANCE);
 		copyDouble(item, "critical_additional_bonus", ItemTooltip.CRITICAL_BONUS);
 		copyDouble(item, "lifesteal_increase", ItemTooltip.LIFESTEAL_INCREASE);
+		copyDouble(item, ItemTooltip.CRITICAL_BONUS_REDUCTION, ItemTooltip.CRITICAL_BONUS_REDUCTION);
+		copyDouble(item, ItemTooltip.OUT_OF_COMBAT_REGEN, ItemTooltip.OUT_OF_COMBAT_REGEN);
+		copyDouble(item, ItemTooltip.CONSUMABLE_HEALING_BONUS, ItemTooltip.CONSUMABLE_HEALING_BONUS);
+		copyDouble(item, ItemTooltip.PHYSICAL_DODGE_CHANCE, ItemTooltip.PHYSICAL_DODGE_CHANCE);
+		copyDouble(item, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION);
+		copyDouble(item, ItemTooltip.NIGHTMARE_CHANCE, ItemTooltip.NIGHTMARE_CHANCE);
 		copyInt(item, "health", ItemTooltip.HEALTH);
 		copyInt(item, "min_level", ItemTooltip.MIN_LEVEL);
 		copyInt(item, "min_use", ItemTooltip.MIN_USE);

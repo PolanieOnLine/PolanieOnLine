@@ -42,6 +42,33 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testGlyphEffectsPublishPercentagePointsAndRefreshStaleValues() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put(ItemTooltip.CRITICAL_BONUS_REDUCTION, "25");
+		attributes.put(ItemTooltip.OUT_OF_COMBAT_REGEN, "1");
+		attributes.put(ItemTooltip.CONSUMABLE_HEALING_BONUS, "20");
+		attributes.put(ItemTooltip.PHYSICAL_DODGE_CHANCE, "5");
+		attributes.put(ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION, "10");
+		attributes.put(ItemTooltip.NIGHTMARE_CHANCE, "10");
+		attributes.put(ItemTooltip.RATE_INCREASE, "1");
+		final Item item = new Item("test glyph", "glyph", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		for (final String key : new String[] {ItemTooltip.CRITICAL_BONUS_REDUCTION,
+				ItemTooltip.OUT_OF_COMBAT_REGEN, ItemTooltip.CONSUMABLE_HEALING_BONUS,
+				ItemTooltip.PHYSICAL_DODGE_CHANCE, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION,
+				ItemTooltip.NIGHTMARE_CHANCE}) {
+			assertEquals(Double.parseDouble(attributes.get(key)),
+					Double.parseDouble(stat(item, key)), 0.0001);
+		}
+		assertEquals("1", stat(item, ItemTooltip.RATE_INCREASE));
+		item.remove(ItemTooltip.NIGHTMARE_CHANCE);
+		ItemTooltipService.update(item);
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(ItemTooltip.NIGHTMARE_CHANCE));
+	}
+
+	@Test
 	public void testParryChanceIsPublishedForTooltip() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "30");

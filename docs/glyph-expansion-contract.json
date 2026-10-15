@@ -1,0 +1,172 @@
+[
+  {
+    "name": "glif świętego dębu",
+    "sprite": "glyph_sacred_oak",
+    "slot": "defensive_rune",
+    "attributes": {
+      "critical_bonus_reduction": "25.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "fragment glifu": 3,
+      "magia ziemi": 800,
+      "bryłka mithrilu": 20,
+      "szafir": 12
+    }
+  },
+  {
+    "name": "glif żywej wody",
+    "sprite": "glyph_living_water",
+    "slot": "healing_rune",
+    "attributes": {
+      "out_of_combat_regen": "1.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "fragment glifu": 4,
+      "magia deszczu": 800,
+      "serce olbrzyma": 40,
+      "cudowna krew": 3
+    }
+  },
+  {
+    "name": "glif Rodzanic",
+    "sprite": "glyph_rodzanice",
+    "slot": "healing_rune",
+    "attributes": {
+      "consumable_healing_bonus": "20.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "fragment glifu": 4,
+      "serce olbrzyma": 60,
+      "smocza krew": 24,
+      "bursztyn": 20
+    }
+  },
+  {
+    "name": "glif wichru",
+    "sprite": "glyph_whirlwind",
+    "slot": "utility_rune",
+    "attributes": {
+      "rate_increase": "1",
+      "physical_dodge_chance": "5.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "glif Strzyboga": 1,
+      "fragment glifu": 2,
+      "magia wiatru": 600,
+      "ametyst": 16,
+      "pióro anioła": 20
+    }
+  },
+  {
+    "name": "glif wytrwałości",
+    "sprite": "glyph_endurance",
+    "slot": "utility_rune",
+    "attributes": {
+      "rate_increase": "1",
+      "low_health_damage_reduction": "10.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "glif Strzyboga": 1,
+      "fragment glifu": 2,
+      "serce olbrzyma": 40,
+      "ametyst": 16,
+      "cudowna krew": 2
+    }
+  },
+  {
+    "name": "glif ogniska",
+    "sprite": "glyph_hearth",
+    "slot": "resistance_rune",
+    "attributes": {},
+    "susceptibilities": {
+      "fire": "0.65"
+    },
+    "recipe": {
+      "fragment glifu": 3,
+      "magia płomieni": 1000,
+      "bursztyn": 30,
+      "kryształ obsydianu": 8
+    }
+  },
+  {
+    "name": "glif korzeni",
+    "sprite": "glyph_roots",
+    "slot": "resistance_rune",
+    "attributes": {},
+    "susceptibilities": {
+      "earth": "0.75",
+      "water": "0.75"
+    },
+    "recipe": {
+      "fragment glifu": 3,
+      "magia ziemi": 800,
+      "magia deszczu": 800,
+      "kryształ obsydianu": 8
+    }
+  },
+  {
+    "name": "glif zmory",
+    "sprite": "glyph_nightmare",
+    "slot": "control_rune",
+    "attributes": {
+      "nightmare_chance": "10.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "fragment glifu": 3,
+      "magia mroku": 800,
+      "wampirza krew": 24,
+      "truchło nietoperza": 12,
+      "obsydian": 16
+    }
+  },
+  {
+    "name": "glif Świętowita",
+    "sprite": "glyph_swietowit",
+    "slot": "special_rune",
+    "attributes": {
+      "atk": "3",
+      "def": "5",
+      "critical_chance": "5.0"
+    },
+    "susceptibilities": {},
+    "recipe": {
+      "fragment glifu": 5,
+      "glif siły": 1,
+      "glif tarczy": 1,
+      "diament": 8,
+      "rubin": 12,
+      "szafir": 12
+    }
+  },
+  {
+    "name": "glif przodków",
+    "sprite": "glyph_ancestors",
+    "slot": "special_rune",
+    "attributes": {
+      "health": "250",
+      "def": "8"
+    },
+    "susceptibilities": {
+      "earth": "0.95",
+      "water": "0.95",
+      "fire": "0.95",
+      "ice": "0.95",
+      "dark": "0.95",
+      "light": "0.95"
+    },
+    "recipe": {
+      "fragment glifu": 5,
+      "glif tarczy": 1,
+      "serce olbrzyma": 50,
+      "cudowna krew": 4,
+      "magia ziemi": 400,
+      "magia światła": 400
+    }
+  }
+]

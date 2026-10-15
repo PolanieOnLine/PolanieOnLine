@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
+import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
+import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
 import static games.stendhal.common.constants.Actions.ADMINLEVEL;
 import static games.stendhal.common.constants.Actions.AUTOWALK;
@@ -276,6 +278,8 @@ public class Player extends DressedEntity implements UseListener {
 		player.getZone().remove(player);
 
 		player.disconnected = true;
+		GlyphRecoveryService.reset(player);
+		GlyphCombatService.clearEffects(player);
 		ChallengeArenaObservation.onLogout(player);
 
 		if (name != null) {
@@ -1205,6 +1209,8 @@ public class Player extends DressedEntity implements UseListener {
 		if (isDisconnected()) {
 			return;
 		}
+		GlyphRecoveryService.reset(this);
+		GlyphCombatService.clearEffects(this);
 		// Always use remove=false for players, as documented
 		// in RPEntity.onDead()
 		super.onDead(killer, false);
@@ -2189,6 +2195,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public void logic() {
+		GlyphRecoveryService.tick(this);
 		/*
 		 * TODO: Refactor Most of these things can be handled as RPEvents
 		 */

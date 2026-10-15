@@ -1,5 +1,6 @@
 package games.stendhal.server.entity.item;
 
+import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import java.util.Map;
 
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
@@ -37,6 +38,7 @@ public class Glyph extends Item {
 			 * resolves it dynamically from the currently equipped glyphs.
 			 */
 			GlyphEffectService.applyHealthOnEquipped((Player) entity, this);
+			GlyphRecoveryService.reset((Player) entity);
 		}
 
 		return super.onEquipped(entity, slot);
@@ -47,6 +49,7 @@ public class Glyph extends Item {
 		final RPObject entity = getBaseContainer();
 		if (entity instanceof Player && isInGlyphSlot()) {
 			GlyphEffectService.applyHealthOnUnequipped((Player) entity, this);
+			GlyphRecoveryService.reset((Player) entity);
 		}
 		return super.onUnequipped();
 	}

@@ -100,6 +100,12 @@
 			<element name="def_additional_bonus" type="Q1:attribute" minOccurs="0"/>
 			<element name="rate_increase" type="Q1:attribute" minOccurs="0"/>
 			<element name="critical_chance" type="Q1:attribute" minOccurs="0"/>
+			<element name="critical_bonus_reduction" type="Q1:attribute" minOccurs="0"/>
+			<element name="out_of_combat_regen" type="Q1:attribute" minOccurs="0"/>
+			<element name="consumable_healing_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="physical_dodge_chance" type="Q1:attribute" minOccurs="0"/>
+			<element name="low_health_damage_reduction" type="Q1:attribute" minOccurs="0"/>
+			<element name="nightmare_chance" type="Q1:attribute" minOccurs="0"/>
 			<element name="lifesteal_increase" type="Q1:attribute" minOccurs="0"/>
 			<element name="health" type="Q1:attribute" minOccurs="0"/>
 			<element name="persistent" type="Q1:attribute" minOccurs="0"/>

@@ -33,6 +33,8 @@ import games.stendhal.common.Level;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.rule.glyph.GlyphCombatService;
+import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
@@ -556,7 +558,7 @@ public abstract class RPEntity extends CombatEntity {
 			damage = applyDistanceAttackModifiers(damage, squaredDistance(defender), maxRange);
 		}
 
-		return damage;
+		return (int) Math.round(damage * GlyphCombatService.outgoingAttackMultiplier(this));
 	}
 
 	/**
@@ -1415,7 +1417,10 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param attacker
 	 * @param damage
 	 */
-	public void onDamaged(final Entity attacker, final int damage) {
+	public void onDamaged(final Entity attacker, final int incomingDamage) {
+		final int damage = Math.min(getHP(),
+				GlyphCombatService.reduceIncomingDamage(this, incomingDamage));
+		GlyphRecoveryService.recordDamage(this, attacker, damage);
 		if (logger.isDebugEnabled() || Testing.DEBUG) {
 			logger.debug("Damaged " + damage + " points by " + attacker.getID());
 		}
@@ -1460,7 +1465,8 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	private int damage(final int amount) {
 		int tempHp = getHP();
-		final int taken = Math.min(amount, tempHp);
+		final int taken = Math.min(GlyphCombatService.reduceIncomingDamage(this, amount), tempHp);
+		GlyphRecoveryService.recordDamage(this, null, taken);
 
 		tempHp -= taken;
 		setHP(tempHp);
@@ -3473,11 +3479,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (this.canHit(defender)) {
 			int damage = damageDone(defender, itemAtk, nature, isRanged, maxRange);
-			final boolean didDamage = damage > 0;
-
-			if (defender.getsDefXpFrom(this, didDamage)) {
-				defender.incDefXP();
-			}
+			final int baseDamage = damage;
 
 			// Roll a critical hit chance for a creature to player (default: 2%).
 			final boolean critical = Rand.roll1D100() <= 2;
@@ -3486,6 +3488,10 @@ public abstract class RPEntity extends CombatEntity {
 				damage *= 2;
 			}
 
+			damage = GlyphCombatService.resolveDirectHit(defender, nature, critical, baseDamage, damage);
+			final boolean didDamage = damage > 0;
+			if (defender.getsDefXpFrom(this, didDamage)) { defender.incDefXP(); }
+
 			if (this instanceof Creature && defender instanceof Player) {
 				damage = games.stendhal.server.core.rule.damage.WallOfGordService
 						.reduceDirectCreatureHit((Player) defender, damage);
@@ -3493,10 +3499,13 @@ public abstract class RPEntity extends CombatEntity {
 
 			if (didDamage) {
 				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
-				this.handleLifesteal(this, this.getWeapons(), damage);
+				final int resolvedDamage = Math.min(defender.getHP(),
+						GlyphCombatService.reduceIncomingDamage(defender, damage));
+				this.handleLifesteal(this, this.getWeapons(), resolvedDamage);
 
 				defender.onDamaged(this, damage);
+				damage = resolvedDamage;
+				GlyphCombatService.onHit(this, defender, damage);
 
 				if (logger.isDebugEnabled() || Testing.DEBUG) {
 					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + damage);
@@ -3712,6 +3721,7 @@ public abstract class RPEntity extends CombatEntity {
 
 	@Override
 	public void onRemoved(StendhalRPZone zone) {
+		GlyphCombatService.clearEffects(this);
 		super.onRemoved(zone);
 
 		// Stop other creatures and players attacks on me.

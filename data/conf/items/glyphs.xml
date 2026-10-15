@@ -248,4 +248,225 @@
 		</equipable>
 	</item>
 
+	<item name="glif świętego dębu">
+		<type class="glyph" subclass="glyph_sacred_oak" tileid="-1"/>
+		<description>Oto glif świętego dębu. Zmniejsza dodatkową część obrażeń trafienia krytycznego o 25%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<critical_bonus_reduction value="25.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="defensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif żywej wody">
+		<type class="glyph" subclass="glyph_living_water" tileid="-1"/>
+		<description>Oto glif żywej wody. Po 10 sekundach bez zadawania i otrzymywania obrażeń odnawia co 5 sekund 1% maksymalnego zdrowia, nie więcej niż 20 punktów.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<out_of_combat_regen value="1.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="healing_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Rodzanic">
+		<type class="glyph" subclass="glyph_rodzanice" tileid="-1"/>
+		<description>Oto glif Rodzanic. Zwiększa leczenie z jedzenia, napojów i mikstur o 20%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<consumable_healing_bonus value="20.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="healing_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif wichru">
+		<type class="glyph" subclass="glyph_whirlwind" tileid="-1"/>
+		<description>Oto glif wichru. Zmniejsza wagę wolniejszych broni o 1, do minimum 2, oraz daje 5% szansy uniku zwykłego, niekrytycznego fizycznego ciosu.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<rate_increase value="1"/>
+			<physical_dodge_chance value="5.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="utility_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif wytrwałości">
+		<type class="glyph" subclass="glyph_endurance" tileid="-1"/>
+		<description>Oto glif wytrwałości. Zmniejsza wagę wolniejszych broni o 1, do minimum 2; poniżej 35% zdrowia redukuje otrzymywane obrażenia o 10%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<rate_increase value="1"/>
+			<low_health_damage_reduction value="10.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="utility_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif ogniska">
+		<type class="glyph" subclass="glyph_hearth" tileid="-1"/>
+		<description>Oto glif ogniska. Zmniejsza otrzymywane obrażenia od ognia o 35%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<susceptibility type="fire" value="0.65"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="resistance_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif korzeni">
+		<type class="glyph" subclass="glyph_roots" tileid="-1"/>
+		<description>Oto glif korzeni. Zmniejsza otrzymywane obrażenia od ziemi i wody o 25%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<susceptibility type="earth" value="0.75"/>
+		<susceptibility type="water" value="0.75"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="resistance_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif zmory">
+		<type class="glyph" subclass="glyph_nightmare" tileid="-1"/>
+		<description>Oto glif zmory. Daje 10% szansy na zmniejszenie obrażeń zadawanych przez trafioną istotę o 10% przez 6 sekund; czas odnowienia wynosi 12 sekund dla źródła i efekt nie kumuluje się.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<nightmare_chance value="10.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="control_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Świętowita">
+		<type class="glyph" subclass="glyph_swietowit" tileid="-1"/>
+		<description>Oto glif Świętowita. Dodaje 3 punkty ataku, 5 punktów obrony i 5 punktów procentowych szansy na trafienie krytyczne.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<atk value="3"/>
+			<def value="5"/>
+			<critical_chance value="5.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="special_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif przodków">
+		<type class="glyph" subclass="glyph_ancestors" tileid="-1"/>
+		<description>Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejsza obrażenia od wszystkich sześciu żywiołów o 5%.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<def value="8"/>
+			<health value="250"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<susceptibility type="earth" value="0.95"/>
+		<susceptibility type="water" value="0.95"/>
+		<susceptibility type="fire" value="0.95"/>
+		<susceptibility type="ice" value="0.95"/>
+		<susceptibility type="dark" value="0.95"/>
+		<susceptibility type="light" value="0.95"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="special_rune"/>
+		</equipable>
+	</item>
+
 </items>

@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.status;
 
+import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import java.util.Collections;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class EatStatusTurnListener implements TurnListener {
 			}
 
 			// is full hp?
-			if (entity.heal(amount, true) == 0) {
+			if (entity.heal(GlyphRecoveryService.boostConsumableHealing(entity, amount), true) == 0) {
 				if (entity instanceof Player) {
 					statusList.removeAll(EatStatus.class);
 				}

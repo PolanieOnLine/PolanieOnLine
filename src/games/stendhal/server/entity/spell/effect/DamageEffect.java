@@ -18,6 +18,7 @@ import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnListenerDecorator;
+import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
@@ -63,12 +64,13 @@ public class DamageEffect extends AbstractEffect implements TurnListener {
 		if(numberOfLeftOverHits > 0 && rpEntityToDamage.getHP() > 0) {
 
 			int damageDone = damageOrigin.damageDone(rpEntityToDamage, getAtk(), getNature());
-			damageDone = Math.min(damageDone, rpEntityToDamage.getBaseHP());
-			int toSteal = (int) Math.ceil(damageDone * Double.valueOf(getLifesteal()));
+			final int resolvedDamage = Math.max(0, Math.min(rpEntityToDamage.getHP(),
+					GlyphCombatService.reduceIncomingDamage(rpEntityToDamage, damageDone)));
+			int toSteal = (int) Math.ceil(resolvedDamage * Double.valueOf(getLifesteal()));
 
 			if(damageDone > 0) {
 				rpEntityToDamage.onDamaged(damageOrigin, damageDone);
-				damageOrigin.addEvent(new AttackEvent(true, damageDone, getNature(), null, true));
+				damageOrigin.addEvent(new AttackEvent(true, resolvedDamage, getNature(), null, true));
 				damageOrigin.notifyWorldAboutChanges();
 			}
 

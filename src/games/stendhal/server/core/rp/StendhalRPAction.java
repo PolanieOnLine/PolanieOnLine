@@ -28,6 +28,7 @@ import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -399,10 +400,12 @@ public class StendhalRPAction {
 					damage, weapons, defender, isRanged);
 
 			// Handle critical hit logic
+			final int baseDamage = damage;
 			Object[] criticalResult = handleCritical(player, damage);
 			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
-			damage = (int) criticalResult[0];
+			damage = GlyphCombatService.resolveDirectHit(defender, player.getDamageType(),
+					critical, baseDamage, (int) criticalResult[0]);
 			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
@@ -418,10 +421,13 @@ public class StendhalRPAction {
 				}
 
 				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
-				player.handleLifesteal(player, weapons, damage);
+				final int resolvedDamage = Math.min(defender.getHP(),
+						GlyphCombatService.reduceIncomingDamage(defender, damage));
+				player.handleLifesteal(player, weapons, resolvedDamage);
 
 				defender.onDamaged(player, damage);
+				damage = resolvedDamage;
+				GlyphCombatService.onHit(player, defender, damage);
 				WeaponAffixCombatService.applyOnHitProcs(player, defender,
 						weapons, damage);
 				logger.debug("attack from " + player.getID() + " to "

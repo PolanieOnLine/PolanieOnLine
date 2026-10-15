@@ -22,6 +22,34 @@ public class ItemRarityPresentationTest {
 	private static final String WORSE_COLOR_MARKER = "color='#ef6a62'";
 
 	@Test
+	public void testGlyphTooltipsExplainProcConditionsAndPercentageUnits() {
+		final RPObject object = ItemTestHelper.createItem("test glyph");
+		object.put("rarity_id", "rare");
+		putCategory(object, ItemTooltip.CATEGORY_OTHER);
+		putStat(object, ItemTooltip.CRITICAL_BONUS_REDUCTION, "25");
+		putStat(object, ItemTooltip.OUT_OF_COMBAT_REGEN, "1");
+		putStat(object, ItemTooltip.CONSUMABLE_HEALING_BONUS, "20");
+		putStat(object, ItemTooltip.PHYSICAL_DODGE_CHANCE, "5");
+		putStat(object, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION, "10");
+		putStat(object, ItemTooltip.NIGHTMARE_CHANCE, "10");
+		putStat(object, ItemTooltip.RATE_INCREASE, "1");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("25% redukcji dodatkowych obrażeń krytycznych"));
+		assertTrue(tooltip.contains("1% maksymalnych PW regeneracji co 5 s"));
+		assertTrue(tooltip.contains("limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń"));
+		assertTrue(tooltip.contains("20% leczenia wyłącznie z przedmiotów zużywalnych"));
+		assertTrue(tooltip.contains("5% szansy uniku bezpośredniego"));
+		assertTrue(tooltip.contains("bez krytyków"));
+		assertTrue(tooltip.contains("10% redukcji otrzymanych obrażeń poniżej 35% PW"));
+		assertTrue(tooltip.contains("10% szansy po trafieniu"));
+		assertTrue(tooltip.contains("o 10% przez 6 s"));
+		assertTrue(tooltip.contains("odnowienie 12 s na źródło; bez kumulacji"));
+		assertTrue(tooltip.contains("1 zmniejszenia wagi broni (minimum 2)"));
+	}
+
+	@Test
 	public void testEveryRarityHasColorAndTextLabel() {
 		assertRarityToolTip("common", "#9e9e9e", "Zwykły");
 		assertRarityToolTip("rare", "#4a90e2", "Rzadki");

@@ -438,6 +438,8 @@ final class ItemRarityPresentation {
 					WeaponPerformanceCalculator.getInt(equippedItem,
 							ItemTooltip.DEFENSE), "pancerza", equippedItem != null);
 		}
+		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.RATE_INCREASE,
+				"zmniejszenia wagi broni (minimum 2)");
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,
 				"zdrowia");
 		appendFlatAffixBonus(coreBonuses, object, equippedItem,
@@ -459,6 +461,25 @@ final class ItemRarityPresentation {
 		appendResistance(resistances, object, equippedItem, "water", "wodę");
 		appendResistance(resistances, object, equippedItem, "cut",
 				"obrażenia fizyczne");
+
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.CRITICAL_BONUS_REDUCTION,
+				"redukcji dodatkowych obrażeń krytycznych", false);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.OUT_OF_COMBAT_REGEN,
+				"maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)", false);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.CONSUMABLE_HEALING_BONUS,
+				"leczenia wyłącznie z przedmiotów zużywalnych", false);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.PHYSICAL_DODGE_CHANCE,
+				"szansy uniku bezpośredniego, zwykłego fizycznego trafienia (bez krytyków)", false);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION,
+				"redukcji otrzymanych obrażeń poniżej 35% PW", false);
+		appendPercentageBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.NIGHTMARE_CHANCE,
+				"szansy po trafieniu na osłabienie ataku celu o 10% przez 6 s (odnowienie 12 s na źródło; bez kumulacji)", false);
 
 		/* Percentage and proc-like bonuses are the final detail layer and stay
 		 * visually separate from both flat stats and resistances. */

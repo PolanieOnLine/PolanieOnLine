@@ -284,6 +284,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute("lifesteal_increase", Type.FLOAT, Definition.HIDDEN);
 		// Extra health provided by glyphs, helping to boost the player's survivability.
 		entity.addAttribute("health", Type.SHORT, Definition.HIDDEN);
+		for (String effect : new String[] { "critical_bonus_reduction",
+				"out_of_combat_regen", "consumable_healing_bonus",
+				"physical_dodge_chance", "low_health_damage_reduction", "nightmare_chance" }) {
+			entity.addAttribute(effect, Type.FLOAT, Definition.HIDDEN);
+		}
 
 		// Some items are quest rewards that other players
 		// don't deserve. Not hidden because the client uses it for an anti
@@ -1150,7 +1155,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			stats.append(getAttackRate());
 		}
 		if (has("rate_increase")) {
-			stats.append(" ZMNIEJSZA-WAGĘ-BRONI ");
+			stats.append(" ZMNIEJSZA-WAGĘ-BRONI: ");
+			stats.append(get("rate_increase"));
+			stats.append(" (minimum 2)");
 		}
 		if (has("amount")) {
 			stats.append(" PZ: ");
@@ -1235,6 +1242,36 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("lifesteal_increase")) {
 			stats.append(" ZWIĘKSZONA-KRADZIEŻ-ŻYCIA: ");
 			stats.append((getDouble("lifesteal_increase") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
+		if (has("critical_bonus_reduction")) {
+			stats.append(" ");
+			stats.append((getDouble("critical_bonus_reduction") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" redukcji dodatkowych obrażeń krytycznych");
+		}
+		if (has("out_of_combat_regen")) {
+			stats.append(" ");
+			stats.append((getDouble("out_of_combat_regen") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)");
+		}
+		if (has("consumable_healing_bonus")) {
+			stats.append(" ");
+			stats.append((getDouble("consumable_healing_bonus") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" leczenia wyłącznie z przedmiotów zużywalnych");
+		}
+		if (has("physical_dodge_chance")) {
+			stats.append(" ");
+			stats.append((getDouble("physical_dodge_chance") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" szansy uniku bezpośredniego, zwykłego fizycznego trafienia (bez krytyków)");
+		}
+		if (has("low_health_damage_reduction")) {
+			stats.append(" ");
+			stats.append((getDouble("low_health_damage_reduction") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" redukcji otrzymanych obrażeń poniżej 35% PW");
+		}
+		if (has("nightmare_chance")) {
+			stats.append(" ");
+			stats.append((getDouble("nightmare_chance") + "%").replaceFirst("\\.[0]+%$", "%"));
+			stats.append(" szansy po trafieniu na osłabienie ataku celu o 10% przez 6 s (odnowienie 12 s na źródło; bez kumulacji)");
 		}
 		if (has("health")) {
 			stats.append(" ZDROWIE: ");

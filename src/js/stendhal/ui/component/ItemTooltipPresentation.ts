@@ -49,6 +49,12 @@ const SPECIAL_BONUSES: PercentageBonusDefinition[] = [
 	{key: "atk_additional_bonus", label: "bonusu ataku", fraction: false},
 	{key: "accuracy_bonus", label: "bonusu precyzji", fraction: false},
 	{key: "critical_chance", label: "szansy na trafienie krytyczne", fraction: false},
+	{key: "critical_bonus_reduction", label: "redukcji dodatkowych obrażeń krytycznych", fraction: false},
+	{key: "out_of_combat_regen", label: "maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)", fraction: false},
+	{key: "consumable_healing_bonus", label: "leczenia wyłącznie z przedmiotów zużywalnych", fraction: false},
+	{key: "physical_dodge_chance", label: "szansy uniku bezpośredniego, zwykłego fizycznego trafienia (bez krytyków)", fraction: false},
+	{key: "low_health_damage_reduction", label: "redukcji otrzymanych obrażeń poniżej 35% PW", fraction: false},
+	{key: "nightmare_chance", label: "szansy po trafieniu na osłabienie ataku celu o 10% przez 6 s (odnowienie 12 s na źródło; bez kumulacji)", fraction: false},
 	{key: "critical_damage_bonus", label: "obrażeń trafienia krytycznego", fraction: true},
 	{key: "parry_chance", label: "szansy na parowanie", fraction: true},
 	{key: "armor_penetration", label: "penetracji pancerza", fraction: true},
@@ -249,6 +255,9 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		appendIntegerBonus(core, intValue(current, "def"), intValue(equipped, "def"),
 				"pancerza", !!equipped);
 	}
+	appendIntegerBonus(core, intValue(current, "rate_increase"),
+			intValue(equipped, "rate_increase"),
+			"zmniejszenia wagi broni (minimum 2)", !!equipped);
 	appendIntegerBonus(core, intValue(current, "health"), intValue(equipped, "health"),
 			"zdrowia", !!equipped);
 	appendIntegerBonus(core,
