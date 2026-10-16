@@ -94,8 +94,8 @@
 		</portal>
 		<portal x="21" y="7" ref="afterlife_tarnow_exit">
 			<destination zone="0_tarnow_city" ref="tarnow_restart_life"/>
-			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
-				<parameter name="quest">0_tarnow_city</parameter>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal">
+				<parameter name="condition">new OrCondition(new PlayerVisitedZonesCondition("0_tarnow_city"), new QuestCompletedCondition("0_tarnow_city"))</parameter>
 				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
 			</implementation>
 		</portal>
