@@ -1238,6 +1238,8 @@ dziesiąty=tenth
 raz=time
 razy=times
 raza=times
+1 raz=1 time
+{number:0} razy={0} times
 # Dialogues held in constants and arrays, including Tad's medicine.
 Lekarstwo dla #Tad? Nie powiedział Tobie, aby przynieść butelkę?=Medicine for #Tad? Didn't he ask you to bring a flask?
 Ach widzę, że masz flaszę. #Tad potrzebuje lekarstwa? Hmm... Potrzebuję kilku #ziół. Pomożesz?=Ah, I see you have a flask. Does #Tad need medicine? Hmm... I need some #herbs. Will you help?

@@ -614,7 +614,7 @@ Oto Radzimir. Wyglądający na przyjaznego faceta, który czeka na utworzenie of
 Zajmuję się kuchnią kowala Andrzeja. Poproś mnie #ugotuj dwojaki a przygotuję dla ciebie gorące danie z gruli!=I look after blacksmith Andrzej's kitchen. Ask me to #cook a two-part food pot, and I will prepare a hot potato dish for you!
 Możesz mi pomóc i przegonić szczury, które biegają dookoła domu. Nasz kot gdzieś się zapodział.=You can help by driving away the rats running around the house. Our cat has disappeared somewhere.
 Wieśniacy trudnią się zbieraniem ziemniaków, ale nie sądzę, że ci je dadzą z własnej woli.=Peasants gather potatoes, but I do not think they will give you any willingly.
-Z tego co wiem kiełbasa wiejska z tutejszych świń jest najlepsza na skwarki.=As far as I know, country sausage from the local pigs makes the best cracklings.
+Z tego co wiem kiełbasa wiejska z tutejszych świń jest najlepsza na skwarki.=As far as I know, cottage sausage from the local pigs makes the best cracklings.
 Cebulę poznasz po zielonych cieńkich listkach wystających z grządki.=Recognize onions by the thin green leaves sticking out of the bed.
 Bez omasty nie zrobię dobrych dwojaków.=Without fat for seasoning, I cannot make a good two-part food pot.
 Trochę mleka dodam i będzie przepyszna potrawa. Idź wydoić jakąś krowę.=Add a little milk and it will be delicious. Go and milk a cow.
