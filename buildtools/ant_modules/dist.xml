@@ -769,12 +769,9 @@
 
 
 	<target name="js-prepare-contribs" depends="js-prepare-node">
-		<exec executable="${executable.npx}" failonerror="true">
-			<arg value="showdown"/>
-			<arg value="makehtml"/>
-			<arg value="--input"/>
+		<exec executable="node" failonerror="true">
+			<arg value="buildtools/render-contributors.cjs"/>
 			<arg value="doc/contributors.md"/>
-			<arg value="--output"/>
 			<arg value="${srcjs}/contributors.html"/>
 		</exec>
 	</target>
