@@ -16,6 +16,7 @@ import { singletons } from "../../SingletonRepo";
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../../stendhal";
+import { GameLanguage } from "../../util/GameLanguage";
 
 
 /**
@@ -70,11 +71,11 @@ export class ChatOptionsDialog extends DialogContentComponent {
 			}
 		}
 		if (npc_options.length > 0) {
-			this.addGroup(!Chat.attending ? undefined : Chat.attending, npc_options);
+			this.addGroup(!Chat.attending ? undefined : Chat.attending, npc_options, false);
 		}
 
 		if (custom_options.length > 0) {
-			this.addGroup("Custom", custom_options);
+			this.addGroup("Custom", custom_options, true);
 		}
 	}
 
@@ -86,10 +87,11 @@ export class ChatOptionsDialog extends DialogContentComponent {
 	 * @param options {string[]}
 	 *   Keywords available in group.
 	 */
-	private addGroup(title: string|undefined, options: string[]) {
+	private addGroup(title: string|undefined, options: string[], custom: boolean) {
 		if (title) {
 			const titleElement = document.createElement("div");
 			titleElement.innerText = title;
+			if (!custom) titleElement.setAttribute("data-no-translate", "");
 			this.componentElement.appendChild(titleElement);
 		}
 
@@ -99,6 +101,9 @@ export class ChatOptionsDialog extends DialogContentComponent {
 			const button = document.createElement("button");
 			button.className = "shortcut-button";
 			button.innerText = options[idx];
+			button.dataset.keyword = options[idx];
+			if (!custom) button.setAttribute("data-translation-keyword", options[idx]);
+			if (custom) button.setAttribute("data-no-translate", "");
 			button.onclick = () => {
 				this.onButtonPressed(button);
 			};
@@ -119,7 +124,7 @@ export class ChatOptionsDialog extends DialogContentComponent {
 			button.style.removeProperty("background-color");
 		}, 600);
 
-		let keyword = button.innerText;
+		let keyword = button.dataset.keyword ?? button.innerText;
 		if (keyword.endsWith("...")) {
 			// add to chat input instead of sending text
 			while (keyword.endsWith(".")) {

@@ -120,7 +120,7 @@ public class StyledOptionPaneUI extends BasicOptionPaneUI {
 		 * instead with the defaults of JLabel.
 		 */
 		 if (msg instanceof String) {
-			 JTextArea text = new JTextArea((String) msg);
+			 JTextArea text = new JTextArea(games.stendhal.client.ClientLanguage.getText((String) msg));
 			 text.setEditable(false);
 			 text.setBorder(null);
 			 text.setOpaque(false);

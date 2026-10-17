@@ -17,8 +17,11 @@ import static games.stendhal.common.constants.Actions.TEXT;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.Translation;
 import games.stendhal.common.messages.SupportMessageTemplatesFactory;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
@@ -107,7 +110,8 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 		new GameEvent(sender, SUPPORTANSWER, action.get(TARGET), reply).raise();
 		if (supported != null) {
 
-			supported.sendPrivateText(NotificationType.SUPPORT, "Administrator " + getAnonymisedAdminName(sender) + " powiedział Tobie: " + reply + " \nJeżeli chcesz odpowiedzieć to użyj /support.");
+			supported.sendPrivateText(NotificationType.SUPPORT,
+					formatOnlineAnswer(supported.getLanguage(), getAnonymisedAdminName(sender), reply));
 			supported.notifyWorldAboutChanges();
 			SingletonRepository.getRuleProcessor().sendMessageToSupporters(message);
 
@@ -117,6 +121,18 @@ public class SupportAnswerAction extends AdministrationAction implements TurnLis
 			DBCommandQueue.get().enqueueAndAwaitResult(command, handle);
 			TurnNotifier.get().notifyInTurns(0, new TurnListenerDecorator(this));
 		}
+	}
+
+	/** Translate only the support wrapper; a human reply is never a dictionary key. */
+	private static String formatOnlineAnswer(final String language, final String admin, final String reply) {
+		final String template = Translation.getText(language,
+				"Administrator {0} powiedział Tobie: {1} \nJeżeli chcesz odpowiedzieć to użyj /support.");
+		final Matcher slots = Pattern.compile("\\{([01])\\}").matcher(template);
+		final StringBuffer result = new StringBuffer();
+		while (slots.find()) {
+			slots.appendReplacement(result, Matcher.quoteReplacement("0".equals(slots.group(1)) ? admin : reply));
+		}
+		return slots.appendTail(result).toString();
 	}
 
 	/**

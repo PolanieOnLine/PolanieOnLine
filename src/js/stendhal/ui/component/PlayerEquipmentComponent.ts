@@ -227,7 +227,7 @@ export class PlayerEquipmentComponent extends Component {
 		const player = marauroa?.me;
 		const title = player ? (player["_name"] || player["name"]) : "";
 		if (title && title !== this.currentTitle) {
-			InventoryWindowController.setTitle("equipmentborder", title);
+			InventoryWindowController.setTitle("equipmentborder", title, true);
 			this.currentTitle = title;
 		}
 	}

@@ -1,0 +1,23 @@
+# Jadzka's medicinal ingredients. The current Zakopane and Matinternet locations are retained.
+Hej ty! Tak, do ciebie mówię! Znasz mnie?=Hey, you! Yes, I am talking to you! Do you know me?
+Hej, chcesz mi jakoś pomóc?=Hey, would you like to help me?
+Świetnie, wiesz co robię. Moje zapasy ziół #leczniczych się wyczerpują.=Great, you know what I do. My supply of #medicinal herbs is running low.
+Jestem Gaździna Jadźka. Mogę uleczyć cię za darmo, dopóki twoje wymagania nie będą zbyt duże. Wielu wojowników prosi o moją pomoc. Dlatego moje zapasy ziół #leczniczych powoli się kończą i potrzebuję je uzupełnić.=I am Gaździna Jadźka. I can heal you for free, provided you do not ask too much. Many warriors need my help, so my #medicinal herbs are running low and must be replenished.
+Tak wielu wojowników prosi mnie o pomoc. Do leczenia potrzebne jest wiele składników a moje zapasy są na wyczerpaniu. Możesz mi przynieść brakujące zioła?=So many warriors ask for help. Healing requires many ingredients, and my supplies are running low. Could you bring the herbs I am missing?
+Jak miło! Proszę przynieś mi: {0}.=How kind! Please bring me: {item:0}.
+Ech... Cóż, niedobrze... Taka twoja wola. Pamiętaj jednak, że wkrótce zacznę odmawiać potrzebującym leczenia. Będę musiała im powiedzieć, że to przez TWOJE lenistwo.=Ah... That is unfortunate... As you wish. But remember, I will soon have to refuse those who need healing. I will have to tell them it is because of YOUR laziness.
+jabłko mają wiele witamin. Rosną na wschód od Semos, ale ich pełen talerz jest także w Matinternecie.=Apples contain many vitamins. They grow east of Semos, and there is also a plate full of them in Matinternet.
+polano to świetny materiał. Można go wykorzystać na wiele sposobów. Znajdź drzewo w lesie i je zetnij.=A log is a useful material with many uses. Find a tree in the forest and chop it down.
+Na własne oczy widziałam całe polany grzybów w Zakopanem.=I have seen entire clearings full of mushrooms in Zakopane.
+Na północ od Semos, niedaleko młodniaka rośnie ponoć zioło arandula. Oto rycina, na której zobaczysz jak wygląda.=They say arandula grows north of Semos, near the young woodland. Here is a drawing showing what it looks like.
+Wspaniale! Znów mogę leczyć czcigodnych wojowników bez opłat! Dziękuję. Przyjmij ode mnie podarek za swoją pracę.=Wonderful! I can heal honorable warriors for free again! Thank you. Accept this gift for your work.
+Dobrze i daj mi znać jeśli mogę ci kiedyś #pomóc..=All right, let me know if I can ever #help you.
+Ok, i daj mi znać jeśli mogę #pomóc w czymkolwiek innym.=All right, let me know if I can #help with anything else.
+Nic nie potrzebuję teraz, dziękuję.=I need nothing now, thank you.
+Gaździna Jadźka poprosiła mnie o zebranie składników, aby pomóc jej nadal leczyć innych.=Gaździna Jadźka asked me to gather ingredients so she can keep healing others.
+Nie chcę, pomóc Gaździnie. Myślę, że ona znajdzie kogoś, kto jej pomoże.=I do not want to help Gaździna Jadźka. I think she will find someone else.
+Wciąż muszę przynieść Gaździnie {0}.=I still need to bring Gaździna Jadźka {item:0}.
+Pomogłem Gaździnie i ona może teraz dalej uzdrawiać.=I helped Gaździna Jadźka, and she can continue healing now.
+Pomogłam Gaździnie i ona może teraz dalej uzdrawiać.=I helped Gaździna Jadźka, and she can continue healing now.
+leczniczych=medicinal
+pomóc=help

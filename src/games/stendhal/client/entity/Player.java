@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPObject;
@@ -78,9 +80,9 @@ public class Player extends RPEntity {
 			away = message;
 			fireChange(PROP_AWAY);
 			if (message != null) {
-				addTextIndicator(Grammar.genderVerb(getGender(), "Zajęty"), NotificationType.INFORMATION);
+				addTextIndicator(getText(Grammar.genderVerb(getGender(), "Zajęty")), NotificationType.INFORMATION);
 			} else {
-				addTextIndicator(Grammar.genderVerb(getGender(), "Powrócił"), NotificationType.INFORMATION);
+				addTextIndicator(getText(Grammar.genderVerb(getGender(), "Powrócił")), NotificationType.INFORMATION);
 			}
 		}
 	}
@@ -100,9 +102,9 @@ public class Player extends RPEntity {
 			grumpy = message;
 			fireChange(PROP_GRUMPY);
 			if (message != null) {
-				addTextIndicator(Grammar.genderVerb(getGender(), "Niedostępny"), NotificationType.INFORMATION);
+				addTextIndicator(getText(Grammar.genderVerb(getGender(), "Niedostępny")), NotificationType.INFORMATION);
 			} else {
-				addTextIndicator(Grammar.genderVerb(getGender(), "Dostępny"), NotificationType.INFORMATION);
+				addTextIndicator(getText(Grammar.genderVerb(getGender(), "Dostępny")), NotificationType.INFORMATION);
 			}
 		}
 	}

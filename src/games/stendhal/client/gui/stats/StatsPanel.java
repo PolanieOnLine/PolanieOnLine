@@ -331,12 +331,19 @@ class StatsPanel extends JPanel {
 	 * A multi line, label like component for the status rows.
 	 */
 	private static class StatLabel extends JTextArea {
+		private String originalText;
+		@Override public void setText(String text) {
+			originalText = text;
+			super.setText(games.stendhal.client.ClientLanguage.getText(text));
+		}
 		public StatLabel() {
 			setOpaque(false);
 			setEditable(false);
 			setFocusable(false);
 			setWrapStyleWord(true);
 			setLineWrap(true);
+			putClientProperty(games.stendhal.client.gui.UiTranslation.AFTER_TRANSLATION,
+					(Runnable) () -> super.setText(games.stendhal.client.ClientLanguage.getText(originalText)));
 			Style style = StyleUtil.getStyle();
 			if (style != null) {
 				setForeground(style.getForeground());

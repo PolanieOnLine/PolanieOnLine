@@ -1,0 +1,74 @@
+"use strict";
+const assert = require("node:assert/strict");
+const {readFileSync} = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+const {test} = require("node:test");
+const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
+const root = path.resolve(__dirname, "../../../../..");
+const sourceRoot = path.join(root, "src/js/stendhal");
+
+async function harness() {
+	const compile = file => ts.transpileModule(readFileSync(path.join(sourceRoot, file), "utf8"), {
+		compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
+	}).outputText;
+	const languageExports = {};
+	vm.runInNewContext(compile("util/GameLanguage.ts"), {exports: languageExports, console,
+		fetch: async url => ({ok: true, text: async () => readFileSync(path.join(root, "data/languages", path.basename(url)), "utf8")})});
+	const language = languageExports.GameLanguage;
+	await language.load("/data");
+	class Item {
+		constructor(stats) { this.tooltip_stats = stats; this.name = "canonical_sword"; }
+		getDisplayName() { return "Sword"; }
+	}
+	const exports = {};
+	vm.runInNewContext(compile("ui/component/ItemTooltipPresentation.ts"), {exports, require: name => {
+		if (name === "marauroa") return {marauroa: {}};
+		if (name === "../../entity/Item") return {Item};
+		if (name === "../../util/GameLanguage") return {GameLanguage: language};
+		throw new Error(name);
+	}});
+	return {language, Item, build: item => exports.buildStructuredItemTooltip(item, false)};
+}
+
+test("weapon and healing tooltips translate labels while retaining exact stats and canonical names", async () => {
+	const h = await harness();
+	const stats = {category: "weapon", damage_min: "10", damage_max: "20", attacks_per_second: "2",
+		damage_type: "fire", range: "4", improve: "4", max_improves: "5", lifesteal: "0.05",
+		critical_chance: "7", health: "50", min_level: "10", durability: "100", uses: "3",
+		consumable_healing_regen: "3", consumable_healing_frequency_seconds: "2", consumable_healing_duration_seconds: "10"};
+	const item = new h.Item({...stats});
+	assert.match(h.build(item).lines.map(line => line.text).join("\n"), /obrażeń/);
+	h.language.synchronize("en");
+	const result = h.build(item);
+	const text = result.lines.map(line => line.text).join("\n");
+	assert.match(text, /30\.0 damage per second/);
+	assert.match(text, /Damage type: Fire/);
+	assert.match(text, /life steal/);
+	assert.match(text, /Healing: \+3 HP every 2 s/);
+	assert.match(text, /Durability: 97\/100/);
+	assert.equal(result.upgradeText, "Upgrade: +4 / +5");
+	assert.doesNotMatch(text, /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/);
+	assert.deepEqual(item.tooltip_stats, stats);
+	assert.equal(item.name, "canonical_sword");
+	h.language.synchronize("pl");
+	assert.equal(h.build(item).upgradeText, "Ulepszenie: +4 / +5");
+});
+
+test("all legendary affix descriptions and regular item bonuses have readable English display text", async () => {
+	const h = await harness(); h.language.synchronize("en");
+	const stats = {category: "armour", def: "85", resistance_fire: "107", spiked_plating: "0.04",
+		hunter_mark: "1", giant_slayer: "1", affix_flat_attack_bonus: "3", accuracy_bonus: "7"};
+	for (const key of ["deep_wounds", "armor_breaker", "longshot", "executioner", "duel_master", "crushing_blow",
+		"stunning_force", "binding_strike", "merciless_reach", "falcon_eye", "first_salvo", "power_overload",
+		"arcane_focus", "wall_of_gord", "iron_will", "unyielding_protection", "hero_eye", "guardian_seal"])
+		stats["legendary_" + key] = "1";
+	const text = h.build(new h.Item(stats)).lines.map(line => line.text).join("\n");
+	assert.match(text, /85 armour points/);
+	assert.match(text, /Spiked Plating: reflect 4\.0%/);
+	assert.match(text, /Stunning Force: 15% chance to stun/);
+	assert.match(text, /Falcon Eye:/);
+	assert.match(text, /critical hit chance/);
+	assert.doesNotMatch(text, /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/);
+	assert.doesNotMatch(text, /bonusu|pancerza|zdrowia|obrażeń|szansy|Zyskujesz/);
+});

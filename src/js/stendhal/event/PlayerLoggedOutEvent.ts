@@ -15,6 +15,7 @@ import { stendhal } from "../stendhal";
 
 import { RPEvent } from "marauroa"
 import { Chat } from "../util/Chat";
+import { GameLanguage } from "../util/GameLanguage";
 
 
 export class PlayerLoggedOutEvent extends RPEvent {
@@ -32,7 +33,7 @@ export class PlayerLoggedOutEvent extends RPEvent {
 		const localName = marauroa?.me?.["_name"] ?? marauroa?.me?.["name"];
 		const isLocalPlayer = typeof localName === "string" && localName === playerName;
 		if (stendhal.playerInGame && !isLocalPlayer) {
-			Chat.log("information", `${playerName} opuścił PolanieOnLine.`);
+			Chat.log("information", GameLanguage.getText(`${playerName} opuścił PolanieOnLine.`));
 		}
 	}
 }

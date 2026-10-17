@@ -1,0 +1,23 @@
+# Polish display text for existing English creature descriptions and speech.
+You see a poor elf builder who can hardly keep it together with all the nasty little brats running around and making such a racket. Please help him out by getting rid of all those pesky little things.=Oto biedny elf budowniczy, który ledwo wytrzymuje z nieznośnymi maluchami biegającymi dookoła i robiącymi taki hałas. Pomóż mu, pozbywając się tych dokuczliwych stworzeń.
+You see another poor elf builder who is having a hard time keeping it together with all the nasty little brats running around and making suck a racket. Please help him out by getting rid of all those pesky little things.=Oto kolejny biedny elf budowniczy, który ledwo wytrzymuje z nieznośnymi maluchami biegającymi dookoła i robiącymi taki hałas. Pomóż mu, pozbywając się tych dokuczliwych stworzeń.
+You see a bright, cheery holiday elf who is trying to remember that all kids are angels and can do no wrong.=Oto pogodny, wesoły świąteczny elf, który próbuje pamiętać, że wszystkie dzieci są aniołkami i nie robią nic złego.
+You see a little sugar-fueled demon that is wrecking havoc wherever he goes, because he helped steal all of Kris Kringle's candy for his stockings, and has spent hours eating it.=Oto mały demon napędzany cukrem, który sieje zamęt, gdziekolwiek się pojawi. Pomógł ukraść wszystkie słodycze Krisa Kringle'a przeznaczone do świątecznych skarpet i od wielu godzin je zjada.
+You see someone who is close to having a sugar coma from all the candy he has eaten.=Oto ktoś, kto od zjedzenia tylu słodyczy jest bliski cukrowej śpiączki.
+You see someone who wants you to help him steal MORE candy.=Oto ktoś, kto chce, byś pomógł mu ukraść WIĘCEJ słodyczy.
+You see a little bully. Be careful, she is coming for you.=Oto mała łobuziara. Uważaj, idzie po ciebie.
+You see a rather obnoxious little kid who has had way too much candy.=Oto dość nieznośny maluch, który zjadł zdecydowanie za dużo słodyczy.
+You see a skater that is barely able too stay on her feet. Nothing fancy.=Oto łyżwiarka, która ledwo trzyma się na nogach. Nic nadzwyczajnego.
+You see a graceful skater.=Oto pełna wdzięku łyżwiarka.
+We mighty duergars will crush the dwarves!=My, potężni duergarowie, zmiażdżymy krasnoludy!
+Kringle is a wuss!!!=Kringle to mięczak!!!
+Put up or shut up!!!=Działaj albo zamilknij!!!
+Bite me!!!=Odczep się!!!
+We need more candy!!!=Potrzebujemy więcej słodyczy!!!
+You guys are just crybabies!!!=Jesteście tylko beksami!!!
+Waaaaaa, you broke my train!!!=Buuuuuu, zepsułeś mój pociąg!!!
+Jingle bells. Shotgun shells!!!=Dzwonią dzwonki. Lecą naboje!!!
+Kringle laid an egg!!!=Kringle zniósł jajko!!!
+Stop it!!!=Przestań!!!
+I want chocolate bar!!!=Chcę tabliczkę czekolady!!!
+I have a code in my nodze=Mam kod w nodze

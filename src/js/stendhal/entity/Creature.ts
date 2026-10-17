@@ -22,15 +22,27 @@ import { drawCreatureArmor, getCreatureArmorLabel } from "../ui/render/CreatureA
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../stendhal";
+import { GameLanguage } from "../util/GameLanguage";
 
 export class Creature extends RPEntity {
+	private titleLanguageRevision=-1;
+	override getTitle() {
+		return GameLanguage.getText(super.getTitle() || this["_name"] || this["name"] || this["class"] || "");
+	}
+	override drawTitle(ctx: RenderingContext2D,x:number,y:number) {
+		if(this.titleLanguageRevision!==GameLanguage.getRevision()) {
+			this.titleLanguageRevision=GameLanguage.getRevision();this.createTitleTextSprite();
+		}
+		super.drawTitle(ctx,x,y);
+	}
 	override minimapShow = true;
 	override minimapStyle = Color.CREATURE;
 	override spritePath = "monsters";
 	override titleStyle = "#ffc8c8";
 
 	getArmorLabel(): string | undefined {
-		return getCreatureArmorLabel(this["armor_type"]);
+		const label = getCreatureArmorLabel(this["armor_type"]);
+		return label === undefined ? undefined : GameLanguage.getText(label);
 	}
 
 	override drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
@@ -65,6 +77,7 @@ export class Creature extends RPEntity {
 
 	// Overrides the one in creature
 	override say(text: string) {
+		text = GameLanguage.getText(text);
 		if (stendhal.config.getBoolean("speech.creature")) {
 			this.addSpeechBubble(text);
 		}

@@ -1,0 +1,21 @@
+# Wrviliza's angelica tincture. Current level-scaled ingredients and names are retained.
+Hau! Witam ponownie... Wróciłeś, aby mi pomóc w przyniesieniu #składników do zrobienia dobrej #nalewki?=Woof! Welcome back... Have you returned to help bring #ingredients for a good #tincture?
+Hau! Mój magazyn z zapasami do przygotowania litworowej #nalewki kurczy się. Czy chcesz mi pomóc z uzupełnieniem #składników?=Woof! My supplies for angelica #tincture are running low. Will you help replenish the #ingredients?
+Hau. Zrobię jeszcze jedną, gdy będę mieć wystaczająco dużo #składników!=Woof. I will make another when I have enough #ingredients!
+Hau! Teraz potrzebuję {0}. Czy przypadkiem nie masz czegoś ze sobą?=Woof! Now I need {item:0}. Do you happen to have any with you?
+Hau... Sądzę, że będę musiała się zapytać kogoś pozytywnie nastawionego!=Woof... I think I will have to ask someone more willing!
+Hau... Sądze, że można iść suchym wąwozem, a następnie...=Woof... I think you can go through the dry canyon, and then...
+Hau! Witaj ponownie. Przyniosłeś jakiś #składnik dla mnie?=Woof! Welcome back. Did you bring any #ingredient for me?
+Hau! Nie tak popularne warzywa, ale wiem, że rosną jakieś na farmie blisko miasta Semos.=Woof! They are not common vegetables, but I know some grow on the farm near Semos.
+Hau! To jest potężny płyn. Kupuję mój na bazarze w Ados, gdy tylko mam czas na podróż.=Woof! It is a potent liquid. I buy mine at the Ados market whenever I have time to travel.
+Hau! Zioło rośnie na równinach lub w lasach... Łatwo znaleźć!=Woof! The herb grows on plains or in forests... Easy to find!
+Hau! Jedyne co wiem, to że jest rzadkim korzeniem rosnącym w lesie szczególnie blisko miejsc nasiąkniętych magią... Nie jest łatwo go znaleźć!=Woof! All I know is that it is a rare root growing in forests, especially near places steeped in magic... It is not easy to find!
+Dobrze co przyniosłeś?=All right, what did you bring?
+Hau! Nie spiesz się... nie ma pośpiechu! Co cię tutaj sprowadziło?=Woof! Take your time... There is no hurry! What brings you here?
+Zawarłem znajomość z koboldką Wrviliza barmanką w barze w Wo'fol.=I met the kobold Wrviliza, a bartender in Wo'fol.
+Poprosiła mnie o pomoc w remoncie jej magazynu na zapasy potrzebne do zrobienia jej Nalewki Litworowej,  ale mam pilne sprawy do załatwienia.=She asked me to replenish the supplies for her angelica tincture, but I have urgent matters to attend to.
+Pomogłem w remoncie jej magazynu na zapasy, z których przygotowuje swój Nalewkę Litworową.=I helped replenish the supplies she uses to prepare angelica tincture.
+Pomogłam w remoncie jej magazynu na zapasy, z których przygotowuje swój Nalewkę Litworową.=I helped replenish the supplies she uses to prepare angelica tincture.
+Może zapytam ją ponownie czy nie potrzebuje więcej rzeczy do jej magazynu na zapasy.=Perhaps I will ask again whether she needs more supplies.
+Jej magazyn na zapasy będzie zaopatrzony na {0}.=Her supplies will last for {item:0}.
+Pomagam jej w uzupełnieniu magazynu w zapasy potrzebne do sporządzenia Nalewki Litworowej. Wciąż mam do dostarczenia jej {0}=I am helping replenish her angelica tincture supplies. I still need to bring {item:0}

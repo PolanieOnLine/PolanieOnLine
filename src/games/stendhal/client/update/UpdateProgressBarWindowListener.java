@@ -31,9 +31,10 @@ class UpdateProgressBarWindowListener implements WindowListener {
 	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		int result = JOptionPane.showConfirmDialog(e.getWindow(),
-				"Czy chcesz przerwać pobieranie?", "Potwierdzenie",
-				JOptionPane.YES_NO_OPTION);
+		String[] options = {UpdateLanguage.getText("Tak"), UpdateLanguage.getText("Nie")};
+		int result = JOptionPane.showOptionDialog(e.getWindow(),
+				UpdateLanguage.getText("Czy chcesz przerwać pobieranie?"), UpdateLanguage.getText("Potwierdzenie"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (result == JOptionPane.YES_OPTION) {
 			e.getWindow().dispose();
 			System.exit(1);

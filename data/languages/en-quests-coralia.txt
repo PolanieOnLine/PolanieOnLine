@@ -1,0 +1,21 @@
+# Coralia's fruit hat. Current fruit locations and restocking dialogue are retained.
+Czy byłbyś na tyle miły i przyniósłbyś dla mnie trochę świeżych owoców do mojego kapelusza? Byłabym wdzięczna!=Would you kindly bring fresh fruit for my hat? I would be grateful!
+Czy chcesz znaleźć dla mnie trochę świeżych owoców do mojego kapelusza?=Would you find fresh fruit for my hat?
+Przykro mi, ale owoce, które mi przyniosłeś do mojego kapelusza nie są zbyt świeże. Czy byłbyś tak miły i znalazł ich trochę więcej?=I am afraid the fruit you brought for my hat is no longer fresh. Would you kindly find more?
+Czy mój kapelusz nie wygląda świeżo? Teraz nie potrzebuję świeżych owoców, ale dziękuję za troskę!=Doesn't my hat look fresh? I need no fresh fruit now, but thank you for caring!
+Co za szkoda, że wszystkie uschły. Potrzebuję trochę świeżych #owoców...=What a pity they all dried up. I need fresh #fruit...
+Ten egzotyczny kapelusz już się nie trzyma. Wiesz...=This exotic hat is falling apart. You know...
+Lśniące, błszczące jabłka! Te, które mam pochodzą gdzieś ze wschodniego Semos.=Shiny, gleaming apples! Mine came from somewhere east of Semos.
+Jest jedna egzotyczna wyspa z bananami.. Kieruj się prosto na zachód. Powiedzmy, że banany nie są zbyt mięsiste dla tych na wschodzie.=There is an exotic island with bananas... Head straight west. Let us say the bananas are not meaty enough for those in the east.
+Jest starsza pani w Fado, która sprzedaje najpiękniejsze wisienki.=An elderly lady in Fado sells the finest cherries.
+Na północ od Semos znajduje się piękna mała świątynia pokryta winoroślami!  Słyszałam także o starym domku w górach Or'ril.=North of Semos is a lovely little temple covered in vines! I also heard about an old house in the Or'ril mountains.
+Sądzę, że widziałam pare gruszy w północnych górach nie daleko pięknego wodospadu.=I think I saw pear trees in the northern mountains, near a beautiful waterfall.
+Jeden ogromny arbuz z ogrodów Kalavan mógłby się pięknie prezentować na moim kapeluszu.=A huge watermelon from the Kalavan gardens would look lovely on my hat.
+Nigdy nie widziałam dziko rosnących drzew granatów, ale słyszałam o człowieku żyjącym na południe od wielkiej rzeki uprawiającym w ogrodzie te drzewa.=I have never seen wild pomegranate trees, but I heard of a man south of the great river who grows them in his garden.
+Coralia poprosiła mnie o świeże owoce do swojego kapelusza.=Coralia asked me for fresh fruit for her hat.
+Zdecydowałem, że nie pomogę Coralii w poszukiwaniach owoców ponieważ mam lepsze rzeczy do zrobienia.=I decided not to help Coralia find fruit, because I have better things to do.
+Wciąż muszę przynieść Coralii {0}.=I still need to bring Coralia {item:0}.
+Mnięło trochę czasu odkąd przyniosłem Coralii świeże owoce do jej kapelusza. Ciekaw jestem czy już zeschły?=It has been a while since I brought Coralia fresh fruit for her hat. I wonder whether it has dried up?
+Przyniosłem Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.=I brought Coralia the fruit she needed for her hat, and she replaced the old fruit that had lost its shine.
+Przyniosłam Coralii owoce, których potrzebowała do swojego kapelusza, a ona zastąpiła nimi stare, które utraciły blask.=I brought Coralia the fruit she needed for her hat, and she replaced the old fruit that had lost its shine.
+owoców=fruit

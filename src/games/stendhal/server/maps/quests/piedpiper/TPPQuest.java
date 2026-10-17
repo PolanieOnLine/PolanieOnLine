@@ -53,7 +53,7 @@ public class TPPQuest implements ITPPQuest {
 	 */
 	public void shoutMessage(final String msg) {
 		if(msg!=null) {
-			SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, msg);
+			SingletonRepository.getRuleProcessor().tellAllPlayersTranslated(NotificationType.PRIVMSG, msg);
 		}
 	}
 

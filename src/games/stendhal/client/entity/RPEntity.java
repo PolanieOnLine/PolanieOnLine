@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -838,9 +840,9 @@ public abstract class RPEntity extends AudibleEntity {
 
 		if (stendhal.SHOW_EVERYONE_ATTACK_INFO || showAttackInfoForPlayer) {
 			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-				getTitle() + " " + Grammar.genderVerb(getGender(), "otrzymał") + " "
+				getText(getTitle() + " " + Grammar.genderVerb(getGender(), "otrzymał") + " "
 						+ Grammar.quantityplnoun(damage, "punkt")
-						+ " obrażeń od " + attacker.getTitle(),
+						+ " obrażeń od " + attacker.getTitle()),
 				NotificationType.NEGATIVE));
 		}
 
@@ -919,9 +921,9 @@ public abstract class RPEntity extends AudibleEntity {
 		if ((amount > 0) && (isInHearingRange())) {
 			ClientSingletonRepository.getUserInterface().addEventLine(
 				new HeaderLessEventLine(
-					getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " " + Grammar.genderVerb(getGender(), "zatruty") + ". Traci "
+					getText(getTitle() + " " + Grammar.genderVerb(getGender(), "został") + " " + Grammar.genderVerb(getGender(), "zatruty") + ". Traci "
 						+ Grammar.quantityplnoun(amount, "punkt")
-						+ " życia.", NotificationType.POISON));
+						+ " życia."), NotificationType.POISON));
 		}
 	}
 
@@ -957,13 +959,15 @@ public abstract class RPEntity extends AudibleEntity {
 			type = NotificationType.PRIVMSG;
 		}
 
-		ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(text, type));
+		final String displayedText = type == NotificationType.SERVER
+				? games.stendhal.client.ClientLanguage.getWelcomeText(text) : text;
+		ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(displayedText, type));
 
 		// Scene settings messages should not disturb playing, just create some atmosphere
 		if (type != NotificationType.SCENE_SETTING) {
 			ClientSingletonRepository.getScreenController().addText(
 					getX() + (getWidth() / 2.0), getY(),
-					text.replace("|", ""), type, false);
+					displayedText.replace("|", ""), type, false);
 		}
 	}
 
@@ -991,7 +995,9 @@ public abstract class RPEntity extends AudibleEntity {
 	 * @param achievementCategory achievement category
 	 */
 	public void onReachAchievement(String achievementTitle, String achievementDescription, String achievementCategory) {
-		ClientSingletonRepository.getUserInterface().addAchievementBox(achievementTitle, achievementDescription, achievementCategory);
+		ClientSingletonRepository.getUserInterface().addAchievementBox(
+				games.stendhal.client.ClientLanguage.getText(achievementTitle),
+				games.stendhal.client.ClientLanguage.getText(achievementDescription), achievementCategory);
 	}
 
 	/**
@@ -1031,7 +1037,7 @@ public abstract class RPEntity extends AudibleEntity {
 	 *     entire map).
 	 */
 	public void onTalk(String text, final int rangeSquared) {
-		if (this instanceof NPC) text = games.stendhal.client.ClientLanguage.getText(text);
+		if (this instanceof NPC || this instanceof Creature) text = games.stendhal.client.ClientLanguage.getText(text);
 		if (User.isAdmin() || (rangeSquared < 0) || (isInHearingRange(rangeSquared))) {
 			final String ttext = trimText(text);
 			final EmojiStore emojiStore = ClientSingletonRepository.getEmojiStore();
@@ -1590,16 +1596,16 @@ public abstract class RPEntity extends AudibleEntity {
 				if (amount > 0) {
 					addTextIndicator("+" + amount, NotificationType.SIGNIFICANT_POSITIVE);
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-							getTitle()
+							getText(getTitle()
 							+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " "
-							+ Grammar.polishQuantity("punkt", amount) + " doświadczenia.",
+							+ Grammar.polishQuantity("punkt", amount) + " doświadczenia."),
 							NotificationType.SIGNIFICANT_POSITIVE));
 				} else if (amount < 0) {
 					addTextIndicator("" + amount, NotificationType.SIGNIFICANT_NEGATIVE);
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-							getTitle()
+							getText(getTitle()
 							+ " traci " + (-amount) + " "
-							+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
+							+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia."),
 							NotificationType.SIGNIFICANT_NEGATIVE));
 				}
 			}
@@ -1652,6 +1658,7 @@ public abstract class RPEntity extends AudibleEntity {
 				msg += newlevel + level + " " + stat;
 			}
 
+			msg = getText(msg);
 			ClientSingletonRepository.getUserInterface().addEventLine(
 					new HeaderLessEventLine(msg, msgtype));
 			ClientSingletonRepository.getScreenController().addText(
@@ -1676,7 +1683,7 @@ public abstract class RPEntity extends AudibleEntity {
 				return;
 			}
 
-			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(deathText));
+			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(getText(deathText)));
 		}
 	    playSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "death");
 	}

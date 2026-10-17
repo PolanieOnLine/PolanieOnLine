@@ -26,6 +26,7 @@ import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
+import { GameLanguage } from "../../util/GameLanguage";
 import { getItemSlotLayers, ItemSlotLayers } from "./ItemSlotPresentation";
 import {
 	buildStructuredItemTooltip,
@@ -741,7 +742,7 @@ export class ItemContainerImplementation {
 		if (rarity) {
 			const rarityLine = document.createElement("div");
 			rarityLine.className = "item-rarity-tooltip__rarity";
-			rarityLine.textContent = rarity.polishDisplayName;
+			rarityLine.textContent = GameLanguage.getText(rarity.polishDisplayName);
 			toolTip.appendChild(rarityLine);
 		}
 
@@ -755,7 +756,7 @@ export class ItemContainerImplementation {
 		if (structured.comparisonName) {
 			const comparison = document.createElement("div");
 			comparison.className = "item-rarity-tooltip__comparison";
-			comparison.textContent = "Porównanie z: " + structured.comparisonName;
+			comparison.textContent = GameLanguage.getText("Porównanie z:") + " " + structured.comparisonName;
 			toolTip.appendChild(comparison);
 		}
 
@@ -765,7 +766,7 @@ export class ItemContainerImplementation {
 
 		// Legacy servers do not publish tooltip_stats, so preserve their plain text.
 		if (!hasStructured) {
-			const rarityText = rarity ? "Rzadkość: " + rarity.polishDisplayName : "";
+			const rarityText = rarity ? GameLanguage.getText("Rzadkość: " + rarity.polishDisplayName) : "";
 			for (const line of item.getToolTip().split("\n")) {
 				if (!line || line === item.getDisplayName() || line === rarityText) {
 					continue;

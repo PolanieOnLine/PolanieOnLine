@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.swing.ToolTipManager;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
@@ -141,7 +142,7 @@ final class ItemRarityPresentation {
 		}
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
-		return tooltip.toString();
+		return games.stendhal.client.ClientLanguage.getText(tooltip.toString());
 	}
 
 	/** Exact stack size; the small inventory icon can continue using K/M labels. */
@@ -151,7 +152,8 @@ final class ItemRarityPresentation {
 		}
 		final int quantity = Math.max(0, ((Item) entity).getQuantity());
 		final String amount = String.format(Locale.ROOT, "%,d", quantity).replace(',', ' ');
-		return "<html>Monety w stosie: <b>" + amount + "</b></html>";
+		return "<html>" + escapeHtml(ClientLanguage.getText("Monety w stosie:"))
+				+ " <b>" + amount + "</b></html>";
 	}
 
 	static String resolveCategory(final RPObject object) {
@@ -220,7 +222,7 @@ final class ItemRarityPresentation {
 		if (rarity != null) {
 			tooltip.append("<br><font size='-1' color='")
 					.append(getTextColor()).append("'>")
-					.append(escapeHtml(rarity.getPolishDisplayName()))
+					.append(escapeHtml(ClientLanguage.getText(rarity.getPolishDisplayName())))
 					.append("</font>");
 		}
 		appendUpgrade(tooltip, object, rarity);
@@ -254,7 +256,8 @@ final class ItemRarityPresentation {
 				: rarity.getColorHex();
 		tooltip.append("<br><font size='-1' color='")
 				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
-				.append("Ulepszenie: +").append(upgradeLevel);
+				.append(escapeHtml(ClientLanguage.getText("Ulepszenie:")))
+				.append(" +").append(upgradeLevel);
 		if (maxUpgradeLevel > 0) {
 			tooltip.append(" / +").append(maxUpgradeLevel);
 		}
@@ -282,7 +285,7 @@ final class ItemRarityPresentation {
 		appendTreeDetail(tooltip, false,
 				formatTwoDecimals(performance.getAttacksPerSecond())
 						+ " ataku na sekundę ("
-						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")",
+						+ ClientLanguage.getText(getWeaponSpeedLabel(performance.getAttacksPerSecond())) + ")",
 				equipped == null ? "" : delta(performance.getAttacksPerSecond(),
 						equipped.getAttacksPerSecond(), 2));
 		tooltip.append("</table>");
@@ -308,7 +311,7 @@ final class ItemRarityPresentation {
 					tooltip.append("<br>");
 				}
 				tooltip.append("Typ obrażeń: ")
-						.append(escapeHtml(localizeDamageType(damageType)));
+						.append(escapeHtml(ClientLanguage.getText(localizeDamageType(damageType))));
 			}
 			if (statuses != null && !statuses.isEmpty()) {
 				if (range > 0 || equippedRange > 0 || damageType != null) {
@@ -548,7 +551,7 @@ final class ItemRarityPresentation {
 			return;
 		}
 		appendBonusLine(bonuses, signed(formatCompact(modifier.doubleValue()))
-				+ "% odporności na " + label,
+				+ "% odporności na " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(modifier.doubleValue(),
 						equippedModifier == null ? 0.0
 								: equippedModifier.doubleValue(), 1));
@@ -563,7 +566,7 @@ final class ItemRarityPresentation {
 		if (value == 0.0 && (equippedItem == null || equippedValue == 0.0)) {
 			return;
 		}
-		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + label,
+		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(value, equippedValue, 1));
 	}
 
@@ -623,7 +626,7 @@ final class ItemRarityPresentation {
 		if (value == 0 && (!comparing || equippedValue == 0)) {
 			return;
 		}
-		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label,
+		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + ClientLanguage.getText(label),
 				comparing ? delta(value, equippedValue, 0) : "");
 	}
 

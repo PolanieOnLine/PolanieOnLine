@@ -84,6 +84,7 @@ test("the actual creature view shows armor only for our current target and respe
 	const { Creature } = load(path.resolve(__dirname, "../../entity/Creature.ts"), {
 		"./RPEntity": { RPEntity },
 		"../data/color/Color": { Color: { CREATURE: "red" } },
+		"../util/GameLanguage": { GameLanguage: { getText: text => text } },
 		"marauroa": { marauroa },
 		"../ui/render/CreatureArmorRenderer": h.renderer
 	});

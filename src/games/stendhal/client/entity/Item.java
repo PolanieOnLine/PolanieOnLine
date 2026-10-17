@@ -37,6 +37,11 @@ public class Item extends Entity {
 		quantity = 0;
 	}
 
+	/** Translate the displayed title without changing the canonical item name. */
+	@Override public String getTitle() {
+		return games.stendhal.client.ClientLanguage.getText(super.getTitle());
+	}
+
 	/**
 	 * Initialize this entity for an object.
 	 *

@@ -37,6 +37,10 @@ public class BareBonesBrowserLaunch {
 			"mozilla" };
 	private static final String errMsg = "Błąd podczas uruchamiania przeglądarki:\n ";
 
+	static String failureMessage(String url) {
+		return games.stendhal.client.ClientLanguage.getText(errMsg) + url;
+	}
+
 	/**
 	 * Opens the specified web page in the user's default browser
 	 *
@@ -81,7 +85,7 @@ public class BareBonesBrowserLaunch {
 					}
 				}
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(j2DClient.get().getMainFrame(), errMsg + url);
+				JOptionPane.showMessageDialog(j2DClient.get().getMainFrame(), failureMessage(url));
 			}
 		}
 	}

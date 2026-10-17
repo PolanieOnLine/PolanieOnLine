@@ -1,0 +1,19 @@
+# Finn y George; el mensaje secreto se conserva sin traducir.
+Dziękuję, że zgodziłeś się przekazać George'owi tą wiadomość:=Gracias por aceptar llevarle este mensaje a George:
+Może jutro będę miał kolejną wiadomość.=Quizá mañana tenga otro mensaje.
+Mam pilną wiadomość dla #George'#a! Jest naprawdę ważna! Ale moi rodzice nie pozwalają mi samemu na spacerować po Ados, dlatego że jestem dzieckiem! Czy mógłbyś dostarczyć mu tą wiadomość?=¡Tengo un mensaje urgente para #George! ¡Es muy importante! Pero mis padres no me dejan pasear a solas por Ados porque soy un niño. ¿Podrías entregárselo?
+Znajdź Tommiego. Może jest w Parku Ados. George nie będzie daleko. Czy mógłbyś dostarczyć mu tą wiadomość?=Busca a Tommy. Quizá esté en el parque de Ados. George no andará lejos. ¿Podrías llevarle este mensaje?
+Nie powinienem rozmawiać z obcymi, ale wyglądasz na takiego co ma coś ważnego do powiedzenia. Co to jest?=No debería hablar con desconocidos, pero parece que tienes algo importante que decirme. ¿Qué es?
+Dziękuję, że zgodziłeś się przekazać wiadomość Finnowi:=Gracias por aceptar llevarle el mensaje a Finn:
+Rzeczywiście jest całkiem interesujące. Proszę daj znać Finnowi:=Eso es bastante interesante. Por favor, dile a Finn:
+I co powiedział George?=¿Y qué dijo George?
+Dziękuję za powiedzenie George'owi!=¡Gracias por decírselo a George!
+Jego odpowiedź jest naprawdę interesująca!=¡Su respuesta es muy interesante!
+Rozmawiałem w Ados z chłopcem o imieniu Finn Farmer.=Hablé en Ados con un niño llamado Finn Farmer.
+Rozmawiałam w Ados z chłopcem o imieniu Finn Farmer.=Hablé en Ados con un niño llamado Finn Farmer.
+Finn poprosił mnie o przekazanie George'owi tajnej wiadomości. Mogę go spotkać niedaleko jego psa Tommy w parku Ados.=Finn me pidió que llevara un mensaje secreto a George. Puedo encontrarlo cerca de su perro Tommy en el parque de Ados.
+Odrzuciłem jego prośbę.=Rechacé su petición.
+Zgodziłem się na przekazanie wiadomości.=Acepté entregar el mensaje.
+Zgodziłam się na przekazanie wiadomości.=Acepté entregar el mensaje.
+George przekazał mi tajną wiadomość, którą muszę dostarczyć Finnowi.=George me dio un mensaje secreto que debo entregar a Finn.
+Zakończyłem moją misję jako posłaniec. Finn Farmer prawie oszalał z radości, gdy przekazałem mu odpowiedź George'a.=Terminé mi misión como mensajero. Finn Farmer se puso muy contento cuando le entregué la respuesta de George.

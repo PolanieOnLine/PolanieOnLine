@@ -69,7 +69,7 @@ public class BuyerNPC implements ZoneConfigurator {
 						Arrays.asList("coffins", "trumnach"),
 						"Te trumny zostały zrabowane z podziemnych katakumb. Musiałam zapłacić niezłą sumkę za tę parę.");
 				addReply(
-						Arrays.asList("dress", "sukience"),
+						Arrays.asList("dress", "sukience", "ubranie"),
 						"Kocham tę piękną różową sukienkę. Była noszona przez księżniczkę elfów Tywysogę.");
 				addReply(
 						Arrays.asList("shield", "tarczy"),
@@ -90,7 +90,7 @@ public class BuyerNPC implements ZoneConfigurator {
 						Arrays.asList("armor", "zbroi"),
 						"Ach, ta zbroja został zrobiona w Deniran. Mało wiem o niej.");
 				addReply(
-						Arrays.asList("sewing machine", "maszynie do szycia"),
+						Arrays.asList("sewing machine", "maszynie do szycia", "maszyna do szycia"),
 						"To jest moja ulubiona rzecz. Została wykonana przez człowieka o imieniu Zinger. Maszyna do szycia wciąż pracuje jak wtedy, gdy została zrobiona.");
 				addQuest("Nie mam żadnych życzeń.");
 				addOffer("W dużej książce znajduje się cennik reliktów i magicznych przedmiotów, które chciałabym kupić.");

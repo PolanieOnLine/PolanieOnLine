@@ -197,6 +197,9 @@ public class WindowUtils {
 	 * @param root the root container of the window
 	 */
 	private static void closeOnEscape(final Window window, final JRootPane root) {
+		window.addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent event) { UiTranslation.register(window); }
+		});
 		InputMap map = root.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		map.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), WINDOW_CLOSE);
 		Action dispatchClosing = new AbstractAction() {
@@ -216,6 +219,7 @@ public class WindowUtils {
 	 * 	changed at default font size changes
 	 */
 	public static void watchFontSize(final Component component) {
+		UiTranslation.register(component);
 		final SettingChangeListener listener = new SettingChangeAdapter(FONT_SIZE_PROPERTY,
 				Integer.toString(DEFAULT_FONT_SIZE)) {
 			@Override

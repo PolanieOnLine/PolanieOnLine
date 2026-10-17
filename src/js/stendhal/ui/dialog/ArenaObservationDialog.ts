@@ -60,6 +60,7 @@ export class ArenaObservationDialog extends DialogContentComponent {
 		for (const name of names) {
 			const option = document.createElement("option");
 			option.value = name;
+			option.setAttribute("data-no-translate", "");
 			option.textContent = name;
 			dialog.players.appendChild(option);
 		}

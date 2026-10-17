@@ -21,6 +21,7 @@ import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
 import { UiStateStore } from "./mobile/UiStateStore";
+import { GameLanguage } from "../util/GameLanguage";
 
 class UI {
 
@@ -61,6 +62,8 @@ class UI {
 	 */
 	public registerComponent(key: UIComponentEnum, component: Component) {
 		this.wellKnownComponents.set(key, component);
+		if (key !== UIComponentEnum.ChatLog && key !== UIComponentEnum.ChatInput
+				&& key !== UIComponentEnum.BottomPanel) GameLanguage.registerUI(component.componentElement);
 	}
 
 	/**
@@ -70,6 +73,7 @@ class UI {
 	 *   The component to be unregistered.
 	 */
 	public unregisterComponent(component: Component) {
+		GameLanguage.unregisterUI(component.componentElement);
 		for (let entry of this.wellKnownComponents.entries()) {
 			if (entry[1] === component) {
 				this.wellKnownComponents.delete(entry[0]);

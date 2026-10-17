@@ -1,0 +1,72 @@
+# Authored quest text missed by the earlier dialogue-only source audit.
+# Quest titles and examination captions; NPC and item identifiers stay canonical.
+Zbierz Informacje o Wrogu=Collect Enemy Information
+Prezent Wielkanocny=Easter Gift
+Przygotowania do Mine Town=Preparations for Mine Town
+Zagubione latarenki=Lost Lanterns
+Tydzień Odrodzenia Miasta Kopalni=Mine Town Revival Week
+Budowa Festiwalu Odrodzenia Miasta Kopalni=Building the Mine Town Revival Festival
+Mapa miasta Zakopane=Map of Zakopane
+Centrum Zakopanego.=Zakopane Town Center.
+Rysunek Carmen=Carmen's Drawing
+Rysunek Ilisy=Ilisa's Drawing
+
+# Medicine for Tad: constants passed into the conversation and journal builders.
+Masz przy sobie te #zioła do #lekarstwa?=Do you have the #herbs for the #medicine with you?
+Dobrze! Dziękuję. Teraz wymieszam... szczypta tego... i kilka kropli... jest! Czy możesz zapytać się #Tad o zaprzestanie zbierania tego? Chcę zobaczyć jak się ma.=Good! Thank you. Now I will mix it... a pinch of this... and a few drops... done! Could you ask #Tad to stop by and collect it? I want to see how he is doing.
+Dobrze, że masz butelkę!=Good, you have the flask!
+Tutaj masz pieniądze na pokrycie twoich wydatków.=Here is some money to cover your expenses.
+Ilisa jest uzdrowicielką w świątyni w Semos.=Ilisa is a healer at the temple in Semos.
+Wszystko w porządku, dziękuję.=Everything is fine, thank you.
+Już mi pomogłeś! Czuję się teraz lepiej.=You have already helped me! I feel better now.
+Mógłbyś zdobyć butelkę od #Margaret.=You could get a flask from #Margaret.
+Pomożesz mi?=Will you help me?
+Och, proszę nie zmienisz zdania? *Apsiiiik*=Oh, please, won't you change your mind? *Achoooo!*
+Wspaniale! Proszę idź szybko jak możesz. *Apsiiik*=Wonderful! Please go as quickly as you can. *Achooo!*
+Spotkałem Tada w hostelu w Semos.=I met Tad at the hostel in Semos.
+Mam butelkę i wkrótce zaniosę ją Tadowi.=I have a flask and will take it to Tad soon.
+Znalazłem trochę ziół Arandula i zaniosę je do Ilisy.=I found some Arandula herbs and will take them to Ilisa.
+Tad podziękował mi.=Tad thanked me.
+Mam butelkę i wkrótce zaniosę ją Bolesławowi.=I have a flask and will take it to Bolesław soon.
+Znalazłem trochę ziół arandula i zaniosę je do Gaździny Jadźki.=I found some arandula herbs and will take them to Gaździna Jadźka.
+
+# Festival dialogue supplied through superclass constructors and reward hooks.
+Gości przybywa, a spiżarnia pustoszeje. Przynieś mi sto porcji mięsa, pięćdziesiąt porcji szynki, sto kawałków sera i czterdzieści steków. Tyle wystarczy na sześć godzin biesiady. Potem znów przyda się twoja pomoc.=More guests are arriving, and the pantry is running empty. Bring me one hundred portions of meat, fifty portions of ham, one hundred pieces of cheese, and forty steaks. That will be enough for six hours of feasting. After that, I will need your help again.
+Dzięki ci, dobry człowieku. Będzie czym nakarmić gości. Weź tę skrzynkę i sam też odpocznij przy ogniu.=Thank you, kind soul. Now we have something to feed the guests. Take this chest and rest by the fire yourself.
+Wiatr porwał latarenki, które szykowałem na święto. Wypatruj ich przy drogach, na polanach i w innych zakątkach, którędy wiedzie cię wędrówka. Przynieś mi pięć moich zgub. Poznasz je po śladach jesiennej zawieruchy. Kupieckich nie potrzebuję. Gdy mi pomożesz, zajrzyj znów za dwanaście godzin.=The wind carried off the lanterns I was preparing for the festival. Look for them along roads, in clearings, and in other corners of the world on your travels. Bring back five of my lost lanterns. You can recognize them by the marks of the autumn storm. I do not need shop-bought ones. After helping me, come back in twelve hours.
+Oddam ci za nie srebrną skrzynię. Niech i tobie coś dobrego przypadnie na święto.=I will give you a silver chest for them. May the festival bring you something good too.
+Ogień płonie spokojnie. Duchy przyjęły nasz dar. Weź złotą skrzynię i wracaj do swoich. Niech przodkowie mają cię w opiece.=The fire burns peacefully. The spirits have accepted our gift. Take the golden chest and return to your people. May the ancestors watch over you.
+
+# Complete runtime journal sentences, including both player genders.
+Dostarczyłem ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.=I delivered the last item to the mayor, and now Ados needs supplies again.
+Dostarczyłam ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.=I delivered the last item to the mayor, and now Ados needs supplies again.
+Dostarczyłem ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.=I delivered the last item to the mayor and received my reward within the last 24 hours.
+Dostarczyłam ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.=I delivered the last item to the mayor and received my reward within the last 24 hours.
+Dostarczyłem ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.=I delivered the last item to Gazda Wojtek, and now Zakopane needs supplies again.
+Dostarczyłam ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.=I delivered the last item to Gazda Wojtek, and now Zakopane needs supplies again.
+Dostarczyłem ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.=I delivered the last item to Gazda Wojtek and received my reward within the last 24 hours.
+Dostarczyłam ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.=I delivered the last item to Gazda Wojtek and received my reward within the last 24 hours.
+Smoki znalazłem i dostałem nagrodę.=I found the dragons and received a reward.
+Smoki znalazłam i dostałam nagrodę.=I found the dragons and received a reward.
+Pozbyłem się kilku zbójników napadających Zakopane i otrzymałem nagrodę od Gazdy Wojtka!=I got rid of some of the bandits raiding Zakopane and received a reward from Gazda Wojtek!
+Pozbyłem się kilku zbójników napadających Zakopane i otrzymałam nagrodę od Gazdy Wojtka!=I got rid of some of the bandits raiding Zakopane and received a reward from Gazda Wojtek!
+Przyniosłem dorsza i obsydian.=I brought cod and obsidian.
+Przyniosłam dorsza i obsydian.=I brought cod and obsidian.
+Poszedłem do banku w Nalwor i spotkałem Grafindle.=I went to the bank in Nalwor and met Grafindle.
+Poszedłam do banku w Nalwor i spotkałam Grafindle.=I went to the bank in Nalwor and met Grafindle.
+
+# Remaining authored replies, hints, and a quiz question.
+Dobrze. Niczego nie zmieniam i niczego nie pobieram.=All right. I will make no changes and charge you nothing.
+Masz 3 kanapki, 3 butelki soku z chmielu i 3 szklanki napoju z winogron?=Do you have 3 sandwiches, 3 bottles of beer, and 3 glasses of grape drink?
+Mam kilka zabawek dla Anna, Jens i George do zabawy.=I have some toys for Anna, Jens, and George to play with.
+Przykro mi, ale nie jestem ekspertem w potrawach i napojach. Zapytaj #Stefana.=I am sorry, but I am no expert on food and drink. Ask #Stefan.
+Grrr. Pizza zimna. Ruszasz sie jak owca.=Grrr. The pizza is cold. You move like a sheep.
+Rabujcie co cennego!=Loot anything valuable!
+Teraz zobaczymy jakiego koloru jest twoja karma.=Now we will see what color your karma is.
+Fleur pracuje na targu w Kirdneh.=Fleur works at the market in Kirdneh.
+Zapytaj barmanki w Semos.=Ask the barmaid in Semos.
+Większość obrażeń u nurka spowodowana jest przez ryby i wodne zwierzęta ponieważ one ... się ciebie.=Most injuries to divers are caused by fish and aquatic animals because they are ... of you.
+Nie dam wam więcej zaproszeń skoro jesteście już zaręczeni i dostaliście je wcześniej. Jeżeli posiadacie już pierścienie to musicie zrobić je jeszcze raz.=I will not give you more invitations, since you are already engaged and received them before. If you already have rings, you will have to have them made again.
+{0}, Udało ci się mnie wyleczyć!={0}, you managed to cure me!
+Muszę jak najszybciej wrócić do domu i dać mu znać, że wszystko w porządku. Wpadnij czasem do mojego domu. Jest coś, co chcę ci dać.=I must return home as soon as possible and let him know that everything is all right. Visit my home sometime. There is something I want to give you.
+Potrzebuję wody, aby moje #kwiaty były świeże. Musisz znaleźć źródło wody i wziąć jej trochę do #butelek. Może jest toś kto sprzedaje wodę.=I need water to keep my #flowers fresh. You must find a source of water and fill some #bottles. Perhaps someone sells water.

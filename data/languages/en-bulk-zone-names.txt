@@ -1,0 +1,4 @@
+# Generated minimap location suffixes; location names remain opaque.
+{0}, budynek={0}, building
+{0}, poziom {1}={0}, level {1}
+{0}, świat alternatywny={0}, alternate world

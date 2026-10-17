@@ -29,6 +29,7 @@ export class ChooseCharacterDialog extends DialogContentComponent {
 				let name = characters[i]["a"]["name"];
 				let button = document.createElement("button");
 				button.classList.add("menubutton");
+				button.setAttribute("data-no-translate", "");
 				button.innerText = name;
 				button.addEventListener("click", () => {
 					this.componentElement.dispatchEvent(new Event("close"));

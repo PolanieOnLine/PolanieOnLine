@@ -24,6 +24,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import games.stendhal.client.entity.StatusID;
+import games.stendhal.client.ClientLanguage;
+import games.stendhal.client.gui.UiTranslation;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.sprite.Sprite;
@@ -76,10 +78,12 @@ class StatusIconPanel extends JComponent {
 		choking.setVisible(false);
 
 		away = new AnimatedIcon(awaySprite, 1000);
+		UiTranslation.preserve(away);
 		add(away);
 		away.setVisible(false);
 
 		grumpy = new AnimatedIcon(grumpySprite, 500);
+		UiTranslation.preserve(grumpy);
 		add(grumpy);
 		grumpy.setVisible(false);
 
@@ -94,6 +98,12 @@ class StatusIconPanel extends JComponent {
 		addStatusIndicator(StatusID.ZOMBIE, "zombie", "Status: Przemiana w zombie");
 		addStatusIndicator(StatusID.HEAVY, "heavy", "Status: Przeciążenie");
 		addStatusIndicator(StatusID.STUNNED, "stunned", "Status: Ogłuszenie");
+		putClientProperty(UiTranslation.PRESERVE_TOOLTIP, Boolean.TRUE);
+		putClientProperty(UiTranslation.AFTER_TRANSLATION, (Runnable) () -> {
+			if (awayMessage != null) away.setToolTipText(moodTooltip("Jesteś oddalony z wiadomością:", awayMessage));
+			if (grumpyMessage != null) grumpy.setToolTipText(moodTooltip("Jesteś niedostępny z wiadomością:", grumpyMessage));
+			updatePanelTooltip();
+		});
 		updatePanelTooltip();
 	}
 
@@ -152,8 +162,8 @@ class StatusIconPanel extends JComponent {
 			}
 			return;
 		}
-		StringBuilder html = new StringBuilder("<html><b>Aktywne statusy:</b><br>");
-		StringBuilder plain = new StringBuilder("Aktywne statusy: ");
+		StringBuilder html = new StringBuilder("<html><b>" + ClientLanguage.getText("Aktywne statusy:") + "</b><br>");
+		StringBuilder plain = new StringBuilder(ClientLanguage.getText("Aktywne statusy:") + " ");
 		for (int i = 0; i < activeTooltips.size(); i++) {
 			if (i > 0) {
 				html.append("<br>");
@@ -285,7 +295,7 @@ class StatusIconPanel extends JComponent {
 		if (isAway) {
 			if ((awayMessage == null) || !message.equals(awayMessage)) {
 				awayMessage = message;
-				String tooltip = "<html>Jesteś oddalony z wiadomością:<br><b>" + message;
+				String tooltip = moodTooltip("Jesteś oddalony z wiadomością:", message);
 				away.setToolTipText(tooltip);
 				if (away.getAccessibleContext() != null) {
 					away.getAccessibleContext().setAccessibleDescription(tooltip);
@@ -320,7 +330,7 @@ class StatusIconPanel extends JComponent {
 		if (isGrumpy) {
 			if ((grumpyMessage == null) || !message.equals(grumpyMessage)) {
 				grumpyMessage = message;
-				String tooltip = "<html>Jesteś niedostępny z wiadomością:<br><b>" + message;
+				String tooltip = moodTooltip("Jesteś niedostępny z wiadomością:", message);
 				grumpy.setToolTipText(tooltip);
 				if (grumpy.getAccessibleContext() != null) {
 					grumpy.getAccessibleContext().setAccessibleDescription(tooltip);
@@ -342,5 +352,10 @@ class StatusIconPanel extends JComponent {
 		if (changed) {
 			updatePanelTooltip();
 		}
+	}
+
+	private static String moodTooltip(String caption, String message) {
+		return "<html>" + ClientLanguage.getText(caption) + "<br><b>"
+				+ message.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") + "</b></html>";
 	}
 }

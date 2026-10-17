@@ -1,0 +1,27 @@
+# Player-market display only; prices, offer ids and stored item names remain canonical.
+{number:0}: {1} za {number:2} money={0}: {item:1} for {2} coins
+Mam w ofercie następujące przedmioty: {0} Powiedz #'pokaż <nazwa przedmiotu>', aby poznać cenę oraz ilość danego towaru.=I offer the following items: {item:0}. Say #'show <item name>' to see the price and quantity.
+Pokazano tylko {number:0} pierwszych ofert.=Only the first {0} offers are shown.
+Pokazano tylko {number:0} pierwszych ofert. Możesz przefiltrować listę ofert. Przykład #pokaż #mięso i pokaże tylko oferty z mięsem.=Only the first {0} offers are shown. You can filter the list. For example, #show #meat lists only offers for meat.
+Aktualnie brak ofert na rynku.=There are currently no offers on the market.
+Aktualnie brak zakończonych ofert na rynku.=There are currently no expired offers on the market.
+Czy chcesz sprzedać {0} za {number:1} money? Będzie cię to kosztowało {number:2} money prowizji.=Would you like to sell {item:0} for {1} coins? The commission is {2} coins.
+Czy chcesz sprzedać {0} za łącznie {number:1} money? Będzie cię to kosztowało {number:2} money prowizji.=Would you like to sell {item:0} for a total of {1} coins? The commission is {2} coins.
+Czy chcesz kupić {0} za {number:1} money?=Would you like to buy {item:0} for {1} coins?
+Twoja oferta na {0} wygaśnie za {1}. Czy chcesz ją przedłużyć do {2} za {number:3} money?=Your offer for {item:0} expires in {item:1}. Would you like to extend it by {item:2} for {3} coins?
+Czy chcesz przedłużyć swoją ofertę na {0} w cenie {number:1} i podatek {number:2} money?=Would you like to extend your offer for {item:0} at a price of {1} coins and a fee of {2} coins?
+Czychcesz przedłużyć offer z {0} za  za opłatą {number:1} money?=Would you like to extend the offer for {item:0} for a fee of {1} coins?
+Czychcesz przedłużyć offers z {0} za w sumie za opłatą {number:1} money?=Would you like to extend the offers for {item:0} for a total fee of {1} coins?
+{0} w cenie {number:1}={item:0} at a price of {1} coins
+Ten {0} może być używany tylko przez Ciebie. Nie możesz go sprzedać.=This {item:0} can be used only by you. You cannot sell it.
+Twoja oferta {0} wygasła. Masz {1} czasu aby odebrać przedmiot lub przedłużyć ofertę.=Your offer for {item:0} has expired. You have {item:1} to collect the item or extend the offer.
+Twoja oferta {0} została usunięta z rynku.=Your offer for {item:0} has been removed from the market.
+Twoja oferta {0} wygaśnie za {1}.=Your offer for {item:0} expires in {item:1}.
+Twoje zarobki w wysokości {number:0} money przepadły, ponieważ nie mogą być tak długo trzymane.=Your earnings of {0} coins have been forfeited because they cannot be held for so long.
+Twój {0} został sprzedany. Możesz przyjść do mnie po należne ci pieniądze.=Your {item:0} has been sold. You can come and collect your money.
+Twoja {0} została sprzedana. Możesz przyjść do mnie po należne ci pieniądze.=Your {item:0} has been sold. You can come and collect your money.
+Twoje {0} zostałe sprzedane. Możesz przyjść do mnie po należne ci pieniądze.=Your {item:0} has been sold. You can come and collect your money.
+Twoje {0} zostało sprzedane. Możesz przyjść do mnie po należne ci pieniądze.=Your {item:0} has been sold. You can come and collect your money.
+Utworzono ofertę na sprzedaż {0} za {number:1}. W chwili obecnej masz ofert.=An offer was created to sell {item:0} for {1} coins. You currently have one offer.
+Utworzono ofertę na sprzedaż {0} za {number:1}. W chwili obecnej masz {number:2} ofert.=An offer was created to sell {item:0} for {1} coins. You currently have {2} offers.
+Utworzono ofertę na sprzedaż {0} za {number:1}. W chwili obecnej masz {number:2} oferty.=An offer was created to sell {item:0} for {1} coins. You currently have {2} offers.

@@ -54,6 +54,7 @@ final class SettingsTranslation {
 			ListCellRenderer<? super T> renderer = selector.getRenderer();
 			selector.setRenderer((list, value, index, selected, focus) -> {
 				Component display = renderer.getListCellRendererComponent(list, value, index, selected, focus);
+				list.setToolTipText(ClientLanguage.getText(list.getToolTipText()));
 				if (display instanceof JLabel) {
 					JLabel label = (JLabel) display;
 					label.setText(ClientLanguage.getText(label.getText()));
@@ -70,9 +71,7 @@ final class SettingsTranslation {
 		String renderedKey = "translation.rendered." + property;
 		if (!current.equals(control.getClientProperty(renderedKey))) control.putClientProperty(originalKey, current);
 		String original = (String) control.getClientProperty(originalKey);
-		boolean html = original.startsWith("<html>") && original.endsWith("</html>");
-		String result = ClientLanguage.getText(html ? original.substring(6, original.length() - 7) : original);
-		if (html) result = "<html>" + result + "</html>";
+		String result = ClientLanguage.getText(original);
 		control.putClientProperty(renderedKey, result);
 		return result;
 	}

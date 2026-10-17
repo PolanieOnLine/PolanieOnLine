@@ -117,6 +117,7 @@ public final class CharacterDialog extends JDialog implements Runnable {
 
 		// Create the character area
 		characterPanel = new JPanel();
+		games.stendhal.client.gui.UiTranslation.preserve(characterPanel);
 		characterPanel.setBorder(null);
 		// Do not add empty places if the first row is not full
 		int columns = Math.min(MAX_COLUMNS, characters.keySet().size());
@@ -228,14 +229,14 @@ public final class CharacterDialog extends JDialog implements Runnable {
 
 		// this if-block is here for compatibility with stendhal server 0.84
 		if (character.has("name")) {
-			label.append("<br>Poziom: ");
+			label.append("<br>").append(games.stendhal.client.ClientLanguage.getText("Poziom:")).append(" ");
 			String level = "0";
 			if (character.has("level")) {
 				level = character.get("level");
 			}
 			label.append(level);
 			/** Skills */
-			label.append("<br>Skille: ");
+			label.append("<br>").append(games.stendhal.client.ClientLanguage.getText("Umiejętności:")).append(" ");
 			String atk = "0";
 			if (character.has("atk")) {
 				atk = character.get("atk");

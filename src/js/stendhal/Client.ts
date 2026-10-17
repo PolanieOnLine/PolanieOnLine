@@ -273,7 +273,7 @@ export class Client {
 			stendhal.playerInGame = false;
 			singletons.getQuickSlotsController().update();
 			if (!Client.instance.unloading) {
-				Chat.logH("error", "Odłączono od serwera.");
+				Chat.logH("error", GameLanguage.getText("Odłączono od serwera."));
 				if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" && window.location.hostname !== "::1") {
 					window.location.href = "/account/mycharacters.html";
 				}
@@ -303,7 +303,7 @@ export class Client {
 
 		marauroa.clientFramework.onCreateAccountAck = function(username: string) {
 			// TODO: We should login automatically
-			alert("Konto zostało pomyślnie utworzone, proszę się zalogować.");
+			alert(GameLanguage.getText("Konto zostało pomyślnie utworzone, proszę się zalogować."));
 			window.location.reload();
 		}.bind(this);
 
@@ -312,7 +312,7 @@ export class Client {
 		}.bind(this);
 
 		marauroa.clientFramework.onLoginFailed = function(_reason: string, _text: string) {
-			alert("Logowanie nie powiodło się. " + _text);
+			alert(GameLanguage.getText("Logowanie nie powiodło się. ") + _text);
 			// TODO: Server closes the connection, so we need to open a new one
 			window.location.reload();
 		}.bind(this);

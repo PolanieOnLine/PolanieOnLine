@@ -12,6 +12,7 @@
 import { marauroa } from "marauroa";
 
 import { Item } from "../../entity/Item";
+import { GameLanguage } from "../../util/GameLanguage";
 
 
 const TOOLTIP_STATS = "tooltip_stats";
@@ -133,9 +134,9 @@ export function buildStructuredItemTooltip(item: Item,
 		comparisonName: equippedItem?.getDisplayName(),
 		titleSuffix: upgrade > 0 ? " +" + upgrade : undefined,
 		upgradeText: maxUpgrade > 0 || upgrade > 0
-				? "Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : "")
+				? GameLanguage.getText("Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : ""))
 				: undefined,
-		lines
+		lines: lines.map(line => ({...line, text: GameLanguage.getText(line.text)}))
 	};
 }
 
@@ -179,7 +180,7 @@ function appendWeaponPerformance(lines: ItemTooltipLine[], current: Record<strin
 			kind: "tree",
 			branchContinues: false,
 			text: formatNumber(attacksPerSecond, 2) + " ataku na sekundę ("
-					+ getWeaponSpeedLabel(attacksPerSecond) + ")",
+					+ GameLanguage.getText(getWeaponSpeedLabel(attacksPerSecond)) + ")",
 			deltas: equipped
 					? [createDelta(attacksPerSecond - equippedAttacksPerSecond, 2)]
 					: undefined
@@ -197,7 +198,7 @@ function appendWeaponPerformance(lines: ItemTooltipLine[], current: Record<strin
 	}
 	const damageType = current["damage_type"];
 	if (damageType) {
-		weaponLines.push({kind: "detail", text: "Typ obrażeń: " + localizeDamageType(damageType)});
+		weaponLines.push({kind: "detail", text: "Typ obrażeń: " + GameLanguage.getText(localizeDamageType(damageType))});
 	}
 	const statuses = current["statusattack"];
 	if (statuses) {
@@ -268,7 +269,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		}
 		resistances.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% odporności na " + label,
+			text: signed(formatCompact(value)) + "% odporności na " + GameLanguage.getText(label),
 			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
 		});
 	}
@@ -279,9 +280,9 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		if (value === 0 && (!equipped || previous === 0)) {
 			continue;
 		}
-		special.push({
+			special.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% " + bonus.label,
+			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(bonus.label),
 			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
 		});
 	}
@@ -338,7 +339,7 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	}
 	for (const [key, title, description] of LEGENDARY_AFFIXES) {
 		if (hasValue(current, key)) {
-			affixes.push({kind: "affix", text: title + ": " + description});
+			affixes.push({kind: "affix", text: GameLanguage.getText(title) + ": " + GameLanguage.getText(description)});
 		}
 	}
 	appendRolledAffix(affixes, current, "legendary_bastion_bonus", "Niezłomny Bastion",
@@ -354,7 +355,7 @@ function appendRolledAffix(lines: ItemTooltipLine[], current: Record<string, str
 		return;
 	}
 	const value = intValue(current, key);
-	lines.push({kind: "affix", text: title + ": " + prefix + value + suffix});
+	lines.push({kind: "affix", text: GameLanguage.getText(title) + ": " + prefix + value + GameLanguage.getText(suffix)});
 }
 
 function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>) {
@@ -529,19 +530,19 @@ function createDelta(value: number, precision: number, suffix = ""): ItemTooltip
 }
 
 function signed(value: string): string {
-	return value.startsWith("-") || value === "0" || value.startsWith("0,")
+	return value.startsWith("-") || value === "0" || value.startsWith("0,") || value.startsWith("0.")
 			? value : "+" + value;
 }
 
 function formatCompact(value: number): string {
-	return value.toLocaleString("pl-PL", {
+	return value.toLocaleString(GameLanguage.getLanguage() === "en" ? "en-GB" : "pl-PL", {
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 1
 	});
 }
 
 function formatNumber(value: number, precision: number): string {
-	return value.toLocaleString("pl-PL", {
+	return value.toLocaleString(GameLanguage.getLanguage() === "en" ? "en-GB" : "pl-PL", {
 		minimumFractionDigits: precision,
 		maximumFractionDigits: precision
 	});

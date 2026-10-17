@@ -1,0 +1,25 @@
+# Princess Ylflia. Level-dependent ingredient amounts and citizenship are retained.
+Nie mogę uwolnić więźniów w piwnicy, ale mogę zrobić jedną rzecz. Złagodzić im ból. Potrzebuję #ziół do tego.=I cannot free the prisoners in the cellar, but I can do one thing: ease their pain. I need #herbs for that.
+Porozmawiaj z moim ojcem, Królem Cozartem. Zapytałam się go o przyznanie Tobie obywatelstwa Kalavan, aby wyrazić Ci moją wdzięczność.=Speak to my father, King Cozart. I asked him to grant you Kalavan citizenship as a sign of my gratitude.
+Już o coś się Ciebie pytałam.=I already asked you for something.
+Uwięzione potwory wyglądają dużo lepiej od ostatniego razu. Odważyłam się zaryzykować i zejść do piwnicy. Dziękuję!=The imprisoned monsters look much better than before. I dared to take the risk of going down to the cellar. Thank you!
+Potrzebuję {0} #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, {1} #eliksir i {2} #antidotum. Zdobędziesz to dla mnie?=I need {0} #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, {1} #potion, and {2} #antidote. Will you get them for me?
+Dziękuję! Musimy być subtelni w tej sprawie. Nie chcę, aby naukowcy coś podejrzewali i wtrącili się. Gdy wrócisz ze składnikami to powiedz mi hasło #zioła.=Thank you! We must be discreet. I do not want the scientists to suspect anything or interfere. When you return with the ingredients, say #herbs.
+Pozwalasz im cierpieć! Jakie to podłe.=You are letting them suffer! How cruel.
+Wiem, że to zioło można tylko znaleźć na wyspie Athor, sądzę, że tam dobrze strzegą sekretu.=I know that herb can only be found on Athor Island. I think they guard the secret well there.
+Uzdrowiciele, którzy używają sclaria zbierają je w różnych miejscach w okolicach Or'ril, w lesie Nalwor. Jestem pewna, że znajdziesz je bez problemu.=Healers who use sclaria gather it around Or'ril and in Nalwor Forest. I am sure you will find it easily.
+Przyjaciel mojej pokojówki Jenny ma źródło niedaleko niego. Mogą występować na lesistych terenach nad rzeką we wschodniej części Nalwor.=A friend of my maid Jenny has a source nearby. It may grow in wooded areas by the river in eastern Nalwor.
+Doskonale! Zarekomenduję Cie mojemu ojcu jako dobrą i pomocną osobę. On się zgodzi ze mną, że nadajesz się na obywatela Kalavan.=Excellent! I will recommend you to my father as a kind and helpful person. He will agree that you deserve Kalavan citizenship.
+Cii! Nie mów nic dopóki nie będziesz miał {0} #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, {1} #eliksir oraz {2} #antidotum. Nie chce, aby ktoś się domyślił naszego przepisu.=Shh! Say nothing until you have {0} #arandula, 1 #kokuda, 1 #sclaria, 1 #kekik, {1} #potion, and {2} #antidote. I do not want anyone to discover our recipe.
+Dziwne. Nie rozumiem co się teraz stało. Przepraszam, ale jestem trochę zamroczona. Zapytaj kogoś innego o pomoc.=Strange. I do not understand what just happened. Sorry, I feel a little dizzy. Ask someone else for help.
+Zioła, które przyniosłeś spisały się wyśmienicie. Powiedziałam ojcu, że może Ci zaufać. Powinieneś pójść do niego i porozmawiać z nim.=The herbs you brought worked wonderfully. I told my father he can trust you. You should go and speak to him.
+Dziękuję za zioła, które mi przyniosłeś do uleczenia potworów. Ciesze się, że mogę Cię zarekomendować mojemu ojcu do nadania obywatelstwa Kalavan.=Thank you for the herbs to heal the monsters. I am happy to recommend you to my father for Kalavan citizenship.
+Pozdrawiam! Moja cudowna córka poprosiła mnie o przyznanie Tobie obywatelstwa miasta Kalavan. Rozpatrywanie zostało zakończone. Teraz wybacz mi, że wrócę do mojego posiłku. Do widzenia.=Greetings! My wonderful daughter asked me to grant you Kalavan citizenship. Your application has been approved. Now excuse me while I return to my meal. Goodbye.
+Zostaw mnie! Nie widzisz, że próbuję jeść?=Leave me alone! Can't you see I am trying to eat?
+Księżniczka Ylflia zapytała mnie o zioła i mikstury, aby złagodzić ból jeńców w piwnicach Kalavan.=Princess Ylflia asked me for herbs and potions to ease the prisoners' pain in the Kalavan cellars.
+Muszę powiedzieć Księżniczce Ylflii, że mam " zioła ", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.=I must tell Princess Ylflia I have 'herbs' when I gather all the herbs, potions, and antidotes she needs.
+Przyniosłem Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.=I brought Princess Ylflia all the healing ingredients, and she said she would recommend me to her father, the king.
+Przyniosłam Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.=I brought Princess Ylflia all the healing ingredients, and she said she would recommend me to her father, the king.
+Król Cozart nadał mi obywatelstwo Kalavan.=King Cozart granted me Kalavan citizenship.
+ziół=herbs
+zioła=herbs

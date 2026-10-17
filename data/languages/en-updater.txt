@@ -1,0 +1,26 @@
+# Shared with the standalone starter; keep this catalogue independent of game libraries.
+Aktualizacja {0}={0} update
+Jest już nowa wersja, która zajmuje {0} KB.\r\nCzy {1} powinna zostać zaktualizowana?=A new version is available ({0} KB).\r\nUpdate {1}?
+Potrzebne jest pobranie dodatkowych plików, które zajmują {0} KB.\r\nCzy {1} powinna zostać zainstalowana?=Additional files must be downloaded ({0} KB).\r\nInstall {1}?
+Wystąpił błąd podczas aktualizacji=An error occurred during the update.
+Twój klient jest zbyt stary do aktualizacji. Pobierz najnowszą wersję.=Your client is too old to update. Please download the latest version.
+Pobieram...=Downloading...
+Pobieram aktualizacje...=Downloading updates...
+Proszę poczekać na pobranie {0}...=Please wait while {0} is downloaded...
+Czy chcesz przerwać pobieranie?=Do you want to cancel the download?
+Potwierdzenie=Confirmation
+Wiadomość=Message
+Tak=Yes
+Nie=No
+Anuluj=Cancel
+Przepraszamy, ale wystąpił błąd podczas pobierania aktualizacji. Nie można zapisać bootProperties=An error occurred while downloading updates. Could not save bootProperties.
+Nie można zapisać jar.properties=Could not save jar.properties.
+Coś się stało podczas próby uruchomienia samodzielnie zbudowanego klienta: {0}=An error occurred while starting the self-built client: {0}
+Przepraszamy, ale wystąpił brak pamięci. Proszę uruchom ponownie {0}.=The game ran out of memory. Please restart {0}.
+{0} Przepraszamy wystąpił błąd z powodu niewłaściwego stanu aktualizacji.\r\nUsunąć pliki aktualizacji {1} i pobrać je ponownie po ponownym uruchomieniu?={0} The update is in an invalid state.\r\nRemove the {1} update files and download them again after restarting?
+{0}Wystąpił niespodziewany błąd.\r\nPrzejdź do formularza kontaktowego na https://polanieonline.eu/kontakt i napisz wiadomość o błędzie:\r\n{1}={0}An unexpected error occurred.\r\nPlease report it using https://polanieonline.eu/kontakt and include these details:\r\n{1}
+Przepraszamy, ale wystąpił błąd z powodu niezgodności podpisu kodu.\\r\\nUsunąć pliki aktualizacji {0}, aby po ponownym uruchomieniu mogły być pobrane ponownie?\r\nUwaga: Ten wyjątek może się pojawić w przypadku jeśli do podpisanych plików jar dodasz samodzielnie zbudowanego klienta.=The code signatures do not match.\r\nRemove the {0} update files so they can be downloaded again after restarting?\r\nNote: This can happen if you mix a self-built client with signed JAR files.
+Potrzebne jest pobranie dodatkowych plików z\r\n{0}\r\n, ale serwer nie jest teraz dostępny. Później spróbuj ponownie.=Additional files must be downloaded from\r\n{0}\r\nbut the server is currently unavailable. Please try again later.
+Podczas pobierania aktualizacji wystąpił błąd w pliku {0}=An error occurred while downloading update file {0}
+Podczas pobierania aktualizacji wystąpił błąd..\r\nSygnatura {0} różni się.\r\nNasz ma {1}, a powinien mieć {2}=An error occurred while downloading updates.\r\nThe signature of {0} does not match.\r\nThe downloaded file has {1} bytes; expected {2}.
+Wymagana jest minimum Java 8 (znana jako 1.8.0), a posiadasz wersję {0}. Możesz pobrać najnowszą wersję z http://java.com=Java 8 (1.8.0) or later is required. You have version {0}. You can download Java from http://java.com

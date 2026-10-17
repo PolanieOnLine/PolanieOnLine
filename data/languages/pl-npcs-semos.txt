@@ -1,0 +1,10 @@
+# Polish text for the existing English Semos NPC lines.
+I like dueling in magical duels... Oh... My poor #memory... I am confused... Look, I have a purple apple!=Lubię pojedynkować się na magię... Och... Moja biedna #pamięć... Jestem zdezorientowany... Spójrz, mam fioletowe jabłko!
+I can not help you with anything... My #memory is nagging at me... All I have is a purple apple!=Nie mogę ci w niczym pomóc... Moja #pamięć daje mi się we znaki... Mam tylko fioletowe jabłko!
+My #memory... A purple #apple... #Kirdneh... Ah, that is place!=Moja #pamięć... Fioletowe #jabłko... #Kirdneh... Ach, to właśnie to miejsce!
+My #memory... A purple #apple... #Vlamyklela... Ah, beloved stepsister!=Moja #pamięć... Fioletowe #jabłko... #Vlamyklela... Ach, ukochana przyrodnia siostra!
+You would not think about an apple... Unless you are bestowed a special kind of an apple! My #memory... Vlamyklela... Kirdneh...=Nie myślałbyś o jabłku... Chyba że dostałbyś wyjątkowy rodzaj jabłka! Moja #pamięć... Vlamyklela... Kirdneh...
+You see Brosoklelo... He seems somewhat confused!=Oto Brosoklelo... Wydaje się trochę zdezorientowany!
+You can only prolong your own offers.=Możesz przedłużać tylko swoje oferty.
+memory=pamięć
+apple=jabłko

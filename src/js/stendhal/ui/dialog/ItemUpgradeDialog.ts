@@ -13,6 +13,7 @@ import { ActionContextMenu } from "./ActionContextMenu";
 import { FloatingWindow } from "../toolkit/FloatingWindow";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { getItemSlotLayers } from "../component/ItemSlotPresentation";
+import { GameLanguage } from "../../util/GameLanguage";
 
 type UpgradeEventData = {[key: string]: any};
 
@@ -170,11 +171,11 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		if (data.name || !preservePreview) {
 			this.fillStats(data);
-			this.chance.textContent = data.success_percent !== undefined
+			this.chance.textContent = GameLanguage.getText(data.success_percent !== undefined
 					? "Szansa powodzenia: " + data.success_percent + "%"
-					: "Szansa powodzenia: —";
-			this.fee.textContent = data.fee_text ? "Koszt: " + data.fee_text
-					: "Koszt: —";
+					: "Szansa powodzenia: —");
+			this.fee.textContent = GameLanguage.getText(data.fee_text ? "Koszt: " + data.fee_text
+					: "Koszt: —");
 			this.fillMaterials(data);
 		}
 
@@ -232,7 +233,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			const available = have >= need;
 			const card = document.createElement("div");
 			card.className = "item-upgrade-material";
-			card.title = name + ": posiadasz " + have + ", wymagane " + need;
+			card.title = GameLanguage.getText(name + ": posiadasz " + have + ", wymagane " + need);
 
 			const slot = document.createElement("div");
 			slot.className = "itemSlot item-upgrade-material-slot";

@@ -56,6 +56,8 @@ class InformationPanel extends JComponent {
 
 	/** Zone name display. */
 	private final JTextPane nameField;
+	/** Canonical readable name retained for language changes. */
+	private String zoneName = "";
 	/** Attribute set needed for centering the zone name text. */
 	private final SimpleAttributeSet center = new SimpleAttributeSet();
 	/** Danger level icons */
@@ -88,6 +90,8 @@ class InformationPanel extends JComponent {
 		nameField.setForeground(Color.WHITE);
 		nameField.setFocusable(false);
 		nameField.setEditable(false);
+		putClientProperty(games.stendhal.client.gui.UiTranslation.AFTER_TRANSLATION,
+				(Runnable) () -> setZoneName(zoneName));
 		container.add(nameField, SLayout.EXPAND_X);
 
 		// ** Danger display **
@@ -114,7 +118,8 @@ class InformationPanel extends JComponent {
 	 * @param name
 	 */
 	void setZoneName(String name) {
-		nameField.setText(name);
+		zoneName = name;
+		nameField.setText(games.stendhal.client.ClientLanguage.getText(name));
 		StyledDocument doc = nameField.getStyledDocument();
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		// Necessary when the needed space gets smaller.

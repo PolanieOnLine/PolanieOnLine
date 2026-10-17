@@ -680,6 +680,16 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 		onlinePlayers.tellAllOnlinePlayers(notificationType, message);
 	}
 
+	/** Broadcast game-authored dialogue per recipient; human messages use tellAllPlayers unchanged. */
+	public void tellAllPlayersTranslated(final NotificationType notificationType, final String message) {
+		onlinePlayers.forAllPlayersExecute(new Task<Player>() {
+			@Override public void execute(final Player player) {
+				player.sendPrivateText(notificationType,
+						games.stendhal.common.Translation.getText(player.getLanguage(), message));
+			}
+		});
+	}
+
 	public void sendMessageToSupporters(final String message) {
 		getOnlinePlayers().forFilteredPlayersExecute(
 				new Task<Player>() {

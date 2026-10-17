@@ -1,0 +1,37 @@
+# Full runtime quest sentences, after gender, quantity and builder expansion.
+# Captured item quantities are authored display data; captured names stay raw.
+Znalazłem {0} do pomocy Ados i muszę je dostarczyć.=I found {item:0} to help Ados and must deliver it.
+Znalazłam {0} do pomocy Ados i muszę je dostarczyć.=I found {item:0} to help Ados and must deliver it.
+Znalazłem {0} do pomocy Zakopanemu i muszę je dostarczyć.=I found {item:0} to help Zakopane and must deliver it.
+Znalazłam {0} do pomocy Zakopanemu i muszę je dostarczyć.=I found {item:0} to help Zakopane and must deliver it.
+Zostałem poproszony, aby przynieść {0} do muzeum w Kirdneh.=I was asked to bring {item:0} to the museum in Kirdneh.
+Zostałam poproszona, aby przynieść {0} do muzeum w Kirdneh.=I was asked to bring {item:0} to the museum in Kirdneh.
+Zostałem poproszony, aby przynieść {0} do ratusza w Wieliczce.=I was asked to bring {item:0} to the town hall in Wieliczka.
+Zostałam poproszona, aby przynieść {0} do ratusza w Wieliczce.=I was asked to bring {item:0} to the town hall in Wieliczka.
+Zostałem poproszony, aby przynieść {0} dla zwierząt.=I was asked to bring {item:0} for the animals.
+Zostałam poproszona, aby przynieść {0} dla zwierząt.=I was asked to bring {item:0} for the animals.
+
+# CollectEnemyData assembles each question from its prefix and a creature name.
+Jaki jego poziom wynosi {0}?=What is the level of {item:0}?
+Ile zdrowia posiada {0}?=How much health does {item:0} have?
+Ile obrony posiada {0}?=How much defense does {item:0} have?
+Jaki poziom ataku posiada {0}?=What is the attack level of {item:0}?
+
+# AdventureIsland appends combat state to one of two journal prefixes.
+# The two zero-width characters before "pokonania" are present in the source.
+Opuściłem wyspę. i pokonałem wszystkich wrogów, których tam spotkałem.=I left the island after defeating all the enemies I encountered there.
+Aktualnie przebywam na wyspie i pokonałem wszystkich wrogów, których tam spotkałem.=I am currently on the island and have defeated all the enemies I encountered there.
+Opuściłem wyspę. i tam jest potwór pozostały do ​​pokonania.=I left the island with one monster still to defeat.
+Aktualnie przebywam na wyspie i tam jest potwór pozostały do ​​pokonania.=I am currently on the island with one monster still to defeat.
+Opuściłem wyspę. i tam są {number:0} potwóry pozostały do ​​pokonania.=I left the island with {0} monsters still to defeat.
+Aktualnie przebywam na wyspie i tam są {number:0} potwóry pozostały do ​​pokonania.=I am currently on the island with {0} monsters still to defeat.
+
+# Completion journals use the actual source spelling and gender behavior.
+Zabiłem wszystkich żołnierzy blordroughs i za wsparcie otrzymałem nagrodę od Mrotho=I killed all the blordrough soldiers and received a reward from Mrotho for my help.
+Zabiłam wszystkich żołnierzy blordroughs i za wsparcie otrzymałam nagrodę od Mrotho=I killed all the blordrough soldiers and received a reward from Mrotho for my help.
+Wziąłem wcześniej wodę do Xhiphin Zohos i otrzymałem od niego trochę mikstur.=I took water to Xhiphin Zohos earlier and received some potions from him.
+Wziąłam wcześniej wodę do Xhiphin Zohos i otrzymałama od niego trochę mikstur.=I took water to Xhiphin Zohos earlier and received some potions from him.
+
+# ZakopaneBank uses Grammar.plnoun(minutes, "zostało"), including its plural.
+{0}, zostało Tobie {1}.={0}, you have {item:1} left.
+{0}, zostały Tobie {1}.={0}, you have {item:1} left.

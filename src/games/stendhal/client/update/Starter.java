@@ -46,9 +46,9 @@ public class Starter {
 			if (Float.parseFloat(version) < 1.8f) {
 				JOptionPane.showMessageDialog(
 					null,
-					"Wymagana jest minimum Java 8 (znana jako 1.8.0), a posiadasz wersję "
+					UpdateLanguage.getText("Wymagana jest minimum Java 8 (znana jako 1.8.0), a posiadasz wersję "
 						+ version
-						+ ". Możesz pobrać najnowszą wersję z http://java.com");
+						+ ". Możesz pobrać najnowszą wersję z http://java.com"));
 			}
 		} catch (final RuntimeException e) {
 			// ignore

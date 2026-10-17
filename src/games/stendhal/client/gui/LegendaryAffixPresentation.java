@@ -179,7 +179,8 @@ final class LegendaryAffixPresentation {
 		}
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
 				.append(Math.abs(value.intValue()))
-				.append(" do wagi broni</font></div>");
+				.append(games.stendhal.client.ClientLanguage.getText(" do wagi broni"))
+				.append("</font></div>");
 	}
 
 	private static void appendSpikedPlating(final StringBuilder result,
@@ -201,7 +202,8 @@ final class LegendaryAffixPresentation {
 	private static void appendRegularText(final StringBuilder result,
 			final String title, final String text) {
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
-				.append(title).append(":</b> ").append(text)
+				.append(games.stendhal.client.ClientLanguage.getText(title)).append(":</b> ")
+				.append(games.stendhal.client.ClientLanguage.getText(text))
 				.append("</font></div>");
 	}
 
@@ -217,7 +219,7 @@ final class LegendaryAffixPresentation {
 		}
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; ")
 				.append(value.intValue() > 0 ? "+" : "")
-				.append(value.intValue()).append(" ").append(label)
+				.append(value.intValue()).append(" ").append(games.stendhal.client.ClientLanguage.getText(label))
 				.append("</font></div>");
 	}
 
@@ -276,7 +278,7 @@ final class LegendaryAffixPresentation {
 	private static void beginLine(final StringBuilder result, final String title) {
 		result.append("<div style='margin-top:4px'><b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
-				.append(title).append(": </font>");
+				.append(games.stendhal.client.ClientLanguage.getText(title)).append(": </font>");
 	}
 
 	private static void appendColored(final StringBuilder result,
@@ -285,7 +287,7 @@ final class LegendaryAffixPresentation {
 			return;
 		}
 		result.append("<font size='-1' color='").append(color).append("'>")
-				.append(text).append("</font>");
+				.append(games.stendhal.client.ClientLanguage.getText(text)).append("</font>");
 	}
 
 	private static void endLine(final StringBuilder result) {

@@ -18,6 +18,7 @@ import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
+import { GameLanguage } from "../util/GameLanguage";
 
 import { marauroa } from "marauroa"
 
@@ -151,7 +152,7 @@ export class Item extends Entity {
 		if (this["name"] === "money") {
 			const quantity = Number(this["quantity"]);
 			return Number.isSafeInteger(quantity) && quantity >= 0
-					? "Monety w stosie: " + String(quantity).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "";
+					? GameLanguage.getText("Monety w stosie: " + String(quantity).replace(/\B(?=(\d{3})+(?!\d))/g, " ")) : "";
 		}
 		const lines: string[] = [];
 		const rarity = this.getRarity();
@@ -178,7 +179,7 @@ export class Item extends Entity {
 				lines.push(dest[0] + " " + dest[1] + "," + dest[2]);
 			}
 		}
-		return lines.join("\n");
+		return lines.map(line => GameLanguage.getText(line)).join("\n");
 	}
 
 	public getRarity(): ItemRarity|undefined {
@@ -187,7 +188,7 @@ export class Item extends Entity {
 
 	public getDisplayName(): string {
 		const title = this["title"] || this["_name"] || this["name"];
-		return typeof title === "string" ? title : "";
+		return typeof title === "string" ? GameLanguage.getText(title) : "";
 	}
 
 	private getUpgradeValue(key: string): number {

@@ -14,12 +14,18 @@ package games.stendhal.common.grammar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.concurrent.ConcurrentHashMap;
+import games.stendhal.common.Translation;
 
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.NameSearch;
 import games.stendhal.common.parser.Sentence;
 
 public class ItemParser {
+	private static final Map<String, Set<String>> TRANSLATED_ITEM_ALIASES = new ConcurrentHashMap<String, Set<String>>();
 
 	/** ItemNames contains all valid item names. */
 	protected Set<String> itemNames;
@@ -73,11 +79,26 @@ public class ItemParser {
 		}
 
 		NameSearch search = sentence.findMatchingName(iNames);
+		// Display names are aliases only within this NPC's permitted wares.
+		// Saved item IDs and the player's original chat message stay unchanged.
+		Map<String, String> aliases = new HashMap<String, String>();
+		if (!search.found()) {
+			Set<String> ambiguous = new HashSet<String>();
+			for (String name : iNames) {
+				for (String alias : translatedAliases(name)) {
+					if (aliases.containsKey(alias) && !aliases.get(alias).equals(name)) ambiguous.add(alias);
+					else aliases.put(alias, name);
+				}
+			}
+			for (String alias : ambiguous) aliases.remove(alias);
+			if (!aliases.isEmpty()) search = sentence.findMatchingName(aliases.keySet());
+		}
 
 		boolean found = search.found();
 
 		// Store found name.
 		String chosenName = search.getName();
+		if (chosenName != null && aliases.containsKey(chosenName)) chosenName = aliases.get(chosenName);
 		int amount = search.getAmount();
 		Set<String> mayBeItems = null;
 
@@ -114,6 +135,22 @@ public class ItemParser {
 		}
 
 		return new ItemParserResult(found, chosenName, amount, mayBeItems);
+	}
+
+	private static Set<String> translatedAliases(final String name) {
+		return TRANSLATED_ITEM_ALIASES.computeIfAbsent(name, canonical -> {
+			Set<String> result = new HashSet<String>();
+			String singular = Translation.getText("en", canonical);
+			if (!singular.equals(canonical)) result.add(singular);
+			// A displayed plural or mass noun, such as "pieces of wood", is still the same ware.
+			for (int amount : new int[]{2, 5}) {
+				String source = Grammar.quantityplnoun(amount, canonical);
+				String translated = Translation.getText("en", source);
+				String prefix = amount + " ";
+				if (!source.equals(translated) && translated.startsWith(prefix)) result.add(translated.substring(prefix.length()));
+			}
+			return Collections.unmodifiableSet(result);
+		});
 	}
 
 	/**
