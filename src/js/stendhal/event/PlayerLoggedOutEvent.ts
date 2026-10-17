@@ -32,7 +32,10 @@ export class PlayerLoggedOutEvent extends RPEvent {
 
 		const localName = marauroa?.me?.["_name"] ?? marauroa?.me?.["name"];
 		const isLocalPlayer = typeof localName === "string" && localName === playerName;
-		if (stendhal.playerInGame && !isLocalPlayer) {
+		const buddies = marauroa?.me?.["buddies"];
+		const isFriend = buddies != null && Object.prototype.hasOwnProperty.call(buddies, playerName);
+		// Never announce an unknown/hidden player's departure or a duplicate event.
+		if (stendhal.playerInGame && !isLocalPlayer && isFriend && index >= 0) {
 			Chat.log("information", GameLanguage.getText(`${playerName} opuścił PolanieOnLine.`));
 		}
 	}

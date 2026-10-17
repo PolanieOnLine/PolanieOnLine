@@ -50,6 +50,7 @@ test("away floaters translate but player chat remains exactly as written",async(
 });
 test("online events translate notices, preserve canonical names and suppress self notifications",async()=>{
  const {logs,deps,marauroa,stendhal}=await harness();
+ marauroa.me.buddies={"Zamknij":"false"};
  const on=new (load("../event/PlayerLoggedOnEvent.ts",deps).PlayerLoggedOnEvent)();on.name="Zamknij";on.execute();
  assert.equal(logs.at(-1).text,"Zamknij has joined PolanieOnLine.");assert.equal(stendhal.players[0],"Zamknij");
  const off=new (load("../event/PlayerLoggedOutEvent.ts",deps).PlayerLoggedOutEvent)();off.name="Zamknij";off.execute();
