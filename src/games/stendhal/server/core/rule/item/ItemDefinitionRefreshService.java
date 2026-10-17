@@ -59,6 +59,14 @@ public final class ItemDefinitionRefreshService {
 					|| ("amount".equals(attribute) && "ring".equals(item.getItemClass()))) {
 				continue;
 			}
+			// The Deathmatch trophy earns its defense from arena victories, not XML.
+			// Restoring the definition would reset every earned bonus to def=1.
+			if ("def".equals(attribute) && "zdobyczny hełm".equals(item.getName())
+					&& saved.has("def")) {
+				item.put("def", saved.get("def"));
+				baseFields.add("def");
+				continue;
+			}
 			item.put(attribute, definition.get(attribute));
 			if (statistics.contains(attribute)) {
 				baseFields.add(attribute);

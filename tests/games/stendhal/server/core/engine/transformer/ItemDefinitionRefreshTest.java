@@ -147,6 +147,30 @@ public class ItemDefinitionRefreshTest {
 	}
 
 	@Test
+	public void deathmatchTrophyKeepsEarnedDefenseAcrossLogins() throws Exception {
+		for (final boolean persistent : new boolean[] { true, false }) {
+			Item helmet = definition("zdobyczny hełm");
+			helmet.setID(new ID(persistent ? 760 : 761, "deathmatch_trophy"));
+			helmet.put("def", 47);
+			helmet.setBoundTo("hunter");
+			helmet.setItemData("hunter");
+			if (persistent) {
+				helmet.setPersistent(true);
+			} else {
+				helmet.remove("persistent");
+			}
+			for (int login = 0; login < 3; login++) {
+				helmet = restore(helmet);
+				assertEquals(47, helmet.getInt("def"));
+				assertEquals(47, helmet.getDefense());
+				assertEquals("hunter", helmet.getBoundTo());
+				assertEquals("hunter", helmet.getItemData());
+				assertEquals("47", helmet.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.DEFENSE));
+			}
+		}
+	}
+
+	@Test
 	public void savedDefenseMultiplierIsAppliedToNewBaseExactlyOnce() throws Exception {
 		Item saved = definition("polska płytowa tarcza");
 		saved.setID(new ID(711, "definition_refresh"));
