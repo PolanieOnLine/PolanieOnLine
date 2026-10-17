@@ -10,6 +10,7 @@
   "scripts": {
 	"test:translations": "node buildtools/check-language-catalogues.cjs pl en es && node buildtools/check-world-translations.cjs && node buildtools/check-spanish-translations.cjs && node --test src/js/stendhal/util/game-language.test.js src/js/stendhal/util/zone-name-language.test.js src/js/stendhal/event/show-item-list-language.test.js src/js/stendhal/ui/component/item-tooltip-language.test.js src/js/stendhal/entity/generated-message-language.test.js src/js/stendhal/slash-action-language.test.js src/js/stendhal/ui/dialog/travel-log-language.test.js src/js/stendhal/ui/web-display-language.test.js",
 	"test:player-mood-icons": "node --test src/js/stendhal/entity/player-mood-icons.test.js",
+	"test:player-presence": "node --test src/js/stendhal/event/player-presence.test.js",
 	"test:arena-observation": "node --test src/js/stendhal/ui/dialog/arena-observation-dialog.test.js",
 	"test:viewport-input": "node --test src/js/stendhal/ui/viewport-input.test.js",
 	"test:arena-view": "node --test src/js/stendhal/ui/arena-view.test.js",

@@ -32,7 +32,8 @@ export class PlayerLoggedOnEvent extends RPEvent {
 
 	override execute(entity: any) {
 		const playerName = this.name;
-		if (stendhal.players.indexOf(playerName) < 0) {
+		const wasOnline = stendhal.players.indexOf(playerName) >= 0;
+		if (!wasOnline) {
 			// remember logged on players
 			stendhal.players.push(playerName);
 			stendhal.players = stendhal.players.sort();
@@ -40,7 +41,11 @@ export class PlayerLoggedOnEvent extends RPEvent {
 
 		const localName = marauroa?.me?.["_name"] ?? marauroa?.me?.["name"];
 		const isLocalPlayer = typeof localName === "string" && localName === playerName;
-		if (stendhal.playerInGame && !isLocalPlayer) {
+		const buddies = marauroa?.me?.["buddies"];
+		const isFriend = buddies != null && Object.prototype.hasOwnProperty.call(buddies, playerName);
+		// Presence events maintain completion names for everyone, but only friends
+		// should produce chat notifications.
+		if (stendhal.playerInGame && !isLocalPlayer && isFriend && !wasOnline) {
 			Chat.log("information", GameLanguage.getText(`${playerName} zawitał do PolanieOnLine.`));
 		}
 	}

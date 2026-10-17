@@ -56,6 +56,8 @@ jobs:
         run: ant -noinput -buildfile build.xml compilejs
       - name: Check translations and translated interface
         run: npm run test:translations
+      - name: Test player presence privacy
+        run: npm run test:player-presence
       - name: Check inventory animation and sprite preparation
         run: npm run test:inventory
       - name: Check quest marker rendering
