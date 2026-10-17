@@ -156,16 +156,6 @@ final class ItemRarityPresentation {
 				+ " <b>" + amount + "</b></html>";
 	}
 
-	/** Exact stack size; the small inventory icon can continue using K/M labels. */
-	static String buildMoneyToolTip(final IEntity entity) {
-		if (!(entity instanceof Item) || !"money".equals(entity.getName())) {
-			return null;
-		}
-		final int quantity = Math.max(0, ((Item) entity).getQuantity());
-		final String amount = String.format(Locale.ROOT, "%,d", quantity).replace(',', ' ');
-		return "<html>Monety w stosie: <b>" + amount + "</b></html>";
-	}
-
 	static String resolveCategory(final RPObject object) {
 		final String published = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.CATEGORY);
@@ -344,7 +334,7 @@ final class ItemRarityPresentation {
 		appendDivider(tooltip);
 		final int equippedArmour = WeaponPerformanceCalculator.getInt(equippedItem,
 				ItemTooltip.DEFENSE);
-		appendPrimaryValue(tooltip, armour + " pkt. pancerza"
+		appendPrimaryValue(tooltip, ClientLanguage.getText(armour + " pkt. pancerza")
 				+ (equippedItem == null ? ""
 						: delta(armour, equippedArmour, 0)), null);
 	}
@@ -689,7 +679,8 @@ final class ItemRarityPresentation {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
 					.append("Leczenie: <b>+").append(amount)
-					.append(" PW</b> (natychmiastowe)</font>");
+					.append(' ').append(escapeHtml(ClientLanguage.getText("PW")))
+					.append("</b> (natychmiastowe)</font>");
 			return;
 		}
 
@@ -704,8 +695,9 @@ final class ItemRarityPresentation {
 				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS);
 		appendDivider(tooltip);
 		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
-				.append("Leczenie: <b>+").append(regen).append(" PW co ")
-				.append(formatCompact(frequency)).append(" s</b>");
+				.append("Leczenie: <b>+").append(regen).append(' ')
+				.append(escapeHtml(ClientLanguage.getText("PW co " + formatCompact(frequency) + " s")))
+				.append("</b>");
 		if (duration > 0.0) {
 			tooltip.append("<br>Czas leczenia: ")
 					.append(formatCompact(duration)).append(" s");
@@ -719,7 +711,7 @@ final class ItemRarityPresentation {
 		final int minLevel = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.MIN_LEVEL);
 		if (minLevel > 0) {
-			footer.append("Wymagany poziom: ").append(minLevel);
+			footer.append(escapeHtml(ClientLanguage.getText("Wymagany poziom: " + minLevel)));
 		}
 		final int durability = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.DURABILITY);

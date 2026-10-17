@@ -21,6 +21,19 @@ import org.junit.Test;
  * Tests for StatusIconPanel
  */
 public class StatusIconPanelTest {
+	private java.lang.reflect.Field preferences;
+	private Object previousPreferences;
+	@org.junit.Before public void isolatePolishLanguage() throws Exception {
+		preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+		preferences.setAccessible(true);
+		previousPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
+		java.util.Properties values = new java.util.Properties();
+		values.setProperty("config." + games.stendhal.client.ClientLanguage.PROPERTY, "pl");
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), values);
+	}
+	@org.junit.After public void restoreLanguage() throws Exception {
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), previousPreferences);
+	}
 	/**
 	 * Check that all status icons start invisible.
 	 */

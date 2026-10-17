@@ -89,4 +89,56 @@ public class ItemTooltipTranslationTest {
 	private void stat(RPObject item, String key, String value) {
 		item.put(ItemTooltip.ATTRIBUTE, key, value);
 	}
+
+	@Test public void translatesInstantHealingUnitsInsideBoldMarkup() {
+		RPObject item = ItemTestHelper.createItem("mega potion");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_INSTANT, "true");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_AMOUNT, "800");
+		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), null, false);
+		assertTrue(html, html.contains("+800 HP"));
+		assertTrue(html, html.contains("instant"));
+		assertTrue(html, !html.contains("PW"));
+	}
+
+	@Test public void translatesPeriodicHealingUnitsAndFrequency() {
+		RPObject item = ItemTestHelper.createItem("sandwich");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_REGEN, "10");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS, "3");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS, "36");
+		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), null, false);
+		assertTrue(html, html.contains("+10 HP every 3 s"));
+		assertTrue(html, html.contains("Healing duration: 36 s"));
+	}
+
+	@Test public void translatesArmourAndRequiredLevelWithoutChangingValues() {
+		RPObject item = ItemTestHelper.createItem("mithril cloak");
+		stat(item, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ARMOUR);
+		stat(item, ItemTooltip.DEFENSE, "35");
+		stat(item, ItemTooltip.MIN_LEVEL, "300");
+		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), null, false);
+		assertTrue(html, html.contains("35 armour points"));
+		assertTrue(html, html.contains("Required level: 300"));
+		RPObject equipped = ItemTestHelper.createItem("old cloak");
+		stat(equipped, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ARMOUR);
+		stat(equipped, ItemTooltip.DEFENSE, "30");
+		String comparison = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), equipped, true);
+		assertTrue(comparison, comparison.contains("35 armour points"));
+		assertTrue(comparison, !comparison.contains("pkt. pancerza"));
+	}
+
+	@Test public void polishHealingAndArmourRemainPolish() throws Exception {
+		((Properties) preferences.get(WtWindowManager.getInstance())).setProperty("config." + ClientLanguage.PROPERTY, "pl");
+		RPObject item = ItemTestHelper.createItem("kanapka");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_REGEN, "10");
+		stat(item, ItemTooltip.CONSUMABLE_HEALING_FREQUENCY_SECONDS, "3");
+		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), null, false);
+		assertTrue(html, html.contains("+10 PW co 3 s"));
+		RPObject cloak = ItemTestHelper.createItem("płaszcz z mithrilu");
+		stat(cloak, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ARMOUR);
+		stat(cloak, ItemTooltip.DEFENSE, "35");
+		stat(cloak, ItemTooltip.MIN_LEVEL, "300");
+		String armour = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(cloak), null, false);
+		assertTrue(armour, armour.contains("35 pkt. pancerza"));
+		assertTrue(armour, armour.contains("Wymagany poziom: 300"));
+	}
 }
