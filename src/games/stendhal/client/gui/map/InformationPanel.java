@@ -78,6 +78,9 @@ class InformationPanel extends JComponent {
 		setLayout(new OverlayLayout(this));
 		JComponent container = SBoxLayout.createContainer(SBoxLayout.VERTICAL);
 		glassPane = new JComponent(){};
+		// The mouse overlay must not turn its allocated bounds into size limits.
+		glassPane.setMinimumSize(new java.awt.Dimension(0, 0));
+		glassPane.setPreferredSize(new java.awt.Dimension(0, 0));
 		add(glassPane);
 		add(container);
 

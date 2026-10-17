@@ -190,4 +190,5 @@ Najpierw otwórz kocioł, aby sięgnąć do środka.=First open the cauldron to 
 Poproś Draconię o pozwolenie na mieszanie składników.=Ask Draconia for permission to mix the ingredients.
 Kocioł obsługuje teraz {0}.=The cauldron is currently being used by {0}.
 Najpierw otwórz kocioł, aby wrzucić składniki.=First open the cauldron to add ingredients.
+PW co {0} s=HP every {0} s
 PolanieOnLine jest przeznaczona i testowana dla Oracle Java i OpenJDK. Używasz {0} {1}. Mogą wynikać problemy takie jak: czarny lub szary ekran.\n Jeżeli masz doświadczenie w programowaniu z JDK to zapraszamy do współpracy.=PolanieOnLine is designed and tested for Oracle Java and OpenJDK. You are using {0} {1}. You may encounter problems such as a black or gray screen.\n If you have JDK programming experience, you are welcome to contribute.

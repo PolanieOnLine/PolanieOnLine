@@ -332,6 +332,12 @@ class StatsPanel extends JPanel {
 	 */
 	private static class StatLabel extends JTextArea {
 		private String originalText;
+		@Override public Dimension getMinimumSize() {
+			final Dimension minimum = super.getMinimumSize();
+			// Wrapped text can become narrower again after the dock is expanded.
+			minimum.width = getInsets().left + getInsets().right;
+			return minimum;
+		}
 		@Override public void setText(String text) {
 			originalText = text;
 			super.setText(games.stendhal.client.ClientLanguage.getText(text));
