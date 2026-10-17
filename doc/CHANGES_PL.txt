@@ -1,5 +1,38 @@
 ## Changelog
 ---------
+1.43.1
+*deathmatch i zdobyczny hełm*
+---
+* Naprawiono błąd powodujący utratę zdobytych punktów obrony Zdobycznego hełmu po ponownym zalogowaniu. Hełm zachowuje teraz obronę wypracowaną podczas zwycięstw na arenie w Ados
+* Dodano jednorazowe przywracanie obrony hełmów uszkodzonych po aktualizacji 1.43. Wartość jest odtwarzana na podstawie zapisanej liczby zwycięstw i limitu obrony postaci
+* Przy przywracaniu obrony uwzględniane są również odrodzenia. Postacie po odrodzeniu zachowują historyczny limit 124 punktów obrony, niezależnie od obecnego poziomu. Liczba zwycięstw nadal decyduje o przywracanej wartości
+* Zdobyczny hełm nie podlega już systemowi rzadkości i nie otrzymuje losowych dodatkowych właściwości. Ze starszych egzemplarzy usuwane są modyfikatory rzadkości bez utraty zdobytej obrony
+
+*polowania u Janisława*
+---
+* Poszerzono zakres poziomów przeciwników dobieranych do łatwych, średnich i trudnych polowań, szczególnie dla doświadczonych graczy
+* Wyraźniej rozdzielono poziomy trudności, dzięki czemu trudne polowania wymagają pokonywania silniejszych przeciwników niż łatwe i średnie
+* Trudne polowania wymagają teraz pokonania od 40 do 50 przeciwników, zamiast od 20 do 30
+* Poprawiono dobieranie celów polowań na wysokich poziomach, aby Janisław mógł proponować odpowiednich przeciwników również postaciom zbliżającym się do maksymalnego poziomu
+
+*Arena Wyzwań i handel*
+---
+* Kupiec Areny skupuje czarne wyposażenie dopiero po ukończeniu zadania Balduina, tak jak pozostali handlarze wymagający jego ukończenia
+* Pozostałe łupy z Areny Wyzwań można nadal sprzedawać bez wykonywania zadania Balduina
+* Poprawiono sprawdzanie warunków sprzedaży, aby nie można było sprzedać czarnego wyposażenia po utracie wymaganego uprawnienia w trakcie transakcji
+
+*grupy*
+---
+* Naprawiono błąd serwera występujący podczas wyrzucania z grupy członka, który był już rozłączony z grą
+* Poprawiono obsługę niedostępnych graczy podczas zapraszania do grupy i przekazywania jej przywództwa
+
+*klient gry i prywatność*
+---
+* Powiadomienia o zalogowaniu i wylogowaniu graczy pojawiają się na czacie tylko w przypadku osób znajdujących się na liście znajomych
+* Poprawiono ochronę prywatności niewidocznych administratorów. Ich wylogowanie nie ujawnia obecności pozostałym graczom
+* Usunięto powtarzające się powiadomienia o przyjściu i wyjściu tego samego gracza
+
+
 1.43
 *języki gry*
 ---
