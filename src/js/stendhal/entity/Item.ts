@@ -158,12 +158,12 @@ export class Item extends Entity {
 		const rarity = this.getRarity();
 		const upgradeLevel = this.getUpgradeValue("improve");
 		const maxUpgradeLevel = this.getUpgradeValue("max_improves");
+		const title = this.getDisplayName()
+				+ (upgradeLevel > 0 ? " +" + upgradeLevel : "");
+		if (title) {
+			lines.push(title);
+		}
 		if (rarity || upgradeLevel > 0 || maxUpgradeLevel > 0) {
-			const title = this.getDisplayName()
-					+ (upgradeLevel > 0 ? " +" + upgradeLevel : "");
-			if (title) {
-				lines.push(title);
-			}
 			if (rarity) {
 				lines.push("Rzadkość: " + rarity.polishDisplayName);
 			}

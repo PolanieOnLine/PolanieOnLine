@@ -613,7 +613,7 @@ export class ItemContainerImplementation {
 		if (item?.["name"] === "money") {
 			return;
 		}
-		if (item && (item.getRarity() || hasStructuredItemTooltip(item))) {
+		if (item) {
 			ItemContainerImplementation.showRarityToolTip(target, item, evt.clientX, evt.clientY);
 		}
 	}
@@ -717,7 +717,7 @@ export class ItemContainerImplementation {
 		const hasStructured = hasStructuredItemTooltip(item);
 		const structured = buildStructuredItemTooltip(item,
 				singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
-		if (!rarity && structured.lines.length === 0 && !structured.upgradeText) {
+		if (!item.getDisplayName() && !rarity && structured.lines.length === 0 && !structured.upgradeText) {
 			return;
 		}
 
