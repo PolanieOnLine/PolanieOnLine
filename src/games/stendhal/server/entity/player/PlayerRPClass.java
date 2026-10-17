@@ -78,6 +78,8 @@ public class PlayerRPClass {
 		player.addAttribute("reborns", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_rewards", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_migration_version", Type.INT, Definition.HIDDEN);
+		// One-shot restoration of Deathmatch trophy defense lost in version 1.43.
+		player.addAttribute("deathmatch_helmet_recovery_v1", Type.INT, Definition.HIDDEN);
 		// Public, volatile mirror used only by clients to draw the reborn badge.
 		player.addAttribute(RebornBadgeSynchronizer.ATTR_REBORN_BADGE, Type.INT, Definition.VOLATILE);
 
