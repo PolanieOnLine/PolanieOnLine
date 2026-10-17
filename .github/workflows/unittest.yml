@@ -54,6 +54,8 @@ jobs:
           cache: 'npm'
       - name: Compile TypeScript webclient
         run: ant -noinput -buildfile build.xml compilejs
+      - name: Check webclient package assets
+        run: npm run test:webclient-package
       - name: Check translations and translated interface
         run: npm run test:translations
       - name: Check safe contributor page generation
