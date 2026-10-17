@@ -69,6 +69,9 @@ public class ItemTransformer {
 			 * at login instead of preserving an old rarity-scaled copy forever.
 			 */
 			final boolean definitionAuthoritative = item instanceof Glyph;
+			// Trophy DEF is advanced exclusively by Deathmatch victories.
+			// Legacy rarity rolls and affixes must not be reapplied on login.
+			final boolean deathmatchTrophy = "zdobyczny hełm".equals(name);
 
 			// Build the current unmodified range before replaying this instance's
 			// saved multipliers. RESTORE itself never rolls rarity or affixes.
@@ -96,7 +99,7 @@ public class ItemTransformer {
 			final boolean savedRarity = rpobject.has(Item.RARITY_ID);
 			final boolean legacyRarityItem = !savedRarity
 					&& ItemRarityService.getInstance().isEligible(item);
-			final boolean restoreAllAttributes = !definitionAuthoritative
+			final boolean restoreAllAttributes = !definitionAuthoritative && !deathmatchTrophy
 					&& rpobject.has("persistent")
 					&& (rpobject.getInt("persistent") == 1);
 			if (restoreAllAttributes) {
@@ -127,7 +130,7 @@ public class ItemTransformer {
 				}
 			}
 
-			if (!definitionAuthoritative && savedRarity) {
+			if (!definitionAuthoritative && !deathmatchTrophy && savedRarity) {
 				restoreRarityMetadata(item, rpobject, savedRarity);
 			}
 			final Set<String> refreshedBaseFields = ItemDefinitionRefreshService.refresh(
@@ -135,7 +138,7 @@ public class ItemTransformer {
 			// Random affixes are also instance state and must survive RESTORE
 			// independently of current XML definitions and rarity modifiers. Glyphs
 			// are definition-owned and intentionally discard any legacy affix state.
-			if (!definitionAuthoritative) {
+			if (!definitionAuthoritative && !deathmatchTrophy) {
 				ItemAffixState.restore(item, rpobject, refreshedBaseFields);
 				ItemDefinitionRefreshService.replayFlatBonuses(item, rpobject);
 			}
@@ -180,7 +183,7 @@ public class ItemTransformer {
 			WeaponDamageRangeService.migrateRestored(item, definitionAttack,
 					definitionDamageMin, definitionDamageMax);
 
-			if (!savedRarity && legacyRarityItem) {
+			if (!savedRarity && legacyRarityItem && !deathmatchTrophy) {
 				ItemRarityService.getInstance().markLegacyCommon(item);
 			}
 
