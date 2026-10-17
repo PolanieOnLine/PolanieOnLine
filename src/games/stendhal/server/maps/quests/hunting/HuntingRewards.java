@@ -59,10 +59,11 @@ public final class HuntingRewards {
 	public static double referenceStrength(int level, List<Creature> creatures) {
 		List<Double> scores = new ArrayList<>();
 		int nearest = Integer.MAX_VALUE;
+		for (Creature creature : HuntingTargetSelector.select(
+				level, HuntingDifficulty.MEDIUM, creatures, Creature::getLevel)) {
+			scores.add(strength(creature));
+		}
 		for (Creature creature : creatures) {
-			if (HuntingDifficulty.MEDIUM.accepts(level, creature.getLevel())) {
-				scores.add(strength(creature));
-			}
 			nearest = Math.min(nearest, Math.abs(level - creature.getLevel()));
 		}
 		if (scores.isEmpty()) {
@@ -77,16 +78,13 @@ public final class HuntingRewards {
 		// Scale all three difficulties together if an unusually tough target
 		// would exceed the one-level safety limit. Capping only its reward would
 		// otherwise make that hard task pay less per unit of work than easy tasks.
-		for (Creature creature : creatures) {
-			for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
-				if (difficulty.accepts(level, creature.getLevel())) {
-					// Keep the original strength calibration independent of payout changes.
-					// Otherwise lowering the bonus also lowers its divisor and cancels
-					// the reduction for the toughest targets.
-					double referenceShare = difficulty == HuntingDifficulty.EASY ? 0.10
-							: difficulty == HuntingDifficulty.MEDIUM ? 0.25 : 0.50;
-					reference = Math.max(reference, strength(creature) * referenceShare * 30 / 25.0);
-				}
+		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
+			for (Creature creature : HuntingTargetSelector.select(
+					level, difficulty, creatures, Creature::getLevel)) {
+				// The same reference cap must cover adaptive endgame targets.
+				double referenceShare = difficulty == HuntingDifficulty.EASY ? 0.10
+						: difficulty == HuntingDifficulty.MEDIUM ? 0.25 : 0.50;
+				reference = Math.max(reference, strength(creature) * referenceShare * 30 / 25.0);
 			}
 		}
 		return reference;

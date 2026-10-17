@@ -24,6 +24,7 @@ import games.stendhal.server.entity.item.HuntingRewardChest;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.maps.quests.hunting.HuntingDifficulty;
 import games.stendhal.server.maps.quests.hunting.HuntingRewards;
+import games.stendhal.server.maps.quests.hunting.HuntingTargetSelector;
 
 
 import games.stendhal.common.Level;
@@ -88,18 +89,17 @@ public class Hunting extends AbstractQuest {
 			raiser.setCurrentState(ConversationStates.ATTENDING);
 			return;
 		}
-		List<Creature> candidates = new ArrayList<>();
 		List<Creature> available = availableCreatures();
-		for (Creature creature : available) {
-			if (difficulty.accepts(player.getLevel(), creature.getLevel())) { candidates.add(creature); }
-		}
+		List<Creature> candidates = HuntingTargetSelector.select(
+				player.getLevel(), difficulty, available, Creature::getLevel);
 		if (candidates.isEmpty()) {
 			raiser.say("Nie mam teraz dostępnych przeciwników na takie polowanie dla Twojego poziomu. Wybierz #łatwe, #średnie lub #trudne.");
 			raiser.setCurrentState(ConversationStates.ATTENDING);
 			return;
 		}
 		Creature creature = candidates.get(Rand.rand(candidates.size()));
-		int count = 20 + Rand.rand(11);
+		int count = difficulty.getMinimumKillCount()
+				+ Rand.rand(difficulty.getMaximumKillCount() - difficulty.getMinimumKillCount() + 1);
 		int bonus = HuntingRewards.rewardBasisPoints(difficulty, count, creature,
 				HuntingRewards.referenceStrength(player.getLevel(), available));
 		player.setQuest(OFFER_SLOT, difficulty.name() + ";" + creature.getName() + ";" + count + ";" + player.getLevel() + ";" + bonus);
@@ -125,16 +125,13 @@ public class Hunting extends AbstractQuest {
 			HuntingDifficulty difficulty = HuntingDifficulty.valueOf(parts[0]);
 			int count = Integer.parseInt(parts[2]);
 			int bonus = Integer.parseInt(parts[4]);
-			if (count < 20 || count > 30 || bonus < 1 || bonus > 10000 || Integer.parseInt(parts[3]) != player.getLevel()) {
+			if (count < difficulty.getMinimumKillCount() || count > difficulty.getMaximumKillCount()
+					|| bonus < 1 || bonus > 10000 || Integer.parseInt(parts[3]) != player.getLevel()) {
 				throw new IllegalArgumentException();
 			}
-			boolean available = false;
-			for (Creature creature : availableCreatures()) {
-				if (creature.getName().equals(parts[1]) && difficulty.accepts(player.getLevel(), creature.getLevel())) {
-					available = true;
-					break;
-				}
-			}
+			boolean available = HuntingTargetSelector.select(
+					player.getLevel(), difficulty, availableCreatures(), Creature::getLevel)
+					.stream().anyMatch(target -> target.getName().equals(parts[1]));
 			if (!available) { throw new IllegalArgumentException(); }
 			int repetitions = player.hasQuest(QUEST_SLOT) ? player.getNumberOfRepetitions(QUEST_SLOT, 2) : 0;
 			player.setQuest(QUEST_SLOT, parts[1] + ",0," + count + "," + player.getSoloKill(parts[1])
