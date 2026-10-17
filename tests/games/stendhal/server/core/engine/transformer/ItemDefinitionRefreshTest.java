@@ -171,6 +171,53 @@ public class ItemDefinitionRefreshTest {
 	}
 
 	@Test
+	public void deathmatchTrophyNeverRollsRarityOrAffixes() {
+		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm",
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withRarity(ItemRarity.LEGENDARY)
+						.withAffixSeed(54321L).build());
+		assertFalse(ItemRarityService.getInstance().isEligible(helmet));
+		assertNull(helmet.getRarity());
+		assertFalse(ItemAffixState.hasAny(helmet));
+		assertFalse(ItemAffixState.hasSeed(helmet));
+		assertTrue(helmet.getRarityModifiers().isEmpty());
+		assertEquals(1, helmet.getInt("def"));
+		assertEquals(1, helmet.getDefense());
+	}
+
+	@Test
+	public void legacyRareDeathmatchTrophyLosesRarityNotEarnedDefenseOnLogin() throws Exception {
+		for (final boolean persistent : new boolean[] { true, false }) {
+			Item helmet = definition("zdobyczny hełm");
+			helmet.setID(new ID(persistent ? 762 : 763, "deathmatch_legacy_rarity"));
+			helmet.setBoundTo("hunter");
+			helmet.setItemData("hunter");
+			helmet.put("def", 47);
+			helmet.setRarity(ItemRarity.LEGENDARY);
+			helmet.setRarityModifier("def", 1.8);
+			helmet.put("flat_defense_bonus", 12);
+			helmet.put(ItemAffixState.ATTRIBUTE, "flat_defense_bonus", "12");
+			ItemAffixState.setSeed(helmet, 12345L);
+			if (persistent) {
+				helmet.setPersistent(true);
+			}
+			for (int login = 0; login < 3; login++) {
+				helmet = restore(helmet);
+				assertEquals(47, helmet.getInt("def"));
+				assertEquals(47, helmet.getDefense());
+				assertNull(helmet.getRarity());
+				assertTrue(helmet.getRarityModifiers().isEmpty());
+				assertFalse(ItemAffixState.hasAny(helmet));
+				assertFalse(ItemAffixState.hasSeed(helmet));
+				assertFalse(helmet.has("flat_defense_bonus"));
+				assertEquals("hunter", helmet.getBoundTo());
+				assertEquals("hunter", helmet.getItemData());
+				assertEquals("47", helmet.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.DEFENSE));
+			}
+		}
+	}
+
+	@Test
 	public void savedDefenseMultiplierIsAppliedToNewBaseExactlyOnce() throws Exception {
 		Item saved = definition("polska płytowa tarcza");
 		saved.setID(new ID(711, "definition_refresh"));

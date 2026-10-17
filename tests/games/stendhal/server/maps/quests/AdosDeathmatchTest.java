@@ -216,7 +216,7 @@ public class AdosDeathmatchTest {
 				getReply(assistant));
 		assertEquals(1, dmPlayer.getNumberOfEquipped("zdobyczny hełm"));
 		final Item trophyHelmet = dmPlayer.getFirstEquipped("zdobyczny hełm");
-		assertSame(ItemRarity.COMMON, trophyHelmet.getRarity());
+		assertNull(trophyHelmet.getRarity());
 		assertFalse(ItemAffixState.hasAny(trophyHelmet));
 		assertEquals(dmPlayer.getName(), trophyHelmet.getBoundTo());
 		en.step(dmPlayer, "bye");
