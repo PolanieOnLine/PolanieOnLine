@@ -430,10 +430,37 @@ public class ItemDefinitionRefreshTest {
 		Item intrinsic = definition("pierścień czystości");
 		assertNotNull(intrinsic);
 		intrinsic.setID(new ID(742, "affix_balance"));
-		intrinsic.put("accuracy_bonus", 25.0);
-		intrinsic = restore(intrinsic);
-		assertEquals(7, intrinsic.getDouble("accuracy_bonus"), 0);
-		assertFalse(ItemAffixState.hasAny(intrinsic));
+		// Simulate a saved instance already damaged by the former global cap.
+		intrinsic.put("accuracy_bonus", 7.0);
+		intrinsic.setPersistent(true);
+		for (int login = 0; login < 3; login++) {
+			intrinsic = restore(intrinsic);
+			assertEquals(25, intrinsic.getDouble("accuracy_bonus"), 0);
+			assertEquals("25.0", intrinsic.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.ACCURACY_BONUS));
+			assertFalse(ItemAffixState.hasAny(intrinsic));
+		}
+	}
+
+	@Test
+	public void damagedXmlBonusRecoversWithRarityScalingAlongsideARandomAffix() throws Exception {
+		Item saved = definition("pierścień czystości");
+		saved.setID(new ID(743, "affix_balance"));
+		saved.setPersistent(true);
+		saved.setRarity(ItemRarity.EPIC);
+		saved.setRarityModifier("accuracy_bonus", 1.15);
+		saved.put("accuracy_bonus", 7.0);
+		saved.put("critical_chance", 10.0);
+		saved.put(ItemAffixState.ATTRIBUTE, "critical_chance", "10.0");
+		ItemAffixState.setSeed(saved, 98765L);
+		for (int login = 0; login < 3; login++) {
+			saved = restore(saved);
+			assertEquals(28.75, saved.getDouble("accuracy_bonus"), 0.000001);
+			assertEquals(4.0, saved.getDouble("critical_chance"), 0);
+			assertEquals("4.0", ItemAffixState.getValues(saved).get("critical_chance"));
+			assertFalse(ItemAffixState.has(saved, "accuracy_bonus"));
+			assertEquals(Long.valueOf(98765L), ItemAffixState.getSeed(saved));
+			assertEquals(Double.valueOf(1.15), saved.getRarityModifier("accuracy_bonus"));
+		}
 	}
 
 	@Test
