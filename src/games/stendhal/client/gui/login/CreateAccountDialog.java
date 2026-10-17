@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.login;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -279,8 +281,8 @@ public class CreateAccountDialog extends JDialog {
 			port = Integer.parseInt(serverPortField.getText());
 		} catch (final NumberFormatException ex) {
 			JOptionPane.showMessageDialog(getOwner(),
-					"Niewłaściwy numer portu. Spróbuj ponownie.",
-					"Niewłaściwy port", JOptionPane.WARNING_MESSAGE);
+					getText("Niewłaściwy numer portu. Spróbuj ponownie."),
+					getText("Niewłaściwy port"), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		finalPort = port;
@@ -288,7 +290,7 @@ public class CreateAccountDialog extends JDialog {
 		// standalone check
 		if (client == null) {
 			JOptionPane.showMessageDialog(this,
-					"Konto nie zostało utworzone!");
+					getText("Konto nie zostało utworzone!"));
 			return;
 		}
 
@@ -314,8 +316,8 @@ public class CreateAccountDialog extends JDialog {
 					setEnabled(true);
 					JOptionPane.showMessageDialog(
 							getOwner(),
-							"Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać, a jeśli korzystasz z innego serwera " +
-							"to sprawdź czy poprawnie wpisałeś nazwę i numer portu.");
+							getText("Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać, a jeśli korzystasz z innego serwera " +
+							"to sprawdź czy poprawnie wpisałeś nazwę i numer portu."));
 
 					LOGGER.error(ex, ex);
 
@@ -333,8 +335,8 @@ public class CreateAccountDialog extends JDialog {
 						progressBar.cancel();
 						setEnabled(true);
 						JOptionPane.showMessageDialog(owner,
-								result.getResult().getText(),
-								"Nie powiodło się tworzenie konta",
+								getText(result.getResult().getText()),
+								getText("Nie powiodło się tworzenie konta"),
 								JOptionPane.ERROR_MESSAGE);
 					} else {
 
@@ -369,27 +371,27 @@ public class CreateAccountDialog extends JDialog {
 					setEnabled(true);
 					JOptionPane.showMessageDialog(
 							owner,
-							"Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać lub mogłeś wprowadzić niewłaściwą nazwę serwera i numer portu.",
-							"Błąd Tworzenia Konta", JOptionPane.ERROR_MESSAGE);
+							getText("Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać lub mogłeś wprowadzić niewłaściwą nazwę serwera i numer portu."),
+							getText("Błąd Tworzenia Konta"), JOptionPane.ERROR_MESSAGE);
 				} catch (final InvalidVersionException e) {
 					progressBar.cancel();
 					setEnabled(true);
 					JOptionPane.showMessageDialog(
 							owner,
-							"Uruchomiłeś starszą wersję gry. Proszę zaktualizuj swoją wersję",
-							"Starsza wersja", JOptionPane.ERROR_MESSAGE);
+							getText("Uruchomiłeś starszą wersję gry. Proszę zaktualizuj swoją wersję"),
+							getText("Starsza wersja"), JOptionPane.ERROR_MESSAGE);
 				} catch (final BannedAddressException e) {
 					progressBar.cancel();
 					setEnabled(true);
 					JOptionPane.showMessageDialog(
 							owner,
-							"Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z decyzją to skontaktuj się z nami na https://polanieonline.eu/kontakt",
-							"Zablokowane IP", JOptionPane.ERROR_MESSAGE);
+							getText("Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z decyzją to skontaktuj się z nami na https://polanieonline.eu/kontakt"),
+							getText("Zablokowane IP"), JOptionPane.ERROR_MESSAGE);
 				} catch (final LoginFailedException e) {
 					progressBar.cancel();
 					setEnabled(true);
 					JOptionPane.showMessageDialog(owner, e.getMessage(),
-							"Błąd logowania", JOptionPane.INFORMATION_MESSAGE);
+							getText("Błąd logowania"), JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		};
@@ -410,8 +412,8 @@ public class CreateAccountDialog extends JDialog {
 		final Window owner = getOwner();
 		if (!password.equals(passwordretype)) {
 			JOptionPane.showMessageDialog(owner,
-					"Hasła nie pasują do siebie. Powtórz oba hasła.",
-					"Hasło nie pasuje", JOptionPane.WARNING_MESSAGE);
+					getText("Hasła nie pasują do siebie. Powtórz oba hasła."),
+					getText("Hasło nie pasuje"), JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
@@ -423,9 +425,9 @@ public class CreateAccountDialog extends JDialog {
 			if (badPasswordReason != null) {
 				// didn't like the password for some reason, show a dialog and
 				// try again
-				final int i = JOptionPane.showOptionDialog(owner, badPasswordReason,
-						"Niewłaściwe hasło", JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE, null, new String[]{"Tak", "Nie"}, 1);
+				final int i = JOptionPane.showOptionDialog(owner, getText(badPasswordReason),
+						getText("Niewłaściwe hasło"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, new String[]{getText("Tak"), getText("Nie")}, 1);
 
 				if (i == JOptionPane.NO_OPTION) {
 					return false;
@@ -445,9 +447,9 @@ public class CreateAccountDialog extends JDialog {
 					"- Zapomniałeś hasła.\n" + 
 					"- Inny gracz w jakiś sposób dostaje hasło i zmienia je.\n" + 
 					"Czy mimo to chcesz kontynuować?";
-			final int i = JOptionPane.showOptionDialog(owner, warning, badEmailTitle,
+			final int i = JOptionPane.showOptionDialog(owner, getText(warning), getText(badEmailTitle),
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, new String[]{"Tak", "Nie"}, 1);
+					null, new String[]{getText("Tak"), getText("Nie")}, 1);
 			if (i != 0) {
 				// no, let me type a valid email
 				return false;
@@ -574,7 +576,7 @@ public class CreateAccountDialog extends JDialog {
 		} else {
 			final String text = "Hasło, które wprowadziłeś jest za krótkie. Musi się składać z minimum 6 znaków.";
 			if (isVisible()) {
-				JOptionPane.showMessageDialog(getOwner(), text);
+				JOptionPane.showMessageDialog(getOwner(), getText(text));
 			} else {
 				LOGGER.warn(text);
 			}

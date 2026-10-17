@@ -22,6 +22,7 @@ import { Panel } from "../toolkit/Panel";
 import { TabPanelComponent } from "../toolkit/TabPanelComponent";
 
 import { Chat } from "../../util/Chat";
+import { GameLanguage } from "../../util/GameLanguage";
 import { stendhal } from "stendhal";
 
 
@@ -62,8 +63,8 @@ export class GroupPanelComponent extends Panel {
 		}
 
 		let button = document.createElement("button");
-		button.innerText = "Dołącz do " + leader;
-		button.title = "Dołącz do grupy prowadzoną przez " + leader;
+		button.innerText = GameLanguage.getText("Dołącz do {0}").replace("{0}", leader);
+		button.title = GameLanguage.getText("Dołącz do grupy prowadzoną przez {0}").replace("{0}", leader);
 		button.addEventListener("click", () => {
 			this.onJoinClicked(leader);
 		});
@@ -166,17 +167,17 @@ export class GroupPanelComponent extends Panel {
 
 	private formatExpmode(mode: string) {
 		if (mode === "lowest") {
-			return "najniższy poziom";
+			return GameLanguage.getText("najniższy poziom");
 		}
 		if (mode === "equal") {
-			return "równy podział";
+			return GameLanguage.getText("równy podział");
 		}
-		return "standardowe";
+		return GameLanguage.getText("standardowe");
 	}
 
 	onGroupChatButtonClick() {
 		if (!this.isInGroup()) {
-			Chat.log("error", "Zanim spróbujesz wysłać wiadomość grupową, zaproś kogoś do grupy.");
+			Chat.log("error", GameLanguage.getText("Zanim spróbujesz wysłać wiadomość grupową, zaproś kogoś do grupy."));
 			return;
 		}
 		(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/p ");
@@ -184,7 +185,7 @@ export class GroupPanelComponent extends Panel {
 
 	onGroupInviteButtonClick() {
 		if (this.isInGroup() && (stendhal.data.group.leader !== marauroa.me["_name"])) {
-			Chat.log("error", "Tylko lider może zapraszać ludzi do grupy.");
+			Chat.log("error", GameLanguage.getText("Tylko lider może zapraszać ludzi do grupy."));
 			return;
 		}
 		Chat.log("client", "Proszę wpisać imię gracza, którego chcesz zaprosić.");
@@ -194,7 +195,7 @@ export class GroupPanelComponent extends Panel {
 
 	onGroupPartButtonClick() {
 		if (!this.isInGroup()) {
-			Chat.log("error", "Nie możesz opuścić grupy, ponieważ nie jesteś jej członkiem.");
+			Chat.log("error", GameLanguage.getText("Nie możesz opuścić grupy, ponieważ nie jesteś jej członkiem."));
 			return;
 		}
 		const action = {

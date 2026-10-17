@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.client.actions;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
@@ -41,7 +43,7 @@ class VolumeAction implements SlashAction {
 		if (params[0] == null) {
 			float volume = ClientSingletonRepository.getSound().getVolume();
 			UserInterface ui = ClientSingletonRepository.getUserInterface();
-			ui.addEventLine(new StandardEventLine("Użyj /volume <nazwa> <wartość>, aby regulować poziom głośności."));
+			ui.addEventLine(new StandardEventLine(getText("Użyj /volume <nazwa> <wartość>, aby regulować poziom głośności.")));
 			ui.addEventLine(new HeaderLessEventLine("<nazwa> jest to pozycja z poniższej listy. \"master\" przedstawia głobalne ustawienia głośności.", NotificationType.CLIENT));
 			ui.addEventLine(new HeaderLessEventLine("<wartość> jest z zakresu od 0 do 100, ale może być ustawiona wyższa.", NotificationType.CLIENT));
 			ui.addEventLine(new HeaderLessEventLine("master -> " + Numeric.floatToInt(volume, 100.0f), NotificationType.CLIENT));
@@ -54,7 +56,7 @@ class VolumeAction implements SlashAction {
 			changeVolume(params[0], params[1]);
 		} else {
 			ClientSingletonRepository.getUserInterface().addEventLine(
-					new HeaderLessEventLine("Użyj /volume dla pomocy.",
+					new HeaderLessEventLine(getText("Użyj /volume dla pomocy."),
 					NotificationType.ERROR));
 		}
 		return true;
@@ -88,12 +90,12 @@ class VolumeAction implements SlashAction {
 					ClientSingletonRepository.getSound().changeVolume(Numeric.intToFloat(volume, 100.0f));
 					WtWindowManager.getInstance().setProperty("sound.volume." + groupName, Integer.toString(volume));
 				} else {
-					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Nie istnieje żadna grupa dźwięku \"" + groupName + "\""));
-					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine("Wpisz \"/volume show\", aby zobaczyć listę grup"));
+					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(getText("Nie istnieje żadna grupa dźwięku \"" + groupName + "\"")));
+					ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(getText("Wpisz \"/volume show\", aby zobaczyć listę grup")));
 				}
 			}
 		} catch (NumberFormatException exception) {
-			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(volumeString + " nie jest prawidłowym numerem", NotificationType.ERROR));
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(getText(volumeString + " nie jest prawidłowym numerem"), NotificationType.ERROR));
 		}
 	}
 

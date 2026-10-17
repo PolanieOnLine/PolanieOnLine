@@ -2,6 +2,7 @@ import { stendhal } from "../../stendhal";
 
 import { Component } from "../toolkit/Component";
 import { InventoryWindowOrderManager } from "./InventoryWindowOrderManager";
+import { GameLanguage } from "../../util/GameLanguage";
 
 interface InventoryWindowElements {
 	root: HTMLElement;
@@ -54,6 +55,7 @@ export class InventoryWindowController {
 			|| root.hasAttribute("hidden")
 			|| getComputedStyle(root).display === "none";
 		this.setWindowVisibility(id, !initiallyHidden);
+		GameLanguage.registerUI(root);
 	}
 
 	public static attachComponent(id: string, component: Component) {
@@ -87,9 +89,11 @@ export class InventoryWindowController {
 		this.setWindowVisibility(id, component.isVisible());
 	}
 
-	public static setTitle(id: string, title: string) {
+	public static setTitle(id: string, title: string, preserve=false) {
 		const elements = this.windows.get(id);
 		if (elements?.title) {
+			if (preserve) elements.title.setAttribute("data-no-translate", "");
+			else elements.title.removeAttribute("data-no-translate");
 			elements.title.textContent = title;
 		}
 	}

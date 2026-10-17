@@ -127,6 +127,7 @@ class ProgressLog {
 			tabs.add(page, content);
 			this.pages.add(content);
 		}
+		games.stendhal.client.gui.UiTranslation.apply(tabs);
 	}
 
 	/**
@@ -138,7 +139,7 @@ class ProgressLog {
 	 * 	name will be used as the query parameter
 	 */
 	void setPageIndex(String page, List<String> subjects, ProgressStatusQuery onClick) {
-		int index = tabs.indexOfTab(page);
+		int index = pageIndex(page);
 		if (index != -1) {
 			Component comp = tabs.getComponent(index);
 			if (comp instanceof Page) {
@@ -158,7 +159,7 @@ class ProgressLog {
 	 * @param contents content paragraphs
 	 */
 	void setPageContent(String page, String header, String description, String information, List<String> contents) {
-		int index = tabs.indexOfTab(page);
+		int index = pageIndex(page);
 		if (index != -1) {
 			Component comp = tabs.getComponent(index);
 			if (comp instanceof Page) {
@@ -176,6 +177,14 @@ class ProgressLog {
 	 */
 	void setRepeatable(Collection<String> repeatable) {
 		this.repeatable = repeatable;
+	}
+
+	/** Look up the protocol category, not its translated tab caption. */
+	private int pageIndex(String category) {
+		for (int i = 0; i < pages.size(); i++) {
+			if (category.equals(pages.get(i).indexQueryData)) return i;
+		}
+		return -1;
 	}
 
 	/**
@@ -360,14 +369,14 @@ class ProgressLog {
 					text.append("<a href=\"");
 					text.append(elem);
 					text.append("\">");
-					text.append(elem);
+					text.append(games.stendhal.client.ClientLanguage.getText(elem));
 					// Mark any possible repeatable quests
 					if (repeatable.contains(elem)) {
 						text.append(IMAGE);
 					}
 					text.append("</a>");
 				} else {
-					text.append(elem);
+					text.append(games.stendhal.client.ClientLanguage.getText(elem));
 					// Mark any possible repeatable quests
 					if (repeatable.contains(elem)) {
 						text.append(IMAGE);
@@ -412,28 +421,28 @@ class ProgressLog {
 			// header
 			if (header != null) {
 				text.append("<h2>");
-				text.append(header);
+				text.append(games.stendhal.client.ClientLanguage.getText(header));
 				text.append("</h2>");
 			}
 
 			if (repeatable) {
 				text.append("<p style=\"font-family:arial; color: #000080\"><b>");
 				text.append(IMAGE);
-				text.append("Ponownie mogę zrobić to zadanie.");
+				text.append(games.stendhal.client.ClientLanguage.getText("Ponownie mogę zrobić to zadanie."));
 				text.append("</b></p>");
 			}
 
 			// information
 			if ((information != null) && (!information.trim().equals(""))) {
 				text.append("<p style=\"font-family:arial; color: #FF0000\"><b>");
-				text.append(information);
+				text.append(games.stendhal.client.ClientLanguage.getText(information));
 				text.append("</b></p>");
 			}
 
 			// description
 			if (description != null) {
 				text.append("<p><i>");
-				text.append(description);
+				text.append(games.stendhal.client.ClientLanguage.getText(description));
 				text.append("</i></p>");
 			}
 
@@ -443,7 +452,7 @@ class ProgressLog {
 				text.append("<ul>");
 				for (String elem : contents) {
 					text.append("<li>");
-					text.append(preprocessor.preprocess(elem));
+					text.append(preprocessor.preprocess(games.stendhal.client.ClientLanguage.getText(elem)));
 					text.append("</li>");
 				}
 				text.append("</ul>");

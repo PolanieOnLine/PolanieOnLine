@@ -9,6 +9,7 @@
 package games.stendhal.client.gui;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
@@ -43,7 +44,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 	private ActionListener mixListener;
 	private Timer countdownTimer;
 	private long readyAt;
-	private String baseStatus;
+	private String baseStatus = "Kocioł nie pracuje.";
 
 	public GoldenCauldronWindow(final String title) {
 		super("golden_cauldron", title);
@@ -56,7 +57,9 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		grid.setOpaque(false);
 		grid.setAcceptedTypes(EntityMap.getClass("item", null, null));
 
-		statusLabel = new JLabel("Kocioł nie pracuje.");
+		statusLabel = new JLabel(ClientLanguage.getText(baseStatus));
+		// Status and countdown are translated separately from their canonical text.
+		UiTranslation.preserve(statusLabel);
 		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		mixButton = new JButton("Mieszaj");
 		mixButton.setFocusable(false);
@@ -82,6 +85,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		content.setOpaque(false);
 		content.add(layout, BorderLayout.CENTER);
 		setContent(content);
+		putClientProperty(UiTranslation.AFTER_TRANSLATION, (Runnable) this::refreshStatusLabel);
 	}
 
 	public void setSlot(final IEntity parent, final String slot) {
@@ -151,14 +155,14 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 			countdownTimer.start();
 			refreshStatusLabel();
 		} else {
-			statusLabel.setText(baseStatus);
+			refreshStatusLabel();
 		}
 	}
 
 	private void refreshStatusLabel() {
 		if (readyAt <= System.currentTimeMillis()) {
 			stopCountdown();
-			statusLabel.setText(baseStatus);
+			statusLabel.setText(ClientLanguage.getText(baseStatus));
 			return;
 		}
 
@@ -167,9 +171,6 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		final long minutes = totalSeconds / 60L;
 		final long seconds = totalSeconds % 60L;
 		final StringBuilder builder = new StringBuilder();
-		if (baseStatus != null && !baseStatus.isEmpty()) {
-			builder.append(baseStatus).append(' ');
-		}
 		builder.append("Pozostało ");
 		if (minutes > 0) {
 			if (minutes < 10) {
@@ -184,7 +185,9 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 			builder.append(seconds).append(" s");
 		}
 		builder.append('.');
-		statusLabel.setText(builder.toString());
+		final String translatedStatus = ClientLanguage.getText(baseStatus);
+		statusLabel.setText((translatedStatus.isEmpty() ? "" : translatedStatus + " ")
+				+ ClientLanguage.getText(builder.toString()));
 	}
 
 	private void stopCountdown() {

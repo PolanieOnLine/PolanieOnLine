@@ -82,6 +82,17 @@ public class RentedSign extends Sign implements StorableEntity {
 	}
 
 	@Override
+	public String getText() {
+		// A rented sign stores its owner's words, not a translatable game message.
+		return has(ATTR_TEXT) ? get(ATTR_TEXT) : null;
+	}
+
+	@Override
+	public String getText(final String language) {
+		return getText();
+	}
+
+	@Override
 	public String describe() {
 		String text = super.describe();
 

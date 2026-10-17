@@ -21,6 +21,7 @@ import { Color } from "../data/color/Color";
 
 import { Chat } from "../util/Chat";
 import { Nature } from "../util/Nature";
+import { GameLanguage } from "../util/GameLanguage";
 
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
@@ -101,9 +102,9 @@ export class RPEntity extends ActiveEntity {
 				this._target.onTargeted(this);
 			}
 		} else if (key === "away") {
-			this.addFloater("Zajęty", "#ffff00");
+			this.addFloater(GameLanguage.getText("Zajęty"), "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Niedostępny", "#ffff00");
+			this.addFloater(GameLanguage.getText("Niedostępny"), "#ffff00");
 		} else if (key === "xp" && typeof (oldValue) !== "undefined") {
 			this.onXPChanged(this[key] - oldValue);
 		} else if (["level", "atk", "ratk", "def"].indexOf(key) > -1
@@ -122,9 +123,9 @@ export class RPEntity extends ActiveEntity {
 			this._target.onAttackStopped(this);
 			this._target = undefined;
 		} else if (key === "away") {
-			this.addFloater("Powrócił", "#ffff00");
+			this.addFloater(GameLanguage.getText("Powrócił"), "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Dostępny", "#ffff00");
+			this.addFloater(GameLanguage.getText("Dostępny"), "#ffff00");
 		}
 		super.unset(key);
 	}
@@ -789,7 +790,7 @@ export class RPEntity extends ActiveEntity {
 
 		const deathText = `${victimName} ${this.genderize(gender, "został", "została", "zostało")} `
 			+ `${this.genderize(gender, "zabity", "zabita", "zabite")} przez ${this.enumerateList(attackerNames)}`;
-		Chat.log("significant_negative", deathText);
+		Chat.log("significant_negative", GameLanguage.getText(deathText));
 	}
 
 	protected onXPChanged(change: number) {
@@ -800,11 +801,11 @@ export class RPEntity extends ActiveEntity {
 		if (change > 0) {
 			this.addFloater("+" + change, "#4169e1");
 			Chat.log("significant_positive",
-				`${this.getTitle()} zdobył ${qty} doświadczenia.`);
+				GameLanguage.getText(`${this.getTitle()} zdobył ${qty} doświadczenia.`));
 		} else {
 			this.addFloater(change.toString(), "#ff8f8f");
 			Chat.log("significant_negative",
-				`${this.getTitle()} traci ${qty} doświadczenia.`);
+				GameLanguage.getText(`${this.getTitle()} traci ${qty} doświadczenia.`));
 		}
 	}
 
@@ -834,7 +835,7 @@ export class RPEntity extends ActiveEntity {
 			msg += `${newlevel}${poziom} ${stat}`;
 		}
 
-		Chat.logH(msgtype, msg);
+		Chat.logH(msgtype, GameLanguage.getText(msg));
 	}
 
 	protected getGender(): string | undefined {
@@ -877,14 +878,15 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	private enumerateList(items: string[]): string {
+		const conjunction = GameLanguage.getLanguage() === "en" ? " and " : " i ";
 		if (items.length === 1) {
 			return items[0];
 		}
 		if (items.length === 2) {
-			return `${items[0]} i ${items[1]}`;
+			return items[0] + conjunction + items[1];
 		}
 		const last = items[items.length - 1];
-		return `${items.slice(0, -1).join(", ")} i ${last}`;
+		return items.slice(0, -1).join(", ") + conjunction + last;
 	}
 
 	private genderize(gender: string, male: string, female: string, neutral: string): string {

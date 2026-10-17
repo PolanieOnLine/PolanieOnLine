@@ -129,6 +129,7 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 		titleBar.add(closeButton);
 
 		cache = new ComponentPaintCache(this);
+		UiTranslation.register(this);
 	}
 
 	/**
@@ -235,6 +236,12 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 	 * @param title title text
 	 */
 	public final void setTitle(String title) {
+		setTitle(title, false);
+	}
+
+	/** Character names must not pass through the display dictionary. */
+	public final void setTitle(String title, boolean preserve) {
+		titleLabel.putClientProperty(UiTranslation.PRESERVE_TEXT, preserve);
 		/*
 		 * Work around JLabel drawing ellipsis when it's short of space. To
 		 * avoid titles like "cor..." for corpses. Html labels do not get the

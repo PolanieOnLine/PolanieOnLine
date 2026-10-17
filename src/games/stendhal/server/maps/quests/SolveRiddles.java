@@ -31,6 +31,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import games.stendhal.common.Direction;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
+import games.stendhal.common.Translation;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.common.parser.SimilarExprMatcher;
@@ -106,6 +107,13 @@ public class SolveRiddles extends AbstractQuest {
 			for (String correct : riddleMap.get(riddle)) {
 				final Sentence expected = ConversationParser.parse(correct, new SimilarExprMatcher());
 				if (answer.matchesFull(expected)) {
+					return true;
+				}
+				// Accept the displayed English answer as an alias, without changing
+				// the canonical riddle/answer stored in XML or the player's quest.
+				final String english = Translation.getText("en", correct);
+				if (!english.equals(correct) && answer.matchesFull(
+						ConversationParser.parse(english, new SimilarExprMatcher()))) {
 					return true;
 				}
 			}

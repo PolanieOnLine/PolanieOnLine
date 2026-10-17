@@ -1,0 +1,37 @@
+# Remaining region NPC dialogue, ambient speech, service messages and display labels.
+# Canonical NPC names and conversation triggers are unchanged.
+Oto George, który uwielbia się bawić!=You see George, who loves to play!
+Szczypta niebieskiego!=A pinch of blue!
+Dotyk grzywki!=A touch of fringe!
+Rzut oka dziwny...=A strange glance...
+!me odpuszcza=!me lets one go
+!me kroi ser=!me cuts the cheese
+Kto ja? Nie mam wiele do powiedzenia o sobie.=Who, me? I do not have much to say about myself.
+{0} Kto jeszcze chciałbyś wiedzieć?={item:0} Who else would you like to know about?
+{0} Co jeszcze chciałbyś wiedzieć?={item:0} What else would you like to know?
+Niebieski pazurek jest najrzadszym pazurkiem w krainie, dlaczego? Nikt nie zna odpowiedzi! Chcesz usłyszeć coś nowego?=The blue claw is the rarest claw in the realm. Why? Nobody knows the answer! Would you like to hear something new?
+Modyfikatory areny {0}=Arena modifiers: {item:0}
+Skupuję {0}=I buy {item:0}
+Sprzedaję również {0}=I also sell {item:0}
+Hej {0}! Nie pchaj innych!=Hey {0}! Do not push others!
+Prom jest zakotwiczony na wyspie. Zajmie to {number:0}.=The ferry is anchored at the island. This will take {0} seconds.
+Prom jest zakotwiczony na pirackiej wyspie. Zajmie to {number:0}.=The ferry is anchored at the pirate island. This will take {0} seconds.
+Prom jest zakotwiczony w Krakowie. Zajmie to {number:0}.=The ferry is anchored in Krakow. This will take {0} seconds.
+Prom jest zakotwiczony w Warszawie. Zajmie to {number:0}.=The ferry is anchored in Warsaw. This will take {0} seconds.
+Deniran - Akcesoria=Deniran - Accessories
+# Price-list entries assembled by Wanda, including recursive list captures.
+mandragora za {number:0}=mandrake for {0}
+muchomor za {number:0}=toadstool for {0}
+trucizna za {number:0}=poison for {0}
+mocna trucizna za {number:0}=greater poison for {0}
+bardzo mocna trucizna za {number:0}=mega poison for {0}
+śmiertelna trucizna za {number:0}=deadly poison for {0}
+zabójcza trucizna za {number:0}=disease poison for {0}
+środek uspokajający za {number:0}=sedative for {0}
+gruczoł jadowy za {number:0}=venom gland for {0}
+mały eliksir za {number:0}=small potion for {0}
+eliksir za {number:0}=potion for {0}
+duży eliksir za {number:0}=greater potion for {0}
+wielki eliksir za {number:0}=mega potion for {0}
+antidotum za {number:0}=antidote for {0}
+mocne antidotum za {number:0}=strong antidote for {0}

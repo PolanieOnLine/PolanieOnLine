@@ -1103,7 +1103,8 @@ public class Player extends DressedEntity implements UseListener {
 	public void sendPrivateText(final NotificationType type, final String text) {
 		boolean system = type == NotificationType.SERVER || type == NotificationType.ERROR
 				|| type == NotificationType.INFORMATION || type == NotificationType.DETAILED
-				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE;
+				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE
+				|| type == NotificationType.TUTORIAL || type == NotificationType.SCENE_SETTING;
 		RPEvent event = new PrivateTextEvent(type, system
 				? games.stendhal.common.Translation.getText(getLanguage(), text) : text);
 		this.addEvent(event);

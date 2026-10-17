@@ -11,6 +11,7 @@
  ***************************************************************************/
 
 import { Pair } from "../../util/Pair";
+import { GameLanguage } from "../../util/GameLanguage";
 
 
 /**
@@ -60,9 +61,9 @@ export class Tooltip extends Pair<string, string|undefined> {
 	 */
 	setState(primary: boolean) {
 		if (primary || !this.isDualState()) {
-			this.element.title = this.first;
+			this.element.title = GameLanguage.getText(this.first);
 		} else {
-			this.element.title = this.second as string;
+			this.element.title = GameLanguage.getText(this.second as string);
 		}
 	}
 
@@ -70,7 +71,7 @@ export class Tooltip extends Pair<string, string|undefined> {
 	 * Updates element text to inverse state.
 	 */
 	toggle() {
-		this.setState(this.element.title !== this.first);
+		this.setState(this.element.title !== GameLanguage.getText(this.first));
 	}
 }
 

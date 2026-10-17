@@ -13,10 +13,13 @@
 package games.stendhal.server.entity.player;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.Translation;
 import games.stendhal.server.core.engine.ChatMessage;
 import games.stendhal.server.core.engine.dbcommand.GetPostmanMessagesCommand;
 import games.stendhal.server.core.events.LoginListener;
@@ -71,15 +74,46 @@ public class ReadPostmanMessages implements LoginListener, TurnListener {
 
 		List<ChatMessage> messages = command.getMessages();
 		Player player = command.getPlayer();
+		deliverMessages(player, messages);
+	}
+
+	/** Deliver retrieved messages separately from database scheduling. */
+	void deliverMessages(final Player player, final List<ChatMessage> messages) {
 		LOGGER.debug(messages.size()+ " messages left for " + player.getName());
 		for (ChatMessage chatmessage : messages) {
 			LOGGER.debug(player.getName() + " got message: " + chatmessage.toString());
 			// set the date to 'unknown' if the message was sent on a specific hard coded date which we will use for the old messages from xml
-			player.sendPrivateText(getNotificationType(chatmessage.getMessagetype()), "postman powiedział Tobie: " + chatmessage.getTimestamp().substring(0,16).replace("2010-07-20 00:00", "nie znana data") + " " + chatmessage.getSource() + " poprosił mnie o dostarczenie tej wiadomości dla Ciebie: \n" + chatmessage.getMessage());
+			player.sendPrivateText(getNotificationType(chatmessage.getMessagetype()), formatMessage(player, chatmessage));
 			// we faked that postman sent a message, better set the last private chatter incase the player now uses /answer
 			player.setLastPrivateChatter("postman");
 		}
 
+	}
+
+	/** Translate authored wrappers before inserting sender names or human-written text. */
+	private String formatMessage(final Player player, final ChatMessage message) {
+		final String language = player.getLanguage();
+		String date = message.getTimestamp().substring(0, 16);
+		if ("2010-07-20 00:00".equals(date)) date = Translation.getText(language, "nie znana data");
+		String body = message.getMessage();
+		if ("N".equals(message.getMessagetype())) {
+			body = Translation.getText(language, body);
+		} else if ("S".equals(message.getMessagetype())) {
+			final String prefix = "W odpowiedzi na twoje pytanie:\n";
+			final String suffix = " \nJeżeli chcesz odpowiedzieć użyj /support.";
+			if (body.startsWith(prefix) && body.endsWith(suffix)) {
+				body = Translation.getText(language, prefix)
+						+ body.substring(prefix.length(), body.length() - suffix.length())
+						+ Translation.getText(language, suffix);
+			}
+		}
+		final String template = Translation.getText(language,
+				"postman powiedział Tobie: {0} {1} poprosił mnie o dostarczenie tej wiadomości dla Ciebie: \n{2}");
+		final String[] values = {date, message.getSource(), body};
+		final Matcher slots = Pattern.compile("\\{([012])\\}").matcher(template);
+		final StringBuffer result = new StringBuffer();
+		while (slots.find()) slots.appendReplacement(result, Matcher.quoteReplacement(values[Integer.parseInt(slots.group(1))]));
+		return slots.appendTail(result).toString();
 	}
 
 	private NotificationType getNotificationType(final String messagetype) {

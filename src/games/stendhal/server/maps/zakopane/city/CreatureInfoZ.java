@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.Translation;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -127,45 +128,46 @@ public class CreatureInfoZ {
 		if (creature == null) {
 			throw new IllegalArgumentException("creature is null");
 		}
+		final String language = player.getLanguage();
 		String dropInfo;
 		if (maxDrops <= 0) {
 			dropInfo = "";
 		} else {
 			dropInfo = getDropItemsInfo(creature,
-					maxDrops);
+					maxDrops, language);
 		}
 		String locationInfo;
 		if (maxLocations <= 0) {
 			locationInfo = "";
 		} else {
 			locationInfo = getLocationInfo(
-					creature.getCreatureName(), maxLocations);
+					creature.getCreatureName(), maxLocations, language);
 		}
 		String respawnInfo;
 		if (respawn) {
-			respawnInfo = getRespawnInfo(creature);
+			respawnInfo = Translation.getText(language, getRespawnInfo(creature));
 		} else {
 			respawnInfo = "";
 		}
 		StringBuilder result = new StringBuilder(getCreatureBasicInfo(player, creature));
 		if (respawn) {
 			if (respawnInfo != null && respawnInfo.length() > 0) {
-				result.append(getRandomString(respawnTexts, respawnInfo)).append(' ');
+				result.append(getRandomString(language, respawnTexts, respawnInfo)).append(' ');
 			}
 		}
 		if (maxDrops > 0) {
 			if (dropInfo != null && dropInfo.length() > 0) {
-				result.append(getRandomString(carryTexts, dropInfo)).append(' ');
+				result.append(getRandomString(language, carryTexts, dropInfo)).append(' ');
 			} else {
-				result.append(getRandomString(carryNothingTexts)).append(' ');
+				result.append(getRandomString(language, carryNothingTexts)).append(' ');
 			}
 		}
 		if (maxLocations > 0) {
 			if (locationInfo != null && locationInfo.length() > 0) {
-				result.append(getRandomString(locationTexts, locationInfo)).append(' ');
+				result.append(getRandomString(language, locationTexts, locationInfo)).append(' ');
 			} else {
-				result.append(getRandomString(locationUnknownTexts,
-						creature.getCreatureName())).append(' ');
+				result.append(getRandomString(language, locationUnknownTexts,
+						Translation.getText(language, creature.getCreatureName()))).append(' ');
 			}
 		}
 		return result.toString();
@@ -189,7 +191,7 @@ public class CreatureInfoZ {
 	 *            how many (most frequent) respawn locations are listed
 	 * @return a string containing the names of the zones
 	 */
-	private String getLocationInfo(final String creatureName, final int maxNumberOfLocations) {
+	private String getLocationInfo(final String creatureName, final int maxNumberOfLocations, final String language) {
 		String prefix = "";
 		final Map<String, Integer> zoneCounts = getCreatureZoneCounts(creatureName);
 		final Set<String> places = new HashSet<String>();
@@ -198,10 +200,10 @@ public class CreatureInfoZ {
 			if (!skippedZoneNames.contains(entry.getKey())) {
 				final String placeName = StendhalRPZone.describe(entry.getKey());
 				if (placeName != null && placeName.length() > 0) {
-					places.add(placeName);
+					places.add(Translation.getText(language, placeName));
 				}
 				if (++counter >= maxNumberOfLocations) {
-					prefix = "na przykład ";
+					prefix = Translation.getText(language, "na przykład ");
 					break;
 				}
 			}
@@ -210,7 +212,7 @@ public class CreatureInfoZ {
 			return "";
 		} else {
 			return prefix + " "
-					+ Grammar.enumerateCollection(places);
+					+ enumerate(language, places);
 		}
 	}
 
@@ -253,12 +255,12 @@ public class CreatureInfoZ {
 		if (creature == null) {
 			throw new IllegalArgumentException("creature is null");
 		}
-		String result = lineStartTexts[(int) (Math.random() * lineStartTexts.length)];
-		result = result.replaceAll("%s", creature.getCreatureName());
-		result = result.replaceAll("%S",
-				Grammar.plural(creature.getCreatureName()));
-		result = result.replaceAll("%a",
-				creature.getCreatureName())
+		String result = Translation.getText(player.getLanguage(), lineStartTexts[(int) (Math.random() * lineStartTexts.length)]);
+		result = result.replace("%s", Translation.getText(player.getLanguage(), creature.getCreatureName()));
+		result = result.replace("%S",
+				Translation.getText(player.getLanguage(), Grammar.plural(creature.getCreatureName())));
+		result = result.replace("%a",
+				Translation.getText(player.getLanguage(), creature.getCreatureName()))
 				+ " ";
 		result += getHowDangerous(player, creature, dangerLiterals) + " ";
 		return result;
@@ -278,11 +280,11 @@ public class CreatureInfoZ {
 	 */
 	public String getHowDangerous(final Player player, final DefaultCreature creature,
 			final Map<Double, String> dangerLiterals) {
-		String s = getLiteral(dangerLiterals,
+		String s = Translation.getText(player.getLanguage(), getLiteral(dangerLiterals,
 				((double) creature.getLevel())
-						/ ((double) player.getLevel()), 0.0);
-		s = s.replaceAll("%s", creature.getCreatureName());
-		s = s.replaceAll("%S", Grammar.plural(creature.getCreatureName()));
+						/ ((double) player.getLevel()), 0.0));
+		s = s.replace("%s", Translation.getText(player.getLanguage(), creature.getCreatureName()));
+		s = s.replace("%S", Translation.getText(player.getLanguage(), Grammar.plural(creature.getCreatureName())));
 		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
 
@@ -295,7 +297,7 @@ public class CreatureInfoZ {
 	 * @return string of the items dropped by given creature.
 	 */
 	private String getDropItemsInfo(final DefaultCreature creature,
-			final int maxNumberOfItems) {
+			final int maxNumberOfItems, final String language) {
 		final StringBuilder result = new StringBuilder();
 		final List<DropItem> dropItems = creature.getDropItems();
 		Collections.sort(dropItems, new Comparator<DropItem>() {
@@ -315,7 +317,7 @@ public class CreatureInfoZ {
 		int counter = 0;
 		String prefix = "";
 		for (final DropItem item : dropItems) {
-			final String probability = getLiteral(probabilityLiterals, item.probability, 0.0);
+			final String probability = Translation.getText(language, getLiteral(probabilityLiterals, item.probability, 0.0));
 
 			if (prevProbability != null && !probability.equals(prevProbability)) {
 				if (result.length() > 0) {
@@ -323,19 +325,19 @@ public class CreatureInfoZ {
 				}
 
 				prevProbability = prevProbability.replaceAll("%s",
-						Grammar.enumerateCollection(items));
+						enumerate(language, items));
 				prevProbability = prevProbability.replaceAll("%a",
 						item.name);
 				result.append(prevProbability);
 				items = new ArrayList<String>();
 			}
-			String s = getLiteral(amountLiterals, item.max, 1);
-			s = s.replaceAll("%s", item.name);
-			s = s.replaceAll("%a", item.name);
+			String s = Translation.getText(language, getLiteral(amountLiterals, item.max, 1));
+			s = s.replace("%s", Translation.getText(language, item.name));
+			s = s.replace("%a", Translation.getText(language, item.name));
 			items.add(s);
 			prevProbability = probability;
 			if (++counter >= maxNumberOfItems) {
-				prefix = "na przykład ";
+				prefix = Translation.getText(language, "na przykład ");
 				break;
 			}
 		}
@@ -345,7 +347,7 @@ public class CreatureInfoZ {
 		}
 		if (prevProbability != null) {
 			result.append(prevProbability.replaceAll("%s",
-					Grammar.enumerateCollection(items)));
+					enumerate(language, items)));
 		}
 
 		return (prefix + result.toString()).replaceAll("_", " ");
@@ -358,11 +360,11 @@ public class CreatureInfoZ {
 	 * @param params
 	 * @return string chosen
 	 */
-	private String getRandomString(final String[] texts, final String... params) {
-		String result = Rand.rand(texts);
+	private String getRandomString(final String language, final String[] texts, final String... params) {
+		String result = Translation.getText(language, Rand.rand(texts));
 		if (params != null) {
 			for (int i = 0; i < params.length; i++) {
-				result = result.replaceAll("%" + (i + 1), params[i]);
+				result = result.replace("%" + (i + 1), params[i]);
 			}
 		}
 		return result;
@@ -381,6 +383,13 @@ public class CreatureInfoZ {
 	 *            numeric value if given value is out of bounds
 	 * @return a literal string
 	 */
+	private String enumerate(final String language, final java.util.Collection<String> items) {
+		if (!"en".equals(Translation.normalize(language))) return Grammar.enumerateCollection(items);
+		final List<String> list = new ArrayList<String>(items);
+		if (list.size() < 2) return list.isEmpty() ? "" : list.get(0);
+		return String.join(", ", list.subList(0, list.size() - 1)) + " and " + list.get(list.size() - 1);
+	}
+
 	private <T extends Number> String getLiteral(final Map<T, String> literals,
 			final T val, final T defValue) {
 		String result = literals.get(defValue);

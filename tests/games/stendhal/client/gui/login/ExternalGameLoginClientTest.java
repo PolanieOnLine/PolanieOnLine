@@ -9,16 +9,64 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.lang.reflect.Field;
+import java.util.Properties;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 
 import games.stendhal.client.update.ClientGameConfiguration;
+import games.stendhal.client.ClientLanguage;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 
 /** Exercises both desktop protocols without accessing real accounts or networks. */
 public class ExternalGameLoginClientTest {
+	private Field preferences;
+	private Object previousPreferences;
+	@Before public void useEnglishWithoutSavingPreferences() throws Exception {
+		preferences = WtWindowManager.class.getDeclaredField("properties");
+		preferences.setAccessible(true);
+		previousPreferences = preferences.get(WtWindowManager.getInstance());
+		Properties properties = new Properties();
+		properties.setProperty("config." + ClientLanguage.PROPERTY, "en");
+		preferences.set(WtWindowManager.getInstance(), properties);
+	}
+	@After public void restorePreferences() throws Exception {
+		preferences.set(WtWindowManager.getInstance(), previousPreferences);
+	}
+	@Test public void locallyGeneratedLoginFailuresUseEnglishForBothProviders() throws Exception {
+		for (ExternalLoginProvider provider : ExternalLoginProvider.values()) {
+			int[] statuses = {410,403,500,200};
+			String[] expected = {"The " + provider.label + " login timed out. Please try again.",
+				"Logging in with " + provider.label + " was rejected.",
+				"Could not confirm the " + provider.label + " login (HTTP 500).",
+				"The login website returned an incomplete response."};
+			for (int i=0;i<statuses.length;i++) {
+				FakeConnections factory = new FakeConnections(); factory.add(statuses[i],"{}");
+				try {
+					new ExternalGameLoginClient("https://login.example",provider,factory)
+						.poll(new ExternalGameLoginClient.StartResult(ID,SECRET,"0123456789","",600));
+					fail("Expected a login error");
+				} catch (IOException error) { assertEquals(expected[i],error.getMessage()); }
+			}
+			FakeConnections factory = new FakeConnections(); factory.add(503,"{}");
+			try { new ExternalGameLoginClient("https://login.example",provider,factory).start(); fail(); }
+			catch (IOException error) {
+				assertEquals("The " + provider.label + " login service is unavailable (HTTP 503).",error.getMessage());
+			}
+		}
+	}
+	@Test public void invalidLoginAddressTranslatesButPolishModeRetainsOriginalMessage() throws Exception {
+		try { new ExternalGameLoginClient("http://login.example",ExternalLoginProvider.GOOGLE); fail(); }
+		catch (IOException error) { assertEquals("Invalid Google login website address.",error.getMessage()); }
+		((Properties)preferences.get(WtWindowManager.getInstance())).setProperty("config."+ClientLanguage.PROPERTY,"pl");
+		try { new ExternalGameLoginClient("http://login.example",ExternalLoginProvider.GOOGLE); fail(); }
+		catch (IOException error) { assertEquals("Nieprawidłowy adres strony logowania Google.",error.getMessage()); }
+	}
 	private static final String ID = "11111111-2222-3333-4444-555555555555";
 	private static final String SECRET = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 

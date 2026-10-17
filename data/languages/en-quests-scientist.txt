@@ -1,0 +1,33 @@
+# Vasi Elos's story. Dialogue and journal only; no quest state changes.
+Ha, ha, ha! Skropię spodnie wysadzane kamieniami krwią, aż powstanie na nich mój #symbol bólu.=Ha, ha, ha! I will sprinkle the gem-studded trousers with blood until my #symbol of pain appears on them.
+Mam zamiar stworzyć parę czarnych spodni. Wróć za 5 minut.=I am going to make a pair of black trousers. Return in 5 minutes.
+Witam! Czy masz coś dla mnie?=Greetings! Do you have something for me?
+Och nie! Nie widzisz, że cierpię. W tej chwili nie jestem w stanie wykonać tych przepięknych spodni nabijanych klejnotami. Chcę aby te spodnie były symbolem bólu i cierpienia. Ty! Pójdziesz i zabijesz mojego brata, to imperialny naukowiec Sergej Elos. Przynieś mi jego krew.=Oh no! Can't you see I am suffering? I cannot make those beautiful jeweled trousers now. I want them to symbolize pain and suffering. You! Go and kill my brother, the imperial scientist Sergej Elos. Bring me his blood.
+Zrób to!=Do it!
+Co? Skąd ją znasz? To smutna historia.{0} Co za smutna historia. Trzymałem ten list dla jej męża.  Myślę, że spotkasz go gdzieś w Kalavan.=What? How do you know her? It is a sad story. {item:0} Such a sad story. I kept this letter for her husband. I think you will find him somewhere in Kalavan.
+{0} Proszę, zanieś ten list do jej męża. Myślę, że spotkasz go gdzieś w Kalavan.={item:0} Please take this letter to her husband. I think you will find him somewhere in Kalavan.
+Skończyłem spodnie, ale nie mogę ci zaufać. Zanim oddam tobie te spodnie to dostarczysz mi wiadomość od mojej ukochanej. Zapytaj  Mayora Sakhsa o Werę. Zrobisz to dla mnie?=I finished the trousers, but I cannot trust you. Before I give them to you, bring me news of my beloved. Ask Mayor Sakhs about Vera. Will you do that for me?
+Och, dziękuję. Będę czekać.=Oh, thank you. I will wait.
+Dobrze! Więc co masz dla mnie?=Good! So what do you have for me?
+Masz spodnie cieni! Wspaniale! Niezwłocznie przystąpię do pracy. Zrobię je w bardzo krótkim czasie dzięki nowej technologi! Proszę wróci za 20 minut.=You have shadow trousers! Wonderful! I will start immediately. With the new technology, it will not take long. Please return in 20 minutes.
+Hm.... Wyglądasz jak byś chciał mi pomóc?=Hmm... You look as though you want to help me?
+Moja żona mieszka w Semos. Kocha klejnoty. Czy możesz mi dostarczyć kilka cennych #klejnotów. Potrzebuję ich do zrobienia pary drogocennych #spodni.=My wife lives in Semos. She loves jewels. Could you bring me some precious #gems? I need them to make a valuable pair of #trousers.
+Moja żona mieszka w Semos. Kocha klejnoty. Czy możesz mi dostarczyć kilka cennych #klejnotów. Potrzebuję ich do zrobienia pary drogocennych  #spodni.=My wife lives in Semos. She loves jewels. Could you bring me some precious #gems? I need them to make a valuable pair of #trousers.
+Do spodni wysadzanych klejnotami potrzebny jest szmaragd, obsydian, szafir, 2 rubiny, 20 sztabek złota i jedna sztabka mithrilu. Możesz zrobić to dla mej żony i dostarczyć mi wszystko co potrzebuję?=The jeweled trousers require an emerald, obsidian, a sapphire, 2 rubies, 20 gold bars, and one mithril bar. Will you do this for my wife and bring everything I need?
+Będę czekać cudzoziemcze.=I will wait, stranger.
+Odejdź, nim cię zabiję!=Leave before I kill you!
+Jeżeli zmienisz zdanie to możemy porozmawiać ponownie.=If you change your mind, we can talk again.
+Vasi Elos poprosił mnie o pomoc, ale nie jestem zainteresowany, aby pomóc naukowcowi.=Vasi Elos asked for help, but I am not interested in helping the scientist.
+Vasi Elos poprosił mnie, abym dostarczył mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.=Vasi Elos asked me to bring him gold and mithril so he could make jeweled trousers as a gift for his dear Vera.
+Vasi Elos poprosił mnie, abym dostarczyła mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.=Vasi Elos asked me to bring him gold and mithril so he could make jeweled trousers as a gift for his dear Vera.
+Vasi Elos potrzebuje spodni cienia. Muszę mu je dostarczyć.=Vasi Elos needs shadow trousers. I must bring them to him.
+Vasi Elos wysadza spodnie klejnotami, które mu dostarczyłem.=Vasi Elos is studding the trousers with the jewels I brought him.
+Vasi Elos wysłał mnie do Mayor Sakhs, abym dowiedział się gdzie jest Vera.=Vasi Elos sent me to Mayor Sakhs to find out where Vera is.
+Mam straszną wiadomość dla Vasi Elos od Mayora Sakhsa.=I have terrible news for Vasi Elos from Mayor Sakhs.
+Vasi Elos jest taki smutny i zły, że Vera odeszła. Muszę zabić jego własnego brata i dać mu kielich pełen krwi jego brata.=Vasi Elos is so sad and angry that Vera is gone. I must kill his own brother and give him a chalice filled with his brother's blood.
+Zabiłem Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.=I killed Imperial Scientist Sergej Elos and must deliver a chalice of his blood as proof.
+Zabiłam Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.=I killed Imperial Scientist Sergej Elos and must deliver a chalice of his blood as proof.
+Vasi Elos jest naprawdę zrozpaczony. Naznaczył spodnie krwią brata.=Vasi Elos is truly distraught. He marked the trousers with his brother's blood.
+Spodnie naznaczone krwią są całe czarne. Należą teraz do mnie.Ale jakim kosztem.=The bloodstained trousers are entirely black. They are mine now. But at what cost.
+klejnotów=gems
+spodni=trousers

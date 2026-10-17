@@ -20,6 +20,9 @@ import games.stendhal.common.CreatureArmor;
 import marauroa.common.game.RPObject;
 
 public class Creature extends RPEntity {
+	@Override public String getTitle() {
+		return games.stendhal.client.ClientLanguage.getText(super.getTitle());
+	}
 	/**
 	 * Debug property.
 	 */

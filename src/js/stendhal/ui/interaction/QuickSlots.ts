@@ -21,6 +21,7 @@ import { ItemContainerImplementation } from "../component/ItemContainerImplement
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 import { Chat } from "../../util/Chat";
+import { GameLanguage } from "../../util/GameLanguage";
 import { ConfigManager } from "../../util/ConfigManager";
 
 type QuickSlotData = {
@@ -244,13 +245,13 @@ export class QuickSlots extends Component {
 		singletons.getHeldObjectManager().onRelease();
 
 		if (!item) {
-			Chat.log("warning", "Nie udało się znaleźć przedmiotu w ekwipunku.");
+			Chat.log("warning", GameLanguage.getText("Nie udało się znaleźć przedmiotu w ekwipunku."));
 			return;
 		}
 
 		const itemClass = String(item["class"] || "").toLowerCase();
 		if (!this.allowedClasses.has(itemClass)) {
-			Chat.log("warning", "Ten przedmiot nie może trafić do szybkiego slotu.");
+			Chat.log("warning", GameLanguage.getText("Ten przedmiot nie może trafić do szybkiego slotu."));
 			return;
 		}
 

@@ -29,7 +29,6 @@ Język gry:=Game language:
 Tłumaczenia są jeszcze uzupełniane. Brakujący tekst pozostaje po polsku.=Translations are still being added. Missing text stays in Polish.
 Tłumaczenia są jeszcze uzupełniane.<br>Brakujący tekst pozostaje po polsku.=Translations are still being added.<br>Missing text stays in Polish.
 skórzany kirys=leather cuirass
-Oto skórzany kirys, zręcznie zrobiony by obronić cię przed mieczem wroga.=This is a leather cuirass, carefully made to protect you from an enemy's sword.
 Witaj.=Hello.
 Pozdrawiam! W czym mogę pomóc?=Greetings! How can I help?
 Pozdrawiam.=Greetings.

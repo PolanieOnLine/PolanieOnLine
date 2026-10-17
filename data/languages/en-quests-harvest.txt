@@ -1,0 +1,25 @@
+# Harvest carts. NPC names, two-cart requirement and northbound destination stay unchanged.
+Jesteś tutaj, aby pomóc mi trochę w moich żniwach?=Are you here to help with my harvest?
+To bardzo miło. Już byłem zmęczony dostarczaniem tych dwóch wóżków do Karla. Proszę #przepchnij dwa wózki do Karla i powiedz mi, gdy #skończysz.=That is very kind. I was tired of delivering those two carts to Karl. Please #push both carts to Karl and tell me when you are #done.
+Możesz łatwo poruszyć wózki pchając je przed wejście do stodoły. Uważaj, aby gdzieś nie utknąć, bo nie będziesz mógł ich przesunąć dalej.=You can move the carts by pushing them in front of the barn entrance. Be careful not to get them stuck, or you will be unable to move them farther.
+Stodołe Karla możesz znaleźć na północ stąd. Wyróżnia się ogromnym znakiem z jego imieniem.=Karl's barn is north of here. It has a huge sign with his name.
+Już myślałem, że trochę mi pomożesz, ale dobrze. Do widzenia.=I thought you would help a little, but all right. Goodbye.
+Jeszcze nie dostarczyłeś obu wózków z sianem do stodoły leżącej na północ stąd.=You have not delivered both hay carts to the barn north of here yet.
+Już cię prosiłem o dostarczenie dwóch wózków z sianem do stodoły Karla. Daj znąć jeśli już to #zrobiłeś.=I already asked you to deliver two hay carts to Karl's barn. Tell me when you are #done.
+Dziękuję za twoją pomoc przy żniwach. Oto twoja nagroda=Thank you for helping with the harvest. Here is your reward
+\#Jenny możesz znaleźć w pobliżu młyna Semos. Zmieli dla ciebie zboże na #mąkę o ile przyniesiesz jej kilak kłosów.=You can find #Jenny near the Semos mill. She will grind grain into #flour if you bring some ears of grain.
+\#Jenny zmieli zboże, które dałem ci jako nagrodę na mąkę, którą możesz użyć na #chleb?=#Jenny can grind the grain I gave you into flour, which you can use for #bread.
+\#Erna jescze nie upiekła dla ciebie? Naprawdę warto ponieważ #Leander może użyć chleba do zrobienia #kanapek dla ciebie.=Has #Erna not baked for you yet? It is worth it, because #Leander can use bread to make #sandwiches for you.
+Jeszcze nie próbowałeś #kanapek zrobionych przez #Leander? Są smaczne.=Have you not tried the #sandwiches made by #Leander? They are delicious.
+Leander prowadzi piekarnię w mieście Semos i może zrobić dla ciebie #kanapki o ile przyniesiesz mu składniki. Dlaczego nie złożysz mu wizyty?=Leander runs the Semos bakery and can make #sandwiches if you bring the ingredients. Why not visit him?
+Erna jest asystentką #Leandera w piekarni. Jeżeli przyniesiesz jej #mąkę to upiecze dla ciebie #chleb.=Erna is #Leander's assistant at the bakery. If you bring #flour, she will bake #bread for you.
+Przenieśliśmy już pełne żniwa, jeszcze raz dziękuję za pomoc.=We have moved the entire harvest. Thank you again for helping.
+Chcę pomóc Eheneumniranin w jego żniwach.=I want to help Eheneumniranin with his harvest.
+Na dzień dzisiejszy praca na farmie jest zbyt ciężka dla mnie.=Farm work is too hard for me today.
+Muszę doprowadzić dwa wóżki siana do stodoły na północ od Eheneumniranina.=I must deliver two hay carts to the barn north of Eheneumniranin.
+Doprowadziłem wystarczającą ilość wózków do stodoły. Mogę teraz powiedzieć Eheneumniraninowi, że skończyłem.=I delivered enough carts to the barn. Now I can tell Eheneumniranin I am done.
+Pomogłem {0} i dostałem swoją nagrodę.=I helped {0} and received my reward.
+Pomogłam {0} i dostałam swoją nagrodę.=I helped {0} and received my reward.
+przepchnij=push
+skończysz=done
+zrobiłeś=done

@@ -1,0 +1,20 @@
+# Ouchit's supplies. Current lumberjack location and ten-log request are retained.
+Czy jesteś tu, aby mi pomóc?=Are you here to help me?
+Dobrze! Sprzedaję łuki i strzały. Byłoby super gdybyś mógł przynieść 10 sztuk #polan. Możesz mi przynieść drewno?=Good! I sell bows and arrows. It would be great if you brought 10 #logs. Can you bring me wood?
+Wspaniale! Jak wrócisz z nim powiedz #polano.=Wonderful! When you return with it, say #log.
+Drzewo jest potrzebne do różnych rzeczy, znajdziesz go... Najlepiej spytaj Drwala koło Zakopanego. Przyniesiesz mi 10 sztuk?=Wood has many uses. You can find it... Better ask the lumberjack near Zakopane. Will you bring 10 pieces?
+Dobrze, możesz wrócić później, jeżeli chcesz. Do zobaczenia.=All right, return later if you wish. See you.
+Czekam na ciebie, aż mi przyniesiesz 10 sztuk #drewna.=I am waiting for you to bring 10 pieces of #wood.
+Drzewo jest surowcem potrzebnym do wielu rzeczy. Jestem pewien, że znajdziesz w lesie. Lepiej porozmawiaj z drwalem koło Zakopanego. I nie zapomnij powiedzieć #'polano', gdy wrócisz z nim.=Wood is needed for many things. I am sure you will find it in the forest. Speak to the lumberjack near Zakopane. Remember to say #'log' when you return with it.
+Bardzo dobrze, teraz mogę zrobić nowe strzały. Ale do łuku, który robię potrzebuję cięciwę. Proszę idź do #Karl. Wiem, że posiada konie powiedz moje imię, a da ci końskiego włosa. Z niego zrobię cięciwę.=Very good, now I can make new arrows. But I need a string for the bow I am making. Go to #Karl. I know he has horses. Say my name, and he will give you horse hair for the bowstring.
+Czekam tu na ciebie, abyś przyniósł mi #'końskie włosie'.=I am waiting for you to bring #'horse hair'.
+Końskie włosie stosowane może być do cięciwy, a dostaniesz go od #Karl.=Horse hair can be used for a bowstring. You can get it from #Karl.
+Wspaniale, masz końskie włosie. Dziękuję bardzo. Karl jest bardzo miły. Proszę, zostawił tutaj ten... Mi nie jest to potrzebne, a tobie może się przydać.=Wonderful, you have the horse hair. Thank you very much. Karl is very kind. Here, he left this... I do not need it, but you may find it useful.
+Dziękuję za twoją pomoc. Jeżeli mogę zaoferować coś po prostu zapytaj o #ofertę.=Thank you for helping. If you need anything else, just ask for my #offer.
+Ouchit poprosił mnie o pomoc w celu uzupełnienia jego zapasów w łuki i strzały.=Ouchit asked me to help restock his bows and arrows.
+Najpierw muszę pszynieść Ouchit 10 sztuk drewna.=First I must bring Ouchit 10 pieces of wood.
+Pszyniosłem drewno dla Ouchit=I brought wood for Ouchit
+Muszę zdobyć trochę włosów konia, które Ouchit potrzebuje do cięciwy. Powiedziano mi, że rolnik Karl mi pomoże.=I must get horse hair for Ouchit's bowstring. I was told the farmer Karl would help.
+Karl był miły i dał mi włos koński.=Karl kindly gave me horse hair.
+Ouchit dał mi nowy ekwipunek i podziękował za pomoc mu.=Ouchit gave me new equipment and thanked me for helping.
+polan=logs

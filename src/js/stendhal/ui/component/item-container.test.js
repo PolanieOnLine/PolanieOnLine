@@ -113,7 +113,7 @@ function createHarness() {
 			this.callback([{ target: element, isIntersecting: visible }]);
 		}
 	}
-	const document = { visibilityState: "visible", createElement: () => new Element() };
+	const document = { visibilityState: "visible", createElement: () => new Element(), querySelectorAll: () => [] };
 	const sentActions = [], dragFrames = [];
 	const marauroa = { me: undefined, currentZoneName: "0_test",
 		clientFramework: { sendAction: action => sentActions.push(action) } };
@@ -183,6 +183,7 @@ function createHarness() {
 		"../sprite/ItemRarityEffects": rarityEffects,
 		"../data/Paths": { Paths: { sprites: "/sprites" } },
 		"../data/ItemRarity": { ItemRarity }, "../SingletonRepo": { singletons },
+		"../util/GameLanguage": { GameLanguage },
 		marauroa: { marauroa }
 	});
 	const slotPresentation = load("ui/component/ItemSlotPresentation.ts", {
@@ -197,6 +198,7 @@ function createHarness() {
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
 		"../../sprite/ItemRarityEffects": rarityEffects,
 		"../../util/AdminDiagnostics": { AdminDiagnostics },
+		"../../util/GameLanguage": { GameLanguage },
 		"./ItemSlotPresentation": slotPresentation
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {

@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import static games.stendhal.common.constants.Actions.MODE;
 import static games.stendhal.common.constants.Actions.TYPE;
 import static games.stendhal.common.constants.Actions.WALK;
@@ -322,7 +324,7 @@ public class User extends Player {
 		} else {
 			text = Grammar.genderVerb(getGender(), "Zostałeś") + " " + Grammar.genderVerb(getGender(), "oznaczony") + " jako " + Grammar.genderVerb(getGender(), "oddalony") + ".";
 		}
-		notifyUser(text, NotificationType.INFORMATION);
+		notifyUser(getText(text), NotificationType.INFORMATION);
 	}
 
 	/**
@@ -398,7 +400,7 @@ public class User extends Player {
 		super.onHealed(amount);
 
 		String pointDesc = Grammar.quantityplnoun(amount, "punkt") + " życia";
-		notifyUser(getTitle() + " odzyskał " + pointDesc + ".", NotificationType.HEAL);
+		notifyUser(getText(getTitle() + " odzyskał " + pointDesc + "."), NotificationType.HEAL);
 	}
 
 	private void notifyUser(String message, NotificationType type) {
@@ -414,7 +416,7 @@ public class User extends Player {
 		if (changes.has(status)) {
 			String[] players = changes.get(status).split(",");
 			for (String playername : players) {
-				notifyUser(playername + messageEnd, NotificationType.INFORMATION);
+				notifyUser(getText(playername + messageEnd), NotificationType.INFORMATION);
 			}
 		}
 	}

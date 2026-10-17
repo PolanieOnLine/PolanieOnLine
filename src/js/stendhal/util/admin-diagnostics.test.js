@@ -46,6 +46,7 @@ function harness() {
 		"../../../util/Clipboard": { copyTextToClipboard: async text => { clipboard.texts.push(text); return clipboard.result; } }
 	});
 	const { SettingsDialog: Settings } = load("../ui/dialog/SettingsDialog.ts", {
+		"../../util/GameLanguage": { GameLanguage: { translateSettings() {} } },
 		"../../stendhal": { stendhal: { config: { get: () => "default" } } },
 		"./settings/GeneralTab": { GeneralTab: class {} },
 		"./settings/InputTab": { InputTab: class {} },

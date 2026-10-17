@@ -76,10 +76,15 @@ public class Sign extends Entity {
 	 */
 	public String getText() {
 		if (has(ATTR_TEXT)) {
-			return get(ATTR_TEXT);
+			return games.stendhal.server.core.engine.Translate.getText(get(ATTR_TEXT));
 		} else {
 			return null;
 		}
+	}
+
+	/** Get authored sign text for an explicit viewer language. */
+	public String getText(final String language) {
+		return has(ATTR_TEXT) ? games.stendhal.common.Translation.getText(language, get(ATTR_TEXT)) : null;
 	}
 
 	/**

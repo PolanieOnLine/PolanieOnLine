@@ -1,0 +1,21 @@
+# Haunchy's barbecue. Current twenty-five coal requirement and reward text are retained.
+Haunchy Meatoch powitał mnie na rynku w Ados.=Haunchy Meatoch greeted me at the Ados market.
+Poprosił mnie o dostarczenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.=He asked me to bring coal, but I have no time to collect it.
+Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem Haunchy'emu, że pomogę mu zdobyć węgiel do grilla.=Because the barbecue fire is low, I promised to help Haunchy get coal.
+Mam już 25 kawałków węgla dla Haunchy'ego. Sądzę, że się ucieszy.=I have 25 pieces of coal for Haunchy. I think he will be pleased.
+Haunchy Meatoch był zadowolony, gdy otrzymał ode mnie węgiel. Ma go teraz wystarczająco dużo. W zamian dał mi kilka przepszynych steków ze swojego grilla!=Haunchy Meatoch was pleased to receive the coal. He has enough now. He gave me delicious steaks from his barbecue in return!
+Założę się, że ta ilość jest znowu niska i potrzebuje więcej. Może dostanę więcej smacznych grillowanych steków.=I bet his supply is running low again. Perhaps I can get more tasty grilled steaks.
+Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłyby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?=I cannot use logs for this big barbecue. I need coal to keep it hot, but little remains. I cannot fetch it because the steaks might burn, so I must stay here. Could you bring 25 pieces of #coal?
+Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.=I have enough coal. I will not need more for a while.
+Ostatni węgiel, który mi przyniosłeś, w większości został wykorzystany. Przyniesiesz mi więcej?=Most of the coal you brought is used up. Will you bring more?
+Dziękuję Ci! Na pewno dam ci miłą i smaczną nagrodę.=Thank you! I will certainly give you a nice, tasty reward.
+Och nieważne. Myślałem, że lubisz grillowanie tak jak ja. A więc do zobaczenia.=Oh, never mind. I thought you enjoyed barbecuing like me. See you, then.
+Na szczęście mój grill wciąż pali. Ale proszę pospiesz się i przynieś mi 25 węgla, tak jak obiecałeś.=Luckily, my barbecue is still burning. But please hurry and bring 25 coal, as you promised.
+Czasami mógłbyś mi wyświadczyć #'przysługę'...=Perhaps you could do me a #'favor' sometime...
+Ach, widzę, że masz wystarczająco dużo węgla, żeby utrzymać grilla! Czy to dla mnie?=Ah, I see you have enough coal to keep the barbecue going! Is it for me?
+No cóż, mam nadzieję, że ktoś inny mi pomoże, zanim mój grill zgaśnie.=Well, I hope someone else helps before my barbecue goes out.
+Dziękuję! Przyjmij oto {0} {1} z mojego grilla!=Thank you! Take {item:0} {item:1} from my barbecue!
+węgla=coal
+przysługę=favor
+Dziękuję! Przyjmij oto ten {0} z mojego grilla!=Thank you! Take this {item:0} from my barbecue!
+Dziękuję! Przyjmij oto te {0} z mojego grilla!=Thank you! Take these {item:0} from my barbecue!

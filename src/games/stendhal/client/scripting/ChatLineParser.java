@@ -45,7 +45,7 @@ public abstract class ChatLineParser {
 
 			if (command.hasError()) {
 				ClientSingletonRepository.getUserInterface().addEventLine(
-					new HeaderLessEventLine(command.getErrorString(),
+					new HeaderLessEventLine(games.stendhal.client.ClientLanguage.getText(command.getErrorString()),
 					NotificationType.ERROR));
 				return false;
 			}

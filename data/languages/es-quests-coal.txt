@@ -1,0 +1,20 @@
+# El carbón de Haunchy; se conservan las cantidades y las recompensas actuales.
+Haunchy Meatoch powitał mnie na rynku w Ados.=Haunchy Meatoch me saludó en el mercado de Ados.
+Poprosił mnie o dostarczenie kilku kawałków węgla, ale nie mam czasu na ich zbieranie.=Me pidió que le llevara carbón, pero no tengo tiempo para recogerlo.
+Ze względu, że płomień w grillu jest bardzo mały to przyrzekłem Haunchy'emu, że pomogę mu zdobyć węgiel do grilla.=Como el fuego de la parrilla está muy bajo, prometí ayudar a Haunchy a conseguir carbón.
+Mam już 25 kawałków węgla dla Haunchy'ego. Sądzę, że się ucieszy.=Ya tengo 25 trozos de carbón para Haunchy. Creo que se alegrará.
+Haunchy Meatoch był zadowolony, gdy otrzymał ode mnie węgiel. Ma go teraz wystarczająco dużo. W zamian dał mi kilka przepszynych steków ze swojego grilla!=Haunchy Meatoch se alegró de recibir el carbón. Ahora tiene suficiente. ¡A cambio me dio unos deliciosos filetes de su parrilla!
+Założę się, że ta ilość jest znowu niska i potrzebuje więcej. Może dostanę więcej smacznych grillowanych steków.=Seguro que se le está acabando el carbón otra vez. Quizá pueda conseguir más filetes deliciosos a la parrilla.
+Nie mogę wykorzystać polan do tego wielkiego grilla. Aby utrzymać temperaturę potrzebuję węgla, ale nie zostało go dużo. Problem w tym, że nie mogę go zdobyć ponieważ moje steki mogłyby się spalić i dlatego muszę tu zostać. Czy mógłbyś przynieść mi 25 kawałków #węgla do mojego grilla?=No puedo usar leña en esta parrilla tan grande. Necesito carbón para mantenerla caliente, pero me queda poco. No puedo ir a buscarlo porque se me quemarían los filetes, así que tengo que quedarme aquí. ¿Podrías traerme 25 trozos de #carbón para la parrilla?
+Zapas węgla jest wystarczająco spory. Nie będę potrzebował go przez jakiś czas.=Tengo suficiente carbón. No necesitaré más durante un tiempo.
+Ostatni węgiel, który mi przyniosłeś, w większości został wykorzystany. Przyniesiesz mi więcej?=He gastado casi todo el carbón que me trajiste. ¿Me traerás más?
+Dziękuję Ci! Na pewno dam ci miłą i smaczną nagrodę.=¡Gracias! Te daré una buena recompensa, y además deliciosa.
+Och nieważne. Myślałem, że lubisz grillowanie tak jak ja. A więc do zobaczenia.=Ah, no importa. Pensaba que te gustaban las parrilladas tanto como a mí. Hasta otra.
+Na szczęście mój grill wciąż pali. Ale proszę pospiesz się i przynieś mi 25 węgla, tak jak obiecałeś.=Por suerte, mi parrilla sigue encendida. Pero date prisa y tráeme 25 trozos de carbón, como prometiste.
+Czasami mógłbyś mi wyświadczyć #'przysługę'...=Quizá puedas hacerme un #'favor' algún día...
+Ach, widzę, że masz wystarczająco dużo węgla, żeby utrzymać grilla! Czy to dla mnie?=¡Ah, veo que tienes suficiente carbón para mantener la parrilla encendida! ¿Es para mí?
+No cóż, mam nadzieję, że ktoś inny mi pomoże, zanim mój grill zgaśnie.=Bueno, espero que alguien más me ayude antes de que se apague la parrilla.
+Dziękuję! Przyjmij oto {0} {1} z mojego grilla!=¡Gracias! Toma {item:0} {item:1} de mi parrilla.
+węgla=carbón
+Dziękuję! Przyjmij oto ten {0} z mojego grilla!=¡Gracias! Toma este {item:0} de mi parrilla.
+Dziękuję! Przyjmij oto te {0} z mojego grilla!=¡Gracias! Toma estos {item:0} de mi parrilla.

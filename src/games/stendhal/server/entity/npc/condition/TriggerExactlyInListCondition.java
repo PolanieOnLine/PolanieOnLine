@@ -15,6 +15,9 @@ package games.stendhal.server.entity.npc.condition;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import games.stendhal.common.Translation;
 
 import games.stendhal.common.parser.ConvCtxForMatchingSource;
 import games.stendhal.common.parser.ConversationContext;
@@ -35,6 +38,7 @@ public class TriggerExactlyInListCondition implements ChatCondition {
 	private static final ConversationContext CONVERSION_CONTEXT = new ConvCtxForMatchingSource();
 
 	private final List<Sentence> triggers = new LinkedList<Sentence>();
+	private final Map<String, List<String>> localizedTriggers = new ConcurrentHashMap<String, List<String>>();
 
 
 	/**
@@ -69,6 +73,23 @@ public class TriggerExactlyInListCondition implements ChatCondition {
 		for (Sentence trigger : triggers) {
 			if (answer.matchesFull(trigger)) {
 				return true;
+			}
+		}
+		if (player != null) {
+			// Compare against the displayed phrase; never rewrite player chat or saved quest state.
+			final String language = player.getLanguage();
+			for (String trigger : localizedTriggers.computeIfAbsent(language, selected -> {
+				List<String> translated = new LinkedList<String>();
+				for (Sentence canonical : triggers) {
+					String source = canonical.getOriginalText();
+					String label = Translation.getText(selected, source);
+					if (!source.equals(label)) translated.add(label.trim());
+				}
+				return translated;
+			})) {
+				// The parser drops English "and" before matching, even in exact mode.
+				// Literal comparison retains every word in a displayed rhyme or password.
+				if (sentence.getOriginalText().trim().equalsIgnoreCase(trigger)) return true;
 			}
 		}
 		return false;

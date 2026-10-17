@@ -984,7 +984,7 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 			if (type.equals("player")) {
 				j2DClient.get().setChatLine("/alter " + entity.getName() + " ");
 			} else if (type.equals("creature")){
-				j2DClient.get().setChatLine("/altercreature #" + id + " '" + entity.getTitle() + "';atk;def;hp;xp");
+				j2DClient.get().setChatLine("/altercreature #" + id + " '" + entity.getName() + "';atk;def;hp;xp");
 			} else {
 				j2DClient.get().setChatLine("/alter #" + id + " ");
 			}

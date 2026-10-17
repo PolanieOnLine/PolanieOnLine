@@ -1,0 +1,4 @@
+# Existing English descriptions and creature speech in the Polish world.
+pl-world.txt
+pl-npcs-semos.txt
+pl-npcs-regions.txt

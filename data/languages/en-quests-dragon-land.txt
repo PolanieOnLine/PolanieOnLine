@@ -1,0 +1,26 @@
+# Dragon Land admission. Names, money amounts and prior-quest requirements are retained.
+Przepraszam {0}, ale twój czas dobiegł końca.=Sorry, {0}, but your time is up.
+Witam w Krainie Smoków {0}. Za wejście pobierana jest opłata. Czy chcesz zapłacić za wstęp?=Welcome to Dragon Land, {0}. There is an admission fee. Do you want to pay it?
+Witam w Krainie Smoków {0}. Czy chcesz zapłacić za wstęp?=Welcome to Dragon Land, {0}. Do you want to pay the admission fee?
+Na razie smoki są rozdrażnione ostatnią wizytą. Wróć za {0}.=The dragons are still agitated by the last visit. Return in {item:0}.
+Witam w Krainie Smoków {0}. Możesz #wyjść wcześniej jeśli chcesz.=Welcome to Dragon Land, {0}. You may #leave early if you wish.
+Nie możesz wejść do krainy smoków, ponieważ nie poradzisz sobie. Nie ukończyłeś zadań, które przygotują cię na to co cię tam czeka. Wróć, gdy wykonasz zadania zlecone przez Josephine, Idę, Baldemara i Krasnoluda. Do widzenia!=You cannot enter Dragon Land because you are not ready. You have not completed the tasks that prepare you for what awaits. Return after completing the tasks given by Josephine, Ida, Baldemar, and Krasnolud. Goodbye!
+Opłata wynosi {0} money. Czy chcesz zapłacić?=The fee is {0} coins. Do you want to pay?
+Jak już wiesz opłata wynosi {0} money.=As you know, the fee is {0} coins.
+Gratuluję i życzę udanego zwiedzania. Jeżeli skończyłeś przed czasem to powiedz #wyjście.=Congratulations, and enjoy your visit. If you finish early, say #exit.
+Nie masz tyle pieniędzy!=You do not have enough money!
+Hm nie rozumiem Ciebie. Jeżeli chcesz wyjść to powiedz #wyjście=Hmm, I do not understand. If you want to leave, say #exit
+Wyjść gdzie?=Leave where?
+Dziękuję za odwiedzenie Krainy Smoków=Thank you for visiting Dragon Land
+Pilnuję wejścia do krainy smoków, aby niedośwadczeni wojownicy nie stali się przekąską dla smoków. Za wstęp pobierana jest #opłata.=I guard the entrance to Dragon Land so inexperienced warriors do not become dragon snacks. There is an admission #fee.
+Sądzę, że oferowana usługa za #wejściówkę nie jest zbyt dużym obciążeniem dla twojej kieszeni.=I do not think the #admission service puts too much strain on your purse.
+Nie znasz znaczenia tego słowa? Powinieneś spędzać więcej czasu w bibliotece, a nie tylko na walkach i podróżach. Słyszałem, że w Ados jest najlepsza.=You do not know what that word means? You should spend more time at the library, not just fighting and traveling. I hear the best library is in Ados.
+Nie mogę ci za bardzo pomóc. Musisz liczyć na swój miecz lub nogi. Przedtem będziesz musiał uiścić #opłatę za wejście. Nie stoję tutaj na pokaz.=I cannot help much. You must rely on your sword or your legs. First you must pay the admission #fee. I am not standing here for show.
+Możesz wejść do krainy smoków jeżeli wykonałeś zadanie na zabójcze buty, tarczę z mithrilu, płaszcz z mithrilu i ciupagę z dwoma wąsami.=You can enter Dragon Land after completing the quests for killer boots, a mithril shield, a mithril cloak, and a highland axe with two prongs.
+Powodzenia i odwiedź mnie jeszcze.=Good luck, and visit me again.
+Oto strażnik Cieciurad, z którym nie powinieneś zadzierać.=You see the guard Cieciurad, whom you should not mess with.
+wyjść=leave
+wyjście=exit
+opłata=fee
+opłatę=fee
+wejściówkę=admission

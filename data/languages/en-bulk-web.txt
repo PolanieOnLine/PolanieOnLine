@@ -1,0 +1,10 @@
+# Web client: composed upgrade labels, bestiary explanations and debug notices.
+Szansa powodzenia: {0}=Success chance: {0}
+Koszt: {0}=Cost: {0}
+{0}: posiadasz {number:1}, wymagane {number:2}={item:0}: owned {1}, required {2}
+Bestiariusz: "???" \= niewiadome=Bestiary: "???" \= unknown
+Bestiariusz: "rzadkie" stwory nie są wymagane do osiągnięć=Bestiary: "rare" creatures are not required for achievements
+Bestiariusz: "anormalne" stwory nie są wymagane do osiągnięć=Bestiary: "abnormal" creatures are not required for achievements
+Bestiariusz: "rzadkie" i "anormalne" stwory nie są wymagane do osiągnięć=Bestiary: "rare" and "abnormal" creatures are not required for achievements
+Oczekiwane parametry=Expected parameters
+nieznana pogoda: {0}=unknown weather: {0}
