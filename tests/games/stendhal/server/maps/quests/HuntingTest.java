@@ -129,11 +129,15 @@ public class HuntingTest {
 		assertFalse(Hunting.availableCreatures().stream().anyMatch(c -> "szczur".equals(c.getName())));
 	}
 	@Test public void difficultyRangesAreDistinctAndDoNotFallbackToTrivialHardHunts() {
+		assertTrue(HuntingDifficulty.EASY.accepts(30, 18));
 		assertTrue(HuntingDifficulty.EASY.accepts(30, 25));
+		assertFalse(HuntingDifficulty.EASY.accepts(30, 26));
+		assertTrue(HuntingDifficulty.MEDIUM.accepts(30, 26));
 		assertTrue(HuntingDifficulty.MEDIUM.accepts(30, 30));
+		assertFalse(HuntingDifficulty.MEDIUM.accepts(30, 32));
+		assertTrue(HuntingDifficulty.HARD.accepts(30, 32));
 		assertTrue(HuntingDifficulty.HARD.accepts(30, 35));
 		assertFalse(HuntingDifficulty.HARD.accepts(30, 25));
-		assertFalse(HuntingDifficulty.EASY.accepts(30, 35));
 		assertTrue(HuntingDifficulty.EASY.accepts(0, 1));
 	}
 	@Test public void completedHuntRewardsOnceAndStoresLevelBeforeOrdinaryXP() {
