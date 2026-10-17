@@ -42,6 +42,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.entity.player.ReservePouchMigration;
 import games.stendhal.server.entity.player.UpdateConverter;
+import games.stendhal.server.maps.deathmatch.DeathmatchHelmetRecovery;
 import games.stendhal.server.entity.slot.BankSlot;
 import games.stendhal.server.entity.slot.Banks;
 import games.stendhal.server.entity.slot.PlayerBagSlot;
@@ -107,6 +108,9 @@ public class PlayerTransformer implements Transformer {
 		UpdateConverter.updateQuests(player);
 		QuestRewardRarityMigrationService.migrate(player);
 		RebornSystem.migrateLegacyData(player);
+		// Item restore and reborn migration are now complete; repair a 1.43
+		// trophy only on this character's first login after the deployment.
+		DeathmatchHelmetRecovery.migrateOnLogin(player);
 		player.updateItemAtkDef();
 		// Should be at least after converting the features list, as this
 		// depends on checking the keyring feature.
