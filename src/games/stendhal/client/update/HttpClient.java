@@ -118,7 +118,7 @@ public class HttpClient {
 				try {
 					connection = (HttpURLConnection) url.openConnection();
 					// Wikipedia API now requires User-Agent string
-					connection.setRequestProperty("User-Agent", "PolanieOnLineClient/1.43.5 (https://polanieonline.eu/kontakt.html)");
+					connection.setRequestProperty("User-Agent", "PolanieOnLineClient/1.43.1 (https://polanieonline.eu/kontakt.html)");
 					connection.setConnectTimeout(myTimeout);
 					connection.setInstanceFollowRedirects(true);
 					connection.setUseCaches(false);
