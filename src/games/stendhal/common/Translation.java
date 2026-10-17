@@ -80,7 +80,7 @@ public final class Translation {
   if(depth>0 && text.contains("&nbsp;")) {
    String decoded=text.replace("&nbsp;"," ");
    String translated=translate(catalogue,decoded,depth+1);
-   if(!translated.equals(decoded))return translated;
+   if(!translated.equals(decoded))return translated.replace(" ", "&nbsp;");
   }
   String matched = catalogue.match(text, depth);
   if (matched != null) return matched;

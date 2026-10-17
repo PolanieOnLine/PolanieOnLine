@@ -4,6 +4,25 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TranslationTest {
+	@Test public void repeatedQuestCountsTranslateNumbersAndMayorJournalEntries() {
+		assertEquals("2 times", Translation.getText("en", "2 razy"));
+		assertEquals("12 times", Translation.getText("en", "12 razy"));
+		assertEquals("1 time", Translation.getText("en", "1 raz"));
+		assertEquals("I have helped Semos 2 times so far.", Translation.getText("en", "Pomogłem Semos 2 razy do tej pory."));
+		assertEquals("I have helped Kuźnice 12 times so far.", Translation.getText("en", "Pomogłam Kuźnicom 12 razy do tej pory."));
+		assertEquals("2 razy", Translation.getText("pl", "2 razy"));
+	}
+	@Test public void translatedWindowTitlesKeepTheirNonBreakingSpaces() {
+		assertEquals("<html>two-headed&nbsp;black&nbsp;dragon</html>",
+				Translation.getText("en", "<html>dwugłowy&nbsp;czarny&nbsp;smok</html>"));
+		assertEquals("<html>dwugłowy&nbsp;czarny&nbsp;smok</html>",
+				Translation.getText("pl", "<html>dwugłowy&nbsp;czarny&nbsp;smok</html>"));
+	}
+	@Test public void cottageSausageNameIsConsistentAcrossFormsAndDescriptions() {
+		assertEquals("cottage sausage", Translation.getText("en", "kiełbasa wiejska"));
+		assertEquals("2 cottage sausages", Translation.getText("en", "2 sztuki kiełbasy wiejskiej"));
+		assertEquals("You see a cottage sausage.", Translation.getText("en", "Oto kiełbasa wiejska."));
+	}
 	@Test public void defaultsToPolishAndNormalizesOnlySupportedLanguages() {
 		assertEquals("pl", Translation.normalize(null));
 		assertEquals("pl", Translation.normalize("es"));

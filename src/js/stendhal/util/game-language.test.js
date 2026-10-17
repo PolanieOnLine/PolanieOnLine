@@ -21,6 +21,19 @@ function harness(document) {
 	return {language: exports.GameLanguage, fetched};
 }
 
+test("repeatable quest counters translate as fragments and inside mayor journal entries", async () => {
+	const {language} = harness();
+	await language.load("/data");
+	language.synchronize("en");
+	assert.equal(language.getText("1 raz"), "1 time");
+	assert.equal(language.getText("2 razy"), "2 times");
+	assert.equal(language.getText("12 razy"), "12 times");
+	assert.equal(language.getText("Pomogłem Semos 2 razy do tej pory."), "I have helped Semos 2 times so far.");
+	assert.equal(language.getText("Pomogłam Kuźnicom 12 razy do tej pory."), "I have helped Kuźnice 12 times so far.");
+	language.synchronize("pl");
+	assert.equal(language.getText("12 razy"), "12 razy");
+});
+
 test("reads the bundled PL/EN dictionaries and preserves missing text", async () => {
 	const {language, fetched} = harness();
 	await language.load("/data");
