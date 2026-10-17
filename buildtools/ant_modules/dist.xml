@@ -825,7 +825,7 @@
 			<fileset dir="${srcjs}">
 				<include name="polanieonline.html"/>
 				<include name="css/**/*.css"/>
-				<include name="polanieonline-compiled.js"/>
+				<include name="stendhal-compiled.js"/>
 				<include name="LICENSE.html"/>
 				<include name="favicon.ico"/>
 				<include name="contributors.html"/>
