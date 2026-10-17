@@ -4,6 +4,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ValueBuyerBehaviour;
 
@@ -24,7 +25,9 @@ public final class ChallengeArenaBuyerNPC {
 				addOffer("Chętnie odkupię broń, zbroje i inne łupy. Za rzadsze okazy zapłacę więcej. Monet, kluczy i rzeczy przypisanych do postaci nie biorę.");
 				addGoodbye("Powodzenia na arenie! Wróć, jeśli znów nazbierasz łupów.");
 				new BuyerAdder().addBuyer(this, new ValueBuyerBehaviour(
-						SingletonRepository.getEntityManager().getDefaultItems()), false);
+						SingletonRepository.getEntityManager().getDefaultItems(),
+						SingletonRepository.getShopsList().get("buyblack", ShopType.ITEM_BUY).keySet(),
+						"ultimate_collector"), false);
 			}
 		};
 		npc.setEntityClass("buyer2npc");

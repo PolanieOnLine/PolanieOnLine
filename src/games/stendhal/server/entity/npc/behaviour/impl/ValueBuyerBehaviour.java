@@ -1,8 +1,11 @@
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import games.stendhal.common.grammar.ItemParserResult;
@@ -15,12 +18,35 @@ import games.stendhal.server.entity.player.Player;
 
 /** A buyer whose catalogue and prices come from item definitions, not a shop list. */
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
+	private static final String BALDUIN_REQUIREMENT =
+			"Czarne przedmioty skupuję po ukończeniu wyzwań Balduina. "
+			+ "Jeśli już je ukończyłeś, sprawdź, czy masz przedmiot przy sobie "
+			+ "i czy nie jest przypisany do postaci.";
+
+	private final Set<String> questLockedItems;
+	private final String requiredQuestSlot;
+
 	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions) {
+		this(definitions, Collections.<String>emptySet(), null);
+	}
+
+	/** Optional per-item quest gate; the normal catalogue remains unrestricted. */
+	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions,
+			final Collection<String> questLockedItems, final String requiredQuestSlot) {
 		super(createCatalogue(definitions));
+		if (questLockedItems == null || (!questLockedItems.isEmpty()
+				&& (requiredQuestSlot == null || requiredQuestSlot.isEmpty()))) {
+			throw new IllegalArgumentException("Quest-locked items require a quest slot");
+		}
+		this.questLockedItems = Collections.unmodifiableSet(new HashSet<String>(questLockedItems));
+		this.requiredQuestSlot = requiredQuestSlot;
 	}
 
 	@Override
 	public String getUnavailableOffer(final ItemParserResult res) {
+		if (res != null && questLockedItems.contains(res.getChosenItemName())) {
+			return BALDUIN_REQUIREMENT;
+		}
 		return "Nie mogę odkupić tych rzeczy. Sprawdź, czy masz je przy sobie i czy nie są przypisane do postaci.";
 	}
 
@@ -53,6 +79,12 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 	public int getCharge(final ItemParserResult res, final Player player) {
 		if (res == null || player == null || res.getAmount() <= 0 || res.getAmount() > 1000
 				|| res.getChosenItemName() == null || !hasItem(res.getChosenItemName())) {
+			return 0;
+		}
+		// Check at quote time and again at confirmation (transactAgreedDeal
+		// invokes getCharge) so an earlier quoted price cannot bypass the gate.
+		if (questLockedItems.contains(res.getChosenItemName())
+				&& !player.isQuestCompleted(requiredQuestSlot)) {
 			return 0;
 		}
 		int remaining = res.getAmount();
