@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.Level;
 import games.stendhal.server.core.rp.achievement.factory.DeathmatchAchievementFactory;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
 import marauroa.common.game.RPObject;
@@ -84,6 +85,7 @@ public final class DeathmatchHelmetRecovery {
 
 		helmet.put("def", estimatedDefense);
 		helmet.setPersistent(true);
+		ItemTooltipService.update(helmet);
 		player.updateItemAtkDef();
 		logger.info("Recovered Deathmatch helmet DEF for " + player.getName()
 				+ " from 1 to " + estimatedDefense + " (wins=" + wins
