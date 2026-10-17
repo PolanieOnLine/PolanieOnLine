@@ -1,7 +1,14 @@
 ## Changelog
 ---------
-1.42.1
-*rozmowy z NPC*
+1.43
+*języki gry*
+---
+* Dodano angielską wersję interfejsu w kliencie Java i grze przez przeglądarkę
+* Przetłumaczono rozmowy z NPC, opisy i dzienniki zadań, nazwy i opisy przedmiotów oraz potworów, tablice, poradniki i komunikaty gry
+* Język polski lub angielski można wybrać w ustawieniach gry, a w kliencie Java również przed zalogowaniem, w ustawieniach klienta startowego. Wybór jest zapamiętywany dla postaci
+* Angielskie nazwy przedmiotów można wykorzystywać w handlu z NPC. Wybrane zagadki i hasła zadań przyjmują również angielskie odpowiedzi
+
+*rozmowy z NPC i zadania*
 ---
 * W kliencie Java i webkliencie dodano opcję Porozmawiaj w menu NPC. Rozmowę można rozpocząć bez wpisywania przywitania na czacie
 * Poprawiono rozmowy w zadaniach. NPC rozpoznają więcej polskich nazw przedmiotów i ich odmian, dzięki czemu łatwiej zapytać o wskazówki
@@ -20,7 +27,7 @@
 * Kule w lobby pozwalają wybrać gracza i oglądać jego walkę na arenie. Widzowie nie mogą pomagać w walce ani zabierać łupów, a po jej zakończeniu wracają do lobby
 * Potwory na arenie pozostawiają łupy. Po zwycięstwie gracz ma minutę na ich zebranie
 * Tablica najlepszych wojowników Areny Wyzwań pokazuje miejsce każdego gracza w rankingu
-* Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Przed sprzedażą kupiec podaje cenę, uwzględniając rzadkość przedmiotu
+* Dodano Kupca Areny, który skupuje łupy według aktualnej wartości przedmiotów, uwzględniającej ceny u innych handlarzy oraz rzadkość wyposażenia. Przed sprzedażą podaje oferowaną kwotę
 * Wyposażenie zdobyte z bossów jest co najmniej rzadkie. Taką samą gwarancję dodano do nagrody za najtrudniejszą próbę areny i łupów jej końcowego przeciwnika
 
 *potwory i łupy*
@@ -35,7 +42,6 @@
 ---
 * Rudę i sztabki cieni zastąpiono rudą i sztabkami czarnego żelaza. Posiadane zapasy zachowują swoją ilość
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
-* Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
 * Zwiększono cenę sprzedaży rzadkiego wyposażenia. Handlarze płacą za nie o 25% więcej niż za zwykłe, również w przypadku wcześniej zdobytych przedmiotów
 * Poprawiono odmianę nazw i ilości przedmiotów w rozmowach z handlarzami
 * Posiadane przedmioty otrzymują aktualne statystyki i opisy po zalogowaniu. Zachowują swoje ulepszenia, rzadkość i rodzaje wylosowanych bonusów
@@ -48,7 +54,6 @@
 ---
 * Dodano logowanie przez Google i Steam w kliencie Java. Konto można połączyć na stronie gry
 * Uporządkowano ustawienia klienta Java. Kategorie znajdują się po lewej, a opcje są pogrupowane, aby łatwiej było je znaleźć
-* Dodano wybór języka polskiego i angielskiego w ustawieniach gry. Wybór jest zapamiętywany dla postaci. Angielskie tłumaczenia są jeszcze uzupełniane
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
@@ -58,10 +63,9 @@
 * Poprawiono działanie ustawienia dopasowania widoku gry do okna
 * Poprawiono lewy panel w kliencie Java i grze przez przeglądarkę. Liczba monet jest czytelna i prawidłowo odświeża się po sprzedaży, podnoszeniu i wyrzucaniu pieniędzy. Po najechaniu na stos monet w ekwipunku widać ich dokładną liczbę
 
-*administracja*
+*świat gry*
 ---
-* Dodano możliwość przywoływania mgielnych potworów, również w wersji elitarnej
-* Dodano administratorom testy płynności gry w przeglądarce z możliwością skopiowania raportu, także na telefonie. Testy działają tylko u osoby, która je włączyła
+* Portal z zaświatów do Tarnowa rozpoznaje wcześniejsze odwiedziny miasta i pozwala wrócić postaciom, które już je odwiedziły
 
 
 1.42
