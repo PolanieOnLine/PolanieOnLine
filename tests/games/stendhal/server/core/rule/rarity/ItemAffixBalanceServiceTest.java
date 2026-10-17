@@ -115,25 +115,51 @@ public class ItemAffixBalanceServiceTest {
 	}
 
 	@Test
-	public void intrinsicRarityScaledBonusesCannotBypassRandomAffixLimits() {
+	public void intrinsicRarityScaledBonusesAreNotRandomAffixes() {
 		final Item item = new Item("ring", "ring", "test", Collections.singletonMap("accuracy_bonus", "25"));
 		item.setEquipableSlots(java.util.Arrays.asList("finger", "bag"));
 		new ItemRarityService(new Random(1)).initialize(item,
 				ItemCreationContext.builder(ItemCreationContext.Source.QUEST)
 						.withRarity(ItemRarity.EPIC).randomizeModifiers(false).build());
-		assertEquals(7, item.getDouble("accuracy_bonus"), 0);
+		assertEquals(28.75, item.getDouble("accuracy_bonus"), 0.000001);
 		assertFalse(ItemAffixState.has(item, "accuracy_bonus"));
 		assertEquals(Double.valueOf(1.15), item.getRarityModifier("accuracy_bonus"));
 	}
 
 	@Test
-	public void questSnapshotAndReforgingCannotBringBackOldValues() {
+	public void intrinsicBonusesRemainUnchangedWhileRecordedAffixesAreLimited() {
+		final Item item = new Item("authored ring", "ring", "test", null);
+		item.put("accuracy_bonus", 25.0);
+		item.put("critical_damage_bonus", 0.40);
+		item.put("resist_bleeding", 0.35);
+		item.put("spiked_plating", 0.20);
+		item.put("atk", 30);
+		item.put("flat_attack_bonus", 10);
+		record(item, "critical_chance", 10);
+		for (int repeat = 0; repeat < 3; repeat++) {
+			ItemAffixBalanceService.enforce(item);
+			assertEquals(25.0, item.getDouble("accuracy_bonus"), 0);
+			assertEquals(0.40, item.getDouble("critical_damage_bonus"), 0);
+			assertEquals(0.35, item.getDouble("resist_bleeding"), 0);
+			assertEquals(0.20, item.getDouble("spiked_plating"), 0);
+			assertEquals(30, item.getInt("atk"));
+			assertEquals(10, item.getInt("flat_attack_bonus"));
+			assertEquals(4.0, item.getDouble("critical_chance"), 0);
+			assertEquals(1, ItemAffixState.getValues(item).size());
+		}
+	}
+
+	@Test
+	public void snapshotsWithoutAffixProvenanceArePreservedButRecordedTransfersAreLimited() {
 		final Item source = new Item("source", "sword", "test", Collections.singletonMap("atk", "20"));
 		source.setRarity(ItemRarity.EPIC);
 		record(source, "accuracy_bonus", 15);
 		final Item returned = new Item("returned", "sword", "test", null);
 		ItemRaritySnapshot.restore(returned, ItemRaritySnapshot.encode(source));
-		assertEquals(8, returned.getDouble("accuracy_bonus"), 0);
+		// This snapshot format carries final stats, not the affix map. It cannot
+		// distinguish an authored bonus from a roll, so must not cap either blindly.
+		assertEquals(15, returned.getDouble("accuracy_bonus"), 0);
+		assertFalse(ItemAffixState.hasAny(returned));
 		final Item reforged = new Item("reforged", "sword", "test", Collections.singletonMap("atk", "30"));
 		ItemRarityTransferSnapshot.apply(reforged, ItemRarityTransferSnapshot.encode(source));
 		assertEquals(8, reforged.getDouble("accuracy_bonus"), 0);
