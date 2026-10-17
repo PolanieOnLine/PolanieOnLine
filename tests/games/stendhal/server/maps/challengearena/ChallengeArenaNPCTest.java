@@ -66,6 +66,56 @@ public class ChallengeArenaNPCTest {
 	}
 
 	@Test
+	public void blackItemCannotBeSoldUntilUltimateCollectorIsCompleted() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-locked", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaBlackLocked");
+		zone.add(player);
+		final Item black = SingletonRepository.getEntityManager().getItem("czarna tarcza",
+				ItemCreationContext.restore());
+		player.getSlot("bag").add(black);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(getReply(npc).contains("Balduina"));
+		assertTrue(player.isEquipped("czarna tarcza"));
+		assertEquals(0, MoneyUtils.getTotalMoneyInCopper(player));
+
+		player.setQuest("ultimate_collector", "done");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(black.getValue())));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(!player.isEquipped("czarna tarcza"));
+		assertEquals(black.getValue(), MoneyUtils.getTotalMoneyInCopper(player));
+	}
+
+	@Test
+	public void blackItemOfferIsRecheckedBeforeCompletingTheSale() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-recheck", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaBlackRecheck");
+		zone.add(player);
+		final Item black = SingletonRepository.getEntityManager().getItem("czarna tarcza",
+				ItemCreationContext.restore());
+		player.getSlot("bag").add(black);
+		player.setQuest("ultimate_collector", "done");
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		player.setQuest("ultimate_collector", "start");
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(player.isEquipped("czarna tarcza"));
+		assertEquals(0, MoneyUtils.getTotalMoneyInCopper(player));
+	}
+
+	@Test
 	public void buyerHasMerchantClothesAndFacesLeftAtTheRequestedSpot() throws Exception {
 		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-location", 64, 64);
 		final StendhalMapStructure map = TMXLoader.load("data/maps/interiors/tarnow/challenge_arena.tmx");

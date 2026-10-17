@@ -1,6 +1,7 @@
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import static org.junit.Assert.*;
+import java.util.Map;
 import java.util.Collections;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +18,7 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPObject;
@@ -111,6 +113,53 @@ public class ValueBuyerBehaviourTest {
 		assertEquals(0, buyer().getCharge(request(-1), player));
 		assertEquals(0, buyer().getCharge(request(1001), player));
 	}
+	@Test public void blackShopItemsRequireBalduinOnlyForQuestGatedBuyer() {
+		final Map<String, Integer> blackItems = SingletonRepository.getShopsList()
+				.get("buyblack", ShopType.ITEM_BUY);
+		assertNotNull("Balduin's black-item catalogue must be loaded", blackItems);
+		final ValueBuyerBehaviour arenaBuyer = new ValueBuyerBehaviour(
+				manager().getDefaultItems(), blackItems.keySet(), "ultimate_collector");
+		int tradable = 0;
+		for (final String name : blackItems.keySet()) {
+			if (!arenaBuyer.hasItem(name)) { continue; }
+			tradable++;
+			final Player player = PlayerTestHelper.createPlayer("black-item-seller");
+			final Item item = manager().getItem(name, ItemCreationContext.restore());
+			player.getSlot("bag").add(item);
+			final ItemParserResult request = new ItemParserResult(true, name, 1,
+					Collections.<String>emptySet());
+
+			assertEquals(name, 0, arenaBuyer.getCharge(request, player));
+			assertTrue(name, arenaBuyer.getUnavailableOffer(request).contains("Balduina"));
+			// This gate is specific to the arena merchant; the ordinary buyer is unchanged.
+			assertEquals(name, item.getValue(), buyer().getCharge(request, player));
+
+			player.setQuest("ultimate_collector", "done");
+			assertEquals(name, item.getValue(), arenaBuyer.getCharge(request, player));
+			player.setQuest("ultimate_collector", "start");
+			assertEquals(name, 0, arenaBuyer.getCharge(request, player));
+		}
+		assertTrue("Expected black items eligible for the arena merchant", tradable > 0);
+	}
+
+	@Test public void completionDoesNotChangeOtherLootOrAllowBoundBlackItems() {
+		final ValueBuyerBehaviour arenaBuyer = new ValueBuyerBehaviour(
+				manager().getDefaultItems(),
+				SingletonRepository.getShopsList().get("buyblack", ShopType.ITEM_BUY).keySet(),
+				"ultimate_collector");
+		final Player player = PlayerTestHelper.createPlayer("arena-black-bound");
+		final Item regular = item(ItemRarity.RARE);
+		player.getSlot("bag").add(regular);
+		assertEquals(regular.getValue(), arenaBuyer.getCharge(request(1), player));
+		final Item black = manager().getItem("czarna tarcza", ItemCreationContext.restore());
+		black.setBoundTo(player.getName());
+		player.getSlot("bag").add(black);
+		player.setQuest("ultimate_collector", "done");
+		final ItemParserResult blackRequest = new ItemParserResult(true, "czarna tarcza", 1,
+				Collections.<String>emptySet());
+		assertEquals(0, arenaBuyer.getCharge(blackRequest, player));
+	}
+
 	@Test public void transactionConsumesLootAndPaysItsValue() {
 		final Player player = PlayerTestHelper.createPlayer("value-test");
 		final StendhalRPZone zone = new StendhalRPZone("value-buy-test", 20, 20);
