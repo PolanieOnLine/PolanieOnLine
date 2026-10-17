@@ -27,6 +27,10 @@ public class DeathmatchHelmetRecoveryTest {
 	private Player player(final String name, final int level, final int wins,
 			final int reborns) {
 		final Player player = PlayerTestHelper.createPlayer(name);
+		// Simulate an old save before the login migration, not a new character.
+		if (player.has(DeathmatchHelmetRecovery.MIGRATION_MARKER)) {
+			player.remove(DeathmatchHelmetRecovery.MIGRATION_MARKER);
+		}
 		player.setLevel(level);
 		player.setQuest("deathmatch_wins", Integer.toString(wins));
 		player.put(RebornSystem.ATTR_REBORNS, reborns);
@@ -65,6 +69,7 @@ public class DeathmatchHelmetRecoveryTest {
 		final Item helmet = addHelmet(player, "bag", 1);
 		DeathmatchHelmetRecovery.migrateOnLogin(player);
 		assertEquals(124, helmet.getInt("def"));
+		assertEquals("124", helmet.get("tooltip_stats", "def"));
 	}
 
 	@Test

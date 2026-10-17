@@ -24,6 +24,7 @@ import games.stendhal.server.core.engine.dbcommand.WriteHallOfFamePointsCommand;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -62,6 +63,7 @@ public class DoneAction implements ChatAction {
 		helmet.setPersistent(true);
 		helmet.setDescription("Oto główna nagroda dla wojownika " + player.getName()
 		        + " za wygranie Deathmatchu. Noś ją z dumą.");
+		ItemTooltipService.update(helmet);
 		player.equipOrPutOnGround(helmet);
 		return helmet;
 	}
@@ -183,6 +185,7 @@ public class DoneAction implements ChatAction {
 				}
 				raiser.say(message + ". Powiedz mi #wyjdź, kiedy będziesz chciał opuścić arenę.");
 			}
+			ItemTooltipService.update(helmet);
 		}
 		player.updateItemAtkDef();
 		TurnNotifier.get().notifyInTurns(0, new NotifyPlayerAboutHallOfFamePoints((SpeakerNPC) raiser.getEntity(), player.getName(), "D", "deathmatch_score"));

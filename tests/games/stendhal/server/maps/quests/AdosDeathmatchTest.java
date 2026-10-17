@@ -35,7 +35,9 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.creature.DeathMatchCreature;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
@@ -241,6 +243,7 @@ public class AdosDeathmatchTest {
 				getReply(assistant));
 		en.step(dmPlayer, "leave");
 
+		assertEquals(Integer.toString(trophyHelmet.getDefense()), trophyHelmet.get("tooltip_stats", "def"));
 		// invoke a turn so NPC stops attending player in different zone
 		nextTurn();
 		assertEquals(ConversationStates.IDLE, en.getCurrentState());
@@ -248,6 +251,28 @@ public class AdosDeathmatchTest {
 		final StendhalRPZone playerZone = dmPlayer.getZone();
 		assertNotNull(playerZone);
 		assertEquals("0_semos_plains_n", playerZone.getName());
+	}
+
+	@Test
+	public void testBailRefreshesHelmetTooltip() {
+		final Player player = PlayerTestHelper.createPlayer("bailingPlayer");
+		player.setLevel(55);
+		ados_wall_n.add(player);
+		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm");
+		helmet.put("def", 3);
+		ItemTooltipService.update(helmet);
+		player.equipToInventoryOnly(helmet);
+		assertEquals("3", helmet.get("tooltip_stats", "def"));
+
+		// An expired bail timestamp processes withdrawal without a real-time wait.
+		player.setQuest(questSlot, "bail;53;0;0");
+		final DeathmatchEngine engine = new DeathmatchEngine(player, deathmatch.getDeathmatchInfo(),
+				new EventRaiser(SingletonRepository.getNPCList().get("Thanatos")));
+		engine.onTurnReached(0);
+
+		assertEquals("cancel", player.getQuest(questSlot));
+		assertEquals(2, helmet.getDefense());
+		assertEquals("2", helmet.get("tooltip_stats", "def"));
 	}
 
 	private void cycleRound(final Player dmPlayer) {

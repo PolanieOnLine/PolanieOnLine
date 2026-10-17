@@ -19,6 +19,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.DeathMatchCreature;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -172,6 +173,7 @@ public class DeathmatchEngine implements TurnListener {
 				defense = 1;
 			}
 			helmet.put("def", "" + defense);
+			ItemTooltipService.update(helmet);
 			player.updateItemAtkDef();
 		} else {
 			int xp = player.getLevel() * 80;
