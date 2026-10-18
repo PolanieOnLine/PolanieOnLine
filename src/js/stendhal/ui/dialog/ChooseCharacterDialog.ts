@@ -13,6 +13,9 @@ import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 
 import { Client } from "../../Client";
 import { SlashActionRepo } from "../../SlashActionRepo";
+import { OutfitPreviewComponent } from "../component/OutfitPreviewComponent";
+import { GameLanguage } from "../../util/GameLanguage";
+import { createCharacterCard } from "./CharacterCard";
 
 
 /**
@@ -22,19 +25,25 @@ export class ChooseCharacterDialog extends DialogContentComponent {
 
 	constructor(characters: any) {
 		super("choose-character-template");
+		this.componentElement.classList.add("character-selection");
 
 		const characterList = this.child("#characters")!;
 		for (var i in characters) {
 			if (characters.hasOwnProperty(i)) {
-				let name = characters[i]["a"]["name"];
-				let button = document.createElement("button");
-				button.classList.add("menubutton");
-				button.setAttribute("data-no-translate", "");
-				button.innerText = name;
-				button.addEventListener("click", () => {
+				const attributes = characters[i]["a"];
+				const preview = new OutfitPreviewComponent();
+				preview.componentElement.removeAttribute("id");
+				let outfit = attributes.outfit_ext_orig || attributes.outfit_ext;
+				if (!outfit) {
+					const legacy = Number(attributes.outfit) || 0;
+					outfit = ["body", "dress", "head", "hair", "detail"]
+						.map((part, index) => part + "=" + Math.floor(legacy / Math.pow(100, index)) % 100).join(",");
+				}
+				preview.setOutfit(outfit, attributes.outfit_colors);
+				const button = createCharacterCard(attributes, preview.componentElement, name => {
 					this.componentElement.dispatchEvent(new Event("close"));
 					Client.get().chooseCharacter(name);
-				});
+				}, text => GameLanguage.getText(text));
 				characterList.append(button);
 			}
 		}

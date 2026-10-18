@@ -52,11 +52,13 @@ function harness() {
 		"./settings/InputTab": { InputTab: class {} },
 		"./settings/SoundTab": { SoundTab: class {} },
 		"./settings/VisualsTab": { VisualsTab: class {} },
+		"./settings/AbstractSettingsTab": { AbstractSettingsTab: class {} },
+		"./settings/SettingsCategoryLayout": { organizeSettings: () => [] },
 		"./settings/AdminDiagnosticsTab": { AdminDiagnosticsTab: Tab },
 		"../../util/AdminDiagnostics": { AdminDiagnostics: D },
 		"../toolkit/TabDialogContentComponent": { TabDialogContentComponent: class {
 			constructor() { this.tabs = []; this.componentElement = { classList: { add() {} } }; }
-			child() { return {}; }
+			child() { return {prepend() {}}; }
 			addTab(label, content) { this.tabs.push({ label, content }); }
 			addButton() { return {}; }
 			addCloseButton() { return {}; }
