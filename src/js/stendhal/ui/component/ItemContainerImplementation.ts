@@ -28,6 +28,7 @@ import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
 import { GameLanguage } from "../../util/GameLanguage";
 import { getItemSlotLayers, ItemSlotLayers } from "./ItemSlotPresentation";
+import { ItemSlotAnimation } from "./ItemSlotAnimation";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
@@ -49,6 +50,7 @@ interface InventorySlotView extends ItemSlotLayers {
 	animated: boolean;
 	animationPending: boolean;
 	visible: boolean;
+	composited?: boolean;
 }
 
 
@@ -219,7 +221,7 @@ export class ItemContainerImplementation {
 			}
 			if (!freeze) { item.stepAnimation(now); }
 			this.updatePosition(view, item);
-			ItemRarityEffects.updateSlot(view.element, item);
+			ItemRarityEffects.updateSlot(view.element, view.composited ? undefined : item);
 		}
 	}
 
@@ -228,6 +230,7 @@ export class ItemContainerImplementation {
 		this.slotVisibilityObserver?.disconnect();
 		for (const view of this.slots) {
 			if (view) {
+				ItemSlotAnimation.clear(view.element, view.icon);
 				ItemContainerImplementation.hideRarityToolTip(view.element);
 			}
 		}
@@ -247,6 +250,8 @@ export class ItemContainerImplementation {
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
+		view.composited = ItemSlotAnimation.update(view.element, view.icon, item);
+		if (view.composited) return;
 		const position = (-item.getXFrameIndex() * 32) + "px "
 			+ (-item.getYFrameIndex() * 32) + "px";
 		if (view.backgroundPosition !== position) {
@@ -334,6 +339,8 @@ export class ItemContainerImplementation {
 					this.animationSlots.push(view);
 				}
 			} else {
+				ItemSlotAnimation.clear(element, view.icon);
+				view.composited = false;
 				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
 				if (view.backgroundImage !== image) {
 					view.icon.style.backgroundImage = image;
@@ -361,7 +368,7 @@ export class ItemContainerImplementation {
 			}
 			view.item = item;
 			(element as any).dataItem = item;
-			ItemRarityEffects.updateSlot(element, item);
+			ItemRarityEffects.updateSlot(element, view.composited ? undefined : item);
 		}
 		this.renderedObject = myobject;
 		this.dirty = false;

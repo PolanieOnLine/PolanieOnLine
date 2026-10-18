@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -194,6 +194,10 @@ function createHarness() {
 	const tooltipPresentation = load("ui/component/ItemTooltipPresentation.ts", {
 		marauroa: {marauroa}, "../../entity/Item": {Item}, "../../util/GameLanguage": {GameLanguage}
 	});
+	const slotAnimation = load("ui/component/ItemSlotAnimation.ts", {
+		"../../SingletonRepo": {singletons}, "../../sprite/ItemRarityEffects": rarityEffects,
+		"../../util/AdminDiagnostics": {AdminDiagnostics}
+	});
 	const { ItemContainerImplementation: Container } = load("ui/component/ItemContainerImplementation.ts", {
 		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {} },
 		"../dialog/ActionContextMenu": {}, "../dialog/DropQuantitySelectorDialog": {},
@@ -204,7 +208,8 @@ function createHarness() {
 		"../../sprite/ItemRarityEffects": rarityEffects,
 		"../../util/AdminDiagnostics": { AdminDiagnostics },
 		"../../util/GameLanguage": { GameLanguage },
-		"./ItemSlotPresentation": slotPresentation
+		"./ItemSlotPresentation": slotPresentation,
+		"./ItemSlotAnimation": slotAnimation
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
 		"../../util/GameLanguage": { GameLanguage },
