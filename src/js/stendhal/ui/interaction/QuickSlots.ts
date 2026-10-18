@@ -49,6 +49,8 @@ export class QuickSlots extends Component {
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
 	private viewportObserver?: MutationObserver;
+	private referenceObserver?: MutationObserver;
+	private referenceElement: HTMLElement | null = null;
 	private readonly slots: HTMLButtonElement[] = [];
 	private readonly slotData = new Map<HTMLButtonElement, QuickSlotData>();
 	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
@@ -96,6 +98,9 @@ export class QuickSlots extends Component {
 		this.mutationObserver = undefined;
 		this.viewportObserver?.disconnect();
 		this.viewportObserver = undefined;
+		this.referenceObserver?.disconnect();
+		this.referenceObserver = undefined;
+		this.referenceElement = null;
 	}
 
 	private buildSlots() {
@@ -160,6 +165,26 @@ export class QuickSlots extends Component {
 		}
 	}
 
+	/** Follow the anchor after its own layout observer runs, not only on server updates. */
+	private observeReference(reference: HTMLElement | null) {
+		if (typeof MutationObserver === "undefined"
+				|| (this.referenceObserver && this.referenceElement === reference)) {
+			return;
+		}
+		this.referenceObserver?.disconnect();
+		this.referenceObserver = new MutationObserver(() => this.update());
+		this.referenceElement = reference;
+		const container = this.componentElement.parentElement;
+		if (container) {
+			// Also rebind when a controller mounts, removes or replaces the anchor.
+			// No subtree observation: our slot writes must not trigger this observer.
+			this.referenceObserver.observe(container, { childList: true });
+		}
+		if (reference) {
+			this.referenceObserver.observe(reference, { attributes: true, attributeFilter: ["style", "class"] });
+		}
+	}
+
 	public update(): void {
 		if (!this.slots.length) {
 			return;
@@ -170,6 +195,7 @@ export class QuickSlots extends Component {
 		const reference = document.getElementById("attack-button")
 			|| document.getElementById("right-panel-toggle")
 			|| document.getElementById("loot-button");
+		this.observeReference(reference);
 		const firstSlot = this.slots[0];
 		const width = firstSlot.offsetWidth || 32;
 		const height = firstSlot.offsetHeight || 32;
