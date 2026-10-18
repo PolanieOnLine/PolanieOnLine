@@ -15,7 +15,7 @@ const root = path.resolve(__dirname, '..');
   '../UI': 'export const ui={};',
   '../../entity/Item': 'export class Item {}',
   '../component/ItemContainerImplementation': 'export const ItemContainerImplementation={updateCursorFor(){},updateToolTipFor(){}};',
-  '../../SingletonRepo': 'export const singletons={};',
+  '../../SingletonRepo': 'export const singletons={getSpriteStore:()=>window.spriteStore};',
   '../../data/Paths': 'export const Paths={gui:"/data/gui"};',
   '../../util/Chat': 'export const Chat={};',
   '../../util/GameLanguage': 'export const GameLanguage={};',
@@ -63,6 +63,46 @@ const root = path.resolve(__dirname, '..');
   });
   await settle();actual=await alignment();console.log('attack replacement',actual);
   assert.ok(actual.dx<1&&actual.dy<1,'Quick slots must rebind after attack-button replacement');
+  // Exercise actual painted pixels, not only computed background styles.
+  await page.evaluate(async()=>{
+   const canvas=document.createElement('canvas');canvas.width=canvas.height=64;
+   const ctx=canvas.getContext('2d');
+   for(const [x,y,color] of [[0,0,'#ff0000'],[32,0,'#0000ff'],[0,32,'#00ff00'],[32,32,'#ff00ff']]) {
+    ctx.fillStyle=color;ctx.fillRect(x,y,32,32);
+   }
+   const image=new Image();image.src=canvas.toDataURL();await image.decode();
+   window.spriteStore={checkPath:()=>image.src,getItemIconAtlas:()=>undefined};
+   window.spriteItem={class:'potion',subclass:'test',state:0,frame:0,sprite:{filename:'test'},
+    animated:true,isAnimated(){return this.animated},stepAnimation(){},getXFrameIndex(){return this.frame},formatQuantity:()=>''};
+  });
+  const colors=[[255,0,0],[0,0,255],[0,255,0],[255,0,255]];
+  for(const [state,frame,expected,animated=true] of [[0,0,0],[0,1,1],[1,0,2],[1,1,3],[1,0,2,false]]) {
+   await page.evaluate(({state,frame,animated})=>{
+    spriteItem.state=state;spriteItem.frame=frame;spriteItem.animated=animated;
+    quickSlots.updateSlotVisual(document.querySelector('.quick-slot'),spriteItem);
+   },{state,frame,animated});
+   const shot=(await page.locator('.quick-slot').first().screenshot()).toString('base64');
+   const pixels=await page.evaluate(async({shot,colors})=>{
+    const image=new Image();image.src='data:image/png;base64,'+shot;await image.decode();
+    const canvas=document.createElement('canvas');canvas.width=image.width;canvas.height=image.height;
+    const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0);
+    const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+    return colors.map(color=>{let n=0;for(let i=0;i<data.length;i+=4)
+     if(data[i]===color[0]&&data[i+1]===color[1]&&data[i+2]===color[2]&&data[i+3]===255)n++;return n;});
+   },{shot,colors});
+   assert.deepEqual(pixels,colors.map((_,i)=>i===expected?1024:0),
+    `Quick slot state ${state}, frame ${frame} must show one full 32px frame without neighbouring frames`);
+  }
+  const controls=await page.evaluate(()=>{
+   const slot=document.querySelector('.quick-slot'),rect=slot.getBoundingClientRect();
+   spriteItem.formatQuantity=()=>'12';quickSlots.updateSlotVisual(slot,spriteItem);
+   const count=slot.querySelector('.quick-slot__count').textContent;
+   const hit=document.elementFromPoint(rect.left+8,rect.top+8)===slot;
+   quickSlots.setEmptySlotVisual(slot);
+   return {count,hit,cleared:slot.querySelector('.item-slot-icon').style.backgroundImage==='none',emptyCount:slot.querySelector('.quick-slot__count').textContent};
+  });
+  assert.deepEqual(controls,{count:'12',hit:true,cleared:true,emptyCount:''});
+  console.log('Quick-slot animation: full-size frames and state rows passed.');
   await page.evaluate(()=>window.quickSlots.unmount());
   assert.equal(await page.locator('#quick-slots').count(),0);
   await page.evaluate(()=>{document.getElementById('attack-button').style.left='400px'});

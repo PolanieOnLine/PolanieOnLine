@@ -54,6 +54,7 @@ export class QuickSlots extends Component {
 	private readonly slots: HTMLButtonElement[] = [];
 	private readonly slotData = new Map<HTMLButtonElement, QuickSlotData>();
 	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
+	private readonly slotIcons = new Map<HTMLButtonElement, HTMLElement>();
 	private assignments: Array<QuickSlotAssignment | null> = [];
 	private readonly containerId: string;
 	private readonly allowedClasses = new Set(["potion", "drink", "food", "scroll"]);
@@ -129,6 +130,11 @@ export class QuickSlots extends Component {
 				this.onTouchEnd(event, slot);
 			});
 
+			const icon = document.createElement("span");
+			icon.className = "item-slot-icon";
+			icon.setAttribute("aria-hidden", "true");
+			slot.appendChild(icon);
+			this.slotIcons.set(slot, icon);
 			const count = document.createElement("span");
 			count.classList.add("quick-slot__count");
 			slot.appendChild(count);
@@ -384,6 +390,7 @@ export class QuickSlots extends Component {
 	}
 
 	private updateSlotVisual(slot: HTMLButtonElement, item: Item) {
+		const icon = this.slotIcons.get(slot)!;
 		const count = this.slotCounts.get(slot);
 		if (count) {
 			count.textContent = typeof item.formatQuantity === "function" ? item.formatQuantity() : "";
@@ -403,10 +410,9 @@ export class QuickSlots extends Component {
 			if (atlas) {
 				const atlasPosition = atlas.positions.get(atlasKey);
 				if (atlasPosition) {
-					slot.style.backgroundImage = `url(${atlas.dataUrl}), url(${Paths.gui}/panel/empty_btn.png)`;
-					slot.style.backgroundPosition = `${-(atlasPosition.x) + 1}px ${-(atlasPosition.y) + 1}px, center center`;
-					slot.style.backgroundRepeat = "no-repeat, no-repeat";
-					slot.style.backgroundSize = "auto, contain";
+					icon.style.backgroundImage = `url(${atlas.dataUrl})`;
+					icon.style.backgroundPosition = `${-atlasPosition.x}px ${-atlasPosition.y}px`;
+					icon.style.backgroundSize = "auto";
 					ItemContainerImplementation.updateCursorFor(slot, item);
 					ItemContainerImplementation.updateToolTipFor(slot, item);
 					return;
@@ -422,15 +428,16 @@ export class QuickSlots extends Component {
 		const yOffset = (item["state"] || 0) * -tileSize;
 		const spritePath = singletons.getSpriteStore().checkPath(Paths.sprites
 			+ "/items/" + item["class"] + "/" + item["subclass"] + ".png");
-		slot.style.backgroundImage = `url(${spritePath}), url(${Paths.gui}/panel/empty_btn.png)`;
-		slot.style.backgroundPosition = `${xOffset + 1}px ${yOffset + 1}px, center center`;
-		slot.style.backgroundRepeat = "no-repeat, no-repeat";
-		slot.style.backgroundSize = `${tileSize}px ${tileSize}px, contain`;
+		icon.style.backgroundImage = `url(${spritePath})`;
+		icon.style.backgroundPosition = `${xOffset}px ${yOffset}px`;
+		// Keep the sprite sheet at native size; offsets select one 32px frame.
+		icon.style.backgroundSize = "auto";
 		ItemContainerImplementation.updateCursorFor(slot, item);
 		ItemContainerImplementation.updateToolTipFor(slot, item);
 	}
 
 	private setEmptySlotVisual(slot: HTMLButtonElement) {
+		this.slotIcons.get(slot)!.style.backgroundImage = "none";
 		slot.style.backgroundImage = `url(${Paths.gui}/panel/empty_btn.png)`;
 		slot.style.backgroundPosition = "center center";
 		slot.style.backgroundRepeat = "no-repeat";

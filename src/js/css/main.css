@@ -1600,6 +1600,7 @@ button.windowtitleminimize:first-child {
 
 .quick-slot__count {
 	position: absolute;
+	z-index: 2;
 	right: 3px;
 	bottom: 2px;
 	color: #fff;
