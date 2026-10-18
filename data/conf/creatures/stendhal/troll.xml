@@ -36,7 +36,7 @@
 				<sound value="cyclops-laugh-02"/>
 				<sound value="cyclops-grunt-01"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,5;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -153,7 +153,7 @@
 			</says>
 			<profile name="brave"/>
 			<profile name="offensive"/>
-			<profile name="status_attackers" params="StunnedStatus,8;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="patrolling"/>
 		</ai>
 	</creature>

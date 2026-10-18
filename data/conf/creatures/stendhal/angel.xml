@@ -193,7 +193,7 @@
 				<noise state="idle follow fight" value="Będę wszechmocny!"/>
 				<sound value="sneeze-baby-1"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="bleeding_attack" params="1"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>

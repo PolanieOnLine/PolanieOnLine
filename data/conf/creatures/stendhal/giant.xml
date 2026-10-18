@@ -71,7 +71,7 @@
 				<noise state="idle follow fight" value="Ence pence, miecz mam w której rece?!"/>
 				<noise state="idle follow fight" value="Miecz mam ostry i wbije Ci go w serce!"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -112,7 +112,7 @@
 				<noise state="idle follow fight" value="Gnomy! Precz stąd!"/>
 				<noise state="idle follow fight" value="Możesz wydrzeć mi sakwę, lecz mego serca nie oddam!"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -155,7 +155,7 @@
 				<noise state="idle follow fight" value="Gińże wreszcie!"/>
 				<noise state="idle follow fight" value="Robaki niech toczą twe ścierwo!"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -247,7 +247,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>

@@ -322,7 +322,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -362,7 +362,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -400,7 +400,7 @@
 				<noise state="idle follow fight" value="Nie masz gustu, więc giń!"/>
 				<sound value="laugh-evil-01"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -438,7 +438,7 @@
 				<noise state="idle follow fight" value="Na proch cię zmielę!"/>
 				<sound value="laugh-evil-01"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,3;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>

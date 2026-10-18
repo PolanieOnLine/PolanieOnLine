@@ -364,7 +364,7 @@
 			<says>
 				<noise state="idle follow fight" value="Wydaj swój ostatni oddech!"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>

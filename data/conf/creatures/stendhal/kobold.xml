@@ -262,7 +262,7 @@
 				<sound value="kobold_bark-03"/>
 				<sound value="kobold_bark-04"/>
 			</says>
-			<profile name="status_attackers" params="StunnedStatus,5;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
