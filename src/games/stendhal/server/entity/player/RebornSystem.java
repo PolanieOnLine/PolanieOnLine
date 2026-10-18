@@ -16,7 +16,9 @@ import marauroa.common.game.RPSlot;
  *
  * Reborns are character progression, not quests. The first five reborns grant
  * capped combat and health bonuses. Later reborns remain available without
- * increasing character power further.
+ * increasing character power further. Monster experience remains at its base
+ * value through five reborns, then falls by five percentage points per reborn
+ * until it reaches 75 percent at ten reborns.
  */
 public final class RebornSystem {
 	public static final String ATTR_REBORNS = "reborns";
@@ -26,7 +28,8 @@ public final class RebornSystem {
 	private static final int MIGRATION_VERSION = 1;
 	private static final int POWER_REBORN_LIMIT = 5;
 	private static final int ATTACK_BONUS_PER_REBORN = 2;
-	private static final int COMBAT_XP_BONUS_PER_REBORN = 5;
+	private static final int COMBAT_XP_REDUCTION_PER_REBORN = 5;
+	private static final int MAX_COMBAT_XP_REDUCTION = 25;
 	private static final int HEALTH_PER_LEVEL = 10;
 
 	private static final int REWARD_THIRD = 1;
@@ -58,8 +61,17 @@ public final class RebornSystem {
 		return getPowerRebornCount(player) * ATTACK_BONUS_PER_REBORN;
 	}
 
+	/** Signed adjustment to base monster experience, not a permanent power bonus. */
 	public static int getCombatExperienceBonusPercent(final Player player) {
-		return getPowerRebornCount(player) * COMBAT_XP_BONUS_PER_REBORN;
+		return getCombatExperiencePercentForRebornCount(getRebornCount(player)) - 100;
+	}
+
+	/** Also used by Yerena to describe the next reborn before it is accepted. */
+	public static int getCombatExperiencePercentForRebornCount(final int reborns) {
+		final int penaltyReborns = Math.min(
+				MAX_COMBAT_XP_REDUCTION / COMBAT_XP_REDUCTION_PER_REBORN,
+				Math.max(POWER_REBORN_LIMIT, reborns) - POWER_REBORN_LIMIT);
+		return 100 - penaltyReborns * COMBAT_XP_REDUCTION_PER_REBORN;
 	}
 
 	public static int getHealthBonus(final Player player) {
@@ -85,7 +97,9 @@ public final class RebornSystem {
 		if (experience <= 0) {
 			return experience;
 		}
-		return scaleByPercent(experience, getCombatExperienceBonusPercent(player));
+		final int percent = getCombatExperiencePercentForRebornCount(getRebornCount(player));
+		// Long arithmetic preserves rounding without overflowing large XP rewards.
+		return (int) ((experience * (long) percent + 50) / 100);
 	}
 
 	private static int scaleByPercent(final int value, final int bonusPercent) {

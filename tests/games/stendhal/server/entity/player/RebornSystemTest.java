@@ -27,13 +27,18 @@ public class RebornSystemTest {
 		final Player player = PlayerTestHelper.createPlayer("reborn-bonuses");
 
 		assertBonuses(player, 0, 0, 0, 0);
-		assertBonuses(player, 1, 2, 5, 1000);
-		assertBonuses(player, 2, 4, 10, 2000);
-		assertBonuses(player, 3, 6, 15, 3000);
-		assertBonuses(player, 4, 8, 20, 4000);
-		assertBonuses(player, 5, 10, 25, 6000);
-		assertBonuses(player, 6, 10, 25, 6000);
-		assertBonuses(player, 100, 10, 25, 6000);
+		assertBonuses(player, 1, 2, 0, 1000);
+		assertBonuses(player, 2, 4, 0, 2000);
+		assertBonuses(player, 3, 6, 0, 3000);
+		assertBonuses(player, 4, 8, 0, 4000);
+		assertBonuses(player, 5, 10, 0, 6000);
+		assertBonuses(player, 6, 10, -5, 6000);
+		assertBonuses(player, 7, 10, -10, 6000);
+		assertBonuses(player, 8, 10, -15, 6000);
+		assertBonuses(player, 9, 10, -20, 6000);
+		assertBonuses(player, 10, 10, -25, 6000);
+		assertBonuses(player, 100, 10, -25, 6000);
+		assertBonuses(player, Integer.MAX_VALUE, 10, -25, 6000);
 	}
 
 	@Test
@@ -42,15 +47,33 @@ public class RebornSystemTest {
 
 		player.put(RebornSystem.ATTR_REBORNS, 1);
 		assertEquals(102, RebornSystem.applyAttackBonus(player, 100));
-		assertEquals(105, RebornSystem.applyCombatExperienceBonus(player, 100));
+		assertEquals(100, RebornSystem.applyCombatExperienceBonus(player, 100));
 
 		player.put(RebornSystem.ATTR_REBORNS, 5);
 		assertEquals(110, RebornSystem.applyAttackBonus(player, 100));
-		assertEquals(125, RebornSystem.applyCombatExperienceBonus(player, 100));
+		assertEquals(100, RebornSystem.applyCombatExperienceBonus(player, 100));
+
+		final int[] rewards = { 95, 90, 85, 80, 75 };
+		for (int reborns = 6; reborns <= 10; reborns++) {
+			player.put(RebornSystem.ATTR_REBORNS, reborns);
+			assertEquals(rewards[reborns - 6], RebornSystem.applyCombatExperienceBonus(player, 100));
+		}
 
 		player.put(RebornSystem.ATTR_REBORNS, 50);
 		assertEquals(110, RebornSystem.applyAttackBonus(player, 100));
-		assertEquals(125, RebornSystem.applyCombatExperienceBonus(player, 100));
+		assertEquals(75, RebornSystem.applyCombatExperienceBonus(player, 100));
+	}
+
+	@Test
+	public void testCombatReductionKeepsRoundingAndNonPositiveRewardsSafe() {
+		final Player player = PlayerTestHelper.createPlayer("reborn-small-rewards");
+		player.put(RebornSystem.ATTR_REBORNS, 10);
+		assertEquals(0, RebornSystem.applyCombatExperienceBonus(player, 0));
+		assertEquals(-1, RebornSystem.applyCombatExperienceBonus(player, -1));
+		assertEquals(1, RebornSystem.applyCombatExperienceBonus(player, 1));
+		assertEquals(3, RebornSystem.applyCombatExperienceBonus(player, 4));
+		assertEquals(1610612735, RebornSystem.applyCombatExperienceBonus(player, Integer.MAX_VALUE));
+		assertEquals(100, RebornSystem.applyCombatExperienceBonus(null, 100));
 	}
 
 	@Test
