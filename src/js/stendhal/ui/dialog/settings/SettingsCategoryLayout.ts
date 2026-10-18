@@ -30,7 +30,7 @@ export function organizeSettings(root: HTMLElement): {label: string; element: HT
 	group(2, "Panel statystyk", ["chk_charname", "chk_hpbar"]);
 	group(2, "Prawy panel", ["chk_rightpanel_personalize", "btn_rightpanel_reset"]);
 	group(3, "Tekst i powiadomienia", ["chk_speechcr", "chk_floatchat", "chk_hidechat", "chk_pvtsnd", "chk_nativeemojis", "selfontchat", "selfonttlog", "txtchatopts"]);
-	group(4, "Walka i przedmioty", ["chk_chestqp", "chk_itemtooltipcomparison", "chk_attack_button", "chk_attack_players"]);
+	group(4, "Walka i przedmioty", ["chk_chestqp", "chk_itemtooltipcomparison", "chk_attack_button", "chk_loot_button", "chk_attack_players"]);
 	// Move the complete controller-owned containers, including dynamically created controls.
 	for (const [id, page] of [["settings-input", 0], ["settings-visuals", 1], ["settings-sound", 5]] as const) {
 		const source = root.querySelector<HTMLElement>(`#${id}`)!;

@@ -61,11 +61,11 @@ const {chromium} = require(process.env.STENDHAL_PLAYWRIGHT || 'playwright');
   await page.addStyleTag({content:`:root{--background-url:url(data:image/jpeg;base64,${fs.readFileSync('data/gui/panel_wood.jpg').toString('base64')})}body{margin:8px}.settings-dialog,.character-selection{padding:8px;box-sizing:border-box}`});
   await page.evaluate(()=>document.head.append(...document.querySelectorAll('template')));
   await page.evaluate(() => {
-   const values={'joystick.center.x':'264','joystick.center.y':'384','viewport.tileScale.mobile':'0.9','chat-opts.custom':'hello','font.body':'Carlito','joystick.style':'joystick','menu.style':'traditional'};
+   const values={'joystick.center.x':'264','joystick.center.y':'384','joystick.autoposition':'true','viewport.tileScale.mobile':'0.9','chat-opts.custom':'hello','font.body':'Carlito','joystick.style':'joystick','menu.style':'traditional'};
    const config={get:key=>values[key]??'false',set:(key,value)=>values[key]=String(value),getBoolean:key=>values[key]==='true',getInt:key=>Number(values[key])||0,
     fonts:{Carlito:'Carlito'},getThemesMap:()=>({wood:''}),getTheme:()=> 'wood',getFontsMap:()=>({Carlito:''}),getOpts:key=>key==='joystick.style'?{joystick:'Joystick'}:{traditional:'Tradycyjny'},getList:()=>[]};
    const noops=new Proxy({}, {get:()=>()=>{}});
-   const controller={update(){},joystickEnabled:()=>false,attackButtonEnabled:()=>false,lootButtonEnabled:()=>false,getVolume:()=>0.5};
+   const controller={update(){},joystickEnabled:()=>false,attackButtonEnabled:()=>false,lootButtonEnabled:()=>config.getBoolean('loot.button'),getVolume:()=>0.5};
    window.fixture={config,values,admin:false,ui:noops,stendhal:{config,data:{outfit:{getLayerNames:()=>['body','dress','head','hair'],detailHasRearLayer:()=>false,isSkinLayer:()=>false}}}};
    window.fixture.singletons=new Proxy({getConfigManager:()=>config},{get:(target,key)=>target[key]||(()=>controller)});
   });
@@ -73,6 +73,23 @@ const {chromium} = require(process.env.STENDHAL_PLAYWRIGHT || 'playwright');
   await page.evaluate(() => {window.settings=new RealDialogs.SettingsDialog();document.body.replaceChildren(settings.componentElement);});
   assert.equal(await page.locator('.tabpanel-tabs button').count(),6);
   for (let i=0;i<6;i++) {await page.locator('.tabpanel-tabs button').nth(i).click();assert.equal(await page.locator('.settings-category:visible').count(),1);}
+  assert.equal(await page.locator('#chk_loot_button').count(),1,'Loot button setting must be available');
+  assert.equal(await page.locator('#chk_joystick_auto').count(),1,'Joystick auto-position setting must be available');
+  await page.locator('.tabpanel-tabs button').nth(4).click();
+  await page.locator('#chk_loot_button').click();
+  assert.equal(await page.evaluate(()=>fixture.values['loot.button']),'true');
+  assert.equal(await page.locator('#chk_loot_button').evaluate(el=>el.closest('.settings-category').dataset.category),'combat');
+  await page.locator('.tabpanel-tabs button').nth(0).click();
+  assert.equal(await page.locator('#txtjoystickx').isDisabled(),true);
+  assert.equal(await page.locator('#txtjoysticky').isDisabled(),true);
+  await page.locator('#chk_joystick_auto').click();
+  assert.equal(await page.evaluate(()=>fixture.values['joystick.autoposition']),'false');
+  assert.equal(await page.locator('#txtjoystickx').isEnabled(),true);
+  assert.equal(await page.locator('#txtjoysticky').isEnabled(),true);
+  await page.locator('#txtjoystickx').fill('123');
+  assert.equal(await page.evaluate(()=>fixture.values['joystick.center.x']),'123');
+  await page.locator('#chk_joystick_auto').click();
+  assert.equal(await page.locator('#txtjoystickx').isDisabled(),true);
   await page.locator('.tabpanel-tabs button').nth(3).click();
   await page.locator('#txtchatopts').fill('remember me');await page.locator('#txtchatopts').dispatchEvent('change');
   assert.equal(await page.evaluate(()=>fixture.values['chat-opts.custom']),'remember me');
@@ -83,6 +100,10 @@ const {chromium} = require(process.env.STENDHAL_PLAYWRIGHT || 'playwright');
   await page.evaluate(()=>{fixture.admin=true;document.body.replaceChildren(new RealDialogs.SettingsDialog().componentElement)});
   assert.equal(await page.locator('.tabpanel-tabs button').count(),7);
   assert.equal(await page.locator('#txtchatopts').inputValue(),'remember me');
+  assert.equal(await page.locator('#chk_loot_button').getAttribute('aria-checked'),'true');
+  assert.equal(await page.locator('#chk_joystick_auto').getAttribute('aria-checked'),'true');
+  assert.equal(await page.locator('#txtjoystickx').inputValue(),'123');
+  assert.equal(await page.locator('#txtjoystickx').isDisabled(),true);
   await page.setViewportSize({width:390,height:844});
   for(let i=0;i<7;i++) {
    await page.locator('.tabpanel-tabs button').nth(i).click();
@@ -100,6 +121,8 @@ const {chromium} = require(process.env.STENDHAL_PLAYWRIGHT || 'playwright');
   await page.evaluate(async()=>{await RealDialogs.GameLanguage.load('https://fixture.invalid/data');RealDialogs.GameLanguage.synchronize('en')});
   assert.equal(await page.locator('.tabpanel-tabs button').nth(0).innerText(),'Controls');
   assert.equal(await page.locator('.tabpanel-tabs button').nth(3).innerText(),'Text and notifications');
+  assert.match(await page.locator('#chk_loot_button').evaluate(el=>el.closest('label').textContent),/Loot button/);
+  assert.match(await page.locator('#chk_joystick_auto').evaluate(el=>el.closest('label').textContent),/Automatic joystick positioning/);
   console.log('Real settings dialog: all pages, admin gating, saved config callback and phone width passed.');
   const sprites=Object.fromEntries(['body/001','dress/015','head/001','hair/007'].map(name=>[name+'.png','data:image/png;base64,'+fs.readFileSync('data/sprites/outfit/'+name+'.png').toString('base64')]));
   await page.evaluate(sprites=>{
