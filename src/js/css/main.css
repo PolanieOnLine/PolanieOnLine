@@ -1212,7 +1212,8 @@ span.lognick {
 
 #client.mobile-floating-ui #rightColumn {
 	position: relative;
-	transform: translateX(0);
+	/* A transform would trap the fixed reserve window inside this clipped column. */
+	transform: none;
 	transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease;
 }
 
