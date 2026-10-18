@@ -7,7 +7,7 @@ import org.junit.Test;
 /** Tests the final text emitted by NPCs, not just individual source fragments. */
 public class RegionalNpcTranslationTest {
  @Test public void sheepdogFoodUsesTheExistingEnglishItemNames() {
-  String foods = "Your sheepdog eats drumsticks, meat, ham, country sausage, steak, smoked sheep's cheese, or sheep's whey drink. Enjoy!";
+  String foods = "Your sheepdog eats drumsticks, meat, ham, cottage sausage, steak, smoked sheep's cheese, or sheep's whey drink. Enjoy!";
   assertEquals("Here you are, a little Tatra sheepdog! " + foods, Translation.getText("en", "Proszę bardzo, mały owczarek podhalański! Twój owczarek żywi się udkiem, mięsem, szynką, kiełbasą swojską, stekiem, oscypek lub żyntycą. Ciesz się!"));
   assertEquals("Here you are, a little sheepdog! " + foods, Translation.getText("en", "Proszę bardzo oto mały owczarek! Twój owczarek żywi się udkiem, mięsem, szynką, kiełbasą swojską, stekiem, oscypek lub żyntycą. Ciesz się!"));
  }
@@ -36,10 +36,10 @@ public class RegionalNpcTranslationTest {
   assertEquals("Zamknij, you killed a total of 3 rat. You defeated none alone and 3 in a group.", Translation.getText("en", "Zamknij, zabiłaś w sumie 3 szczur. Nie pokonałaś ani jednego w pojedynkę oraz 3 w grupie."));
  }
  @Test public void reboundOffersKeepNumbersAndSpecialGifts() {
-  String source = "Mogę cofnąć twoją drogę po raz 3. Po tym odrodzeniu twoje ciosy otrzymają łącznie 6 procent premii, a doświadczenie zdobywane w walce 15 procent premii. Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży. Czy chcesz narodzić się ponownie?";
+  String source = "Mogę cofnąć twoją drogę po raz 3. Po tym odrodzeniu twoje ciosy otrzymają łącznie 6 procent premii. Doświadczenie z potworów pozostanie na poziomie 100 procent wartości bazowej. Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży. Czy chcesz narodzić się ponownie?";
   String english = Translation.getText("en", source);
   assertTrue(english.contains("6 percent"));
-  assertTrue(english.contains("15 percent"));
+  assertTrue(english.contains("100 percent of the base value"));
   assertTrue(english.contains("two special daggers"));
   assertTrue(english.endsWith("Would you like to be reborn?"));
  }

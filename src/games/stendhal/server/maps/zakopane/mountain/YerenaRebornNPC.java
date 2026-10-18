@@ -108,7 +108,9 @@ public class YerenaRebornNPC implements ZoneConfigurator {
 						if (nextReborn <= 5) {
 							raiser.say(firstFiveOffer(nextReborn));
 						} else {
-							raiser.say("Pięć najważniejszych darów czasu już do ciebie należy. Mogę jednak ponownie cofnąć twoją drogę. Nie otrzymasz kolejnej premii do siły, zdrowia ani doświadczenia, ale twoje następne odrodzenie pozostanie częścią historii tej postaci. Czy chcesz tego?");
+							raiser.say("Pięć najważniejszych darów czasu już do ciebie należy. Mogę jednak ponownie cofnąć twoją drogę. Nie otrzymasz kolejnej premii do siły ani zdrowia. Po tym odrodzeniu będziesz otrzymywać "
+									+ RebornSystem.getCombatExperiencePercentForRebornCount(nextReborn)
+									+ " procent wartości bazowej doświadczenia z potworów. Nagrody doświadczenia z zadań pozostaną bez zmian. Czy chcesz tego?");
 						}
 					}
 				});
@@ -166,12 +168,10 @@ public class YerenaRebornNPC implements ZoneConfigurator {
 
 	private String firstFiveOffer(final int nextReborn) {
 		final int attackBonus = nextReborn * 2;
-		final int experienceBonus = nextReborn * 5;
 		final StringBuilder text = new StringBuilder();
 		text.append("Mogę cofnąć twoją drogę po raz ").append(nextReborn)
 				.append(". Po tym odrodzeniu twoje ciosy otrzymają łącznie ")
-				.append(attackBonus).append(" procent premii, a doświadczenie zdobywane w walce ")
-				.append(experienceBonus).append(" procent premii.");
+				.append(attackBonus).append(" procent premii. Doświadczenie z potworów pozostanie na poziomie 100 procent wartości bazowej.");
 
 		if (nextReborn == 3) {
 			text.append(" Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży.");

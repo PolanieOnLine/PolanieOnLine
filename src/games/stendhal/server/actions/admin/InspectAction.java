@@ -96,8 +96,9 @@ public class InspectAction extends AdministrationAction {
 				st.append("\nOdrodzenia: " + RebornSystem.getRebornCount(inspectedPlayer));
 				st.append("\nPremia ataku z odrodzeń: "
 						+ RebornSystem.getAttackBonusPercent(inspectedPlayer) + "%");
-				st.append("\nPremia doświadczenia z walki: "
-						+ RebornSystem.getCombatExperienceBonusPercent(inspectedPlayer) + "%");
+				st.append("\nDoświadczenie z potworów: "
+						+ RebornSystem.getCombatExperiencePercentForRebornCount(
+								RebornSystem.getRebornCount(inspectedPlayer)) + "% wartości bazowej");
 				st.append("\nPremia zdrowia z odrodzeń: "
 						+ RebornSystem.getHealthBonus(inspectedPlayer));
 				st.append("\nNagrody odrodzeń: "
