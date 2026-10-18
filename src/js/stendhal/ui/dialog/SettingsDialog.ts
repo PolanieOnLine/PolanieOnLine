@@ -28,6 +28,8 @@ import { Debug } from "../../util/Debug";
 import { GameLanguage } from "../../util/GameLanguage";
 
 import { ToggleSwitch } from "../component/ToggleSwitch";
+import { AbstractSettingsTab } from "./settings/AbstractSettingsTab";
+import { organizeSettings } from "./settings/SettingsCategoryLayout";
 
 
 class SettingsToggleControl {
@@ -103,7 +105,7 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 
 	constructor() {
-		super("settingsdialog-template", Layout.TOP, "#settings-tabs");
+		super("settingsdialog-template", Layout.LEFT, "#settings-tabs");
 		this.componentElement.classList.add("settings-dialog");
 
 		// TODO: add option to reset defaults
@@ -123,10 +125,14 @@ export class SettingsDialog extends TabDialogContentComponent {
 			"effect.weather": stendhal.config.get("effect.weather")
 		};
 
-		this.addTab("Ogólne", new GeneralTab(this, this.child("#settings-general")!));
-		this.addTab("Wizualne", new VisualsTab(this, this.child("#settings-visuals")!));
-		this.addTab("Dźwięki", new SoundTab(this, this.child("#settings-sound")!));
-		this.addTab("Sterowanie", new InputTab(this, this.child("#settings-input")!));
+		new GeneralTab(this, this.child("#settings-general")!);
+		new VisualsTab(this, this.child("#settings-visuals")!);
+		new SoundTab(this, this.child("#settings-sound")!);
+		new InputTab(this, this.child("#settings-input")!);
+		class Category extends AbstractSettingsTab {}
+		for (const page of organizeSettings(this.componentElement)) {
+			this.addTab(page.label, new Category(page.element));
+		}
 		if (AdminDiagnostics.isAdministrator()) {
 			this.addTab("Diagnostyka (admin)", new AdminDiagnosticsTab());
 		}
@@ -141,6 +147,10 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 		const btn_close = this.addCloseButton();
 		btn_close.title = "Zamknij to okno dialogowe bez odświeżenia strony";
+		const savedNote = document.createElement("span");
+		savedNote.className = "settings-saved-note";
+		savedNote.textContent = "Ustawienia zapisują się automatycznie";
+		this.child(".dialogbuttons")!.prepend(savedNote);
 		GameLanguage.translateSettings(this.componentElement);
 	}
 
