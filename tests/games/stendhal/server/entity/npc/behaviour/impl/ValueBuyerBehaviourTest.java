@@ -73,7 +73,7 @@ public class ValueBuyerBehaviourTest {
 		final String[] names = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",
 				"eliksir miłości", "gigantyczny eliksir", "smoczy eliksir", "duży smoczy eliksir",
 				"eliksir mroku" };
-		final int[] unitPrices = { 19, 49, 99, 293, 3000, 586, 12000, 16000, 75 };
+		final int[] unitPrices = { 19, 49, 99, 293, 147, 586, 879, 1099, 75 };
 		final ValueBuyerBehaviour arenaBuyer = buyer();
 		for (int i = 0; i < names.length; i++) {
 			final String name = names[i];
@@ -93,13 +93,34 @@ public class ValueBuyerBehaviourTest {
 		}
 	}
 	@Test public void ordinaryDrinksAndAntidotesKeepTheirFullValue() {
-		for (final String name : new String[] { "sok z chmielu", "zupa", "mleko", "antidotum" }) {
+		for (final String name : new String[] { "sok z chmielu", "mleko", "antidotum" }) {
 			final Player player = PlayerTestHelper.createPlayer("ArenaDrinkSeller");
 			final Item drink = manager().getItem(name, ItemCreationContext.restore());
 			player.getSlot("bag").add(drink);
 			final ItemParserResult request = new ItemParserResult(true, name, 1, Collections.<String>emptySet());
 			assertEquals(name, drink.getValue(), buyer().getCharge(request, player));
 			assertEquals(name, drink.getValue(), buyer().getUnitPrice(name));
+		}
+	}
+	@Test public void expensiveFoodUsesArenaPricesWithoutChangingOtherMerchantsOrAllowingBoundItems() {
+		final String[] names = { "nakrapiane jajo", "zupa", "zupa grzybowa", "zupa rybna" };
+		final int[] prices = { 250, 312, 312, 312 };
+		final ValueBuyerBehaviour arenaBuyer = buyer();
+		for (int i = 0; i < names.length; i++) {
+			final String name = names[i];
+			final Player player = PlayerTestHelper.createPlayer("ArenaFoodSeller");
+			final StackableItem food = (StackableItem) manager().getItem(name, ItemCreationContext.restore());
+			food.setQuantity(5);
+			player.getSlot("bag").add(food);
+			final int originalValue = food.getValue();
+			final ItemParserResult request = new ItemParserResult(true, name, 3, Collections.<String>emptySet());
+			assertEquals(name + " catalogue", prices[i], arenaBuyer.getUnitPrice(name));
+			assertEquals(name + " quote", prices[i] * 3, arenaBuyer.getCharge(request, player));
+			assertEquals(name + " item value", originalValue, food.getValue());
+			assertEquals(name + " ordinary merchant", originalValue * 3,
+					new BuyerBehaviour(Collections.singletonMap(name, originalValue)).getCharge(request, player));
+			food.setBoundTo(player.getName());
+			assertEquals(name + " bound", 0, arenaBuyer.getCharge(request, player));
 		}
 	}
 	@Test public void elixirSalePaysDiscountedPriceAndConsumesOnlyRequestedQuantity() {

@@ -112,6 +112,39 @@ public class ChallengeArenaNPCTest {
 	}
 
 	@Test
+	public void arenaBuyerQuotesAndPaysRebalancedConsumables() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-consumables", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaConsumableSeller");
+		zone.add(player);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		final String[] names = { "smoczy eliksir", "duży smoczy eliksir", "eliksir miłości",
+				"nakrapiane jajo", "zupa", "zupa grzybowa", "zupa rybna" };
+		final int[] prices = { 879, 1099, 147, 250, 312, 312, 312 };
+		int totalPaid = 0;
+		for (int i = 0; i < names.length; i++) {
+			final String name = names[i];
+			final StackableItem item = (StackableItem) SingletonRepository.getEntityManager()
+					.getItem(name, ItemCreationContext.restore());
+			item.setQuantity(5);
+			player.getSlot("bag").add(item);
+			final int originalValue = item.getValue();
+			final int price = prices[i] * 3;
+			engine.step(player, "sprzedaj 3 " + name);
+			assertEquals(name, ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+			assertTrue(name, getReply(npc).contains(MoneyUtils.formatPrice(price)));
+			engine.step(player, "tak");
+			totalPaid += price;
+			assertEquals(name, ConversationStates.ATTENDING, engine.getCurrentState());
+			assertEquals(name, totalPaid, MoneyUtils.getTotalMoneyInCopper(player));
+			assertEquals(name, 2, item.getQuantity());
+			assertEquals(name, originalValue, item.getValue());
+		}
+	}
+
+	@Test
 	public void blackItemCannotBeSoldUntilUltimateCollectorIsCompleted() {
 		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-locked", 64, 64);
 		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);

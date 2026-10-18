@@ -2,6 +2,7 @@ package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,28 @@ import games.stendhal.server.entity.item.TwilightElixir;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** Arena buyer using item values, with a reduced purchase price for elixirs. */
+/** Arena buyer using item values, with reduced purchase prices for consumables. */
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
+	private static final Map<String, Double> ELIXIR_PRICE_RATIOS;
+	private static final Map<String, Integer> CONSUMABLE_PRICE_DIVISORS;
+
+	static {
+		// Keep these elixirs proportional to the great elixir's healing and price.
+		final Map<String, Double> ratios = new HashMap<String, Double>();
+		ratios.put("eliksir miłości", 0.5);
+		ratios.put("gigantyczny eliksir", 2.0);
+		ratios.put("smoczy eliksir", 3.0);
+		ratios.put("duży smoczy eliksir", 3.75);
+		ELIXIR_PRICE_RATIOS = Collections.unmodifiableMap(ratios);
+
+		final Map<String, Integer> divisors = new HashMap<String, Integer>();
+		divisors.put("nakrapiane jajo", 30);
+		divisors.put("zupa", 4);
+		divisors.put("zupa grzybowa", 4);
+		divisors.put("zupa rybna", 4);
+		CONSUMABLE_PRICE_DIVISORS = Collections.unmodifiableMap(divisors);
+	}
+
 	private static final String BALDUIN_REQUIREMENT =
 			"Czarne przedmioty skupuję po ukończeniu wyzwań Balduina. "
 			+ "Jeśli już je ukończyłeś, sprawdź, czy masz przedmiot przy sobie "
@@ -75,8 +96,18 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 						getPurchasePrice(item.getValue(), item.getImplementation())));
 			}
 		}
-		if (prices.containsKey("gigantyczny eliksir") && prices.containsKey("wielki eliksir")) {
-			prices.put("gigantyczny eliksir", 2 * prices.get("wielki eliksir"));
+		final Integer greatElixirPrice = prices.get("wielki eliksir");
+		if (greatElixirPrice != null) {
+			for (final Map.Entry<String, Double> entry : ELIXIR_PRICE_RATIOS.entrySet()) {
+				if (prices.containsKey(entry.getKey())) {
+					prices.put(entry.getKey(), (int) Math.round(greatElixirPrice * entry.getValue()));
+				}
+			}
+		}
+		for (final Map.Entry<String, Integer> entry : CONSUMABLE_PRICE_DIVISORS.entrySet()) {
+			if (prices.containsKey(entry.getKey())) {
+				prices.put(entry.getKey(), prices.get(entry.getKey()) / entry.getValue());
+			}
 		}
 		return prices;
 	}
@@ -114,8 +145,9 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 			if (item.getValue() <= 0) { return 0; }
 			final int quantity = Math.min(remaining, item.getQuantity());
 			final int unitPrice;
-			if ("gigantyczny eliksir".equals(item.getName())) {
-				// Follow the great elixir's price, preserving this instance's rarity multiplier.
+			if (ELIXIR_PRICE_RATIOS.containsKey(item.getName())
+					|| CONSUMABLE_PRICE_DIVISORS.containsKey(item.getName())) {
+				// Use the adjusted catalogue price without discounting saved item values twice.
 				unitPrice = (int) (getUnitPrice(item.getName()) * ItemValueService.getValueMultiplier(item));
 			} else {
 				unitPrice = getPurchasePrice(item.getValue(), item.getClass());
