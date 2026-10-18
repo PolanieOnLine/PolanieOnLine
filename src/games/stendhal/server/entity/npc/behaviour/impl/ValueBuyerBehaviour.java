@@ -13,10 +13,12 @@ import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.OwnedItem;
+import games.stendhal.server.entity.item.Potion;
+import games.stendhal.server.entity.item.TwilightElixir;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** A buyer whose catalogue and prices come from item definitions, not a shop list. */
+/** Arena buyer using item values, with a reduced purchase price for elixirs. */
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
 	private static final String BALDUIN_REQUIREMENT =
 			"Czarne przedmioty skupuję po ukończeniu wyzwań Balduina. "
@@ -69,10 +71,23 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 					&& !"key".equals(item.getItemClass())
 					&& item.getEquipableSlots() != null && item.getEquipableSlots().contains("trade")
 					&& (item.getAttributes() == null || !item.getAttributes().containsKey("autobind"))) {
-				prices.put(item.getItemName(), Integer.valueOf(item.getValue()));
+				prices.put(item.getItemName(), Integer.valueOf(
+						getPurchasePrice(item.getValue(), item.getImplementation())));
 			}
 		}
+		if (prices.containsKey("gigantyczny eliksir") && prices.containsKey("wielki eliksir")) {
+			prices.put("gigantyczny eliksir", 2 * prices.get("wielki eliksir"));
+		}
 		return prices;
+	}
+
+	private static int getPurchasePrice(final int value, final Class<?> implementation) {
+		if (implementation != null && (Potion.class.isAssignableFrom(implementation)
+				|| TwilightElixir.class.isAssignableFrom(implementation))) {
+			// Round down per unit: neither stacks nor rounding may bypass the 75% reduction.
+			return value / 4;
+		}
+		return value;
 	}
 
 	@Override
@@ -98,7 +113,14 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 			ItemValueService.refresh(item);
 			if (item.getValue() <= 0) { return 0; }
 			final int quantity = Math.min(remaining, item.getQuantity());
-			total += (long) quantity * item.getValue();
+			final int unitPrice;
+			if ("gigantyczny eliksir".equals(item.getName())) {
+				// Follow the great elixir's price, preserving this instance's rarity multiplier.
+				unitPrice = (int) (getUnitPrice(item.getName()) * ItemValueService.getValueMultiplier(item));
+			} else {
+				unitPrice = getPurchasePrice(item.getValue(), item.getClass());
+			}
+			total += (long) quantity * unitPrice;
 			remaining -= quantity;
 			if (total > Integer.MAX_VALUE) { return 0; }
 		}

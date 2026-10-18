@@ -66,6 +66,52 @@ public class ChallengeArenaNPCTest {
 	}
 
 	@Test
+	public void arenaBuyerQuotesAndPaysReducedElixirPrices() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-elixirs", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaPotionSeller");
+		zone.add(player);
+		final StackableItem potions = (StackableItem) SingletonRepository.getEntityManager()
+				.getItem("wielki eliksir", ItemCreationContext.restore());
+		potions.setQuantity(5);
+		player.getSlot("bag").add(potions);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj 3 wielki eliksir");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(879)));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertEquals(879, MoneyUtils.getTotalMoneyInCopper(player));
+		assertEquals(2, potions.getQuantity());
+		assertEquals(1174, potions.getValue());
+	}
+
+	@Test
+	public void arenaBuyerPaysTwiceTheGreatElixirPriceForGiantElixirs() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-giant-elixirs", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaGiantPotionSeller");
+		zone.add(player);
+		final StackableItem potions = (StackableItem) SingletonRepository.getEntityManager()
+				.getItem("gigantyczny eliksir", ItemCreationContext.restore());
+		potions.setQuantity(5);
+		player.getSlot("bag").add(potions);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj 3 gigantyczny eliksir");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(1758)));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertEquals(1758, MoneyUtils.getTotalMoneyInCopper(player));
+		assertEquals(2, potions.getQuantity());
+		assertEquals(48000, potions.getValue());
+	}
+
+	@Test
 	public void blackItemCannotBeSoldUntilUltimateCollectorIsCompleted() {
 		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-locked", 64, 64);
 		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);

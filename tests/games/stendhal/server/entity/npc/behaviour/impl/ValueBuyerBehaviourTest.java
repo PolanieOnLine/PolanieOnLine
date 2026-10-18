@@ -69,6 +69,55 @@ public class ValueBuyerBehaviourTest {
 		assertFalse(buyer().hasItem("money"));
 		assertFalse(buyer().hasItem("skrzynia Areny Wyzwań"));
 	}
+	@Test public void elixirsUseReducedArenaPricesWithoutChangingTheirItemValue() {
+		final String[] names = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",
+				"eliksir miłości", "gigantyczny eliksir", "smoczy eliksir", "duży smoczy eliksir",
+				"eliksir mroku" };
+		final int[] unitPrices = { 19, 49, 99, 293, 3000, 586, 12000, 16000, 75 };
+		final ValueBuyerBehaviour arenaBuyer = buyer();
+		for (int i = 0; i < names.length; i++) {
+			final String name = names[i];
+			final Player player = PlayerTestHelper.createPlayer("ArenaElixirSeller");
+			final StackableItem potion = (StackableItem) manager().getItem(name, ItemCreationContext.restore());
+			potion.setQuantity(5);
+			player.getSlot("bag").add(potion);
+			final int originalValue = potion.getValue();
+			final int unitPrice = unitPrices[i];
+			final ItemParserResult request = new ItemParserResult(true, name, 3, Collections.<String>emptySet());
+			assertEquals(name + " catalogue", unitPrice, arenaBuyer.getUnitPrice(name));
+			assertEquals(name + " quote", unitPrice * 3, arenaBuyer.getCharge(request, player));
+			assertEquals(name + " repeated quote", unitPrice * 3, arenaBuyer.getCharge(request, player));
+			assertEquals(name + " item value", originalValue, potion.getValue());
+			assertEquals(name + " ordinary merchant", originalValue * 3,
+					new BuyerBehaviour(Collections.singletonMap(name, originalValue)).getCharge(request, player));
+		}
+	}
+	@Test public void ordinaryDrinksAndAntidotesKeepTheirFullValue() {
+		for (final String name : new String[] { "sok z chmielu", "zupa", "mleko", "antidotum" }) {
+			final Player player = PlayerTestHelper.createPlayer("ArenaDrinkSeller");
+			final Item drink = manager().getItem(name, ItemCreationContext.restore());
+			player.getSlot("bag").add(drink);
+			final ItemParserResult request = new ItemParserResult(true, name, 1, Collections.<String>emptySet());
+			assertEquals(name, drink.getValue(), buyer().getCharge(request, player));
+			assertEquals(name, drink.getValue(), buyer().getUnitPrice(name));
+		}
+	}
+	@Test public void elixirSalePaysDiscountedPriceAndConsumesOnlyRequestedQuantity() {
+		final Player player = PlayerTestHelper.createPlayer("ArenaElixirPayment");
+		final StendhalRPZone zone = new StendhalRPZone("arena-elixir-payment", 20, 20);
+		zone.add(player);
+		final StackableItem potion = (StackableItem) manager().getItem("mały eliksir", ItemCreationContext.restore());
+		potion.setQuantity(5);
+		player.getSlot("bag").add(potion);
+		PlayerTestHelper.generateNPCRPClasses();
+		final SpeakerNPC npc = new SpeakerNPC("Elixir Test Buyer");
+		zone.add(npc);
+		final ItemParserResult request = new ItemParserResult(true, "mały eliksir", 3, Collections.<String>emptySet());
+		assertTrue(buyer().transactAgreedDeal(request, new EventRaiser(npc), player));
+		assertEquals(57, MoneyUtils.getTotalMoneyInCopper(player));
+		assertEquals(2, potion.getQuantity());
+		assertEquals(79, potion.getValue());
+	}
 	@Test public void sumsActualValuesInDropOrderWithoutApplyingRarityTwice() {
 		final Player player = PlayerTestHelper.createPlayer("value-test");
 		final Item common = item(ItemRarity.COMMON);
