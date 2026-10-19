@@ -18,6 +18,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 	private static final Logger logger = Logger.getLogger(ChallengeArenaEngine.class);
 	private static final long WAVE_DELAY_MILLIS = 2500L;
 	private static final long LOOT_PERIOD_MILLIS = 60000L;
+	private static final long BLOCKED_WAVE_TIMEOUT_MILLIS = 60000L;
 
 	private final Player player;
 	private final ChallengeArenaInfo arenaInfo;
@@ -29,6 +30,7 @@ public final class ChallengeArenaEngine implements TurnListener {
 	private boolean finishing;
 	private long nextWaveAt;
 	private long lootUntil;
+	private long blockedWaveSince = -1L;
 
 	ChallengeArenaEngine(final Player player, final ChallengeArenaInfo arenaInfo) {
 		this(player, arenaInfo, System::currentTimeMillis);
@@ -74,13 +76,32 @@ public final class ChallengeArenaEngine implements TurnListener {
 			return;
 		}
 
+		final boolean allCreaturesDead = spawner.areAllCreaturesDead();
 		if (state.getSpawnedCreatures() >= state.getTier().getCreatureCount()
-				&& spawner.areAllCreaturesDead()) {
+				&& allCreaturesDead) {
 			completeRun(state);
 			return;
 		}
 
-		if (spawner.areAllCreaturesDead()
+		final ChallengeArenaTier tier = state.getTier();
+		final int waveNumber = tier.getNextWaveNumber(state.getSpawnedCreatures());
+		final int remainingInWave = tier.getRemainingWaveSize(state.getSpawnedCreatures());
+		final boolean partialWave = remainingInWave > 0
+				&& remainingInWave < tier.getWaveSizeForWave(waveNumber);
+		if (partialWave && allCreaturesDead) {
+			if (blockedWaveSince < 0) {
+				blockedWaveSince = clock.getAsLong();
+			} else if (clock.getAsLong() - blockedWaveSince >= BLOCKED_WAVE_TIMEOUT_MILLIS) {
+				logger.warn("Challenge Arena partial wave remained blocked for " + player.getName());
+				failRun(state);
+				return;
+			}
+		} else {
+			// Combat may take arbitrarily long; only idle placement failures time out.
+			blockedWaveSince = -1L;
+		}
+
+		if ((allCreaturesDead || partialWave)
 				&& clock.getAsLong() >= nextWaveAt) {
 			spawnNextWave(state);
 		}
@@ -126,7 +147,8 @@ public final class ChallengeArenaEngine implements TurnListener {
 		if (remaining <= 0 || waveNumber > tier.getWaveCount()) {
 			return;
 		}
-		final int waveSize = Math.min(tier.getWaveSizeForWave(waveNumber), remaining);
+		final int waveSize = tier.getRemainingWaveSize(alreadySpawned);
+		final boolean firstBatch = waveSize == tier.getWaveSizeForWave(waveNumber);
 		int spawnedNow = 0;
 
 		for (int i = 0; i < waveSize; i++) {
@@ -147,6 +169,11 @@ public final class ChallengeArenaEngine implements TurnListener {
 		}
 
 		if (spawnedNow == 0) {
+			if (!firstBatch) {
+				// Keep the successful part of this wave and retry the missing slots.
+				nextWaveAt = clock.getAsLong() + WAVE_DELAY_MILLIS;
+				return;
+			}
 			logger.warn("Challenge Arena could not spawn a wave for "
 					+ player.getName());
 			failRun(state);
@@ -156,11 +183,17 @@ public final class ChallengeArenaEngine implements TurnListener {
 		final ChallengeArenaState updated = state.withSpawnedCreatures(
 				alreadySpawned + spawnedNow);
 		player.setQuest(ChallengeArenaState.QUEST_SLOT, updated.serialize());
+		// Progress starts a fresh idle allowance even if the new enemy dies
+		// before the next engine turn can observe it alive.
+		blockedWaveSince = -1L;
 		nextWaveAt = clock.getAsLong() + WAVE_DELAY_MILLIS;
 
-		player.sendPrivateText("Arena Wyzwań. Fala " + waveNumber + " z "
-				+ tier.getWaveCount() + ". Przeciwników w tej fali "
-				+ spawnedNow + ".");
+		if (firstBatch) {
+			// Announce the logical wave once, including any pending placements.
+			player.sendPrivateText("Arena Wyzwań. Fala " + waveNumber + " z "
+					+ tier.getWaveCount() + ". Przeciwników w tej fali "
+					+ tier.getWaveSizeForWave(waveNumber) + ".");
+		}
 	}
 
 	private void completeRun(final ChallengeArenaState state) {

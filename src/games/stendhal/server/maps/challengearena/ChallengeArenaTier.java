@@ -85,6 +85,19 @@ public enum ChallengeArenaTier {
 		return waveCount + 1;
 	}
 
+	/** Remaining placements in the current wave, not a new full batch. */
+	public int getRemainingWaveSize(final int alreadySpawned) {
+		final int safeSpawned = Math.max(0, Math.min(creatureCount, alreadySpawned));
+		int waveEnd = 0;
+		for (int wave = 1; wave <= waveCount; wave++) {
+			waveEnd += getWaveSizeForWave(wave);
+			if (safeSpawned < waveEnd) {
+				return waveEnd - safeSpawned;
+			}
+		}
+		return 0;
+	}
+
 	public int getMinimumLevelOffset() {
 		return minimumLevelOffset;
 	}
