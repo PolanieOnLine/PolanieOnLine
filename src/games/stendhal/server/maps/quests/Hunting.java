@@ -177,8 +177,16 @@ public class Hunting extends AbstractQuest {
 			if (created < 0 || now - Math.min(now, created) >= OFFER_LIFETIME) return null;
 			// Levelling alone must not reroll a still-suitable target or its reward.
 			fields[3] = Integer.toString(player.getLevel());
+			// Upgrade unaccepted old offers without rerolling or restarting their timer.
+			int savedBonus = Integer.parseInt(fields[4]);
+			int bonus = Math.min(savedBonus, difficulty.getPercent() * 100);
+			fields[4] = Integer.toString(bonus);
 			String offer = String.join(";", Arrays.copyOf(fields, 5));
-			return validOffer(offer, difficulty, candidates, fields.length == 7) ? offer : null;
+			if (!validOffer(offer, difficulty, candidates, fields.length == 7)) return null;
+			if (bonus != savedBonus) {
+				player.setQuest(OFFER_CACHE_PREFIX + difficulty.name(), String.join(";", fields));
+			}
+			return offer;
 		} catch (NumberFormatException invalid) { return null; }
 	}
 
@@ -218,6 +226,14 @@ public class Hunting extends AbstractQuest {
 					player.getLevel(), difficulty, availableCreatures(), Creature::getLevel)
 					.stream().anyMatch(target -> target.getName().equals(parts[1]));
 			if (!available) { throw new IllegalArgumentException(); }
+			if (bonus > difficulty.getPercent() * 100) {
+				// An old preview can be confirmed directly after an upgrade. Show
+				// the revised terms first; never accept a silently reduced reward.
+				offer(player, raiser, difficulty);
+				raiser.setCurrentState(ConversationStates.QUESTION_1);
+				player.sendPrivateText("Zmieniono zasady nagród za polowania. Sprawdź nową ofertę i potwierdź ją ponownie.");
+				return;
+			}
 			int repetitions = player.hasQuest(QUEST_SLOT) ? player.getNumberOfRepetitions(QUEST_SLOT, 2) : 0;
 			player.setQuest(QUEST_SLOT, parts[1] + ",0," + count + "," + player.getSoloKill(parts[1])
 					+ "," + player.getSharedKill(parts[1]) + ";" + System.currentTimeMillis() + ";"

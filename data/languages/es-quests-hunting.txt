@@ -14,6 +14,7 @@ Najpierw zakończ obecne polowanie albo powiedz #rezygnuję. Przerwane zadanie n
 Nie przyjmujesz zadania. Możesz wybrać inną trudność.=Has rechazado la misión. Puedes elegir otra dificultad.
 Nie przyjmujesz zadania. Odrzucenie nie losuje nowej propozycji. Możesz wybrać inną trudność.=Has rechazado la misión. Rechazarla no genera una propuesta nueva. Puedes elegir otra dificultad.
 Propozycja dla każdej trudności jest zapamiętana na 7 dni. Ukończenie polowania pozwala od razu wylosować nowe. Zabójstwa na arenach nie zaliczają polowania.=La propuesta de cada dificultad se guarda durante 7 días. Completar una cacería permite obtener nuevas propuestas de inmediato. Las bajas en las arenas no cuentan para la cacería.
+Zmieniono zasady nagród za polowania. Sprawdź nową ofertę i potwierdź ją ponownie.=Han cambiado las reglas de las recompensas de cacería. Revisa la nueva propuesta y confírmala de nuevo.
 Chcesz przerwać polowanie bez nagrody? Dotychczasowy postęp tego zadania przepadnie. #tak / #nie=¿Quieres abandonar la cacería sin recompensa? Perderás el progreso de esta misión. #sí / #no
 Nie masz aktywnego polowania.=No tienes ninguna cacería activa.
 Polowanie przerwane bez nagrody. Liczba ukończonych polowań jest zachowana. Wybierz #łatwe, #średnie lub #trudne.=Has abandonado la cacería sin recompensa. Se conserva el número de cacerías completadas. Elige #fácil, #media o #difícil.

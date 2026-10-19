@@ -296,14 +296,52 @@ public class HuntingTest {
 		engine.step(player, "średnie");
 		assertEquals(expected, player.getQuest("hunting_offer"));
 	}
-	@Test public void cancellingAnOldThirtyFiveKillTaskKeepsItsCountAndReward() {
+	@Test public void cancellingAnOldThirtyFiveKillTaskKeepsItsCountButCapsTheNewOffer() {
 		player.setQuest("hunting", "szczur,0,35,0,0;" + System.currentTimeMillis() + ";4");
 		engine.step(player, "rezygnuję"); engine.step(player, "tak");
 		engine.step(player, "średnie");
-		assertEquals("MEDIUM;szczur;35;" + player.getLevel() + ";2100", player.getQuest("hunting_offer"));
+		assertEquals("MEDIUM;szczur;35;" + player.getLevel() + ";1500", player.getQuest("hunting_offer"));
 		engine.step(player, "tak");
 		assertEquals("35", player.getQuest("hunting", 0).split(",")[2]);
-		assertEquals("2100", player.getQuest("hunting", 4));
+		assertEquals("1500", player.getQuest("hunting", 4));
 		assertEquals(4, player.getNumberOfRepetitions("hunting", 2));
+	}
+	@Test public void oldUnacceptedCachedRewardIsCappedWithoutResettingTheDrawOrTimer() {
+		long created = System.currentTimeMillis() - 60000;
+		player.setQuest("hunting_offer_MEDIUM", "MEDIUM;szczur;25;" + player.getLevel() + ";8000;" + created);
+		engine.step(player, "średnie");
+		assertEquals("MEDIUM;szczur;25;" + player.getLevel() + ";1500", player.getQuest("hunting_offer"));
+		assertEquals(Long.toString(created), player.getQuest("hunting_offer_MEDIUM").split(";")[5]);
+		engine.step(player, "tak");
+		assertEquals("1500", player.getQuest("hunting", 4));
+	}
+	@Test public void directlyAcceptingAnOldPreviewRequiresConfirmationOfTheNewReward() {
+		player.setQuest("hunting_offer", "MEDIUM;szczur;25;" + player.getLevel() + ";8000");
+		engine.setCurrentState(ConversationStates.QUESTION_1);
+		engine.step(player, "tak");
+		assertFalse(player.hasQuest("hunting"));
+		assertEquals(ConversationStates.QUESTION_1, engine.getCurrentState());
+		assertEquals("1500", player.getQuest("hunting_offer").split(";")[4]);
+		engine.step(player, "tak");
+		assertEquals("1500", player.getQuest("hunting", 4));
+	}
+	@Test public void alreadyAcceptedEightyPercentHuntKeepsItsPromisedReward() {
+		player.setQuest("hunting", "szczur,0,25,0,0;0;3;MEDIUM;8000");
+		player.setAtkXP(Level.getXP(20)); player.setDefXP(Level.getXP(20));
+		int before = player.getAtkXP();
+		int expected = (int) (((long) Level.getXP(21) - Level.getXP(20)) * 80 / 100);
+		kills(); engine.step(player, "załatwione");
+		assertEquals(before + expected, player.getAtkXP());
+		assertEquals(before + expected, player.getDefXP());
+		assertEquals("8000", player.getQuest("hunting", 4));
+		assertEquals(4, player.getNumberOfRepetitions("hunting", 2));
+	}
+	@Test public void cancellingAnAcceptedHighRewardCannotCarryTheOldRewardIntoANewTask() {
+		player.setQuest("hunting", "szczur,0,25,0,0;" + System.currentTimeMillis() + ";3;MEDIUM;8000");
+		engine.step(player, "rezygnuję"); engine.step(player, "tak");
+		engine.step(player, "średnie");
+		assertEquals("1500", player.getQuest("hunting_offer").split(";")[4]);
+		engine.step(player, "tak");
+		assertEquals("1500", player.getQuest("hunting", 4));
 	}
 }

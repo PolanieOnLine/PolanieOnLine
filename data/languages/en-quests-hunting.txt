@@ -14,6 +14,7 @@ Najpierw zakończ obecne polowanie albo powiedz #rezygnuję. Przerwane zadanie n
 Nie przyjmujesz zadania. Możesz wybrać inną trudność.=You have declined the quest. You can choose another difficulty.
 Nie przyjmujesz zadania. Odrzucenie nie losuje nowej propozycji. Możesz wybrać inną trudność.=You have declined the quest. Declining does not draw a new offer. You can choose another difficulty.
 Propozycja dla każdej trudności jest zapamiętana na 7 dni. Ukończenie polowania pozwala od razu wylosować nowe. Zabójstwa na arenach nie zaliczają polowania.=The offer for each difficulty is saved for 7 days. Completing a hunt lets you draw new offers immediately. Arena kills do not count towards the hunt.
+Zmieniono zasady nagród za polowania. Sprawdź nową ofertę i potwierdź ją ponownie.=Hunting reward rules have changed. Review the new offer and confirm it again.
 Chcesz przerwać polowanie bez nagrody? Dotychczasowy postęp tego zadania przepadnie. #tak / #nie=Do you want to abandon the hunt without a reward? Your progress in this quest will be lost. #yes / #no
 Nie masz aktywnego polowania.=You have no active hunt.
 Polowanie przerwane bez nagrody. Liczba ukończonych polowań jest zachowana. Wybierz #łatwe, #średnie lub #trudne.=The hunt was abandoned without a reward. Your completed hunt count is preserved. Choose #easy, #medium, or #hard.

@@ -42,6 +42,7 @@ public class QuestTranslationCatalogueTest {
 		assertEquals("The offer for each difficulty is saved for 7 days. Completing a hunt lets you draw new offers immediately. Arena kills do not count towards the hunt.", Translation.getText("en", source));
 		assertEquals("You have declined the quest. Declining does not draw a new offer. You can choose another difficulty.", Translation.getText("en", "Nie przyjmujesz zadania. Odrzucenie nie losuje nowej propozycji. Możesz wybrać inną trudność."));
 		assertEquals("The hunt was abandoned without a reward. Abandoning does not draw a new offer. Choose #easy, #medium, or #hard.", Translation.getText("en", "Polowanie przerwane bez nagrody. Rezygnacja nie losuje nowej propozycji. Wybierz #łatwe, #średnie lub #trudne."));
+		assertEquals("Hunting reward rules have changed. Review the new offer and confirm it again.", Translation.getText("en", "Zmieniono zasady nagród za polowania. Sprawdź nową ofertę i potwierdź ją ponownie."));
 	}
 	@Test public void polishLanguageKeepsQuestTextAndStatesUntouched() {
 		assertEquals("Status Społeczny: Magnat", Translation.getText("pl", "Status Społeczny: Magnat"));

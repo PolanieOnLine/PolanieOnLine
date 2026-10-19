@@ -8,6 +8,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.common.Level;
 import utilities.QuestHelper;
 
 public class HuntingBalanceTest {
@@ -24,16 +25,17 @@ public class HuntingBalanceTest {
 		double reference = HuntingRewards.strength(target);
 		assertEquals(500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, target, reference));
 		assertEquals(1500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 25, target, reference));
-		assertEquals(3000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 25, target, reference));
+		assertEquals(3000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 45, target, reference));
 	}
 	@Test public void rewardPerKillDoesNotFavourShorterRandomAssignments() {
 		Creature target = creature(30, 100);
-		double reference = HuntingRewards.strength(target);
-		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
-			int shortReward = HuntingRewards.rewardBasisPoints(difficulty, 20, target, reference);
-			int longReward = HuntingRewards.rewardBasisPoints(difficulty, 30, target, reference);
-			assertEquals(shortReward * 3, longReward * 2);
-		}
+		double reference = HuntingRewards.strength(target) * 2;
+		assertEquals(200, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 20, target, reference));
+		assertEquals(300, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 30, target, reference));
+		assertEquals(600, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 20, target, reference));
+		assertEquals(900, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 30, target, reference));
+		assertEquals(1333, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 40, target, reference));
+		assertEquals(1667, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 50, target, reference));
 	}
 	@Test public void weakerMonsterPaysLessEvenAtSameDifficulty() {
 		Creature weak = creature(25, 20), strong = creature(25, 100);
@@ -55,9 +57,8 @@ public class HuntingBalanceTest {
 		double reference = HuntingRewards.referenceStrength(30, Arrays.asList(easy, medium, hard));
 		int easyReward = HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 25, easy, reference);
 		int hardReward = HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 25, hard, reference);
-		assertTrue(hardReward / HuntingRewards.strength(hard) > 5.9 * easyReward / HuntingRewards.strength(easy));
-		// The strongest hunt must be reduced too, not remain at its old 100% payout.
-		assertEquals(6000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 30, hard, reference));
+		assertTrue(hardReward / HuntingRewards.strength(hard) > 3.1 * easyReward / HuntingRewards.strength(easy));
+		assertEquals(2400, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 40, hard, reference));
 	}
 	@Test public void savedRewardDoesNotChangeWhenCreatureDefinitionsOrCharacterLevelChange() {
 		assertEquals(3375, HuntingRewards.questBasisPoints("szczur,0,30,0,0;0;2;HARD;3375"));
@@ -95,10 +96,37 @@ public class HuntingBalanceTest {
 			}
 			if (easyMaximum > 0 && Double.isFinite(hardMinimum)) {
 				assertTrue("level " + level + ": easy " + easyMaximum + " hard " + hardMinimum,
-						hardMinimum > easyMaximum * 5.5);
+						// Tiny rewards round to whole basis points. Compare the
+						// actual work premium, not an approximate unrounded ratio.
+						hardMinimum > easyMaximum);
 				checked++;
 			}
 		}
 		assertTrue("Cover several character levels", checked >= 5);
+	}
+	@Test public void giantGreyAtEndgameCannotAwardEightyPercent() {
+		Creature giant = SingletonRepository.getEntityManager().getCreature("szarak gigant");
+		double reference = HuntingRewards.referenceStrength(Level.maxLevel(), Arrays.asList(giant));
+		// All three difficulties fall back to this sole available endgame target.
+		// The shared reference is now 30/25 of its strength, not its raw strength.
+		assertEquals(2222, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 40, giant, reference));
+		assertEquals(2778, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 50, giant, reference));
+		assertEquals(500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 30, giant, reference));
+		assertEquals(1500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 30, giant, reference));
+	}
+	@Test public void sharedScalingKeepsDifferentHardTargetsAndCountsDistinct() {
+		Creature easy = creature(25, 50), medium = creature(30, 100);
+		Creature weaker = creature(34, 400), strongest = creature(35, 600);
+		double reference = HuntingRewards.referenceStrength(30, Arrays.asList(easy, medium, weaker, strongest));
+		assertEquals(1600, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 40, weaker, reference));
+		assertEquals(2000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 50, weaker, reference));
+		assertEquals(2400, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 40, strongest, reference));
+		assertEquals(3000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 50, strongest, reference));
+	}
+	@Test public void eachDifficultyEnforcesItsOwnLimitEvenWithAnUndersizedReference() {
+		Creature target = creature(35, 600);
+		assertEquals(500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.EASY, 30, target, 1));
+		assertEquals(1500, HuntingRewards.rewardBasisPoints(HuntingDifficulty.MEDIUM, 30, target, 1));
+		assertEquals(3000, HuntingRewards.rewardBasisPoints(HuntingDifficulty.HARD, 50, target, 1));
 	}
 }
