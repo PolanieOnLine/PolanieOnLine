@@ -417,7 +417,7 @@
 
 	<shop name="denirangroceryseller" type="sell">
 		<item name="jajo" price="5"/>
-		<item name="cebula" price="5"/>
+		<item name="cebula" price="33"/>
 		<item name="czosnek" price="5"/>
 		<item name="ziemniaki" price="5"/>
 		<item name="fasola pinto" price="5"/>
