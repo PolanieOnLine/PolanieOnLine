@@ -1,5 +1,34 @@
 ## Changelog
 ---------
+1.43.2
+*balans gry i handel*
+---
+* Zmieniono doświadczenie z potworów po odrodzeniu: do piątego odrodzenia wynosi 100%, a od szóstego kolejno 95%, 90%, 85%, 80% i 75%
+* Zmieniono szanse ogłuszenia u wybranych zwykłych potworów: olbrzymy i duże humanoidy mają 6%, a pozostali przeciwnicy objęci zmianą 3%
+* Obniżono skup eliksirów u Kupca Areny o co najmniej 75%. Gigantyczny eliksir jest wart w skupie dwa razy tyle co wielki
+* Obniżono ceny skupu nakrapianego jaja, zupy, zupy grzybowej i zupy rybnej u Kupca Areny
+* Podniesiono cenę cebuli u Ambrogio z 5 do 33 monet, aby zlikwidować zarabianie na jej odsprzedaży
+
+*poprawki w grze*
+---
+* Naprawiono błędną liczbę przeciwników i powtarzające się numery fal na Arenie Wyzwań
+* Naprawiono zaniżone bazowe bonusy przedmiotów po osłabieniu afiksów. Poprawne bonusy wracają po zalogowaniu
+* Naprawiono błędną wartość obrony w opisie Zdobycznego hełmu
+
+*gra przez przeglądarkę i na telefonie*
+---
+* Uporządkowano ustawienia i dodano podgląd wyglądu, poziomu oraz umiejętności na ekranie wyboru postaci
+* Poprawiono płynność gry przy otwartym ekwipunku i usunięto drganie animowanych ikon
+* Naprawiono wyświetlanie i położenie szybkich slotów oraz dostęp do drugiego zestawu wyposażenia na telefonach
+* Przywrócono brakujące opisy przedmiotów, m.in. kluczy, środka uspokajającego i serca olbrzyma
+
+*wersja angielska*
+---
+* Długie nazwy potworów nie zasłaniają już przedmiotów w oknie łupów
+* Poprawiono tłumaczenie liczby powtórzeń zadań w dzienniku
+* Zmieniono nazwę kiełbasy wiejskiej z country sausage na cottage sausage
+
+
 1.43.1
 *deathmatch i zdobyczny hełm*
 ---
