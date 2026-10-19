@@ -191,5 +191,6 @@ public class PlayerRPClass {
 		// commerce
 		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
+		player.addAttribute(EconomyCorrection1432.RECORD, Type.MAP, Definition.HIDDEN);
 	}
 }

@@ -8,6 +8,7 @@
 * Obniżono skup eliksirów u Kupca Areny o co najmniej 75%. Gigantyczny eliksir jest wart w skupie dwa razy tyle co wielki
 * Obniżono ceny skupu nakrapianego jaja, zupy, zupy grzybowej i zupy rybnej u Kupca Areny
 * Podniesiono cenę cebuli u Ambrogio z 5 do 33 monet, aby zlikwidować zarabianie na jej odsprzedaży
+* Skorygowano nadmiarowe monety uzyskane na błędnych cenach skupu eliksirów i handlu cebulą
 
 *poprawki w grze*
 ---
