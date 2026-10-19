@@ -64,6 +64,7 @@ import games.stendhal.server.entity.status.StatusList;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.events.AttackEvent;
 import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.maps.quests.hunting.HuntingKillCredit;
 import games.stendhal.server.util.CounterMap;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -1674,6 +1675,8 @@ public abstract class RPEntity extends CombatEntity {
 				} else {
 					killer.setSharedKill(killedName);
 				}
+				HuntingKillCredit.excludeArenaKill(
+						killer, this, damageDone == totalDamageReceived);
 			}
 
 			SingletonRepository.getAchievementNotifier().onKill(killer);

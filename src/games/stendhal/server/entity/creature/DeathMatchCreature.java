@@ -18,6 +18,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.deathmatch.DeathmatchInfo;
 import games.stendhal.server.maps.deathmatch.DeathmatchState;
+import games.stendhal.server.maps.quests.hunting.HuntingKillCredit;
 
 /**
  * <p>A creature that will give no XP to killers.
@@ -105,6 +106,8 @@ public class DeathMatchCreature extends Creature {
 				} else {
 					killer.setSharedKill(killedName);
 				}
+				HuntingKillCredit.excludeArenaKill(
+						killer, this, damageDone == totalDamageReceived);
 			}
 
 			killer.notifyWorldAboutChanges();

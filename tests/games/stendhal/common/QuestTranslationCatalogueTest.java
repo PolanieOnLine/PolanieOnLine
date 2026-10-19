@@ -37,6 +37,12 @@ public class QuestTranslationCatalogueTest {
 				Translation.getText("en", "Ach, rozumiem, masz §'napój z oliwką'. Czy to dla mnie?"));
 	}
 
+	@Test public void huntingAntiRerollRulesAreTranslated() {
+		String source = "Propozycja dla każdej trudności jest zapamiętana na 7 dni. Ukończenie polowania pozwala od razu wylosować nowe. Zabójstwa na arenach nie zaliczają polowania.";
+		assertEquals("The offer for each difficulty is saved for 7 days. Completing a hunt lets you draw new offers immediately. Arena kills do not count towards the hunt.", Translation.getText("en", source));
+		assertEquals("You have declined the quest. Declining does not draw a new offer. You can choose another difficulty.", Translation.getText("en", "Nie przyjmujesz zadania. Odrzucenie nie losuje nowej propozycji. Możesz wybrać inną trudność."));
+		assertEquals("The hunt was abandoned without a reward. Abandoning does not draw a new offer. Choose #easy, #medium, or #hard.", Translation.getText("en", "Polowanie przerwane bez nagrody. Rezygnacja nie losuje nowej propozycji. Wybierz #łatwe, #średnie lub #trudne."));
+	}
 	@Test public void polishLanguageKeepsQuestTextAndStatesUntouched() {
 		assertEquals("Status Społeczny: Magnat", Translation.getText("pl", "Status Społeczny: Magnat"));
 		assertEquals("hunting_offer", Translation.getText("en", "hunting_offer"));

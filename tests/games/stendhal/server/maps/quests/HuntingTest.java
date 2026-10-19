@@ -9,6 +9,8 @@ import games.stendhal.common.Level;
 import games.stendhal.common.QuestMarker;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.engine.transformer.PlayerTransformer;
+import marauroa.common.game.RPObject;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.HuntingRewardChest;
 import games.stendhal.server.entity.item.Item;
@@ -214,5 +216,94 @@ public class HuntingTest {
 		player.setQuest("hunting_offer", offer[0] + ";" + offer[1] + ";" + offer[2] + ";" + offer[3] + ";999999");
 		engine.step(player, "tak");
 		assertFalse(player.hasQuest("hunting"));
+	}
+	private String cachedMedium(long age) {
+		String offer = "MEDIUM;szczur;25;" + player.getLevel() + ";1307";
+		player.setQuest("hunting_offer_MEDIUM", offer + ";" + (System.currentTimeMillis() - age));
+		return offer;
+	}
+	@Test public void decliningPersistsTheDrawWithoutStartingAHunt() {
+		engine.step(player, "średnie");
+		String offer = player.getQuest("hunting_offer");
+		assertNotNull(player.getQuest("hunting_offer_MEDIUM"));
+		engine.step(player, "nie");
+		assertFalse(player.hasQuest("hunting"));
+		assertFalse(player.hasQuest("hunting_offer"));
+		engine.step(player, "średnie");
+		assertEquals(offer, player.getQuest("hunting_offer"));
+	}
+	@Test public void cachedOfferSurvivesSavedCharacterReloadAndDifficultySwitch() {
+		String expected = cachedMedium(0);
+		player = (Player) new PlayerTransformer().transform(new RPObject(player));
+		engine.step(player, "trudne");
+		engine.step(player, "średnie");
+		assertEquals(expected, player.getQuest("hunting_offer"));
+	}
+	@Test public void cancellingAndAcceptingAgainDoesNotRerollTheOffer() {
+		String expected = cachedMedium(0);
+		accept();
+		engine.step(player, "rezygnuję"); engine.step(player, "tak");
+		engine.step(player, "średnie");
+		assertEquals(expected, player.getQuest("hunting_offer"));
+	}
+	@Test public void sevenDayOfferExpiresButAnUnexpiredOfferDoesNot() {
+		String expected = cachedMedium(7L * 24 * 60 * 60 * 1000 - 60000);
+		engine.step(player, "średnie");
+		assertEquals(expected, player.getQuest("hunting_offer"));
+		engine.step(player, "nie");
+		cachedMedium(7L * 24 * 60 * 60 * 1000 + 60000);
+		engine.step(player, "średnie");
+		assertNotEquals(expected, player.getQuest("hunting_offer"));
+		assertNotEquals("1307", player.getQuest("hunting_offer").split(";")[4]);
+	}
+	@Test public void completionReleasesAllCachedOffersImmediately() {
+		cachedMedium(0);
+		player.setQuest("hunting_offer_EASY", "EASY;szczur;25;0;500;" + System.currentTimeMillis());
+		accept(); kills(); engine.step(player, "załatwione");
+		assertEquals("done", player.getQuest("hunting", 0));
+		assertFalse(player.hasQuest("hunting_offer_MEDIUM"));
+		assertFalse(player.hasQuest("hunting_offer_EASY"));
+		engine.step(player, "średnie");
+		assertNotEquals("1307", player.getQuest("hunting_offer").split(";")[4]);
+	}
+	@Test public void levellingDoesNotRerollAnOfferWhoseTargetStillFits() {
+		cachedMedium(0);
+		player.setLevel(player.getLevel() + 1);
+		engine.step(player, "średnie");
+		assertEquals("MEDIUM;szczur;25;" + player.getLevel() + ";1307", player.getQuest("hunting_offer"));
+		engine.step(player, "tak");
+		assertEquals("1307", player.getQuest("hunting", 4));
+	}
+	@Test public void cancellingAPrePatchActiveHuntAlsoPreservesItsOffer() {
+		player.setQuest("hunting", "szczur,0,25,0,0;" + System.currentTimeMillis() + ";4;MEDIUM;1307");
+		engine.step(player, "rezygnuję"); engine.step(player, "tak");
+		engine.step(player, "średnie");
+		assertEquals("MEDIUM;szczur;25;" + player.getLevel() + ";1307", player.getQuest("hunting_offer"));
+		assertEquals(4, player.getNumberOfRepetitions("hunting", 2));
+	}
+	@Test public void decliningAPrePatchPreviewDoesNotDiscardItsDraw() {
+		String expected = "MEDIUM;szczur;25;" + player.getLevel() + ";1307";
+		player.setQuest("hunting_offer", expected);
+		engine.setCurrentState(ConversationStates.QUESTION_1);
+		engine.step(player, "nie");
+		engine.step(player, "średnie");
+		assertEquals(expected, player.getQuest("hunting_offer"));
+	}
+	@Test public void switchingDifficultyPreservesThePrePatchPreviewForItsOwnDifficulty() {
+		String expected = "MEDIUM;szczur;25;" + player.getLevel() + ";1307";
+		player.setQuest("hunting_offer", expected);
+		engine.step(player, "trudne");
+		engine.step(player, "średnie");
+		assertEquals(expected, player.getQuest("hunting_offer"));
+	}
+	@Test public void cancellingAnOldThirtyFiveKillTaskKeepsItsCountAndReward() {
+		player.setQuest("hunting", "szczur,0,35,0,0;" + System.currentTimeMillis() + ";4");
+		engine.step(player, "rezygnuję"); engine.step(player, "tak");
+		engine.step(player, "średnie");
+		assertEquals("MEDIUM;szczur;35;" + player.getLevel() + ";2100", player.getQuest("hunting_offer"));
+		engine.step(player, "tak");
+		assertEquals("35", player.getQuest("hunting", 0).split(",")[2]);
+		assertEquals("2100", player.getQuest("hunting", 4));
+		assertEquals(4, player.getNumberOfRepetitions("hunting", 2));
 	}
 }
