@@ -21,10 +21,10 @@ public class JanislawNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Janisław") {
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj młody podróżniku, potrzebujesz #pomocy?");
-				addJob("Jeszczę parę lat wstecz byłem jednym ze sławnych myśliwych w całej kranie, polowałem na potwory. Teraz to już jestem za stary na takie podróże.");
-				addHelp("Zlecam #zadania na polowanie: #łatwe, #średnie i #trudne. Dostaniesz dotychczasowe nagrody, PD ataku i obrony oraz Skrzynię Myśliwego. Zawsze najpierw pokażę Ci cel i nagrody.");
-				addGoodbye("Uważaj na drodze, wszędzie czają się złe stworzenia i czekają na dobrą chwilę, aby Cię zaatakować...");
+				addGreeting("Witaj, wędrowcze. Ogrzej się chwilę i powiedz, czy potrzebujesz #pomocy.");
+				addJob("Dawniej przemierzałem lasy i góry, tropiąc bestie, które nie dawały ludziom spokoju. Dziś nogi już nie te, ale oko do tropów wciąż mam dobre.");
+				addHelp("Jeśli niestraszna ci leśna głusza, mam dla ciebie #zadania. Znam tropy na łowy #łatwe, #średnie i #trudne. Za dobrą robotę uczciwie zapłacę, dorzucę skrzynię i podzielę się tym, czego sam nauczyłem się na polowaniach.");
+				addGoodbye("Idź ostrożnie. W głuszy lepiej dwa razy spojrzeć za siebie niż raz dać się zaskoczyć.");
 			}
 
 			@Override
@@ -33,7 +33,7 @@ public class JanislawNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Janisław, który być może będzie miał specjalne wyzwanie dla głodnych przygód rycerzy.");
+		npc.setDescription("Oto Janisław, stary myśliwy. Sam już rzadko rusza w głuszę, ale chętnie wskaże trop komuś, kto nie boi się bestii.");
 		npc.setEntityClass("npcstarybaca");
 		npc.setGender("M");
 		npc.setDirection(Direction.RIGHT);

@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Test;
 import games.stendhal.common.Level;
 import games.stendhal.common.QuestMarker;
+import games.stendhal.common.Translation;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.PlayerTransformer;
@@ -23,6 +24,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.quests.hunting.HuntingDifficulty;
 import games.stendhal.server.maps.quests.hunting.HuntingRewards;
+import games.stendhal.server.maps.zakopane.home.JanislawNPC;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 import utilities.SpeakerNPCTestHelper;
@@ -221,6 +223,72 @@ public class HuntingTest {
 		String offer = "MEDIUM;szczur;25;" + player.getLevel() + ";1307";
 		player.setQuest("hunting_offer_MEDIUM", offer + ";" + (System.currentTimeMillis() - age));
 		return offer;
+	}
+	@Test public void exactOfferRewardsArePrivateAndVisibleBeforeAcceptanceInBothLanguages() {
+		player.setClientVersion("1.0");
+		for (String language : new String[] {"pl", "en"}) {
+			player.setLanguage(language);
+			engine.setCurrentState(ConversationStates.ATTENDING);
+			String expectedOffer = cachedMedium(0);
+			player.clearEvents();
+			assertTrue(engine.step(player, "medium"));
+			String summary = PlayerTestHelper.getPrivateReply(player);
+			assertNotNull("Exact rewards must be visible before accepting", summary);
+			assertTrue(summary, summary.contains("13,07%"));
+			assertTrue(summary, summary.contains("25%"));
+			assertTrue(summary, summary.contains("25"));
+			assertTrue(summary, summary.contains("pl".equals(language) ? "szczur" : "rat"));
+			assertTrue(summary, summary.contains("pl".equals(language) ? "PD pełnego poziomu ataku i obrony" : "full attack and defense level's XP"));
+			assertTrue(summary, summary.contains("pl".equals(language) ? "Skrzynię Myśliwego" : "Hunter's Chest"));
+			assertFalse(player.hasQuest("hunting"));
+			assertEquals(expectedOffer, player.getQuest("hunting_offer"));
+			String speech = Translation.getText(language, SpeakerNPCTestHelper.getReply(NPCList.get().get("Janisław")));
+			assertFalse("NPC speech must not recite reward percentages", speech.contains("%"));
+			assertTrue(speech, speech.contains("pl".equals(language) ? "szczur" : "rat"));
+			assertTrue(speech, speech.contains("25"));
+			assertTrue(speech, speech.contains("pl".equals(language) ? "#tak" : "#yes"));
+			assertTrue(speech, speech.contains("pl".equals(language) ? "#nie" : "#no"));
+			assertTrue(engine.step(player, "no"));
+		}
+	}
+	@Test public void currentHunterDialogueDoesNotFallBackToPolishInEnglish() {
+		NPCList.get().clear();
+		new JanislawNPC().configureZone(zone, null);
+		SpeakerNPC hunter = NPCList.get().get("Janisław");
+		quest = new Hunting();
+		quest.addToWorld();
+		engine = hunter.getEngine();
+		for (String command : new String[] {"hi", "job", "help", "done", "cancel", "quest", "hard",
+				"medium", "no", "medium", "yes", "quest", "easy", "done", "cancel", "no", "cancel", "yes",
+				"done", "medium", "yes"}) {
+			assertTrue(command, engine.step(player, command));
+			String source = SpeakerNPCTestHelper.getReply(hunter);
+			assertNotNull(command, source);
+			assertNotEquals(command + " must have an English reply", source, Translation.getText("en", source));
+		}
+		kills();
+		for (String command : new String[] {"done", "done", "bye"}) {
+			assertTrue(command, engine.step(player, command));
+			String source = SpeakerNPCTestHelper.getReply(hunter);
+			assertNotNull(command, source);
+			assertNotEquals(command + " must have an English reply", source, Translation.getText("en", source));
+		}
+		assertEquals("done", player.getQuest("hunting", 0));
+	}
+	@Test public void multiwordTargetRemainsRecognisableInTranslatedOffersAndReminders() {
+		Creature target = SingletonRepository.getEntityManager().getCreature("szczur jaskiniowy");
+		zone.add(new CreatureRespawnPoint(zone, 3, 3, target, 1));
+		player.setLevel(target.getLevel());
+		player.setQuest("hunting_offer_MEDIUM", "MEDIUM;szczur jaskiniowy;25;" + player.getLevel()
+				+ ";1307;" + System.currentTimeMillis());
+		for (String command : new String[] {"medium", "yes", "quest", "done"}) {
+			assertTrue(command, engine.step(player, command));
+			String source = SpeakerNPCTestHelper.getReply(NPCList.get().get("Janisław"));
+			assertTrue(source, source.contains("szczur jaskiniowy"));
+			String english = Translation.getText("en", source);
+			assertTrue(english, english.contains("caverat"));
+			assertFalse(english, english.contains("szczur"));
+		}
 	}
 	@Test public void decliningPersistsTheDrawWithoutStartingAHunt() {
 		engine.step(player, "średnie");
