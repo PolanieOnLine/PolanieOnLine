@@ -117,7 +117,7 @@
 	</item>
 
 	<item name="skrzynia Areny Wyzwań">
-		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
+		<type class="box" subclass="challenge_arena_reward_chest" tileid="-1"/>
 		<description>Oto nagroda zdobyta na Arenie Wyzwań. Otwórz ją aby otrzymać wyposażenie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.ChallengeArenaRewardChest"/>
 		<attributes>
@@ -133,7 +133,7 @@
 		</equipable>
 	</item>
 	<item name="skrzynia myśliwego">
-		<type class="box" subclass="zlota_skrzynia" tileid="-1"/>
+		<type class="box" subclass="hunter_reward_chest" tileid="-1"/>
 		<description>Oto Skrzynia Myśliwego zdobyta za polowanie u Janisława. Nagroda zależy od trudności i poziomu w chwili ukończenia zadania.</description>
 		<implementation class-name="games.stendhal.server.entity.item.HuntingRewardChest"/>
 		<attributes>
