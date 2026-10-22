@@ -247,7 +247,7 @@ function appendLifeStealStat(lines: ItemTooltipLine[],
 	const previous = numberValue(equipped, hasValue(equipped, "effective_lifesteal") ? "effective_lifesteal" : "lifesteal") * 100;
 	if (value === 0 && (!equipped || previous === 0)) return;
 	const bonus = intValue(current, "lifesteal_effectiveness") > 0 ? value - base : 0;
-	lines.push({kind: "detail", text: GameLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
+	lines.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText("kradzieży życia")
 			+ (bonus > 0 ? " (+" + formatCompact(bonus) + "%)" : ""),
 		deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
 }

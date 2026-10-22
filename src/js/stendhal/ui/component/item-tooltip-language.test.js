@@ -67,18 +67,32 @@ test("zero attack without comparison remains hidden", async () => {
 	assert.ok(h.build(item).lines.every(line => !line.text.includes(" ataku")));
 });
 
+test("life steal uses the other bonuses' row style without an extra label", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "accessory", def: "10", lifesteal: "0.10",
+		base_lifesteal: "0.10", effective_lifesteal: "0.10"});
+	const lines = h.build(item).lines;
+	const lifeSteal = lines.find(line => line.text === "+10% kradzieży życia");
+	const defense = lines.find(line => line.text === "+10 pancerza");
+	assert.ok(lifeSteal);
+	assert.ok(defense);
+	assert.equal(lifeSteal.kind, defense.kind);
+	assert.equal(lifeSteal.kind, "bonus");
+	assert.ok(lines.every(line => !line.text.includes("Kradzież życia:")));
+});
+
 test("life steal is separate from its effectiveness affix and total in Polish and English", async () => {
 	const h = await harness();
 	const item = new h.Item({category: "weapon", lifesteal: "0.075", base_lifesteal: "0.075",
 		affix_lifesteal: "0", effective_lifesteal: "0.09", lifesteal_effectiveness: "20"});
 	let text = h.build(item).lines.map(line => line.text).join("\n");
-	assert.match(text, /Kradzież życia: 9% \(\+1.5%\)/);
+	assert.match(text, /\+9% kradzieży życia \(\+1.5%\)/);
 	assert.doesNotMatch(text, /Łączna kradzież życia/);
 	assert.match(text, /\+20% skuteczności kradzieży życia/);
 	assert.doesNotMatch(text, /\+7.5% kradzieży życia|bazow/i);
 	h.language.synchronize("en");
 	text = h.build(item).lines.map(line => line.text).join("\n");
-	assert.match(text, /Life steal: 9% \(\+1.5%\)/);
+	assert.match(text, /\+9% life steal \(\+1.5%\)/);
 	assert.doesNotMatch(text, /Total life steal/);
 	assert.match(text, /\+20% life steal effectiveness/);
 	assert.doesNotMatch(text, /kradzie|skutecz|Łączna/);
@@ -100,12 +114,11 @@ test("a plain item compares missing life steal against the equipped core stat", 
 	h.marauroa.me = {finger: {count: () => 1, getByIndex: () => equipped}};
 	const item = new h.Item({category: "accessory", equipment_slots: "finger"});
 	const lines = h.build(item, true).lines;
-	assert.ok(lines.some(line => line.text === "Kradzież życia: 0%"));
-	const total = lines.find(line => line.text === "Kradzież życia: 0%");
+	const total = lines.find(line => line.text === "0% kradzieży życia");
 	assert.ok(total);
 	assert.equal(total.deltas[0].text, "-9,0%");
 	assert.equal(total.deltas[0].direction, "worse");
-	assert.ok(lines.every(line => !line.text.includes("+0% kradzieży życia")));
+	assert.equal(lines.filter(line => line.text === "0% kradzieży życia").length, 1);
 });
 
 test("weapon and healing tooltips translate labels while retaining exact stats and canonical names", async () => {

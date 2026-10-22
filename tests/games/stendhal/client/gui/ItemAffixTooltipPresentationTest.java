@@ -15,6 +15,20 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixTooltipPresentationTest {
 	@Test
+	public void lifeStealUsesTheSameDiamondAndSignedBonusStyleAsOtherStats() {
+		final RPObject object = ItemTestHelper.createItem("life steal armour");
+		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		put(object, ItemTooltip.DEFENSE, "10");
+		put(object, ItemTooltip.LIFESTEAL, "0.10");
+		put(object, ItemTooltip.BASE_LIFESTEAL, "0.10");
+		put(object, ItemTooltip.EFFECTIVE_LIFESTEAL, "0.10");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(object));
+		assertTrue(tooltip, tooltip.contains("&#9670; +10 pancerza"));
+		assertTrue(tooltip, tooltip.contains("&#9670; +10% kradzieży życia"));
+		assertFalse(tooltip, tooltip.contains("Kradzież życia:"));
+	}
+
+	@Test
 	public void lifeStealIsAStatAndEffectivenessIsASeparateAffix() {
 		final RPObject object = ItemTestHelper.createItem("life steal sword");
 		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_WEAPON);
@@ -27,7 +41,7 @@ public class ItemAffixTooltipPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object), null);
 
-		assertTrue(tooltip, tooltip.contains("Kradzież życia: 9% (+1,5%)"));
+		assertTrue(tooltip, tooltip.contains("&#9670; +9% kradzieży życia (+1,5%)"));
 		assertFalse(tooltip, tooltip.contains("Łączna kradzież życia"));
 		assertTrue(tooltip, tooltip.contains("+20% skuteczności kradzieży życia"));
 		assertFalse(tooltip, tooltip.contains("+7,5% kradzieży życia"));
@@ -46,10 +60,11 @@ public class ItemAffixTooltipPresentationTest {
 		put(equipped, "lifesteal_effectiveness", "20");
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(current), equipped);
-		assertTrue(tooltip, tooltip.contains("Kradzież życia: 0%"));
+		assertTrue(tooltip, tooltip.contains("&#9670; +0% kradzieży życia"));
 		assertFalse(tooltip, tooltip.contains("Łączna kradzież życia"));
 		assertTrue(tooltip, tooltip.contains("color='#ef6a62'>-9,0</font>"));
-		assertFalse(tooltip, tooltip.contains("+0% kradzieży życia"));
+		org.junit.Assert.assertEquals(tooltip, tooltip.indexOf("+0% kradzieży życia"),
+				tooltip.lastIndexOf("+0% kradzieży życia"));
 	}
 
 	@Test

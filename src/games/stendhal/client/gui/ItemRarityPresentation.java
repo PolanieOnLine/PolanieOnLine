@@ -446,9 +446,9 @@ final class ItemRarityPresentation {
 		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
 		final double bonus = WeaponPerformanceCalculator.getInt(object, ItemTooltip.LIFESTEAL_EFFECTIVENESS) > 0
 				? value - base : 0.0;
-		appendStatRow(stats, escapeHtml(ClientLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
-				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : "")),
-				equippedItem == null ? "" : delta(value, previous, 1), false);
+		appendBonusLine(stats, signed(formatCompact(value)) + "% " + ClientLanguage.getText("kradzieży życia")
+				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : ""),
+				equippedItem == null ? "" : delta(value, previous, 1));
 	}
 
 	private static double effectiveLifeStealPercent(final RPObject object) {

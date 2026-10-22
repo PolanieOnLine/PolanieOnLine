@@ -956,13 +956,13 @@ test("tooltip keeps life-steal gain with its value and comparison in a separate 
 	const h = createHarness();
 	const tooltip = h.document.createElement("div");
 	h.Container.appendStructuredTooltipLine(tooltip, {
-		kind: "detail", text: "Kradzież życia: 12% (+2%)",
+		kind: "bonus", text: "+12% kradzieży życia (+2%)",
 		deltas: [{ text: "+3,0%", direction: "better" }]
 	});
 	const row = tooltip.children[0];
 	const comparison = row.children.find(child => child.className === "item-tooltip-comparison");
 	assert.ok(comparison, "Comparison must have its own right-hand group");
-	assert.equal(row.children[0].textContent, "Kradzież życia: 12% (+2%)");
+	assert.equal(row.children[0].textContent, "◆ +12% kradzieży życia (+2%)");
 	assert.equal(comparison.textContent, " (+3,0%)");
 	assert.equal(comparison.children[1].className, "item-tooltip-delta item-tooltip-delta--better");
 });
