@@ -56,9 +56,15 @@ public final class ItemTooltipService {
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
 		publishEquipmentSlots(item);
-		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
-		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
-				item.getAttributeWithUpgrade("ratk", 0));
+		// Publish computed zero too, so clients do not fall back to raw penalties
+		// that have already been cancelled by upgrades or deterioration.
+		if (item.has("atk")) {
+			put(item, ItemTooltip.ATTACK, Integer.toString(displayedAttack(item)));
+		}
+		if (item.has("ratk")) {
+			put(item, ItemTooltip.RANGED_ATTACK,
+					Integer.toString(item.getAttributeWithUpgrade("ratk", 0)));
+		}
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
 		putPositiveInt(item, ItemTooltip.DAMAGE_MAX, item.getDamageMax());
 		if (item.has("atk") || item.has("ratk")) {
@@ -240,7 +246,7 @@ public final class ItemTooltipService {
 		int attack = item.getAttributeWithUpgrade("atk", 0);
 		attack -= intAttribute(item, ItemTooltip.FLAT_ATTACK_BONUS);
 		attack -= intAttribute(item, ItemTooltip.LEGENDARY_RELIC_POWER);
-		return Math.max(0, attack);
+		return attack;
 	}
 
 	private static int displayedDefense(final Item item) {

@@ -4,6 +4,7 @@
 package games.stendhal.client.gui;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
@@ -13,6 +14,73 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixTooltipPresentationTest {
+	@Test
+	public void equipmentAttackPenaltiesAreNotMaskedByZeroOrMissingOtherAttack() {
+		final String[][] attacks = {
+				{"-5", null, "-5"}, {"-5", "0", "-5"},
+				{null, "-4", "-4"}, {"0", "-4", "-4"},
+				{"-5", "-3", "-3"}, {"4", "7", "+7"}
+		};
+		for (final String[] values : attacks) {
+			final RPObject object = ItemTestHelper.createItem("attack tooltip armour");
+			object.put("class", "armor");
+			put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ARMOUR);
+			put(object, ItemTooltip.DEFENSE, "40");
+			if (values[0] != null) put(object, ItemTooltip.ATTACK, values[0]);
+			if (values[1] != null) put(object, ItemTooltip.RANGED_ATTACK, values[1]);
+
+			final String tooltip = ItemRarityPresentation.buildItemToolTip(
+					EntityFactory.createEntity(object), null);
+
+			assertTrue(tooltip, tooltip.contains(values[2] + " ataku"));
+			assertTrue(tooltip.contains("40 pkt. pancerza"));
+		}
+	}
+
+	@Test
+	public void attackComparisonUsesNegativeEquippedValue() {
+		final RPObject current = ItemTestHelper.createItem("current ring");
+		put(current, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		put(current, ItemTooltip.ATTACK, "-2");
+		final RPObject equipped = ItemTestHelper.createItem("equipped ring");
+		put(equipped, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		put(equipped, ItemTooltip.ATTACK, "-5");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(current), equipped);
+
+		assertTrue(tooltip, tooltip.contains("-2 ataku"));
+		assertTrue(tooltip, tooltip.contains("color='#62d26f'>+3</font>"));
+	}
+
+	@Test
+	public void upgradedEquipmentDoesNotFallBackToCancelledRawAttackPenalty() {
+		final games.stendhal.server.entity.item.Item item =
+				ItemTestHelper.createItem("upgraded gloves");
+		item.put("class", "glove");
+		item.put("atk", -1);
+		item.put(games.stendhal.server.entity.item.Item.MAX_UPGRADE_LEVEL_ATTRIBUTE, 1);
+		item.put(games.stendhal.server.entity.item.Item.UPGRADE_LEVEL_ATTRIBUTE, 1);
+		games.stendhal.server.entity.item.ItemTooltipService.update(item);
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(item), null);
+
+		assertFalse(tooltip, tooltip.contains(" ataku"));
+	}
+
+	@Test
+	public void zeroAttackWithoutComparisonRemainsHidden() {
+		final RPObject object = ItemTestHelper.createItem("neutral ring");
+		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		put(object, ItemTooltip.ATTACK, "0");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), null);
+
+		assertFalse(tooltip, tooltip.contains(" ataku"));
+	}
+
 	@Test
 	public void expandedWeaponAffixesUseReadablePercentLabels() {
 		final RPObject object = ItemTestHelper.createItem("affix tooltip sword");

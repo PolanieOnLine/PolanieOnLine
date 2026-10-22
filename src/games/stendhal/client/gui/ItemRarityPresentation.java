@@ -419,15 +419,8 @@ final class ItemRarityPresentation {
 		/* Flat equipment values are the most important secondary properties and
 		 * stay directly below the item's primary attack/armour block. */
 		if (!weapon) {
-			final int attack = Math.max(
-					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(object,
-							ItemTooltip.RANGED_ATTACK));
-			final int equippedAttack = Math.max(
-					WeaponPerformanceCalculator.getInt(equippedItem,
-							ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(equippedItem,
-							ItemTooltip.RANGED_ATTACK));
+			final int attack = equipmentAttack(object);
+			final int equippedAttack = equipmentAttack(equippedItem);
 			appendComparableBonusLine(coreBonuses, attack, equippedAttack,
 					"ataku", equippedItem != null);
 		}
@@ -568,6 +561,18 @@ final class ItemRarityPresentation {
 		}
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(value, equippedValue, 1));
+	}
+
+	private static int equipmentAttack(final RPObject object) {
+		final int melee = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.ATTACK);
+		final int ranged = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.RANGED_ATTACK);
+		// An absent or zero attack must not hide a penalty in the other stat.
+		if (melee == 0) {
+			return ranged;
+		}
+		return ranged == 0 ? melee : Math.max(melee, ranged);
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,

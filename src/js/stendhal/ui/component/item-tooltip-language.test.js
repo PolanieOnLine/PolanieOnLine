@@ -22,14 +22,50 @@ async function harness() {
 		getDisplayName() { return "Sword"; }
 	}
 	const exports = {};
+	const marauroa = {};
 	vm.runInNewContext(compile("ui/component/ItemTooltipPresentation.ts"), {exports, require: name => {
-		if (name === "marauroa") return {marauroa: {}};
+		if (name === "marauroa") return {marauroa};
 		if (name === "../../entity/Item") return {Item};
 		if (name === "../../util/GameLanguage") return {GameLanguage: language};
 		throw new Error(name);
 	}});
-	return {language, Item, build: item => exports.buildStructuredItemTooltip(item, false)};
+	return {language, Item, marauroa,
+		build: (item, compare=false) => exports.buildStructuredItemTooltip(item, compare)};
 }
+
+test("equipment attack penalties survive missing or zero other attack values", async () => {
+	const h = await harness();
+	for (const [attack, expected] of [
+		[{atk: "-5"}, "-5 ataku"],
+		[{atk: "-5", ratk: "0"}, "-5 ataku"],
+		[{ratk: "-4"}, "-4 ataku"],
+		[{atk: "0", ratk: "-4"}, "-4 ataku"],
+		[{atk: "-5", ratk: "-3"}, "-3 ataku"],
+		[{atk: "4", ratk: "7"}, "+7 ataku"]
+	]) {
+		const item = new h.Item({category: "armour", def: "40", ...attack});
+		const text = h.build(item).lines.map(line => line.text).join("\n");
+		assert.ok(text.includes(expected), text);
+		assert.match(text, /40 pkt\. pancerza/);
+	}
+});
+
+test("attack comparison retains equipped penalties and marks a smaller penalty as better", async () => {
+	const h = await harness();
+	const equipped = new h.Item({category: "accessory", atk: "-5"});
+	h.marauroa.me = {finger: {count: () => 1, getByIndex: () => equipped}};
+	const item = new h.Item({category: "accessory", equipment_slots: "finger", atk: "-2"});
+	const line = h.build(item, true).lines.find(line => line.text === "-2 ataku");
+	assert.ok(line, "The tooltip must show the current attack penalty");
+	assert.equal(line.deltas[0].text, "+3");
+	assert.equal(line.deltas[0].direction, "better");
+});
+
+test("zero attack without comparison remains hidden", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "accessory", atk: "0"});
+	assert.ok(h.build(item).lines.every(line => !line.text.includes(" ataku")));
+});
 
 test("weapon and healing tooltips translate labels while retaining exact stats and canonical names", async () => {
 	const h = await harness();

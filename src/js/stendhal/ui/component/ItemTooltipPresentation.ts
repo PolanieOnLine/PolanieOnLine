@@ -243,8 +243,8 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	const special: ItemTooltipLine[] = [];
 
 	if (!weapon) {
-		appendIntegerBonus(core, Math.max(intValue(current, "atk"), intValue(current, "ratk")),
-				Math.max(intValue(equipped, "atk"), intValue(equipped, "ratk")), "ataku", !!equipped);
+		appendIntegerBonus(core, equipmentAttack(current), equipmentAttack(equipped),
+				"ataku", !!equipped);
 	}
 	if (!weapon && !armour) {
 		appendIntegerBonus(core, intValue(current, "def"), intValue(equipped, "def"),
@@ -448,6 +448,16 @@ function stats(item?: Item): Record<string, string>|undefined {
 
 function hasValue(value: Record<string, string>|undefined, key: string): boolean {
 	return !!value && Object.prototype.hasOwnProperty.call(value, key);
+}
+
+function equipmentAttack(value: Record<string, string>|undefined): number {
+	const melee = intValue(value, "atk");
+	const ranged = intValue(value, "ratk");
+	// An absent or zero attack must not hide a penalty in the other stat.
+	if (melee === 0) {
+		return ranged;
+	}
+	return ranged === 0 ? melee : Math.max(melee, ranged);
 }
 
 function weaponAttack(value: Record<string, string>|undefined): number {

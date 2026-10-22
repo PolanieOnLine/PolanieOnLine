@@ -25,6 +25,58 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testNegativeAttackIsPublishedWithoutChangingCombatValue() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "-5");
+		final Item item = new Item("test attack penalty", "armor", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("-5", stat(item, ItemTooltip.ATTACK));
+		assertEquals(-5, item.getAttack());
+	}
+
+	@Test
+	public void testNegativeBaseAttackRemainsSeparateFromAffixBonus() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "-3");
+		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "2");
+		final Item item = new Item("test affixed attack penalty", "ring", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("-5", stat(item, ItemTooltip.ATTACK));
+		assertEquals("2", stat(item, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS));
+		assertEquals(-3, item.getAttack());
+	}
+
+	@Test
+	public void testUpgradeCancellingAttackPenaltyPublishesAuthoritativeZero() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "-1");
+		final Item item = new Item("test upgraded gloves", "glove", "test", attributes);
+		item.put(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE, 1);
+		item.put(Item.UPGRADE_LEVEL_ATTRIBUTE, 1);
+
+		ItemTooltipService.update(item);
+
+		assertEquals(0, item.getAttack());
+		assertEquals("0", stat(item, ItemTooltip.ATTACK));
+	}
+
+	@Test
+	public void testNegativeRangedAttackIsPublished() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("ratk", "-4");
+		final Item item = new Item("test ranged attack penalty", "ring", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("-4", stat(item, ItemTooltip.RANGED_ATTACK));
+		assertEquals(-4, item.getRangedAttack());
+	}
+
+	@Test
 	public void testWeaponPublishesCategoryAndTiming() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "30");
