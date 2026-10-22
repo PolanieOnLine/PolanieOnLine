@@ -22,6 +22,8 @@ import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
 
 /** Builds a presentation-safe map of final item statistics for clients. */
@@ -90,6 +92,16 @@ public final class ItemTooltipService {
 		putPositiveInt(item, ItemTooltip.RANGE, displayedRange(item));
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
+		if (item.has("lifesteal")) {
+			final double value = item.getDouble("lifesteal");
+			final boolean affix = item.getDefinitionLifesteal() == 0.0
+					&& ItemAffixState.has(item, "lifesteal");
+			put(item, ItemTooltip.BASE_LIFESTEAL, Double.toString(affix ? 0.0 : value));
+			put(item, ItemTooltip.AFFIX_LIFESTEAL, Double.toString(affix ? value : 0.0));
+			put(item, ItemTooltip.EFFECTIVE_LIFESTEAL,
+					Double.toString(ItemLifestealService.getEffectiveLifesteal(item)));
+			copyInt(item, ItemLifestealService.EFFECTIVENESS, ItemTooltip.LIFESTEAL_EFFECTIVENESS);
+		}
 		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
 		copyDouble(item, ItemTooltip.ARMOR_PENETRATION,
 				ItemTooltip.ARMOR_PENETRATION);

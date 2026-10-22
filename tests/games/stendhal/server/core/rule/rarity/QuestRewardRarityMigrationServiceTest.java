@@ -157,6 +157,8 @@ public class QuestRewardRarityMigrationServiceTest {
 				"krwiopijca", ItemCreationContext.quest());
 		final Item expected = SingletonRepository.getEntityManager().getItem(
 				"krwiopijca", ItemCreationContext.questReward());
+		// Reproduce the old Common rule, rather than create a current Common item.
+		sword.remove("lifesteal");
 		assertFalse(sword.has("lifesteal"));
 		sword.setBoundTo(player.getName());
 		assertTrue(player.equipToInventoryOnly(sword));

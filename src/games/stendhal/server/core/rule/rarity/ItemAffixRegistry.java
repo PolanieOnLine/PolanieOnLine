@@ -35,6 +35,7 @@ public final class ItemAffixRegistry {
 					new StatusResistanceAffixDefinition(StatusType.STUNNED),
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
+					new LifestealEffectivenessAffixDefinition(),
 					new AccuracyAffixDefinition(),
 					new CriticalChanceAffixDefinition(),
 					new CriticalDamageAffixDefinition(),
@@ -253,12 +254,24 @@ public final class ItemAffixRegistry {
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return WeaponAffixService.isEligible(item, getAttribute());
+			return WeaponAffixService.isLifestealEligible(item);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
 			return WeaponAffixService.applyLifesteal(item, random);
+		}
+	}
+
+	private static final class LifestealEffectivenessAffixDefinition
+			implements ItemAffixDefinition {
+		@Override public String getId() { return ItemLifestealService.EFFECTIVENESS; }
+		@Override public String getAttribute() { return ItemLifestealService.EFFECTIVENESS; }
+		@Override public boolean isEligible(final Item item) {
+			return WeaponAffixService.isLifestealEffectivenessEligible(item);
+		}
+		@Override public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyLifestealEffectiveness(item, random);
 		}
 	}
 

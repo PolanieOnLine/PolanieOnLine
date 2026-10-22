@@ -25,6 +25,21 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void lifeStealCoreAndEffectivenessArePublishedSeparately() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("lifesteal", "0.075");
+		final Item item = new Item("life steal sword", "sword", "test", attributes);
+		item.put("lifesteal_effectiveness", 20);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.075", stat(item, "base_lifesteal"));
+		assertEquals("0.0", stat(item, "affix_lifesteal"));
+		assertEquals("20", stat(item, "lifesteal_effectiveness"));
+		assertEquals(0.09, Double.parseDouble(stat(item, "effective_lifesteal")), 0.000001);
+	}
+
+	@Test
 	public void testNegativeAttackIsPublishedWithoutChangingCombatValue() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "-5");

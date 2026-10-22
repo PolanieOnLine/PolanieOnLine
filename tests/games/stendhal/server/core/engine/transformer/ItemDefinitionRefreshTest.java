@@ -386,7 +386,7 @@ public class ItemDefinitionRefreshTest {
 		saved.setPersistent(true);
 		final String[] attributes = {"accuracy_bonus", "critical_chance", "critical_damage_bonus", "lifesteal", "parry_chance"};
 		final double[] before = {15, 10, 0.30, 0.41, 0.15};
-		final double[] after = {8, 6, 0.15, 0.41, 0.15};
+		final double[] after = {8, 6, 0.15, 0.30, 0.15};
 		for (int i = 0; i < attributes.length; i++) {
 			saved.put(attributes[i], before[i]);
 			saved.put(ItemAffixState.ATTRIBUTE, attributes[i], saved.get(attributes[i]));
@@ -396,9 +396,13 @@ public class ItemDefinitionRefreshTest {
 			saved = restore(saved);
 			for (int i = 0; i < attributes.length; i++) {
 				assertEquals(attributes[i], after[i], saved.getDouble(attributes[i]), 0.000001);
-				assertEquals(saved.get(attributes[i]), ItemAffixState.getValues(saved).get(attributes[i]));
+				if ("lifesteal".equals(attributes[i])) {
+					assertFalse(ItemAffixState.has(saved, "lifesteal"));
+				} else {
+					assertEquals(saved.get(attributes[i]), ItemAffixState.getValues(saved).get(attributes[i]));
+				}
 			}
-			assertEquals(5, ItemAffixState.getValues(saved).size());
+			assertEquals(4, ItemAffixState.getValues(saved).size());
 			assertEquals(3, saved.getUpgradeLevel());
 			assertEquals(saved.getInt("atk") + 3, saved.getAttack());
 			assertEquals("kokol", saved.getBoundTo());

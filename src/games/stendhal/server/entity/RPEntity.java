@@ -53,6 +53,7 @@ import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.item.CaptureTheFlagFlag;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.player.Player;
@@ -3563,16 +3564,16 @@ public abstract class RPEntity extends CombatEntity {
 				sumAll += weaponItem.getAttack();
 				double weaponAttack = weaponItem.getAttack();
 				if (weaponItem.has("lifesteal")) {
-					sumLifesteal += weaponAttack * weaponItem.getDouble("lifesteal");
+					sumLifesteal += weaponAttack * ItemLifestealService.getEffectiveLifesteal(weaponItem);
 				}
 			}
 			if (hasGloves() && getGloves().has("lifesteal")) {
-				sumLifesteal += sumAll * getGloves().getDouble("lifesteal");
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getGloves());
 			}
 			if (hasRing() && getRing().has("lifesteal")) {
-				sumLifesteal += sumAll * getRing().getDouble("lifesteal");
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRing());
 			} else if (hasRingB() && getRingB().has("lifesteal")) {
-				sumLifesteal += sumAll * getRingB().getDouble("lifesteal");
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRingB());
 			}
 
 			// Add lifesteal increase from glyphs

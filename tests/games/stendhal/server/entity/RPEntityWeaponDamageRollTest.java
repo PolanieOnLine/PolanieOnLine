@@ -203,6 +203,21 @@ public class RPEntityWeaponDamageRollTest {
 	}
 
 	@Test
+	public void lifeStealEffectivenessMultipliesOnlyTheWeaponFraction() {
+		final Item weapon = fixedWeapon("sword", 40);
+		weapon.put("lifesteal", 0.075);
+		weapon.put("lifesteal_effectiveness", 20);
+		final TestDressedEntity attacker = new TestDressedEntity(
+				Arrays.asList(weapon), 0, 0.0);
+		attacker.setBaseHP(1000);
+		attacker.setHP(500);
+
+		attacker.handleLifesteal(attacker, attacker.getWeapons(), 100);
+
+		assertEquals(509, attacker.getHP());
+	}
+
+	@Test
 	public void bloodGlyphStealsLifeFromUnarmedDamage() {
 		final TestDressedEntity attacker = new TestDressedEntity(
 				Arrays.<Item>asList(), 0, 0.0);

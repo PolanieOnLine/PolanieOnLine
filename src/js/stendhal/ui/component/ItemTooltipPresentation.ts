@@ -64,7 +64,6 @@ const SPECIAL_BONUSES: PercentageBonusDefinition[] = [
 	{key: "resist_heavy", label: "odporności na spowolnienie", fraction: true},
 	{key: "resist_stunned", label: "odporności na ogłuszenie", fraction: true},
 	{key: "critical_additional_bonus", label: "obrażeń krytycznych", fraction: false},
-	{key: "lifesteal", label: "kradzieży życia", fraction: true},
 	{key: "lifesteal_increase", label: "zwiększonej kradzieży życia", fraction: false},
 	{key: "def_additional_bonus", label: "bonusu pancerza", fraction: false}
 ];
@@ -233,7 +232,24 @@ function appendCoreStats(lines: ItemTooltipLine[], current: Record<string, strin
 	}
 	appendPlainStat(section, "Siła ataku", intValue(current, "skill_atk"),
 			intValue(equipped, "skill_atk"), !!equipped);
+	if (hasValue(current, "base_lifesteal") || hasValue(equipped, "base_lifesteal")) {
+		appendLifeStealStat(section, current, equipped);
+	}
 	appendSection(lines, section);
+}
+
+function appendLifeStealStat(lines: ItemTooltipLine[],
+		current: Record<string, string>, equipped: Record<string, string>|undefined) {
+	const base = numberValue(current, "base_lifesteal") * 100;
+	const previousBase = numberValue(equipped, "base_lifesteal") * 100;
+	if (base === 0 && previousBase === 0) return;
+	const value = numberValue(current, hasValue(current, "effective_lifesteal") ? "effective_lifesteal" : "lifesteal") * 100;
+	const previous = numberValue(equipped, hasValue(equipped, "effective_lifesteal") ? "effective_lifesteal" : "lifesteal") * 100;
+	if (value === 0 && (!equipped || previous === 0)) return;
+	const bonus = intValue(current, "lifesteal_effectiveness") > 0 ? value - base : 0;
+	lines.push({kind: "detail", text: GameLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
+			+ (bonus > 0 ? " (+" + formatCompact(bonus) + "%)" : ""),
+		deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
 }
 
 function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>,
@@ -274,7 +290,16 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		});
 	}
 
-	for (const bonus of SPECIAL_BONUSES) {
+	const lifeSteal = numberValue(current, hasValue(current, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
+	const previousLifeSteal = numberValue(equipped, hasValue(equipped, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
+	if (lifeSteal !== 0 || (equipped && previousLifeSteal !== 0)) {
+		special.push({kind: "bonus", text: signed(formatCompact(lifeSteal)) + "% " + GameLanguage.getText("kradzieży życia"),
+			deltas: equipped ? [createDelta(lifeSteal - previousLifeSteal, 1, "%")] : undefined});
+	}
+	const lifeStealBonuses: PercentageBonusDefinition[] = [
+		{key: "lifesteal_effectiveness", label: "skuteczności kradzieży życia", fraction: false}
+	];
+	for (const bonus of [...SPECIAL_BONUSES, ...lifeStealBonuses]) {
 		const value = percentageValue(current, bonus.key, bonus.fraction);
 		const previous = percentageValue(equipped, bonus.key, bonus.fraction);
 		if (value === 0 && (!equipped || previous === 0)) {

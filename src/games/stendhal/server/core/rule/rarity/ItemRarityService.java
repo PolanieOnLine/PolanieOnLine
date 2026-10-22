@@ -35,7 +35,7 @@ public final class ItemRarityService {
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
 					"damage_max", "rate", "def",
-					"range", "skill_atk", "rate_increase", "health")));
+					"range", "skill_atk", "rate_increase", "health", ItemLifestealService.EFFECTIVENESS)));
 
 	private static final Set<String> FLOAT_STATS = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("accuracy_bonus", "lifesteal",
@@ -164,13 +164,10 @@ public final class ItemRarityService {
 		final ItemRarityModifiers fixed = context.getModifiers();
 		Double sharedDamageMultiplier = null;
 
-		// Positive lifesteal declared by the item definition is a guaranteed
-		// regular affix, not a free base statistic. Common items have no regular
-		// affix slots. Negative values are intentional weapon drawbacks and stay
-		// independent of rarity.
-		suppressPositiveIntrinsicLifestealForCommon(item, rarity);
+		item.put(ItemLifestealService.VERSION_ATTRIBUTE, ItemLifestealService.VERSION);
 
 		for (final String statistic : INTEGRAL_STATS) {
+			if (ItemLifestealService.isUnscaled(statistic)) continue;
 			if (item.has(statistic) && item.getInt(statistic) > 0) {
 				final double multiplier;
 				if (isBaseDamageStatistic(statistic)
@@ -190,6 +187,7 @@ public final class ItemRarityService {
 			}
 		}
 		for (final String statistic : FLOAT_STATS) {
+			if (ItemLifestealService.isUnscaled(statistic)) continue;
 			if (item.has(statistic) && item.getDouble(statistic) > 0.0) {
 				final double multiplier = chooseMultiplier(statistic, tier, fixed,
 						context.isRandomizeModifiers());
@@ -214,15 +212,6 @@ public final class ItemRarityService {
 		ItemTooltipService.update(item);
 	}
 
-	private void suppressPositiveIntrinsicLifestealForCommon(final Item item,
-			final ItemRarity rarity) {
-		if (rarity == ItemRarity.COMMON && WeaponAffixService.isWeapon(item)
-				&& item.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE)
-				&& item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) > 0.0) {
-			item.remove(WeaponAffixService.LIFESTEAL_ATTRIBUTE);
-		}
-	}
-
 	public void markLegacyCommon(final Item item) {
 		if (item == null) {
 			return;
@@ -237,7 +226,7 @@ public final class ItemRarityService {
 			}
 		}
 		for (final String statistic : FLOAT_STATS) {
-			if (item.has(statistic)) {
+			if (item.has(statistic) && !ItemLifestealService.isUnscaled(statistic)) {
 				item.setRarityModifier(statistic, 1.0);
 			}
 		}

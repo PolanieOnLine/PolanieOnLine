@@ -403,10 +403,36 @@ final class ItemRarityPresentation {
 				WeaponPerformanceCalculator.getInt(object, ItemTooltip.SKILL_ATTACK),
 				WeaponPerformanceCalculator.getInt(equippedItem,
 						ItemTooltip.SKILL_ATTACK), equippedItem != null);
+		if (hasTooltipValue(object, ItemTooltip.BASE_LIFESTEAL)
+				|| hasTooltipValue(equippedItem, ItemTooltip.BASE_LIFESTEAL)) {
+			appendLifeStealStat(stats, object, equippedItem);
+		}
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1'>").append(stats).append("</font>");
 		}
+	}
+
+	private static void appendLifeStealStat(final StringBuilder stats,
+			final RPObject object, final RPObject equippedItem) {
+		final double base = WeaponPerformanceCalculator.getDouble(object, ItemTooltip.BASE_LIFESTEAL) * 100.0;
+		final double previousBase = WeaponPerformanceCalculator.getDouble(equippedItem, ItemTooltip.BASE_LIFESTEAL) * 100.0;
+		if (base == 0.0 && previousBase == 0.0) return;
+		final double value = effectiveLifeStealPercent(object);
+		final double previous = effectiveLifeStealPercent(equippedItem);
+		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
+		if (stats.length() > 0) stats.append("<br>");
+		final double bonus = WeaponPerformanceCalculator.getInt(object, ItemTooltip.LIFESTEAL_EFFECTIVENESS) > 0
+				? value - base : 0.0;
+		stats.append(escapeHtml(ClientLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
+				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : "")));
+		if (equippedItem != null) stats.append(delta(value, previous, 1));
+	}
+
+	private static double effectiveLifeStealPercent(final RPObject object) {
+		return WeaponPerformanceCalculator.getDouble(object,
+				hasTooltipValue(object, ItemTooltip.EFFECTIVE_LIFESTEAL)
+						? ItemTooltip.EFFECTIVE_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
@@ -509,9 +535,10 @@ final class ItemRarityPresentation {
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
+		appendLifeStealAffix(specialBonuses, object, equippedItem);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
-				ItemTooltip.LIFESTEAL,
-				"kradzieży życia", true);
+				ItemTooltip.LIFESTEAL_EFFECTIVENESS,
+				"skuteczności kradzieży życia", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
@@ -561,6 +588,19 @@ final class ItemRarityPresentation {
 		}
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(value, equippedValue, 1));
+	}
+
+	private static void appendLifeStealAffix(final StringBuilder bonuses,
+			final RPObject object, final RPObject equippedItem) {
+		final double value = WeaponPerformanceCalculator.getDouble(object,
+				hasTooltipValue(object, ItemTooltip.BASE_LIFESTEAL)
+						? ItemTooltip.AFFIX_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
+		final double previous = WeaponPerformanceCalculator.getDouble(equippedItem,
+				hasTooltipValue(equippedItem, ItemTooltip.BASE_LIFESTEAL)
+						? ItemTooltip.AFFIX_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
+		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
+		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText("kradzieży życia"),
+				equippedItem == null ? "" : delta(value, previous, 1));
 	}
 
 	private static int equipmentAttack(final RPObject object) {

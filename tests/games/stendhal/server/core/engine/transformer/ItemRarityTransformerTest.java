@@ -164,7 +164,7 @@ public class ItemRarityTransformerTest {
 	}
 
 	@Test
-	public void commonIntrinsicLifestealSuppressionSurvivesRestore()
+	public void commonIntrinsicLifestealSurvivesRestore()
 			throws IOException {
 		final Item created = SingletonRepository.getEntityManager().getItem(
 				INTRINSIC_LIFESTEAL_ITEM_NAME,
@@ -178,12 +178,12 @@ public class ItemRarityTransformerTest {
 				serializedCopy(firstLoad));
 
 		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
-		assertFalse(secondLoad.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE));
+		assertEquals(created.getDouble("lifesteal"), secondLoad.getDouble("lifesteal"), 0.000001);
 		assertFalse(ItemAffixState.hasAny(secondLoad));
 	}
 
 	@Test
-	public void guaranteedLifestealAffixSurvivesRestoreWithoutReroll()
+	public void intrinsicLifestealAndSeparateAffixSurviveRestoreWithoutReroll()
 			throws IOException {
 		final Item created = SingletonRepository.getEntityManager().getItem(
 				INTRINSIC_LIFESTEAL_ITEM_NAME,
@@ -204,7 +204,7 @@ public class ItemRarityTransformerTest {
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
 		assertEquals(ItemAffixState.getValues(created),
 				ItemAffixState.getValues(secondLoad));
-		assertTrue(ItemAffixState.has(secondLoad,
+		assertFalse(ItemAffixState.has(secondLoad,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
 		assertEquals(1, ItemAffixState.getValues(secondLoad).size());
 	}

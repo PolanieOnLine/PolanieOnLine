@@ -26,6 +26,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemAffixBalanceService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
+import games.stendhal.server.core.rule.rarity.LifestealMigrationService;
 import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
@@ -212,6 +213,9 @@ public class ItemTransformer {
 
 			// Rebuild the volatile client presentation after all persisted and
 			// converted values have reached their final state.
+			if (!definitionAuthoritative && !deathmatchTrophy) {
+				LifestealMigrationService.migrate(item, rpobject);
+			}
 			ItemAffixBalanceService.enforce(item);
 			ItemValueService.refresh(item);
 			ItemTooltipService.update(item);

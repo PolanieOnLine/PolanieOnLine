@@ -15,6 +15,44 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixTooltipPresentationTest {
 	@Test
+	public void lifeStealIsAStatAndEffectivenessIsASeparateAffix() {
+		final RPObject object = ItemTestHelper.createItem("life steal sword");
+		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_WEAPON);
+		put(object, "lifesteal", "0.075");
+		put(object, "base_lifesteal", "0.075");
+		put(object, "affix_lifesteal", "0.0");
+		put(object, "effective_lifesteal", "0.09");
+		put(object, "lifesteal_effectiveness", "20");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), null);
+
+		assertTrue(tooltip, tooltip.contains("Kradzież życia: 9% (+1,5%)"));
+		assertFalse(tooltip, tooltip.contains("Łączna kradzież życia"));
+		assertTrue(tooltip, tooltip.contains("+20% skuteczności kradzieży życia"));
+		assertFalse(tooltip, tooltip.contains("+7,5% kradzieży życia"));
+		assertFalse(tooltip.toLowerCase().contains("bazow"));
+	}
+
+	@Test
+	public void itemWithoutLifeStealComparesAgainstEquippedCoreStatNotAnInventedAffix() {
+		final RPObject current = ItemTestHelper.createItem("plain ring");
+		put(current, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		final RPObject equipped = ItemTestHelper.createItem("life steal ring");
+		put(equipped, "lifesteal", "0.075");
+		put(equipped, "base_lifesteal", "0.075");
+		put(equipped, "affix_lifesteal", "0");
+		put(equipped, "effective_lifesteal", "0.09");
+		put(equipped, "lifesteal_effectiveness", "20");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(current), equipped);
+		assertTrue(tooltip, tooltip.contains("Kradzież życia: 0%"));
+		assertFalse(tooltip, tooltip.contains("Łączna kradzież życia"));
+		assertTrue(tooltip, tooltip.contains("color='#ef6a62'>-9,0</font>"));
+		assertFalse(tooltip, tooltip.contains("+0% kradzieży życia"));
+	}
+
+	@Test
 	public void equipmentAttackPenaltiesAreNotMaskedByZeroOrMissingOtherAttack() {
 		final String[][] attacks = {
 				{"-5", null, "-5"}, {"-5", "0", "-5"},

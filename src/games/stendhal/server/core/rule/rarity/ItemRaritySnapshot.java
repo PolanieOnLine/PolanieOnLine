@@ -24,11 +24,13 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
+import marauroa.common.game.RPObject;
 
 /**
  * Compact snapshot used by the few quest scripts which temporarily remove an
@@ -37,7 +39,7 @@ import games.stendhal.server.entity.item.ItemTooltipService;
  */
 public final class ItemRaritySnapshot {
 	private static final int LEGACY_VERSION = 1;
-	private static final int VERSION = 2;
+	private static final int VERSION = 3;
 	private static final int MAX_ENTRIES = 64;
 	private static final int MAX_STATISTICS = 64;
 	private static final int MAX_ENCODED_LENGTH = 32768;
@@ -94,6 +96,15 @@ public final class ItemRaritySnapshot {
 					output.writeDouble(item.getDouble(attribute));
 				}
 			}
+			output.writeInt(item.has(ItemLifestealService.VERSION_ATTRIBUTE)
+					? item.getInt(ItemLifestealService.VERSION_ATTRIBUTE) : 0);
+			final Long seed = ItemAffixState.getSeed(item);
+			output.writeBoolean(seed != null);
+			if (seed != null) output.writeLong(seed.longValue());
+			writeMap(output, ItemAffixState.getValues(item));
+			writeMap(output, item.hasMap(ItemLifestealService.LEGACY_ATTRIBUTE)
+					? item.getMap(ItemLifestealService.LEGACY_ATTRIBUTE)
+					: Collections.<String, String>emptyMap());
 			output.close();
 			return Base64.getUrlEncoder().withoutPadding()
 					.encodeToString(bytes.toByteArray());
@@ -125,7 +136,7 @@ public final class ItemRaritySnapshot {
 			final DataInputStream input = new DataInputStream(
 					new ByteArrayInputStream(bytes));
 			final int version = input.readUnsignedByte();
-			if (version != LEGACY_VERSION && version != VERSION) {
+			if (version < LEGACY_VERSION || version > VERSION) {
 				throw new IllegalArgumentException("Unsupported item rarity snapshot version");
 			}
 			final ItemRarity rarity = ItemRarity.fromId(input.readUTF());
@@ -176,7 +187,7 @@ public final class ItemRaritySnapshot {
 			}
 
 			final List<StatisticValue> statistics = new ArrayList<StatisticValue>();
-			if (version == VERSION) {
+			if (version >= 2) {
 				final int statisticCount = input.readInt();
 				if (statisticCount < 0 || statisticCount > MAX_STATISTICS) {
 					throw new IllegalArgumentException("Invalid rarity statistic count");
@@ -199,11 +210,27 @@ public final class ItemRaritySnapshot {
 					}
 				}
 			}
+			final RPObject metadata = new RPObject();
+			metadata.setRPClass("item");
+			if (version >= 3) {
+				final int model = input.readInt();
+				if (model < 0 || model > ItemLifestealService.VERSION) {
+					throw new IllegalArgumentException("Unsupported life-steal snapshot model");
+				}
+				if (model > 0) metadata.put(ItemLifestealService.VERSION_ATTRIBUTE, model);
+				if (input.readBoolean()) metadata.put(ItemAffixState.SEED_ATTRIBUTE, Long.toString(input.readLong()));
+				for (final Map.Entry<String, String> entry : readMap(input).entrySet()) {
+					metadata.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
+				}
+				for (final Map.Entry<String, String> entry : readMap(input).entrySet()) {
+					metadata.put(ItemLifestealService.LEGACY_ATTRIBUTE, entry.getKey(), entry.getValue());
+				}
+			}
 			if (input.available() != 0) {
 				throw new IllegalArgumentException("Trailing item rarity snapshot data");
 			}
 
-			if (version == VERSION) {
+			if (version >= 2) {
 				for (final String attribute
 						: ItemRarityService.getInstance().getSupportedStatistics()) {
 					if (item.has(attribute)) {
@@ -230,6 +257,19 @@ public final class ItemRaritySnapshot {
 			item.setValue(value);
 			item.setRarity(rarity);
 			item.put(Item.RARITY_PROFILE, profile);
+			if (version >= 3) {
+				if (item.hasMap(ItemAffixState.ATTRIBUTE)) item.removeMap(ItemAffixState.ATTRIBUTE);
+				if (item.has(ItemAffixState.SEED_ATTRIBUTE)) item.remove(ItemAffixState.SEED_ATTRIBUTE);
+				if (item.has(ItemLifestealService.VERSION_ATTRIBUTE)) item.remove(ItemLifestealService.VERSION_ATTRIBUTE);
+				if (item.hasMap(ItemLifestealService.LEGACY_ATTRIBUTE)) item.removeMap(ItemLifestealService.LEGACY_ATTRIBUTE);
+				ItemAffixState.restore(item, metadata);
+				if (metadata.has(ItemLifestealService.VERSION_ATTRIBUTE)) {
+					item.put(ItemLifestealService.VERSION_ATTRIBUTE, metadata.get(ItemLifestealService.VERSION_ATTRIBUTE));
+				}
+				LifestealMigrationService.migrate(item, snapshotState(item, metadata));
+			} else {
+				LifestealMigrationService.migrate(item, new RPObject(item));
+			}
 			ItemAffixBalanceService.enforce(item);
 			ItemTooltipService.update(item);
 		} catch (final IllegalArgumentException e) {
@@ -239,6 +279,40 @@ public final class ItemRaritySnapshot {
 		} catch (final IOException e) {
 			throw new IllegalArgumentException("Invalid item rarity snapshot", e);
 		}
+	}
+
+	private static RPObject snapshotState(final Item item, final RPObject metadata) {
+		final RPObject state = new RPObject(item);
+		for (final Map.Entry<String, String> entry : metadata.hasMap(ItemLifestealService.LEGACY_ATTRIBUTE)
+				? metadata.getMap(ItemLifestealService.LEGACY_ATTRIBUTE).entrySet()
+				: Collections.<String, String>emptyMap().entrySet()) {
+			state.put(ItemLifestealService.LEGACY_ATTRIBUTE, entry.getKey(), entry.getValue());
+		}
+		return state;
+	}
+
+	private static void writeMap(final DataOutputStream output, final Map<String, String> values) throws IOException {
+		final List<String> keys = new ArrayList<String>(values.keySet());
+		Collections.sort(keys);
+		output.writeInt(keys.size());
+		for (final String key : keys) {
+			output.writeUTF(key);
+			output.writeUTF(values.get(key));
+		}
+	}
+
+	private static Map<String, String> readMap(final DataInputStream input) throws IOException {
+		final int count = input.readInt();
+		if (count < 0 || count > MAX_ENTRIES) throw new IllegalArgumentException("Invalid snapshot metadata count");
+		final Map<String, String> values = new LinkedHashMap<String, String>();
+		for (int index = 0; index < count; index++) {
+			final String key = input.readUTF();
+			final String value = input.readUTF();
+			if (key.isEmpty() || key.length() > 128 || value.length() > 512 || values.put(key, value) != null) {
+				throw new IllegalArgumentException("Invalid snapshot metadata");
+			}
+		}
+		return values;
 	}
 
 	private static final class StatisticValue {

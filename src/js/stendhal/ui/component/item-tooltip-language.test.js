@@ -67,6 +67,47 @@ test("zero attack without comparison remains hidden", async () => {
 	assert.ok(h.build(item).lines.every(line => !line.text.includes(" ataku")));
 });
 
+test("life steal is separate from its effectiveness affix and total in Polish and English", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "weapon", lifesteal: "0.075", base_lifesteal: "0.075",
+		affix_lifesteal: "0", effective_lifesteal: "0.09", lifesteal_effectiveness: "20"});
+	let text = h.build(item).lines.map(line => line.text).join("\n");
+	assert.match(text, /Kradzież życia: 9% \(\+1.5%\)/);
+	assert.doesNotMatch(text, /Łączna kradzież życia/);
+	assert.match(text, /\+20% skuteczności kradzieży życia/);
+	assert.doesNotMatch(text, /\+7.5% kradzieży życia|bazow/i);
+	h.language.synchronize("en");
+	text = h.build(item).lines.map(line => line.text).join("\n");
+	assert.match(text, /Life steal: 9% \(\+1.5%\)/);
+	assert.doesNotMatch(text, /Total life steal/);
+	assert.match(text, /\+20% life steal effectiveness/);
+	assert.doesNotMatch(text, /kradzie|skutecz|Łączna/);
+});
+
+test("a life steal grant is an affix, not a core stat", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "weapon", lifesteal: "0.07", base_lifesteal: "0",
+		affix_lifesteal: "0.07", effective_lifesteal: "0.07"});
+	const text = h.build(item).lines.map(line => line.text).join("\n");
+	assert.match(text, /\+7% kradzieży życia/);
+	assert.doesNotMatch(text, /Kradzież życia:/);
+});
+
+test("a plain item compares missing life steal against the equipped core stat", async () => {
+	const h = await harness();
+	const equipped = new h.Item({category: "accessory", lifesteal: "0.075", base_lifesteal: "0.075",
+		affix_lifesteal: "0", effective_lifesteal: "0.09", lifesteal_effectiveness: "20"});
+	h.marauroa.me = {finger: {count: () => 1, getByIndex: () => equipped}};
+	const item = new h.Item({category: "accessory", equipment_slots: "finger"});
+	const lines = h.build(item, true).lines;
+	assert.ok(lines.some(line => line.text === "Kradzież życia: 0%"));
+	const total = lines.find(line => line.text === "Kradzież życia: 0%");
+	assert.ok(total);
+	assert.equal(total.deltas[0].text, "-9,0%");
+	assert.equal(total.deltas[0].direction, "worse");
+	assert.ok(lines.every(line => !line.text.includes("+0% kradzieży życia")));
+});
+
 test("weapon and healing tooltips translate labels while retaining exact stats and canonical names", async () => {
 	const h = await harness();
 	const stats = {category: "weapon", damage_min: "10", damage_max: "20", attacks_per_second: "2",

@@ -121,6 +121,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	private Boolean rarityEnabledOverride;
 	private String rarityProfile = "default";
 	private int definitionValue;
+	private double definitionLifesteal;
 
 	/**
 	 *
@@ -151,7 +152,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			}
 		}
 
+		definitionLifesteal = has("lifesteal") ? getDouble("lifesteal") : 0.0;
 		update();
+	}
+
+	/** Authored value, retained separately from saved rolls and affixes. */
+	public double getDefinitionLifesteal() {
+		return definitionLifesteal;
 	}
 
 	/** no public 'default' item. */
@@ -178,6 +185,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		rarityEnabledOverride = item.rarityEnabledOverride;
 		rarityProfile = item.rarityProfile;
 		definitionValue = item.definitionValue;
+		definitionLifesteal = item.definitionLifesteal;
 	}
 
 	public static void generateRPClass() {
@@ -260,6 +268,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// Some items have lifesteal values
 		entity.addAttribute("lifesteal", Type.FLOAT, Definition.HIDDEN);
+		entity.addAttribute("lifesteal_effectiveness", Type.INT, Definition.HIDDEN);
+		entity.addAttribute("lifesteal_version", Type.INT, Definition.HIDDEN);
+		entity.addAttribute("lifesteal_legacy", Type.MAP, Definition.HIDDEN);
 
 		// Items that protect against poisoning
 		entity.addAttribute("antipoison", Type.FLOAT, (byte) (Definition.HIDDEN | Definition.VOLATILE));

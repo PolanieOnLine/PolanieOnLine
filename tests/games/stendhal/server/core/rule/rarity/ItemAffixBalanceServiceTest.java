@@ -150,16 +150,14 @@ public class ItemAffixBalanceServiceTest {
 	}
 
 	@Test
-	public void snapshotsWithoutAffixProvenanceArePreservedButRecordedTransfersAreLimited() {
+	public void versionThreeSnapshotsAndTransfersPreserveProvenanceAndRespectLimits() {
 		final Item source = new Item("source", "sword", "test", Collections.singletonMap("atk", "20"));
 		source.setRarity(ItemRarity.EPIC);
 		record(source, "accuracy_bonus", 15);
 		final Item returned = new Item("returned", "sword", "test", null);
 		ItemRaritySnapshot.restore(returned, ItemRaritySnapshot.encode(source));
-		// This snapshot format carries final stats, not the affix map. It cannot
-		// distinguish an authored bonus from a roll, so must not cap either blindly.
-		assertEquals(15, returned.getDouble("accuracy_bonus"), 0);
-		assertFalse(ItemAffixState.hasAny(returned));
+		assertEquals(8, returned.getDouble("accuracy_bonus"), 0);
+		assertEquals("8.0", ItemAffixState.getValues(returned).get("accuracy_bonus"));
 		final Item reforged = new Item("reforged", "sword", "test", Collections.singletonMap("atk", "30"));
 		ItemRarityTransferSnapshot.apply(reforged, ItemRarityTransferSnapshot.encode(source));
 		assertEquals(8, reforged.getDouble("accuracy_bonus"), 0);
