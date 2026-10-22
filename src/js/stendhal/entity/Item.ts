@@ -151,8 +151,13 @@ export class Item extends Entity {
 	public getToolTip(): string {
 		if (this["name"] === "money") {
 			const quantity = Number(this["quantity"]);
-			return Number.isSafeInteger(quantity) && quantity >= 0
-					? GameLanguage.getText("Monety w stosie: " + String(quantity).replace(/\B(?=(\d{3})+(?!\d))/g, " ")) : "";
+			if (!Number.isSafeInteger(quantity) || quantity < 0) {
+				return "";
+			}
+			const few = quantity % 10 >= 2 && quantity % 10 <= 4
+					&& !(quantity % 100 >= 12 && quantity % 100 <= 14);
+			const noun = quantity === 1 ? "moneta" : few ? "monety" : "monet";
+			return GameLanguage.getText("Łącznie: " + GameLanguage.getText(quantity + " " + noun));
 		}
 		const lines: string[] = [];
 		const rarity = this.getRarity();

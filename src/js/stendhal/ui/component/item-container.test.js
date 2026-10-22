@@ -162,6 +162,7 @@ function createHarness() {
 		const exports = {};
 		vm.runInNewContext(compiled.get(name), {
 			exports, Date: Clock, document, console, window: {innerWidth: 1024, innerHeight: 768},
+			fetch: async url => ({ok: true, text: async () => readFileSync(path.resolve(stendhalRoot, "../../../data/languages", path.basename(url)), "utf8")}),
 			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent,
 			getComputedStyle: element => ({ visibility: element.visible ? "visible" : "hidden" }),
 			require: name => {
@@ -261,7 +262,7 @@ function createHarness() {
 	}
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
-		metrics, document, marauroa, images, observers, Container, ItemRarity, raritySlotCalls, groundCalls,
+		metrics, document, marauroa, images, observers, Container, ItemRarity, GameLanguage, raritySlotCalls, groundCalls,
 		diagnostics, diagnosticCounts,
 		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
 		setNow: value => { now = value; }
@@ -336,21 +337,36 @@ test("only money stacks show their full quantity even while the icon still says 
 	const {container, parent} = h.makeContainer([item]);
 	const slot = parent.elements[0];
 	assert.equal(slot.textContent, "992M");
-	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+	assert.equal(slot.title, "Łącznie: 992550648 monet");
 	item.set("quantity", "992550348");
 	container.update();
 	assert.equal(slot.textContent, "992M");
-	assert.equal(slot.title, "Monety w stosie: 992 550 348");
+	assert.equal(slot.title, "Łącznie: 992550348 monet");
 	assert.equal(slot.attributes.get("aria-label"), slot.title);
 	item.set("quantity", "2147483647");
 	container.update();
-	assert.equal(slot.title, "Monety w stosie: 2 147 483 647");
+	assert.equal(slot.title, "Łącznie: 2147483647 monet");
 	item.set("quantity", "1");
 	container.update();
-	assert.equal(slot.title, "Monety w stosie: 1");
+	assert.equal(slot.title, "Łącznie: 1 moneta");
 	item.set("name", "polano");
 	container.update();
 	assert.equal(slot.title, "polano");
+});
+
+test("money tooltips use the panel wording, correct coin forms and viewer language", async () => {
+	const h = createHarness(), item = h.makeItem(1);
+	item.set("name", "money");
+	for (const [quantity, noun] of [[0,"monet"], [1,"moneta"], [2,"monety"], [5,"monet"], [12,"monet"], [22,"monety"], [101,"monet"]]) {
+		item.set("quantity", quantity);
+		assert.equal(item.getToolTip(), "Łącznie: " + quantity + " " + noun);
+	}
+	await h.GameLanguage.load("/data");
+	h.GameLanguage.synchronize("en");
+	item.set("quantity", 1);
+	assert.equal(item.getToolTip(), "Total: 1 coin");
+	item.set("quantity", 22);
+	assert.equal(item.getToolTip(), "Total: 22 coins");
 });
 
 test("the money quantity tooltip is not hidden by structured item tooltip metadata", () => {
@@ -362,7 +378,7 @@ test("the money quantity tooltip is not hidden by structured item tooltip metada
 	for (const listener of slot.listeners.get("mouseenter") || []) {
 		listener({currentTarget: slot, clientX: 0, clientY: 0});
 	}
-	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+	assert.equal(slot.title, "Łącznie: 992550648 monet");
 });
 
 test("animation and quantity updates never rewrite the static slot or replace its layers", () => {

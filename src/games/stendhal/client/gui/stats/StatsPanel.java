@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import games.stendhal.client.entity.StatusID;
+import games.stendhal.client.gui.MoneyTooltip;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
@@ -407,13 +408,12 @@ class StatsPanel extends JPanel {
 
 		void setMoney(long dukaty, long talary, long miedziaki, long totalCopper) {
 			if (!CurrencyReform.useReformedCurrency()) {
+				final String tooltip = MoneyTooltip.format(totalCopper);
 				if (legacyLabel != null) {
 					legacyLabel.setAmount(totalCopper);
-					legacyLabel.setToolTipText("Łącznie: " + totalCopper + " "
-						+ coinQuantity("money", totalCopper));
+					legacyLabel.setToolTipText(tooltip);
 				}
-				setToolTipText("Łącznie: " + totalCopper + " "
-					+ coinQuantity("money", totalCopper));
+				setToolTipText(tooltip);
 				return;
 			}
 

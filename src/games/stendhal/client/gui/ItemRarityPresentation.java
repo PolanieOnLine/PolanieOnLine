@@ -151,10 +151,7 @@ final class ItemRarityPresentation {
 		if (!(entity instanceof Item) || !"money".equals(entity.getName())) {
 			return null;
 		}
-		final int quantity = Math.max(0, ((Item) entity).getQuantity());
-		final String amount = String.format(Locale.ROOT, "%,d", quantity).replace(',', ' ');
-		return "<html>" + escapeHtml(ClientLanguage.getText("Monety w stosie:"))
-				+ " <b>" + amount + "</b></html>";
+		return MoneyTooltip.format(((Item) entity).getQuantity());
 	}
 
 	static String resolveCategory(final RPObject object) {

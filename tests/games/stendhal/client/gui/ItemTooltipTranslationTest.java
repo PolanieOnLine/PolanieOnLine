@@ -66,7 +66,9 @@ public class ItemTooltipTranslationTest {
 		RPObject money = ItemTestHelper.createItem("money");
 		money.put("quantity", 1234567);
 		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(money), null, false);
-		assertTrue(html, html.contains("Coins in this stack: <b>1 234 567</b>"));
+		org.junit.Assert.assertEquals("Total: 1234567 coins", html);
+		money.put("quantity", 1);
+		org.junit.Assert.assertEquals("Total: 1 coin", ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(money)));
 	}
 
 	@Test public void translatesElementalResistanceAsACompleteBonus() {

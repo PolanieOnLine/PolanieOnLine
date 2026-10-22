@@ -69,6 +69,21 @@ public class StatsPanelMoneyTest {
 	}
 
 	@Test
+	public void panelAndCoinLabelKeepTheCommonMoneyDescription() throws Exception {
+		org.junit.Assume.assumeFalse(CurrencyReform.useReformedCurrency());
+		change("bag", true, item(1, "money", 50, 1));
+		change("pouch", true, item(1, "money", 30, 1));
+		assertMoney(80);
+		Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
+		moneyField.setAccessible(true);
+		javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
+		Field labelField = panel.getClass().getDeclaredField("legacyLabel");
+		labelField.setAccessible(true);
+		assertEquals("Łącznie: 80 monet", panel.getToolTipText());
+		assertEquals("Łącznie: 80 monet", ((JLabel) labelField.get(panel)).getToolTipText());
+	}
+
+	@Test
 	public void itemPricesMustNotBecome1071PhantomCoins() throws Exception {
 		change("bag", true, item(1, "eliksir", 20, 30), item(2, "polano", 71, 1),
 			item(3, "szmaragd", 2, 200));
@@ -180,6 +195,12 @@ public class StatsPanelMoneyTest {
 		change("bag", true, item(1, "money", Integer.MAX_VALUE, 1));
 		change("pouch", true, item(1, "money", Integer.MAX_VALUE, 1));
 		assertMoney(2L * Integer.MAX_VALUE);
+		if (!CurrencyReform.useReformedCurrency()) {
+			Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
+			moneyField.setAccessible(true);
+			javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
+			assertEquals("Łącznie: 4294967294 monety", panel.getToolTipText());
+		}
 	}
 
 	@Test
