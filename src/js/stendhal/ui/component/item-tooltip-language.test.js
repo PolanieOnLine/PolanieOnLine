@@ -121,6 +121,14 @@ test("a plain item compares missing life steal against the equipped core stat", 
 	assert.equal(lines.filter(line => line.text === "0% kradzieży życia").length, 1);
 });
 
+test("weapon speed descriptions start on their own line in Polish and English", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "weapon", damage_min: "26", damage_max: "37", attacks_per_second: "1.67"});
+	assert.ok(h.build(item).lines.some(line => line.text === "1,67 ataku na sekundę\n(Szybka broń)"));
+	h.language.synchronize("en");
+	assert.ok(h.build(item).lines.some(line => line.text === "1.67 attacks per second\n(Fast weapon)"));
+});
+
 test("weapon and healing tooltips translate labels while retaining exact stats and canonical names", async () => {
 	const h = await harness();
 	const stats = {category: "weapon", damage_min: "10", damage_max: "20", attacks_per_second: "2",

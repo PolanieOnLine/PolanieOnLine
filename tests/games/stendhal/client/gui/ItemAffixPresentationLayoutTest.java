@@ -74,6 +74,7 @@ public class ItemAffixPresentationLayoutTest {
 						(int) Math.ceil(view.getPreferredSpan(View.X_AXIS)),
 						(int) Math.ceil(view.getPreferredSpan(View.Y_AXIS)));
 				view.setSize(allocation.width, allocation.height);
+				assertTrue("Comparisons must not force a wide tooltip", allocation.width <= 245);
 				final String text = view.getDocument().getText(0, view.getDocument().getLength());
 				final Rectangle attack = view.modelToView(text.indexOf("+3 ataku"), allocation, Position.Bias.Forward).getBounds();
 				final Rectangle attackDelta = view.modelToView(text.lastIndexOf("+3"), allocation, Position.Bias.Forward).getBounds();
@@ -83,6 +84,41 @@ public class ItemAffixPresentationLayoutTest {
 				assertTrue("Defense comparison must stay on the stat line", Math.abs(defense.y - defenseDelta.y) <= 1);
 				assertTrue("Comparisons must align at the right edge", Math.abs(attackDelta.x - defenseDelta.x) <= 1);
 				assertTrue("Comparisons must not remain inline after the label", attackDelta.x > allocation.width * 0.7);
+			} catch (final javax.swing.text.BadLocationException e) {
+				throw new AssertionError(e);
+			}
+		});
+	}
+
+	@Test
+	public void weaponSpeedDescriptionStartsBelowTheComparedAttackRate() throws Exception {
+		final RPObject object = ItemTestHelper.createItem("ciupaga");
+		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_WEAPON);
+		put(object, ItemTooltip.DAMAGE_MIN, "26");
+		put(object, ItemTooltip.DAMAGE_MAX, "37");
+		put(object, ItemTooltip.ATTACKS_PER_SECOND, "1.67");
+		final RPObject equipped = ItemTestHelper.createItem("ciupaga");
+		put(equipped, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_WEAPON);
+		put(equipped, ItemTooltip.DAMAGE_MIN, "25");
+		put(equipped, ItemTooltip.DAMAGE_MAX, "39");
+		put(equipped, ItemTooltip.ATTACKS_PER_SECOND, "1.5");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), equipped);
+		SwingUtilities.invokeAndWait(() -> {
+			try {
+				final JLabel label = new JLabel(tooltip);
+				final View view = (View) label.getClientProperty(BasicHTML.propertyKey);
+				final Rectangle allocation = new Rectangle(0, 0,
+						(int) Math.ceil(view.getPreferredSpan(View.X_AXIS)),
+						(int) Math.ceil(view.getPreferredSpan(View.Y_AXIS)));
+				view.setSize(allocation.width, allocation.height);
+				final String text = view.getDocument().getText(0, view.getDocument().getLength());
+				final Rectangle rate = view.modelToView(text.indexOf("1,67 ataku"), allocation, Position.Bias.Forward).getBounds();
+				final Rectangle description = view.modelToView(text.indexOf("(Szybka broń)"), allocation, Position.Bias.Forward).getBounds();
+				final Rectangle delta = view.modelToView(text.indexOf("+0,17"), allocation, Position.Bias.Forward).getBounds();
+				assertTrue("The speed description must start on the next line", description.y >= rate.y + rate.height);
+				assertTrue("The speed description must align with the rate", Math.abs(description.x - rate.x) <= 1);
+				assertTrue("The comparison must stay beside the rate, not its description", Math.abs(delta.y - rate.y) <= 1);
 			} catch (final javax.swing.text.BadLocationException e) {
 				throw new AssertionError(e);
 			}

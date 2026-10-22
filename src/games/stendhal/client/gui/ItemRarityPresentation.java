@@ -123,7 +123,7 @@ final class ItemRarityPresentation {
 		appendRarityGlowMarker(tooltip, rarity);
 		/* Do not paint a private card background here. StyledToolTipUI tiles the
 		 * currently selected client skin behind this transparent HTML content. */
-		tooltip.append("<table width='").append(comparisonItem == null ? 190 : 300)
+		tooltip.append("<table width='").append(comparisonItem == null ? 190 : 240)
 				.append("' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);
@@ -284,9 +284,10 @@ final class ItemRarityPresentation {
 						+ "] pkt. obrażeń za trafienie",
 				equipped == null ? "" : damageRangeDelta(performance, equipped));
 		appendTreeDetail(tooltip, false,
-				formatTwoDecimals(performance.getAttacksPerSecond())
+				ClientLanguage.getText(formatTwoDecimals(performance.getAttacksPerSecond())
 						+ " ataku na sekundę ("
-						+ ClientLanguage.getText(getWeaponSpeedLabel(performance.getAttacksPerSecond())) + ")",
+						+ ClientLanguage.getText(getWeaponSpeedLabel(performance.getAttacksPerSecond())) + ")")
+						.replace(" (", "\n("),
 				equipped == null ? "" : delta(performance.getAttacksPerSecond(),
 						equipped.getAttacksPerSecond(), 2));
 		tooltip.append("</table>");
@@ -381,7 +382,7 @@ final class ItemRarityPresentation {
 						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
 				.append("</font></td><td><font size='-1' color='")
 				.append(getTextColor()).append("'>")
-				.append(escapeHtml(details))
+				.append(escapeHtml(details).replace("\n", "<br>"))
 				.append("</font></td>");
 		appendComparisonCell(tooltip, comparison, false);
 		tooltip.append("</tr>");

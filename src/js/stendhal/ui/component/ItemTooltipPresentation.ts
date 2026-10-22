@@ -178,8 +178,9 @@ function appendWeaponPerformance(lines: ItemTooltipLine[], current: Record<strin
 		weaponLines.push({
 			kind: "tree",
 			branchContinues: false,
-			text: formatNumber(attacksPerSecond, 2) + " ataku na sekundę ("
-					+ GameLanguage.getText(getWeaponSpeedLabel(attacksPerSecond)) + ")",
+			text: GameLanguage.getText(formatNumber(attacksPerSecond, 2) + " ataku na sekundę ("
+					+ GameLanguage.getText(getWeaponSpeedLabel(attacksPerSecond)) + ")")
+					.replace(" (", "\n("),
 			deltas: equipped
 					? [createDelta(attacksPerSecond - equippedAttacksPerSecond, 2)]
 					: undefined

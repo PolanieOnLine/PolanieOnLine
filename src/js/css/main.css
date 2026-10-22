@@ -378,7 +378,7 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip--comparing {
-	width: 300px;
+	width: 240px;
 }
 .item-rarity-tooltip.item-rarity-epic {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(155, 89, 182, 0.12);
@@ -441,6 +441,7 @@ div.itemSlot {
 	flex: 1 1 auto;
 	min-width: 0;
 	color: #f3efe7;
+	white-space: pre-line;
 }
 
 .item-rarity-tooltip__detail,
