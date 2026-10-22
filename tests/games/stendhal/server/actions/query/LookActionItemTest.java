@@ -112,6 +112,15 @@ public class LookActionItemTest {
 	}
 
 	@Test
+	public void unarmoredCreatureLookOmitsArmorNoticeInBothLanguages() {
+		final Creature creature = new Creature();
+		creature.setName("serafin");
+		creature.setLevel(123);
+		assertEquals("Oto serafin. Poziom 123.", LookAction.getLookDescription(creature, "pl"));
+		assertEquals("You see seraph. Level 123.", LookAction.getLookDescription(creature, "en"));
+	}
+
+	@Test
 	public void authoredPlayerDescriptionAndNicknameAreNotTranslated() {
 		final Player player = PlayerTestHelper.createPlayer("polano");
 		assertTrue(LookAction.getLookDescription(player, "en").contains("polano"));

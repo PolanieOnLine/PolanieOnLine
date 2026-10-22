@@ -72,11 +72,24 @@ public class CreatureArmorTest {
 		creature.setLevel(20);
 		for (final String[] entry : new String[][] {
 				{"light", "Pancerz lekki"}, {"medium", "Pancerz średni"},
-				{"heavy", "Pancerz ciężki"}, {"none", "Brak pancerza"}}) {
+				{"heavy", "Pancerz ciężki"}}) {
 			creature.setArmorType(entry[0]);
 			assertEquals("Oto przeciwnik testowy. Poziom 20. " + entry[1] + ".", creature.describe());
 		}
 		creature.setArmorType(null);
 		assertEquals("none", creature.get("armor_type"));
+	}
+
+	@Test
+	public void unarmoredLookKeepsDescriptionAndLevelWithoutAnArmorNotice() {
+		final Creature creature = new Creature();
+		creature.setDescription("Oto przeciwnik testowy.");
+		creature.setLevel(20);
+		for (final String armor : new String[] {"none", null, "unknown"}) {
+			creature.setArmorType(armor);
+			assertEquals("Oto przeciwnik testowy. Poziom 20.", creature.describe());
+		}
+		creature.remove("armor_type");
+		assertEquals("Oto przeciwnik testowy. Poziom 20.", creature.describe());
 	}
 }
