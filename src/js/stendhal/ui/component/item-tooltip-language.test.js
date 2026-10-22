@@ -153,6 +153,26 @@ test("weapon and healing tooltips translate labels while retaining exact stats a
 	assert.equal(h.build(item).upgradeText, "Ulepszenie: +4 / +5");
 });
 
+test("flat attack and defense affixes stay out of core stats and retain one comparison row", async () => {
+	const h = await harness();
+	const equipped = new h.Item({category: "accessory", affix_flat_attack_bonus: "1", affix_flat_defense_bonus: "2"});
+	h.marauroa.me = {finger: {count: () => 1, getByIndex: () => equipped}};
+	const item = new h.Item({category: "accessory", equipment_slots: "finger", atk: "3", def: "16",
+		affix_flat_attack_bonus: "2", affix_flat_defense_bonus: "4", resistance_light: "120", resist_bleeding: "0.12"});
+	const lines = h.build(item, true).lines;
+	assert.ok(lines.some(line => line.text === "+3 ataku"));
+	assert.ok(lines.some(line => line.text === "+16 pancerza"));
+	const resistance = lines.findIndex(line => line.text.includes("odporności na krwawienie"));
+	assert.ok(resistance >= 0);
+	for (const [text, delta] of [["+2 dodatkowego ataku", "+1"], ["+4 dodatkowego pancerza", "+2"]]) {
+		assert.equal(lines.filter(line => line.text === text).length, 1);
+		const index = lines.findIndex(line => line.text === text);
+		assert.ok(index > resistance, "Flat affixes must be below resistance affixes");
+		assert.equal(lines[index].deltas[0].text, delta);
+		assert.equal(lines[index].deltas[0].direction, "better");
+	}
+});
+
 test("all legendary affix descriptions and regular item bonuses have readable English display text", async () => {
 	const h = await harness(); h.language.synchronize("en");
 	const stats = {category: "armour", def: "85", resistance_fire: "107", spiked_plating: "0.04",

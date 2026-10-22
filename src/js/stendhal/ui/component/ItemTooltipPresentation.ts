@@ -269,14 +269,6 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	}
 	appendIntegerBonus(core, intValue(current, "health"), intValue(equipped, "health"),
 			"zdrowia", !!equipped);
-	appendIntegerBonus(core,
-			intValueWithFallback(current, "affix_flat_attack_bonus", "flat_attack_bonus"),
-			intValueWithFallback(equipped, "affix_flat_attack_bonus", "flat_attack_bonus"),
-			"dodatkowego ataku", !!equipped);
-	appendIntegerBonus(core,
-			intValueWithFallback(current, "affix_flat_defense_bonus", "flat_defense_bonus"),
-			intValueWithFallback(equipped, "affix_flat_defense_bonus", "flat_defense_bonus"),
-			"dodatkowego pancerza", !!equipped);
 
 	for (const [nature, label] of RESISTANCES) {
 		const value = resistanceValue(current, nature);
@@ -312,6 +304,15 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
 		});
 	}
+
+	appendIntegerBonus(special,
+			intValueWithFallback(current, "affix_flat_attack_bonus", "flat_attack_bonus"),
+			intValueWithFallback(equipped, "affix_flat_attack_bonus", "flat_attack_bonus"),
+			"dodatkowego ataku", !!equipped);
+	appendIntegerBonus(special,
+			intValueWithFallback(current, "affix_flat_defense_bonus", "flat_defense_bonus"),
+			intValueWithFallback(equipped, "affix_flat_defense_bonus", "flat_defense_bonus"),
+			"dodatkowego pancerza", !!equipped);
 
 	appendSection(lines, core);
 	appendSection(lines, resistances);

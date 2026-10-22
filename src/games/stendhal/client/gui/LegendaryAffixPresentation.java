@@ -27,12 +27,6 @@ final class LegendaryAffixPresentation {
 
 		final StringBuilder result = new StringBuilder();
 		appendAttackRateReduction(result, object);
-		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
-				"dodatkowego ataku");
-		// Legacy saved/dev items keep their old materialized flat DEF line, but
-		// fresh generation no longer rolls this affix.
-		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
-				"dodatkowego pancerza");
 		appendSpikedPlating(result, object);
 		if (has(object, ItemTooltip.HUNTER_MARK)) {
 			appendRegularText(result, "Znak łowcy",
@@ -204,22 +198,6 @@ final class LegendaryAffixPresentation {
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
 				.append(games.stendhal.client.ClientLanguage.getText(title)).append(":</b> ")
 				.append(games.stendhal.client.ClientLanguage.getText(text))
-				.append("</font></div>");
-	}
-
-	private static void appendRegularRolled(final StringBuilder result,
-			final RPObject object, final String key, final String label) {
-		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
-		if (raw == null) {
-			return;
-		}
-		final Integer value = parseInteger(raw);
-		if (value == null || value.intValue() == 0) {
-			return;
-		}
-		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; ")
-				.append(value.intValue() > 0 ? "+" : "")
-				.append(value.intValue()).append(" ").append(games.stendhal.client.ClientLanguage.getText(label))
 				.append("</font></div>");
 	}
 

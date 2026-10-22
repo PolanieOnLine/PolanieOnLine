@@ -24,6 +24,36 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixPresentationLayoutTest {
 	@Test
+	public void flatAttackAndDefenseAffixesAppearOnceAfterResistancesNotAmongCoreStats() {
+		final RPObject object = ItemTestHelper.createItem("amulet z mithrilu");
+		object.put("class", "necklace");
+		object.put("rarity_id", "epic");
+		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
+		put(object, ItemTooltip.ATTACK, "3");
+		put(object, ItemTooltip.DEFENSE, "16");
+		put(object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS, "2");
+		put(object, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS, "4");
+		put(object, ItemTooltip.RESISTANCE_PREFIX + "light", "120");
+		put(object, ItemTooltip.RESIST_BLEEDING, "0.12");
+		final RPObject equipped = ItemTestHelper.createItem("amulet");
+		put(equipped, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS, "1");
+		put(equipped, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS, "2");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), equipped);
+		assertTrue(tooltip.contains("+3 ataku"));
+		assertTrue(tooltip.contains("+16 pancerza"));
+		for (final String line : new String[] {"+2 dodatkowego ataku", "+4 dodatkowego pancerza"}) {
+			final int index = tooltip.indexOf(line);
+			assertTrue(tooltip, index >= 0);
+			org.junit.Assert.assertEquals("An affix must only be shown once", index, tooltip.lastIndexOf(line));
+			assertTrue("Flat affixes must stay below resistance affixes", index > tooltip.indexOf("odporności na krwawienie"));
+			final String row = tooltip.substring(index, tooltip.indexOf("</tr>", index));
+			assertTrue("The affix must retain its right-hand comparison", row.contains("align='right'"));
+			assertTrue(row.contains("color='#62d26f'"));
+		}
+	}
+
+	@Test
 	public void comparisonTableRowsRetainTheTooltipTextColor() throws Exception {
 		final RPObject object = ItemTestHelper.createItem("pierścień");
 		object.put("class", "ring");

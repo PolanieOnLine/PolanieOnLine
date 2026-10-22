@@ -485,14 +485,6 @@ final class ItemRarityPresentation {
 		}
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,
 				"zdrowia");
-		appendFlatAffixBonus(coreBonuses, object, equippedItem,
-				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
-				ItemTooltip.FLAT_ATTACK_BONUS, "dodatkowego ataku",
-				"ataku z affixu");
-		appendFlatAffixBonus(coreBonuses, object, equippedItem,
-				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
-				ItemTooltip.FLAT_DEFENSE_BONUS, "dodatkowego pancerza",
-				"pancerza z affixu");
 
 		/* Resistances form their own visual block so the player can separate
 		 * elemental protection from the item's defining flat statistics. */
@@ -568,6 +560,14 @@ final class ItemRarityPresentation {
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
+		appendFlatAffixBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
+				ItemTooltip.FLAT_ATTACK_BONUS, "dodatkowego ataku",
+				"ataku z affixu");
+		appendFlatAffixBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
+				ItemTooltip.FLAT_DEFENSE_BONUS, "dodatkowego pancerza",
+				"pancerza z affixu");
 
 		appendBonusSection(tooltip, coreBonuses);
 		appendBonusSection(tooltip, resistances);
