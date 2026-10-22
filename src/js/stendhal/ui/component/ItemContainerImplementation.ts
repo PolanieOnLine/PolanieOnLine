@@ -761,6 +761,7 @@ export class ItemContainerImplementation {
 		}
 
 		if (structured.comparisonName) {
+			toolTip.classList.add("item-rarity-tooltip--comparing");
 			const comparison = document.createElement("div");
 			comparison.className = "item-rarity-tooltip__comparison";
 			comparison.textContent = GameLanguage.getText("Porównanie z:") + " " + structured.comparisonName;
@@ -816,8 +817,8 @@ export class ItemContainerImplementation {
 			const value = document.createElement("span");
 			value.className = "item-rarity-tooltip__tree-value";
 			value.appendChild(document.createTextNode(line.text));
-			ItemContainerImplementation.appendTooltipDeltas(value, line.deltas);
 			detail.appendChild(value);
+			ItemContainerImplementation.appendTooltipDeltas(detail, line.deltas);
 			toolTip.appendChild(detail);
 			return;
 		}
@@ -828,7 +829,6 @@ export class ItemContainerImplementation {
 			break;
 		case "bonus":
 			detail.className = "item-rarity-tooltip__bonus";
-			detail.appendChild(document.createTextNode("◆ "));
 			break;
 		case "affix":
 			detail.className = "item-rarity-tooltip__affix";
@@ -840,7 +840,13 @@ export class ItemContainerImplementation {
 			detail.className = "item-rarity-tooltip__detail";
 			break;
 		}
-		detail.appendChild(document.createTextNode(line.text));
+		const value = document.createElement("span");
+		value.className = "item-rarity-tooltip__value";
+		value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		detail.appendChild(value);
+		if (line.deltas?.length) {
+			detail.classList.add("item-rarity-tooltip__stat-row");
+		}
 		ItemContainerImplementation.appendTooltipDeltas(detail, line.deltas);
 		toolTip.appendChild(detail);
 	}
@@ -849,17 +855,20 @@ export class ItemContainerImplementation {
 		if (!deltas?.length) {
 			return;
 		}
-		target.appendChild(document.createTextNode(" ("));
+		const comparison = document.createElement("span");
+		comparison.className = "item-tooltip-comparison";
+		comparison.appendChild(document.createTextNode(" ("));
 		deltas.forEach((delta, index) => {
 			if (index > 0) {
-				target.appendChild(document.createTextNode("–"));
+				comparison.appendChild(document.createTextNode("–"));
 			}
 			const value = document.createElement("span");
 			value.className = "item-tooltip-delta item-tooltip-delta--" + delta.direction;
 			value.textContent = delta.text;
-			target.appendChild(value);
+			comparison.appendChild(value);
 		});
-		target.appendChild(document.createTextNode(")"));
+		comparison.appendChild(document.createTextNode(")"));
+		target.appendChild(comparison);
 	}
 
 	private static hideRarityToolTip(target?: HTMLElement, restoreTitle = true) {

@@ -6,6 +6,15 @@ package games.stendhal.client.gui;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Rectangle;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.Position;
+import javax.swing.text.LabelView;
+import javax.swing.text.View;
+
 import org.junit.Test;
 
 import games.stendhal.client.entity.factory.EntityFactory;
@@ -14,6 +23,71 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixPresentationLayoutTest {
+	@Test
+	public void comparisonTableRowsRetainTheTooltipTextColor() throws Exception {
+		final RPObject object = ItemTestHelper.createItem("pierścień");
+		object.put("class", "ring");
+		put(object, ItemTooltip.ATTACK, "3");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), ItemTestHelper.createItem("założony pierścień"));
+		SwingUtilities.invokeAndWait(() -> {
+			try {
+				final JLabel label = new JLabel(tooltip);
+				label.setForeground(Color.BLACK);
+				final View view = (View) label.getClientProperty(BasicHTML.propertyKey);
+				final String text = view.getDocument().getText(0, view.getDocument().getLength());
+				org.junit.Assert.assertEquals("Table cells must inherit the tooltip's readable color",
+						textColor(view, text.indexOf("PIERŚCIEŃ")), textColor(view, text.indexOf("+3 ataku")));
+			} catch (final javax.swing.text.BadLocationException e) {
+				throw new AssertionError(e);
+			}
+		});
+	}
+
+	private static Color textColor(final View view, final int offset) {
+		if (view instanceof LabelView && view.getStartOffset() <= offset && view.getEndOffset() > offset) {
+			return ((LabelView) view).getForeground();
+		}
+		for (int i = 0; i < view.getViewCount(); i++) {
+			final Color color = textColor(view.getView(i), offset);
+			if (color != null) return color;
+		}
+		return null;
+	}
+
+	@Test
+	public void comparisonValuesRenderInARightHandColumnOnTheStatLine() throws Exception {
+		final RPObject object = ItemTestHelper.createItem("pierścień");
+		object.put("class", "ring");
+		put(object, ItemTooltip.ATTACK, "3");
+		put(object, ItemTooltip.DEFENSE, "7");
+		final RPObject equipped = ItemTestHelper.createItem("pierścień");
+		equipped.put("class", "ring");
+		put(equipped, ItemTooltip.DEFENSE, "2");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object), equipped);
+		SwingUtilities.invokeAndWait(() -> {
+			try {
+				final JLabel label = new JLabel(tooltip);
+				final View view = (View) label.getClientProperty(BasicHTML.propertyKey);
+				final Rectangle allocation = new Rectangle(0, 0,
+						(int) Math.ceil(view.getPreferredSpan(View.X_AXIS)),
+						(int) Math.ceil(view.getPreferredSpan(View.Y_AXIS)));
+				view.setSize(allocation.width, allocation.height);
+				final String text = view.getDocument().getText(0, view.getDocument().getLength());
+				final Rectangle attack = view.modelToView(text.indexOf("+3 ataku"), allocation, Position.Bias.Forward).getBounds();
+				final Rectangle attackDelta = view.modelToView(text.lastIndexOf("+3"), allocation, Position.Bias.Forward).getBounds();
+				final Rectangle defense = view.modelToView(text.indexOf("+7 pancerza"), allocation, Position.Bias.Forward).getBounds();
+				final Rectangle defenseDelta = view.modelToView(text.lastIndexOf("+5"), allocation, Position.Bias.Forward).getBounds();
+				assertTrue("Attack comparison must stay on the stat line", Math.abs(attack.y - attackDelta.y) <= 1);
+				assertTrue("Defense comparison must stay on the stat line", Math.abs(defense.y - defenseDelta.y) <= 1);
+				assertTrue("Comparisons must align at the right edge", Math.abs(attackDelta.x - defenseDelta.x) <= 1);
+				assertTrue("Comparisons must not remain inline after the label", attackDelta.x > allocation.width * 0.7);
+			} catch (final javax.swing.text.BadLocationException e) {
+				throw new AssertionError(e);
+			}
+		});
+	}
 	@Test
 	public void accessoryShowsCoreAttackSeparatelyFromRegularAndLegendaryAffixes() {
 		final RPObject object = ItemTestHelper.createItem("pierścień z mithrilu");

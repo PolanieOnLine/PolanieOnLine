@@ -123,7 +123,8 @@ final class ItemRarityPresentation {
 		appendRarityGlowMarker(tooltip, rarity);
 		/* Do not paint a private card background here. StyledToolTipUI tiles the
 		 * currently selected client skin behind this transparent HTML content. */
-		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
+		tooltip.append("<table width='").append(comparisonItem == null ? 190 : 300)
+				.append("' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);
 		appendComparisonHeader(tooltip, comparisonItem);
@@ -272,11 +273,11 @@ final class ItemRarityPresentation {
 		appendDivider(tooltip);
 		appendPrimaryValue(tooltip,
 				formatOneDecimal(performance.getBaseDps())
-						+ " pkt. obrażeń na sekundę"
-						+ (equipped == null ? "" : delta(
-								performance.getBaseDps(), equipped.getBaseDps(), 1)), null);
+						+ " pkt. obrażeń na sekundę",
+				equipped == null ? "" : delta(
+						performance.getBaseDps(), equipped.getBaseDps(), 1));
 
-		tooltip.append("<table cellpadding='0' cellspacing='0'>");
+		appendStatTableStart(tooltip);
 		appendTreeDetail(tooltip, true,
 				"[" + performance.getDamageMin() + "–"
 						+ performance.getDamageMax()
@@ -303,18 +304,17 @@ final class ItemRarityPresentation {
 			tooltip.append("<div style='margin-top:3px'><font size='-1' color='")
 					.append(getTextColor()).append("'>");
 			if (range > 0 || equippedRange > 0) {
-				tooltip.append("Zasięg: ").append(range)
-						.append(delta(range, equippedRange, 0));
+				appendStatTableStart(tooltip);
+				appendStatRow(tooltip, "Zasięg: " + range,
+						equippedItem == null ? "" : delta(range, equippedRange, 0), false);
+				tooltip.append("</table>");
 			}
 			if (damageType != null) {
-				if (range > 0 || equippedRange > 0) {
-					tooltip.append("<br>");
-				}
 				tooltip.append("Typ obrażeń: ")
 						.append(escapeHtml(ClientLanguage.getText(localizeDamageType(damageType))));
 			}
 			if (statuses != null && !statuses.isEmpty()) {
-				if (range > 0 || equippedRange > 0 || damageType != null) {
+				if (damageType != null) {
 					tooltip.append("<br>");
 				}
 				tooltip.append("Efekty trafienia: ")
@@ -334,21 +334,42 @@ final class ItemRarityPresentation {
 		appendDivider(tooltip);
 		final int equippedArmour = WeaponPerformanceCalculator.getInt(equippedItem,
 				ItemTooltip.DEFENSE);
-		appendPrimaryValue(tooltip, ClientLanguage.getText(armour + " pkt. pancerza")
-				+ (equippedItem == null ? ""
-						: delta(armour, equippedArmour, 0)), null);
+		appendPrimaryValue(tooltip, ClientLanguage.getText(armour + " pkt. pancerza"),
+				equippedItem == null ? "" : delta(armour, equippedArmour, 0));
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
-			final String value, final String details) {
+			final String value, final String comparison) {
 		/* Keep the primary value at the client's configured base font size. The
 		 * bold weight establishes hierarchy without oversized Swing HTML text. */
-		tooltip.append("<div><b>").append(value).append("</b>");
-		if (details != null && !details.isEmpty()) {
-			tooltip.append("<br><font size='-1'>").append(details)
-					.append("</font>");
+		appendStatTableStart(tooltip);
+		appendStatRow(tooltip, value, comparison, true);
+		tooltip.append("</table>");
+	}
+
+	private static void appendStatTableStart(final StringBuilder tooltip) {
+		tooltip.append("<table width='100%' cellpadding='0' cellspacing='0'>");
+	}
+
+	private static void appendStatRow(final StringBuilder tooltip,
+			final String valueHtml, final String comparison, final boolean primary) {
+		tooltip.append("<tr><td valign='top'>")
+				.append("<font color='").append(getTextColor())
+				.append(primary ? "'><b>" : "' size='-1'>")
+				.append(valueHtml).append(primary ? "</b></font>" : "</font>").append("</td>");
+		appendComparisonCell(tooltip, comparison, primary);
+		tooltip.append("</tr>");
+	}
+
+	private static void appendComparisonCell(final StringBuilder tooltip,
+			final String comparison, final boolean primary) {
+		if (!comparison.isEmpty()) {
+			tooltip.append("<td align='right' valign='top' nowrap='nowrap'>")
+					.append("<font color='").append(getTextColor())
+					.append(primary ? "'><b>" : "' size='-1'>")
+					.append("&nbsp;").append(comparison)
+					.append(primary ? "</b></font>" : "</font>").append("</td>");
 		}
-		tooltip.append("</div>");
 	}
 
 	private static void appendTreeDetail(final StringBuilder tooltip,
@@ -361,8 +382,9 @@ final class ItemRarityPresentation {
 				.append("</font></td><td><font size='-1' color='")
 				.append(getTextColor()).append("'>")
 				.append(escapeHtml(details))
-				.append(comparison)
-				.append("</font></td></tr>");
+				.append("</font></td>");
+		appendComparisonCell(tooltip, comparison, false);
+		tooltip.append("</tr>");
 	}
 
 	private static void appendDivider(final StringBuilder tooltip) {
@@ -409,7 +431,8 @@ final class ItemRarityPresentation {
 		}
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
-			tooltip.append("<font size='-1'>").append(stats).append("</font>");
+			appendStatTableStart(tooltip);
+			tooltip.append(stats).append("</table>");
 		}
 	}
 
@@ -421,12 +444,11 @@ final class ItemRarityPresentation {
 		final double value = effectiveLifeStealPercent(object);
 		final double previous = effectiveLifeStealPercent(equippedItem);
 		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
-		if (stats.length() > 0) stats.append("<br>");
 		final double bonus = WeaponPerformanceCalculator.getInt(object, ItemTooltip.LIFESTEAL_EFFECTIVENESS) > 0
 				? value - base : 0.0;
-		stats.append(escapeHtml(ClientLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
-				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : "")));
-		if (equippedItem != null) stats.append(delta(value, previous, 1));
+		appendStatRow(stats, escapeHtml(ClientLanguage.getText("Kradzież życia") + ": " + formatCompact(value) + "%"
+				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : "")),
+				equippedItem == null ? "" : delta(value, previous, 1), false);
 	}
 
 	private static double effectiveLifeStealPercent(final RPObject object) {
@@ -557,7 +579,8 @@ final class ItemRarityPresentation {
 			return;
 		}
 		appendDivider(tooltip);
-		tooltip.append("<font size='-1'>").append(section).append("</font>");
+		appendStatTableStart(tooltip);
+		tooltip.append(section).append("</table>");
 	}
 
 	private static void appendResistance(final StringBuilder bonuses,
@@ -655,13 +678,8 @@ final class ItemRarityPresentation {
 			final String label, final int value, final int equippedValue,
 			final boolean comparing) {
 		if (value != 0 || (comparing && equippedValue != 0)) {
-			if (stats.length() > 0) {
-				stats.append("<br>");
-			}
-			stats.append(escapeHtml(label + ": " + value));
-			if (comparing) {
-				stats.append(delta(value, equippedValue, 0));
-			}
+			appendStatRow(stats, escapeHtml(label + ": " + value),
+					comparing ? delta(value, equippedValue, 0) : "", false);
 		}
 	}
 
@@ -682,10 +700,7 @@ final class ItemRarityPresentation {
 
 	private static void appendBonusLine(final StringBuilder bonuses,
 			final String line, final String comparison) {
-		if (bonuses.length() > 0) {
-			bonuses.append("<br>");
-		}
-		bonuses.append("&#9670; ").append(escapeHtml(line)).append(comparison);
+		appendStatRow(bonuses, "&#9670; " + escapeHtml(line), comparison, false);
 	}
 
 	private static Double getResistanceModifier(final RPObject object,

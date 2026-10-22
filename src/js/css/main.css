@@ -376,6 +376,10 @@ div.itemSlot {
 .item-rarity-tooltip.item-rarity-rare {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(74, 144, 226, 0.09);
 }
+
+.item-rarity-tooltip--comparing {
+	width: 300px;
+}
 .item-rarity-tooltip.item-rarity-epic {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(155, 89, 182, 0.12);
 }
@@ -434,6 +438,7 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__tree-value {
+	flex: 1 1 auto;
 	min-width: 0;
 	color: #f3efe7;
 }
@@ -444,8 +449,29 @@ div.itemSlot {
 	font-size: 11px;
 }
 
-.item-rarity-tooltip__bonus::first-letter {
+.item-rarity-tooltip__bonus > .item-rarity-tooltip__value {
+	display: block;
+}
+
+.item-rarity-tooltip__bonus > .item-rarity-tooltip__value::first-letter {
 	color: #a37861;
+}
+
+.item-rarity-tooltip__stat-row {
+	display: flex;
+	align-items: baseline;
+	column-gap: 8px;
+}
+
+.item-rarity-tooltip__stat-row > .item-rarity-tooltip__value {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.item-tooltip-comparison {
+	flex: 0 0 auto;
+	margin-left: auto;
+	white-space: nowrap;
 }
 
 .item-rarity-tooltip__affix {

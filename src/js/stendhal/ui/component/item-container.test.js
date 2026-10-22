@@ -952,6 +952,34 @@ test("a received return-ring perception dims the existing icon without losing it
 	assert.equal(actions[0].type, "use");
 });
 
+test("tooltip keeps life-steal gain with its value and comparison in a separate right-hand group", () => {
+	const h = createHarness();
+	const tooltip = h.document.createElement("div");
+	h.Container.appendStructuredTooltipLine(tooltip, {
+		kind: "detail", text: "Kradzież życia: 12% (+2%)",
+		deltas: [{ text: "+3,0%", direction: "better" }]
+	});
+	const row = tooltip.children[0];
+	const comparison = row.children.find(child => child.className === "item-tooltip-comparison");
+	assert.ok(comparison, "Comparison must have its own right-hand group");
+	assert.equal(row.children[0].textContent, "Kradzież życia: 12% (+2%)");
+	assert.equal(comparison.textContent, " (+3,0%)");
+	assert.equal(comparison.children[1].className, "item-tooltip-delta item-tooltip-delta--better");
+});
+
+test("tooltip damage-range comparisons stay together beside the tree value", () => {
+	const h = createHarness();
+	const tooltip = h.document.createElement("div");
+	h.Container.appendStructuredTooltipLine(tooltip, {
+		kind: "tree", text: "[5–20] pkt. obrażeń za trafienie", branchContinues: true,
+		deltas: [{ text: "-2", direction: "worse" }, { text: "+5", direction: "better" }]
+	});
+	const row = tooltip.children[0];
+	assert.equal(row.children[1].textContent, "[5–20] pkt. obrażeń za trafienie");
+	assert.equal(row.children[2].className, "item-tooltip-comparison");
+	assert.equal(row.children[2].textContent, " (-2–+5)");
+});
+
 test("return ring uses the same state row on the ground and while dragging", () => {
 	const h = createHarness(), ring = returnRing(h);
 	const { container, parent } = h.makeContainer([ring]);
