@@ -137,6 +137,8 @@ public class PlayerRPClass {
 		player.addRPSlot("!tutorial", 1, Definition.HIDDEN);
 
 		player.addAttribute("karma", Type.FLOAT, Definition.PRIVATE);
+		player.addAttribute(games.stendhal.common.constants.CombatStat.ATTRIBUTE, Type.MAP,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("tradescore", Type.INT, Definition.PRIVATE);
 		player.addAttribute("sentence", Type.STRING, Definition.HIDDEN);
 

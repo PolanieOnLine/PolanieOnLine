@@ -140,6 +140,7 @@ class StendhalPerceptionListener implements IPerceptionListener {
 	public boolean onClear() {
 		dispatch.onClear();
 		StatsPanelController.get().updateCarriedMoney(null);
+		StatsPanelController.get().updateCombatStats(null);
 		return false;
 	}
 
@@ -156,6 +157,8 @@ class StendhalPerceptionListener implements IPerceptionListener {
 		RPObject player = userContext.getPlayer();
 		if (player != null && world_objects.get(player.getID()) == player) ClientLanguage.synchronize(player);
 		StatsPanelController.get().updateCarriedMoney(player != null
+				&& world_objects.get(player.getID()) == player ? player : null);
+		StatsPanelController.get().updateCombatStats(player != null
 				&& world_objects.get(player.getID()) == player ? player : null);
 	}
 }

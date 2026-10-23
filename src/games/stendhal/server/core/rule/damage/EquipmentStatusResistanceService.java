@@ -47,11 +47,21 @@ public final class EquipmentStatusResistanceService {
 			return 0.0;
 		}
 		final String attribute = getResistanceAttribute(statusType);
-		final double intrinsic = target.has(attribute)
-				? clampFraction(target.getDouble(attribute)) : 0.0;
+		final double intrinsic = intrinsicResistance(target, attribute);
 		final double equipment = Math.min(MAX_AFFIX_RESISTANCE,
 				getEquipmentResistance(getResistanceEquipment(target), attribute));
 		return 1.0 - (1.0 - intrinsic) * (1.0 - equipment);
+	}
+
+	/** Final cap after combining the equipment ceiling with intrinsic resistance. */
+	public static double getMaximumResistance(final RPEntity target, final StatusType statusType) {
+		return 1.0 - (1.0 - intrinsicResistance(target, getResistanceAttribute(statusType)))
+				* (1.0 - MAX_AFFIX_RESISTANCE);
+	}
+
+	private static double intrinsicResistance(final RPEntity target, final String attribute) {
+		return target != null && attribute != null && target.has(attribute)
+				? clampFraction(target.getDouble(attribute)) : 0.0;
 	}
 
 	/**

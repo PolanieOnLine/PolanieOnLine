@@ -51,6 +51,7 @@ public class SettingsProperties {
 	/** Property for comparing item tooltip statistics with equipped items. */
 	public static final String ITEM_TOOLTIP_COMPARISON_PROPERTY =
 			"ui.item_tooltip_comparison";
+	public static final String SHOW_STAT_LIMITS_PROPERTY = "ui.show_stat_limits";
 
 	public static final String UI_RENDERING = "ui.rendering";
 

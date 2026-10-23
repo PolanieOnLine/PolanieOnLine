@@ -89,6 +89,19 @@ public class SettingsPagesTest {
 		return pages;
 	}
 
+	@Test public void statLimitsAreOffByDefaultAndPersistWhenEnabled() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			SettingsPages pages = createPages();
+			JCheckBox limits = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj limity statystyk");
+			assertNotNull(limits);
+			assertFalse(limits.isSelected());
+			limits.doClick();
+			assertEquals("true", manager.getProperty("ui.show_stat_limits", "false"));
+			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT),
+					"Pokazuj limity statystyk").isSelected());
+		});
+	}
+
 	@Test
 	public void changingDisplayLanguagePreservesSettingsAndOriginalLabels() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
@@ -120,7 +133,7 @@ public class SettingsPagesTest {
 	public void allExistingOptionsArePresentOnceAndInTheRightCategories() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			SettingsPages pages = createPages();
-			assertEquals(25, find(pages, JCheckBox.class).size());
+			assertEquals(26, find(pages, JCheckBox.class).size());
 			assertEquals(11, find(pages, JComboBox.class).size());
 			assertEquals(6, find(pages, JSlider.class).size());
 			assertNotNull(check(pages.getPage(SettingsPages.Category.CONTROLS), "Ciągły ruch"));

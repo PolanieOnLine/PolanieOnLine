@@ -2185,11 +2185,17 @@ public class Player extends DressedEntity implements UseListener {
 	// Entity
 	//
 
-	/**
-	 * Perform cycle logic.
-	 */
+	/** Refresh the private combat summary alongside ordinary equipment totals. */
+	@Override
+	public void updateItemAtkDef() {
+		super.updateItemAtkDef();
+		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
+	}
+
+	/** Perform cycle logic, including state-dependent combat summary changes. */
 	@Override
 	public void logic() {
+		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
 		/*
 		 * TODO: Refactor Most of these things can be handled as RPEvents
 		 */

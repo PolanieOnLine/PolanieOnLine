@@ -52,6 +52,7 @@ class StatsPanel extends JPanel {
 	private final KarmaIndicator karmaIndicator;
 	private final ManaIndicator manaIndicator;
 	private final MoneyPanel moneyPanel;
+	private final CombatStatsPanel combatStatsPanel;
 	private final Color defaultCapacityColor;
 
 	StatsPanel() {
@@ -113,6 +114,12 @@ class StatsPanel extends JPanel {
 		add(capacityLabel, SLayout.EXPAND_X);
 		capacityLabel.setVisible(false);
 		defaultCapacityColor = capacityLabel.getForeground();
+		combatStatsPanel = new CombatStatsPanel();
+		add(combatStatsPanel, SLayout.EXPAND_X);
+	}
+
+	void setCombatStats(java.util.Map<String, String> values) {
+		combatStatsPanel.setSnapshot(values);
 	}
 
 	/**
