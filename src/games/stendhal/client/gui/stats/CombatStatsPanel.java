@@ -70,7 +70,7 @@ final class CombatStatsPanel extends JPanel {
 		toggle.setFocusable(false);
 		toggle.setMargin(new Insets(0, 4, 0, 4));
 		toggle.addActionListener(event -> toggleWindow());
-		add(toggle, BorderLayout.NORTH);
+		add(toggle, BorderLayout.SOUTH);
 		scroll.setBorder(null);
 		scroll.setOpaque(false); scroll.getViewport().setOpaque(false);
 		window.setContent(scroll);
@@ -106,7 +106,7 @@ final class CombatStatsPanel extends JPanel {
 	private void positionWindow() {
 		Container host = window.getParent();
 		if (host == null) return;
-		Point point = SwingUtilities.convertPoint(this, getWidth(), 0, host);
+		Point point = SwingUtilities.convertPoint(this, getWidth(), toggle.getY(), host);
 		// Measure the cell grid directly, including while the window is still hidden.
 		scroll.setPreferredSize(rows.getPreferredSize());
 		Dimension size = window.getPreferredSize();

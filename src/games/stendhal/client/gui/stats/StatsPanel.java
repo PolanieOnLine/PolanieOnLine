@@ -115,7 +115,8 @@ class StatsPanel extends JPanel {
 		capacityLabel.setVisible(false);
 		defaultCapacityColor = capacityLabel.getForeground();
 		combatStatsPanel = new CombatStatsPanel();
-		add(combatStatsPanel, SLayout.EXPAND_X);
+		combatStatsPanel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+		add(combatStatsPanel, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
 	}
 
 	void setCombatStats(java.util.Map<String, String> values) {
