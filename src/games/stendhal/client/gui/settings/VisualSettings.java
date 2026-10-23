@@ -313,7 +313,7 @@ class VisualSettings {
 				"Udostępnia przycisk otwierający okno statystyk procentowych obok widoku gry."));
 		combatStats.add(SettingsComponentFactory.createSettingsToggle(SettingsProperties.SHOW_STAT_LIMITS_PROPERTY,
 				false, "Pokazuj limity statystyk",
-				"Pokazuje maksymalne wartości w sekcji statystyk procentowych. Nie zmienia działania limitów."));
+				"Pokazuje limity obok wartości statystyk."));
 	}
 
 	/**
