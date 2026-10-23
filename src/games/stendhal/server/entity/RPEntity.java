@@ -3576,7 +3576,8 @@ public abstract class RPEntity extends CombatEntity {
 			}
 			if (hasRing() && getRing().has("lifesteal")) {
 				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRing());
-			} else if (hasRingB() && getRingB().has("lifesteal")) {
+			}
+			if (hasRingB() && getRingB().has("lifesteal")) {
 				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRingB());
 			}
 

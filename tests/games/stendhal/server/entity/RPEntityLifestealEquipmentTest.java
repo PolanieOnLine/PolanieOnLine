@@ -73,6 +73,46 @@ public class RPEntityLifestealEquipmentTest {
 		assertEquals(950, attacker.getHP());
 	}
 
+	@Test public void bothRingsStackRegardlessOfSlotOrHeldWeapon() {
+		for (boolean armed : new boolean[] {false, true}) {
+			if (armed) equipNonLifeStealWeapon();
+			for (boolean swapped : new boolean[] {false, true}) {
+				equip("finger", "ring", swapped ? 0.025 : 0.01);
+				equip("fingerb", "ring", swapped ? 0.01 : 0.025);
+				attacker.setHP(500);
+				hit(1000);
+				assertEquals("armed=" + armed + ", swapped=" + swapped, 535, attacker.getHP());
+				attacker.getSlot("finger").clear();
+				attacker.getSlot("fingerb").clear();
+			}
+		}
+	}
+
+	@Test public void zeroLifeStealInFirstRingDoesNotHideSecondRing() {
+		equipNonLifeStealWeapon();
+		equip("finger", "ring", 0.0);
+		equip("fingerb", "ring", 0.025);
+		hit(1000);
+		assertEquals(525, attacker.getHP());
+	}
+
+	@Test public void bothRingsKeepEffectivenessAndCombineWithGlovesAndGlyph() {
+		equip("finger", "ring", 0.01);
+		Item secondRing = equip("fingerb", "ring", 0.025);
+		secondRing.put("lifesteal_effectiveness", 20);
+		equip("glove", "glove", 0.05);
+		equipBloodGlyph(20.0);
+		hit(1000);
+		// 1% + (2.5% * 1.2) + 5% + 20% = 29%.
+		assertEquals(790, attacker.getHP());
+	}
+
+	private void equipNonLifeStealWeapon() {
+		Item weapon = equip("lhand", "sword", 0.0);
+		weapon.put("atk", 100);
+		weapon.put("rate", 5);
+	}
+
 	private void hit(int damage) {
 		attacker.handleLifesteal(attacker, attacker.getWeapons(), damage);
 	}
