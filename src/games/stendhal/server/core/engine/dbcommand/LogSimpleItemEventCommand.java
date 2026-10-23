@@ -77,6 +77,6 @@ public class LogSimpleItemEventCommand extends AbstractLogItemEventCommand {
 	 */
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("player", player).add("event", event).toString();
+		return MoreObjects.toStringHelper(this).add("player", player == null ? null : player.getName()).add("event", event).toString();
 	}
 }
