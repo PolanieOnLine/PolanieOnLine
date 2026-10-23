@@ -3567,6 +3567,10 @@ public abstract class RPEntity extends CombatEntity {
 					sumLifesteal += weaponAttack * ItemLifestealService.getEffectiveLifesteal(weaponItem);
 				}
 			}
+			// Equipment and glyph percentages also apply to damage dealt without a weapon.
+			if (attackerWeapons.isEmpty()) {
+				sumAll = 1;
+			}
 			if (hasGloves() && getGloves().has("lifesteal")) {
 				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getGloves());
 			}
