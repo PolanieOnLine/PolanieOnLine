@@ -15,6 +15,9 @@ import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.condition.OrCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.quest.CraftItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
@@ -43,6 +46,7 @@ public class BringMagic implements QuestManuscript {
 			.whenQuestWasCompleted("Czarnoksiężnik przemienił mój hełm kolczy w magiczny hełm kolczy.");
 
 		quest.offer()
+			.requestOnlyWhen(new OrCondition(new QuestCompletedCondition("kill_mountain_elves"), new QuestStartedCondition("bring_magic")))
 			.offerState(ConversationStates.QUEST_3_OFFERED)
 			.respondToCraftIssue("Najpierw dokończ sprawę górskich elfów. Hełm z tamtej próby będzie potrzebny w ostatnim doświadczeniu.")
 			.respondToRequest("Pozostał ostatni etap moich badań. Potrzebuję stu porcji magii ziemi, płomieni, deszczu, mroku i światła. Z ich pomocą wzmocnię hełm kolczy, który ode mnie otrzymałeś. Podejmiesz się tego?")

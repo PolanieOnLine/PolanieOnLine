@@ -13,6 +13,10 @@ package games.stendhal.server.maps.quests;
 
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
@@ -39,6 +43,8 @@ public class ClearTower implements QuestManuscript {
 			.whenQuestWasCompleted("Czarnoksiężnik uznał, że poradziłem sobie z pierwszą próbą i zapowiedział kolejne zadanie.");
 
 		quest.offer()
+			.requestOnlyWhen(new AndCondition(new NotCondition(new QuestCompletedCondition("clear_tower")),
+					new QuestNotStartedCondition("kill_mountain_elves"), new QuestNotStartedCondition("bring_magic")))
 			.respondToRequest("Zanim powierzę ci poważniejsze sprawy, chcę zobaczyć jak radzisz sobie w walce. W mojej starej wieży zalęgły się potwory i przeszkadzają mi w pracy. Oczyścisz ją?")
 			.respondToUnrepeatableRequest("Wieża jest już oczyszczona. Teraz mogę zająć się tym, co naprawdę mnie interesuje.")
 			.respondToAccept("Dobrze. Oczyść wieżę dokładnie i wróć do mnie, gdy żaden z jej mieszkańców nie będzie już stanowił problemu.")
