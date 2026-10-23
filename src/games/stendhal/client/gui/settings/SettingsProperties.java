@@ -52,6 +52,7 @@ public class SettingsProperties {
 	public static final String ITEM_TOOLTIP_COMPARISON_PROPERTY =
 			"ui.item_tooltip_comparison";
 	public static final String SHOW_STAT_LIMITS_PROPERTY = "ui.show_stat_limits";
+	public static final String SHOW_COMBAT_STATS_PROPERTY = "ui.show_combat_stats";
 
 	public static final String UI_RENDERING = "ui.rendering";
 

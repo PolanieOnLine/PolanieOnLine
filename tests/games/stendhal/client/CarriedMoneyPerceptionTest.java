@@ -20,36 +20,42 @@ import marauroa.common.game.RPObject;
 /** Exercises the real perception handler, including the ordering of private slot updates. */
 public class CarriedMoneyPerceptionTest {
 	@Test public void combatStatsUseMergedPrivatePerceptionsAndClearOnLogout() throws Exception {
-		marauroa.common.game.RPClass schema = new marauroa.common.game.RPClass("combat_stats_perception_test");
-		schema.addAttribute("combat_stats", marauroa.common.game.Definition.Type.MAP);
-		player.setRPClass(schema);
-		player.put("combat_stats", "resist_bleeding", "35");
-		player.put("combat_stats", "resist_bleeding.limit", "60");
-		perception.onPerceptionEnd((byte) 0, 1);
-		SwingUtilities.invokeAndWait(() -> {});
-		assertEquals("Odporność na krwawienie: 35%", combatText());
-		RPObject changes = new RPObject();
-		changes.setRPClass(schema);
-		changes.setID(player.getID());
-		changes.put("combat_stats", "resist_bleeding", "0");
-		perception.onMyRPObject(changes, null);
-		perception.onPerceptionEnd((byte) 0, 2);
-		SwingUtilities.invokeAndWait(() -> {});
-		assertEquals("Odporność na krwawienie: 0%", combatText());
-		perception.onClear();
-		SwingUtilities.invokeAndWait(() -> {});
-		assertEquals("", combatText());
+		Field preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+		preferences.setAccessible(true);
+		Object originalPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), new java.util.Properties());
+		try {
+			marauroa.common.game.RPClass schema = new marauroa.common.game.RPClass("combat_stats_perception_test");
+			schema.addAttribute("combat_stats", marauroa.common.game.Definition.Type.MAP);
+			player.setRPClass(schema);
+			player.put("combat_stats", "resist_bleeding", "35");
+			player.put("combat_stats", "resist_bleeding.limit", "60");
+			perception.onPerceptionEnd((byte) 0, 1);
+			SwingUtilities.invokeAndWait(() -> {});
+			assertEquals("Odporność na krwawienie: 35%", combatText());
+			RPObject changes = new RPObject();
+			changes.setRPClass(schema);
+			changes.setID(player.getID());
+			changes.put("combat_stats", "resist_bleeding", "0");
+			perception.onMyRPObject(changes, null);
+			perception.onPerceptionEnd((byte) 0, 2);
+			SwingUtilities.invokeAndWait(() -> {});
+			assertEquals("Odporność na krwawienie: 0%", combatText());
+			perception.onClear();
+			SwingUtilities.invokeAndWait(() -> {});
+			assertEquals("", combatText());
+		} finally {
+			preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), originalPreferences);
+		}
 	}
 
 	private String combatText() throws Exception {
 		Object root = stats.getComponent();
 		Field combat = root.getClass().getDeclaredField("combatStatsPanel");
 		combat.setAccessible(true);
-		java.awt.Container view = (java.awt.Container) combat.get(root);
-		for (java.awt.Component child : view.getComponents()) {
-			if (child instanceof javax.swing.JTextArea) return ((javax.swing.JTextArea) child).getText();
-		}
-		throw new AssertionError("Missing combat text");
+		Object view = combat.get(root);
+		Field rows = view.getClass().getDeclaredField("rows"); rows.setAccessible(true);
+		return ((javax.swing.JTextArea) rows.get(view)).getText();
 	}
 	private StatsPanelController stats;
 	private UserContext context;

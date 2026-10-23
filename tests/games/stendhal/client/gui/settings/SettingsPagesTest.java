@@ -102,6 +102,16 @@ public class SettingsPagesTest {
 		});
 	}
 
+	@Test public void combatStatsAccessIsOffByDefaultAndPersistsWhenEnabled() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			SettingsPages pages = createPages();
+			JCheckBox access = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki procentowe");
+			assertNotNull(access); assertFalse(access.isSelected()); access.doClick();
+			assertEquals("true", manager.getProperty("ui.show_combat_stats", "false"));
+			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki procentowe").isSelected());
+		});
+	}
+
 	@Test
 	public void changingDisplayLanguagePreservesSettingsAndOriginalLabels() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
@@ -133,7 +143,7 @@ public class SettingsPagesTest {
 	public void allExistingOptionsArePresentOnceAndInTheRightCategories() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			SettingsPages pages = createPages();
-			assertEquals(26, find(pages, JCheckBox.class).size());
+			assertEquals(27, find(pages, JCheckBox.class).size());
 			assertEquals(11, find(pages, JComboBox.class).size());
 			assertEquals(6, find(pages, JSlider.class).size());
 			assertNotNull(check(pages.getPage(SettingsPages.Category.CONTROLS), "Ciągły ruch"));
