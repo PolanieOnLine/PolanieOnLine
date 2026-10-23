@@ -5,6 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Container;
 import java.awt.Point;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.text.DecimalFormat;
@@ -18,7 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -36,24 +40,11 @@ import games.stendhal.common.constants.CombatStat;
 @SuppressWarnings("serial")
 final class CombatStatsPanel extends JPanel {
 	private final JButton toggle = new JButton();
-	private final JTextArea rows = new JTextArea() {
-		@Override public void setBounds(int x, int y, int width, int height) {
-			boolean widthChanged = width != getWidth();
-			super.setBounds(x, y, width, height);
-			// Wrapped height is known only after layout has assigned the new width.
-			if (widthChanged) SwingUtilities.invokeLater(this::revalidate);
-		}
-
-		@Override public Dimension getMinimumSize() {
-			Dimension size = super.getMinimumSize();
-			size.width = getInsets().left + getInsets().right;
-			return size;
-		}
-	};
+	private final JPanel rows = new JPanel(new GridBagLayout());
 	private final JScrollPane scroll = new JScrollPane(rows, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	private Map<String, String> values = Collections.emptyMap();
-	private final InternalManagedWindow window = new InternalManagedWindow("combat_stats", "Statystyki procentowe");
+	private final InternalManagedWindow window = new InternalManagedWindow("combat_stats", "Statystyki");
 	private Container windowHost;
 	private final ComponentAdapter hostResize = new ComponentAdapter() {
 		@Override public void componentResized(ComponentEvent event) {
@@ -64,11 +55,8 @@ final class CombatStatsPanel extends JPanel {
 	CombatStatsPanel() {
 		super(new BorderLayout(0, 3));
 		setOpaque(false);
-		rows.setEditable(false);
-		rows.setFocusable(false);
+		setBorder(null);
 		rows.setOpaque(false);
-		rows.setLineWrap(true);
-		rows.setWrapStyleWord(true);
 		rows.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		rows.setFont(UIManager.getFont("Label.font"));
 		Style style = StyleUtil.getStyle();
@@ -80,11 +68,11 @@ final class CombatStatsPanel extends JPanel {
 		UiTranslation.preserve(toggle);
 		putClientProperty(UiTranslation.AFTER_TRANSLATION, (Runnable) this::render);
 		toggle.setFocusable(false);
+		toggle.setMargin(new Insets(0, 4, 0, 4));
 		toggle.addActionListener(event -> toggleWindow());
 		add(toggle, BorderLayout.NORTH);
 		scroll.setBorder(null);
 		scroll.setOpaque(false); scroll.getViewport().setOpaque(false);
-		scroll.setPreferredSize(new Dimension(330, 300));
 		window.setContent(scroll);
 		window.setMinimizable(false);
 		window.setMovable(false);
@@ -119,7 +107,11 @@ final class CombatStatsPanel extends JPanel {
 		Container host = window.getParent();
 		if (host == null) return;
 		Point point = SwingUtilities.convertPoint(this, getWidth(), 0, host);
+		// Measure the cell grid directly, including while the window is still hidden.
+		scroll.setPreferredSize(rows.getPreferredSize());
 		Dimension size = window.getPreferredSize();
+		if (size.width > host.getWidth()) size.height += scroll.getHorizontalScrollBar().getPreferredSize().height;
+		if (size.height > host.getHeight()) size.width += scroll.getVerticalScrollBar().getPreferredSize().width;
 		size.width = Math.min(size.width, host.getWidth());
 		size.height = Math.min(size.height, host.getHeight());
 		int x = Math.max(0, Math.min(point.x, host.getWidth() - size.width));
@@ -136,23 +128,23 @@ final class CombatStatsPanel extends JPanel {
 	private void render() {
 		boolean showLimits = WtWindowManager.getInstance().getPropertyBoolean(
 				SettingsProperties.SHOW_STAT_LIMITS_PROPERTY, false);
-		StringBuilder text = new StringBuilder();
+		rows.removeAll();
+		int row = 0;
 		DecimalFormat format = new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(
 				"en".equals(ClientLanguage.getLanguage()) ? Locale.ENGLISH : new Locale("pl", "PL")));
 		for (CombatStat stat : CombatStat.values()) {
 			Double value = number(values.get(stat.getKey()));
 			if (value == null) continue;
-			if (text.length() > 0) text.append('\n');
-			text.append(ClientLanguage.getText(stat.getLabel())).append(": ").append(format.format(value)).append('%');
+			addCell(ClientLanguage.getText(stat.getLabel()) + ":", row, 0, SwingConstants.LEFT);
+			addCell(format.format(value) + "%", row, 1, SwingConstants.RIGHT);
 			Double limit = number(values.get(stat.getLimitKey()));
-			// Keep the value and its limit together when a long label wraps in a narrow sidebar.
-			if (showLimits && limit != null) text.append("\u00a0/\u00a0").append(format.format(limit)).append('%');
+			if (showLimits && limit != null) addCell("/ " + format.format(limit) + "%", row, 2, SwingConstants.RIGHT);
+			row++;
 		}
-		toggle.setText(ClientLanguage.getText("Statystyki procentowe"));
-		window.setTitle("Statystyki procentowe");
-		rows.setText(text.toString());
-		scroll.setPreferredSize(new Dimension(330, Math.min(300, Math.max(32, rows.getPreferredSize().height))));
-		boolean available = text.length() > 0 && WtWindowManager.getInstance().getPropertyBoolean(
+		toggle.setText(ClientLanguage.getText("Statystyki"));
+		window.setTitle("Statystyki");
+		rows.revalidate();
+		boolean available = row > 0 && WtWindowManager.getInstance().getPropertyBoolean(
 				SettingsProperties.SHOW_COMBAT_STATS_PROPERTY, false);
 		setVisible(available);
 		if (!available) window.setVisible(false);
@@ -160,6 +152,18 @@ final class CombatStatsPanel extends JPanel {
 		setToolTipText(ClientLanguage.getText("Aktualne wartości po uwzględnieniu limitów. Bonusy warunkowe zależą od bieżącej sytuacji w walce."));
 		revalidate();
 		repaint();
+	}
+
+	private void addCell(String text, int row, int column, int alignment) {
+		JLabel label = new JLabel(text, alignment);
+		label.setFont(rows.getFont());
+		label.setForeground(rows.getForeground());
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = column; constraints.gridy = row;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weightx = column == 0 ? 1.0 : 0.0;
+		constraints.insets = new Insets(1, column == 2 ? 5 : 0, 1, column == 0 ? 12 : 0);
+		rows.add(label, constraints);
 	}
 
 	private static Double number(String value) {

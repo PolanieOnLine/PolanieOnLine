@@ -105,10 +105,10 @@ public class SettingsPagesTest {
 	@Test public void combatStatsAccessIsOffByDefaultAndPersistsWhenEnabled() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			SettingsPages pages = createPages();
-			JCheckBox access = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki procentowe");
+			JCheckBox access = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki");
 			assertNotNull(access); assertFalse(access.isSelected()); access.doClick();
 			assertEquals("true", manager.getProperty("ui.show_combat_stats", "false"));
-			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki procentowe").isSelected());
+			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki").isSelected());
 		});
 	}
 

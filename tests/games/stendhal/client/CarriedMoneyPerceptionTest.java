@@ -55,7 +55,9 @@ public class CarriedMoneyPerceptionTest {
 		combat.setAccessible(true);
 		Object view = combat.get(root);
 		Field rows = view.getClass().getDeclaredField("rows"); rows.setAccessible(true);
-		return ((javax.swing.JTextArea) rows.get(view)).getText();
+		javax.swing.JPanel grid = (javax.swing.JPanel) rows.get(view);
+		if (grid.getComponentCount() == 0) return "";
+		return ((JLabel) grid.getComponent(0)).getText() + " " + ((JLabel) grid.getComponent(1)).getText();
 	}
 	private StatsPanelController stats;
 	private UserContext context;

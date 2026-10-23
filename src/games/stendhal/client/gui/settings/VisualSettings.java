@@ -309,8 +309,8 @@ class VisualSettings {
 		items.add(itemTooltipComparisonToggle);
 		JComponent combatStats = pages.addGroup(SettingsPages.Category.COMBAT, "Statystyki postaci");
 		combatStats.add(SettingsComponentFactory.createSettingsToggle(SettingsProperties.SHOW_COMBAT_STATS_PROPERTY,
-				false, "Pokazuj statystyki procentowe",
-				"Udostępnia przycisk otwierający okno statystyk procentowych obok widoku gry."));
+				false, "Pokazuj statystyki",
+				"Pokazuje przycisk otwierający okno statystyk."));
 		combatStats.add(SettingsComponentFactory.createSettingsToggle(SettingsProperties.SHOW_STAT_LIMITS_PROPERTY,
 				false, "Pokazuj limity statystyk",
 				"Pokazuje limity obok wartości statystyk."));
