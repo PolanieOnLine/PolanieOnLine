@@ -29,6 +29,13 @@ import games.stendhal.common.constants.CombatStat;
 final class CombatStatsPanel extends JPanel {
 	private final JToggleButton toggle = new JToggleButton();
 	private final JTextArea rows = new JTextArea() {
+		@Override public void setBounds(int x, int y, int width, int height) {
+			boolean widthChanged = width != getWidth();
+			super.setBounds(x, y, width, height);
+			// Wrapped height is known only after layout has assigned the new width.
+			if (widthChanged) SwingUtilities.invokeLater(this::revalidate);
+		}
+
 		@Override public Dimension getMinimumSize() {
 			Dimension size = super.getMinimumSize();
 			size.width = getInsets().left + getInsets().right;
