@@ -74,6 +74,9 @@ final class ItemCreationCommandOptions {
 				throw new IllegalArgumentException("Nieznana rzadkość przedmiotu: " + rarityId);
 			}
 			context.withRarity(requestedRarity);
+		} else {
+			// Rolled rarity should receive its normal affixes too; explicit options below can opt out.
+			context.generateAffixes(true);
 		}
 
 		Boolean randomizeModifiers = null;

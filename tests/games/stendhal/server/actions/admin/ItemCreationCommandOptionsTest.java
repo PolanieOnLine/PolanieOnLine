@@ -7,13 +7,66 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityService;
+import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPAction;
+import utilities.RPClass.ItemTestHelper;
 
 public class ItemCreationCommandOptionsTest {
+	@Test
+	public void summonWithoutRarityGeneratesAffixesForTheRolledTier() {
+		final RPAction action = new RPAction();
+		action.put("type", "summon");
+		action.put("creature", "topór");
+		final double[] rolls = {0.0, 0.75, 0.95, 0.99};
+		final ItemRarity[] rarities = {ItemRarity.COMMON, ItemRarity.RARE,
+				ItemRarity.EPIC, ItemRarity.LEGENDARY};
+		final int[] affixCounts = {0, 1, 2, 4};
+		for (int index = 0; index < rolls.length; index++) {
+			final Item item = randomlyRolledItem(action, rolls[index]);
+			assertEquals(rarities[index], item.getRarity());
+			assertEquals("Affixes for randomly rolled " + rarities[index],
+					affixCounts[index], ItemAffixState.getValues(item).size());
+		}
+	}
+
+	@Test
+	public void summonWithoutRarityStillHonoursExplicitlyDisabledAffixes() {
+		final RPAction action = new RPAction();
+		action.put("affixes", "none");
+		for (double roll : new double[] {0.75, 0.95}) {
+			final Item item = randomlyRolledItem(action, roll);
+			assertTrue(item.getRarity() == ItemRarity.RARE || item.getRarity() == ItemRarity.EPIC);
+			assertTrue(ItemAffixState.getValues(item).isEmpty());
+			assertFalse(ItemAffixState.hasSeed(item));
+		}
+	}
+
+	private Item randomlyRolledItem(final RPAction action, final double roll) {
+		ItemTestHelper.generateRPClasses();
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "20");
+		attributes.put("rate", "10");
+		final Item item = new Item("topór", "axe", "test", attributes);
+		item.setEquipableSlots(Arrays.asList("rhand", "bag"));
+		final Random random = new Random(7L) {
+			private static final long serialVersionUID = 1L;
+			@Override public double nextDouble() { return roll; }
+		};
+		new ItemRarityService(random).initialize(item, ItemCreationCommandOptions.fromAction(action));
+		return item;
+	}
+
 	@Test
 	public void testFixedModifiersDisableRandomizationButKeepEpicAffixes() {
 		final RPAction action = new RPAction();
