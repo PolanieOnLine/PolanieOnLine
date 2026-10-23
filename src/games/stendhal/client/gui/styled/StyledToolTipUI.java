@@ -264,15 +264,15 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		String normalized = text.replace("<html>",
 				"<html>" + STRUCTURED_LIST_MARKER);
 		normalized = normalized.replace("Typ obrażeń: ",
-				"&#9670;&nbsp; Typ obrażeń: ");
+				"&#9670; Typ obrażeń: ");
 		normalized = normalized.replace("Zasięg: ",
-				"&#9670;&nbsp; Zasięg: ");
+				"&#9670; Zasięg: ");
 		normalized = normalized.replace("Efekty trafienia: ",
-				"&#9670;&nbsp; Efekty trafienia: ");
+				"&#9670; Efekty trafienia: ");
 		normalized = ARMOUR_STAT_PATTERN.matcher(normalized).replaceAll(
-				"&#9670;&nbsp; +$1 pancerza");
+				"&#9670; +$1 pancerza");
 		normalized = SKILL_ATTACK_STAT_PATTERN.matcher(normalized).replaceAll(
-				"&#9670;&nbsp; +$1 siły ataku");
+				"&#9670; +$1 siły ataku");
 		tooltip.setTipText(normalized);
 	}
 
