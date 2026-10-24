@@ -36,7 +36,6 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.player.Player;
@@ -311,9 +310,10 @@ public class RuneMasterNPC implements ZoneConfigurator {
 								return;
 							}
 
-							selectedGlyph.getResources().forEach((resourceName, amount) -> {
-								player.drop(resourceName, amount);
-							});
+							if (!selectedGlyph.consumeResources(player)) {
+								raiser.say("Wróć z czystymi fragmentami glifu i pozostałymi składnikami.");
+								return;
+							}
 							raiser.say("Gotowe. Matryca przyjęła znak " + glyphName + ". Korzystaj z jego mocy mądrze.");
 
 							player.setQuest(QUEST_SLOT, "done");
@@ -408,9 +408,70 @@ class Glyph {
 	public List<ChatCondition> getResourceConditions() {
 		List<ChatCondition> conditions = new ArrayList<>();
 		resources.forEach((resourceName, amount) -> {
-			conditions.add(new PlayerHasItemWithHimCondition(resourceName, amount));
+			conditions.add(new ChatCondition() {
+				@Override
+				public boolean fire(Player player, Sentence sentence, Entity npc) {
+					return hasResource(player, resourceName, amount);
+				}
+			});
 		});
 		return conditions;
+	}
+
+	private boolean isCleanFragment(final Item item) {
+		return item.isSubmittable() && (item.getItemData() == null || item.getItemData().isEmpty());
+	}
+
+	private boolean hasResource(final Player player, final String name, final int amount) {
+		if (!"fragment glifu".equals(name)) {
+			return player.isSubmittableEquipped(name, amount);
+		}
+		int remaining = amount;
+		for (final Item item : player.getAllEquipped(name)) {
+			if (isCleanFragment(item)) {
+				remaining -= Math.min(remaining, item.getQuantity());
+				if (remaining == 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean consumeResources(final Player player) {
+		for (final Map.Entry<String, Integer> entry : resources.entrySet()) {
+			if (!hasResource(player, entry.getKey(), entry.getValue())) {
+				return false;
+			}
+		}
+		for (final Map.Entry<String, Integer> entry : resources.entrySet()) {
+			if (!"fragment glifu".equals(entry.getKey())) {
+				if (!player.dropSubmittable(entry.getKey(), entry.getValue())) {
+					return false;
+				}
+				continue;
+			}
+			int remaining = entry.getValue();
+			for (final Item item : player.getAllEquipped(entry.getKey())) {
+				if (!isCleanFragment(item)) {
+					continue;
+				}
+				final int units = Math.min(remaining, item.getQuantity());
+				for (int i = 0; i < units; i++) {
+					if (!player.drop(item)) {
+						return false;
+					}
+				}
+				remaining -= units;
+				if (remaining == 0) {
+					break;
+				}
+			}
+			if (remaining != 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public String getFormattedResources() {
