@@ -25,6 +25,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -95,6 +96,8 @@ public class Burglary extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
+		final ChatCondition hasRequiredGold = (player, sentence, entity) ->
+				player.isEquippedWithItemdata("sztabka złota", QUEST_SLOT, 15);
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -104,7 +107,7 @@ public class Burglary extends AbstractQuest {
 						new AndCondition(
 								new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)))),
+								hasRequiredGold))),
 			ConversationStates.ATTENDING, 
 			"Nie próbuj mnie oszukiwać! *szept* Wróć z tymi przedmiotami do mnie...",
 			null);
@@ -120,7 +123,6 @@ public class Burglary extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					player.dropWithItemdata("sztabka złota", QUEST_SLOT, 15);
 					Burglary.prepareChest();
 				}
 			});
@@ -132,10 +134,19 @@ public class Burglary extends AbstractQuest {
 					new GreetingMatchesNameCondition(npc.getName()),
 					new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
-					new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)),
+					hasRequiredGold),
 			ConversationStates.ATTENDING,
 			"Dzięki... Tym razem się przekona co to znaczy być okradzionym...",
-			new MultipleActions(reward));
+			new ChatAction() {
+				@Override
+				public void fire(Player player, Sentence sentence, EventRaiser npc) {
+					if (!player.dropWithItemdata("sztabka złota", QUEST_SLOT, 15)) {
+						npc.say("Wróć z piętnastoma sztabkami złota należącymi do Sołtysa.");
+						return;
+					}
+					new MultipleActions(reward).fire(player, sentence, npc);
+				}
+			});
 	}
 
 	private static void prepareChest() {
