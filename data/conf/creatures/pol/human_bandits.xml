@@ -55,7 +55,7 @@
 		</attributes>
 		<level value="36"/>
 		<experience value="1470"/>
-		<respawn value="1160"/>
+		<respawn value="1500"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[1,2]" probability="50.0"/>
