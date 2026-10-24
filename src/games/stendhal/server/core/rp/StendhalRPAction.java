@@ -348,6 +348,9 @@ public class StendhalRPAction {
 		// player may be using a melee weapon with longer reach
 		isRanged = isRanged && attackWeapon != null
 				&& attackWeapon.isNonMeleeWeapon();
+		// Launchers use their ammunition's attack and damage type even in melee.
+		final boolean usesAmmunition = (player.getProjectileLauncher() != null && player.getAmmunition() != null)
+				|| (player.getWandWeapon() != null && player.getMagicSpells() != null);
 
 		boolean beaten;
 		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
@@ -487,7 +490,7 @@ public class StendhalRPAction {
 			}
 		}
 
-		if (isRanged) {
+		if (isRanged || usesAmmunition) {
 			// Removing the missile is deferred here so that the weapon
 			// information is available when calculating the damage.
 			useMissile(player, defender, damage);
