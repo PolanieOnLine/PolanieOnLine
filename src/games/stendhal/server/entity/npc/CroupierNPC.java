@@ -64,7 +64,9 @@ public abstract class CroupierNPC extends SpeakerNPC {
 	}
 
 	public void onThrown(final Dice dice, final Player player) {
-		if (playingArea.contains(dice)) {
+		if (playingArea.contains(dice) && getName().equals(dice.getItemData())) {
+			// Consume the paid game before resolving it; keep the token visible until cleanup.
+			dice.setItemData("");
 			final int sum = dice.getSum();
 			processWin(player, sum);
 			// The croupier takes the dice away from the table after some time.
@@ -106,7 +108,8 @@ public abstract class CroupierNPC extends SpeakerNPC {
 	}
 
 	public void onThrownBill(final Ball ball, final Player player) {
-		if (playingArea.contains(ball)) {
+		if (playingArea.contains(ball) && getName().equals(ball.getItemData())) {
+			ball.setItemData("");
 			final int sum = ball.getSum();
 			processWinBill(player, sum);
 			// The croupier takes the dice away from the table after some time.
