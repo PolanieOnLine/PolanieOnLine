@@ -34,6 +34,7 @@ public class PlayerHasItemdataItemWithHimCondition implements ChatCondition {
 
 	private final String itemName;
 	private final String itemdata;
+	private final int amount;
 
 	/**
 	 * Creates a new PlayerHasItemdataItemWithHimCondition.
@@ -44,16 +45,25 @@ public class PlayerHasItemdataItemWithHimCondition implements ChatCondition {
 	 *            itemdata to check
 	 */
 	public PlayerHasItemdataItemWithHimCondition(final String itemName, final String itemdata) {
+		this(itemName, itemdata, 1);
+	}
+
+	public PlayerHasItemdataItemWithHimCondition(final String itemName, final String itemdata, final int amount) {
 		this.itemName = checkNotNull(itemName);
 		this.itemdata = checkNotNull(itemdata);
+		this.amount = amount;
 	}
 
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+		int remaining = amount;
 		final List<Item> items = player.getAllEquipped(itemName);
 		for (final Item item : items) {
 			if (itemdata.equalsIgnoreCase(item.getItemData())) {
-				return true;
+				remaining -= item.getQuantity();
+				if (remaining <= 0) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -66,7 +76,7 @@ public class PlayerHasItemdataItemWithHimCondition implements ChatCondition {
 
 	@Override
 	public int hashCode() {
-		return 43867 * itemName.hashCode() + itemdata.hashCode();
+		return 43867 * itemName.hashCode() + itemdata.hashCode() + amount;
 	}
 
 	@Override
@@ -75,7 +85,7 @@ public class PlayerHasItemdataItemWithHimCondition implements ChatCondition {
 			return false;
 		}
 		PlayerHasItemdataItemWithHimCondition other = (PlayerHasItemdataItemWithHimCondition) obj;
-		return itemName.equals(other.itemName)
+		return amount == other.amount && itemName.equals(other.itemName)
 			&& itemdata.equals(other.itemdata);
 	}
 }
