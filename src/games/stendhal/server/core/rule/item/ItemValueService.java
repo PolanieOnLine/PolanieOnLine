@@ -30,7 +30,7 @@ public final class ItemValueService {
 		final boolean oldRarePrice = rarity == ItemRarity.RARE && builtInProfile
 				&& saved != null && Double.compare(saved.doubleValue(), 1.20) == 0;
 		if (!oldRarePrice && saved != null && Double.isFinite(saved.doubleValue())
-				&& saved.doubleValue() > 0) {
+				&& saved.doubleValue() >= 0) {
 			return saved.doubleValue();
 		}
 		// Only the obsolete standard Rare price is migrated. Other explicit/custom
