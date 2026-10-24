@@ -19,6 +19,7 @@ import java.util.List;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -223,13 +224,23 @@ public class BalloonForBobby extends AbstractQuest {
 		reward.add(new IncrementQuestAction(QUEST_SLOT, 1, 1));
 
 		// The player has a balloon and gives it to Bobby
+		final ChatCondition canGiveBalloon = new AndCondition(
+				new NotCondition(new SystemPropertyCondition("stendhal.minetown")),
+				new PlayerIsWearingOutfitCondition(balloonOutfit));
 		npc.add(
 				ConversationStates.QUEST_ITEM_QUESTION,
 				ConversationPhrases.YES_MESSAGES,
-				null,
+				canGiveBalloon,
 				ConversationStates.ATTENDING,
 				"Hurra! Leć baloniku! Leć!",
 				new MultipleActions(reward));
+		npc.add(
+				ConversationStates.QUEST_ITEM_QUESTION,
+				ConversationPhrases.YES_MESSAGES,
+				new NotCondition(canGiveBalloon),
+				ConversationStates.ATTENDING,
+				"Nie mogę teraz przyjąć tego balonika. Porozmawiajmy ponownie.",
+				null);
 	}
 
 	@Override
