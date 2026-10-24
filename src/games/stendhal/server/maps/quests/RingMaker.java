@@ -178,7 +178,17 @@ public class RingMaker extends AbstractQuest {
 
 							}
 						},
-						new DropItemAction("pierścień szmaragdowy")));
+						new DropItemAction("pierścień szmaragdowy")) {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						final RingOfLife ring = (RingOfLife) player.getFirstEquipped("pierścień szmaragdowy");
+						if (ring == null || !ring.isBroken()) {
+							npc.say("Nie masz przy sobie uszkodzonego pierścienia szmaragdowego do naprawy.");
+							return;
+						}
+						super.fire(player, sentence, npc);
+					}
+				});
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
