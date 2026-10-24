@@ -148,7 +148,7 @@
 		<description>Oto skrzat leśny starszy. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="83"/>
-			<def value="16"/>
+			<def value="26"/>
 			<hp value="98"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -177,7 +177,7 @@
 		<description>Oto skrzat leśny starszy komandor. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="90"/>
-			<def value="17"/>
+			<def value="28"/>
 			<hp value="107"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -207,7 +207,7 @@
 		<description>Oto skrzat leśny starszy wojownik. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="95"/>
-			<def value="17"/>
+			<def value="33"/>
 			<hp value="116"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -239,7 +239,7 @@
 		<description>Oto skrzat leśny starszy strzelec. Skoro jest jeden za chwilę zjawi się ich cała chmara.</description>
 		<attributes>
 			<atk value="87"/>
-			<def value="11"/>
+			<def value="23"/>
 			<hp value="98"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
