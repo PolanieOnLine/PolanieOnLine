@@ -206,7 +206,7 @@ public class Shovel extends AreaUseItem {
 	}
 
 	/**
-	 * Generates random X and Y coordinates within the map boundaries.
+	 * Generates random X and Y coordinates on a tile without collisions.
 	 *
 	 * @param zone
 	 *	 The zone (map) where the new coordinates should be generated.
@@ -219,8 +219,11 @@ public class Shovel extends AreaUseItem {
 		int mapWidth = zone.getWidth();
 		int mapHeight = zone.getHeight();
 
-		int newX = random.nextInt(mapWidth);
-		int newY = random.nextInt(mapHeight);
+		int newX, newY;
+		do {
+			newX = random.nextInt(mapWidth);
+			newY = random.nextInt(mapHeight);
+		} while (zone.collides(newX, newY));
 
 		return new int[] { newX, newY };
 	}
