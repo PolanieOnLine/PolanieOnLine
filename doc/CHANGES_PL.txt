@@ -1,5 +1,76 @@
 ## Changelog
 ---------
+1.43.3
+*kradzież życia i afiksy*
+---
+* Kradzież życia należąca do właściwości przedmiotu nie zajmuje już miejsca na afiks i nie jest zwiększana przez mnożnik rzadkości
+* Dodano afiks zwiększający skuteczność kradzieży życia o 10% lub 20%. Może pojawić się na przedmiotach, które już mają kradzież życia
+* Afiks nadający kradzież życia losuje się tylko dla przedmiotów, które nie mają tej właściwości
+* Wcześniej zdobyte bronie, w których kradzież życia zajmowała miejsce na dodatkową właściwość, otrzymują w jej miejsce inny afiks po zalogowaniu
+* Kradzież życia z obu założonych pierścieni sumuje się i działa również podczas walki bez broni
+* Poprawiono naliczanie ujemnych wartości kradzieży życia
+
+*opisy przedmiotów i statystyki*
+---
+* Dodano w kliencie Java okno Statystyki z szansą na trafienie krytyczne, dodatkowymi obrażeniami krytycznymi, parowaniem i odpornościami na negatywne efekty
+* Przycisk otwierający okno można włączyć w ustawieniach. Znajduje się na dole panelu postaci, a samo okno otwiera się nad ekranem gry i dopasowuje do zawartości
+* Dodano osobną opcję wyświetlania limitów obok wartości statystyk. Obie nowe opcje są domyślnie wyłączone
+* Wartości w oknie statystyk są wyrównane w kolumnach, a różnice przy porównywaniu przedmiotów znajdują się po prawej stronie, w tej samej linii co dana właściwość
+* Opisy przedmiotów pokazują ujemny atak. Przy kradzieży życia przyrost wynikający ze skuteczności znajduje się w nawiasie
+* Ujednolicono oznaczenia bonusów, usunięto powtarzający się dodatkowy atak i pancerz oraz przeniesiono określenie szybkości broni do osobnej linii
+* Ujednolicono podpowiedzi dotyczące pieniędzy. Ekwipunek i panel postaci korzystają ze wspólnego opisu łącznej liczby monet
+* Ukryto informację o braku pancerza w opisach i podpowiedziach postaci oraz potworów
+* Skrzynia Myśliwego i skrzynia z Areny Wyzwań mają odrębne ikony
+
+*walka i glify*
+---
+* Naprawiono rozstrzyganie trafień przeciw potworom, które mogło pomijać właściwe losowanie wyniku ataku
+* Łuki i różdżki zużywają amunicję także podczas walki z bliska. Włócznie pozostają wielokrotnego użytku
+* Zdejmowanie glifów nie obniża już trwale zdrowia postaci, gdy wcześniej osiągnięto jego maksymalną wartość. Bonus do zdrowia jest też prawidłowo usuwany po utracie glifu podczas śmierci
+* Poprawiono przeliczanie odporności po zdjęciu pierścieni przy osiągniętym limicie oraz zachowanie niewidzialności podczas przenoszenia zapasowego pierścienia
+* Efekty założonych przedmiotów są prawidłowo wyłączane również wtedy, gdy przedmiot zostaje zużyty
+
+*polowania u Janisława*
+---
+* Propozycja polowania dla każdej trudności jest zapamiętywana na siedem dni. Ponowna rozmowa i rezygnacja z zadania nie losują innego celu; ukończenie polowania pozwala otrzymać nową propozycję
+* Zabójstwa potworów na arenach nie zaliczają się do polowań
+* Nagrody za nowe polowania nie przekraczają 5%, 15% i 30% doświadczenia pełnego poziomu ataku i obrony, odpowiednio dla łatwych, średnich i trudnych łowów. Wcześniej przyjęte zadania zachowują uzgodnione nagrody
+* Uporządkowano rozmowy z Janisławem i wyjaśniono zasady przyjmowania, kończenia oraz przerywania polowań
+
+*zadania i mieszkańcy*
+---
+* Czarnoksiężnik odpowiada na pytania o zadanie zgodnie z bieżącym etapem swojej historii, bez odsyłania do ukończonych już prób
+* Naprawiono rozpoczynanie rozmów z NPC, gdy nazwa postaci przypomina powitanie
+* Kupione w Deniran dodatki do stroju zachowują swój wygląd po ponownym zalogowaniu. Bobby sprawdza właściwy balonik również przy potwierdzaniu jego oddania
+* Poprawiono losowanie miejsc wykopalisk fragmentów glifów, aby nie trafiały na zablokowane pola. Jedno użycie łopaty liczy się jako jedna próba
+* Omar zachowuje liczbę ukończonych rekonstrukcji, a Mistrz Run przyjmuje do wykonania glifu tylko odtworzone fragmenty
+* Naprawiono zadania związane z włamaniem i Odbiciem Arsenału: wymagane przedmioty są sprawdzane przed wydaniem nagrody, a skrzynie uzupełniają tylko brakujące zapasy
+* Naprawa uszkodzonego pierścienia życia wybiera właściwy egzemplarz, zachowuje jego przypisanie do właściciela i ponownie sprawdza możliwość naprawy przed pobraniem opłaty
+
+*przedmioty, pieniądze i handel*
+---
+* Naprawiono obsługę dużych sum pieniędzy przy płatnościach, opłatach targowych i resetowaniu zadań
+* Gotowy napar pozostaje w kotle, gdy brakuje miejsca na jego odebranie. Pusty, porzucony kocioł można ponownie zająć
+* Dzielenie stosów przedmiotów zachowuje ich wariant graficzny
+* Poprawiono własne podpisy zwojów, również tych oznaczonych wcześniej, oraz sprawdzanie ilości przy ich oznaczaniu
+* Zabezpieczono gry u krupiera przed wielokrotnym rozliczaniem tej samej opłaconej rundy
+* Przedmioty przywoływane przez administratora otrzymują afiksy zgodne z wylosowaną rzadkością również bez ręcznego wskazywania jej w poleceniu
+
+*domy i obrączki*
+---
+* Dorabianie klucza, wymiana zamka i sprzedaż domu ponownie sprawdzają właściciela przy potwierdzeniu operacji
+* Obrączka ślubna pozwala przenieść się tylko do aktualnego współmałżonka, z uwzględnieniem rozwodu i ponownego ślubu
+
+*Mine Town*
+---
+* Wydłużono czas ponownego pojawiania się zagubionych latarenek z 30 do 60 minut
+* Wykluczono numerowane domy, banki i wnętrza mieszkalne. Zebrana latarenka pojawia się w innym miejscu niż poprzednio
+
+*wersja hiszpańska*
+---
+* Uzupełniono tłumaczenia ustawień, okna statystyk i rozmów związanych z polowaniami
+
+
 1.43.2
 *balans gry i handel*
 ---
