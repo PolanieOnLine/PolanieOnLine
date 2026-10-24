@@ -54,7 +54,7 @@ public class ShockStatusHandler implements StatusHandler<ShockStatus> {
 				int persistence = Rand.randUniform(30, 60 * 5);
 				// shock-resistance also alters duration
 				if (entity.has(resistName)) {
-					persistence = (int) Math.round(persistence * (1.0 - entity.getDouble(resistName)));
+					persistence = (int) Math.round(persistence * (1.0 - Math.min(1.0, entity.getDouble(resistName))));
 				}
 
 				TurnNotifier.get().notifyInSeconds(persistence, remover);

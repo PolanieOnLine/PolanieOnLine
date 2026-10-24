@@ -158,20 +158,8 @@ public class StatusResistantItem extends SlotActivatedItem {
 				newResistance += currentResistance;
 			}
 
-			/**
-			 * Safeguarding. Entity cannot be more than 100% resistant. Do not
-			 * need to worry about less than zero because resistance will be
-			 * removed in such case.
-			 *
-			 * FIXME: Removing items will subtract from effective resistance
-			 *        even when potential resistance is greater than 1.0.
-			 *        Should implement separate variables for effective and
-			 *        potential resistance. Will probably need to be calculated
-			 *        from owning entity.
-			 */
-			if (newResistance > 1.0) {
-				newResistance = 1.0;
-			}
+			// Keep the full sum so unequipping is reversible. Combat resolution
+			// clamps effective resistance to 100%, not this materialized total.
 
 			/**
 			 * Remove reference if entity is no longer resistant. This can be

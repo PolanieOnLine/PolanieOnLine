@@ -13,6 +13,8 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Corpse;
@@ -160,6 +162,29 @@ public class EquipmentStatusResistanceServiceTest {
 
 		assertEquals(1.0, EquipmentStatusResistanceService.getResistance(target,
 				StatusType.POISONED), 0.0);
+
+		for (double intrinsic : new double[] {0.0, 0.20}) {
+			for (boolean removeRightFirst : new boolean[] {false, true}) {
+				final Player player = PlayerTestHelper.createPlayer("isolation rings tester");
+				player.put("resist_shocked", intrinsic);
+				final Item left = SingletonRepository.getEntityManager().getItem("pierścień izolacji", ItemRarity.COMMON);
+				final Item right = SingletonRepository.getEntityManager().getItem("pierścień izolacji", ItemRarity.COMMON);
+				player.getSlot("finger").add(left);
+				left.onEquipped(player, "finger");
+				player.getSlot("fingerb").add(right);
+				right.onEquipped(player, "fingerb");
+				assertEquals(1.0, EquipmentStatusResistanceService.getResistance(player, StatusType.SHOCKED), 0.0000001);
+
+				final Item removed = removeRightFirst ? right : left;
+				final Item remaining = removeRightFirst ? left : right;
+				removed.onUnequipped();
+				removed.getContainerSlot().remove(removed.getID());
+				assertEquals(intrinsic + 0.66, EquipmentStatusResistanceService.getResistance(player, StatusType.SHOCKED), 0.0000001);
+				remaining.onUnequipped();
+				remaining.getContainerSlot().remove(remaining.getID());
+				assertEquals(intrinsic, EquipmentStatusResistanceService.getResistance(player, StatusType.SHOCKED), 0.0000001);
+			}
+		}
 	}
 
 	private Item resistanceItem(final String attribute, final double value) {
