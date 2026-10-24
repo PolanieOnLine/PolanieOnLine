@@ -8,7 +8,7 @@
 		<description>Oto pokutnik z bagien. Stary upiór, na którego wolisz nie wpaść po drodzę.</description>
 		<attributes>
 			<atk value="400"/>
-			<def value="33"/>
+			<def value="68"/>
 			<armor value="medium"/>
 			<hp value="2900"/>
 			<speed value="1.0"/>
@@ -42,7 +42,7 @@
 		<description>Oto pokutnik z wrzosowisk. Uważaj na bezleśnych krzewinek, by nie napotkać upióra.</description>
 		<attributes>
 			<atk value="410"/>
-			<def value="34"/>
+			<def value="69"/>
 			<armor value="medium"/>
 			<hp value="3000"/>
 			<speed value="1.0"/>
@@ -75,7 +75,7 @@
 		<description>Oto pokutnik nocny. Upiór ukazyjący najczęściej w nocy osobom, które popełniły okropny czyn.</description>
 		<attributes>
 			<atk value="420"/>
-			<def value="35"/>
+			<def value="70"/>
 			<armor value="medium"/>
 			<hp value="3100"/>
 			<speed value="1.0"/>
@@ -111,7 +111,7 @@
 		<description>Oto pokutnik wieczorny. Odprawiający pokutę zazwyczaj po zachodzie słońca.</description>
 		<attributes>
 			<atk value="430"/>
-			<def value="36"/>
+			<def value="72"/>
 			<armor value="medium"/>
 			<hp value="3200"/>
 			<speed value="1.0"/>
@@ -147,7 +147,7 @@
 		<description>Oto pokutnik poranny. Ujawnia się złoczyńcom zaraz po wschodzie słońca, by ich ukarać.</description>
 		<attributes>
 			<atk value="440"/>
-			<def value="37"/>
+			<def value="74"/>
 			<armor value="medium"/>
 			<hp value="3300"/>
 			<speed value="1.0"/>
@@ -181,7 +181,7 @@
 		<description>Oto pokutnik z gór. Unikaj górskich szlaków na których spowija dziwna mgła.</description>
 		<attributes>
 			<atk value="450"/>
-			<def value="38"/>
+			<def value="74"/>
 			<armor value="medium"/>
 			<hp value="3400"/>
 			<speed value="1.0"/>
@@ -218,7 +218,7 @@
 		<description>Oto pokutnik z łąk. Uwolni się w momencie gdy spełni swą pokutę.</description>
 		<attributes>
 			<atk value="460"/>
-			<def value="39"/>
+			<def value="76"/>
 			<armor value="medium"/>
 			<hp value="3500"/>
 			<speed value="1.0"/>
