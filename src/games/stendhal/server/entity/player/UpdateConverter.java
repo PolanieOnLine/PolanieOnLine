@@ -510,15 +510,8 @@ public abstract class UpdateConverter {
 			object.remove("keyring_ext");
 		}
 
-		// port to 1.43: balloon outfit index
-		if (object.has("release") && object.get("release").compareTo("1.43") < 0 && object.has("outfit_ext")) {
-			tempOutfit = new Outfit(object.get("outfit_ext"));
-			final int detailIndex = tempOutfit.getLayer("detail");
-			if (detailIndex > 1 && detailIndex < 5) {
-				tempOutfit = new Outfit("detail=1").putOver(tempOutfit);
-				object.put("outfit_ext", tempOutfit.toString());
-			}
-		}
+		// Polanie uses detail indexes 2-4 for permanent Deniran accessories.
+		// Keep them unchanged even when restoring a pre-1.43 character.
 	}
 
 	/**
