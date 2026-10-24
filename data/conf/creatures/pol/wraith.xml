@@ -603,7 +603,7 @@
 		<description>Oto strzyga leśna, niegdyś człek, który prowadził niegodziwy żywot wrócił zamieniony w demona. Lepiej unikaj lasów.</description>
 		<attributes>
 			<atk value="266"/>
-			<def value="33"/>
+			<def value="52"/>
 			<armor value="medium"/>
 			<hp value="440"/>
 			<speed value="1.0"/>
