@@ -3591,8 +3591,9 @@ public abstract class RPEntity extends CombatEntity {
 
 		// process the lifesteal
 		if (sumLifesteal != 0) {
-			// 0.5f is used for rounding
-			final int lifesteal = (int) (damage * sumLifesteal / sumAll + 0.5f);
+			// Round the magnitude so life loss and healing follow the same rule.
+			final float lifeChange = damage * sumLifesteal / sumAll;
+			final int lifesteal = Math.round(Math.abs(lifeChange)) * (lifeChange < 0 ? -1 : 1);
 
 			if (lifesteal >= 0) {
 				attacker.heal(lifesteal, true);

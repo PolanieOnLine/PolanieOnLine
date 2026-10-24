@@ -53,9 +53,17 @@ public class RPEntityLifestealEquipmentTest {
 		assertEquals(560, attacker.getHP());
 	}
 
-	@Test public void unarmedHitWithoutLifeStealDoesNotHeal() {
+	@Test public void zeroAndNegativeLifeStealUseCorrectHealthChanges() {
 		hit(1000);
 		assertEquals(500, attacker.getHP());
+		Item weapon = new Item("cursed weapon", "club", "test", null);
+		weapon.put("atk", 48);
+		weapon.put("lifesteal", -0.1);
+		for (int damage : new int[] {5, 10, 100}) {
+			attacker.setHP(500);
+			attacker.handleLifesteal(attacker, Arrays.asList(weapon), damage);
+			assertEquals("Damage=" + damage, damage == 100 ? 490 : 499, attacker.getHP());
+		}
 	}
 
 	@Test public void armedWeaponWeightsAndEquipmentBonusesStayUnchanged() {
