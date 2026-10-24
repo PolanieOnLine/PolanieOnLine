@@ -304,7 +304,7 @@ public class ItemUpgradeServiceTest {
 		final ItemUpgradeService service = service(0);
 		provideRequirements(player, item, service);
 		final ItemUpgradePreview preview = service.createPreview(player, item);
-		final int moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
+		final long moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
 				.getTotalMoneyInCopper(player);
 		player.drop("polano", 1);
 
@@ -327,7 +327,7 @@ public class ItemUpgradeServiceTest {
 				new FixedRandom(0), clock);
 		provideRequirements(player, item, service);
 		final ItemUpgradePreview preview = service.createPreview(player, item);
-		final int moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
+		final long moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
 				.getTotalMoneyInCopper(player);
 
 		clock.advance(ItemUpgradeService.PREVIEW_TOKEN_TTL_MILLIS);

@@ -174,6 +174,9 @@ public class StackableItem extends Item implements Stackable<StackableItem> {
 		if (this == onTop) {
 			return false;
 		}
+		if ((long) getQuantity() + onTop.getQuantity() > Integer.MAX_VALUE) {
+			return false;
+		}
 
 		if (!getItemClass().equals(onTop.getItemClass())
 				|| !getItemSubclass().equals(onTop.getItemSubclass())) {

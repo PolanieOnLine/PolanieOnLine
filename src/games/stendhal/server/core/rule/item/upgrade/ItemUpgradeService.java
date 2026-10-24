@@ -374,8 +374,10 @@ public final class ItemUpgradeService implements LogoutListener {
 		for (final String material : materials.keySet()) {
 			owned.put(material, countCarried(player, material));
 		}
+		// Preview balances use INT on the wire; fees also fit INT, so this cap
+		// preserves affordability without truncating the actual wallet or payment.
 		return new ItemUpgradeRequirements(fee, MoneyUtils.formatPrice(fee),
-				MoneyUtils.getTotalMoneyInCopper(player), materials, owned);
+				(int) Math.min(Integer.MAX_VALUE, MoneyUtils.getTotalMoneyInCopper(player)), materials, owned);
 	}
 
 	private int countCarried(final Player player, final String itemName) {

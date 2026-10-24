@@ -28,16 +28,16 @@ public final class MoneyUtils {
 
 	private MoneyUtils() {}
 
-	public static int toCopper(String coinName, int quantity) {
+	public static long toCopper(String coinName, int quantity) {
 		if (coinName == null) return 0;
 		switch (coinName.toLowerCase()) {
 			case MONEY:
 			case COPPER:
-				return quantity * COPPER_VALUE;
+				return (long) quantity * COPPER_VALUE;
 			case SILVER:
-				return quantity * SILVER_VALUE;
+				return (long) quantity * SILVER_VALUE;
 			case GOLD:
-				return quantity * GOLD_VALUE;
+				return (long) quantity * GOLD_VALUE;
 			default:
 				return 0;
 		}
@@ -67,8 +67,8 @@ public final class MoneyUtils {
 	/**
 	 * Zwraca łączną wartość wszystkich monet gracza w miedziakach.
 	 */
-	public static int getTotalMoneyInCopper(final Player player) {
-		int totalCopper = 0;
+	public static long getTotalMoneyInCopper(final Player player) {
+		long totalCopper = 0;
 		String[] coins = getKnownCoinNames();
 
 		for (String name : coins) {
@@ -86,18 +86,16 @@ public final class MoneyUtils {
 
 	/**
 	 * Usuwa określoną kwotę (w miedziakach) z ekwipunku gracza.
-	 * Robi to w sposób deterministyczny:
-	 *  - oblicza łączną wartość posiadanych monet,
-	 *  - odejmuje koszt,
-	 *  - usuwa stare monety i tworzy nowe z reszty.
+	 * Pobiera monety z istniejących stosów, wydając resztę tylko przy rozmienianiu.
 	 */
-	public static boolean removeMoney(final Player player, int amountToRemove) {
-		int total = getTotalMoneyInCopper(player);
-		if (total < amountToRemove) {
+	public static boolean removeMoney(final Player player, long amountToRemove) {
+		if (amountToRemove < 0 || getTotalMoneyInCopper(player) < amountToRemove) {
 			return false;
 		}
-
-		int remaining = total - amountToRemove;
+		if (amountToRemove == 0) {
+			return true;
+		}
+		long remaining = amountToRemove;
 
 		String[] coins = getKnownCoinNames();
 		for (String coinName : coins) {
@@ -106,15 +104,22 @@ public final class MoneyUtils {
 				if (item instanceof StackableItem) {
 					StackableItem s = (StackableItem) item;
 					if (s.getQuantity() > 0) {
-						player.drop(coinName, s.getQuantity());
+						final long unitValue = toCopper(coinName, 1);
+						final int quantity = (int) Math.min(s.getQuantity(), 1 + (remaining - 1) / unitValue);
+						if (!player.drop(coinName, quantity)) {
+							return false;
+						}
+						remaining -= quantity * unitValue;
+						if (remaining <= 0) {
+							giveMoney(player, (int) -remaining);
+							return true;
+						}
 					}
 				}
 			}
 		}
 
-		giveMoney(player, remaining);
-
-		return true;
+		return false;
 	}
 
 	public static String formatPrice(int totalCopper) {
