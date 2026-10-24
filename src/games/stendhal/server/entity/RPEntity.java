@@ -2233,6 +2233,7 @@ public abstract class RPEntity extends CombatEntity {
 			final int quantity = item.getQuantity();
 			if (amount >= quantity) {
 				new ItemLogger().destroy(this, slot, item);
+				item.onUnequipped();
 				slot.remove(item.getID());
 				return quantity;
 			} else {
@@ -2243,6 +2244,7 @@ public abstract class RPEntity extends CombatEntity {
 		} else {
 			// The item is not stackable, so we only remove a
 			// single one.
+			item.onUnequipped();
 			slot.remove(item.getID());
 			new ItemLogger().destroy(this, slot, item);
 			return 1;

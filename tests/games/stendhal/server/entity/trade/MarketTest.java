@@ -30,9 +30,11 @@ import games.stendhal.server.actions.CStatusAction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.OfferTransformer;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.Log4J;
@@ -82,6 +84,19 @@ public class MarketTest {
 		assertEquals(offer, object);
 		assertFalse(object.getItem().getContainer().equals(bob));
 		assertTrue(object.getItem().getContainer().equals(offer));
+
+		final Item ring = SingletonRepository.getEntityManager().getItem("pierścień izolacji");
+		assertTrue(bob.equip("finger", ring));
+		ring.onEquipped(bob, "finger");
+		assertEquals(0.66, EquipmentStatusResistanceService.getResistance(bob,
+				StatusType.SHOCKED), 0.0000001);
+
+		final Offer ringOffer = market.createOffer(bob, ring, 10, 1);
+		assertTrue(ringOffer != null);
+		assertEquals(ring, ringOffer.getItem());
+		assertTrue(bob.getSlot("finger").isEmpty());
+		assertEquals(0.0, EquipmentStatusResistanceService.getResistance(bob,
+				StatusType.SHOCKED), 0.0000001);
 	}
 
 	/**
