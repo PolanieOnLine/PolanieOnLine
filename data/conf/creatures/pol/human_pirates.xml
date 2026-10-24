@@ -9,7 +9,7 @@
 		<description>Oto pirat. Jest już doświadczonym piratem.</description>
 		<attributes>
 			<atk value="340"/>
-			<def value="32"/>
+			<def value="60"/>
 			<armor value="light"/>
 			<hp value="360"/>
 			<speed value="1.0"/>
@@ -44,7 +44,7 @@
 		<description>Oto kamrat. Brał udział w wielu wydarzeniach.</description>
 		<attributes>
 			<atk value="360"/>
-			<def value="33"/>
+			<def value="62"/>
 			<armor value="light"/>
 			<hp value="382"/>
 			<speed value="1.0"/>
@@ -80,7 +80,7 @@
 		<description>Oto marynarz. Brał udział w wielu abordażach.</description>
 		<attributes>
 			<atk value="367"/>
-			<def value="33"/>
+			<def value="63"/>
 			<armor value="light"/>
 			<hp value="389"/>
 			<speed value="1.0"/>
@@ -116,7 +116,7 @@
 		<description>Oto krwawy pirat. Jest osobą bardzo znaną oraz poważaną przez resztę załogantów.</description>
 		<attributes>
 			<atk value="388"/>
-			<def value="34"/>
+			<def value="64"/>
 			<armor value="light"/>
 			<hp value="410"/>
 			<speed value="1.0"/>
@@ -154,7 +154,7 @@
 		<description>Oto wilk morski. Jego sława wykracza poza organizację.</description>
 		<attributes>
 			<atk value="401"/>
-			<def value="35"/>
+			<def value="66"/>
 			<armor value="light"/>
 			<hp value="425"/>
 			<speed value="1.0"/>
