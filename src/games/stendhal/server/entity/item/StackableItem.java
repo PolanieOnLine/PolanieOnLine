@@ -128,6 +128,7 @@ public class StackableItem extends Item implements Stackable<StackableItem> {
 					getName());
 
 			newItem.setQuantity(amountToSplitOff);
+			newItem.setEntitySubclass(getItemSubclass());
 
 			for (final String attribute : ATTRIBUTES_TO_COPY_ON_SPLIT) {
 				if (has(attribute)) {
