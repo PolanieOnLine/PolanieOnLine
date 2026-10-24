@@ -383,7 +383,7 @@
 		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
 		<attributes>
 			<atk value="390"/>
-			<def value="53"/>
+			<def value="70"/>
 			<armor value="light"/>
 			<hp value="309"/>
 			<speed value="0.7"/>
@@ -413,7 +413,7 @@
 		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
 		<attributes>
 			<atk value="330"/>
-			<def value="54"/>
+			<def value="67"/>
 			<armor value="light"/>
 			<hp value="345"/>
 			<speed value="0.9"/>
@@ -445,7 +445,7 @@
 		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
 		<attributes>
 			<atk value="410"/>
-			<def value="51"/>
+			<def value="69"/>
 			<armor value="light"/>
 			<hp value="290"/>
 			<speed value="0.5"/>
