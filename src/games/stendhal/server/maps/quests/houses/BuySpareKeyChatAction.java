@@ -33,6 +33,10 @@ final class BuySpareKeyChatAction extends HouseChatAction implements ChatAction 
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+		if (HouseUtilities.getPlayersHouse(player) == null) {
+			raiser.say("Nie jesteś już właścicielem tego domu.");
+			return;
+		}
 		if (player.isEquipped("money", HouseChatAction.COST_OF_SPARE_KEY)) {
 
 			final String housenumber = player.getQuest(questslot);
