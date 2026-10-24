@@ -174,6 +174,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
