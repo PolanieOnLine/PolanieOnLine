@@ -376,7 +376,7 @@ public class StendhalRPAction {
 		if (defender instanceof Creature) {
 			// Checks if defender is an immortal creature so player can't hurt him
 			// but give atk xp even if attack was missed
-			beaten = !((Creature) defender).isImmortal();
+			beaten = beaten && !((Creature) defender).isImmortal();
 			getsAtkXp = player.getsAtkXpFrom(defender);
 		}
 

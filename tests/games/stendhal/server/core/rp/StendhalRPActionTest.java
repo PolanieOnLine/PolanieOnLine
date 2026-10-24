@@ -23,11 +23,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.server.game.db.DatabaseFactory;
 import utilities.PlayerTestHelper;
@@ -38,6 +41,7 @@ public class StendhalRPActionTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		MockStendlRPWorld.get();
+		MockStendhalRPRuleProcessor.get();
 		new DatabaseFactory().initializeDatabase();
 	}
 
@@ -285,16 +289,39 @@ public class StendhalRPActionTest {
 	}
 
 	@Test
-	public void playerAttackWithoutWeaponDoesNotThrow() {
-		final Player player = PlayerTestHelper.createPlayer("unarmed");
-		final Creature victim = SingletonRepository.getEntityManager()
-				.getCreature("mysz domowa");
-		player.setPosition(5, 5);
-		victim.setPosition(6, 5);
-		zone.add(player);
-		zone.add(victim);
+	public void playerAttackWithoutWeaponRespectsHitRollAndImmortality() {
+		for (int scenario = 0; scenario < 3; scenario++) {
+			final boolean hits = scenario > 0;
+			final boolean immortal = scenario == 2;
+			final Player player = new Player(PlayerTestHelper.createPlayer("unarmed_" + scenario)) {
+				@Override
+				public boolean canHit(final RPEntity defender) {
+					return hits;
+				}
 
-		assertNull(player.getWeapon());
-		StendhalRPAction.playerAttack(player, victim);
+				@Override
+				public int damageDone(final RPEntity defender, final double attack, final Nature nature) {
+					return 1;
+				}
+			};
+			final Creature victim = SingletonRepository.getEntityManager()
+					.getCreature("mysz domowa");
+			if (immortal) {
+				victim.getAIProfiles().put("immortal", "");
+			}
+			victim.initHP(100);
+			player.setPosition(5, 5);
+			victim.setPosition(6, 5);
+			zone.add(player);
+			zone.add(victim);
+
+			assertNull(player.getWeapon());
+			assertEquals(hits && !immortal, StendhalRPAction.playerAttack(player, victim));
+			if (!hits || immortal) {
+				assertEquals(100, victim.getHP());
+			}
+			zone.remove(player);
+			zone.remove(victim);
+		}
 	}
 }
