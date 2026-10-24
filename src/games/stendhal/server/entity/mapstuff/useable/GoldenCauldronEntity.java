@@ -211,7 +211,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	private boolean isBrewing() {
-		return readyAt > System.currentTimeMillis();
+		return readyAt > 0;
 	}
 
 	private boolean isContentEmpty() {
@@ -328,6 +328,13 @@ public class GoldenCauldronEntity extends UseableEntity {
 			setState(STATE_IDLE);
 			setStatus(STATUS_IDLE);
 			notifyWorldAboutChanges();
+			return;
+		}
+
+		if (slot.isFull()) {
+			setStatus("Wywar jest gotowy. Zwolnij miejsce w kotle, aby go odebrać.");
+			notifyWorldAboutChanges();
+			scheduleCompletion(1);
 			return;
 		}
 
