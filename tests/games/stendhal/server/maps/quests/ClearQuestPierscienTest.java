@@ -14,6 +14,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
@@ -79,6 +80,17 @@ public class ClearQuestPierscienTest {
 		assertFalse(player.hasQuest(SERVICE_SLOT));
 		assertThat(player.getXP(), equalTo(xp));
 		assertThat(player.getNumberOfEquipped("money"), equalTo(0));
+
+		player.setQuest(CLOAK_SLOT, "machine;olejek=1");
+		player.getSlot("bag").add(ItemTestHelper.createItem("money", 1500000000));
+		player.getSlot("bag").add(ItemTestHelper.createItem("money", 1500000000));
+		engine.step(player, "płaszcz");
+		engine.step(player, "potwierdzam");
+
+		assertFalse(player.hasQuest(CLOAK_SLOT));
+		assertFalse(player.hasQuest(SERVICE_SLOT));
+		assertThat(player.getXP(), equalTo(xp));
+		assertThat(MoneyUtils.getTotalMoneyInCopper(player), equalTo(2998000000L));
 	}
 
 	@Test

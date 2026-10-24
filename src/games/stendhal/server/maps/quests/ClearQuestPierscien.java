@@ -18,6 +18,7 @@ import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -142,13 +143,13 @@ public class ClearQuestPierscien extends AbstractQuest {
 							raiser.say("To zadanie nie ma już zapisanego postępu. Niczego nie pobieram.");
 							return;
 						}
-						if (!hasPayment(player, option)) {
+						if (!hasPayment(player, option)
+								|| !MoneyUtils.removeMoney(player, option.money)) {
 							raiser.say("Nie masz pełnej zapłaty. " + paymentText(option)
 									+ " Nie pobiorę części należności. Gdy zbierzesz wszystko, ponownie powiedz #potwierdzam albo #rezygnuję.");
 							return;
 						}
 
-						player.drop("money", option.money);
 						if (option.gold > 0) {
 							player.drop(GOLD, option.gold);
 						}
@@ -187,10 +188,10 @@ public class ClearQuestPierscien extends AbstractQuest {
 	}
 
 	private static boolean hasPayment(final Player player, final ResetOption option) {
-		if (player.getNumberOfEquipped("money") < option.money) {
+		if (!MoneyUtils.hasEnoughMoney(player, option.money)) {
 			return false;
 		}
-		return option.gold == 0 || player.getNumberOfEquipped(GOLD) >= option.gold;
+		return option.gold == 0 || player.isEquipped(GOLD, option.gold);
 	}
 
 	private static String paymentText(final ResetOption option) {
