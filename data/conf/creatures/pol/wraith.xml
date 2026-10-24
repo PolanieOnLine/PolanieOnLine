@@ -497,7 +497,7 @@
 		<description/>
 		<attributes>
 			<atk value="174"/>
-			<def value="24"/>
+			<def value="48"/>
 			<armor value="none"/>
 			<hp value="90"/>
 			<speed value="0.5"/>
@@ -568,7 +568,7 @@
 		<description>Oto strzyga polna. Dawny człowiek, który powrócił do świata żywych pod postacią demona.</description>
 		<attributes>
 			<atk value="244"/>
-			<def value="30"/>
+			<def value="50"/>
 			<armor value="medium"/>
 			<hp value="240"/>
 			<speed value="1.0"/>
