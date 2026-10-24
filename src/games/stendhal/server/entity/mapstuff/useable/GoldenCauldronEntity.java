@@ -153,6 +153,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return false;
 		}
 
+		releaseReservationIfIdle();
+
 		if (!isOpen()) {
 			if ((brewer != null) && !isControlledBy(player)) {
 				player.sendPrivateText("Kocioł jest teraz zarezerwowany przez " + brewer + ".");
@@ -451,8 +453,16 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	private void releaseReservationIfIdle() {
-		if ((brewer == null) || !isContentEmpty() || isOpen()) {
+		if ((brewer == null) || !isContentEmpty() || isBrewing()) {
 			return;
+		}
+
+		if (isOpen()) {
+			final Player owner = SingletonRepository.getRuleProcessor().getPlayer(brewer);
+			if (owner != null && owner.getZone() == getZone() && owner.nextTo(this)) {
+				return;
+			}
+			remove("open");
 		}
 
 		clearBrewer();
