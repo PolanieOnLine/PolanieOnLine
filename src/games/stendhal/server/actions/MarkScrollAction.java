@@ -44,7 +44,7 @@ public class MarkScrollAction implements ActionListener {
 				// add a description if the player wanted one
 				if (action.has(TARGET)) {
 					String description = action.get(TARGET) + " " + action.get("args");
-					scroll.setDescription("Oto zwój zapisany przez " + player.getName() + ". Napis głosi: \""+ description +"\". ");
+					scroll.setDescription("Oto zwój zapisany przez " + player.getName() + ". Jest na nim napisane: \""+ description +"\". ");
 				}
 
 				// set itemdata after description

@@ -143,7 +143,10 @@ public class MarkedScroll extends TeleportScroll {
 				String destInfo = infos[0] + "," + infos[1] + "," + infos[2];
 				final String desc = this.getDescription();
 				// apply custom label
-				int marker = desc.indexOf("Napis głosi: ");
+				int marker = desc.indexOf("Jest na nim napisane: ");
+				if (marker < 0) {
+					marker = desc.indexOf("Napis głosi: ");
+				}
 				if (marker < 0) {
 					marker = desc.indexOf("Pisze na nim: ");
 				}
