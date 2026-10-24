@@ -151,7 +151,7 @@ public class Shovel extends AreaUseItem {
 		player.setQuest(glyph_fragment_quest_slot, 2, mapName);
 		player.setQuest(glyph_fragment_quest_slot, 3, Integer.toString(cordX));
 		player.setQuest(glyph_fragment_quest_slot, 4, Integer.toString(cordY));
-		player.setQuest(glyph_fragment_quest_slot, 5, Integer.toString(attempt + 1));
+		player.setQuest(glyph_fragment_quest_slot, 5, Integer.toString(attempt));
 	}
 
 	/**
