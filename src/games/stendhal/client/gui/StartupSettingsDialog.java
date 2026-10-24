@@ -28,6 +28,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import games.stendhal.client.ClientLanguage;
+import games.stendhal.common.Translation;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 
@@ -90,11 +91,11 @@ final class StartupSettingsDialog extends JDialog {
 	private JComponent createLanguageSelector() {
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
 				SBoxLayout.COMMON_PADDING);
-		final JComboBox<String> selector = new JComboBox<String>(new String[] { "Polski", "English" });
+		final JComboBox<String> selector = new JComboBox<String>(new String[] { "Polski", "English", "Español" });
 		selector.setName("language-selector");
-		selector.setSelectedIndex("en".equals(ClientLanguage.getLanguage()) ? 1 : 0);
+		selector.setSelectedIndex(Translation.SUPPORTED_LANGUAGES.indexOf(ClientLanguage.getLanguage()));
 		selector.addActionListener(event -> {
-			String language = selector.getSelectedIndex() == 1 ? "en" : "pl";
+			String language = Translation.SUPPORTED_LANGUAGES.get(selector.getSelectedIndex());
 			if (!language.equals(ClientLanguage.getLanguage())) ClientLanguage.choose(language);
 		});
 		JLabel label = new JLabel("Język gry:");

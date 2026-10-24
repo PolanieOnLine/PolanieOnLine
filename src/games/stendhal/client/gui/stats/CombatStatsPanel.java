@@ -131,7 +131,7 @@ final class CombatStatsPanel extends JPanel {
 		rows.removeAll();
 		int row = 0;
 		DecimalFormat format = new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(
-				"en".equals(ClientLanguage.getLanguage()) ? Locale.ENGLISH : new Locale("pl", "PL")));
+				Locale.forLanguageTag(ClientLanguage.getLanguage())));
 		for (CombatStat stat : CombatStat.values()) {
 			Double value = number(values.get(stat.getKey()));
 			if (value == null) continue;

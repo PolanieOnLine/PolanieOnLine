@@ -12,6 +12,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import games.stendhal.client.ClientLanguage;
+import games.stendhal.common.Translation;
 
 /** Translates display labels only, never option values or saved preferences. */
 final class SettingsTranslation {
@@ -48,7 +49,7 @@ final class SettingsTranslation {
 
 	private static <T> void translateSelector(JComboBox<T> selector) {
 		if ("language-selector".equals(selector.getName())) {
-			selector.setSelectedIndex("en".equals(ClientLanguage.getLanguage()) ? 1 : 0);
+			selector.setSelectedIndex(Translation.SUPPORTED_LANGUAGES.indexOf(ClientLanguage.getLanguage()));
 		}
 		if (selector.getClientProperty("translation.renderer") == null) {
 			ListCellRenderer<? super T> renderer = selector.getRenderer();

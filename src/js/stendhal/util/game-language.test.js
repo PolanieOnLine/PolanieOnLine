@@ -34,7 +34,7 @@ test("repeatable quest counters translate as fragments and inside mayor journal 
 	assert.equal(language.getText("12 razy"), "12 razy");
 });
 
-test("reads the bundled PL/EN dictionaries and preserves missing text", async () => {
+test("reads the bundled PL/EN/ES dictionaries and preserves missing text", async () => {
 	const {language, fetched} = harness();
 	await language.load("/data");
 	const loadedRequests = fetched.length;
@@ -43,6 +43,11 @@ test("reads the bundled PL/EN dictionaries and preserves missing text", async ()
 	assert.equal(language.getText("Zamknij"), "Close");
 	assert.equal(language.getText("Brak tłumaczenia"), "Brak tłumaczenia");
 	language.synchronize("es");
+	assert.equal(language.getLanguage(), "es");
+	assert.equal(language.getText("Zamknij"), "Cerrar");
+	assert.equal(language.getText("Brak tłumaczenia"), "Brak tłumaczenia");
+	assert.equal(language.getOriginalKeyword("listo", language.getText("Kontynuuj polowanie. Powiedz #załatwione, kiedy skończysz.")), "załatwione");
+	language.synchronize("de");
 	assert.equal(language.getLanguage(), "pl");
 	await language.load("/data");
 	assert.equal(fetched.length, loadedRequests, "Changing language does not reload catalogues");

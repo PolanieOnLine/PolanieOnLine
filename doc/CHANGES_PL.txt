@@ -68,6 +68,7 @@
 
 *wersja hiszpańska*
 ---
+* Udostępniono język hiszpański w ustawieniach klienta Java, okna startowego i gry przez przeglądarkę. Brakujące tłumaczenia pozostają w oryginalnej wersji
 * Uzupełniono tłumaczenia ustawień, okna statystyk i rozmów związanych z polowaniami
 
 

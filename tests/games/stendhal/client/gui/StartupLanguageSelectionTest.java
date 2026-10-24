@@ -87,6 +87,7 @@ public class StartupLanguageSelectionTest {
 			assertNotNull("Startup settings should expose the language selector", selector);
 			assertEquals("Polski", selector.getItemAt(0));
 			assertEquals("English", selector.getItemAt(1));
+			assertEquals("Español", selector.getItemAt(2));
 			assertEquals(0, selector.getSelectedIndex());
 			selector.setSelectedIndex(1);
 			assertEquals("en", ClientLanguage.getLanguage());
@@ -98,6 +99,11 @@ public class StartupLanguageSelectionTest {
 			dialog.dispose();
 			dialog = new StartupSettingsDialog(owner, new StartupMusicController(new NoSoundFacade()));
 			assertEquals(1, languageSelector(dialog).getSelectedIndex());
+			languageSelector(dialog).setSelectedIndex(2);
+			assertEquals("es", ClientLanguage.getLanguage());
+			dialog.dispose();
+			dialog = new StartupSettingsDialog(owner, new StartupMusicController(new NoSoundFacade()));
+			assertEquals(2, languageSelector(dialog).getSelectedIndex());
 			languageSelector(dialog).setSelectedIndex(0);
 			assertEquals("pl", ClientLanguage.getLanguage());
 		});

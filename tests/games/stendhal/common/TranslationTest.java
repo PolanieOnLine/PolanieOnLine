@@ -25,7 +25,8 @@ public class TranslationTest {
 	}
 	@Test public void defaultsToPolishAndNormalizesOnlySupportedLanguages() {
 		assertEquals("pl", Translation.normalize(null));
-		assertEquals("pl", Translation.normalize("es"));
+		assertEquals("es", Translation.normalize(" ES "));
+		assertEquals("pl", Translation.normalize("de"));
 		assertEquals("en", Translation.normalize(" EN "));
 		assertFalse(Translation.isSupported("../../en"));
 		assertFalse(Translation.isSupported(""));
@@ -33,6 +34,8 @@ public class TranslationTest {
 	@Test public void usesExistingPolishAndNewEnglishDictionaries() {
 		assertEquals("Rzadkość", Translation.getText(null, "Rarity"));
 		assertEquals("Close", Translation.getText("en", "Zamknij"));
+		assertEquals("Cerrar", Translation.getText("es", "Zamknij"));
+		assertEquals("Brak tłumaczenia", Translation.getText("es", "Brak tłumaczenia"));
 		assertEquals("strzała", Translation.getText("pl", "wooden arrow"));
 	}
 	@Test public void neverLosesMissingOrEmptyText() {

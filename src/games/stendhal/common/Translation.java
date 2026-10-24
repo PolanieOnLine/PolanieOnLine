@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 /** Shared reader for the game's existing UTF-8 language dictionaries. */
 public final class Translation {
  public static final String DEFAULT_LANGUAGE = "pl";
+ public static final List<String> SUPPORTED_LANGUAGES = Collections.unmodifiableList(Arrays.asList("pl", "en", "es"));
  private static final Logger logger = Logger.getLogger(Translation.class);
  private static final Pattern PARAMETER = Pattern.compile("\\{(?:(item|number):)?(\\d+)\\}");
  private static final Pattern NUMERIC_SUFFIX = Pattern.compile("^\\{number:\\d+\\}([^0-9{}][^{}]*)$");
@@ -21,8 +22,7 @@ public final class Translation {
  private Translation() { }
 
  public static boolean isSupported(String language) {
-  return language != null && ("pl".equals(language.trim().toLowerCase(Locale.ROOT))
-    || "en".equals(language.trim().toLowerCase(Locale.ROOT)));
+  return language != null && SUPPORTED_LANGUAGES.contains(language.trim().toLowerCase(Locale.ROOT));
  }
  public static String normalize(String language) {
   return isSupported(language) ? language.trim().toLowerCase(Locale.ROOT) : DEFAULT_LANGUAGE;
@@ -119,7 +119,7 @@ public final class Translation {
 
  private static Map<String,Catalogue> loadDictionaries() {
   Map<String,Catalogue> result=new HashMap<>();
-  for(String language:new String[]{"pl","en"}) {
+  for(String language:SUPPORTED_LANGUAGES) {
    Map<String,String> entries=new LinkedHashMap<>();
    readFile(language+".txt",entries);
    {

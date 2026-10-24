@@ -5,24 +5,26 @@ type KeywordContext = {pattern?: RegExp, score: number, original: string[], tran
 
 /** Uses the game's bundled dictionaries, without any translation service. */
 export class GameLanguage {
+ private static readonly supportedLanguages = ["pl", "en", "es"];
  private static language = "pl";
- private static dictionaries: Record<string, Map<string, string>> = {pl: new Map(), en: new Map()};
- private static rules: Record<string, Map<string, TemplateRule[]>> = {pl: new Map(), en: new Map()};
- private static numericSuffixRules: Record<string, Map<string, TemplateRule[]>> = {pl: new Map(), en: new Map()};
+ private static dictionaries: Record<string, Map<string, string>> = {pl: new Map(), en: new Map(), es: new Map()};
+ private static rules: Record<string, Map<string, TemplateRule[]>> = {pl: new Map(), en: new Map(), es: new Map()};
+ private static numericSuffixRules: Record<string, Map<string, TemplateRule[]>> = {pl: new Map(), en: new Map(), es: new Map()};
  private static loading?: Promise<void>;
  private static originals = new WeakMap<Node, SavedText>();
  private static attributes = new WeakMap<Element, Map<string, SavedText>>();
  private static roots = new Map<HTMLElement, MutationObserver | undefined>();
  private static scheduled = new Set<HTMLElement>();
- private static keywordLabels:Record<string,Map<string,string>>={pl:new Map(),en:new Map()};
- private static originalKeywords:Record<string,Map<string,string>>={pl:new Map(),en:new Map()};
+ private static keywordLabels:Record<string,Map<string,string>>={pl:new Map(),en:new Map(),es:new Map()};
+ private static originalKeywords:Record<string,Map<string,string>>={pl:new Map(),en:new Map(),es:new Map()};
  private static revision=0;
- private static keywordContexts:Record<string,Map<string,KeywordContext[]>>={pl:new Map(),en:new Map()};
- private static keywordTemplates:Record<string,Map<string,KeywordContext[]>>={pl:new Map(),en:new Map()};
- private static topicAliases:Record<string,Map<string,Set<string>>>={pl:new Map(),en:new Map()};
+ private static keywordContexts:Record<string,Map<string,KeywordContext[]>>={pl:new Map(),en:new Map(),es:new Map()};
+ private static keywordTemplates:Record<string,Map<string,KeywordContext[]>>={pl:new Map(),en:new Map(),es:new Map()};
+ private static topicAliases:Record<string,Map<string,Set<string>>>={pl:new Map(),en:new Map(),es:new Map()};
 
  public static normalize(language: unknown): string {
-  return typeof language === "string" && language.trim().toLowerCase() === "en" ? "en" : "pl";
+  const normalized = typeof language === "string" ? language.trim().toLowerCase() : "pl";
+  return this.supportedLanguages.includes(normalized) ? normalized : "pl";
  }
  public static getLanguage(): string { return this.language; }
  public static getRevision(): number { return this.revision; }
@@ -244,8 +246,8 @@ export class GameLanguage {
  public static load(dataPath: string): Promise<void> {
   if(!this.loading) {
    this.loading=(async () => {
-    const files=["pl.txt","en.txt"];
-    for(const language of ["pl","en"])try {
+    const files=this.supportedLanguages.map(language=>language+".txt");
+    for(const language of this.supportedLanguages)try {
      const response=await fetch(dataPath+"/languages/"+language+"-index.txt");
      if(response.ok)for(const raw of (await response.text()).split(/\r?\n/)) {
       const file=raw.trim();
@@ -257,10 +259,11 @@ export class GameLanguage {
      catch(error){console.warn("Cannot load game language "+file,error);return new Map<string,string>();}
     }));
     for(let index=0;index<files.length;index++) {
-     const language=files[index].startsWith("pl")?"pl":"en";
+     const language=files[index].split(/[.-]/)[0];
      for(const [source,value] of Array.from(contents[index]))if(!this.dictionaries[language].has(source))this.dictionaries[language].set(source,value);
     }
-    this.buildRules("pl");this.buildRules("en");this.revision++;this.refreshUI();
+    for(const language of this.supportedLanguages)this.buildRules(language);
+    this.revision++;this.refreshUI();
    })();
   }
   return this.loading;

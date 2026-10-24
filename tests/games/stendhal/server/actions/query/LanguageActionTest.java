@@ -32,11 +32,14 @@ public class LanguageActionTest {
 		assertEquals("en", player.get("language"));
 		Player restored = new Player(new RPObject(player));
 		assertEquals("en", restored.getLanguage());
+		new LanguageAction().onAction(player, action(" ES "));
+		assertEquals("es", player.getLanguage());
+		assertEquals("es", new Player(new RPObject(player)).getLanguage());
 	}
 	@Test public void malformedAndUnsupportedActionsCannotChangeLanguage() {
 		Player player = PlayerTestHelper.createPlayer("Language validation");
 		player.setLanguage("en");
-		for (String language : new String[] {null, "", "es", "../../pl"}) {
+		for (String language : new String[] {null, "", "de", "../../pl"}) {
 			new LanguageAction().onAction(player, action(language));
 			assertEquals("en", player.getLanguage());
 		}

@@ -1,4 +1,4 @@
-# Extra Spanish catalogues. Language choice in the startup window is a separate task.
+# Spanish catalogues loaded by the game clients and server.
 es-ui.txt
 es-items.txt
 es-creatures.txt
