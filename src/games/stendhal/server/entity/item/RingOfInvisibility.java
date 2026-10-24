@@ -80,8 +80,18 @@ public class RingOfInvisibility extends Item {
 		}
 
 		if (owner instanceof Player) {
-			if (isInvisible((Player) owner)) {
-				setVisible((Player) owner, false);
+			final Player player = (Player) owner;
+			final Item firstRing = player.getRing();
+			final Item secondRing = player.getRingB();
+			if (firstRing != this && secondRing != this) {
+				return false;
+			}
+			if ((firstRing != this && firstRing instanceof RingOfInvisibility)
+					|| (secondRing != this && secondRing instanceof RingOfInvisibility)) {
+				return false;
+			}
+			if (isInvisible(player)) {
+				setVisible(player, false);
 
 			  	return true;
 			}
