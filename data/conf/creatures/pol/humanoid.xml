@@ -384,7 +384,7 @@
 		</attributes>
 		<level value="171"/>
 		<experience value="30881"/>
-		<respawn value="3510"/>
+		<respawn value="12500"/>
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[4,77]" probability="100.0"/>
@@ -417,7 +417,7 @@
 		</attributes>
 		<level value="171"/>
 		<experience value="30881"/>
-		<respawn value="3510"/>
+		<respawn value="12500"/>
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[1,9]" probability="100.0"/>
@@ -456,7 +456,7 @@
 		</attributes>
 		<level value="191"/>
 		<experience value="38335"/>
-		<respawn value="3510"/>
+		<respawn value="15000"/>
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[9,129]" probability="80.0"/>
