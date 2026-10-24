@@ -316,8 +316,8 @@
 			<size value="2,2"/>
 		</attributes>
 		<level value="275"/>
-		<experience value="36300"/>
-		<respawn value="21300"/>
+		<experience value="80000"/>
+		<respawn value="24000"/>
 		<corpse name="giant"/>
 		<drops>
 			<item value="money" quantity="[100,600]" probability="100.0"/>
