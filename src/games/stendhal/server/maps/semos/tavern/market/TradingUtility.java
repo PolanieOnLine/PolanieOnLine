@@ -12,10 +12,8 @@
 package games.stendhal.server.maps.semos.tavern.market;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.Money;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.trade.Market;
 
@@ -40,7 +38,7 @@ public class TradingUtility {
 	 */
 	public static boolean substractTradingFee(Player player, int price) {
 		BigDecimal fee = calculateFee(player, price);
-		return player.drop("money", fee.intValue());
+		return MoneyUtils.removeMoney(player, fee.intValue());
 	}
 
 	/**
@@ -52,13 +50,7 @@ public class TradingUtility {
 	 */
 	public static boolean canPlayerAffordTradingFee(Player player, int price) {
 		BigDecimal fee = calculateFee(player, price);
-		List<Item> allEquipped = player.getAllEquipped("money");
-		int ownedMoney = 0;
-		for(Item item : allEquipped) {
-			Money m = (Money) item;
-			ownedMoney += m.getQuantity();
-		}
-		return fee.intValue() <= ownedMoney;
+		return MoneyUtils.hasEnoughMoney(player, fee.intValue());
 	}
 
 	/**
