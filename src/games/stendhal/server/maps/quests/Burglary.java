@@ -132,6 +132,7 @@ public class Burglary extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
 					hasRequiredGold),
