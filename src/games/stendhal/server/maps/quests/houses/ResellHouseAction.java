@@ -38,6 +38,10 @@ final class ResellHouseAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+		if (HouseUtilities.getPlayersHouse(player) == null) {
+			raiser.say("Nie jesteś już właścicielem tego domu.");
+			return;
+		}
 		// we need to find out where this house is so we know how much to refund them
 		final String claimedHouse = player.getQuest(questSlot);
 
