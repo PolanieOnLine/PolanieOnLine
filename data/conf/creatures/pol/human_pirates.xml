@@ -9,7 +9,7 @@
 		<description>Oto pirat. Jest już doświadczonym piratem.</description>
 		<attributes>
 			<atk value="340"/>
-			<def value="32"/>
+			<def value="60"/>
 			<armor value="light"/>
 			<hp value="360"/>
 			<speed value="1.0"/>
@@ -44,7 +44,7 @@
 		<description>Oto kamrat. Brał udział w wielu wydarzeniach.</description>
 		<attributes>
 			<atk value="360"/>
-			<def value="33"/>
+			<def value="62"/>
 			<armor value="light"/>
 			<hp value="382"/>
 			<speed value="1.0"/>
@@ -80,7 +80,7 @@
 		<description>Oto marynarz. Brał udział w wielu abordażach.</description>
 		<attributes>
 			<atk value="367"/>
-			<def value="33"/>
+			<def value="63"/>
 			<armor value="light"/>
 			<hp value="389"/>
 			<speed value="1.0"/>
@@ -116,7 +116,7 @@
 		<description>Oto krwawy pirat. Jest osobą bardzo znaną oraz poważaną przez resztę załogantów.</description>
 		<attributes>
 			<atk value="388"/>
-			<def value="34"/>
+			<def value="64"/>
 			<armor value="light"/>
 			<hp value="410"/>
 			<speed value="1.0"/>
@@ -154,7 +154,7 @@
 		<description>Oto wilk morski. Jego sława wykracza poza organizację.</description>
 		<attributes>
 			<atk value="401"/>
-			<def value="35"/>
+			<def value="66"/>
 			<armor value="light"/>
 			<hp value="425"/>
 			<speed value="1.0"/>
@@ -190,7 +190,7 @@
 		<description>Oto  kapitan piratów. Posiada własną łajbę. Podlegają mu wszyscy oficerowie, podoficerowie oraz załoga jego statku.</description>
 		<attributes>
 			<atk value="415"/>
-			<def value="36"/>
+			<def value="67"/>
 			<armor value="light"/>
 			<hp value="439"/>
 			<speed value="1.0"/>
@@ -270,7 +270,7 @@
 		<description>Oto lutin bandyta. Razem ze swoimi kompanami popełnia wiele przestępstw, aby zdobyć więcej pieniędzy lub rzadkie wartościowe przedmioty.</description>
 		<attributes>
 			<atk value="480"/>
-			<def value="47"/>
+			<def value="70"/>
 			<armor value="light"/>
 			<hp value="600"/>
 			<speed value="0.9"/>
@@ -307,7 +307,7 @@
 		<description></description>
 		<attributes>
 			<atk value="540"/>
-			<def value="43"/>
+			<def value="70"/>
 			<armor value="light"/>
 			<hp value="780"/>
 			<speed value="0.8"/>
@@ -340,7 +340,7 @@
 		<description></description>
 		<attributes>
 			<atk value="600"/>
-			<def value="70"/>
+			<def value="80"/>
 			<armor value="light"/>
 			<hp value="750"/>
 			<speed value="0.8"/>
@@ -377,7 +377,7 @@
 		<description>Oto przemytnik. Nie chcesz wiedzieć co przemyca... Może się dowiesz? Pamiętaj o ostrzeżeniu, że obserwuje każdy twój ruch. Będzie walczył o zachowanie swoich sekretów!</description>
 		<attributes>
 			<atk value="620"/>
-			<def value="57"/>
+			<def value="77"/>
 			<armor value="light"/>
 			<hp value="900"/>
 			<speed value="0.8"/>
@@ -415,7 +415,7 @@
 		<description>Oto kucharz bractwa lutinów. Rum dodaje praktycznie do każdej przygotowywanej przez niego potrawy...</description>
 		<attributes>
 			<atk value="640"/>
-			<def value="39"/>
+			<def value="77"/>
 			<armor value="none"/>
 			<hp value="1000"/>
 			<speed value="0.7"/>
@@ -457,7 +457,7 @@
 		<attributes>
 			<atk value="650"/>
 			<ratk value="650"/>
-			<def value="21"/>
+			<def value="55"/>
 			<armor value="light"/>
 			<hp value="1200"/>
 			<speed value="0.6"/>
@@ -532,7 +532,7 @@
 		<description>Oto kapitan lutinów. Lepiej zachowaj ostrożność! Jeden błąd i zwoła swą kompanię.</description>
 		<attributes>
 			<atk value="790"/>
-			<def value="60"/>
+			<def value="80"/>
 			<armor value="light"/>
 			<hp value="850"/>
 			<speed value="0.9"/>
@@ -608,7 +608,7 @@
 		<description>Oto lider piratów. Jest jednym z najbardziej docenianych piratów z bractwa lutinów. Nie chcesz go spotkać na swej drodze...</description>
 		<attributes>
 			<atk value="790"/>
-			<def value="31"/>
+			<def value="82"/>
 			<armor value="light"/>
 			<hp value="540"/>
 			<speed value="1.0"/>
@@ -650,7 +650,7 @@
 		<description></description>
 		<attributes>
 			<atk value="700"/>
-			<def value="31"/>
+			<def value="86"/>
 			<armor value="medium"/>
 			<hp value="500"/>
 			<speed value="0.9"/>
@@ -686,7 +686,7 @@
 		<description></description>
 		<attributes>
 			<atk value="740"/>
-			<def value="27"/>
+			<def value="88"/>
 			<armor value="heavy"/>
 			<hp value="800"/>
 			<speed value="0.9"/>
@@ -725,7 +725,7 @@
 		<description></description>
 		<attributes>
 			<atk value="500"/>
-			<def value="32"/>
+			<def value="72"/>
 			<armor value="none"/>
 			<hp value="1200"/>
 			<speed value="0.8"/>
@@ -758,7 +758,7 @@
 		<description></description>
 		<attributes>
 			<atk value="800"/>
-			<def value="57"/>
+			<def value="90"/>
 			<armor value="medium"/>
 			<hp value="1100"/>
 			<speed value="0.9"/>
@@ -795,7 +795,7 @@
 		<description></description>
 		<attributes>
 			<atk value="755"/>
-			<def value="31"/>
+			<def value="86"/>
 			<armor value="none"/>
 			<hp value="1000"/>
 			<speed value="0.9"/>
@@ -831,7 +831,7 @@
 		<description></description>
 		<attributes>
 			<atk value="790"/>
-			<def value="31"/>
+			<def value="90"/>
 			<armor value="none"/>
 			<hp value="1500"/>
 			<speed value="0.8"/>
@@ -862,7 +862,7 @@
 		<description></description>
 		<attributes>
 			<atk value="990"/>
-			<def value="42"/>
+			<def value="91"/>
 			<armor value="medium"/>
 			<hp value="1750"/>
 			<speed value="1.0"/>
@@ -901,7 +901,7 @@
 		<attributes>
 			<atk value="1200"/>
 			<ratk value="1200"/>
-			<def value="31"/>
+			<def value="75"/>
 			<armor value="light"/>
 			<hp value="700"/>
 			<speed value="0.8"/>
@@ -941,7 +941,7 @@
 		<attributes>
 			<atk value="1400"/>
 			<ratk value="1400"/>
-			<def value="39"/>
+			<def value="80"/>
 			<armor value="light"/>
 			<hp value="1400"/>
 			<speed value="0.7"/>
@@ -983,7 +983,7 @@
 		<attributes>
 			<atk value="1800"/>
 			<ratk value="1800"/>
-			<def value="48"/>
+			<def value="90"/>
 			<armor value="none"/>
 			<hp value="2000"/>
 			<speed value="0.6"/>
@@ -1024,7 +1024,7 @@
 		<description></description>
 		<attributes>
 			<atk value="2200"/>
-			<def value="21"/>
+			<def value="45"/>
 			<armor value="none"/>
 			<hp value="2500"/>
 			<speed value="1.0"/>
@@ -1065,7 +1065,7 @@
 		<description></description>
 		<attributes>
 			<atk value="1970"/>
-			<def value="34"/>
+			<def value="90"/>
 			<armor value="none"/>
 			<hp value="2135"/>
 			<speed value="0.9"/>
