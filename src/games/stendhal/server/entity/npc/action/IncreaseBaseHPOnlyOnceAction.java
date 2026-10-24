@@ -42,7 +42,7 @@ public class IncreaseBaseHPOnlyOnceAction implements ChatAction {
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 		if (player.getQuest(questSlot + "_basehp") == null) {
-			player.setBaseHP(player.getBaseHP() + baseHpDiff);
+			player.setBaseHP(player.getUncappedBaseHP() + baseHpDiff);
 			player.heal(baseHpDiff);
 
 			player.setQuest(questSlot + "_basehp", "done");

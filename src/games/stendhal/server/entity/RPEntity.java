@@ -993,6 +993,11 @@ public abstract class RPEntity extends CombatEntity {
 		return this.base_hp;
 	}
 
+	/** Maximum HP before any storage limit, for reversible stat changes. */
+	public int getUncappedBaseHP() {
+		return getBaseHP();
+	}
+
 	/**
 	 * Set the HP. <br>
 	 * DO NOT USE THIS UNLESS YOU REALLY KNOW WHAT YOU ARE DOING. <br>
@@ -1183,7 +1188,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		// In case we level up several levels at a single time.
 		for (int i = 0; i < Math.abs(levels); i++) {
-			setBaseHP(getBaseHP() + (int) Math.signum(levels) * 10);
+			setBaseHP(getUncappedBaseHP() + (int) Math.signum(levels) * 10);
 			setHP(getBaseHP());
 			new GameEvent(getName(), "level", Integer.toString(oldLevel + (i + 1) * ((int) Math.signum(levels))))
 					.raise();

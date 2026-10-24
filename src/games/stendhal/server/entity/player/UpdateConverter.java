@@ -896,7 +896,7 @@ public abstract class UpdateConverter {
 		final int expectedBaseHP = calculateBaseHP(player)
 				+ GlyphEffectService.getHealthBonus(player);
 
-		if (player.getBaseHP() != expectedBaseHP) {
+		if (player.getUncappedBaseHP() != expectedBaseHP) {
 			player.setBaseHP(expectedBaseHP);
 			if (player.getHP() > expectedBaseHP) {
 				player.setHP(expectedBaseHP);
@@ -983,27 +983,27 @@ public abstract class UpdateConverter {
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, "done")) {
-			player.setBaseHP(player.getBaseHP() - 4970);
+			player.setBaseHP(player.getUncappedBaseHP() - 4970);
 			player.setHP(player.getBaseHP());
 			player.setQuest(QUEST_SLOT, "done;reborn_1");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "done;2")) {
-			player.setBaseHP(player.getBaseHP() - 6940);
+			player.setBaseHP(player.getUncappedBaseHP() - 6940);
 			player.setHP(player.getBaseHP());
 			player.setQuest(QUEST_SLOT, "done;reborn_2");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "done;3")) {
-			player.setBaseHP(player.getBaseHP() - 8910);
+			player.setBaseHP(player.getUncappedBaseHP() - 8910);
 			player.setHP(player.getBaseHP());
 			player.setQuest(QUEST_SLOT, "done;reborn_3");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "done;4")) {
-			player.setBaseHP(player.getBaseHP() - 10880);
+			player.setBaseHP(player.getUncappedBaseHP() - 10880);
 			player.setHP(player.getBaseHP());
 			player.setQuest(QUEST_SLOT, "done;reborn_4");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "done;5")) {
-			player.setBaseHP(player.getBaseHP() - 11850);
+			player.setBaseHP(player.getUncappedBaseHP() - 11850);
 			player.setHP(player.getBaseHP());
 			player.setQuest(QUEST_SLOT, "done;reborn_5");
 		}

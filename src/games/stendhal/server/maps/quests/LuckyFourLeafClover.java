@@ -190,7 +190,7 @@ public class LuckyFourLeafClover extends AbstractQuest {
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
 						player.setAtkXP(player.getAtkXP() + 10000);
 						player.setDefXP(player.getDefXP() + 10000);
-						player.setBaseHP(player.getBaseHP() + 150);
+						player.setBaseHP(player.getUncappedBaseHP() + 150);
 					}
 				});
 

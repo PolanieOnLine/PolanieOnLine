@@ -35,6 +35,7 @@ public abstract class DressedEntity extends RPEntity {
 
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DressedEntity.class);
+	private static final String BASE_HP_OVERFLOW = "base_hp_overflow";
 
 	public DressedEntity() {
 		super();
@@ -50,7 +51,18 @@ public abstract class DressedEntity extends RPEntity {
 	 */
 	@Override
 	public void setBaseHP(final int newhp) {
-		super.setBaseHP(clampHitPoints("base_hp", newhp));
+		final int clamped = clampHitPoints("base_hp", newhp);
+		if (newhp == clamped) {
+			remove(BASE_HP_OVERFLOW);
+		} else {
+			put(BASE_HP_OVERFLOW, newhp - clamped);
+		}
+		super.setBaseHP(clamped);
+	}
+
+	@Override
+	public int getUncappedBaseHP() {
+		return getBaseHP() + (has(BASE_HP_OVERFLOW) ? getInt(BASE_HP_OVERFLOW) : 0);
 	}
 
 	@Override

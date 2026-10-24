@@ -450,7 +450,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 					final Item pazurek = SingletonRepository.getEntityManager().getItem("pazur niebieskiego smoka");
 					pazurek.setBoundTo(player.getName());
 					player.equipOrPutOnGround(pazurek);
-					player.setBaseHP(20 + player.getBaseHP());
+					player.setBaseHP(20 + player.getUncappedBaseHP());
 					player.heal(20, true);
 					player.setQuest(QUEST_SLOT, "done");
 				});

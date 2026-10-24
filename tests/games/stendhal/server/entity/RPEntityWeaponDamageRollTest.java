@@ -20,9 +20,12 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
+import games.stendhal.server.entity.npc.action.IncreaseBaseHPAction;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.PlayerSlot;
+import marauroa.common.game.RPObject;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.CreatureTestHelper;
 import utilities.RPClass.ItemTestHelper;
@@ -144,6 +147,38 @@ public class RPEntityWeaponDamageRollTest {
 		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
 		assertEquals(1000, player.getBaseHP());
 		assertEquals(1000, player.getHP());
+
+		glyph.put("health", 500);
+		player.setBaseHP(32500);
+		player.setHP(32000);
+		GlyphEffectService.applyHealthOnEquipped(player, glyph);
+		assertEquals(Short.MAX_VALUE, player.getBaseHP());
+		assertEquals(32000, player.getHP());
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(32500, player.getBaseHP());
+
+		GlyphEffectService.applyHealthOnEquipped(player, glyph);
+		final Player restored = new Player(new RPObject(player));
+		GlyphEffectService.applyHealthOnUnequipped(restored, glyph);
+		assertEquals(32500, restored.getBaseHP());
+
+		final Item secondGlyph = new Item("second health glyph", "glyph", "test", null);
+		secondGlyph.put("health", 200);
+		GlyphEffectService.applyHealthOnEquipped(player, secondGlyph);
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(32700, player.getBaseHP());
+		GlyphEffectService.applyHealthOnUnequipped(player, secondGlyph);
+		assertEquals(32500, player.getBaseHP());
+
+		GlyphEffectService.applyHealthOnEquipped(player, glyph);
+		player.addXP(50);
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(32510, player.getBaseHP());
+
+		GlyphEffectService.applyHealthOnEquipped(player, glyph);
+		new IncreaseBaseHPAction(100).fire(player, null, null);
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(32610, player.getBaseHP());
 	}
 
 	@Test
@@ -163,6 +198,25 @@ public class RPEntityWeaponDamageRollTest {
 		// Level 0 base HP is 100 and the equipped glyph adds another 100.
 		assertEquals(200, player.getBaseHP());
 		assertEquals(50, player.getHP());
+
+		player.setLevel(3240);
+		glyph.put("health", 500);
+		UpdateConverter.updateBaseHP(player);
+		player.setHP(32000);
+		UpdateConverter.updateBaseHP(player);
+		assertEquals(33000, player.getUncappedBaseHP());
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(32500, player.getBaseHP());
+		assertEquals(32000, player.getHP());
+
+		player.put(RebornSystem.ATTR_REBORNS, 5);
+		RebornSystem.updateBaseHP(player);
+		player.setHP(32000);
+		RebornSystem.updateBaseHP(player);
+		assertEquals(39000, player.getUncappedBaseHP());
+		assertEquals(32000, player.getHP());
+		GlyphEffectService.applyHealthOnUnequipped(player, glyph);
+		assertEquals(38500, player.getUncappedBaseHP());
 	}
 
 	@Test

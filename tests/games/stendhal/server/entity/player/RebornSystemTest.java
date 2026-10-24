@@ -140,6 +140,15 @@ public class RebornSystemTest {
 		assertEquals(0, player.getXP());
 		assertEquals(100 + permanentHealth + 1000, player.getBaseHP());
 		assertEquals(player.getBaseHP() - missingHealth, player.getHP());
+
+		final int cappedBaseHP = Short.MAX_VALUE + levelHealth;
+		player.setLevel(Level.maxLevel());
+		player.setBaseHP(cappedBaseHP);
+		player.setHP(player.getBaseHP() - missingHealth);
+		assertEquals(2, RebornSystem.performReborn(player));
+		assertEquals(Short.MAX_VALUE + 1000, player.getUncappedBaseHP());
+		assertEquals(Short.MAX_VALUE, player.getBaseHP());
+		assertEquals(Short.MAX_VALUE - missingHealth, player.getHP());
 	}
 
 	@Test

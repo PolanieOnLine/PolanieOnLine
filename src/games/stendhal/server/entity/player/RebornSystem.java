@@ -145,8 +145,8 @@ public final class RebornSystem {
 		final int reborns = getRebornCount(player) + 1;
 		final int healthReward = getHealthRewardForReborn(reborns);
 		final int levelHealth = getLevelHealthToReset();
-		final int resetBaseHP = player.getBaseHP() - levelHealth + healthReward;
-		final int resetHP = player.getHP() - levelHealth + healthReward;
+		final int resetBaseHP = player.getUncappedBaseHP() - levelHealth + healthReward;
+		final int missingHealth = player.getBaseHP() - player.getHP();
 
 		player.put(ATTR_REBORNS, reborns);
 		RebornBadgeSynchronizer.sync(player);
@@ -157,7 +157,7 @@ public final class RebornSystem {
 		// Only health gained from the maximum level is removed. Permanent health
 		// from quests and earlier reborns remains on the character.
 		player.setBaseHP(resetBaseHP);
-		player.setHP(resetHP);
+		player.setHP(player.getBaseHP() - missingHealth);
 
 		claimPendingRewards(player);
 
@@ -184,11 +184,11 @@ public final class RebornSystem {
 	private static void updateBaseHP(final Player player,
 			final int missingHealth) {
 		UpdateConverter.updateBaseHP(player);
-		final int expectedBaseHP = player.getBaseHP() + getHealthBonus(player);
-		if (player.getBaseHP() != expectedBaseHP) {
+		final int expectedBaseHP = player.getUncappedBaseHP() + getHealthBonus(player);
+		if (player.getUncappedBaseHP() != expectedBaseHP) {
 			player.setBaseHP(expectedBaseHP);
 		}
-		player.setHP(Math.max(0, expectedBaseHP - missingHealth));
+		player.setHP(Math.max(0, player.getBaseHP() - missingHealth));
 	}
 
 	/**
