@@ -14,7 +14,16 @@ public class MarkScrollAction implements ActionListener {
 	public void onAction(Player player, RPAction action) {
 		int count = 1;
 		if (action.has("quantity")) {
-			count = Integer.parseInt(action.get("quantity"));
+			try {
+				count = Integer.parseInt(action.get("quantity"));
+			} catch (NumberFormatException e) {
+				player.sendPrivateText("Podaj poprawną, dodatnią liczbę zwojów do zapisania.");
+				return;
+			}
+		}
+		if (count <= 0) {
+			player.sendPrivateText("Podaj poprawną, dodatnią liczbę zwojów do zapisania.");
+			return;
 		}
 
 		// can't try to drop the scroll straight away as teleport may not be allowed
@@ -24,7 +33,9 @@ public class MarkScrollAction implements ActionListener {
 			final int y = player.getY();
 
 			if (zone.isTeleportInAllowed(x, y)) {
-				player.drop("niezapisany zwój", count);
+				if (!player.drop("niezapisany zwój", count)) {
+					return;
+				}
 
 				final MarkedScroll scroll = (MarkedScroll)
 						SingletonRepository.getEntityManager().getItem("zwój zapisany");
