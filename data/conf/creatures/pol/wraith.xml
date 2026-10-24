@@ -378,7 +378,7 @@
 		<description/>
 		<attributes>
 			<atk value="1699"/>
-			<def value="39"/>
+			<def value="55"/>
 			<armor value="medium"/>
 			<hp value="11000"/>
 			<speed value="1.0"/>
@@ -454,7 +454,7 @@
 		<description/>
 		<attributes>
 			<atk value="2099"/>
-			<def value="59"/>
+			<def value="75"/>
 			<armor value="medium"/>
 			<hp value="18000"/>
 			<speed value="1.0"/>
