@@ -47,7 +47,7 @@
 		<description/>
 		<attributes>
 			<atk value="299"/>
-			<def value="19"/>
+			<def value="54"/>
 			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="1.0"/>
@@ -82,7 +82,7 @@
 		<description/>
 		<attributes>
 			<atk value="205"/>
-			<def value="20"/>
+			<def value="47"/>
 			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="0.4"/>
@@ -120,7 +120,7 @@
 		<description/>
 		<attributes>
 			<atk value="225"/>
-			<def value="29"/>
+			<def value="52"/>
 			<armor value="light"/>
 			<hp value="233"/>
 			<speed value="1.0"/>
@@ -324,7 +324,7 @@
 		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
 		<attributes>
 			<atk value="250"/>
-			<def value="49"/>
+			<def value="60"/>
 			<armor value="light"/>
 			<hp value="290"/>
 			<speed value="0.8"/>
@@ -354,7 +354,7 @@
 		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
 		<attributes>
 			<atk value="290"/>
-			<def value="52"/>
+			<def value="62"/>
 			<armor value="light"/>
 			<hp value="333"/>
 			<speed value="1.0"/>
