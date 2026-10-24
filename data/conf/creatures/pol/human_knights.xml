@@ -268,7 +268,7 @@
 		</attributes>
 		<level value="202"/>
 		<experience value="71420"/>
-		<respawn value="3020"/>
+		<respawn value="16000"/>
 		<corpse name="huge_animalhuman"/>
 		<drops>
 			<item value="money" quantity="[20,220]" probability="90.0"/>
