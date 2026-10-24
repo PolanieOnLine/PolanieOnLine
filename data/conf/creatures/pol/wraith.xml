@@ -505,7 +505,7 @@
 		</attributes>
 		<level value="23"/>
 		<experience value="350"/>
-		<respawn value="980"/>
+		<respawn value="1280"/>
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[2,21]" probability="100.0"/>
@@ -575,8 +575,8 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="23"/>
-		<experience value="2345"/>
-		<respawn value="1410"/>
+		<experience value="600"/>
+		<respawn value="1600"/>
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[5,20]" probability="100.0"/>
@@ -610,8 +610,8 @@
 			<size value="1,1"/>
 		</attributes>
 		<level value="33"/>
-		<experience value="2585"/>
-		<respawn value="1141"/>
+		<experience value="1200"/>
+		<respawn value="1800"/>
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[5,50]" probability="100.0"/>
