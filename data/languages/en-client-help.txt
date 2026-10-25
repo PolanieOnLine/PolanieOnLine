@@ -43,9 +43,9 @@ Zmienia bezzwłocznie #atrybut dla #wojownika w podanej ilości; #tryb może by�
 Zmienia potworowi wartości. Użyj #- jako symbol zastępczy, aby zostawić domyślne wartości. Użyteczne w plagach.=Change a creature's values. Use #- as a placeholder to keep default values. Useful for plagues.
 - /alterquest <wojownik> <nazwa zadania> <stan>=- /alterquest <player> <quest name> <state>
 Aktualizuje #'nazwę zadania' dla #wojownika nadając #stan.=Update the #'quest name' for a #player to the specified #state.
-- /summon <potwór|przedmiot> [<x> <y>] [ilość] [rarity\=<common|rare|epic|legendary>] [<stat>-multiplier\=<wartość>]=- /summon <creature|item> [<x> <y>] [amount] [rarity=<common|rare|epic|legendary>] [<stat>-multiplier=<value>]
+- /summon <potwór|przedmiot> [<x> <y>] [ilość] [rarity\=<common|rare|epic|legendary>] [affixes\=<random|max|none>] [<stat>-multiplier\=<wartość>]=- /summon <creature|item> [<x> <y>] [amount] [rarity=<common|rare|epic|legendary>] [affixes=<random|max|none>] [<stat>-multiplier=<value>]
 Przywołuje określony przedmiot lub potwora. Kwalifikujące się wyposażenie bez rarity otrzymuje losową rzadkość.=Summon the specified item or creature. Eligible equipment receives a random rarity unless rarity is specified.
-- /summonat <wojownik> <slot> [ilość] <przedmiot> [rarity\=<common|rare|epic|legendary>] [<stat>-multiplier\=<wartość>]=- /summonat <player> <slot> [amount] <item> [rarity=<common|rare|epic|legendary>] [<stat>-multiplier=<value>]
+- /summonat <wojownik> <slot> [ilość] <przedmiot> [rarity\=<common|rare|epic|legendary>] [affixes\=<random|max|none>] [<stat>-multiplier\=<wartość>]=- /summonat <player> <slot> [amount] <item> [rarity=<common|rare|epic|legendary>] [affixes=<random|max|none>] [<stat>-multiplier=<value>]
 Przywołuje określony przedmiot do wskazanego slotu; ilość domyślnie wynosi 1.=Summon the specified item into the selected slot; the default amount is 1.
 - /destroy <obiekt>=- /destroy <object>
 Niszczy obiekt.=Destroy an object.
@@ -185,9 +185,9 @@ Zmień wartości stwora. Użyj #- jako symbolu zastępczego, aby zachować domy�
 Zmień liczbę #stworzeń zabitych w trybie #typ ("solo" lub "shared") na wpisaną #liczbe dla #gracza.=Set a #player's #creature kill count for #type ("solo" or "shared") to the specified #count.
 <gracz> <questslot> <wartość>=<player> <questslot> <value>
 Zaktualizuj #questslot dla #gracza do podanej #wartości.=Update a #player's #questslot to the specified #value.
-<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity\=<poziom>] [<stat>-multiplier\=<wartość>]=<creature>|<item> [<x> <y>] [amount] [rarity\=<tier>] [<stat>-multiplier\=<value>]
+<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity\=<poziom>] [affixes\=<random|max|none>] [<stat>-multiplier\=<wartość>]=<creature>|<item> [<x> <y>] [amount] [rarity\=<tier>] [affixes=<random|max|none>] [<stat>-multiplier\=<value>]
 Przyzwij wskazany przedmiot lub stwora. Kwalifikujące się wyposażenie bez rarity otrzyma losową rzadkość.=Summon the specified item or creature. Eligible equipment without a rarity value receives a random rarity.
-<gracz> <slot> [ilość] <przedmiot> [rarity\=<poziom>] [<stat>-multiplier\=<wartość>]=<player> <slot> [amount] <item> [rarity\=<tier>] [<stat>-multiplier\=<value>]
+<gracz> <slot> [ilość] <przedmiot> [rarity\=<poziom>] [affixes\=<random|max|none>] [<stat>-multiplier\=<wartość>]=<player> <slot> [amount] <item> [rarity\=<tier>] [affixes=<random|max|none>] [<stat>-multiplier\=<value>]
 Przyzwij wskazany przedmiot do określonego slotu #gracza; <ilość> domyślnie wynosi 1, jeśli nie zostanie podana.=Summon the specified item into a #player's slot; <amount> defaults to 1 if omitted.
 Niszczy byt całkowicie.=Destroy an entity completely.
 Wymień uwięzionych graczy i ich wyroki.=List jailed players and their sentences.

@@ -48,7 +48,7 @@ public class SummonAction extends AdministrationAction {
 	private static final String ELITE = "elite";
 	private static final String USAGE = "Użyj: /summon <coPrzywołać> [<x> <y>] [ilość] "
 			+ "[elite=<true|false>] [rarity=<common|rare|epic|legendary>] "
-			+ "[affixes=<random|none>] [seed=<liczba>] [<stat>-multiplier=<wartość>]";
+			+ "[affixes=<random|max|none>] [seed=<liczba>] [<stat>-multiplier=<wartość>]";
 
 
 	public static void register() {

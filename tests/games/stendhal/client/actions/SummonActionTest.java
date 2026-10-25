@@ -91,13 +91,15 @@ public class SummonActionTest {
 	public void testRarityOptionsAreNotPartOfItemName() {
 		new User();
 		String[] args = {"fishing", "rod", "rarity=legendary",
-				"attack-multiplier=1.30", "randomize-modifiers=false"};
+				"attack-multiplier=1.30", "randomize-modifiers=false", "affixes=max", "seed=321"};
 		new SummonAction().execute(args, null);
 
 		assertThat(sentAction.get("creature"), is("fishing rod"));
 		assertThat(sentAction.get("rarity"), is("legendary"));
 		assertThat(sentAction.get("attack-multiplier"), is("1.30"));
 		assertThat(sentAction.get("randomize-modifiers"), is("false"));
+		assertThat(sentAction.get("affixes"), is("max"));
+		assertThat(sentAction.get("seed"), is("321"));
 	}
 
 	@Test

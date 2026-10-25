@@ -45,6 +45,8 @@ interface Action {
 
 const ITEM_CREATION_OPTION_KEYS = [
 	"rarity",
+	"affixes",
+	"seed",
 	"randomize-modifiers",
 	"stat-multiplier",
 	"attack-multiplier",
@@ -331,8 +333,8 @@ export class SlashActionRepo {
 				"altercreature",
 				"alterkill",
 				"alterquest",
-				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity=<poziom>] [<stat>-multiplier=<wartość>]"},
-				"summonat",
+				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]"},
+				{type: "summonat", sparams: "<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]"},
 				{
 					type: "destroy",
 					getHelp: function(): string[] {
@@ -1340,7 +1342,7 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [<stat>-multiplier=<wartość>]",
+				"<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]",
 				"Przyzwij wskazany przedmiot do określonego slotu #gracza; <ilość> domyślnie wynosi 1, jeśli"
 						+ " nie zostanie podana."
 			];

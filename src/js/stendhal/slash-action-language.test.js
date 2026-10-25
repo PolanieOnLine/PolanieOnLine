@@ -45,6 +45,19 @@ async function harness() {
   require:name=>dependency(name)});
  return {repo:exports.SlashActionRepo.get(),language,logs,actions,stendhal};
 }
+
+test("summon commands forward max affixes and seed separately from the item name",async()=>{
+ const {repo,actions}=await harness();
+ repo.summon.execute("summon",["topór","10","20","rarity=legendary","affixes=max","seed=321"],"");
+ assert.equal(actions.at(-1).creature,"topór");
+ assert.equal(actions.at(-1).affixes,"max");
+ assert.equal(actions.at(-1).seed,"321");
+ assert.equal(actions.at(-1).rarity,"legendary");
+ repo.summonat.execute("summonat",["admin","bag","złota"],"ciupaga z trzema wąsami rarity=legendary affixes=max seed=321");
+ assert.equal(actions.at(-1).item,"złota ciupaga z trzema wąsami");
+ assert.equal(actions.at(-1).affixes,"max");
+ assert.equal(actions.at(-1).seed,"321");
+});
 test("continuous movement keeps its action and colour while translating its local notice", async()=>{
  const {repo,language,logs,actions}=await harness();
  repo.movecont.execute("movecont",[],"");

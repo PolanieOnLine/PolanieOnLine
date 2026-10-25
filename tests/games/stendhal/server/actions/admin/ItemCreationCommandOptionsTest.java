@@ -16,13 +16,75 @@ import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemAffixRegistry;
+import games.stendhal.server.core.rule.rarity.ItemAffixDefinition;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPAction;
+import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemCreationCommandOptionsTest {
+	@Test(expected = IllegalArgumentException.class)
+	public void normalDropsCannotRequestMaximizedAffixes() {
+		ItemCreationContext.builder(ItemCreationContext.Source.DROP).maximizeAffixes(true).build();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void restoreCannotRequestMaximizedAffixes() {
+		ItemCreationContext.builder(ItemCreationContext.Source.RESTORE).maximizeAffixes(true).build();
+	}
+
+	@Test
+	public void maxModeIsExplicitAndDoesNotChangeOrdinaryContexts() {
+		final RPAction action = new RPAction();
+		action.put("affixes", "max");
+		final ItemCreationContext maximum = ItemCreationCommandOptions.fromAction(action);
+		assertTrue(maximum.isMaximizeAffixes());
+		assertTrue(maximum.isGenerateAffixes());
+		assertFalse(maximum.equals(ItemCreationContext.admin()));
+		action.put("affixes", "random");
+		assertFalse(ItemCreationCommandOptions.fromAction(action).isMaximizeAffixes());
+		assertFalse(ItemCreationContext.drop().isMaximizeAffixes());
+	}
+
+	@Test
+	public void maxAffixesUseLegalMaximumsAndSurviveRestore() {
+		final Map<String, Double> maximums = new HashMap<String, Double>();
+		maximums.put("lifesteal", 0.10);
+		maximums.put("accuracy_bonus", 8.0);
+		maximums.put("critical_chance", 6.0);
+		maximums.put("critical_damage_bonus", 0.15);
+		maximums.put("bleed_on_hit", 0.08);
+		maximums.put("execute_damage", 0.15);
+		maximums.put("armor_penetration", 0.15);
+		final java.util.Set<String> selected = new java.util.HashSet<String>();
+		for (long seed = 0; seed < 32; seed++) {
+			final RPAction action = new RPAction();
+			action.put("rarity", "legendary");
+			action.put("affixes", "MAX");
+			action.put("seed", Long.toString(seed));
+			action.put("stat-multiplier", "1.35");
+			final Item item = randomlyRolledItem(action, 0.5);
+			assertEquals(27, item.getInt("atk"));
+			assertEquals(Long.valueOf(seed), ItemAffixState.getSeed(item));
+			assertEquals(4, ItemAffixState.getValues(item).size());
+			for (String id : ItemAffixState.getValues(item).keySet()) {
+				final ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
+				if (definition != null) {
+					assertTrue("Unexpected axe affix: " + id, maximums.containsKey(id));
+					assertEquals(id, maximums.get(id), item.getDouble(definition.getAttribute()), 0.000001);
+					selected.add(id);
+				}
+			}
+			final Item restored = new Item("topór", "axe", "test", null);
+			ItemAffixState.restore(restored, new RPObject(item));
+			assertEquals(ItemAffixState.getValues(item), ItemAffixState.getValues(restored));
+		}
+		assertEquals("Affix types must remain random", maximums.keySet(), selected);
+	}
+
 	@Test
 	public void summonWithoutRarityGeneratesAffixesForTheRolledTier() {
 		final RPAction action = new RPAction();
