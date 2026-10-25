@@ -378,7 +378,7 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	static JScrollPane createLeftColumnScrollPane(JComponent column) {
-		JScrollPane scroll = new JScrollPane(column, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scroll = new JScrollPane(column, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBorder(null);
 		scroll.setMinimumSize(new Dimension(180, 0));
@@ -386,7 +386,7 @@ class SwingClientGUI implements J2DClientGUI {
 		return scroll;
 	}
 
-	/** Wrap to the dock width, but retain enough height to scroll to every row. */
+	/** Fit the dock so that only the friends list scrolls within its remaining space. */
 	private static class LeftColumn extends JComponent implements Scrollable {
 		private static final long serialVersionUID = 1L;
 
@@ -399,9 +399,7 @@ class SwingClientGUI implements J2DClientGUI {
 
 		@Override public Dimension getPreferredScrollableViewportSize() { return getPreferredSize(); }
 		@Override public boolean getScrollableTracksViewportWidth() { return true; }
-		@Override public boolean getScrollableTracksViewportHeight() {
-			return getParent() != null && getParent().getHeight() >= getPreferredSize().height;
-		}
+		@Override public boolean getScrollableTracksViewportHeight() { return true; }
 		@Override public int getScrollableUnitIncrement(Rectangle visible, int orientation, int direction) {
 			return SCROLLING_SPEED;
 		}
