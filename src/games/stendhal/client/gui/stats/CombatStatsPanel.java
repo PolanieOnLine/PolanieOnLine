@@ -107,8 +107,7 @@ final class CombatStatsPanel extends JPanel {
 		Container host = window.getParent();
 		if (host == null) return;
 		Point point = SwingUtilities.convertPoint(this, getWidth(), toggle.getY(), host);
-		// Measure the cell grid directly, including while the window is still hidden.
-		scroll.setPreferredSize(rows.getPreferredSize());
+		// Let the scroll pane include its border and viewport in the content size.
 		Dimension size = window.getPreferredSize();
 		if (size.width > host.getWidth()) size.height += scroll.getHorizontalScrollBar().getPreferredSize().height;
 		if (size.height > host.getHeight()) size.width += scroll.getVerticalScrollBar().getPreferredSize().width;
