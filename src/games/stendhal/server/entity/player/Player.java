@@ -2660,7 +2660,7 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
-	protected double getSusceptibility(Nature type) {
+	public double getSusceptibility(Nature type) {
 		double sus = 1.0;
 		/**
 		 * Check weapon and shield separately, so that holding 2 resistant

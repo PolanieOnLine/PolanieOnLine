@@ -132,11 +132,11 @@ final class CombatStatsPanel extends JPanel {
 		DecimalFormat format = new DecimalFormat("0.#", DecimalFormatSymbols.getInstance(
 				Locale.forLanguageTag(ClientLanguage.getLanguage())));
 		for (CombatStat stat : CombatStat.values()) {
-			Double value = number(values.get(stat.getKey()));
+			Double value = number(values.get(stat.getKey()), stat.getNature() != null);
 			if (value == null) continue;
 			addCell(ClientLanguage.getText(stat.getLabel()) + ":", row, 0, SwingConstants.LEFT);
 			addCell(format.format(value) + "%", row, 1, SwingConstants.RIGHT);
-			Double limit = number(values.get(stat.getLimitKey()));
+			Double limit = number(values.get(stat.getLimitKey()), false);
 			if (showLimits && limit != null) addCell("/ " + format.format(limit) + "%", row, 2, SwingConstants.RIGHT);
 			row++;
 		}
@@ -165,11 +165,11 @@ final class CombatStatsPanel extends JPanel {
 		rows.add(label, constraints);
 	}
 
-	private static Double number(String value) {
+	private static Double number(String value, boolean allowNegative) {
 		if (value == null) return null;
 		try {
 			double number = Double.parseDouble(value);
-			return Double.isFinite(number) && number >= 0.0 ? number : null;
+			return Double.isFinite(number) && (allowNegative || number >= 0.0) ? number : null;
 		} catch (NumberFormatException ignored) { return null; }
 	}
 }

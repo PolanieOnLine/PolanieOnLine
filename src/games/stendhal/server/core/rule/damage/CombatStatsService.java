@@ -15,6 +15,12 @@ public final class CombatStatsService {
 	public static boolean update(final Player player) {
 		final Map<String, String> snapshot = new LinkedHashMap<String, String>();
 		for (CombatStat stat : CombatStat.values()) {
+			if (stat.getNature() != null) {
+				// Use the same equipped-item calculation as incoming damage, including weaknesses.
+				final double resistance = 100.0 * (1.0 - player.getSusceptibility(stat.getNature()));
+				snapshot.put(stat.getKey(), Double.toString(resistance));
+				continue;
+			}
 			final double value;
 			final double limit;
 			switch (stat) {
