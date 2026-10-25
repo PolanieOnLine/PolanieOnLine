@@ -197,6 +197,11 @@ public final class ItemTooltipService {
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
 		publishConsumableHealing(item);
+		if (item instanceof RingOfTeleportation) {
+			// Keep an empty value after use to avoid a contained-object deletion delta.
+			put(item, ItemTooltip.SAVED_POSITION,
+					((RingOfTeleportation) item).getSavedPositionForTooltip());
+		}
 
 		if (PUBLISH_ITEM_VALUE && item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));

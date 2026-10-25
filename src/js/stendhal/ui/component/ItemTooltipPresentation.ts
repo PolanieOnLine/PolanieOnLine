@@ -414,6 +414,10 @@ function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>)
 		footer.push({kind: "footer", text: "Wytrzymałość: "
 				+ Math.max(0, durability - uses) + "/" + durability});
 	}
+	if (current["saved_position"]) {
+		footer.push({kind: "footer", text: GameLanguage.getText("Zapisana pozycja:")
+				+ " " + current["saved_position"]});
+	}
 	appendSection(lines, footer);
 }
 

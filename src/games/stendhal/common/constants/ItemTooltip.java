@@ -109,6 +109,7 @@ public final class ItemTooltip {
 	public static final String MAX_UPGRADE_LEVEL = "max_improves";
 	public static final String DURABILITY = "durability";
 	public static final String USES = "uses";
+	public static final String SAVED_POSITION = "saved_position";
 	public static final String VALUE = "value";
 
 	private ItemTooltip() {

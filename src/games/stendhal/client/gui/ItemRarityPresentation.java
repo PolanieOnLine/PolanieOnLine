@@ -804,6 +804,13 @@ final class ItemRarityPresentation {
 			appendFooterSeparator(footer);
 			footer.append(escapeHtml(scrollDestination));
 		}
+		final String savedPosition = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.SAVED_POSITION);
+		if (savedPosition != null && !savedPosition.isEmpty()) {
+			appendFooterSeparator(footer);
+			footer.append(escapeHtml(ClientLanguage.getText("Zapisana pozycja:")
+					+ " " + savedPosition));
+		}
 		if (footer.length() > 0) {
 			appendDivider(tooltip);
 			tooltip.append("<div style='text-align:right'><font size='-1' color='")

@@ -171,6 +171,7 @@ Prawy przycisk myszy: wyczyść wybór.=Right-click to clear the selection.
 Ulepszenie:=Upgrade:
 Ulepszenie: +{0}=Upgrade: +{0}
 Wymagany poziom:=Required level:
+Zapisana pozycja:=Saved position:
 Wytrzymałość:=Durability:
 Zasięg:=Range:
 Zasięg=Range

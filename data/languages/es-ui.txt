@@ -341,6 +341,7 @@ Prawy przycisk myszy: wyczyść wybór.=Clic derecho para borrar la selección.
 Ulepszenie:=Mejora:
 Ulepszenie: +{0}=Mejora: +{0}
 Wymagany poziom:=Nivel requerido:
+Zapisana pozycja:=Posición guardada:
 Wytrzymałość:=Durabilidad:
 Zasięg:=Alcance:
 Zasięg=Alcance
