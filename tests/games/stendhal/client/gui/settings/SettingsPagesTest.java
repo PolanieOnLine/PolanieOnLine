@@ -8,7 +8,9 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.Point;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ import games.stendhal.client.gui.MockUserInterface;
 import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import utilities.MemoryClientPersistence;
 
 public class SettingsPagesTest {
 	private WtWindowManager manager;
@@ -44,10 +47,12 @@ public class SettingsPagesTest {
 	private UserInterface originalInterface;
 	private List<Dimension> displaySizes;
 	private List<Dimension> originalDisplaySizes;
+	private MemoryClientPersistence persistence;
 
 	@Before
 	@SuppressWarnings("unchecked")
 	public void isolatePreferences() throws Exception {
+		persistence = new MemoryClientPersistence();
 		manager = WtWindowManager.getInstance();
 		propertiesField = WtWindowManager.class.getDeclaredField("properties");
 		propertiesField.setAccessible(true);
@@ -79,6 +84,7 @@ public class SettingsPagesTest {
 		ClientSingletonRepository.setUserInterface(originalInterface);
 		displaySizes.clear();
 		displaySizes.addAll(originalDisplaySizes);
+		persistence.close();
 	}
 
 	private SettingsPages createPages() {
@@ -90,26 +96,33 @@ public class SettingsPagesTest {
 	}
 
 	@Test public void statLimitsAreOffByDefaultAndPersistWhenEnabled() throws Exception {
-		SwingUtilities.invokeAndWait(() -> {
-			SettingsPages pages = createPages();
-			JCheckBox limits = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj limity statystyk");
-			assertNotNull(limits);
-			assertFalse(limits.isSelected());
-			limits.doClick();
-			assertEquals("true", manager.getProperty("ui.show_stat_limits", "false"));
-			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT),
-					"Pokazuj limity statystyk").isSelected());
-		});
+		SwingUtilities.invokeAndWait(() -> assertToggleSurvivesPreferenceReload(
+				"Pokazuj limity statystyk", SettingsProperties.SHOW_STAT_LIMITS_PROPERTY));
 	}
 
 	@Test public void combatStatsAccessIsOffByDefaultAndPersistsWhenEnabled() throws Exception {
-		SwingUtilities.invokeAndWait(() -> {
-			SettingsPages pages = createPages();
-			JCheckBox access = check(pages.getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki");
-			assertNotNull(access); assertFalse(access.isSelected()); access.doClick();
-			assertEquals("true", manager.getProperty("ui.show_combat_stats", "false"));
-			assertTrue(check(createPages().getPage(SettingsPages.Category.COMBAT), "Pokazuj statystyki").isSelected());
-		});
+		SwingUtilities.invokeAndWait(() -> assertToggleSurvivesPreferenceReload(
+				"Pokazuj statystyki", SettingsProperties.SHOW_COMBAT_STATS_PROPERTY));
+	}
+
+	private void assertToggleSurvivesPreferenceReload(String label, String parameter) {
+		try {
+			JCheckBox toggle = check(createPages().getPage(SettingsPages.Category.COMBAT), label);
+			assertFalse(toggle.isSelected());
+			assertNull(persistence.savedPreferences().getProperty("config." + parameter));
+			Method reload = WtWindowManager.class.getDeclaredMethod("read");
+			reload.setAccessible(true);
+			for (boolean enabled : new boolean[] {true, false}) {
+				toggle.doClick();
+				assertEquals(Boolean.toString(enabled), manager.getProperty(parameter, ""));
+				assertEquals(Boolean.toString(enabled), persistence.savedPreferences().getProperty("config." + parameter));
+				reload.invoke(manager);
+				toggle = check(createPages().getPage(SettingsPages.Category.COMBAT), label);
+				assertEquals(enabled, toggle.isSelected());
+			}
+		} catch (ReflectiveOperationException | IOException error) {
+			throw new AssertionError(error);
+		}
 	}
 
 	@Test

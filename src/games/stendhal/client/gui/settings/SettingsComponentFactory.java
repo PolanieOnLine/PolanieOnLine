@@ -93,6 +93,7 @@ class SettingsComponentFactory {
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				WtWindowManager.getInstance().setProperty(parameter, Boolean.toString(enabled));
+				WtWindowManager.getInstance().save();
 			}
 		});
 		return toggle;
