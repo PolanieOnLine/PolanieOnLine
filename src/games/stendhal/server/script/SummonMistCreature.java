@@ -62,13 +62,15 @@ public final class SummonMistCreature extends AbstractAdminScript {
 			return;
 		}
 		final String name = String.join(" ", nameParts).trim();
-		final Creature creature = name.isEmpty() ? null
+		final Creature prototype = name.isEmpty() ? null
 				: SingletonRepository.getEntityManager().getCreature(name);
-		if (creature == null || creature.isAbnormal()
-				|| creature.getName().startsWith("mgielny ")) {
+		if (prototype == null || prototype.isAbnormal()
+				|| prototype.getName().startsWith("mgielny ")) {
 			sendError("Podaj nazwę zwykłego potwora, np. dwugłowy smok.");
 			return;
 		}
+		// Match normal respawns: templates may leave visibility/resistance at zero.
+		final Creature creature = prototype.getNewInstance();
 		AlternativeCreatures.applyMistVariant(creature, factor);
 		if (elite && !EliteCreatureService.promote(creature)) {
 			sendError("Ten potwór nie może otrzymać wersji elitarnej. Nic nie przywołano.");
