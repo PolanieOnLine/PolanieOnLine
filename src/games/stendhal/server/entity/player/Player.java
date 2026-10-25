@@ -3421,7 +3421,7 @@ public class Player extends DressedEntity implements UseListener {
 	public int getCappedAtk() {
 		// Blue line in https://sourceforge.net/p/arianne/feature-requests/1330/
 		// reduced using median instead of average as reference
-		return Math.min(this.atk, getMaxAtkForLevel(level));
+		return Math.min(this.atk, getMaxAtkForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**
@@ -3433,7 +3433,7 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public int getCappedDef() {
 		// Red line in https://sourceforge.net/p/arianne/feature-requests/1330/
-		return Math.min(this.def, getMaxDefForLevel(level));
+		return Math.min(this.def, getMaxDefForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**
@@ -3459,7 +3459,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public int getCappedRatk() {
-		return Math.min(this.ratk, getMaxAtkForLevel(level));
+		return Math.min(this.ratk, getMaxAtkForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**

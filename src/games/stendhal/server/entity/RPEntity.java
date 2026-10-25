@@ -523,10 +523,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		final double weaponComponent = 1.0 + attackingWeaponsValue;
 		// XXX: Is correct to use sourceAtk here instead of atkStrength?
-		double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
-		if (this instanceof Player) {
-			maxAttack *= 1.0 + RebornSystem.getAttackBonusPercent((Player) this) / 100.0;
-		}
+		final double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
 		double attack = Rand.rand() * maxAttack;
 
 		/*

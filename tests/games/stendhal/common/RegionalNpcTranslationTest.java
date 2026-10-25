@@ -36,9 +36,9 @@ public class RegionalNpcTranslationTest {
   assertEquals("Zamknij, you killed a total of 3 rat. You defeated none alone and 3 in a group.", Translation.getText("en", "Zamknij, zabiłaś w sumie 3 szczur. Nie pokonałaś ani jednego w pojedynkę oraz 3 w grupie."));
  }
  @Test public void reboundOffersKeepNumbersAndSpecialGifts() {
-  String source = "Mogę cofnąć twoją drogę po raz 3. Po tym odrodzeniu twoje ciosy otrzymają łącznie 6 procent premii. Doświadczenie z potworów pozostanie na poziomie 100 procent wartości bazowej. Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży. Czy chcesz narodzić się ponownie?";
+  String source = "Mogę cofnąć twoją drogę po raz 3. Po tym odrodzeniu premia do każdego z limitów ATK, RATK i DEF wyniesie +24. Wyższe limity pozwalają wykorzystać wytrenowane umiejętności. Doświadczenie z potworów pozostanie na poziomie 100 procent wartości bazowej. Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży. Czy chcesz narodzić się ponownie?";
   String english = Translation.getText("en", source);
-  assertTrue(english.contains("6 percent"));
+  assertTrue(english.contains("will be +24"));
   assertTrue(english.contains("100 percent of the base value"));
   assertTrue(english.contains("two special daggers"));
   assertTrue(english.endsWith("Would you like to be reborn?"));

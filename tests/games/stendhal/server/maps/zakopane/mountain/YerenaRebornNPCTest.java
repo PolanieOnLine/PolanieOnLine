@@ -49,11 +49,16 @@ public class YerenaRebornNPCTest extends ZonePlayerAndNPCTestImpl {
         for (int completed = 0; completed < 5; completed++) {
             final String text = offer(completed);
             assertTrue(text, text.contains("100 procent wartości bazowej"));
+            assertTrue(text, text.contains("premia do każdego z limitów ATK, RATK i DEF wyniesie +"
+                    + (completed + 1) * 8 + "."));
+            assertFalse(text, text.contains("twoje ciosy"));
             assertFalse(text, text.contains("doświadczenie zdobywane w walce"));
             if (completed == 2) assertTrue(text.contains("dwa szczególne sztylety"));
             if (completed == 3) assertTrue(text.contains("mithrilowy amulet"));
             if (completed == 4) assertTrue(text.contains("ekskalibur"));
             assertTrue(Translation.getText("en", text).contains("100 percent of the base value"));
+            assertTrue(Translation.getText("en", text).contains("will be +" + (completed + 1) * 8));
+            assertTrue(Translation.getText("es", text).contains("será de +" + (completed + 1) * 8));
         }
     }
 
@@ -64,8 +69,23 @@ public class YerenaRebornNPCTest extends ZonePlayerAndNPCTestImpl {
         for (int i = 0; i < completed.length; i++) {
             final String text = offer(completed[i]);
             assertTrue(text, text.contains(percentages[i] + " procent wartości bazowej"));
+            if (completed[i] < 10) {
+                assertTrue(text, text.contains("premia do każdego z limitów ATK, RATK i DEF wyniesie +"
+                        + (completed[i] + 1) * 8 + "."));
+            } else {
+                assertTrue(text, text.contains("Nie otrzymasz kolejnego zwiększenia limitów umiejętności"));
+            }
             final String english = Translation.getText("en", text);
             assertTrue(english, english.contains(percentages[i] + " percent of the base value"));
+            final String spanish = Translation.getText("es", text);
+            assertTrue(spanish, spanish.contains(percentages[i] + " por ciento del valor base"));
+            if (completed[i] < 10) {
+                assertTrue(english, english.contains("will be +" + (completed[i] + 1) * 8));
+                assertTrue(spanish, spanish.contains("será de +" + (completed[i] + 1) * 8));
+            } else {
+                assertTrue(english, english.contains("no further skill limit increases"));
+                assertTrue(spanish, spanish.contains("No recibirás más aumentos"));
+            }
         }
     }
 }
