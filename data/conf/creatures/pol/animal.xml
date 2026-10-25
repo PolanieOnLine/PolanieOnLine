@@ -291,7 +291,7 @@
 		<description>Oto biały tygrys. Nie łatwo go spotkać, ale łatwo zginąć od ran jakie zadaje.</description>
 		<attributes>
 			<atk value="191"/>
-			<def value="20"/>
+			<def value="45"/>
 			<hp value="182"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
@@ -407,7 +407,7 @@
 		<description></description>
 		<attributes>
 			<atk value="117"/>
-			<def value="21"/>
+			<def value="27"/>
 			<hp value="160"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -457,7 +457,7 @@
 		<description></description>
 		<attributes>
 			<atk value="200"/>
-			<def value="11"/>
+			<def value="27"/>
 			<hp value="240"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
@@ -670,7 +670,7 @@
 		<description></description>
 		<attributes>
 			<atk value="227"/>
-			<def value="33"/>
+			<def value="43"/>
 			<hp value="300"/>
 			<speed value="0.6"/>
 			<size value="2,2"/>

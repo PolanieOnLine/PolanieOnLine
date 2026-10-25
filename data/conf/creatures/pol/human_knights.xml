@@ -161,7 +161,7 @@
 		<description/>
 		<attributes>
 			<atk value="400"/>
-			<def value="35"/>
+			<def value="70"/>
 			<armor value="medium"/>
 			<hp value="800"/>
 			<speed value="0.8"/>
@@ -194,7 +194,7 @@
 		<description/>
 		<attributes>
 			<atk value="475"/>
-			<def value="40"/>
+			<def value="76"/>
 			<armor value="medium"/>
 			<hp value="800"/>
 			<speed value="0.7"/>
@@ -227,7 +227,7 @@
 		<description/>
 		<attributes>
 			<atk value="550"/>
-			<def value="55"/>
+			<def value="77"/>
 			<armor value="medium"/>
 			<hp value="1100"/>
 			<speed value="0.6"/>
@@ -268,7 +268,7 @@
 		</attributes>
 		<level value="202"/>
 		<experience value="71420"/>
-		<respawn value="3020"/>
+		<respawn value="16000"/>
 		<corpse name="huge_animalhuman"/>
 		<drops>
 			<item value="money" quantity="[20,220]" probability="90.0"/>
