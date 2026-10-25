@@ -117,7 +117,7 @@
 
 	<!-- Nosiwoda Jakub (Zakopane) -->
 	<production name="nosiwoda_fill_butelke" type="drink">
-		<item name="butelka wodą" minutes="1">
+		<item name="butelka wody" minutes="1">
 			<resource name="butelka"/>
 			<resource name="money" amount="100"/>
 		</item>

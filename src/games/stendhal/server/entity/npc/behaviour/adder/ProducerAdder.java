@@ -208,7 +208,7 @@ public class ProducerAdder {
 					if (behaviour.isOrderReady(player)) {
 						// This can happen if the player had the bag full
 						// when coming to talk to the NPC.
-						npc.say("Jeszcze nie " + player.getGenderVerb("wykonałeś") + " ostatniego zlecenia.");
+						npc.say("Twoje poprzednie zlecenie jest już gotowe. Odbierz je, zanim zlecisz następne.");
 					} else {
 						npc.say("Wciąż nie " + Grammar.genderVerb(npc.getGender(), "skończyłem") + " twojego ostatniego zlecenia. Wróć za "
 							+ behaviour.getApproximateRemainingTime(player)
