@@ -153,6 +153,19 @@ final class SeasonalZonePlan {
 		return attributes;
 	}
 
+	private static Map<String, String> readConditionalAttributes(final Element zone,
+			final String property) {
+		final Map<String, String> active = readActiveAttributes(zone);
+		final Map<String, String> changes = new HashMap<String, String>();
+		for (final String name : new String[] { "weather", "music", "music_volume" }) {
+			if (hasConditionalParameter(zone, name, property)) {
+				// A missing value removes an event override when no ordinary value exists.
+				changes.put(name, active.get(name));
+			}
+		}
+		return changes.isEmpty() ? null : changes;
+	}
+
 	private static String readActiveFile(final Element zone) {
 		String file = zone.getAttribute("file");
 		for (final Element block : XMLUtil.getElements(zone, "attributes")) {
@@ -245,8 +258,7 @@ final class SeasonalZonePlan {
 				mapUpdate = ZoneMapUpdater.prepareMapUpdate(
 						referenceMap, targetMap, referenceFile, targetFile);
 			}
-			final Map<String, String> attributes = hasConditionalParameter(zone, "weather", property)
-					? readActiveAttributes(zone) : null;
+			final Map<String, String> attributes = readConditionalAttributes(zone, property);
 
 			final List<ConditionalEntity> entities = new ArrayList<ConditionalEntity>();
 			final EntitySetupXMLReader entityReader = new EntitySetupXMLReader();
@@ -258,7 +270,8 @@ final class SeasonalZonePlan {
 
 			for (final Element child : XMLUtil.getElements(zone)) {
 				final String condition = child.getAttribute("condition");
-				if (!usesProperty(condition, property)) {
+				if (!usesProperty(condition, property)
+						&& !("entity".equals(child.getTagName()) && dependsOnProperty(child, property))) {
 					continue;
 				}
 				if ("entity".equals(child.getTagName())) {
@@ -343,14 +356,17 @@ final class SeasonalZonePlan {
 	private static void applyAttributes(final StendhalRPZone zone,
 			final Map<String, String> values) {
 		final ZoneAttributes attributes = zone.getAttributes();
-		WeatherUpdater.get().unmanageAttributes(attributes);
-		removeRemainingWeatherEntities(zone);
-
-		final String weather = values.get("weather");
-		if (weather == null || weather.trim().isEmpty()) {
-			attributes.remove("weather");
-		} else {
-			attributes.put("weather", weather);
+		if (values.containsKey("weather")) {
+			WeatherUpdater.get().unmanageAttributes(attributes);
+			removeRemainingWeatherEntities(zone);
+		}
+		for (final Map.Entry<String, String> entry : values.entrySet()) {
+			final String value = entry.getValue();
+			if (value == null || value.trim().isEmpty()) {
+				attributes.remove(entry.getKey());
+			} else {
+				attributes.put(entry.getKey(), value);
+			}
 		}
 	}
 

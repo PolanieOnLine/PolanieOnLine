@@ -70,12 +70,15 @@
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#99ffeb</parameter>
 			<parameter name="weather">snow_heavy</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -103,12 +106,15 @@
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#99ffeb</parameter>
 			<parameter name="weather">snow_heavy</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -184,6 +190,8 @@
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#99ff99</parameter>
 			<parameter name="weather">fog_heavy</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="13" y="13">
@@ -297,6 +305,8 @@
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#cfe2f6</parameter>
 			<parameter name="weather">fog_heavy</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="36" y="41" ref="wejscie_lewo">
@@ -375,6 +385,8 @@
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#cfe2f6</parameter>
 			<parameter name="weather">fog_heavy</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="61" y="44" ref="2most">

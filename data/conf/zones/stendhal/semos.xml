@@ -7,6 +7,10 @@
 	<!-- Ground level -->
 
 	<zone name="0_semos_canyon" level="0" x="500320" y="499680" file="Level 0/semos/canyon.tmx" accessible="false">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<!-- NPCs -->
 		<!--	Not ready
 		<configurator class-name="games.stendhal.server.maps.semos.canyon.TollboothNPC"/>
@@ -36,6 +40,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2,rain=+1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -74,6 +80,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="68" y="4" ref="kikareukin_exit">
@@ -95,6 +103,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -103,6 +113,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="77" y="127">
@@ -111,6 +123,7 @@
 				<parameter name="sound">come_to_rest</parameter>
 				<parameter name="radius">16</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -164,6 +177,10 @@
 	<!-- Interiors in 0_semos_mountain_n2_w -->
 
 	<zone name="int_apothecary_cabin" file="interiors/semos/apothecary_cabin.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<!-- hint to secret lab -->
 		<entity x="0" y="0">
@@ -206,6 +223,10 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 	</zone>
 
 	<zone name="int_apothecary_lab" file="interiors/semos/apothecary_lab.tmx" accessible="false">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.semos.apothecary_lab.ApothecaryNPC"/>
 
@@ -252,6 +273,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<parameter name="weather">varying(temperature=-1)</parameter>
 			<parameter name="file" condition="stendhal.minetown">Level 0/semos/mountain_n2_mine_town_weeks.tmx</parameter>
 			<parameter name="file" condition="stendhal.minetownconstruction">Level 0/semos/mountain_n2_mine_town_weeks_construction.tmx</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<point-of-interest x="90" y="97">
@@ -385,6 +408,10 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		</zone>
 
 	<zone name="int_semos_frank_house" file="interiors/semos/frank_house.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<!-- Portals -->
 		<portal x="7" y="30" ref="exit">
 			<destination zone="0_semos_mountain_n2" ref="frank_house"/>
@@ -398,6 +425,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="14" y="19" ref="well_entrance_left">
@@ -471,6 +500,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="67" y="47" ref="stores_entrance">
@@ -519,6 +550,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -528,6 +561,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
@@ -608,6 +643,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				<parameter name="sound">come_to_rest</parameter>
 				<parameter name="radius">13</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -617,6 +653,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="radius">16</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -637,6 +674,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -647,6 +686,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -666,6 +706,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -677,6 +719,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -758,6 +801,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -769,6 +814,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -837,6 +883,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -848,6 +896,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -916,6 +965,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -927,6 +978,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -995,6 +1047,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -1006,6 +1060,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -1074,6 +1129,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -1085,6 +1142,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -1153,6 +1211,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">stars</parameter>
 			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -1163,6 +1223,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -1182,6 +1243,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">view_wizards_tower</parameter>
 			<parameter name="parallax_ignore_tiles">sky/view_wizards_tower</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -1198,6 +1261,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -1261,6 +1325,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<attributes>
 			<parameter name="parallax">view_wizards_tower</parameter>
 			<parameter name="parallax_ignore_tiles">sky/view_wizards_tower</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -1275,6 +1341,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -1374,6 +1441,8 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -1538,6 +1607,10 @@ Południe: Miasto Semos
 	</zone>
 
 	<zone name="int_semos_school_0" file="interiors/semos/school_0.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<portal x="20" y="38" ref="exit">
 			<destination zone="0_semos_plains_n" ref="school_entrance"/>
 				<attribute name="move.continuous"/>
@@ -1556,6 +1629,8 @@ Południe: Miasto Semos
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.plains.MillerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.semos.plains.HoeingManNPC"/>
@@ -1584,6 +1659,8 @@ Południowy-Wschód: Farma
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -1592,6 +1669,8 @@ Południowy-Wschód: Farma
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<point-of-interest x="62" y="99">
@@ -1617,6 +1696,8 @@ Południowy-Wschód: Farma
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -1626,6 +1707,8 @@ Południowy-Wschód: Farma
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<portal x="85" y="26" ref="jail_entrance_left">
 			<destination zone="-1_semos_jail" ref="entrance"/>
@@ -1644,6 +1727,10 @@ Południowy-Wschód: Farma
 	</zone>
 
 	<zone name="int_semos_guard_house" file="interiors/semos/guard_house.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.guardhouse.RetiredAdventurerNPC"/>
 		<portal x="13" y="16" ref="entrance">
@@ -1690,6 +1777,10 @@ Oszuści wśród prostaków wolą nacisnąć na potworze. To też działa!
 	</zone>
 
 	<zone name="int_semos_hostel" file="interiors/semos/hostel.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.hostel.KidsNPCs"/>
 		<configurator class-name="games.stendhal.server.maps.semos.hostel.BoyNPC"/>
 
@@ -1718,6 +1809,8 @@ Oszuści wśród prostaków wolą nacisnąć na potworze. To też działa!
 			<parameter name="file" condition="stendhal.christmas">Level 0/semos/village_w_xmas.tmx</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -1821,6 +1914,8 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 			<parameter name="file" condition="stendhal.minetown">Level 0/semos/city_halloween.tmx</parameter>
 			<parameter name="file" condition="stendhal.easter">Level 0/semos/city_easter.tmx</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator
 			class-name="games.stendhal.server.entity.mapstuff.office.StoredEntityMoveConfigurator">
@@ -2066,6 +2161,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">10</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2075,6 +2171,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 				<parameter name="sound">dungeon_entrance</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">4</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2298,6 +2395,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				<parameter name="sound">snowflakelittlewhiteskirt</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">15</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2307,6 +2405,8 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 	<zone name="int_semos_tavern_0" file="interiors/semos/tavern_0.tmx">
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/semos/tavern_0_xmas.tmx</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.semos.tavern.BarMaidNPC"/>
@@ -2323,6 +2423,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 		<entity x="2" y="8" condition="stendhal.christmas">
@@ -2331,6 +2432,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				<parameter name="sound">christmastree</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">20</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2452,6 +2554,10 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 	</zone>
 
 	<zone name="int_semos_tavern_1" file="interiors/semos/tavern_1.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.tavern.RareWeaponsSellerNPC"/>
 		<configurator
@@ -2466,6 +2572,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2495,6 +2602,10 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 	</zone>
 
 	<zone name="int_semos_temple" file="interiors/semos/temple.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.temple.HealerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.semos.temple.TelepathNPC"/>
 
@@ -2503,6 +2614,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sacred_moments</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -2550,6 +2662,10 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 	</zone>
 
 	<zone name="int_semos_blacksmith" file="interiors/semos/blacksmith.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.blacksmith.BlacksmithNPC"/>
 		<configurator
@@ -2693,6 +2809,10 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 	</zone>
 
 	<zone name="int_semos_library" file="interiors/semos/library.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.library.HistorianGeographerNPC"/>
 		<configurator
@@ -2796,6 +2916,8 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 	<zone name="int_semos_storage_0" file="interiors/semos/storage_0.tmx">
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/semos/storage_0_xmas.tmx</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.storage.HousewifeNPC"/>
@@ -2815,6 +2937,8 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#413263</parameter>
 			<parameter name="blend_method">bleach</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="26" y="10" ref="upstairs">
@@ -2825,6 +2949,8 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 	<zone name="int_semos_bank" file="interiors/semos/bank.tmx">
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/semos/bank_xmas.tmx</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<!-- to disallow making or using marked scrolls for getting to trading
 			table area -->
@@ -3156,6 +3282,8 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 	<zone name="int_semos_townhall" file="interiors/semos/townhall.tmx">
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/semos/townhall_xmas.tmx</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.townhall.MayorNPC"/>
 		<configurator
@@ -3166,6 +3294,7 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -3201,6 +3330,10 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 	</zone>
 
 	<zone name="int_semos_bakery" file="interiors/semos/bakery.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.bakery.ChefNPC"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.bakery.ShopAssistantNPC"/>
@@ -3231,6 +3364,10 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 	<!--for the admin house -->
 	<zone name="int_semos_house" file="interiors/semos/house.tmx"
 		accessible="false">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.house.FlowerSellerNPC"/>
 		<configurator class-name="games.stendhal.server.maps.semos.house.SpiritTrapperNPC"/>
@@ -3293,6 +3430,8 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<entity x="103" y="49">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.Gate">
@@ -3389,6 +3528,10 @@ Wschód: Miasto Ados
 	</zone>
 
 	<zone name="int_semos_swanky_pad" file="interiors/semos/swanky_pad.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.pad.DealerNPC"/>
 		<portal x="7" y="18" ref="entrance">
 			<destination zone="0_semos_road_e" ref="pad_entrance"/>
@@ -3403,6 +3546,8 @@ Wschód: Miasto Ados
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="72" y="25">
@@ -3411,6 +3556,7 @@ Wschód: Miasto Ados
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
 				<parameter name="radius">60</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -3422,6 +3568,8 @@ Wschód: Miasto Ados
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather" condition="!stendhal.christmas">varying</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow_light</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -3433,6 +3581,7 @@ Wschód: Miasto Ados
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
 				<parameter name="radius">30</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -3484,6 +3633,8 @@ Potrzebna dorosła owca: proszę rozmawiać z Sato
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="1" y="1">
@@ -3491,6 +3642,7 @@ Potrzebna dorosła owca: proszę rozmawiać z Sato
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -3522,6 +3674,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_n2_w2" level="-1" x="499744" y="499744"
 		file="Level -1/semos/mine_n2_w2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="81" y="5">
 			<implementation
@@ -3651,14 +3807,26 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_n2_e" level="-1" x="500128" y="499616"
 		file="Level -1/semos/mine_n2_e.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-1_semos_mine_n2_e2" level="-1" x="500256" y="499616"
 		file="Level -1/semos/mine_n2_e2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-1_semos_mine_n2" level="-1" x="500000" y="499744"
 		file="Level -1/semos/mine_n2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<configurator
 			class-name="games.stendhal.server.entity.mapstuff.block.BlockZoneConfigurator">
@@ -3772,6 +3940,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_ne" level="-1" x="500128" y="499744"
 		file="Level -1/semos/mine_ne.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="79" y="107">
 			<implementation
@@ -3816,6 +3988,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_n_e2" level="-1" x="500256" y="499744"
 		file="Level -1/semos/mine_n_e2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="56" y="49">
 			<implementation
@@ -3874,6 +4050,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_n_w2" level="-1" x="499744" y="499872"
 		file="Level -1/semos/mine_n_w2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<portal x="121" y="17" ref="house1_entrance">
 			<destination zone="int_wofol_house1" ref="entrance"/>
 			<attribute name="move.continuous"/>
@@ -4046,6 +4226,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_mine_nw" level="-1" x="499872" y="499872"
 		file="Level -1/semos/mine_nw.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<portal x="6" y="23" ref="house4_entrance">
 			<destination zone="int_wofol_house4" ref="entrance"/>
 			<attribute name="move.continuous"/>
@@ -4156,6 +4340,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_caves" level="-1" x="500256" y="499872"
 		file="Level -1/semos/caves.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.caves.BabyDragonSellerNPC"/>
 
@@ -4163,6 +4351,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4181,17 +4370,26 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_dungeon" level="-1" x="500064" y="500000"
 		file="Level -1/semos/dungeon.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
 
 	<zone name="-1_semos_jail" level="-1" x="499872" y="500000"
 		file="Level -1/semos/jail.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.entity.player.Jail"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<configurator class-name="games.stendhal.server.maps.semos.jail.GuardNPC"/>
@@ -4221,6 +4419,8 @@ Południowy-zachód: Miasto Fado
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#75698c</parameter>
 			<parameter name="blend_method">bleach</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 
@@ -4228,6 +4428,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4238,6 +4439,8 @@ Południowy-zachód: Miasto Fado
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#75698c</parameter>
 			<parameter name="blend_method">bleach</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 
@@ -4245,6 +4448,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4255,6 +4459,8 @@ Południowy-zachód: Miasto Fado
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#75698c</parameter>
 			<parameter name="blend_method">bleach</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="28" y="37" ref="entrance" replacing="true">
@@ -4265,6 +4471,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4275,12 +4482,15 @@ Południowy-zachód: Miasto Fado
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#75698c</parameter>
 			<parameter name="blend_method">bleach</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4291,12 +4501,15 @@ Południowy-zachód: Miasto Fado
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0099da</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- music -->
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">ice_cave</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
@@ -4318,26 +4531,50 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-2_semos_mine_n2_e" level="-2" x="500128" y="499616"
 		file="Level -2/semos/mine_n2_e.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_n2_e2" level="-2" x="500256" y="499616"
 		file="Level -2/semos/mine_n2_e2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_n2_e3" level="-2" x="500384" y="499616"
 		file="Level -2/semos/mine_n2_e3.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_ne" level="-2" x="500128" y="499744"
 		file="Level -2/semos/mine_ne.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_n_e2" level="-2" x="500256" y="499744"
 		file="Level -2/semos/mine_n_e2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_n_e3" level="-2" x="500384" y="499744"
 		file="Level -2/semos/mine_n_e3.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<entity x="56" y="18">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
@@ -4351,18 +4588,34 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-2_semos_mine_e" level="-2" x="500128" y="499872"
 		file="Level -2/semos/mine_e.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_e2" level="-2" x="500256" y="499872"
 		file="Level -2/semos/mine_e2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_e3" level="-2" x="500384" y="499872"
 		file="Level -2/semos/mine_e3.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 	</zone>
 
 	<zone name="-2_semos_mine_w2" level="-2" x="499744" y="499872"
 		file="Level -2/semos/mine_w2.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.mines.HighPriestNPC"/>
 		<portal x="26" y="44" ref="to_balrog" replacing="true">
 			<destination zone="-2_semos_mine_w2" ref="exit_balrog"/>
@@ -4381,17 +4634,26 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-2_semos_dungeon" level="-2" x="500096" y="500032"
 		file="Level -2/semos/dungeon.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
 
 	<zone name="-2_semos_jail" level="-2" x="499872" y="500000"
 		file="Level -2/semos/jail.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.maps.semos.jail.JailKeeperNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoItemMove">
 			<parameter name="message">Ze względu bezpieczeństwa nie można przesuwać przedmiotów na terenie więzienia.</parameter>
@@ -4400,6 +4662,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-3_semos_jail" level="-3" x="499872" y="500000"
 		file="Level -3/semos/jail_walk.tmx" accessible="false">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoMoveTo"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoItemMove">
 			<parameter name="message">Ze względu bezpieczeństwa nie można przesuwać przedmiotów na terenie więzienia.</parameter>
@@ -4418,6 +4684,8 @@ Południowy-zachód: Miasto Fado
 			<parameter name="blend_method">bleach</parameter>
 			<parameter name="music">dark_quest</parameter>
 			<parameter name="music_volume">0.8</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="9" y="6" ref="dragon_portal_1">
@@ -4606,11 +4874,16 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-3_semos_dungeon" level="-3" x="500096" y="500032"
 		file="Level -3/semos/dungeon.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 
 		<entity x="1" y="1">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4623,6 +4896,8 @@ Południowy-zachód: Miasto Fado
 			<parameter name="blend_method">bleach</parameter>
 			<parameter name="music">dark_quest</parameter>
 			<parameter name="music_volume">0.8</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator
@@ -4653,6 +4928,10 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-4_semos_dungeon" level="-4" x="500096" y="500064"
 		file="Level -4/semos/dungeon.tmx">
+		<attributes>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
+			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
+		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.dungeon.SheepBuyerNPC"/>
 
@@ -4660,6 +4939,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="volume" condition="stendhal.minetown">0</parameter>
 			</implementation>
 		</entity>
 
