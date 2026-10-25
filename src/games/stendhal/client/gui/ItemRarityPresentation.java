@@ -41,6 +41,7 @@ final class ItemRarityPresentation {
 	private static final String BETTER_COLOR = "#62d26f";
 	private static final String WORSE_COLOR = "#ef6a62";
 	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
+	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.#");
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -937,9 +938,8 @@ final class ItemRarityPresentation {
 		return value.startsWith("-") ? value : "+" + value;
 	}
 
-	private static String formatCompact(final double value) {
-		return Math.rint(value) == value
-				? Integer.toString((int) value) : formatOneDecimal(value);
+	private static synchronized String formatCompact(final double value) {
+		return COMPACT_DECIMAL.format(value);
 	}
 
 	private static synchronized String formatOneDecimal(final double value) {
