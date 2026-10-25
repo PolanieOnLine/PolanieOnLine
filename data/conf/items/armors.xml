@@ -460,7 +460,6 @@
 			<atk value="1"/>
 			<def value="90"/>
 			<min_level value="400"/>
-			<statusresist slots="armor;" type="bleeding" value="0.2"/>
 		</attributes>
 		<weight value="52.0"/>
 		<value value="154974"/>

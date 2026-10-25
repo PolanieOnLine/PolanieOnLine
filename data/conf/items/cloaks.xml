@@ -417,7 +417,6 @@
 			<def value="40"/>
 			<min_use value="250"/>
 			<min_level value="400"/>
-			<statusresist slots="cloak;" type="bleeding" value="0.1"/>
 		</attributes>
 		<weight value="5.0"/>
 		<value value="51200"/>

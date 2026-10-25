@@ -276,7 +276,6 @@
 			<atk value="1"/>
 			<def value="30"/>
 			<min_level value="250"/>
-			<statusresist slots="feet;" type="bleeding" value="0.1"/>
 		</attributes>
 		<weight value="14.0"/>
 		<value value="28125"/>
