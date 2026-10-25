@@ -16,7 +16,6 @@
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="85" y="45">
@@ -47,7 +46,6 @@
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -100,7 +98,6 @@
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -173,7 +170,6 @@
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -186,7 +182,6 @@
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="110" y="25">
@@ -231,7 +226,6 @@
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="100" y="12">
@@ -328,7 +322,6 @@
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -430,7 +423,6 @@
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -443,7 +435,6 @@
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -538,7 +529,6 @@
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -808,7 +798,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="115" y="105">
@@ -992,7 +981,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		
 		<!-- NPCs -->
@@ -1013,10 +1001,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<!-- interiors -->
 	<!-- Dobromir House -->
 	<zone name="int_zakopane_dobromir_house" file="interiors/zakopane/house_dobromir.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="13" y="19" ref="exit">
 			<destination zone="0_zakopane_s_e2" ref="entrance"/>
 			<attribute name="move.continuous" />
@@ -1025,10 +1009,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Maisonette 0 -->
 	<zone name="int_zakopane_maisonette_0" file="interiors/zakopane/maisonette_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.house.BoleslawNPC"/>
 
@@ -1052,10 +1032,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Maisonette 1 -->
 	<zone name="int_zakopane_maisonette_1" file="interiors/zakopane/maisonette_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.house.CelinaNPC"/>
 
@@ -1077,10 +1053,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bakery -->
 	<zone name="int_zakopane_bakery" file="interiors/zakopane/bakery.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.bakery.ChefNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.bakery.ShopAssistantNPC"/>
@@ -1095,8 +1067,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<zone name="int_zakopane_bank_0" file="interiors/zakopane/bank_0.tmx">
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/bank_0_xmas.tmx</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -1314,10 +1284,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Bank 1 -->
 	<zone name="int_zakopane_bank_1" file="interiors/zakopane/bank_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<!-- NPCs -->
@@ -1489,8 +1455,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.maps.zakopane.bank.ItemsOnTable"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="2" y="16" ref="skarbiec_out">
@@ -1596,8 +1560,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="13" y="2" ref="bt_upto_1">
@@ -1614,8 +1576,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="1" y="12" ref="bt_upto_0">
@@ -1628,8 +1588,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="12" y="11" ref="bt_upto_2">
@@ -1654,8 +1612,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="0" y="0">
@@ -1680,8 +1636,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		
 		<!-- NPCs -->
@@ -1695,10 +1649,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Blacksmith -->
 	<zone name="int_zakopane_blacksmith" file="interiors/zakopane/blacksmith.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.blacksmith.KowalAndrzejNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.blacksmith.KrasnoludNPC"/>
@@ -1735,10 +1685,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Hospital -->
 	<zone name="int_zakopane_hospital" file="interiors/zakopane/hospital.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.hospital.BogusNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.hospital.GazdzinaJadzkaNPC"/>
@@ -1786,10 +1732,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Hostel -->
 	<zone name="int_zakopane_hostel" file="interiors/zakopane/hostel.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.hostel.BronekNPC"/>
 
@@ -1815,10 +1757,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Mine hut -->
 	<zone name="int_zakopane_mines_hut" file="interiors/zakopane/hut.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.zakopane.cave.hut.ItemsOnTable"/>
 
 		<portal x="5" y="10" ref="hut_exit">
@@ -1829,10 +1767,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 
 	<!-- Houses -->
 	<zone name="int_zakopane_seller_house" file="interiors/zakopane/house_200.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.house.AlicjaNPC"/>
 
@@ -1853,10 +1787,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_201" file="interiors/zakopane/house_201.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">8</parameter>
@@ -1875,10 +1805,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_201_1" file="interiors/zakopane/house_201_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<portal x="2" y="17" ref="house_201_dol">
@@ -1887,10 +1813,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_202" file="interiors/zakopane/house_202.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">22</parameter>
@@ -1902,10 +1824,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_203" file="interiors/zakopane/house_203.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">36</parameter>
@@ -1917,10 +1835,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_204" file="interiors/zakopane/house_204.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">15</parameter>
@@ -1943,10 +1857,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_204_1" file="interiors/zakopane/house_204_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<portal x="9" y="22" ref="house_204_dol">
@@ -1955,10 +1865,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_205" file="interiors/zakopane/house_205.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">19</parameter>
@@ -1970,10 +1876,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_206" file="interiors/zakopane/house_206.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -1985,10 +1887,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_207" file="interiors/zakopane/house_207.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">6</parameter>
@@ -2007,10 +1905,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_207_-1" file="interiors/zakopane/house_207_-1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<portal x="2" y="2" ref="house_207_gora">
 			<destination zone="int_zakopane_house_207" ref="house_207_dol"/>
@@ -2018,10 +1912,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_208" file="interiors/zakopane/house_208.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">2</parameter>
@@ -2040,10 +1930,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_208_1" file="interiors/zakopane/house_208_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
 		<portal x="2" y="2" ref="house_208_dol">
@@ -2052,10 +1938,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_209" file="interiors/zakopane/house_209.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2067,10 +1949,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_210" file="interiors/zakopane/house_210.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2082,10 +1960,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_211" file="interiors/zakopane/house_211.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2097,10 +1971,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_212" file="interiors/zakopane/house_212.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2112,10 +1982,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_213" file="interiors/zakopane/house_213.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2127,10 +1993,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_214" file="interiors/zakopane/house_214.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">21</parameter>
@@ -2142,10 +2004,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	</zone>
 
 	<zone name="int_zakopane_house_215" file="interiors/zakopane/house_215.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">19</parameter>
@@ -2164,7 +2022,6 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="music" condition="stendhal.christmas">snowflakelittlewhiteskirt</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2233,15 +2090,11 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Home -1 -->
 	<zone name="int_zakopane_home_-1" file="interiors/zakopane/home_-1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-dj_zai-darkbells</parameter>
 				<parameter name="volume">30</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2253,10 +2106,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Mill 0 -->
 	<zone name="int_zakopane_mill_0" file="interiors/zakopane/mill_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<portal x="9" y="7" ref="entrance_mill">
 			<destination zone="0_zakopane_se" ref="mill_entrance"/>
@@ -2275,10 +2124,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Mill 1 -->
 	<zone name="int_zakopane_mill_1" file="interiors/zakopane/mill_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="3" y="19" ref="entrance_down">
@@ -2373,17 +2218,13 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Playroom -->
 	<zone name="int_zakopane_playroom" file="interiors/zakopane/playroom.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.zakopane.playroom.Playroomset"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="54" y="8">
@@ -2403,10 +2244,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Postoffice -->
 	<zone name="int_zakopane_postoffice" file="interiors/zakopane/postoffice.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="3" y="10" ref="postoffice_left_exit">
 			<destination zone="0_zakopane_s" ref="postoffice_entrance_left"/>
 			<attribute name="move.continuous" />
@@ -2419,10 +2256,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Shop -->
 	<zone name="int_zakopane_shop" file="interiors/zakopane/shop.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.shop.StasekNPC"/>
 
@@ -2444,10 +2277,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Stable -->
 	<zone name="int_zakopane_stable" file="interiors/zakopane/stable.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.stable.StableNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.stable.VetNPC"/>
@@ -2474,10 +2303,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 0 -->
 	<zone name="int_zakopane_sewing_house_0" file="interiors/zakopane/sewing_house_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.GlovesBuyerNPC"/>
 
@@ -2505,10 +2330,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Sewing house 1 -->
 	<zone name="int_zakopane_sewing_house_1" file="interiors/zakopane/sewing_house_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.SewingNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.sewinghouse.CollectorNPC"/>
@@ -2526,7 +2347,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<parameter name="music">pol-littlemeadow1</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2617,10 +2437,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Church -->
 	<zone name="int_zakopane_church" file="interiors/zakopane/church.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.church.WikaryNPC"/>
 
@@ -2654,10 +2470,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Chapel -->
 	<zone name="int_zakopane_chapel" file="interiors/zakopane/chapel.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="7" y="14" ref="chapel_1_exit">
 			<destination zone="0_zakopane_c" ref="chapel_entrance_1"/>
 			<attribute name="move.continuous" />
@@ -2671,7 +2483,6 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2721,10 +2532,6 @@ Aktualne ceny u Gazdy Wojtka:
 
 	<!-- Trainstation -->
 	<zone name="int_zakopane_trainstation" file="interiors/zakopane/trainstation.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="11" y="14" ref="trainstation_1_exit">
 			<destination zone="0_zakopane_e" ref="trainstation_entrance_1"/>
 			<attribute name="move.continuous" />
@@ -2737,15 +2544,11 @@ Aktualne ceny u Gazdy Wojtka:
 	</zone>
 
 	<zone name="int_zakopane_mountain_room" file="interiors/zakopane/mountain_room.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
 				<parameter name="volume">15</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2766,8 +2569,6 @@ Aktualne ceny u Gazdy Wojtka:
 	<zone name="-1_zakopane_mountain_cave" level="-1" x="513056" y="18176" file="Level -1/zakopane/mountain_cave.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2777,7 +2578,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
 				<parameter name="volume">15</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2795,7 +2596,6 @@ Aktualne ceny u Gazdy Wojtka:
 			<parameter name="music">pol-inthedark2</parameter>
 			<parameter name="music_volume">0.2</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -2803,14 +2603,12 @@ Aktualne ceny u Gazdy Wojtka:
 	<zone name="-1_zakopane_underground" file="Level -1/zakopane/underground.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark3</parameter>
 				<parameter name="volume">20</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2828,8 +2626,6 @@ Aktualne ceny u Gazdy Wojtka:
 	<zone name="-1_zakopane_catacombs" file="Level -1/zakopane/catacombs.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="27" y="10" ref="catacombs_exit">
@@ -2848,7 +2644,6 @@ Aktualne ceny u Gazdy Wojtka:
 			<parameter name="music">pol-inthedark2</parameter>
 			<parameter name="music_volume">0.2</parameter>
 			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2878,8 +2673,6 @@ Aktualne ceny u Gazdy Wojtka:
 	<zone name="-2_zakopane_underground" file="Level -2/zakopane/underground.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<portal x="1" y="123" ref="underground_2_exit">
@@ -2894,8 +2687,6 @@ Aktualne ceny u Gazdy Wojtka:
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2905,7 +2696,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
 				<parameter name="volume">50</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
@@ -2950,10 +2741,6 @@ Aktualne ceny u Gazdy Wojtka:
 	<!-- Level 1 -->
 
 	<zone name="1_football_playground" level="1" x="513312" y="18688" file="Level 1/zakopane/football_playground.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.stadium.KibicNPC"/>
 
@@ -3153,8 +2940,6 @@ Aktualne ceny u Gazdy Wojtka:
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->

@@ -12,8 +12,6 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -21,8 +19,6 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.maps.ados.entwives.EntwifeNPC"/>
@@ -177,8 +173,6 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<point-of-interest x="63" y="48">
@@ -194,8 +188,6 @@
  		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -203,8 +195,6 @@
 	<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -616,8 +606,6 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="124" y="122">
@@ -660,8 +648,6 @@
  		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<entity x="5" y="124">
@@ -718,10 +704,6 @@ Zachód: Semos
 	</zone>
 
 	<zone name="int_ados_magician_house" file="interiors/ados/magician_house.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.magician_house.WizardNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.magician_house.ItemsOnTable" />
@@ -769,8 +751,6 @@ używanie zwojów.
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -848,7 +828,7 @@ używanie zwojów.
 				<parameter name="sound">fire-1</parameter>
 				<parameter name="radius">12</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -890,10 +870,6 @@ Zachód: Semos
 	</zone>
 
 	<zone name="int_ados_pet_sanctuary" file="interiors/ados/pet_sanctuary.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="16" y="9" ref="door_right">
 			<!-- sometime in future we might allow players in to get a pet out but for
 					 now, we lock the door into the pet area -->
@@ -923,8 +899,6 @@ Zachód: Semos
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.ados.wall.Deathmatch" />
@@ -1043,8 +1017,6 @@ Zachód: Semos
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -1475,18 +1447,10 @@ Proszę zostawiaj moją pocztę w domu moich sąsiadów.
 	</zone>
 
 	<zone name="int_ados_reverse_arrow" file="interiors/ados/reverse_arrow.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 	</zone>
 
 	<zone name="int_ados_bank" file="interiors/ados/bank.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.bank.BankNPC" />
 
@@ -1674,8 +1638,6 @@ Pod nowym kierownictwem. Skrzynia po prawej jest wciąż utrzymywana przez Semos
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#808080</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -1702,8 +1664,6 @@ Pod nowym kierownictwem. Skrzynia po prawej jest wciąż utrzymywana przez Semos
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#808080</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Portals -->
@@ -1714,10 +1674,6 @@ Pod nowym kierownictwem. Skrzynia po prawej jest wciąż utrzymywana przez Semos
 	</zone>
 
 	<zone name="int_ados_bakery" file="interiors/ados/bakery.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.bakery.BakerNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.bakery.ItemsOnTable" />
@@ -1744,10 +1700,6 @@ Pod nowym kierownictwem. Skrzynia po prawej jest wciąż utrzymywana przez Semos
 	</zone>
 
 	<zone name="int_ados_library" file="interiors/ados/library.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.library.LibrarianNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.library.WriterNPC" />
@@ -1836,17 +1788,13 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_tavern_0" file="interiors/ados/tavern_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1869,10 +1817,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_zaras_house_0" file="interiors/ados/zaras_house_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="8" y="14" ref="entrance_zaras_house">
 			<destination zone="0_ados_city_n" ref="zaras_house_entrance" />
@@ -1891,10 +1835,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_zaras_house_1" file="interiors/ados/zaras_house_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="11" y="4" ref="down_zaras_house">
 			<destination zone="int_ados_zaras_house_0" ref="up_zaras_house"/>
@@ -1926,10 +1866,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_goldsmith" file="interiors/ados/goldsmith.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.goldsmith.GoldsmithNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.goldsmith.MithrilForgerNPC" />
@@ -1964,10 +1900,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	-->
 
 	<zone name="int_ados_carolines_house_0" file="interiors/ados/carolines_house.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.market.FishermansDaughterNPC" />
 
@@ -1980,10 +1912,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_felinas_house" file="interiors/ados/felinas_house.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.felinashouse.CatSellerNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.felinashouse.KittensNPC" />
@@ -1997,10 +1925,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_71" file="interiors/ados/house_71.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -2045,10 +1969,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_72" file="interiors/ados/house_72.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">6</parameter>
@@ -2080,10 +2000,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_73" file="interiors/ados/house_73.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 	<parameter name="x">9</parameter>
@@ -2107,10 +2023,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_74" file="interiors/ados/house_74.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">28</parameter>
@@ -2142,10 +2054,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_75" file="interiors/ados/house_75.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">2</parameter>
@@ -2177,10 +2085,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_76" file="interiors/ados/house_76.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">3</parameter>
@@ -2212,10 +2116,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_house_77" file="interiors/ados/house_77.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 	<parameter name="x">13</parameter>
@@ -2248,10 +2148,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_barracks_0" file="interiors/ados/barracks_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.barracks.BuyerNPC" />
 		<!-- originally located in semos townhall hence package here - may move back -->
@@ -2312,10 +2208,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_barracks_1" file="interiors/ados/barracks_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="36" y="4" ref="downstairs_2">
 			<destination zone="int_ados_barracks_0" ref="upstairs_2" />
@@ -2324,10 +2216,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_storage" file="interiors/ados/storage.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="14" y="30" ref="storage_inside_left">
 			<destination zone="0_ados_city_n" ref="storage_outside_1"/>
@@ -2342,10 +2230,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_sewing_room" file="interiors/ados/sewing_room.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.sewingroom.SeamstressNPC" />
 
@@ -2384,8 +2268,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<parameter name="color_method">screen</parameter>
 			<!-- mid-grey -->
 			<parameter name="color">#808080</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2420,17 +2302,13 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_bar" file="interiors/ados/bar.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2455,17 +2333,13 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_bar_1" file="interiors/ados/bar_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2479,10 +2353,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_town_hall" file="interiors/ados/buraucrazy_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.townhall.TaxmanNPC" />
 
@@ -2498,7 +2368,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2771,10 +2641,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_town_hall_1" file="interiors/ados/buraucrazy_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.townhall.ClerkNPC" />
 
@@ -2783,7 +2649,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2816,10 +2682,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_town_hall_2" file="interiors/ados/buraucrazy_2.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.townhall.MayorNPC" />
 
@@ -2828,7 +2690,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2870,16 +2732,12 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_town_hall_3" file="interiors/ados/buraucrazy_3.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Music/Ambiance -->
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2924,10 +2782,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_fishermans_hut_west" file="interiors/ados/fishermans_hut_west.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.fishermans_hut.TeacherNPC" />
 
@@ -2940,10 +2794,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_fishermans_hut_north" file="interiors/ados/fishermans_hut_north.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.fishermans_hut.FishermanNPC" />
 
@@ -2956,10 +2806,6 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	</zone>
 
 	<zone name="int_ados_meat_market" file="interiors/ados/meat_market.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.meat_market.BlacksheepHarryNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.meat_market.BlacksheepJoeNPC" />
@@ -3023,10 +2869,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_castle_entrance" file="interiors/ados/castle_entrance.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- entrance -->
 		<portal x="15" y="30" ref="entranceleft">
 			<destination zone="0_ados_city" ref="castle_left_entrance" />
@@ -3196,10 +3038,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_castle_left" file="interiors/ados/castle_left.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.castle.JesterNPC" />
 
@@ -3328,10 +3166,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_castle_right" file="interiors/ados/castle_right.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- bottom corridor -->
 		<portal x="0" y="35" ref="bottom1">
 			<destination zone="int_ados_castle_entrance" ref="right1" />
@@ -3457,10 +3291,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_castle_throne" file="interiors/ados/castle_throne.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- left corridor -->
 		<portal x="0" y="16" ref="left1">
 			<destination zone="int_ados_castle_left" ref="top1" />
@@ -3596,10 +3426,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_castle_dungeons" file="interiors/ados/castle_dungeons.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="33" y="29" ref="entrance1">
 			<destination zone="0_ados_city" ref="castledungeons" />
@@ -3617,10 +3443,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_ross_house" file="interiors/ados/ross_house.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<configurator class-name="games.stendhal.server.maps.ados.rosshouse.LittleGirlNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.rosshouse.FatherNPC" />
@@ -3635,10 +3457,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_50" file="interiors/ados/house_50.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -3666,10 +3484,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_50_1" file="interiors/ados/house_50_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -3697,10 +3511,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_51" file="interiors/ados/house_51.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -3728,10 +3538,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_51_1" file="interiors/ados/house_51_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -3760,10 +3566,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_52" file="interiors/ados/house_52.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">12</parameter>
@@ -3797,10 +3599,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_52_1" file="interiors/ados/house_52_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -3810,10 +3608,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_53" file="interiors/ados/house_53.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -3840,10 +3634,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_53_1" file="interiors/ados/house_53_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -3853,10 +3643,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_54" file="interiors/ados/house_54.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">12</parameter>
@@ -3899,10 +3685,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_54_1" file="interiors/ados/house_54_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -3912,10 +3694,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_55" file="interiors/ados/house_55.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">12</parameter>
@@ -3946,10 +3724,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_55_1" file="interiors/ados/house_55_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Interactive sounds -->
@@ -3975,10 +3749,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_56" file="interiors/ados/house_56.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -4004,10 +3774,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_56_1" file="interiors/ados/house_56_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Interactive sounds -->
@@ -4027,10 +3793,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_57" file="interiors/ados/house_57.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">12</parameter>
@@ -4056,10 +3818,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_57_1" file="interiors/ados/house_57_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Piano -->
@@ -4078,10 +3836,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_58" file="interiors/ados/house_58.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">11</parameter>
@@ -4125,10 +3879,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_58_1" file="interiors/ados/house_58_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">3</parameter>
@@ -4145,10 +3895,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_59" file="interiors/ados/house_59.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -4200,10 +3946,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_59_1" file="interiors/ados/house_59_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -4213,10 +3955,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_60" file="interiors/ados/house_60.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">7</parameter>
@@ -4267,10 +4005,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_60_1" file="interiors/ados/house_60_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -4280,10 +4014,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_61" file="interiors/ados/house_61.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">5</parameter>
@@ -4328,10 +4058,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_61_1" file="interiors/ados/house_61_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">2</parameter>
@@ -4347,10 +4073,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_62" file="interiors/ados/house_62.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">13</parameter>
@@ -4377,10 +4099,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_62_1" file="interiors/ados/house_62_1.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<!-- Portals -->
@@ -4400,10 +4118,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_63" file="interiors/ados/house_63.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">20</parameter>
@@ -4423,10 +4137,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_64" file="interiors/ados/house_64.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">20</parameter>
@@ -4446,10 +4156,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_65" file="interiors/ados/house_65.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">10</parameter>
@@ -4469,10 +4175,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_66" file="interiors/ados/house_66.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">19</parameter>
@@ -4529,10 +4231,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_67" file="interiors/ados/house_67.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">20</parameter>
@@ -4552,10 +4250,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_68" file="interiors/ados/house_68.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">22</parameter>
@@ -4569,10 +4263,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_69" file="interiors/ados/house_69.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">9</parameter>
@@ -4603,10 +4293,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_house_70" file="interiors/ados/house_70.tmx" accessible="false">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 		<configurator class-name="games.stendhal.server.entity.mapstuff.chest.StoredChestConfigurator">
 			<parameter name="x">11</parameter>
@@ -4738,8 +4424,6 @@ Moje wynagrodzenie:
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -4762,10 +4446,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_farm_house" file="interiors/ados/farm_house.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.ados.farmhouse.FarmersWifeNPC" />
 
 		<!-- Clock -->
@@ -4803,10 +4483,6 @@ Moje wynagrodzenie:
 	</zone>
 
 	<zone name="int_ados_farm_house_1" file="interiors/ados/farm_house_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.farmhouse.MotherNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.farmhouse.BoyNPC"/>
@@ -4848,8 +4524,6 @@ Moje wynagrodzenie:
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -4893,8 +4567,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -4927,8 +4599,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(fog=+2)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music ambiance -->
@@ -4936,7 +4606,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">lost_in_the_fog</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -4946,8 +4616,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -5082,8 +4750,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!--	NPCs -->
@@ -5389,8 +5055,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 		<!-- temporarily no teleport in since it is not accessible to players most of the time and if we run a raid there, players shouldn't mark scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
@@ -5401,8 +5065,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(fog=+2)</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -5413,7 +5075,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">lost_in_the_fog</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5436,8 +5098,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Removed till vaults ready
@@ -5464,8 +5124,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -5641,10 +5299,6 @@ Południowy-wschód: Doki
 	</zone>
 
 	<zone name="int_ados_church_0" file="interiors/ados/church_0.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.church.PriestNPC"/>
 		<configurator class-name="games.stendhal.server.maps.ados.church.VergerNPC"/>
@@ -5654,7 +5308,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sacred_moments</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5691,10 +5345,6 @@ Południowy-wschód: Doki
 	</zone>
 
 	<zone name="int_ados_church_1" file="interiors/ados/church_1.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.church.HealerNPC" />
 
@@ -5703,7 +5353,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5824,10 +5474,6 @@ Południowy-wschód: Doki
 	-->
 
 	<zone name="int_ados_fishermans_hut_south" file="interiors/ados/fishermans_hut_south.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 
 		<!-- Portals -->
 		<portal x="8" y="14" ref="entrance_fishermans_hut_south">
@@ -5842,8 +5488,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -5866,8 +5510,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 	</zone>
@@ -5876,8 +5518,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 	</zone>
 
@@ -5885,8 +5525,6 @@ Południowy-wschód: Doki
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 	</zone>
@@ -5894,10 +5532,6 @@ Południowy-wschód: Doki
 
 	<!-- Level -1 -->
 	<zone name="-1_ados_abandoned_keep" level="-1" x="500512" y="499744" file="Level -1/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.abandonedkeep.OrcWeaponArmorGuyNPC" />
 		<configurator class-name="games.stendhal.server.maps.ados.abandonedkeep.OrcKillGiantDwarfNPC" />
@@ -5915,31 +5549,15 @@ Południowy-wschód: Doki
 	</zone>
 
 	<zone name="-1_ados_tunnel_w" level="-1" x="500768" y="499744" file="Level -1/ados/tunnel_w.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-1_ados_tunnel_w2" level="-1" x="500640" y="499744" file="Level -1/ados/tunnel_w2.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-1_ados_caves" level="-1" x="500384" y="499872" file="Level -1/ados/caves.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-1_ados_caves_e" level="-1" x="500512" y="499872" file="Level -1/ados/caves_e.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="71" y="62" ref="pit_entrance">
 			<destination zone="-2_ados_snake_pit" ref="pit_exit" />
@@ -5971,17 +5589,9 @@ Południowy-wschód: Doki
 	</zone>
 
 	<zone name="-1_ados_caves_s" level="-1" x="500384" y="500000" file="Level -1/ados/caves_s.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-1_ados_caves_se" level="-1" x="500512" y="500000" file="Level -1/ados/caves_se.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="123" y="107" ref="0">
 			<destination zone="0_ados_rock" ref="caves_exit" />
@@ -5990,10 +5600,6 @@ Południowy-wschód: Doki
 	</zone>
 
 	<zone name="-1_ados_outside_nw" level="-1" x="500640" y="499872" file="Level -1/ados/outside_nw.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<portal x="4" y="23" ref="0">
 			<destination zone="0_ados_outside_nw" ref="0" />
 			<attribute name="move.continuous" />
@@ -6007,8 +5613,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#afd4a9</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6016,7 +5620,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6028,8 +5632,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#afd4a9</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6037,7 +5639,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6049,8 +5651,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#afd4a9</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Portals -->
@@ -6063,7 +5663,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6075,8 +5675,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#afd4a9</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Portals -->
@@ -6090,7 +5688,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6115,8 +5713,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#afd4a9</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6124,17 +5720,13 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
 	</zone>
 
 	<zone name="-1_ados_outside_w" level="-1" x="500640" y="500000" file="Level -1/ados/outside_w.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
 				<parameter name="width">27</parameter>
@@ -6193,17 +5785,9 @@ Południowy-wschód: Doki
 
 	<!-- Level -2 -->
 	<zone name="-2_ados_abandoned_keep" level="-2" x="500512" y="499744" file="Level -2/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-2_ados_outside_nw" level="-2" x="500640" y="499872" file="Level -2/ados/outside_nw.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 	</zone>
 
 	<zone name="-2_ados_snake_pit" level="-2" x="500512" y="499808" file="Level -2/ados/snake_pit.tmx">
@@ -6211,8 +5795,6 @@ Południowy-wschód: Doki
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Signs -->
@@ -6246,7 +5828,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6257,8 +5839,6 @@ Wschodni Tunel: Niezbadany</attribute>
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -6269,7 +5849,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6317,10 +5897,6 @@ Wschodni Tunel: Niezbadany</attribute>
 
 	<!-- Level -3 -->
 	<zone name="-3_ados_abandoned_keep" level="-3" x="500512" y="499744" file="Level -3/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.ados.abandonedkeep.DwarfBuyerGuyNPC" />
 
 		<!-- Signs -->
@@ -6335,10 +5911,6 @@ Wschodni Tunel: Niezbadany</attribute>
 	</zone>
 
 	<zone name="-3_ados_outside_nw" level="-3" x="500640" y="499872" file="Level -3/ados/outside_nw.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.maps.ados.outside.CloaksCollectorNPC" />
 
 		<!-- This must be after the NPC configurator -->
@@ -6379,8 +5951,6 @@ Wschodni Tunel: Niezbadany</attribute>
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6388,7 +5958,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6423,8 +5993,6 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6432,7 +6000,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -6442,8 +6010,6 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6451,7 +6017,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6462,8 +6028,6 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music/Ambiance -->
@@ -6471,7 +6035,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6496,8 +6060,6 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<parameter name="color_method">multiply</parameter>
 			<parameter name="color">#776899</parameter>
 			<parameter name="blend_method">bleach</parameter>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
 		</attributes>
 
 		<!-- Music ambiance -->
@@ -6505,7 +6067,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
-				<parameter name="volume" condition="stendhal.minetown">0</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6524,10 +6086,6 @@ Minęły trzy dni od kiedy zdecydowałem się na odkrywanie niższych poziomów 
 
 	<!-- Level -4 -->
 	<zone name="-4_ados_abandoned_keep" level="-4" x="500512" y="499744" file="Level -4/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.abandonedkeep.DwarfWeaponArmorGuyNPC"/>
 
@@ -6546,10 +6104,6 @@ Minęły trzy dni od kiedy zdecydowałem się na odkrywanie niższych poziomów 
 
 	<!-- Level -5 -->
 	<zone name="-5_ados_abandoned_keep" level="-5" x="500512" y="499744" file="Level -5/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
 
 		<portal x="15" y="30" ref="down1">
@@ -6568,10 +6122,6 @@ Minęły trzy dni od kiedy zdecydowałem się na odkrywanie niższych poziomów 
 
 	<!-- Level -6 -->
 	<zone name="-6_ados_abandoned_keep" level="-6" x="500512" y="499744" file="Level -6/ados/abandoned_keep.tmx">
-		<attributes>
-			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
-			<parameter name="music_volume" condition="stendhal.minetown">0.5</parameter>
-		</attributes>
 		<!-- Portals -->
 		<portal x="15" y="30" ref="up1">
 			<destination zone="-5_ados_abandoned_keep" ref="down1" />
