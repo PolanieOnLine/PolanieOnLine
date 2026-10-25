@@ -427,6 +427,24 @@ final class ItemRarityPresentation {
 				|| hasTooltipValue(equippedItem, ItemTooltip.BASE_LIFESTEAL)) {
 			appendLifeStealStat(stats, object, equippedItem);
 		}
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "poisoned",
+				"odporności na zatrucie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "bleeding",
+				"odporności na krwawienie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "shocked",
+				"odporności na szok", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "confused",
+				"odporności na dezorientację", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "heavy",
+				"odporności na spowolnienie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "stunned",
+				"odporności na ogłuszenie", true);
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
 			appendStatTableStart(tooltip);

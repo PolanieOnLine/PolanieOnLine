@@ -78,6 +78,15 @@ const RESISTANCES: Array<[string, string]> = [
 	["cut", "obrażenia fizyczne"]
 ];
 
+const STATUS_RESISTANCES: Array<[string, string]> = [
+	["poisoned", "odporności na zatrucie"],
+	["bleeding", "odporności na krwawienie"],
+	["shocked", "odporności na szok"],
+	["confused", "odporności na dezorientację"],
+	["heavy", "odporności na spowolnienie"],
+	["stunned", "odporności na ogłuszenie"]
+];
+
 const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
 	["legendary_deep_wounds", "Głębokie Rany", "15% szansy na krwawienie; rana zadaje 35% obrażeń trafienia."],
 	["legendary_armor_breaker", "Łamacz Pancerzy", "Redukuje 40% niekorzystnej kary wynikającej z pancerza celu."],
@@ -235,6 +244,14 @@ function appendCoreStats(lines: ItemTooltipLine[], current: Record<string, strin
 			intValue(equipped, "skill_atk"), !!equipped);
 	if (hasValue(current, "base_lifesteal") || hasValue(equipped, "base_lifesteal")) {
 		appendLifeStealStat(section, current, equipped);
+	}
+	for (const [status, label] of STATUS_RESISTANCES) {
+		const key = "status_resistance_" + status;
+		const value = percentageValue(current, key, true);
+		const previous = percentageValue(equipped, key, true);
+		if (value === 0 && (!equipped || previous === 0)) continue;
+		section.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
+			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
 	}
 	appendSection(lines, section);
 }

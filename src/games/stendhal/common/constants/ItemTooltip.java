@@ -32,6 +32,8 @@ public final class ItemTooltip {
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
 	public static final String RESISTANCE_PREFIX = "resistance_";
+	/** Innate status resistances, separate from rolled resist_* affixes. */
+	public static final String STATUS_RESISTANCE_PREFIX = "status_resistance_";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
 	public static final String BASE_LIFESTEAL = "base_lifesteal";

@@ -25,6 +25,7 @@ import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
+import games.stendhal.server.entity.status.StatusType;
 
 /** Builds a presentation-safe map of final item statistics for clients. */
 public final class ItemTooltipService {
@@ -52,8 +53,10 @@ public final class ItemTooltipService {
 			return;
 		}
 
-		if (item.has(ItemTooltip.ATTRIBUTE)) {
-			item.remove(ItemTooltip.ATTRIBUTE);
+		if (item.hasMap(ItemTooltip.ATTRIBUTE)) {
+			for (final String key : new HashSet<String>(item.getMap(ItemTooltip.ATTRIBUTE).keySet())) {
+				item.remove(ItemTooltip.ATTRIBUTE, key);
+			}
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
@@ -90,6 +93,19 @@ public final class ItemTooltipService {
 					Integer.toString(resistance));
 		}
 		putPositiveInt(item, ItemTooltip.RANGE, displayedRange(item));
+		if (item instanceof StatusResistantItem) {
+			final StatusResistantItem resistantItem = (StatusResistantItem) item;
+			// Tooltips may be refreshed before subclass construction has finished.
+			if (resistantItem.getStatusResistancesList() != null) {
+				for (final StatusType type : StatusType.values()) {
+					final double resistance = resistantItem.getStatusResistanceValue(type);
+					if (resistance > 0.0) {
+						put(item, ItemTooltip.STATUS_RESISTANCE_PREFIX + type.getName(),
+								Double.toString(resistance));
+					}
+				}
+			}
+		}
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
 		if (item.has("lifesteal")) {
