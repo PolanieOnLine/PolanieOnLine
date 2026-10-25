@@ -996,6 +996,26 @@ bielikrasom	OBJ	=bielikrasa	bielikrasa
 bielikrasami	OBJ	=bielikrasa	bielikrasa
 bielikrasach	OBJ	=bielikrasa	bielikrasa
 bielikraso	OBJ	=bielikrasa	bielikrasa
+
+# Polish item inflections keep material and content qualifiers unchanged.
+polana	OBJ	=polano	polano
+polan	OBJ	=polano	polano
+sztabkę	OBJ	=sztabka	sztabka
+sztabki	OBJ	=sztabka	sztabka
+sztabek	OBJ	=sztabka	sztabka
+mąki	OBJ	=mąka	mąka
+mąkę	OBJ	=mąka	mąka
+miodu	OBJ	=miód	miód
+butelkę	OBJ	=butelka	butelka
+butelki	OBJ	=butelka	butelka
+butelek	OBJ	=butelka	butelka
+chleba	OBJ	=chleb	chleb
+orchideę	OBJ	=orchidea	orchidea
+orchidei	OBJ	=orchidea	orchidea
+żonkile	OBJ	=żonkil	żonkil
+żonkili	OBJ	=żonkil	żonkil
+przylaszczki	OBJ	=przylaszczka	przylaszczka
+przylaszczkę	OBJ	=przylaszczka	przylaszczka
 świeca	OBJ	świece
 żółty	OBJ	żółte
 
