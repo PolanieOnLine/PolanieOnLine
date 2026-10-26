@@ -21,6 +21,7 @@ import games.stendhal.server.maps.quests.revivalweeks.DadNPC;
 import games.stendhal.server.maps.quests.revivalweeks.FishermansDaughterSellingNPC;
 import games.stendhal.server.maps.quests.revivalweeks.FoundGirl;
 import games.stendhal.server.maps.quests.revivalweeks.GhostSellerNPC;
+import games.stendhal.server.maps.quests.revivalweeks.HalloweenGhostAmbience;
 import games.stendhal.server.maps.quests.revivalweeks.LoadableContent;
 import games.stendhal.server.maps.quests.revivalweeks.MakeupArtist;
 import games.stendhal.server.maps.quests.revivalweeks.NineSwitchesGame;
@@ -54,6 +55,7 @@ public class MineTownRevivalWeeks extends AbstractQuest {
 		content.add(new TicTacToeGame());
 		content.add(new NineSwitchesGame());
 		content.add(new GhostSellerNPC());
+		content.add(new HalloweenGhostAmbience());
 //		content.add(new SokobanGame());
 
 		for (final LoadableContent loadableContent : content) {
