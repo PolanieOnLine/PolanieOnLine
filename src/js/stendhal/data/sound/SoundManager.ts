@@ -563,16 +563,25 @@ export class SoundManager {
 		let unmuted = true;
 		for (const layerName of this.layers) {
 			for (const snd of this.active[layerName]) {
-				snd.muted = false;
-				unmuted = unmuted && !snd.paused && !snd.muted;
+				unmuted = this.unmuteSound(snd) && unmuted;
 			}
 		}
 		// global music is not tracked in layer array
 		if (this.globalMusic) {
-			this.globalMusic.muted = false;
-			unmuted = unmuted && !this.globalMusic.paused && !this.globalMusic.muted;
+			unmuted = this.unmuteSound(this.globalMusic) && unmuted;
 		}
 		return unmuted;
+	}
+
+	private unmuteSound(sound: SoundObject): boolean {
+		sound.muted = false;
+		if (sound.loop && sound.paused) {
+			// Muted autoplay may have been paused by the browser at startup.
+			void sound.play().catch(error => {
+				console.warn("Could not resume looping sound:", sound.basename, error);
+			});
+		}
+		return !sound.paused && !sound.muted;
 	}
 
 	/**
