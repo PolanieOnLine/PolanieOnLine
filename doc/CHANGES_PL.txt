@@ -1,5 +1,56 @@
 ## Changelog
 ---------
+1.43.4
+*halloween i duszek*
+---
+* Dodano Jaromirę, którą można spotkać przy biesiadzie w południowym Zakopanem tylko podczas Halloween. Za 5000 monet można kupić u niej duszka jako towarzysza
+* Duszek rośnie po 10 godzinach spędzonych z opiekunem w grze. Postęp zachowuje po wylogowaniu, a kupiony towarzysz pozostaje z graczem również po zakończeniu wydarzenia
+* Duszek nie potrzebuje karmienia i nie bierze udziału w walce. Zajmuje ten sam slot towarzysza co owczarek lub kotek
+* Przygotowano małą i wyrośniętą postać duszka, półprzezroczysty wygląd oraz animację unoszenia, która działa także w bezruchu
+* Uzupełniono halloweenowe dekoracje Zakopanego, oświetlenie dyń i czaszek oraz rozmieszczenie mieszkańców przy biesiadzie
+* Dodano specjalną muzykę Halloween w wybranych miejscach Zakopanego, Kościeliska, Semos i Ados. Zastępuje ona dotychczasową muzykę tła na czas wydarzenia
+* W miejscach z halloweenową muzyką co pewien czas słychać ciche odgłosy duchów. Pojawiają się w losowych odstępach i znikają po zakończeniu wydarzenia
+
+*odrodzenia i walka*
+---
+* Każde z pierwszych dziesięciu odrodzeń zwiększa o 8 punktów limity ataku i obrony wykorzystywanych w walce. Łączny wzrost limitów wynosi do 80 punktów i obejmuje również wcześniej wykonane odrodzenia
+* Podniesienie limitu pozwala wykorzystać wytrenowane umiejętności. Nie przyznaje dodatkowych punktów ataku ani obrony
+* Usunięto dotychczasowy procentowy bonus do siły ataku za odrodzenia, zastępując go rozwojem limitów umiejętności
+* Poprawiono rodzaje pancerza nieopancerzonych potworów i mieszkańców. Szczury, myszy, zjawy oraz inni przeciwnicy objęci zmianą nie są już traktowani jak noszący pancerz. Ich wartości obrony pozostają bez zmian
+
+*pierścienie i wyposażenie*
+---
+* Pierścienie mieszczanina, rycerza, barona i magnata nie zapewniają już dodatkowych odporności na zatrucie i porażenie
+* Wykluczono te cztery pierścienie z systemu rzadkości i losowania afiksów. Wcześniejsze modyfikatory są usuwane po zalogowaniu, bez utraty ulepszeń i przypisania do właściciela
+* Usunięto wbudowaną odporność na krwawienie z wyposażenia ciemnomithrilowego. Odporność pochodząca z wylosowanego afiksa nadal działa
+
+*opisy przedmiotów i statystyki*
+---
+* Dodano do okna Statystyki odporności na światło, mrok, ogień, lód, ziemię, wodę i obrażenia cięte. Wartości uwzględniają aktualnie założone wyposażenie, oba pierścienie i glify, a także podatności zwiększające otrzymywane obrażenia
+* W opisach przedmiotów poprawnie wyświetlane są odporności na negatywne efekty należące do ich stałych właściwości, niezależnie od afiksów
+* Przywrócono informację o miejscu zapisanym w pierścieniu powrotu. Opis aktualizuje się również po zapisaniu nowej lokalizacji lub użyciu pierścienia
+* Usunięto zbędne zera po przecinku w opisach bonusów. Kradzież życia wyświetla teraz np. 22% (+2%) zamiast 22,0% (+2,0%)
+* Poprawiono dopasowanie wielkości okna Statystyki, aby jego zawartość nie była przycinana przez obramowanie i niepotrzebne paski przewijania
+
+*klient gry*
+---
+* Przewijanie bocznego panelu dotyczy teraz listy znajomych. Minimapa, dane postaci i przycisk Statystyki pozostają na swoim miejscu
+* Poprawiono zapamiętywanie opcji zaznaczanych w ustawieniach klienta Java
+* Muzyka tła i zapętlone dźwięki otoczenia uruchamiają się po włączeniu dźwięku w trakcie gry, również gdy klient wystartował z wyciszeniem. Nie trzeba już ponownie uruchamiać klienta
+* Efekty wyróżniające elitarne potwory respektują ich widoczność i przezroczystość, zamiast zasłaniać sylwetkę nieprzezroczystą poświatą
+
+*rozmowy z NPC*
+---
+* Naprawiono zlecenia na butelki wody u Nosiwody Jakuba, które mogły pozostawać zablokowane przez błędną nazwę produktu
+* Rozmowy z NPC rozpoznają więcej polskich odmian nazw kwiatów, m.in. stokrotek, lilii, bratków, róż, orchidei i żonkili
+* Uzupełniono rozpoznawanie odmian nazw surowców i produktów, m.in. polan, sztabek, mąki, miodu, butelek i chleba
+
+*narzędzia administracyjne*
+---
+* Dodano opcję affixes=max w poleceniach przywoływania przedmiotów, pozwalającą uzyskać maksymalne wartości wylosowanych afiksów
+* Poprawiono przywoływanie mgielnych potworów. Zmiany nadawane przywołanemu stworowi nie modyfikują już wzorca wykorzystywanego przez kolejne przywołania
+
+
 1.43.3
 *kradzież życia i afiksy*
 ---
