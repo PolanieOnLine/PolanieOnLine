@@ -45,15 +45,14 @@ export class DomesticAnimal extends RPEntity {
 			this["drawHeight"] = image.height / nDirections / 2;
 			this["drawWidth"] = image.width / nFrames;
 			var drawX = ((this["width"] * 32) - this["drawWidth"]) / 2;
-			var frame = 0;
-			if (this["speed"] > 0) {
-				// % Works normally with *floats* (just whose bright idea was
-				// that?), so use floor() as a workaround
-				frame = Math.floor(Date.now() / 100) % nFrames;
-			}
+			const frame = this.getAnimationFrame(Date.now());
 			var drawY = (this["height"] * 32) - this["drawHeight"];
 			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"], this["drawHeight"], localX + drawX, localY + drawY, this["drawWidth"], this["drawHeight"]);
 		}
+	}
+
+	protected getAnimationFrame(timeMillis: number): number {
+		return this["speed"] > 0 ? Math.floor(timeMillis / 100) % 3 : 0;
 	}
 
 	override getCursor(_x: number, _y: number) {

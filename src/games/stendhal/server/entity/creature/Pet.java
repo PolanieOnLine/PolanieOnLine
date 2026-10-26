@@ -390,7 +390,7 @@ public abstract class Pet extends DomesticAnimal {
 		return false;
 	}
 
-	private void increaseHunger() {
+	protected void increaseHunger() {
 		if (!getZone().getPlayers().isEmpty()) {
 			hunger++;
 		}
