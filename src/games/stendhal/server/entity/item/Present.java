@@ -17,6 +17,7 @@ import java.util.Map;
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -68,7 +69,8 @@ public class Present extends Box {
 		this.removeOne();
 
 		final String itemName = getItemData();
-		final Item item = SingletonRepository.getEntityManager().getItem(itemName);
+		final Item item = SingletonRepository.getEntityManager().getItem(itemName,
+				ItemCreationContext.drop());
 		player.sendPrivateText("Gratulacje dostałeś " 
 				+ ItemTools.itemNameToDisplayName(itemName) + "!");
 

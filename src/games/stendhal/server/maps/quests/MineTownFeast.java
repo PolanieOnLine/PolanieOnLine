@@ -12,18 +12,18 @@ public class MineTownFeast extends MineTownCollectionQuest {
 	public static final String QUEST_SLOT = "minetown_feast_[year]";
 
 	public MineTownFeast() {
-		super(QUEST_SLOT, QUEST_NAME, "Boguchwał", "skrzynka", 6, requirements(),
+		super(QUEST_SLOT, QUEST_NAME, "Boguchwał", "srebrna skrzynia", 6, requirements(),
 				"Gości przybywa, a spiżarnia pustoszeje. Przynieś mi sto porcji mięsa, pięćdziesiąt porcji szynki, sto kawałków sera i czterdzieści steków. Tyle wystarczy na sześć godzin biesiady. Potem znów przyda się twoja pomoc.");
 	}
 
 	@Override
 	protected String rewardOffer() {
-		return "Mam dla ciebie skrzynkę schowaną na tę okazję. Nie odejdziesz z pustymi rękami.";
+		return "Mam dla ciebie srebrną skrzynię schowaną na tę okazję. Nie odejdziesz z pustymi rękami.";
 	}
 
 	@Override
 	protected String rewardThanks() {
-		return "Dzięki ci, dobry człowieku. Będzie czym nakarmić gości. Weź tę skrzynkę i sam też odpocznij przy ogniu.";
+		return "Dzięki ci, dobry człowieku. Będzie czym nakarmić gości. Weź tę srebrną skrzynię i sam też odpocznij przy ogniu.";
 	}
 
 	private static Map<String, Integer> requirements() {

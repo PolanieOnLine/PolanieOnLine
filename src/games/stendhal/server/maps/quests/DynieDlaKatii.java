@@ -116,7 +116,7 @@ public class DynieDlaKatii extends AbstractQuest {
 				null,
 				new SayTimeRemainingAction(QUEST_SLOT,REQUIRED_MINUTES,
 						"Dziękuję! " +
-						"Na chwilę obecną mam ich za dużo oraz zabrakło mi srebrnych skrzynek! " +
+						"Na chwilę obecną mam ich za dużo oraz zabrakło mi złotych skrzynek! " +
 						"Przyjdź do mnie później."));
 
 		// player is willing to help
@@ -124,7 +124,7 @@ public class DynieDlaKatii extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dobrze, będę cię wypatrywała. Jesienią straszne dynie trafiają się wśród łupów po najróżniejszych stworach. Przynieś mi dziesięć, a odwdzięczę się srebrną skrzynią. Uważaj na siebie w drodze.",
+			"Dobrze, będę cię wypatrywała. Jesienią straszne dynie trafiają się wśród łupów po najróżniejszych stworach. Przynieś mi dziesięć, a odwdzięczę się złotą skrzynią. Uważaj na siebie w drodze.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5));
 
 		// player is not willing to help
@@ -145,8 +145,8 @@ public class DynieDlaKatii extends AbstractQuest {
 		reward.add(new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				npc.say("Dziękuję Ci! Oto nagroda ode mnie, srebrna skrzynia! Nie wiadomo co się w niej tam skrywa!");
-				final Item reward = SingletonRepository.getEntityManager().getItem("srebrna skrzynia");
+				npc.say("Dziękuję Ci! Oto nagroda ode mnie, złota skrzynia! Nie wiadomo co się w niej tam skrywa!");
+				final Item reward = SingletonRepository.getEntityManager().getItem("złota skrzynia");
 				reward.setBoundTo(player.getName());
 				player.equipOrPutOnGround(reward);
 				player.notifyWorldAboutChanges();
@@ -179,7 +179,7 @@ public class DynieDlaKatii extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Straszne Dynie",
-				"Katia przebrała się za czarownicę oraz wszystkim innym przebierańcom daje tajemniczą srebrną skrzynkę za przyniesienie strasznych dyń do niej!",
+				"Katia przebrała się za czarownicę oraz wszystkim innym przebierańcom daje tajemniczą złotą skrzynkę za przyniesienie strasznych dyń do niej!",
 				true);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -213,7 +213,7 @@ public class DynieDlaKatii extends AbstractQuest {
 		}
 		if (isCompleted(player)) {
 			res.add(player.getGenderVerb("Zaniosłem") + " Katii dynie." +
-		             "W zamian " + player.getGenderVerb("otrzymałem") + " tajemniczą srebrną skrzynkę.");
+		             "W zamian " + player.getGenderVerb("otrzymałem") + " tajemniczą złotą skrzynkę.");
 		}
 		if(isRepeatable(player)){
 			res.add("Ponownie mogę poszukać kilku dyń dla Katii!");

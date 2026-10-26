@@ -1,7 +1,7 @@
 # Mensajes de espera; las duraciones se traducen como texto del sistema.
 Możesz dostać tylko jedno zadanie dziennie. Proszę wróć za {0}.=Solo puedes recibir una misión al día. Vuelve dentro de {item:0}.
 Sądzę, że mają już dosyć wrażeń na jakiś czas. Wróć za {0}.=Creo que ya han tenido suficientes emociones por ahora. Vuelve dentro de {item:0}.
-Dziękuję! Na chwilę obecną mam ich za dużo oraz zabrakło mi srebrnych skrzynek! Przyjdź do mnie później. {0}.=¡Gracias! Ahora tengo demasiados y me he quedado sin cofres de plata. Vuelve más tarde. {item:0}.
+Dziękuję! Na chwilę obecną mam ich za dużo oraz zabrakło mi złotych skrzynek! Przyjdź do mnie później. {0}.=¡Gracias! Ahora tengo demasiados y me he quedado sin cofres de oro. Vuelve más tarde. {item:0}.
 Nie chcę przeszkadzać mojej mamie, nim nie wróci z powrotem, więc nie musisz jej nic przekazać. Może zapytaj mnie raz jeszcze później... {0}.=No quiero molestar a mi madre antes de que vuelva, así que no necesitas darle ningún mensaje. Quizá puedas preguntarme de nuevo más tarde... {item:0}.
 Przykro mi, ale muszę umyć mój garnek nim zacznę gotować moją zupę dla Ciebie. Wróć za {0}.=Lo siento, pero tengo que lavar mi olla antes de cocinar más sopa para ti. Vuelve dentro de {item:0}.
 Nieźle się bawiłam. Dziękuję! Wróć powiedzmy za {0}.=Me he divertido mucho. ¡Gracias! Vuelve dentro de, digamos, {item:0}.

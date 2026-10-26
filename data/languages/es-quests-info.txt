@@ -70,7 +70,7 @@ Wishman, nadzwyczajny żołnierz z Mrocznego Legionu Blordrough, strzeże smokó
 Kraina Smoków=Tierra de dragones
 Kraina smoków, gdzie wstęp mają tylko wybrani.=Una tierra de dragones en la que solo pueden entrar los elegidos.
 Straszne Dynie=Calabazas terroríficas
-Katia przebrała się za czarownicę oraz wszystkim innym przebierańcom daje tajemniczą srebrną skrzynkę za przyniesienie strasznych dyń do niej!=¡Katia se ha disfrazado de bruja! Da un misterioso cofre de plata a los demás visitantes disfrazados que le traigan calabazas terroríficas.
+Katia przebrała się za czarownicę oraz wszystkim innym przebierańcom daje tajemniczą złotą skrzynkę za przyniesienie strasznych dyń do niej!=¡Katia se ha disfrazado de bruja! Da un misterioso cofre de oro a los demás visitantes disfrazados que le traigan calabazas terroríficas.
 Dzikie Zwierzyny=Animales salvajes
 Farmer Mścisław poprosił mnie o pomoc w pozbyciu się paru dzików i wilków z okolic jego farmy. Cały czas wyjadają jego warzywa.=Farmer Mścisław me ha pedido ayuda para librarse de los jabalíes y lobos de los alrededores de su granja. No dejan de comerse sus verduras.
 Prezent Wielkanocny Dla Dzieci=Regalos de Pascua para los niños

@@ -121,7 +121,7 @@ Uriel przebywał na górze Orril.=Uriel was on Orril Mountain.
 # Seasonal Mine Town tasks.
 Pomogłem już raz podczas tegorocznego święta.=I have already helped once during this year's festival.
 Pomogłem już {number:0} razy podczas tegorocznego święta.=I have already helped {0} times during this year's festival.
-Mam dla ciebie skrzynkę schowaną na tę okazję. Nie odejdziesz z pustymi rękami.=I have a chest set aside for you for this occasion. You will not leave empty-handed.
+Mam dla ciebie srebrną skrzynię schowaną na tę okazję. Nie odejdziesz z pustymi rękami.=I have a silver chest set aside for you for this occasion. You will not leave empty-handed.
 Doglądam strawy na święto. Pilnuję, żeby żaden gość nie odszedł głodny.=I look after the festival food. I make sure no guest leaves hungry.
 To moje zguby. Dobrze, że znów je mam. Weź srebrną skrzynię, jak obiecałem. Dzięki tobie rozświetlimy noc.=These are my missing lanterns. It is good to have them back. Take the silver chest, as I promised. Thanks to you, we will light up the night.
 Rozwieszam latarenki przy miejscu biesiady, żeby nikt po zmroku nie zabłądził.=I hang lanterns around the feast so that no one gets lost after dark.

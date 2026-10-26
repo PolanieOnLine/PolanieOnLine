@@ -239,16 +239,16 @@ Już wróciłeś? Obiecałeś, że zbierzesz dla mnie trochę strasznych dyń...
 Masz przynieść dla mnie 10 strasznych dyń! Zapamiętaj jeszcze raz, #'straszne dynie'!=Bring me 10 spooky pumpkins! Remember: #'spooky pumpkins'!
 Co byś powiedział wojowniku na zebranie dla mnie 10 #'strasznych dyń'?=Warrior, how about gathering 10 #'spooky pumpkins' for me?
 Chcesz ponownie pozbierać dla mnie #'straszne dynie'?=Would you gather #'spooky pumpkins' for me again?
-Dziękuję! Na chwilę obecną mam ich za dużo oraz zabrakło mi srebrnych skrzynek! Przyjdź do mnie później.=Thank you! I have too many right now and have run out of silver chests! Visit later.
-Dobrze, będę cię wypatrywała. Jesienią straszne dynie trafiają się wśród łupów po najróżniejszych stworach. Przynieś mi dziesięć, a odwdzięczę się srebrną skrzynią. Uważaj na siebie w drodze.=Good, I will look out for you. In autumn, spooky pumpkins appear among the loot of many different creatures. Bring ten, and I will reward you with a silver chest. Be careful on your travels.
+Dziękuję! Na chwilę obecną mam ich za dużo oraz zabrakło mi złotych skrzynek! Przyjdź do mnie później.=Thank you! I have too many right now and have run out of gold chests! Visit later.
+Dobrze, będę cię wypatrywała. Jesienią straszne dynie trafiają się wśród łupów po najróżniejszych stworach. Przynieś mi dziesięć, a odwdzięczę się złotą skrzynią. Uważaj na siebie w drodze.=Good, I will look out for you. In autumn, spooky pumpkins appear among the loot of many different creatures. Bring ten, and I will reward you with a gold chest. Be careful on your travels.
 Cóż... Może innym razem.=Well... Perhaps another time.
-Dziękuję Ci! Oto nagroda ode mnie, srebrna skrzynia! Nie wiadomo co się w niej tam skrywa!=Thank you! Here is your reward: a silver chest! Who knows what is hidden inside!
+Dziękuję Ci! Oto nagroda ode mnie, złota skrzynia! Nie wiadomo co się w niej tam skrywa!=Thank you! Here is your reward: a gold chest! Who knows what is hidden inside!
 Hej! Nie oszukasz mnie! Kieszenie masz puste, gdzie mógłbyś zostawić te wielkie dynie?=Hey! You cannot fool me! Your pockets are empty. Where could you have left those huge pumpkins?
 Och ... cóż, mam nadzieję, że znajdziesz kiedyś.=Oh... Well, I hope you find them someday.
 Nie chcę zbierać dla niej dyń...=I do not want to gather pumpkins for her...
 Chcę pozbierać kilka dyń!=I want to gather pumpkins!
-Zaniosłem Katii dynie.W zamian otrzymałem tajemniczą srebrną skrzynkę.=I brought Katia pumpkins. I received a mysterious silver chest in return.
-Zaniosłam Katii dynie.W zamian otrzymałam tajemniczą srebrną skrzynkę.=I brought Katia pumpkins. I received a mysterious silver chest in return.
+Zaniosłem Katii dynie.W zamian otrzymałem tajemniczą złotą skrzynkę.=I brought Katia pumpkins. I received a mysterious gold chest in return.
+Zaniosłam Katii dynie.W zamian otrzymałam tajemniczą złotą skrzynkę.=I brought Katia pumpkins. I received a mysterious gold chest in return.
 Ponownie mogę poszukać kilku dyń dla Katii!=I can look for pumpkins for Katia again!
 # Josephine's second cloak collection.
 Wspaniale! Jestem teraz szczęśliwa! Do widzenia!=Wonderful! I am happy now! Goodbye!

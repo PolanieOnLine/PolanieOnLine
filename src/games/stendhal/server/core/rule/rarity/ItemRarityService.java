@@ -63,6 +63,8 @@ public final class ItemRarityService {
 		this.affixGenerator = new ItemAffixGenerator(random);
 		registerProfile(ItemRarityProfile.defaultProfile());
 		registerProfile(ItemRarityProfile.bossProfile());
+		registerProfile(ItemRarityProfile.silverChestProfile());
+		registerProfile(ItemRarityProfile.goldChestProfile());
 	}
 
 	public static ItemRarityService getInstance() {
