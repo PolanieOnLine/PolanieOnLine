@@ -39,6 +39,6 @@ public class MineTownFeast extends MineTownCollectionQuest {
 	public void addToWorld() {
 		super.addToWorld();
 		createFestivalNPC("body=0,dress=33,head=0,mouth=0,eyes=18,mask=0,hair=27,hat=1",
-				45, 16, "Doglądam strawy na święto. Pilnuję, żeby żaden gość nie odszedł głodny.");
+				41, 17, "Doglądam strawy na święto. Pilnuję, żeby żaden gość nie odszedł głodny.");
 	}
 }

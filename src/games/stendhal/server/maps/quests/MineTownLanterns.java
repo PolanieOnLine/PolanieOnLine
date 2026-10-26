@@ -35,7 +35,7 @@ public class MineTownLanterns extends MineTownCollectionQuest {
 	public void addToWorld() {
 		super.addToWorld();
 		createFestivalNPC("body=0,dress=14,head=0,mouth=0,eyes=18,mask=0,hair=27,hat=0",
-				41, 16, "Rozwieszam latarenki przy miejscu biesiady, żeby nikt po zmroku nie zabłądził.");
+				27, 28, "Rozwieszam latarenki przy miejscu biesiady, żeby nikt po zmroku nie zabłądził.");
 		try {
 			spawns.start();
 		} catch (final RuntimeException e) {

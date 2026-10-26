@@ -63,7 +63,7 @@ public class GhostSellerNPC implements LoadableContent {
 		seller.setGender("F");
 		seller.setDirection(Direction.DOWN);
 		seller.initHP(100);
-		final Point position = freePosition(zone, seller, 38, 19);
+		final Point position = freePosition(zone, seller, 30, 20);
 		if (position == null) {
 			throw new IllegalStateException("Brakuje miejsca dla " + NPC_NAME);
 		}
