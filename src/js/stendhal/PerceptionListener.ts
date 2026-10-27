@@ -22,6 +22,7 @@ import { RunicAltarComponent } from "ui/component/RunicAltarComponent";
 import { singletons } from "SingletonRepo";
 import { Client } from "Client";
 import { GameLanguage } from "util/GameLanguage";
+import { ItemUpgradeDialog } from "ui/dialog/ItemUpgradeDialog";
 
 
 /**
@@ -56,6 +57,7 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 		(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 		stendhal.ui.equip.update();
+        ItemUpgradeDialog.onInventoryChanged();
 		if (marauroa.me) {
 			GameLanguage.synchronize(marauroa.me["language"]);
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)?.update("money");

@@ -46,6 +46,11 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private requestToken?: string;
 	private selectionCleared = false;
 	private upgradeCandidatePaths = new Set<string>();
+    private inventorySignature?: string;
+    private catalogReceived = false;
+    private inventoryRefresh?: ReturnType<typeof setTimeout>;
+    private animationTimer?: ReturnType<typeof setInterval>;
+    private readonly animatedIcons = new Map<HTMLElement, string>();
 
 	private constructor() {
 		super("empty-div-template");
@@ -120,7 +125,66 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			ItemUpgradeDialog.active = dialog;
 		}
 		ItemUpgradeDialog.active.apply(data);
+        ItemUpgradeDialog.active.startAnimation();
 	}
+
+    public static onInventoryChanged(): void {
+        const dialog = this.active;
+        if (!dialog?.glyphMode || !marauroa.me) return;
+        const parts: string[] = [];
+        const append = (owner: any) => {
+            for (const key of Object.keys(owner).sort()) {
+                const slot = owner[key];
+                if (!slot || typeof slot.count !== "function" || typeof slot.getByIndex !== "function") continue;
+                parts.push("[", key);
+                for (let i = 0; i < slot.count(); i++) {
+                    const item = slot.getByIndex(i); if (!item) continue;
+                    parts.push(JSON.stringify(["id", "name", "class", "subclass", "quantity", "glyph_level", "bound", "itemdata"].map(key => item[key])));
+                    append(item);
+                }
+                parts.push("]");
+            }
+        };
+        append(marauroa.me); const signature = parts.join("");
+        const changed = dialog.inventorySignature !== undefined && signature !== dialog.inventorySignature;
+        dialog.inventorySignature = signature;
+        if (changed && !dialog.catalogReceived) {
+            dialog.requestToken = undefined; dialog.upgradeButton.disabled = true; dialog.scheduleRefresh();
+        }
+        dialog.catalogReceived = false;
+    }
+    private scheduleRefresh(): void {
+        if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh);
+        this.inventoryRefresh = setTimeout(() => {
+            this.inventoryRefresh = undefined;
+            if (ItemUpgradeDialog.active === this && this.glyphMode) this.send(this.selectedRecipe ? "preview" : "refresh");
+        }, 200);
+    }
+    private startAnimation(): void {
+        if (this.animationTimer === undefined) this.animationTimer = setInterval(() => this.animateIcons(), 100);
+        this.animateIcons();
+    }
+    private spriteIcon(itemClass: string, subclass: string, size = 32): HTMLElement {
+        const clip = document.createElement("span"); clip.className = "workbench-item-icon";
+        clip.style.width = clip.style.height = size + "px";
+        const image = document.createElement("span"); image.className = "workbench-item-frame";
+        if (size !== 32) image.style.transform = `scale(${size / 32})`;
+        clip.appendChild(image); this.registerSprite(image, itemClass, subclass); return clip;
+    }
+    private registerSprite(element: HTMLElement, itemClass: string, subclass: string): void {
+        const filename = Paths.sprites + "/items/" + itemClass + "/" + subclass + ".png";
+        element.style.backgroundImage = "url(" + singletons.getSpriteStore().checkPath(filename) + ")";
+        element.style.backgroundPosition = "0px 0px";
+        this.animatedIcons.set(element, filename);
+    }
+    private animateIcons(now = Date.now()): void {
+        for (const [element, filename] of this.animatedIcons) {
+            if (element.isConnected === false) { this.animatedIcons.delete(element); continue; }
+            const sheet = singletons.getSpriteStore().get(filename);
+            const frames = Math.max(1, Math.floor(sheet.width / 32) || 1);
+            element.style.backgroundPosition = `${-(Math.floor(now / 100) % frames) * 32}px 0px`;
+        }
+    }
 
 	public static canSelectItem(item: Item): boolean {
 		return !!ItemUpgradeDialog.active && !ItemUpgradeDialog.active.glyphMode
@@ -136,6 +200,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	public override onParentClose(): void {
 		this.send("close");
+        if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh);
+        if (this.animationTimer !== undefined) clearInterval(this.animationTimer);
+        this.animatedIcons.clear();
 		ItemUpgradeDialog.active = undefined;
 	}
 
@@ -145,6 +212,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
                 || (data.npc_id !== undefined && this.npcId && Number(data.npc_id) !== this.npcId))) return;
         if (data.phase === "open") {
             this.glyphMode = responseGlyph;
+            this.refreshButton.hidden = this.glyphMode; this.inventorySignature = undefined; this.catalogReceived = false;
+            if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh);
             this.frame?.setTitle(this.glyphMode ? "Stół runiczny" : "Ulepszanie przedmiotu");
             this.componentElement.classList.toggle("glyph-workbench-dialog", this.glyphMode);
             this.recipeCatalog.hidden = !this.glyphMode; this.selectedRecipe = undefined;
@@ -155,7 +224,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
         else if (!this.isInteractionStatus(String(data.status || ""))) this.selectedRecipe = undefined;
         this.creatingGlyph = this.glyphMode && data.operation === "create";
         this.itemHeading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
-        if (this.glyphMode && data.recipe_ids !== undefined) this.fillRecipeCatalog(data);
+        if (this.glyphMode && data.recipe_ids !== undefined) { this.fillRecipeCatalog(data); this.catalogReceived = true; }
         this.upgradeButton.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
 		const responsePath = data.selected_path
 				? this.normalizePath(String(data.selected_path)) : undefined;
@@ -182,9 +251,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		if (data.name) {
 			this.icon.replaceChildren();
-			const sprite = singletons.getSpriteStore().get(Paths.sprites
-					+ "/items/" + data["class"] + "/" + data.subclass + ".png");
-			this.icon.appendChild(sprite.cloneNode());
+            this.icon.appendChild(this.spriteIcon(data["class"], data.subclass));
 			const rarity = ItemRarity.fromId(data.rarity_id) || ItemRarity.COMMON;
 			this.nameLabel.textContent = data.name;
 			this.nameLabel.style.color = this.glyphMode ? "" : rarity.colorHex;
@@ -214,6 +281,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		const canUpgrade = Number(data.can_upgrade || 0) === 1 && !!this.requestToken;
 		this.upgradeButton.disabled = !canUpgrade;
 		this.refreshButton.disabled = !this.npcId;
+        if (this.glyphMode && state === "STALE_PREVIEW") this.scheduleRefresh();
 		this.status.textContent = data.message || this.statusText(state);
 		this.status.dataset.status = state.toLowerCase();
 		this.upgradeButton.title = canUpgrade ? (this.glyphMode ? "Ulepsz glif" : "Wykonaj próbę ulepszenia")
@@ -278,8 +346,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
                 button.classList.toggle("glyph-recipe-selected", id === this.selectedRecipe);
                 button.title = GameLanguage.getText(ready[index] === "1" ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania.");
                 if (sprites[index]) {
-                    const icon = document.createElement("img"); icon.src = Paths.sprites + "/items/glyph/" + sprites[index] + ".png"; icon.alt = "";
-                    button.appendChild(icon);
+                    button.appendChild(this.spriteIcon("glyph", sprites[index], 20));
                 }
                 const label = document.createElement("span"); label.textContent = names[index] + " " + ["I", "II", "III"][level - 1]; button.appendChild(label);
                 button.onclick = () => {
@@ -316,10 +383,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			slot.className = "itemSlot item-upgrade-material-slot";
 			const layers = getItemSlotLayers(slot);
 			if (classes[index] && subclasses[index]) {
-				layers.icon.style.backgroundImage = "url(" + singletons.getSpriteStore()
-						.checkPath(Paths.sprites + "/items/" + classes[index]
-								+ "/" + subclasses[index] + ".png") + ")";
-				layers.icon.style.backgroundPosition = "0px 0px";
+                this.registerSprite(layers.icon, classes[index], subclasses[index]);
 			}
 			layers.quantityLabel.textContent = need > 1 ? String(need) : "";
 

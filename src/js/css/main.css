@@ -2309,7 +2309,7 @@ td.number {
 .glyph-recipe-catalog[hidden] { display: none; }
 .glyph-catalog-group { display: flex; flex-direction: column; min-height: 0; }
 .glyph-catalog-open { flex: 1; }
-.glyph-catalog-heading { flex: 0 0 auto; cursor: pointer; color: #ffbe40; background: transparent; border: 0; border-bottom: 1px solid #826a4b; text-align: left; font-weight: bold; padding: 7px 4px; }
+.glyph-catalog-heading { flex: 0 0 auto; cursor: pointer; color: #ffbe40; text-align: left; font-weight: bold; padding: 7px 4px; }
 .glyph-catalog-rows { min-height: 0; overflow-y: auto; }
 .glyph-catalog-rows[hidden] { display: none; }
 .glyph-recipe-row { display: flex; align-items: center; gap: 6px; width: 100%; padding: 3px 5px; border: 1px solid transparent; background: transparent; color: inherit; text-align: left; cursor: pointer; }
@@ -2321,3 +2321,6 @@ td.number {
  .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; }
  .glyph-recipe-catalog { flex: 0 0 auto; height: 180px; }
 }
+
+.workbench-item-icon { display: inline-block; flex: 0 0 auto; overflow: hidden; position: relative; pointer-events: none; }
+.workbench-item-frame { display: block; width: 32px; height: 32px; background-repeat: no-repeat; transform-origin: top left; image-rendering: pixelated; }

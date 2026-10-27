@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.Timer;
 import javax.swing.JList;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -30,9 +31,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import games.stendhal.client.gui.styled.StyleUtil;
+import games.stendhal.client.sprite.AnimatedSprite;
+import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
 import games.stendhal.client.gui.styled.styles.StyleFactory;
 import marauroa.common.game.RPEvent;
+import marauroa.common.game.RPObject;
 
 /** Checks the themed upgrade layout and the existing selection safeguards. */
 public class ItemUpgradeWindowTest {
@@ -141,6 +145,52 @@ public class ItemUpgradeWindowTest {
             assertEquals("Utwórz glif", button("upgrade").getText());
             assertNull(field("selectedPath")); assertTrue(button("upgrade").isEnabled());
         });
+    }
+
+    @Test
+    public void glyphCategoriesUseTheSharedButtonFrameAndMaterialsUseAnimatedTiles() throws Exception {
+        onEdt(() -> {
+            RPEvent event = selected(); event.put("phase", "open"); event.put("service", "glyph");
+            event.put("operation", "create"); event.put("selected_recipe", "1:glif siły");
+            event.put("material_names", Arrays.asList("sztabka srebra"));
+            event.put("material_classes", Arrays.asList("resource")); event.put("material_subclasses", Arrays.asList("silver_bar"));
+            event.put("material_values", Arrays.asList("1")); event.put("owned_material_values", Arrays.asList("0")); apply(event);
+            JButton header = (JButton) nestedField(field("creationCategory"), "header");
+            assertSame(button("upgrade").getBorder(), header.getBorder());
+            assertFalse(button("refresh").isVisible());
+            Object material = findMaterialIcon((Container)field("materials"));
+            Object sprite = nestedField(material, "sprite");
+            assertTrue(sprite instanceof AnimatedSprite);
+            assertEquals(32, ((Sprite)sprite).getWidth());
+            assertEquals(32, ((Sprite)sprite).getHeight());
+        });
+    }
+
+    @Test
+    public void inventoryChangesInvalidateTheGlyphReceiptAndRefreshOnlyWhenContentsChange() throws Exception {
+        RPObject player = new RPObject(); player.addSlot("bag");
+        RPObject material = new RPObject(); material.put("id", 1); material.put("name", "fragment glifu"); material.put("quantity", 2);
+        player.getSlot("bag").add(material);
+        onEdt(() -> {
+            Field active = ItemUpgradeWindow.class.getDeclaredField("instance"); active.setAccessible(true); active.set(null, null);
+            Field opening = ItemUpgradeWindow.class.getDeclaredField("openingGlyphWindow"); opening.setAccessible(true); opening.setBoolean(null, true);
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    RPEvent event = selected(); event.put("service", "glyph"); event.put("operation", "create");
+                    event.put("selected_recipe", "1:glif siły"); apply(event);
+                    active.set(null, window); opening.setBoolean(null, false);
+                } catch (Exception error) { throw new AssertionError(error); }
+            });
+            ItemUpgradeWindow.onInventoryChanged(player);
+        });
+        onEdt(() -> assertFalse(((Timer)field("inventoryRefresh")).isRunning()));
+        material.put("quantity", 3); ItemUpgradeWindow.onInventoryChanged(player);
+        onEdt(() -> {
+            assertNull(field("requestToken")); assertFalse(button("upgrade").isEnabled());
+            Timer timer = (Timer)field("inventoryRefresh"); assertTrue(timer.isRunning()); timer.stop();
+        });
+        ItemUpgradeWindow.onInventoryChanged(player);
+        onEdt(() -> assertFalse(((Timer)field("inventoryRefresh")).isRunning()));
     }
 
     @Test

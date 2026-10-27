@@ -17,6 +17,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.gui.stats.StatsPanelController;
+import games.stendhal.client.gui.ItemUpgradeWindow;
 
 import marauroa.client.net.IPerceptionListener;
 import marauroa.common.game.RPObject;
@@ -156,6 +157,7 @@ class StendhalPerceptionListener implements IPerceptionListener {
 		// Read the same complete object used by inventory windows, not slot deltas.
 		// At this point both public and private perception changes have been merged.
 		RPObject player = userContext.getPlayer();
+        ItemUpgradeWindow.onInventoryChanged(player != null && world_objects.get(player.getID()) == player ? player : null);
 		if (player != null && world_objects.get(player.getID()) == player) ClientLanguage.synchronize(player);
 		StatsPanelController.get().updateCarriedMoney(player != null
 				&& world_objects.get(player.getID()) == player ? player : null);
