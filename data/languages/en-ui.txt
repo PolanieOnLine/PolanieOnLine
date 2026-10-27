@@ -790,3 +790,6 @@ Ustawienia klienta=Client settings
 Zmień język, tryb wyświetlania gry i ustawienia dźwięku.=Change the language, display mode and sound settings.
 Naciśnij ten przycisk, aby zalogować sie na serwer {0}.=Press this button to log in to the {0} server.
 Naciśnij ten przycisk, aby utworzyć konto na serwerze {0}.=Press this button to create an account on the {0} server.
+
+doświadczenia z potworów=experience from creatures
++{0}% doświadczenia z potworów=+{0}% experience from creatures

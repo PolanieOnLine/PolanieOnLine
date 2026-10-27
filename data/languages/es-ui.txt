@@ -960,3 +960,6 @@ Odporność na naturę=Resistencia a la naturaleza
 Odporność na wodę=Resistencia al agua
 Odporność na obrażenia fizyczne=Resistencia al daño físico
 Prawy panel=Panel derecho
+
+doświadczenia z potworów=experiencia de criaturas
++{0}% doświadczenia z potworów=+{0}% experiencia de criaturas

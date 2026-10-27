@@ -499,6 +499,8 @@ final class ItemRarityPresentation {
 					WeaponPerformanceCalculator.getInt(equippedItem,
 							ItemTooltip.DEFENSE), "pancerza", equippedItem != null);
 		}
+		appendPercentageBonus(coreBonuses, object, equippedItem,
+				ItemTooltip.COMBAT_EXPERIENCE_BONUS, "doświadczenia z potworów", false);
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.RATE_INCREASE,
 				"zmniejszenia wagi broni (minimum 2)");
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,

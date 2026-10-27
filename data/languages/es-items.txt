@@ -1745,3 +1745,6 @@ glif Świętowita=glifo de Świętowit
 Oto glif Świętowita. Dodaje 3 punkty ataku, 5 punktów obrony i 5 punktów procentowych szansy na trafienie krytyczne.=Ves un glifo de Świętowit. Añade 3 puntos de ataque, 5 puntos de defensa y 5 puntos porcentuales de probabilidad de golpe crítico.
 glif przodków=glifo de los ancestros
 Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejsza obrażenia od wszystkich sześciu żywiołów o 5%.=Ves un glifo de los ancestros. Añade 250 puntos de salud y 8 puntos de defensa, y reduce el daño de los seis elementos un 5%.
+
+glif wiedzy=glifo del conocimiento
+Oto glif wiedzy. Zwiększa doświadczenie zdobywane z potworów o 10%, gdy jest założony w miejscu użytkowym. Jego moc nie wygasa.=Ves un glifo del conocimiento. Aumenta un 10% la experiencia de las criaturas al equiparlo en la ranura de utilidad. Su poder no caduca.

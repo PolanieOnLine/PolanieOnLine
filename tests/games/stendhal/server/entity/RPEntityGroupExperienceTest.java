@@ -22,6 +22,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
@@ -148,6 +149,97 @@ public class RPEntityGroupExperienceTest {
 		assertEquals(26, anna.getXP());
 		assertEquals(31, bartek.getXP());
 		assertEquals(33, celina.getXP());
+	}
+
+	@Test
+	public void knowledgeIncreasesPersonalCombatRewardAfterRebornReduction() {
+		for (final int reborns : new int[] {0, 10}) {
+			final Player anna = addPlayer("anna", new StendhalRPZone("knowledge_solo", 20, 20));
+			anna.put(RebornSystem.ATTR_REBORNS, reborns);
+			anna.getSlot("utility_rune").add(knowledge(anna));
+			final RewardTestEntity defeated = new RewardTestEntity();
+			defeated.setName("test target");
+			defeated.addContribution(anna, 100);
+			defeated.rewardContributors(20000);
+			assertEquals(reborns == 0 ? 1100 : 825, anna.getXP());
+			ruleProcessor.clearPlayers();
+		}
+	}
+
+	@Test
+	public void knowledgeOnlyBoostsItsOwnerAfterEqualGroupSplit() {
+		final StendhalRPZone zone = new StendhalRPZone("knowledge_equal", 20, 20);
+		final Player anna = addPlayer("anna", zone);
+		final Player bartek = addPlayer("bartek", zone);
+		anna.getSlot("utility_rune").add(knowledge(anna));
+		group = SingletonRepository.getGroupManager().createGroup(anna.getName());
+		group.addMember(bartek.getName());
+		group.setExpmode("equal");
+		final RewardTestEntity defeated = new RewardTestEntity();
+		defeated.setName("test target");
+		defeated.addContribution(anna, 100);
+		defeated.rewardContributors(20000);
+		assertEquals(550, anna.getXP());
+		assertEquals(500, bartek.getXP());
+	}
+
+	@Test
+	public void lowestGroupModeUsesTheRecipientsKnowledge() {
+		final StendhalRPZone zone = new StendhalRPZone("knowledge_lowest", 20, 20);
+		final Player anna = addPlayer("anna", zone);
+		final Player bartek = addPlayer("bartek", zone);
+		anna.setLevel(10);
+		bartek.setLevel(1);
+		bartek.getSlot("utility_rune").add(knowledge(bartek));
+		group = SingletonRepository.getGroupManager().createGroup(anna.getName());
+		group.addMember(bartek.getName());
+		group.setExpmode("lowest");
+		final int before = bartek.getXP();
+		final RewardTestEntity defeated = new RewardTestEntity();
+		defeated.setName("test target");
+		defeated.addContribution(anna, 100);
+		defeated.rewardContributors(20000);
+		assertEquals(1100, bartek.getXP() - before);
+	}
+
+	@Test
+	public void knowledgeInBagsHandsOrOwnedBySomeoneElseDoesNotBoostRewards() {
+		for (final String slot : new String[] {"bag", "rhand", "utility_rune"}) {
+			final Player anna = addPlayer("anna", new StendhalRPZone("knowledge_inactive", 20, 20));
+			final Glyph glyph = knowledge(anna);
+			if ("utility_rune".equals(slot)) glyph.setBoundTo("someone_else");
+			anna.getSlot(slot).add(glyph);
+			final RewardTestEntity defeated = new RewardTestEntity();
+			defeated.setName("test target");
+			defeated.addContribution(anna, 100);
+			defeated.rewardContributors(20000);
+			assertEquals(slot, 1000, anna.getXP());
+			ruleProcessor.clearPlayers();
+		}
+	}
+
+	@Test
+	public void knowledgeDoesNotIncreaseOrdinaryQuestExperience() {
+		final Player anna = PlayerTestHelper.createPlayer("quest-exp");
+		anna.getSlot("utility_rune").add(knowledge(anna));
+		anna.addXP(1000);
+		assertEquals(1000, anna.getXP());
+	}
+
+	private Glyph knowledge(final Player owner) {
+		final Glyph glyph = new Glyph("glif wiedzy", "glyph", "glyph_knowledge", null);
+		glyph.setBoundTo(owner.getName());
+		return glyph;
+	}
+
+	@Test
+	public void knowledgeRoundsOnceAndCannotOverflowOrIncreaseNegativeExperience() {
+		final Player player = PlayerTestHelper.createPlayer("knowledge-rounding");
+		player.getSlot("utility_rune").add(knowledge(player));
+		assertEquals(6, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, 5));
+		assertEquals(Integer.MAX_VALUE, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, Integer.MAX_VALUE));
+		assertEquals(0, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, 0));
+		assertEquals(-100, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, -100));
 	}
 
 	private Player addPlayer(final String name, final StendhalRPZone zone) {

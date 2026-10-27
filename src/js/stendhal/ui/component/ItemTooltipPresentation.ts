@@ -295,6 +295,13 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 			"zmniejszenia wagi broni (minimum 2)", !!equipped);
 	appendIntegerBonus(core, intValue(current, "health"), intValue(equipped, "health"),
 			"zdrowia", !!equipped);
+	const experienceBonus = numberValue(current, "combat_experience_bonus");
+	const previousExperienceBonus = numberValue(equipped, "combat_experience_bonus");
+	if (experienceBonus !== 0 || (equipped && previousExperienceBonus !== 0)) {
+		core.push({kind: "bonus", text: signed(formatCompact(experienceBonus)) + "% "
+				+ GameLanguage.getText("doświadczenia z potworów"),
+				deltas: equipped ? [createDelta(experienceBonus - previousExperienceBonus, 1, "%")] : undefined});
+	}
 
 	for (const [nature, label] of RESISTANCES) {
 		const value = resistanceValue(current, nature);

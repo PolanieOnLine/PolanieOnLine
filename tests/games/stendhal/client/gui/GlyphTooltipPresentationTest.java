@@ -14,6 +14,15 @@ import utilities.RPClass.ItemTestHelper;
 
 public class GlyphTooltipPresentationTest {
 	@Test
+	public void knowledgeShowsPermanentCreatureExperienceAsAGlyphProperty() {
+		final RPObject object = ItemTestHelper.createItem("glif wiedzy");
+		object.put("class", "glyph");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_OTHER);
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.COMBAT_EXPERIENCE_BONUS, "10");
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(object));
+		assertTrue(tooltip.contains("+10% doświadczenia z potworów"));
+	}
+	@Test
 	public void strzybogGlyphExplainsItsAttackRateReductionInFullTooltip() {
 		final RPObject object = ItemTestHelper.createItem("glif Strzyboga");
 		object.put("class", "glyph");

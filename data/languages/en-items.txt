@@ -1745,3 +1745,6 @@ glif Świętowita=glyph of Świętowit
 Oto glif Świętowita. Dodaje 3 punkty ataku, 5 punktów obrony i 5 punktów procentowych szansy na trafienie krytyczne.=You see a glyph of Świętowit. Adds 3 attack points, 5 defense points and 5 percentage points of critical hit chance.
 glif przodków=glyph of the ancestors
 Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejsza obrażenia od wszystkich sześciu żywiołów o 5%.=You see a glyph of the ancestors. Adds 250 health points and 8 defense points, and reduces damage from all six elements by 5%.
+
+glif wiedzy=knowledge glyph
+Oto glif wiedzy. Zwiększa doświadczenie zdobywane z potworów o 10%, gdy jest założony w miejscu użytkowym. Jego moc nie wygasa.=You see a knowledge glyph. It increases experience from creatures by 10% when worn in the utility slot. Its power never expires.

@@ -23,9 +23,10 @@ class GlyphExpansionTest(unittest.TestCase):
             for slot in item.findall('s:equipable/s:slot', NS):
                 if slot.attrib['name'].endswith('_rune'):
                     counts[slot.attrib['name']] += 1
-        self.assertEqual(len(self.items), 22)  # fragment plus 21 equippable glyphs
+        self.assertEqual(len(self.items), 23)  # fragment, 21 combat glyphs and knowledge
+        self.assertEqual(counts.pop('utility_rune'), 4)
         self.assertEqual(set(counts.values()), {3})
-        self.assertEqual(len(counts), 7)
+        self.assertEqual(len(counts), 6)
 
     def test_attributes_slots_and_sprites(self):
         for expected in CONTRACT:

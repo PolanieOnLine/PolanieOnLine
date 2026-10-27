@@ -841,3 +841,5 @@ Nasze miasto potrzebuje różnych rzeczy. Jeżeli potrzebujesz banku to znajdzie
 Witaj, Gazda Wojtek kazał mi przekazywać rycerzom kto aktualnie w naszych regionach potrzebuje Twojej #'pomocy'.=Hola. Gazda Wojtek me encargó decirles a los caballeros quién necesita ahora su #'ayuda' en nuestra región.
 Jest wielu innych, którzy mogą potrzebować #pomocy w {0}.=Hay muchos otros que pueden necesitar #ayuda en {0}.
 Zajmuje się papierkową robotą tutaj. Możesz #pomóc innym, a szczególnie {0}.=Me ocupo del papeleo aquí. Puedes #ayudar a los demás, especialmente a {0}.
+
+Mogę opowiedzieć ci o #potworach, które spotkałem, albo pokazać, do czego służą #glify. Zapytaj o #zadanie.=Puedo hablarte de los #monstruos que he encontrado o mostrarte para qué sirven los #glifos. Pregunta por una #misión.

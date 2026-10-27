@@ -27,6 +27,17 @@ import marauroa.common.net.OutputSerializer;
 import utilities.RPClass.ItemTestHelper;
 
 public class GlyphRestoreMigrationTest {
+	@Test
+	public void knowledgeRestoreKeepsOwnerDeathProtectionAndExperienceTooltip() throws IOException {
+		final Item saved = SingletonRepository.getEntityManager().getItem("glif wiedzy", ItemCreationContext.quest());
+		saved.setID(new ID(203, "glyph_restore_test"));
+		saved.setBoundTo("knowledge-owner");
+		final Item restored = new ItemTransformer().transform(serializedCopy(saved));
+		assertEquals("knowledge-owner", restored.getBoundTo());
+		org.junit.Assert.assertTrue(restored.isUndroppableOnDeath());
+		assertEquals("10", restored.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.COMBAT_EXPERIENCE_BONUS));
+		assertNull(restored.getRarity());
+	}
 	@BeforeClass
 	public static void setUpClasses() {
 		MockStendlRPWorld.get();

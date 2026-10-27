@@ -196,8 +196,7 @@ public class ExperiencedWarriorNPC implements ZoneConfigurator  {
 				setLevel(368);
 
 				addJob("Moja praca? Jestem dobrze znanym wojownikiem. Dziwne, że nie słyszałeś o mnie!");
-				addQuest("Dzięki, ale na razie nie potrzebuję pomocy.");
-				addHelp("Jeżeli chcesz mogę Ci powiedzieć o #potworach, które spotkałem.");
+				addHelp("Mogę opowiedzieć ci o #potworach, które spotkałem, albo pokazać, do czego służą #glify. Zapytaj o #zadanie.");
 				addOffer("Oferuję Ci informacje o #potworach, które widziałem. Oczywiście za rozsądną cenę.");
 
 				add(ConversationStates.ATTENDING, Arrays.asList("creature", "potworach", "potwór"), null,

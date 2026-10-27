@@ -99,6 +99,7 @@ public final class ItemTooltip {
 	public static final String PHYSICAL_DODGE_CHANCE = "physical_dodge_chance";
 	public static final String LOW_HEALTH_DAMAGE_REDUCTION = "low_health_damage_reduction";
 	public static final String NIGHTMARE_CHANCE = "nightmare_chance";
+	public static final String COMBAT_EXPERIENCE_BONUS = "combat_experience_bonus";
 	public static final String HEALTH = "health";
 	/** Tooltip-only healing data for consumable items. */
 	public static final String CONSUMABLE_HEALING_AMOUNT = "consumable_healing_amount";

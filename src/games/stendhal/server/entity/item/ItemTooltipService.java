@@ -196,6 +196,10 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.PHYSICAL_DODGE_CHANCE, ItemTooltip.PHYSICAL_DODGE_CHANCE);
 		copyDouble(item, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION);
 		copyDouble(item, ItemTooltip.NIGHTMARE_CHANCE, ItemTooltip.NIGHTMARE_CHANCE);
+		if (games.stendhal.server.core.rule.glyph.GlyphExperienceService.isKnowledgeGlyph(item)) {
+			put(item, ItemTooltip.COMBAT_EXPERIENCE_BONUS, Integer.toString(
+					games.stendhal.server.core.rule.glyph.GlyphExperienceService.BONUS_PERCENT));
+		}
 		copyInt(item, "health", ItemTooltip.HEALTH);
 		copyInt(item, "min_level", ItemTooltip.MIN_LEVEL);
 		copyInt(item, "min_use", ItemTooltip.MIN_USE);

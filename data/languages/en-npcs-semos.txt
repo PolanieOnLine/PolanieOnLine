@@ -1027,3 +1027,5 @@ trudne=hard
 zaoferuj=offer
 uleczyć=heal
 ucznia=pupil
+
+Mogę opowiedzieć ci o #potworach, które spotkałem, albo pokazać, do czego służą #glify. Zapytaj o #zadanie.=I can tell you about the #creatures I have met, or show you what #glyphs do. Ask about a #task.

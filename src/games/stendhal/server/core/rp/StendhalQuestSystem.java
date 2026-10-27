@@ -104,6 +104,7 @@ public class StendhalQuestSystem {
 		loadQuest(new CollectEnemyData());
 		loadQuest(new CrownForTheWannaBeKing());
 		loadQuest(new DailyItemQuest());
+		loadQuest(new FirstGlyph());
 		loadQuest(new DailyMonsterQuest());
 		loadQuest(new DiceGambling());
 		loadQuest(new DragonLair());

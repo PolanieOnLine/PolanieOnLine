@@ -469,4 +469,23 @@
 		</equipable>
 	</item>
 
+	<item name="glif wiedzy">
+		<type class="glyph" subclass="glyph_knowledge" tileid="-1"/>
+		<description>Oto glif wiedzy. Zwiększa doświadczenie zdobywane z potworów o 10%, gdy jest założony w miejscu użytkowym. Jego moc nie wygasa.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<undroppableondeath value="1"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="0"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="utility_rune"/>
+		</equipable>
+	</item>
 </items>

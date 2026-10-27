@@ -35,6 +35,8 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
+import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
+import games.stendhal.server.maps.quests.FirstGlyph;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
@@ -1664,7 +1666,8 @@ public abstract class RPEntity extends CombatEntity {
 					}
 				}
 
-				expRecipient.addXP(RebornSystem.applyCombatExperienceBonus(expRecipient, reward));
+				expRecipient.addXP(GlyphExperienceService.applyCombatBonus(expRecipient,
+						RebornSystem.applyCombatExperienceBonus(expRecipient, reward)));
 				if (expRecipient != killer) {
 					expRecipient.notifyWorldAboutChanges();
 				}
@@ -1686,6 +1689,7 @@ public abstract class RPEntity extends CombatEntity {
 				}
 				HuntingKillCredit.excludeArenaKill(
 						killer, this, damageDone == totalDamageReceived);
+				FirstGlyph.recordKill(killer, this);
 			}
 
 			SingletonRepository.getAchievementNotifier().onKill(killer);
@@ -1712,7 +1716,8 @@ public abstract class RPEntity extends CombatEntity {
 			final Map<Player, Integer> shares = GroupExperienceDistributor.splitEqually(
 					pool.group.getOnlineMembersInSameZone(pool.reference), pool.reward);
 			if (shares.isEmpty()) {
-				pool.reference.addXP(RebornSystem.applyCombatExperienceBonus(pool.reference, pool.reward));
+				pool.reference.addXP(GlyphExperienceService.applyCombatBonus(pool.reference,
+						RebornSystem.applyCombatExperienceBonus(pool.reference, pool.reward)));
 				pool.reference.notifyWorldAboutChanges();
 				continue;
 			}
@@ -1720,7 +1725,7 @@ public abstract class RPEntity extends CombatEntity {
 				final Player recipient = share.getKey();
 				final int reward = RebornSystem.applyCombatExperienceBonus(
 						recipient, share.getValue().intValue());
-				recipient.addXP(reward);
+				recipient.addXP(GlyphExperienceService.applyCombatBonus(recipient, reward));
 				recipient.notifyWorldAboutChanges();
 			}
 		}

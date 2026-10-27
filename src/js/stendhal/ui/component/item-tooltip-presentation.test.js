@@ -49,3 +49,12 @@ test("ordinary items do not acquire glyph effect lines", () => {
 	assert.ok(!text.includes("poza walką"));
 	assert.ok(!text.includes("minimum 2"));
 });
+
+test("knowledge shows creature experience separately from affixes", () => {
+	const tooltip = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "other", combat_experience_bonus: "10"
+	}}, false);
+	assert.ok(tooltip.lines.some(line => line.kind === "bonus"
+			&& line.text === "+10% doświadczenia z potworów"));
+	assert.ok(!tooltip.lines.some(line => line.kind === "affix"));
+});
