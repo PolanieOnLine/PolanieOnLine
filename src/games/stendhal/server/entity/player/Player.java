@@ -11,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
+import games.stendhal.common.Translation;
+import games.stendhal.common.constants.GameTiming;
+import games.stendhal.server.core.rule.damage.CombatStatsService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -1110,7 +1114,7 @@ public class Player extends DressedEntity implements UseListener {
 				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE
 				|| type == NotificationType.TUTORIAL || type == NotificationType.SCENE_SETTING;
 		RPEvent event = new PrivateTextEvent(type, system
-				? games.stendhal.common.Translation.getText(getLanguage(), text) : text);
+				? Translation.getText(getLanguage(), text) : text);
 		this.addEvent(event);
 		this.notifyWorldAboutChanges();
 	}
@@ -2195,14 +2199,14 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public void updateItemAtkDef() {
 		super.updateItemAtkDef();
-		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
+		CombatStatsService.update(this);
 	}
 
 	/** Perform cycle logic, including state-dependent combat summary changes. */
 	@Override
 	public void logic() {
 		GlyphRecoveryService.tick(this);
-		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
+		CombatStatsService.update(this);
 		/*
 		 * TODO: Refactor Most of these things can be handled as RPEvents
 		 */
@@ -2240,11 +2244,11 @@ public class Player extends DressedEntity implements UseListener {
 
 		final int turn = SingletonRepository.getRuleProcessor().getTurn();
 		
-		int attackRate = getAttackRate();
+		double attackRate = getPreciseAttackRate();
 		if (isBadBoy()) {
-			attackRate = getAttackRate() * 2;
+			attackRate *= 2;
 		}
-		if (isAttacking() && turn % attackRate == 0) {
+		if (isAttacking() && GameTiming.isAttackTurn(turn, attackRate)) {
 			RPEntity attackTarget = getAttackTarget();
 
 			// Face target if player is not moving
@@ -2259,7 +2263,7 @@ public class Player extends DressedEntity implements UseListener {
 
 		agePlayer(turn);
 		final String currentZone = getZone() == null ? null : getZone().getID().getID();
-		if (turn >= nextQuestMarkerTurn || !java.util.Objects.equals(questMarkerZone, currentZone)) {
+		if (turn >= nextQuestMarkerTurn || !Objects.equals(questMarkerZone, currentZone)) {
 			QuestMarkerService.update(this);
 			nextQuestMarkerTurn = turn + 4;
 			questMarkerZone = currentZone;
@@ -3304,7 +3308,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public String getLanguage() {
-		return games.stendhal.common.Translation.normalize(has("language") ? get("language") : null);
+		return Translation.normalize(has("language") ? get("language") : null);
 	}
 
 	/**
@@ -3314,7 +3318,7 @@ public class Player extends DressedEntity implements UseListener {
 	 *			language
 	 */
 	public void setLanguage(String language) {
-		put("language", games.stendhal.common.Translation.normalize(language));
+		put("language", Translation.normalize(language));
 	}
 
 	/**

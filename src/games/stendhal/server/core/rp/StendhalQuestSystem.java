@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.Translation;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
@@ -465,8 +466,8 @@ public class StendhalQuestSystem {
 	 */
 	private void dumpQuest(final StringBuilder sb, final IQuest quest, final Player player) {
 		final QuestInfo questInfo = quest.getQuestInfo(player);
-		sb.append(games.stendhal.common.Translation.getText(player.getLanguage(), questInfo.getName()) + " : ");
-		sb.append(games.stendhal.common.Translation.getText(player.getLanguage(), questInfo.getDescription()) + "\r\n");
+		sb.append(Translation.getText(player.getLanguage(), questInfo.getName()) + " : ");
+		sb.append(Translation.getText(player.getLanguage(), questInfo.getDescription()) + "\r\n");
 		if (questInfo.getSuggestedMinLevel() > player.getLevel()) {
 			sb.append("(To zadanie może być zbyt niebezpieczne jak na twój poziom doświadczenia)\r\n");
 		}
@@ -474,15 +475,15 @@ public class StendhalQuestSystem {
 		final List<String> history = quest.getHistory(player);
 		for (final String entry : history) {
 			if (entry.startsWith("<requirements>")) {
-				sb.append("\r\n" + games.stendhal.common.Translation.getText(player.getLanguage(), entry.substring("<requirements>".length())) + "\r\n");
+				sb.append("\r\n" + Translation.getText(player.getLanguage(), entry.substring("<requirements>".length())) + "\r\n");
 			} else {
-				sb.append("\t * " + games.stendhal.common.Translation.getText(player.getLanguage(), entry) + "\r\n");
+				sb.append("\t * " + Translation.getText(player.getLanguage(), entry) + "\r\n");
 			}
 		}
 
 		final List<String> hints = quest.getHint(player);
 		for (final String entry : hints) {
-			sb.append("\t - " + games.stendhal.common.Translation.getText(player.getLanguage(), entry) + "\r\n");
+			sb.append("\t - " + Translation.getText(player.getLanguage(), entry) + "\r\n");
 		}
 	}
 

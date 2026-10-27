@@ -21,6 +21,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.group.Group;
+import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.player.Player;
@@ -236,10 +237,10 @@ public class RPEntityGroupExperienceTest {
 	public void knowledgeRoundsOnceAndCannotOverflowOrIncreaseNegativeExperience() {
 		final Player player = PlayerTestHelper.createPlayer("knowledge-rounding");
 		player.getSlot("utility_rune").add(knowledge(player));
-		assertEquals(6, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, 5));
-		assertEquals(Integer.MAX_VALUE, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, Integer.MAX_VALUE));
-		assertEquals(0, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, 0));
-		assertEquals(-100, games.stendhal.server.core.rule.glyph.GlyphExperienceService.applyCombatBonus(player, -100));
+		assertEquals(6, GlyphExperienceService.applyCombatBonus(player, 5));
+		assertEquals(Integer.MAX_VALUE, GlyphExperienceService.applyCombatBonus(player, Integer.MAX_VALUE));
+		assertEquals(0, GlyphExperienceService.applyCombatBonus(player, 0));
+		assertEquals(-100, GlyphExperienceService.applyCombatBonus(player, -100));
 	}
 
 	private Player addPlayer(final String name, final StendhalRPZone zone) {

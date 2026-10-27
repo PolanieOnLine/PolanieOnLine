@@ -22,12 +22,14 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Debug;
 import games.stendhal.common.FeatureList;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.Version;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.events.seasonal.MineTownItemCleanup;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.rarity.QuestRewardRarityMigrationService;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -146,7 +148,7 @@ public class PlayerTransformer implements Transformer {
 		player.clearEvents();
 		// Some older persistence versions stored volatile maps. Never reuse NPC
 		// identifiers or quest indicators from a previous connection.
-		player.removeMap(games.stendhal.common.QuestMarker.ATTRIBUTE);
+		player.removeMap(QuestMarker.ATTRIBUTE);
 		if (player.has(AWAY)) {
 			player.remove(AWAY);
 		}
@@ -442,6 +444,8 @@ public class PlayerTransformer implements Transformer {
 				boundOldItemsToPlayer(player, item);
 
 				newSlot.add(item);
+				GlyphProgressionService.restoreEquippedHealth(
+						player, item, rpobject, newSlot.getName());
 
 			       /* Check if item has attributes that can be activated by a slot.
 				*

@@ -17,6 +17,7 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.semos.plains.ExperiencedWarriorNPC;
 import games.stendhal.server.maps.semos.library.LibrarianNPC;
+import games.stendhal.server.maps.semos.temple.HealerNPC;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 import marauroa.common.game.RPObject;
@@ -34,7 +35,7 @@ public class FirstGlyphTest {
         MockStendlRPWorld.get().addRPZone(zone);
         new ExperiencedWarriorNPC().configureZone(zone, null);
         new LibrarianNPC().configureZone(zone, null);
-        new games.stendhal.server.maps.semos.temple.HealerNPC().configureZone(zone, null);
+        new HealerNPC().configureZone(zone, null);
         quest = new FirstGlyph();
         quest.addToWorld();
         player = PlayerTestHelper.createPlayer("learner");

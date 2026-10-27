@@ -9,6 +9,8 @@ import java.util.Properties;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingUtilities;
@@ -32,7 +34,7 @@ public class StartupLanguageSelectionTest {
 	private Object previousPreferences;
 	private StartupSettingsDialog dialog;
 	private StendhalFirstScreen screen;
-	private javax.swing.JFrame owner;
+	private JFrame owner;
 	private LookAndFeel previousLookAndFeel;
 	private Object previousStyle;
 	private MemoryClientPersistence persistence;
@@ -60,7 +62,7 @@ public class StartupLanguageSelectionTest {
 			previousStyle = UIManager.get("StendhalStyle");
 			try { UIManager.setLookAndFeel(new StyledLookAndFeel(StyleFactory.createStyle("Drewno (default)"))); }
 			catch (Exception error) { throw new AssertionError(error); }
-			owner = new javax.swing.JFrame();
+			owner = new JFrame();
 			owner.setFont(UIManager.getFont("Label.font"));
 		});
 	}
@@ -171,7 +173,7 @@ public class StartupLanguageSelectionTest {
 
 	private static boolean hasTooltip(Container root, String text) {
 		for (Component child : root.getComponents()) {
-			if (child instanceof javax.swing.JComponent && text.equals(((javax.swing.JComponent) child).getToolTipText())) return true;
+			if (child instanceof JComponent && text.equals(((JComponent) child).getToolTipText())) return true;
 			if (child instanceof Container && hasTooltip((Container) child, text)) return true;
 		}
 		return false;

@@ -3,6 +3,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -11,6 +12,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Position;
 import javax.swing.text.LabelView;
 import javax.swing.text.View;
@@ -45,7 +47,7 @@ public class ItemAffixPresentationLayoutTest {
 		for (final String line : new String[] {"+2 dodatkowego ataku", "+4 dodatkowego pancerza"}) {
 			final int index = tooltip.indexOf(line);
 			assertTrue(tooltip, index >= 0);
-			org.junit.Assert.assertEquals("An affix must only be shown once", index, tooltip.lastIndexOf(line));
+			assertEquals("An affix must only be shown once", index, tooltip.lastIndexOf(line));
 			assertTrue("Flat affixes must stay below resistance affixes", index > tooltip.indexOf("odporności na krwawienie"));
 			final String row = tooltip.substring(index, tooltip.indexOf("</tr>", index));
 			assertTrue("The affix must retain its right-hand comparison", row.contains("align='right'"));
@@ -66,9 +68,9 @@ public class ItemAffixPresentationLayoutTest {
 				label.setForeground(Color.BLACK);
 				final View view = (View) label.getClientProperty(BasicHTML.propertyKey);
 				final String text = view.getDocument().getText(0, view.getDocument().getLength());
-				org.junit.Assert.assertEquals("Table cells must inherit the tooltip's readable color",
+				assertEquals("Table cells must inherit the tooltip's readable color",
 						textColor(view, text.indexOf("PIERŚCIEŃ")), textColor(view, text.indexOf("+3 ataku")));
-			} catch (final javax.swing.text.BadLocationException e) {
+			} catch (final BadLocationException e) {
 				throw new AssertionError(e);
 			}
 		});
@@ -114,7 +116,7 @@ public class ItemAffixPresentationLayoutTest {
 				assertTrue("Defense comparison must stay on the stat line", Math.abs(defense.y - defenseDelta.y) <= 1);
 				assertTrue("Comparisons must align at the right edge", Math.abs(attackDelta.x - defenseDelta.x) <= 1);
 				assertTrue("Comparisons must not remain inline after the label", attackDelta.x > allocation.width * 0.7);
-			} catch (final javax.swing.text.BadLocationException e) {
+			} catch (final BadLocationException e) {
 				throw new AssertionError(e);
 			}
 		});
@@ -149,7 +151,7 @@ public class ItemAffixPresentationLayoutTest {
 				assertTrue("The speed description must start on the next line", description.y >= rate.y + rate.height);
 				assertTrue("The speed description must align with the rate", Math.abs(description.x - rate.x) <= 1);
 				assertTrue("The comparison must stay beside the rate, not its description", Math.abs(delta.y - rate.y) <= 1);
-			} catch (final javax.swing.text.BadLocationException e) {
+			} catch (final BadLocationException e) {
 				throw new AssertionError(e);
 			}
 		});

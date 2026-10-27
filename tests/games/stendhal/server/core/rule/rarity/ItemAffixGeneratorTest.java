@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class ItemAffixGeneratorTest {
 		for (StatusType status : StatusType.values()) {
 			maximums.put(EquipmentStatusResistanceService.getResistanceAttribute(status), 0.12);
 		}
-		final java.util.Set<String> seen = new HashSet<String>();
+		final Set<String> seen = new HashSet<String>();
 		for (String itemClass : new String[] {"sword", "axe", "dagger", "club", "ranged", "wand", "whip", "armor", "shield", "helmet", "ring", "necklace"}) {
 			final boolean accessory = "ring".equals(itemClass) || "necklace".equals(itemClass);
 			maximums.put("accuracy_bonus", accessory ? 7.0 : 8.0);

@@ -23,7 +23,7 @@
 
 	<item name="glif daru Mokoszy">
 		<type class="glyph" subclass="glyph_health" tileid="-1"/>
-		<description>Oto glif daru Mokoszy. Przynosi uzdrowienie, dodając 500 punktów zdrowia. Mokosz, bogini płodności i urodzaju, błogosławi swoich wyznawców siłą i odnowieniem.</description>
+		<description>Oto glif daru Mokoszy. Błogosławieństwo bogini płodności i urodzaju wzmacnia ciało i dodaje sił do dalszej wędrówki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<health value="500"/>
@@ -43,7 +43,7 @@
 
 	<item name="glif siły">
 		<type class="glyph" subclass="glyph_strength" tileid="-1"/>
-		<description>Oto glif siły. Przyznaje 5 punktów dodatkowego ataku, potęgując Twoją moc w walce. Wyposaż się w niego, aby stać się jeszcze groźniejszym przeciwnikiem.</description>
+		<description>Oto glif siły. Zaklęta w kamieniu moc nadaje ciosom większą siłę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<atk value="5"/>
@@ -63,7 +63,7 @@
 
 	<item name="glif Peruna">
 		<type class="glyph" subclass="glyph_attack" tileid="-1"/>
-		<description>Oto glif Peruna. Niosący moc piorunów glif zwiększa Twoje obrażenia o dodatkowe 10%. Przywołaj gniew boga burzy, by stać się niepokonanym na polu bitwy.</description>
+		<description>Oto glif Peruna. Niesie gniew boga burzy, potęgując zadawane obrażenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<atk_additional_bonus value="10.0"/>
@@ -83,7 +83,7 @@
 
 	<item name="glif czaszy">
 		<type class="glyph" subclass="glyph_attack_critical" tileid="-1"/>
-		<description>Oto glif czaszy. Trafienia krytyczne zadają dodatkowe 25% bazowych obrażeń, zwiększając bazowy mnożnik krytyczny z 2,00x do 2,25x. Odkryj w sobie moc, która przełamie wszelkie przeszkody!</description>
+		<description>Oto glif czaszy. Uwalnia swą moc podczas trafień krytycznych, czyniąc je bardziej dotkliwymi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<critical_additional_bonus value="25.0"/>
@@ -103,7 +103,7 @@
 
 	<item name="glif tarczy">
 		<type class="glyph" subclass="glyph_shield" tileid="-1"/>
-		<description>Oto glif tarczy. Obronny glif dający 20 punktów obrony. Poczuj ochronę, która pozwoli Ci przetrwać najcięższe starcia.</description>
+		<description>Oto glif tarczy. Tworzy magiczną osłonę, która wzmacnia obronę przed ciosami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<def value="20"/>
@@ -123,7 +123,7 @@
 
 	<item name="glif Swaroga">
 		<type class="glyph" subclass="glyph_defensive" tileid="-1"/>
-		<description>Oto glif Swaroga. Obdarzający Cię dodatkową obroną w wysokości 20% glif ten stanie się Twoim nieocenionym sojusznikiem w obronie przed wrogami. Przyjmij siłę Słowiańskiego boga ognia.</description>
+		<description>Oto glif Swaroga. Błogosławieństwo boga ognia wzmacnia Twoją obronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<def_additional_bonus value="20.0"/>
@@ -143,7 +143,7 @@
 
 	<item name="glif Tytana">
 		<type class="glyph" subclass="glyph_titan" tileid="-1"/>
-		<description>Oto glif Tytana. Przyznający 5 punktów ataku, 5 punktów obrony oraz 200 punktów zdrowia, uczyni Cię prawdziwym tytanem na polu walki. Wzmocnij swoje ciało i umysł potęgą przodków.</description>
+		<description>Oto glif Tytana. Łączy moc ataku, obrony i zdrowia, hartując ciało do walki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<atk value="5"/>
@@ -185,7 +185,7 @@
 
 	<item name="glif Jarowita">
 		<type class="glyph" subclass="glyph_resistance" tileid="-1"/>
-		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 15%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
+		<description>Oto glif Jarowita. Chroni przed mocą wszystkich sześciu żywiołów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 		</attributes>
@@ -210,7 +210,7 @@
 
 	<item name="glif kryzysu">
 		<type class="glyph" subclass="glyph_critical" tileid="-1"/>
-		<description>Oto glif kryzysu. Zwiększający szansę na atak krytyczny o 15%, jest idealnym wsparciem w trudnych sytuacjach. Przyciągnij łaskę losu i zaskocz przeciwników potężnymi ciosami.</description>
+		<description>Oto glif kryzysu. Przyciąga łaskę losu, zwiększając szansę na trafienie krytyczne.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<critical_chance value="15.0"/>
@@ -230,7 +230,7 @@
 
 	<item name="glif krwi">
 		<type class="glyph" subclass="glyph_blood" tileid="-1"/>
-		<description>Oto glif krwi. Umożliwiający kradzież życia w wysokości 20%, pozwoli Ci na regenerację w trakcie walki. Stawiaj czoła wrogom, a jednocześnie odzyskuj zdrowie dzięki ich słabościom.</description>
+		<description>Oto glif krwi. Pozwala odzyskiwać zdrowie podczas walki, czerpiąc je z zadawanych ran.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<lifesteal_increase value="20.0"/>
@@ -250,7 +250,7 @@
 
 	<item name="glif świętego dębu">
 		<type class="glyph" subclass="glyph_sacred_oak" tileid="-1"/>
-		<description>Oto glif świętego dębu. Zmniejsza dodatkową część obrażeń trafienia krytycznego o 25%.</description>
+		<description>Oto glif świętego dębu. Czerpie siłę z prastarego drzewa, łagodząc dodatkowe obrażenia trafień krytycznych.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<critical_bonus_reduction value="25.0"/>
@@ -271,7 +271,7 @@
 
 	<item name="glif żywej wody">
 		<type class="glyph" subclass="glyph_living_water" tileid="-1"/>
-		<description>Oto glif żywej wody. Po 10 sekundach bez zadawania i otrzymywania obrażeń odnawia co 5 sekund 1% maksymalnego zdrowia, nie więcej niż 20 punktów.</description>
+		<description>Oto glif żywej wody. Gdy ustaje walka, jego moc powoli przywraca utracone zdrowie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<out_of_combat_regen value="1.0"/>
@@ -292,7 +292,7 @@
 
 	<item name="glif Rodzanic">
 		<type class="glyph" subclass="glyph_rodzanice" tileid="-1"/>
-		<description>Oto glif Rodzanic. Zwiększa leczenie z jedzenia, napojów i mikstur o 20%.</description>
+		<description>Oto glif Rodzanic. Błogosławieństwo opiekunek ludzkiego losu wzmacnia leczenie z jedzenia, napojów i mikstur.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<consumable_healing_bonus value="20.0"/>
@@ -313,7 +313,7 @@
 
 	<item name="glif wichru">
 		<type class="glyph" subclass="glyph_whirlwind" tileid="-1"/>
-		<description>Oto glif wichru. Zmniejsza wagę wolniejszych broni o 1, do minimum 2, oraz daje 5% szansy uniku zwykłego, niekrytycznego fizycznego ciosu.</description>
+		<description>Oto glif wichru. Przyspiesza ataki wolniejszą bronią i pomaga unikać zwykłych fizycznych ciosów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<rate_increase value="1"/>
@@ -335,7 +335,7 @@
 
 	<item name="glif wytrwałości">
 		<type class="glyph" subclass="glyph_endurance" tileid="-1"/>
-		<description>Oto glif wytrwałości. Zmniejsza wagę wolniejszych broni o 1, do minimum 2; poniżej 35% zdrowia redukuje otrzymywane obrażenia o 10%.</description>
+		<description>Oto glif wytrwałości. Przyspiesza ataki wolniejszą bronią i osłania Cię, gdy zdrowie spada do niebezpiecznego poziomu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<rate_increase value="1"/>
@@ -357,7 +357,7 @@
 
 	<item name="glif ogniska">
 		<type class="glyph" subclass="glyph_hearth" tileid="-1"/>
-		<description>Oto glif ogniska. Zmniejsza otrzymywane obrażenia od ognia o 35%.</description>
+		<description>Oto glif ogniska. Zaklęty płomień chroni przed niszczycielską mocą ognia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 
@@ -378,7 +378,7 @@
 
 	<item name="glif korzeni">
 		<type class="glyph" subclass="glyph_roots" tileid="-1"/>
-		<description>Oto glif korzeni. Zmniejsza otrzymywane obrażenia od ziemi i wody o 25%.</description>
+		<description>Oto glif korzeni. Więź z naturą osłabia obrażenia od ziemi i wody.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 
@@ -400,7 +400,7 @@
 
 	<item name="glif zmory">
 		<type class="glyph" subclass="glyph_nightmare" tileid="-1"/>
-		<description>Oto glif zmory. Daje 10% szansy na zmniejszenie obrażeń zadawanych przez trafioną istotę o 10% przez 6 sekund; czas odnowienia wynosi 12 sekund dla źródła i efekt nie kumuluje się.</description>
+		<description>Oto glif zmory. Podczas trafienia może na krótko osłabić atak przeciwnika.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<nightmare_chance value="10.0"/>
@@ -421,7 +421,7 @@
 
 	<item name="glif Świętowita">
 		<type class="glyph" subclass="glyph_swietowit" tileid="-1"/>
-		<description>Oto glif Świętowita. Dodaje 3 punkty ataku, 5 punktów obrony i 5 punktów procentowych szansy na trafienie krytyczne.</description>
+		<description>Oto glif Świętowita. Błogosławieństwo boga wojny wzmacnia atak, obronę i szansę na trafienie krytyczne.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<atk value="3"/>
@@ -444,7 +444,7 @@
 
 	<item name="glif przodków">
 		<type class="glyph" subclass="glyph_ancestors" tileid="-1"/>
-		<description>Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejsza obrażenia od wszystkich sześciu żywiołów o 5%.</description>
+		<description>Oto glif przodków. Opieka dawnych pokoleń wzmacnia zdrowie i obronę oraz chroni przed sześcioma żywiołami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 			<def value="8"/>

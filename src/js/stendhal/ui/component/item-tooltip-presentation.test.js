@@ -41,6 +41,18 @@ test("glyph percentages retain units and explain thresholds and cooldowns", () =
 	}
 });
 
+test("glyph level, fractional speed and recovery cap match the current level", () => {
+    const tooltip = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+        category: "other", glyph_level: "2", rate_increase: "0.7",
+        out_of_combat_regen: "0.75", out_of_combat_regen_cap: "14"
+    }}, false);
+    assert.equal(tooltip.titleSuffix, " II");
+    const text = tooltip.lines.map(line => line.text).join("\n");
+    assert.ok(text.includes("0,7 zmniejszenia wagi broni"));
+    assert.ok(text.includes("0,75% maksymalnych PW"));
+    assert.ok(text.includes("limit 14 PW"));
+});
+
 test("ordinary items do not acquire glyph effect lines", () => {
 	const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
 		category: "other", health: "5"

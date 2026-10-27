@@ -963,3 +963,8 @@ Prawy panel=Panel derecho
 
 doświadczenia z potworów=experiencia de criaturas
 +{0}% doświadczenia z potworów=+{0}% experiencia de criaturas
+
+zmniejszenia wagi broni (minimum 2)=de reducción del peso del arma (mínimo 2)
+maksymalnych PW regeneracji co 5 s (limit 8 PW; po 10 s bez zadawania i otrzymywania obrażeń)=de los PV máximos regenerados cada 5 s (límite de 8 PV; tras 10 s sin infligir ni recibir daño)
+maksymalnych PW regeneracji co 5 s (limit 14 PW; po 10 s bez zadawania i otrzymywania obrażeń)=de los PV máximos regenerados cada 5 s (límite de 14 PV; tras 10 s sin infligir ni recibir daño)
+maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)=de los PV máximos regenerados cada 5 s (límite de 20 PV; tras 10 s sin infligir ni recibir daño)

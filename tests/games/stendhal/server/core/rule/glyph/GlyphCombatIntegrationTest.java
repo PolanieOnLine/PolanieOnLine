@@ -1,6 +1,7 @@
 package games.stendhal.server.core.rule.glyph;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -81,7 +82,7 @@ public class GlyphCombatIntegrationTest {
         };
         assertEquals(30, target.damage(100, (Killer) caster()));
         assertEquals(0, target.getHP());
-        org.junit.Assert.assertTrue(died[0]);
+        assertTrue(died[0]);
     }
 
     @Test

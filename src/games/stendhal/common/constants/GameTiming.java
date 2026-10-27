@@ -19,6 +19,12 @@ public final class GameTiming {
 	public static final double SECONDS_PER_TURN =
 			MILLISECONDS_PER_TURN / 1000.0;
 
+	/** Distribute fractional intervals across turns, preserving integer cadence. */
+	public static boolean isAttackTurn(final int turn, final double interval) {
+		return Double.isFinite(interval) && interval >= 1.0
+				&& Math.floor(turn / interval) > Math.floor((turn - 1.0) / interval);
+	}
+
 	private GameTiming() {
 		// constants class
 	}

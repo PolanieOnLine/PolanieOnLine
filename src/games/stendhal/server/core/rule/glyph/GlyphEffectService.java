@@ -10,8 +10,8 @@ import games.stendhal.server.entity.player.Player;
 /**
  * Centralizes the interpretation of legacy glyph attributes.
  *
- * Storage/wire keys intentionally remain unchanged so existing persisted glyphs
- * do not require a migration. Method names describe the gameplay semantics
+ * Legacy storage keys remain readable; fractional speed uses a separate field
+ * to preserve binary compatibility. Method names describe the gameplay semantics
  * instead of repeating historical attribute names where those names are
  * misleading (for example {@code rate_increase} actually reduces attack rate).
  */
@@ -20,6 +20,7 @@ public final class GlyphEffectService {
 	public static final String HEALTH_ATTRIBUTE = "health";
 	public static final String ATTACK_PERCENT_ATTRIBUTE = "atk_additional_bonus";
 	public static final String LIFESTEAL_PERCENT_ATTRIBUTE = "lifesteal_increase";
+	public static final String ATTACK_RATE_REDUCTION_ATTRIBUTE = "glyph_attack_rate_reduction";
 	public static final String LEGACY_ATTACK_RATE_REDUCTION_ATTRIBUTE = "rate_increase";
 
 	private GlyphEffectService() {
@@ -65,7 +66,18 @@ public final class GlyphEffectService {
 	 * misleading terminology.
 	 */
 	public static double getAttackRateReduction(final RPEntity entity) {
-		return getDecimalBonus(entity, LEGACY_ATTACK_RATE_REDUCTION_ATTRIBUTE);
+		if (entity == null) return 0.0;
+		double result = 0.0;
+		for (final Item glyph : entity.getAllEquippedGlyphs()) {
+			if (glyph == null) continue;
+			final String attribute = glyph.has(ATTACK_RATE_REDUCTION_ATTRIBUTE)
+					? ATTACK_RATE_REDUCTION_ATTRIBUTE : LEGACY_ATTACK_RATE_REDUCTION_ATTRIBUTE;
+			if (glyph.has(attribute)) {
+				final double value = glyph.getDouble(attribute);
+				if (Double.isFinite(value) && value > 0.0) result += value;
+			}
+		}
+		return result;
 	}
 
 	/**

@@ -24,6 +24,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.item.Container;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPObject.ID;
@@ -201,7 +202,7 @@ public class ItemUpgradeServiceTest {
 		assertSame(ItemUpgradeResult.Status.FAILURE, result.getStatus());
 		assertEquals(1, item.getUpgradeLevel());
 		assertEquals((int) (fee * 0.4),
-				games.stendhal.server.entity.item.money.MoneyUtils
+				MoneyUtils
 						.getTotalMoneyInCopper(player));
 		for (final String material : service.getMaterialRequirements(2).keySet()) {
 			assertTrue(player.getAllEquipped(material).isEmpty());
@@ -304,7 +305,7 @@ public class ItemUpgradeServiceTest {
 		final ItemUpgradeService service = service(0);
 		provideRequirements(player, item, service);
 		final ItemUpgradePreview preview = service.createPreview(player, item);
-		final long moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
+		final long moneyBefore = MoneyUtils
 				.getTotalMoneyInCopper(player);
 		player.drop("polano", 1);
 
@@ -312,7 +313,7 @@ public class ItemUpgradeServiceTest {
 				service.performUpgrade(player, item,
 						preview.getRequestToken()).getStatus());
 		assertEquals(moneyBefore,
-				games.stendhal.server.entity.item.money.MoneyUtils
+				MoneyUtils
 						.getTotalMoneyInCopper(player));
 		assertEquals(0, item.getUpgradeLevel());
 	}
@@ -327,7 +328,7 @@ public class ItemUpgradeServiceTest {
 				new FixedRandom(0), clock);
 		provideRequirements(player, item, service);
 		final ItemUpgradePreview preview = service.createPreview(player, item);
-		final long moneyBefore = games.stendhal.server.entity.item.money.MoneyUtils
+		final long moneyBefore = MoneyUtils
 				.getTotalMoneyInCopper(player);
 
 		clock.advance(ItemUpgradeService.PREVIEW_TOKEN_TTL_MILLIS);
@@ -337,7 +338,7 @@ public class ItemUpgradeServiceTest {
 						preview.getRequestToken()).getStatus());
 		assertEquals(0, item.getUpgradeLevel());
 		assertEquals(moneyBefore,
-				games.stendhal.server.entity.item.money.MoneyUtils
+				MoneyUtils
 						.getTotalMoneyInCopper(player));
 		for (final Map.Entry<String, Integer> material
 				: service.getMaterialRequirements(1).entrySet()) {

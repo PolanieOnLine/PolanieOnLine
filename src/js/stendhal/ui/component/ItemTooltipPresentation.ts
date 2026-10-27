@@ -146,7 +146,7 @@ export function buildStructuredItemTooltip(item: Item,
 
 	return {
 		comparisonName: equippedItem?.getDisplayName(),
-		titleSuffix: upgrade > 0 ? " +" + upgrade : undefined,
+		titleSuffix: glyphLevelSuffix(current) + (upgrade > 0 ? " +" + upgrade : "") || undefined,
 		upgradeText: maxUpgrade > 0 || upgrade > 0
 				? GameLanguage.getText("Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : ""))
 				: undefined,
@@ -290,8 +290,8 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		appendIntegerBonus(core, intValue(current, "def"), intValue(equipped, "def"),
 				"pancerza", !!equipped);
 	}
-	appendIntegerBonus(core, intValue(current, "rate_increase"),
-			intValue(equipped, "rate_increase"),
+	appendDecimalBonus(core, numberValue(current, "rate_increase"),
+			numberValue(equipped, "rate_increase"),
 			"zmniejszenia wagi broni (minimum 2)", !!equipped);
 	appendIntegerBonus(core, intValue(current, "health"), intValue(equipped, "health"),
 			"zdrowia", !!equipped);
@@ -331,10 +331,13 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		if (value === 0 && (!equipped || previous === 0)) {
 			continue;
 		}
-			special.push({
+		const label = bonus.key === "out_of_combat_regen"
+				? bonus.label.replace("20 PW", formatCompact(numberValue(current, "out_of_combat_regen_cap") || 20) + " PW")
+				: bonus.label;
+		special.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(bonus.label),
-			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
+			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
+			deltas: equipped ? [createDelta(value - previous, bonus.key === "out_of_combat_regen" ? 2 : 1, "%")] : undefined
 		});
 	}
 
@@ -454,6 +457,18 @@ function appendPlainStat(lines: ItemTooltipLine[], label: string, current: numbe
 		text: label + ": " + current,
 		deltas: comparing ? [createDelta(current - previous, 0)] : undefined
 	});
+}
+
+function glyphLevelSuffix(current: any): string {
+	const level = intValue(current, "glyph_level");
+	return level >= 1 && level <= 3 ? " " + ["I", "II", "III"][level - 1] : "";
+}
+
+function appendDecimalBonus(lines: ItemTooltipLine[], current: number,
+		previous: number, label: string, comparing: boolean) {
+	if (current === 0 && (!comparing || previous === 0)) return;
+	lines.push({kind: "bonus", text: signed(formatCompact(current)) + " " + label,
+		deltas: comparing ? [createDelta(current - previous, 1)] : undefined});
 }
 
 function appendIntegerBonus(lines: ItemTooltipLine[], current: number,
@@ -604,14 +619,14 @@ function createDelta(value: number, precision: number, suffix = ""): ItemTooltip
 }
 
 function signed(value: string): string {
-	return value.startsWith("-") || value === "0" || value.startsWith("0,") || value.startsWith("0.")
+	return value.startsWith("-") || /^0([,.]0+)?$/.test(value)
 			? value : "+" + value;
 }
 
 function formatCompact(value: number): string {
 	return value.toLocaleString(GameLanguage.getLanguage() === "en" ? "en-GB" : "pl-PL", {
 		minimumFractionDigits: 0,
-		maximumFractionDigits: 1
+		maximumFractionDigits: 2
 	});
 }
 

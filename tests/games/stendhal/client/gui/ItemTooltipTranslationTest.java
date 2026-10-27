@@ -1,5 +1,6 @@
 package games.stendhal.client.gui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
@@ -66,9 +67,9 @@ public class ItemTooltipTranslationTest {
 		RPObject money = ItemTestHelper.createItem("money");
 		money.put("quantity", 1234567);
 		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(money), null, false);
-		org.junit.Assert.assertEquals("Total: 1234567 coins", html);
+		assertEquals("Total: 1234567 coins", html);
 		money.put("quantity", 1);
-		org.junit.Assert.assertEquals("Total: 1 coin", ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(money)));
+		assertEquals("Total: 1 coin", ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(money)));
 	}
 
 	@Test public void translatesElementalResistanceAsACompleteBonus() {

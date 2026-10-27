@@ -1748,3 +1748,24 @@ Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejs
 
 glif wiedzy=knowledge glyph
 Oto glif wiedzy. Zwiększa doświadczenie zdobywane z potworów o 10%, gdy jest założony w miejscu użytkowym. Jego moc nie wygasa.=You see a knowledge glyph. It increases experience from creatures by 10% when worn in the utility slot. Its power never expires.
+
+Oto glif daru Mokoszy. Błogosławieństwo bogini płodności i urodzaju wzmacnia ciało i dodaje sił do dalszej wędrówki.=You see a glyph of Mokosz’s gift. The blessing of the goddess of fertility and harvest strengthens the body for the journey ahead.
+Oto glif siły. Zaklęta w kamieniu moc nadaje ciosom większą siłę.=You see a glyph of strength. The power bound within the stone strengthens your blows.
+Oto glif Peruna. Niesie gniew boga burzy, potęgując zadawane obrażenia.=You see a glyph of Perun. It carries the wrath of the storm god, increasing damage dealt.
+Oto glif czaszy. Uwalnia swą moc podczas trafień krytycznych, czyniąc je bardziej dotkliwymi.=You see a glyph of the chalice. Its power makes critical hits more devastating.
+Oto glif tarczy. Tworzy magiczną osłonę, która wzmacnia obronę przed ciosami.=You see a glyph of the shield. Its magical protection strengthens your defense against blows.
+Oto glif Swaroga. Błogosławieństwo boga ognia wzmacnia Twoją obronę.=You see a glyph of Swaróg. The blessing of the fire god strengthens your defense.
+Oto glif Tytana. Łączy moc ataku, obrony i zdrowia, hartując ciało do walki.=You see a glyph of the titan. It combines attack, defense and health to strengthen the body for battle.
+Oto glif Jarowita. Chroni przed mocą wszystkich sześciu żywiołów.=You see a glyph of Jarowit. It protects against the power of all six elements.
+Oto glif kryzysu. Przyciąga łaskę losu, zwiększając szansę na trafienie krytyczne.=You see a glyph of crisis. It draws fortune to your side, increasing critical hit chance.
+Oto glif krwi. Pozwala odzyskiwać zdrowie podczas walki, czerpiąc je z zadawanych ran.=You see a glyph of blood. It restores health during combat by drawing life from the wounds you inflict.
+Oto glif świętego dębu. Czerpie siłę z prastarego drzewa, łagodząc dodatkowe obrażenia trafień krytycznych.=You see a glyph of the sacred oak. It draws strength from an ancient tree to lessen additional critical damage.
+Oto glif żywej wody. Gdy ustaje walka, jego moc powoli przywraca utracone zdrowie.=You see a glyph of living water. Once combat ends, its power slowly restores lost health.
+Oto glif Rodzanic. Błogosławieństwo opiekunek ludzkiego losu wzmacnia leczenie z jedzenia, napojów i mikstur.=You see a glyph of the Rodzanice. Their blessing strengthens healing from food, drinks and potions.
+Oto glif wichru. Przyspiesza ataki wolniejszą bronią i pomaga unikać zwykłych fizycznych ciosów.=You see a glyph of the gale. It speeds up slower weapons and helps you dodge ordinary physical blows.
+Oto glif wytrwałości. Przyspiesza ataki wolniejszą bronią i osłania Cię, gdy zdrowie spada do niebezpiecznego poziomu.=You see a glyph of perseverance. It speeds up slower weapons and protects you when your health falls dangerously low.
+Oto glif ogniska. Zaklęty płomień chroni przed niszczycielską mocą ognia.=You see a glyph of the hearth. Its enchanted flame protects against the destructive power of fire.
+Oto glif korzeni. Więź z naturą osłabia obrażenia od ziemi i wody.=You see a glyph of roots. Its bond with nature lessens damage from earth and water.
+Oto glif zmory. Podczas trafienia może na krótko osłabić atak przeciwnika.=You see a glyph of the nightmare. A successful hit may briefly weaken the enemy’s attack.
+Oto glif Świętowita. Błogosławieństwo boga wojny wzmacnia atak, obronę i szansę na trafienie krytyczne.=You see a glyph of Świętowit. The war god’s blessing strengthens attack, defense and critical hit chance.
+Oto glif przodków. Opieka dawnych pokoleń wzmacnia zdrowie i obronę oraz chroni przed sześcioma żywiołami.=You see a glyph of the ancestors. Their protection strengthens health and defense and shields you against the six elements.

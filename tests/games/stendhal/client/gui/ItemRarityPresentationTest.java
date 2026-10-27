@@ -7,28 +7,34 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
+import java.util.Properties;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.factory.EntityFactory;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemRarityPresentationTest {
 
-	private java.lang.reflect.Field preferences;
+	private Field preferences;
 	private Object previousPreferences;
-	@org.junit.Before public void isolatePolishLanguage() throws Exception {
-		preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+	@Before public void isolatePolishLanguage() throws Exception {
+		preferences = WtWindowManager.class.getDeclaredField("properties");
 		preferences.setAccessible(true);
-		previousPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
-		java.util.Properties values = new java.util.Properties();
-		values.setProperty("config." + games.stendhal.client.ClientLanguage.PROPERTY, "pl");
-		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), values);
+		previousPreferences = preferences.get(WtWindowManager.getInstance());
+		Properties values = new Properties();
+		values.setProperty("config." + ClientLanguage.PROPERTY, "pl");
+		preferences.set(WtWindowManager.getInstance(), values);
 	}
-	@org.junit.After public void restoreLanguage() throws Exception {
-		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), previousPreferences);
+	@After public void restoreLanguage() throws Exception {
+		preferences.set(WtWindowManager.getInstance(), previousPreferences);
 	}
 	private static final String DIVIDER_MARKER =
 			"&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;&#9472;&#9472;&#9472;&#9472;";

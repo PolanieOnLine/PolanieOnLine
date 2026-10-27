@@ -18,6 +18,7 @@ public final class GlyphRecoveryService {
     private static final class Recovery {
         private long quietSince;
         private long nextPulse;
+        private double healingRemainder;
         Recovery(final long now) { quietSince = now; nextPulse = now + QUIET_MS; }
     }
 
@@ -61,8 +62,26 @@ public final class GlyphRecoveryService {
         if (now < state.nextPulse) { return; }
         // One pulse at most: a paused server or offline interval cannot bank healing.
         state.nextPulse = now + PULSE_MS;
-        final int healing = (int) Math.min(20.0, Math.floor(player.getBaseHP() * percent / 100.0));
+        if (player.getHP() >= player.getBaseHP()) {
+            state.healingRemainder = 0.0;
+            return;
+        }
+        final double available = Math.min(regenerationCap(player), player.getBaseHP() * percent / 100.0)
+                + state.healingRemainder;
+        final int healing = (int)Math.floor(available + 1.0e-9);
+        state.healingRemainder = Math.max(0.0, available - healing);
         if (healing > 0) { player.heal(healing, true); }
+    }
+
+    private static double regenerationCap(final Player player) {
+        double cap = 0;
+        for (Item glyph : player.getAllEquippedGlyphs()) {
+            if (glyph.has("out_of_combat_regen") && glyph.getDouble("out_of_combat_regen") > 0) {
+                cap += glyph.has(GlyphProgressionService.REGEN_CAP_ATTRIBUTE)
+                        ? glyph.getDouble(GlyphProgressionService.REGEN_CAP_ATTRIBUTE) : 20.0;
+            }
+        }
+        return Math.max(0.0, cap);
     }
 
     /** Only food/potion callers use this; spells, lifesteal and regeneration do not. */

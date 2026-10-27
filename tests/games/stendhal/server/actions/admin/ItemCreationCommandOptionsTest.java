@@ -9,8 +9,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -59,7 +61,7 @@ public class ItemCreationCommandOptionsTest {
 		maximums.put("bleed_on_hit", 0.08);
 		maximums.put("execute_damage", 0.15);
 		maximums.put("armor_penetration", 0.15);
-		final java.util.Set<String> selected = new java.util.HashSet<String>();
+		final Set<String> selected = new HashSet<String>();
 		for (long seed = 0; seed < 32; seed++) {
 			final RPAction action = new RPAction();
 			action.put("rarity", "legendary");

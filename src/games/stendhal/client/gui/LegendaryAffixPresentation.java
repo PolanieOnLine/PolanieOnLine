@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
@@ -162,6 +163,7 @@ final class LegendaryAffixPresentation {
 
 	private static void appendAttackRateReduction(final StringBuilder result,
 			final RPObject object) {
+		if (has(object, ItemTooltip.GLYPH_LEVEL)) return;
 		final String raw = WeaponPerformanceCalculator.getTooltipValue(object,
 				ItemTooltip.RATE_INCREASE);
 		if (raw == null) {
@@ -173,7 +175,7 @@ final class LegendaryAffixPresentation {
 		}
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
 				.append(Math.abs(value.intValue()))
-				.append(games.stendhal.client.ClientLanguage.getText(" do wagi broni"))
+				.append(ClientLanguage.getText(" do wagi broni"))
 				.append("</font></div>");
 	}
 
@@ -196,8 +198,8 @@ final class LegendaryAffixPresentation {
 	private static void appendRegularText(final StringBuilder result,
 			final String title, final String text) {
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
-				.append(games.stendhal.client.ClientLanguage.getText(title)).append(":</b> ")
-				.append(games.stendhal.client.ClientLanguage.getText(text))
+				.append(ClientLanguage.getText(title)).append(":</b> ")
+				.append(ClientLanguage.getText(text))
 				.append("</font></div>");
 	}
 
@@ -256,7 +258,7 @@ final class LegendaryAffixPresentation {
 	private static void beginLine(final StringBuilder result, final String title) {
 		result.append("<div style='margin-top:4px'><b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
-				.append(games.stendhal.client.ClientLanguage.getText(title)).append(": </font>");
+				.append(ClientLanguage.getText(title)).append(": </font>");
 	}
 
 	private static void appendColored(final StringBuilder result,
@@ -265,7 +267,7 @@ final class LegendaryAffixPresentation {
 			return;
 		}
 		result.append("<font size='-1' color='").append(color).append("'>")
-				.append(games.stendhal.client.ClientLanguage.getText(text)).append("</font>");
+				.append(ClientLanguage.getText(text)).append("</font>");
 	}
 
 	private static void endLine(final StringBuilder result) {

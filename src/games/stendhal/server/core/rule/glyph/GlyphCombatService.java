@@ -43,8 +43,13 @@ public final class GlyphCombatService {
 
     public static boolean dodges(final RPEntity defender, final Nature nature,
             final boolean critical, final int roll) {
-        return !critical && nature == Nature.CUT && roll >= 1 && roll <= 100
-                && roll <= 100 * percent(defender, "physical_dodge_chance");
+        return roll >= 1 && roll <= 100 && dodgesOnBasisPointRoll(defender, nature, critical, roll * 100);
+    }
+
+    static boolean dodgesOnBasisPointRoll(final RPEntity defender, final Nature nature,
+            final boolean critical, final int roll) {
+        return !critical && nature == Nature.CUT && roll >= 1 && roll <= 10000
+                && roll <= 10000 * percent(defender, "physical_dodge_chance");
     }
 
     /** Direct-hit-only effects; callers apply endurance at the damage sink. */
@@ -53,7 +58,7 @@ public final class GlyphCombatService {
         if (damage <= 0) { return damage; }
         if (!critical && nature == Nature.CUT
                 && percent(defender, "physical_dodge_chance") > 0
-                && dodges(defender, nature, false, Rand.roll1D100())) { return 0; }
+                && dodgesOnBasisPointRoll(defender, nature, false, Rand.rand(10000) + 1)) { return 0; }
         return critical ? reduceCriticalBonus(defender, baseDamage, damage) : damage;
     }
 

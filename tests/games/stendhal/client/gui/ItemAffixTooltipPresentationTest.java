@@ -3,6 +3,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
@@ -10,6 +11,8 @@ import org.junit.Test;
 
 import games.stendhal.client.entity.factory.EntityFactory;
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
@@ -63,7 +66,7 @@ public class ItemAffixTooltipPresentationTest {
 		assertTrue(tooltip, tooltip.contains("&#9670; +0% kradzieży życia"));
 		assertFalse(tooltip, tooltip.contains("Łączna kradzież życia"));
 		assertTrue(tooltip, tooltip.contains("color='#ef6a62'>-9,0</font>"));
-		org.junit.Assert.assertEquals(tooltip, tooltip.indexOf("+0% kradzieży życia"),
+		assertEquals(tooltip, tooltip.indexOf("+0% kradzieży życia"),
 				tooltip.lastIndexOf("+0% kradzieży życia"));
 	}
 
@@ -108,13 +111,13 @@ public class ItemAffixTooltipPresentationTest {
 
 	@Test
 	public void upgradedEquipmentDoesNotFallBackToCancelledRawAttackPenalty() {
-		final games.stendhal.server.entity.item.Item item =
+		final Item item =
 				ItemTestHelper.createItem("upgraded gloves");
 		item.put("class", "glove");
 		item.put("atk", -1);
-		item.put(games.stendhal.server.entity.item.Item.MAX_UPGRADE_LEVEL_ATTRIBUTE, 1);
-		item.put(games.stendhal.server.entity.item.Item.UPGRADE_LEVEL_ATTRIBUTE, 1);
-		games.stendhal.server.entity.item.ItemTooltipService.update(item);
+		item.put(Item.MAX_UPGRADE_LEVEL_ATTRIBUTE, 1);
+		item.put(Item.UPGRADE_LEVEL_ATTRIBUTE, 1);
+		ItemTooltipService.update(item);
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(item), null);

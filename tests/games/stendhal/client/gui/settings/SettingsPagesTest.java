@@ -25,12 +25,16 @@ import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.MockUserInterface;
 import games.stendhal.client.gui.UserInterface;
@@ -136,19 +140,19 @@ public class SettingsPagesTest {
 			manager.setProperty("ui.language", "en");
 			SettingsTranslation.apply(pages);
 			assertEquals("Show blood and corpses", blood.getText());
-			assertEquals("Close", games.stendhal.client.ClientLanguage.getText("Zamknij"));
-			assertEquals("Talk", games.stendhal.client.entity.ActionType.TALK.getRepresentation());
-			assertSame(games.stendhal.client.entity.ActionType.TALK, games.stendhal.client.entity.ActionType.getbyRep("Talk"));
-			assertSame(games.stendhal.client.entity.ActionType.TALK, games.stendhal.client.entity.ActionType.getbyRep("Porozmawiaj"));
-			javax.swing.border.CompoundBorder languageBorder = (javax.swing.border.CompoundBorder)
+			assertEquals("Close", ClientLanguage.getText("Zamknij"));
+			assertEquals("Talk", ActionType.TALK.getRepresentation());
+			assertSame(ActionType.TALK, ActionType.getbyRep("Talk"));
+			assertSame(ActionType.TALK, ActionType.getbyRep("Porozmawiaj"));
+			CompoundBorder languageBorder = (CompoundBorder)
 					pages.addGroup(SettingsPages.Category.TEXT, "Język").getBorder();
-			assertEquals("Language", ((javax.swing.border.TitledBorder) languageBorder.getOutsideBorder()).getTitle());
+			assertEquals("Language", ((TitledBorder) languageBorder.getOutsideBorder()).getTitle());
 			manager.setProperty("ui.language", "pl");
 			SettingsTranslation.apply(pages);
 			assertEquals("Pokaż krew i zwłoki", blood.getText());
 			assertEquals(selected, blood.isSelected());
 			assertEquals(volume, sliders.get(0).getValue());
-			assertEquals("Język", ((javax.swing.border.TitledBorder) languageBorder.getOutsideBorder()).getTitle());
+			assertEquals("Język", ((TitledBorder) languageBorder.getOutsideBorder()).getTitle());
 		});
 	}
 

@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.constants.GameTiming;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.entity.creature.Creature;
@@ -38,6 +39,26 @@ public class RPEntityWeaponDamageRollTest {
 		ItemTestHelper.generateRPClasses();
 		CreatureTestHelper.generateRPClasses();
 	}
+
+
+    @Test
+    public void fractionalGlyphSpeedUsesThreeDistinctAttackIntervals() {
+        final TestDressedEntity attacker = new TestDressedEntity(Arrays.<Item>asList(fixedWeapon("axe", 10, 4)), 0, 0.0);
+        for (double reduction : new double[] {0.4, 0.7, 1.0}) {
+            attacker.setAttackRateReduction(reduction);
+            assertEquals(4.0 - reduction, attacker.getPreciseAttackRate(), 0.000001);
+            int attacks = 0;
+            for (int turn = 1; turn <= 3960; turn++) {
+                if (GameTiming.isAttackTurn(turn, attacker.getPreciseAttackRate())) attacks++;
+            }
+            assertEquals((int)Math.floor(3960 / (4.0 - reduction)), attacks);
+        }
+        for (int rate = 1; rate <= 20; rate++) {
+            for (int turn = 1; turn < 100; turn++) {
+                assertEquals(turn % rate == 0, GameTiming.isAttackTurn(turn, rate));
+            }
+        }
+    }
 
 	@Test
 	public void mixedWeaponRollsUseIndependentArmorMultipliers() {
@@ -353,8 +374,8 @@ public class RPEntityWeaponDamageRollTest {
 			glyph.put("skill_atk", bonus);
 		}
 
-		private void setAttackRateReduction(final int reduction) {
-			glyph.put("rate_increase", reduction);
+		private void setAttackRateReduction(final double reduction) {
+			glyph.put("glyph_attack_rate_reduction", reduction);
 		}
 
 		private void setLifestealBonus(final double percentage) {

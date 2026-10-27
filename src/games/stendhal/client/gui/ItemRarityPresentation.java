@@ -41,7 +41,7 @@ final class ItemRarityPresentation {
 	private static final String BETTER_COLOR = "#62d26f";
 	private static final String WORSE_COLOR = "#ef6a62";
 	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
-	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.#");
+	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.##");
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -144,7 +144,7 @@ final class ItemRarityPresentation {
 		}
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
-		return games.stendhal.client.ClientLanguage.getText(tooltip.toString());
+		return ClientLanguage.getText(tooltip.toString());
 	}
 
 	/** Exact stack size; the small inventory icon can continue using K/M labels. */
@@ -210,11 +210,14 @@ final class ItemRarityPresentation {
 		if (title != null) {
 			final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.UPGRADE_LEVEL);
+			final int glyphLevel = WeaponPerformanceCalculator.getInt(object, ItemTooltip.GLYPH_LEVEL);
+			final String glyphSuffix = glyphLevel >= 1 && glyphLevel <= 3
+					? " " + new String[] {"I", "II", "III"}[glyphLevel - 1] : "";
 			final String titleColor = rarity == null ? getTextColor()
 					: rarity.getColorHex();
 			tooltip.append("<font size='-1' color='")
 					.append(escapeHtml(titleColor)).append("'><b>")
-					.append(escapeHtml((title + (upgradeLevel > 0
+					.append(escapeHtml((title + glyphSuffix + (upgradeLevel > 0
 							? " +" + upgradeLevel : "")).toUpperCase(Locale.ROOT)))
 					.append("</b></font>");
 		}
@@ -501,7 +504,7 @@ final class ItemRarityPresentation {
 		}
 		appendPercentageBonus(coreBonuses, object, equippedItem,
 				ItemTooltip.COMBAT_EXPERIENCE_BONUS, "doświadczenia z potworów", false);
-		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.RATE_INCREASE,
+		appendDecimalBonus(coreBonuses, object, equippedItem, ItemTooltip.RATE_INCREASE,
 				"zmniejszenia wagi broni (minimum 2)");
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,
 				"zdrowia");
@@ -522,7 +525,10 @@ final class ItemRarityPresentation {
 				"redukcji dodatkowych obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.OUT_OF_COMBAT_REGEN,
-				"maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)", false);
+				"maksymalnych PW regeneracji co 5 s (limit "
+						+ formatCompact(hasTooltipValue(object, ItemTooltip.OUT_OF_COMBAT_REGEN_CAP)
+								? WeaponPerformanceCalculator.getDouble(object, ItemTooltip.OUT_OF_COMBAT_REGEN_CAP) : 20)
+						+ " PW; po 10 s bez zadawania i otrzymywania obrażeń)", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.CONSUMABLE_HEALING_BONUS,
 				"leczenia wyłącznie z przedmiotów zużywalnych", false);
@@ -650,7 +656,8 @@ final class ItemRarityPresentation {
 			return;
 		}
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
-				equippedItem == null ? "" : delta(value, equippedValue, 1));
+				equippedItem == null ? "" : delta(value, equippedValue,
+                        ItemTooltip.OUT_OF_COMBAT_REGEN.equals(attribute) ? 2 : 1));
 	}
 
 	private static void appendLifeStealAffix(final StringBuilder bonuses,
@@ -676,6 +683,16 @@ final class ItemRarityPresentation {
 			return ranged;
 		}
 		return ranged == 0 ? melee : Math.max(melee, ranged);
+	}
+
+	private static void appendDecimalBonus(final StringBuilder bonuses,
+			final RPObject object, final RPObject equippedItem,
+			final String attribute, final String label) {
+		final double value = WeaponPerformanceCalculator.getDouble(object, attribute);
+		final double previous = WeaponPerformanceCalculator.getDouble(equippedItem, attribute);
+		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
+		appendBonusLine(bonuses, signed(formatCompact(value)) + " " + ClientLanguage.getText(label),
+				equippedItem == null ? "" : delta(value, previous, 1));
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,

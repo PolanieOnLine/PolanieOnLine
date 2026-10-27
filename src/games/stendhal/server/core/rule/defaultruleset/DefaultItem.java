@@ -24,6 +24,7 @@ import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.DefaultItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.FullItemCreator;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityProfile;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
@@ -283,6 +284,10 @@ public class DefaultItem {
 				item.put(ItemTooltip.CATEGORY_OVERRIDE, tooltipCategory);
 			}
 			item.configureRarity(rarityEnabled, rarityProfile, value);
+			if (!creationContext.isRestore()
+					&& GlyphProgressionService.isUpgradeable(item)) {
+				GlyphProgressionService.applyLevel(item, 1);
+			}
 			ItemRarityService.getInstance().initialize(item, creationContext);
 		}
 

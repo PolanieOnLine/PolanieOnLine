@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.events.seasonal.MineTownLanternSpawns;
 import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.item.ItemDefinitionRefreshService;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
@@ -220,6 +221,7 @@ public class ItemTransformer {
 			}
 			ItemAffixBalanceService.enforce(item);
 			ItemValueService.refresh(item);
+			GlyphProgressionService.restore(item, rpobject);
 			ItemTooltipService.update(item);
 			return item;
 		} else {

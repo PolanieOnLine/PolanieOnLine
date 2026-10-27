@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
+import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -77,7 +78,7 @@ class SettingsComponentFactory {
 			section.repaint();
 		});
 		section.add(toggle);
-		section.add(content, games.stendhal.client.gui.layout.SLayout.EXPAND_X);
+		section.add(content, SLayout.EXPAND_X);
 		return section;
 	}
 

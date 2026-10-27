@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ComponentEvent;
 import java.lang.reflect.Field;
 import java.util.*;
 import javax.swing.*;
@@ -145,7 +146,7 @@ public class CombatStatsPanelTest {
 			assertFalse(viewport.getVerticalScrollBar().isVisible()); assertFalse(viewport.getHorizontalScrollBar().isVisible());
 			int withLimits = overlay.getWidth(); WtWindowManager.getInstance().setProperty("ui.show_stat_limits", "false"); layout(overlay);
 			assertTrue("Turning limits off should release their column width", overlay.getWidth() < withLimits);
-			host.setSize(180, 100); host.dispatchEvent(new java.awt.event.ComponentEvent(host, java.awt.event.ComponentEvent.COMPONENT_RESIZED));
+			host.setSize(180, 100); host.dispatchEvent(new ComponentEvent(host, ComponentEvent.COMPONENT_RESIZED));
 			layout(overlay);
 			assertTrue(overlay.getWidth() <= host.getWidth()); assertTrue(overlay.getHeight() <= host.getHeight());
 			assertTrue(viewport.getVerticalScrollBar().isVisible()); assertTrue(viewport.getHorizontalScrollBar().isVisible());

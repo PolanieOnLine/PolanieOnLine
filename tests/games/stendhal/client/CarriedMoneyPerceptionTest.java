@@ -7,26 +7,31 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import org.junit.Before;
 import org.junit.Test;
 
 import games.stendhal.client.gui.stats.StatsPanelController;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.listener.RPObjectChangeListener;
 import games.stendhal.common.constants.CurrencyReform;
+import marauroa.common.game.Definition;
+import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
 
 /** Exercises the real perception handler, including the ordering of private slot updates. */
 public class CarriedMoneyPerceptionTest {
 	@Test public void combatStatsUseMergedPrivatePerceptionsAndClearOnLogout() throws Exception {
-		Field preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+		Field preferences = WtWindowManager.class.getDeclaredField("properties");
 		preferences.setAccessible(true);
-		Object originalPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
-		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), new java.util.Properties());
+		Object originalPreferences = preferences.get(WtWindowManager.getInstance());
+		preferences.set(WtWindowManager.getInstance(), new Properties());
 		try {
-			marauroa.common.game.RPClass schema = new marauroa.common.game.RPClass("combat_stats_perception_test");
-			schema.addAttribute("combat_stats", marauroa.common.game.Definition.Type.MAP);
+			RPClass schema = new RPClass("combat_stats_perception_test");
+			schema.addAttribute("combat_stats", Definition.Type.MAP);
 			player.setRPClass(schema);
 			player.put("combat_stats", "resist_bleeding", "35");
 			player.put("combat_stats", "resist_bleeding.limit", "60");
@@ -45,7 +50,7 @@ public class CarriedMoneyPerceptionTest {
 			SwingUtilities.invokeAndWait(() -> {});
 			assertEquals("", combatText());
 		} finally {
-			preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), originalPreferences);
+			preferences.set(WtWindowManager.getInstance(), originalPreferences);
 		}
 	}
 
@@ -55,7 +60,7 @@ public class CarriedMoneyPerceptionTest {
 		combat.setAccessible(true);
 		Object view = combat.get(root);
 		Field rows = view.getClass().getDeclaredField("rows"); rows.setAccessible(true);
-		javax.swing.JPanel grid = (javax.swing.JPanel) rows.get(view);
+		JPanel grid = (JPanel) rows.get(view);
 		if (grid.getComponentCount() == 0) return "";
 		return ((JLabel) grid.getComponent(0)).getText() + " " + ((JLabel) grid.getComponent(1)).getText();
 	}

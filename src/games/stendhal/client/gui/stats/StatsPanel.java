@@ -15,7 +15,9 @@ import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPE
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.net.URL;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,8 +26,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.StatusID;
 import games.stendhal.client.gui.MoneyTooltip;
+import games.stendhal.client.gui.UiTranslation;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
@@ -119,7 +123,7 @@ class StatsPanel extends JPanel {
 		add(combatStatsPanel, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
 	}
 
-	void setCombatStats(java.util.Map<String, String> values) {
+	void setCombatStats(Map<String, String> values) {
 		combatStatsPanel.setSnapshot(values);
 	}
 
@@ -349,7 +353,7 @@ class StatsPanel extends JPanel {
 		}
 		@Override public void setText(String text) {
 			originalText = text;
-			super.setText(games.stendhal.client.ClientLanguage.getText(text));
+			super.setText(ClientLanguage.getText(text));
 		}
 		public StatLabel() {
 			setOpaque(false);
@@ -357,8 +361,8 @@ class StatsPanel extends JPanel {
 			setFocusable(false);
 			setWrapStyleWord(true);
 			setLineWrap(true);
-			putClientProperty(games.stendhal.client.gui.UiTranslation.AFTER_TRANSLATION,
-					(Runnable) () -> super.setText(games.stendhal.client.ClientLanguage.getText(originalText)));
+			putClientProperty(UiTranslation.AFTER_TRANSLATION,
+					(Runnable) () -> super.setText(ClientLanguage.getText(originalText)));
 			Style style = StyleUtil.getStyle();
 			if (style != null) {
 				setForeground(style.getForeground());
@@ -485,7 +489,7 @@ class StatsPanel extends JPanel {
 			@Override
 			public Dimension getMinimumSize() {
 				final Dimension minimum = super.getPreferredSize();
-				final java.awt.FontMetrics metrics = getFontMetrics(getFont());
+				final FontMetrics metrics = getFontMetrics(getFont());
 				minimum.width += Math.max(0, metrics.stringWidth(Integer.toString(Integer.MAX_VALUE))
 						- metrics.stringWidth(getText()));
 				return minimum;

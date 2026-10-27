@@ -29,6 +29,7 @@ import games.stendhal.server.util.Area;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPEvent;
+import marauroa.common.game.RPObject;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -349,7 +350,7 @@ public class ChallengeArenaViewOrbTest {
 		final Player owner = player("WatchPersistOwner"), viewer = player("WatchPersistViewer");
 		final ChallengeArenaInfo info = start(owner);
 		open(viewer, 37); assertTrue(ChallengeArenaObservation.watch(viewer, owner.getName()));
-		final marauroa.common.game.RPObject snapshot = ChallengeArenaObservation.persistenceSnapshot(viewer);
+		final RPObject snapshot = ChallengeArenaObservation.persistenceSnapshot(viewer);
 		assertEquals(lobby.getName(), snapshot.get("zoneid"));
 		assertSame(info.getZone(), viewer.getZone());
 		assertNotEquals(snapshot.get("zoneid"), viewer.get("zoneid"));

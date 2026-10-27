@@ -18,6 +18,7 @@ import java.util.List;
 import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.events.seasonal.SeasonalEventService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -46,7 +47,7 @@ import games.stendhal.server.entity.player.Player;
 public class DynieDlaKatii extends AbstractQuest {
 	@Override
 	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
-		return games.stendhal.server.core.events.seasonal.SeasonalEventService.get().isMineTownEnabled()
+		return SeasonalEventService.get().isMineTownEnabled()
 				? null : QuestMarker.NONE;
 	}
 

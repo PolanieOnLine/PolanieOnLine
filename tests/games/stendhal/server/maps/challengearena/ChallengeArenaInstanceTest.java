@@ -20,9 +20,11 @@ import games.stendhal.server.actions.CommandCenter;
 import marauroa.common.game.RPAction;
 import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.common.tiled.StendhalMapStructure;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
@@ -132,7 +134,7 @@ public class ChallengeArenaInstanceTest {
 		assertFalse(admin.isGhost());
 		assertFalse(admin.isArenaSpectator());
 		assertTrue("The arena gate must allow administrative movement", admin.canMoveTo(34, 19));
-		for (final games.stendhal.server.entity.Entity entity : info.getZone().getEntitiesAt(0, 0)) {
+		for (final Entity entity : info.getZone().getEntitiesAt(0, 0)) {
 			if (entity instanceof ChallengeArenaPlayerGate) {
 				final ChallengeArenaPlayerGate gate = (ChallengeArenaPlayerGate) entity;
 				gate.onEntered(admin, info.getZone(), admin.getX(), admin.getY());
@@ -290,7 +292,7 @@ public class ChallengeArenaInstanceTest {
 		second.getEngine().onTurnReached(1);
 		assertFalse(first.getZone().getNPCList().isEmpty());
 		assertFalse(second.getZone().getNPCList().isEmpty());
-		for (final games.stendhal.server.entity.npc.NPC creature : first.getZone().getNPCList()) {
+		for (final NPC creature : first.getZone().getNPCList()) {
 			assertSame(first.getZone(), creature.getZone());
 			assertFalse(second.getZone().has(creature.getID()));
 		}

@@ -98,7 +98,7 @@ public final class CriticalHitService {
 
 	/** Rolls one critical-hit attempt using the final percentage chance. */
 	public static boolean rollCritical(final Player player) {
-		return isCriticalSuccessful(getCriticalChance(player), Rand.roll1D100());
+		return isCriticalSuccessfulBasisPoints(getCriticalChance(player), Rand.rand(10000) + 1);
 	}
 
 	/** Package-visible deterministic seam for unit tests. */
@@ -106,9 +106,14 @@ public final class CriticalHitService {
 		if (roll < 1 || roll > 100) {
 			throw new IllegalArgumentException("Critical roll must be in [1, 100]");
 		}
+		return isCriticalSuccessfulBasisPoints(chance, roll * 100);
+	}
+
+	static boolean isCriticalSuccessfulBasisPoints(final double chance, final int roll) {
+		if (roll < 1 || roll > 10000) throw new IllegalArgumentException("Critical roll must be in [1, 10000]");
 		final double clamped = Math.min(MAX_CRITICAL_CHANCE,
 				Math.max(0.0, chance));
-		return roll <= clamped;
+		return roll <= clamped * 100;
 	}
 
 	static boolean isFalconEyeDistanceActive(final Player player) {

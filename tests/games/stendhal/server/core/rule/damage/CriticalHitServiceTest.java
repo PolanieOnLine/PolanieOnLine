@@ -26,6 +26,13 @@ public class CriticalHitServiceTest {
 		ItemTestHelper.generateRPClasses();
 	}
 
+
+    @Test
+    public void fractionalCriticalChanceHasExactBasisPointBoundary() {
+        assertTrue(CriticalHitService.isCriticalSuccessfulBasisPoints(13.5, 1350));
+        assertFalse(CriticalHitService.isCriticalSuccessfulBasisPoints(13.5, 1351));
+    }
+
 	@Test
 	public void baseChanceIsExactlyTenPercent() {
 		final Player player = player();

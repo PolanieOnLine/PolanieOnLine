@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
 
 import org.apache.log4j.Logger;
 
@@ -116,6 +117,16 @@ public abstract class DressedEntity extends RPEntity {
 	 * only fell from 2 to 1 because of an equipped glyph are floored at 2.
 	 */
 	@Override
+	public double getPreciseAttackRate() {
+		final double interval = super.getPreciseAttackRate();
+		if (!getWeapons().isEmpty() && getWeaponAttackRate() > 1
+				&& GlyphEffectService.getAttackRateReduction(this) > 0.0) {
+			return Math.max(2.0, interval);
+		}
+		return interval;
+	}
+
+	@Override
 	public int getAttackRate() {
 		final int attackRate = super.getAttackRate();
 		final double rateReduction =
@@ -153,7 +164,7 @@ public abstract class DressedEntity extends RPEntity {
 	 */
 	@Override
 	public float getItemAtkForAttack(
-			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
+			final ToDoubleFunction<Item> damageMultiplier) {
 		final double glyphAttackBonus =
 				GlyphEffectService.getAttackPercentBonusFraction(this);
 		if (Double.compare(glyphAttackBonus, 0.0) == 0) {

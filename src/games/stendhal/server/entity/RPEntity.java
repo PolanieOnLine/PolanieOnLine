@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -33,7 +34,9 @@ import games.stendhal.common.Level;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.rule.damage.WallOfGordService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
+import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.maps.quests.FirstGlyph;
@@ -520,7 +523,7 @@ public abstract class RPEntity extends CombatEntity {
 			// and approaches 1 when rate approaches infinity.
 			// We can't use a much simpler function as long as we need
 			// to deal with open ended rate values.
-			final double speedPart = 1 - 8 / (getAttackRate() + 3.0);
+			final double speedPart = 1 - 8 / (getPreciseAttackRate() + 3.0);
 
 			speedEffect = 1.0 - WEIGHT_EFFECT * speedPart * levelPart * levelPart;
 		}
@@ -2847,7 +2850,7 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	private float getWeaponsAtk(final boolean rollDamage,
-			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
+			final ToDoubleFunction<Item> damageMultiplier) {
 		float weapon = 0;
 
 		final List<Item> weapons = getWeapons();
@@ -2963,7 +2966,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @return rolled item attack
 	 */
 	public float getItemAtkForAttack(
-			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
+			final ToDoubleFunction<Item> damageMultiplier) {
 		final float stableWeaponDamage = getWeaponsAtk(false);
 		final float rolledWeaponDamage = getWeaponsAtk(true, damageMultiplier);
 		return Math.max(0, getItemAtk() - stableWeaponDamage + rolledWeaponDamage);
@@ -3370,6 +3373,18 @@ public abstract class RPEntity extends CombatEntity {
 	 * @return the attack rate
 	 */
 	public int getAttackRate() {
+		return (int) Math.ceil(getPreciseAttackRate());
+	}
+
+	/** Exact interval used by player attack timing; integer callers round up. */
+	public double getPreciseAttackRate() {
+		if (getWeapons().isEmpty()) return Item.getDefaultAttackRate();
+		final int natural = getWeaponAttackRate();
+		return natural > 1 ? Math.max(1.0, natural
+				- GlyphEffectService.getAttackRateReduction(this)) : natural;
+	}
+
+	protected int getWeaponAttackRate() {
 		boolean meleeDistance = isAttacking() && nextTo(getAttackTarget());
 
 		final List<Item> weapons = getWeapons();
@@ -3391,22 +3406,6 @@ public abstract class RPEntity extends CombatEntity {
 
 		// Zastosuj modyfikator poziomu
 		best = (int) Math.ceil(best * getItemLevelModifier(weapons.get(0)));
-
-		// Pobierz wartość rate_increase z wszystkich wyposażonych przedmiotów (np.
-		// glifów)
-		double rateIncrease = 0;
-		for (final Item equip : getAllEquippedGlyphs()) {
-			rateIncrease += equip.has("rate_increase") ? equip.getDouble("rate_increase") : 0;
-		}
-
-		// Sprawdź, czy wartość rate jest większa niż 2 i zmniejsz ją o rate_increase
-		if (best > 1) {
-			best -= rateIncrease;
-			// Upewnij się, że rate nie spadnie poniżej 2
-			if (best < 1) {
-				best = 1;
-			}
-		}
 
 		return best;
 	}
@@ -3506,7 +3505,7 @@ public abstract class RPEntity extends CombatEntity {
 			if (defender.getsDefXpFrom(this, didDamage)) { defender.incDefXP(); }
 
 			if (this instanceof Creature && defender instanceof Player) {
-				damage = games.stendhal.server.core.rule.damage.WallOfGordService
+				damage = WallOfGordService
 						.reduceDirectCreatureHit((Player) defender, damage);
 			}
 

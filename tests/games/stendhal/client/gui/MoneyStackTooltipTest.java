@@ -4,6 +4,7 @@ package games.stendhal.client.gui;
 import static org.junit.Assert.*;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.SwingUtilities;
 import org.junit.Test;
 import games.stendhal.client.entity.Item;
@@ -55,7 +56,7 @@ public class MoneyStackTooltipTest {
 				panel.setParent(coins);
 				panel.setEntity(coins);
 				MouseEvent hover = new MouseEvent(panel, MouseEvent.MOUSE_ENTERED, 0, 0, 5, 5, 0, false);
-				for (java.awt.event.MouseListener listener : panel.getMouseListeners()) listener.mouseEntered(hover);
+				for (MouseListener listener : panel.getMouseListeners()) listener.mouseEntered(hover);
 				assertEquals("Łącznie: 992550648 monet", panel.getToolTipText(hover));
 				RPObject quantity = new RPObject();
 				quantity.put("quantity", 992550348);

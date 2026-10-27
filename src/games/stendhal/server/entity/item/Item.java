@@ -287,7 +287,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute("critical_additional_bonus", Type.FLOAT, Definition.HIDDEN);
 		// Additional bonus to defense, enhancing the player's protective capabilities.
 		entity.addAttribute("def_additional_bonus", Type.FLOAT, Definition.HIDDEN);
-		// Increase in attack rate, expressed as a short value, allowing for faster attacks.
+		// Keep the persisted legacy type: existing character blobs contain shorts.
 		entity.addAttribute("rate_increase", Type.SHORT, Definition.HIDDEN);
 		// Chance to land a critical hit, represented as a floating-point value that enhances damage potential.
 		entity.addAttribute("critical_chance", Type.FLOAT, Definition.HIDDEN);
@@ -353,6 +353,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// state (e. g. broken)
 		entity.addAttribute("state", Type.INT);
+
+		entity.addAttribute("glyph_level", Type.BYTE, Definition.HIDDEN);
+		entity.addAttribute("out_of_combat_regen_cap", Type.FLOAT, Definition.HIDDEN);
+		entity.addAttribute("glyph_attack_rate_reduction", Type.FLOAT, Definition.HIDDEN);
 	}
 
 	/**

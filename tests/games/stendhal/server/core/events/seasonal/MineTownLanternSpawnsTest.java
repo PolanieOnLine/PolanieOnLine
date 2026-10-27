@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.CollisionDetection;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -188,7 +189,7 @@ public class MineTownLanternSpawnsTest {
 	@Test
 	public void mapsWithoutOptionalSecretLayerCanSpawnLanterns() {
 		final StendhalRPZone zone = zone("lantern_no_secret_layer_test");
-		zone.secretMap = new games.stendhal.common.CollisionDetection();
+		zone.secretMap = new CollisionDetection();
 		spawns.start();
 		assertEquals(1, count(zones));
 	}

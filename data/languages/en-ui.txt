@@ -793,3 +793,8 @@ Naciśnij ten przycisk, aby utworzyć konto na serwerze {0}.=Press this button t
 
 doświadczenia z potworów=experience from creatures
 +{0}% doświadczenia z potworów=+{0}% experience from creatures
+
+zmniejszenia wagi broni (minimum 2)=reduction in weapon weight (minimum 2)
+maksymalnych PW regeneracji co 5 s (limit 8 PW; po 10 s bez zadawania i otrzymywania obrażeń)=of maximum HP restored every 5 s (up to 8 HP; after 10 s without dealing or taking damage)
+maksymalnych PW regeneracji co 5 s (limit 14 PW; po 10 s bez zadawania i otrzymywania obrażeń)=of maximum HP restored every 5 s (up to 14 HP; after 10 s without dealing or taking damage)
+maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymywania obrażeń)=of maximum HP restored every 5 s (up to 20 HP; after 10 s without dealing or taking damage)

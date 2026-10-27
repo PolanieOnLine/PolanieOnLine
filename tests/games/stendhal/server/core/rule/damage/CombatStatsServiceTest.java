@@ -6,6 +6,7 @@ import org.junit.Test;
 import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.StatusType;
 import utilities.PlayerTestHelper;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.DefinitionClass;
@@ -27,7 +28,7 @@ public class CombatStatsServiceTest {
 		assertNumber("critical_chance", 50);
 		assertNumber("critical_chance.limit", 50);
 		assertEquals(0.35, EquipmentStatusResistanceService.getResistance(player,
-				games.stendhal.server.entity.status.StatusType.BLEEDING), 0.000001);
+				StatusType.BLEEDING), 0.000001);
 	}
 	@Test public void gearRemovalRefreshesInsteadOfLeavingOldBonuses() {
 		equip("finger", "ring", "resist_bleeding", 0.35);

@@ -5,13 +5,14 @@ import static org.junit.Assert.*;
 import java.util.ConcurrentModificationException;
 import org.junit.Test;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.Corpse;
 import marauroa.common.game.RPObject;
 
 public class ItemEventDescriptionTest {
 
 	private final RPEntity player = new RPEntity() {
 		@Override public void logic() { }
-		@Override protected void dropItemsOn(games.stendhal.server.entity.item.Corpse corpse) { }
+		@Override protected void dropItemsOn(Corpse corpse) { }
 		@Override public String getName() { return "History tester"; }
 		@Override public String toString() {
 			throw new ConcurrentModificationException("Inventory is changing on the game thread");

@@ -21,6 +21,7 @@ import games.stendhal.client.gui.stats.StatsPanelController;
 import marauroa.client.net.IPerceptionListener;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
+import marauroa.common.net.message.MessageS2CPerception;
 
 class StendhalPerceptionListener implements IPerceptionListener {
 	private static final Logger logger = Logger.getLogger(StendhalPerceptionListener.class);
@@ -130,7 +131,7 @@ class StendhalPerceptionListener implements IPerceptionListener {
 
 	@Override
 	public void onException(final Exception e,
-			final marauroa.common.net.message.MessageS2CPerception perception) {
+			final MessageS2CPerception perception) {
 		dispatch.onException(e, perception);
 		logger.error("perception caused an error: " + perception, e);
 		System.exit(-1);

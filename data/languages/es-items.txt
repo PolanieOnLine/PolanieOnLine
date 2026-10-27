@@ -1748,3 +1748,24 @@ Oto glif przodków. Dodaje 250 punktów zdrowia i 8 punktów obrony oraz zmniejs
 
 glif wiedzy=glifo del conocimiento
 Oto glif wiedzy. Zwiększa doświadczenie zdobywane z potworów o 10%, gdy jest założony w miejscu użytkowym. Jego moc nie wygasa.=Ves un glifo del conocimiento. Aumenta un 10% la experiencia de las criaturas al equiparlo en la ranura de utilidad. Su poder no caduca.
+
+Oto glif daru Mokoszy. Błogosławieństwo bogini płodności i urodzaju wzmacnia ciało i dodaje sił do dalszej wędrówki.=Ves un glifo del don de Mokosz. La bendición de la diosa de la fertilidad y la cosecha fortalece el cuerpo para continuar el viaje.
+Oto glif siły. Zaklęta w kamieniu moc nadaje ciosom większą siłę.=Ves un glifo de fuerza. El poder encerrado en la piedra refuerza tus golpes.
+Oto glif Peruna. Niesie gniew boga burzy, potęgując zadawane obrażenia.=Ves un glifo de Perun. Lleva la ira del dios de la tormenta y aumenta el daño infligido.
+Oto glif czaszy. Uwalnia swą moc podczas trafień krytycznych, czyniąc je bardziej dotkliwymi.=Ves un glifo del cáliz. Su poder hace que los golpes críticos sean más devastadores.
+Oto glif tarczy. Tworzy magiczną osłonę, która wzmacnia obronę przed ciosami.=Ves un glifo del escudo. Su protección mágica refuerza tu defensa contra los golpes.
+Oto glif Swaroga. Błogosławieństwo boga ognia wzmacnia Twoją obronę.=Ves un glifo de Swaróg. La bendición del dios del fuego refuerza tu defensa.
+Oto glif Tytana. Łączy moc ataku, obrony i zdrowia, hartując ciało do walki.=Ves un glifo del titán. Combina ataque, defensa y salud para fortalecer el cuerpo en la batalla.
+Oto glif Jarowita. Chroni przed mocą wszystkich sześciu żywiołów.=Ves un glifo de Jarowit. Protege contra el poder de los seis elementos.
+Oto glif kryzysu. Przyciąga łaskę losu, zwiększając szansę na trafienie krytyczne.=Ves un glifo de crisis. Atrae la fortuna y aumenta la probabilidad de golpe crítico.
+Oto glif krwi. Pozwala odzyskiwać zdrowie podczas walki, czerpiąc je z zadawanych ran.=Ves un glifo de sangre. Recupera salud durante el combate al extraer vida de las heridas que infliges.
+Oto glif świętego dębu. Czerpie siłę z prastarego drzewa, łagodząc dodatkowe obrażenia trafień krytycznych.=Ves un glifo del roble sagrado. Extrae fuerza de un árbol antiguo para reducir el daño crítico adicional.
+Oto glif żywej wody. Gdy ustaje walka, jego moc powoli przywraca utracone zdrowie.=Ves un glifo del agua viva. Cuando termina el combate, su poder restaura lentamente la salud perdida.
+Oto glif Rodzanic. Błogosławieństwo opiekunek ludzkiego losu wzmacnia leczenie z jedzenia, napojów i mikstur.=Ves un glifo de las Rodzanice. Su bendición refuerza la curación de alimentos, bebidas y pociones.
+Oto glif wichru. Przyspiesza ataki wolniejszą bronią i pomaga unikać zwykłych fizycznych ciosów.=Ves un glifo del vendaval. Acelera las armas más lentas y ayuda a esquivar los golpes físicos normales.
+Oto glif wytrwałości. Przyspiesza ataki wolniejszą bronią i osłania Cię, gdy zdrowie spada do niebezpiecznego poziomu.=Ves un glifo de perseverancia. Acelera las armas más lentas y te protege cuando tu salud cae a un nivel peligroso.
+Oto glif ogniska. Zaklęty płomień chroni przed niszczycielską mocą ognia.=Ves un glifo del hogar. Su llama encantada protege contra el poder destructivo del fuego.
+Oto glif korzeni. Więź z naturą osłabia obrażenia od ziemi i wody.=Ves un glifo de las raíces. Su vínculo con la naturaleza reduce el daño de tierra y agua.
+Oto glif zmory. Podczas trafienia może na krótko osłabić atak przeciwnika.=Ves un glifo de la pesadilla. Un golpe certero puede debilitar brevemente el ataque del enemigo.
+Oto glif Świętowita. Błogosławieństwo boga wojny wzmacnia atak, obronę i szansę na trafienie krytyczne.=Ves un glifo de Świętowit. La bendición del dios de la guerra refuerza el ataque, la defensa y la probabilidad de golpe crítico.
+Oto glif przodków. Opieka dawnych pokoleń wzmacnia zdrowie i obronę oraz chroni przed sześcioma żywiołami.=Ves un glifo de los ancestros. Su protección refuerza la salud y la defensa y te protege de los seis elementos.

@@ -190,3 +190,13 @@ test("all legendary affix descriptions and regular item bonuses have readable En
 	assert.doesNotMatch(text, /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/);
 	assert.doesNotMatch(text, /bonusu|pancerza|zdrowia|obrażeń|szansy|Zyskujesz/);
 });
+
+test("living water comparison retains the quarter point improvement", async () => {
+    const h = await harness();
+    const equipped = new h.Item({category: "other", out_of_combat_regen: "0.5"});
+    h.marauroa.me = {healing_rune: {count: () => 1, getByIndex: () => equipped}};
+    const item = new h.Item({category: "other", equipment_slots: "healing_rune",
+        out_of_combat_regen: "0.75", out_of_combat_regen_cap: "14"});
+    const line = h.build(item, true).lines.find(line => line.text.includes("regeneracji co 5 s"));
+    assert.equal(line.deltas[0].text, "+0,25%");
+});

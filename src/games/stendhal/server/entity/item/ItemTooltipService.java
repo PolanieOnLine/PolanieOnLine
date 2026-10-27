@@ -15,12 +15,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import games.stendhal.common.Constants;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
@@ -86,7 +89,7 @@ public final class ItemTooltipService {
 			}
 		}
 		putPositiveInt(item, ItemTooltip.DEFENSE, displayedDefense(item));
-		for (final java.util.Map.Entry<Nature, Double> entry
+		for (final Map.Entry<Nature, Double> entry
 				: item.getSusceptibilities().entrySet()) {
 			final int resistance = (int) Math.round(
 					200.0 - (100.0 * entry.getValue().doubleValue()));
@@ -186,19 +189,26 @@ public final class ItemTooltipService {
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);
 		copyDouble(item, "def_additional_bonus", ItemTooltip.DEFENSE_BONUS);
-		copyInt(item, "rate_increase", ItemTooltip.RATE_INCREASE);
+		copyDouble(item, item.has("glyph_attack_rate_reduction")
+                ? "glyph_attack_rate_reduction" : "rate_increase", ItemTooltip.RATE_INCREASE);
 		copyDouble(item, "critical_chance", ItemTooltip.CRITICAL_CHANCE);
 		copyDouble(item, "critical_additional_bonus", ItemTooltip.CRITICAL_BONUS);
 		copyDouble(item, "lifesteal_increase", ItemTooltip.LIFESTEAL_INCREASE);
 		copyDouble(item, ItemTooltip.CRITICAL_BONUS_REDUCTION, ItemTooltip.CRITICAL_BONUS_REDUCTION);
 		copyDouble(item, ItemTooltip.OUT_OF_COMBAT_REGEN, ItemTooltip.OUT_OF_COMBAT_REGEN);
+		copyDouble(item, ItemTooltip.OUT_OF_COMBAT_REGEN_CAP, ItemTooltip.OUT_OF_COMBAT_REGEN_CAP);
+		if (item.has(ItemTooltip.GLYPH_LEVEL)
+				&& GlyphProgressionService.isUpgradeable(item)) {
+			put(item, ItemTooltip.GLYPH_LEVEL, Integer.toString(
+					GlyphProgressionService.getLevel(item)));
+		}
 		copyDouble(item, ItemTooltip.CONSUMABLE_HEALING_BONUS, ItemTooltip.CONSUMABLE_HEALING_BONUS);
 		copyDouble(item, ItemTooltip.PHYSICAL_DODGE_CHANCE, ItemTooltip.PHYSICAL_DODGE_CHANCE);
 		copyDouble(item, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION, ItemTooltip.LOW_HEALTH_DAMAGE_REDUCTION);
 		copyDouble(item, ItemTooltip.NIGHTMARE_CHANCE, ItemTooltip.NIGHTMARE_CHANCE);
-		if (games.stendhal.server.core.rule.glyph.GlyphExperienceService.isKnowledgeGlyph(item)) {
+		if (GlyphExperienceService.isKnowledgeGlyph(item)) {
 			put(item, ItemTooltip.COMBAT_EXPERIENCE_BONUS, Integer.toString(
-					games.stendhal.server.core.rule.glyph.GlyphExperienceService.BONUS_PERCENT));
+					GlyphExperienceService.BONUS_PERCENT));
 		}
 		copyInt(item, "health", ItemTooltip.HEALTH);
 		copyInt(item, "min_level", ItemTooltip.MIN_LEVEL);

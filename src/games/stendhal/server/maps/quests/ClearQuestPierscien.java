@@ -18,6 +18,7 @@ import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -232,7 +233,7 @@ public class ClearQuestPierscien extends AbstractQuest {
 
 	private static final class HasSelectedResetCondition implements ChatCondition {
 		@Override
-		public boolean fire(final Player player, final Sentence sentence, final games.stendhal.server.entity.Entity entity) {
+		public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 			return getSelectedOption(player) != null;
 		}
 	}

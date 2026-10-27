@@ -26,6 +26,29 @@ public class GlyphRecoveryServiceTest {
         player.getSlot(Slots.GLYPHS.getNames().get(0)).add(glyph);
     }
 
+
+    @Test
+    public void progressionCapsRecoveryAndPreservesSubHealthPulses() {
+        player.getSlot(Slots.GLYPHS.getNames().get(0)).clear();
+        glyph = new Glyph("glif żywej wody", "glyph", "glyph_water", null);
+        player.getSlot(Slots.GLYPHS.getNames().get(0)).add(glyph);
+        for (int level = 1; level <= 3; level++) {
+            GlyphProgressionService.applyLevel(glyph, level);
+            player.setBaseHP(5000); player.setHP(100);
+            GlyphRecoveryService.tick(player, 0); GlyphRecoveryService.tick(player, 10000);
+            assertEquals(100 + new int[] {8, 14, 20}[level - 1], player.getHP());
+        }
+        GlyphProgressionService.applyLevel(glyph, 1);
+        player.setBaseHP(100); player.setHP(50);
+        GlyphRecoveryService.tick(player, 0); GlyphRecoveryService.tick(player, 10000);
+        assertEquals(50, player.getHP());
+        GlyphRecoveryService.tick(player, 15000);
+        assertEquals(51, player.getHP());
+        player.setHP(100); GlyphRecoveryService.tick(player, 20000);
+        player.setHP(50); GlyphRecoveryService.tick(player, 25000);
+        assertEquals(50, player.getHP());
+    }
+
     @Test
     public void waitsTenSecondsThenFiveSecondsBetweenPulses() {
         GlyphRecoveryService.tick(player, 0);

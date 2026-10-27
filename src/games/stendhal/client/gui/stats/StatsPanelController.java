@@ -14,13 +14,17 @@ package games.stendhal.client.gui.stats;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.entity.StatusID;
+import games.stendhal.common.constants.CombatStat;
 import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.Level;
 import games.stendhal.common.MathHelper;
@@ -419,10 +423,10 @@ public final class StatsPanelController {
 
 	/** Read only a complete merged perception; missing maps clear old-server/logout data. */
 	public void updateCombatStats(RPObject player) {
-		final java.util.Map<String, String> values = player != null
-				&& player.hasMap(games.stendhal.common.constants.CombatStat.ATTRIBUTE)
-				? new java.util.LinkedHashMap<String, String>(player.getMap(games.stendhal.common.constants.CombatStat.ATTRIBUTE))
-				: java.util.Collections.emptyMap();
+		final Map<String, String> values = player != null
+				&& player.hasMap(CombatStat.ATTRIBUTE)
+				? new LinkedHashMap<String, String>(player.getMap(CombatStat.ATTRIBUTE))
+				: Collections.emptyMap();
 		Runnable update = () -> panel.setCombatStats(values);
 		if (SwingUtilities.isEventDispatchThread()) update.run();
 		else SwingUtilities.invokeLater(update);

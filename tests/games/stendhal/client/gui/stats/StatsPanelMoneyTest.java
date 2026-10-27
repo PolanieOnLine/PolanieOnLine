@@ -1,12 +1,17 @@
 package games.stendhal.client.gui.stats;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,13 +75,13 @@ public class StatsPanelMoneyTest {
 
 	@Test
 	public void panelAndCoinLabelKeepTheCommonMoneyDescription() throws Exception {
-		org.junit.Assume.assumeFalse(CurrencyReform.useReformedCurrency());
+		Assume.assumeFalse(CurrencyReform.useReformedCurrency());
 		change("bag", true, item(1, "money", 50, 1));
 		change("pouch", true, item(1, "money", 30, 1));
 		assertMoney(80);
 		Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
 		moneyField.setAccessible(true);
-		javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
+		JComponent panel = (JComponent) moneyField.get(controller.getComponent());
 		Field labelField = panel.getClass().getDeclaredField("legacyLabel");
 		labelField.setAccessible(true);
 		assertEquals("Łącznie: 80 monet", panel.getToolTipText());
@@ -198,7 +203,7 @@ public class StatsPanelMoneyTest {
 		if (!CurrencyReform.useReformedCurrency()) {
 			Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
 			moneyField.setAccessible(true);
-			javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
+			JComponent panel = (JComponent) moneyField.get(controller.getComponent());
 			assertEquals("Łącznie: 4294967294 monety", panel.getToolTipText());
 		}
 	}
@@ -210,8 +215,8 @@ public class StatsPanelMoneyTest {
 		assertMoney(CurrencyReform.useReformedCurrency() ? 0 : total);
 		Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
 		moneyField.setAccessible(true);
-		javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
-		org.junit.Assert.assertTrue(panel.getToolTipText().contains(Long.toString(total)));
+		JComponent panel = (JComponent) moneyField.get(controller.getComponent());
+		assertTrue(panel.getToolTipText().contains(Long.toString(total)));
 	}
 
 	@Test
@@ -224,8 +229,8 @@ public class StatsPanelMoneyTest {
 		change("bag", true, update);
 		assertMoney(20);
 		assertEquals(201, carried.getInt("quantity"));
-		org.junit.Assert.assertSame(originalSlot, carried.getContainerSlot());
-		org.junit.Assert.assertFalse(update.has("name"));
+		assertSame(originalSlot, carried.getContainerSlot());
+		assertFalse(update.has("name"));
 	}
 
 	@Test
@@ -235,8 +240,8 @@ public class StatsPanelMoneyTest {
 		assertMoney(CurrencyReform.useReformedCurrency() ? 11 : 30411);
 		Field moneyField = StatsPanel.class.getDeclaredField("moneyPanel");
 		moneyField.setAccessible(true);
-		javax.swing.JComponent panel = (javax.swing.JComponent) moneyField.get(controller.getComponent());
-		org.junit.Assert.assertTrue(panel.getToolTipText().contains("30411"));
+		JComponent panel = (JComponent) moneyField.get(controller.getComponent());
+		assertTrue(panel.getToolTipText().contains("30411"));
 	}
 
 	@Test

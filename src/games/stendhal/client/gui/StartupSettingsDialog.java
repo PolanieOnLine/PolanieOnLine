@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.ListCellRenderer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -111,9 +113,9 @@ final class StartupSettingsDialog extends JDialog {
 				SBoxLayout.COMMON_PADDING);
 		JLabel label = new JLabel("Tryb wyświetlania gry");
 		final JComboBox<WindowMode> selector = new JComboBox<WindowMode>(WindowMode.values());
-		final javax.swing.ListCellRenderer<? super WindowMode> renderer = selector.getRenderer();
+		final ListCellRenderer<? super WindowMode> renderer = selector.getRenderer();
 		selector.setRenderer((list, value, index, selected, focus) -> {
-			java.awt.Component display = renderer.getListCellRendererComponent(list, value, index, selected, focus);
+			Component display = renderer.getListCellRendererComponent(list, value, index, selected, focus);
 			if (display instanceof JLabel) {
 				JLabel option = (JLabel) display;
 				option.setText(ClientLanguage.getText(option.getText()));
