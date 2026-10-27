@@ -2283,7 +2283,12 @@ public abstract class RPEntity extends CombatEntity {
 	 * @return true iff dropping the item was successful.
 	 */
 	public boolean drop(final Item item) {
-		return drop(it -> item == it, 1);
+		return drop(item, 1);
+	}
+
+	/** Removes an exact quantity from a specific carried instance. */
+	public boolean drop(final Item item, final int amount) {
+		return amount > 0 && drop(it -> item == it, amount);
 	}
 
 	/**

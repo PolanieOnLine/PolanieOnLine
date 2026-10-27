@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import games.stendhal.common.constants.Nature;
@@ -83,6 +84,18 @@ public final class GlyphProgressionService {
     /** Zero denotes an item outside progression, including the knowledge glyph. */
     public static int getLevel(final Item item) {
         return isUpgradeable(item) ? readLevel(item,item.getName()) : 0;
+    }
+
+    /** Exact values for a non-consuming preview of the shared progression table. */
+    public static Map<String, Double> getEffects(final Item item, final int level) {
+        if (!isUpgradeable(item) || level < 1 || level > 3) return Collections.emptyMap();
+        Map<String, Double> values = new LinkedHashMap<String, Double>();
+        for (Effect effect : DEFINITIONS.get(item.getName())) {
+            String key = effect.nature == null ? effect.attribute
+                    : "resistance_" + effect.nature.name().toLowerCase(Locale.ROOT);
+            values.put(key, effect.values[level - 1]);
+        }
+        return Collections.unmodifiableMap(values);
     }
 
     private static int readLevel(final RPObject saved, final String name) {

@@ -52,7 +52,6 @@ class GlyphExpansionTest(unittest.TestCase):
                 actual = dict((name, int(amount)) for name, amount in re.findall(r'"([^"]+)",\s*(\d+)', recipes[expected['name']]))
                 self.assertEqual(actual, expected['recipe'])
                 self.assertTrue(set(actual).issubset(known), set(actual) - known)
-                self.assertIn('case "' + expected['name'].lower() + '":', self.npc)
         for name in ['glif wichru', 'glif wytrwałości']:
             self.assertIn('"glif Strzyboga", 1', recipes[name])
         self.assertIn('selectedGlyph.consumeResources(player)', self.npc)
