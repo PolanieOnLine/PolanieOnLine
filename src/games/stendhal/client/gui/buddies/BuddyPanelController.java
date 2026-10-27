@@ -79,7 +79,8 @@ public final class BuddyPanelController implements PropertyChangeListener {
 		configureFilterToggle(filterToggle);
 		filterRow.add(filterToggle);
 		final JTextField filterField = new JTextField();
-		filterField.setColumns(12);
+		// The expanding row supplies the width; a fixed 12-column preference widens narrow docks.
+		filterField.setColumns(1);
 		filterField.setVisible(false);
 		filterField.setToolTipText("Filtruj listę znajomych według nazwy");
 		filterField.getDocument().addDocumentListener(new DocumentListener() {

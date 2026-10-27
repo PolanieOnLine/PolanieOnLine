@@ -3,6 +3,7 @@ package games.stendhal.client.gui;
 import static org.junit.Assert.*;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import javax.swing.*;
@@ -12,6 +13,7 @@ import org.junit.After;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
 import games.stendhal.client.gui.styled.styles.StyleFactory;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.buddies.BuddyPanelController;
 
 public class LeftColumnResizeTest {
  private LookAndFeel previous;
@@ -30,6 +32,33 @@ public class LeftColumnResizeTest {
   parent.invalidate(); parent.doLayout();
   for (Component child : parent.getComponents()) if (child instanceof Container) layout((Container) child);
   parent.invalidate();
+ }
+ @Test public void openingBuddySearchFitsTheDockWithoutHorizontalScrolling() throws Exception {
+  SwingUtilities.invokeAndWait(() -> {
+   try {
+    Constructor<BuddyPanelController> constructor = BuddyPanelController.class.getDeclaredConstructor();
+    constructor.setAccessible(true); BuddyPanelController controller = constructor.newInstance();
+    JComponent buddies = (JComponent)controller.getComponent();
+    JComponent filter = (JComponent)buddies.getComponent(0);
+    JToggleButton toggle = (JToggleButton)filter.getComponent(0); JTextField field = (JTextField)filter.getComponent(1);
+    JList<?> list = (JList<?>)buddies.getComponent(1);
+    Method add = list.getModel().getClass().getDeclaredMethod("setOnline", String.class, boolean.class); add.setAccessible(true);
+    for (int i=0; i<60; i++) add.invoke(list.getModel(), "Przyjaciel" + i, i<2);
+    JScrollPane scroll = (JScrollPane)new ScrolledViewport(buddies).getComponent(); scroll.setBorder(null);
+    JTabbedPane tabs = new JTabbedPane(SwingConstants.BOTTOM); tabs.add("Przyjaciele", scroll); tabs.add("Grupa", new JPanel());
+    for (int width : new int[] {180, 240, 320, 180}) {
+     tabs.setSize(width, 500); for (int pass=0; pass<3; pass++) layout(tabs);
+     toggle.doClick(); for (int pass=0; pass<3; pass++) layout(tabs);
+     assertTrue(field.isVisible()); assertTrue(scroll.getVerticalScrollBar().isVisible());
+     assertFalse("Opening search must not create a horizontal scrollbar at dock width " + width, scroll.getHorizontalScrollBar().isVisible());
+     assertTrue(field.getWidth() > 0); assertTrue(field.getX() + field.getWidth() <= filter.getWidth());
+     assertTrue(buddies.getWidth() <= scroll.getViewport().getExtentSize().width);
+     field.setText("Przyjaciel59"); assertEquals(1, list.getModel().getSize());
+     field.getActionMap().get("buddyFilterHide").actionPerformed(new ActionEvent(field, 0, "escape"));
+     assertFalse(field.isVisible()); assertFalse(toggle.isSelected()); assertEquals(60, list.getModel().getSize());
+    }
+   } catch (Exception error) { throw new AssertionError(error); }
+  });
  }
  @Test public void expandedDockCanReturnToItsOriginalMinimumWidth() throws Exception {
   SwingUtilities.invokeAndWait(() -> {
