@@ -54,7 +54,7 @@ class GlyphExpansionTest(unittest.TestCase):
                 self.assertIn('case "' + expected['name'].lower() + '":', self.npc)
         for name in ['glif wichru', 'glif wytrwałości']:
             self.assertIn('"glif Strzyboga", 1', recipes[name])
-        self.assertIn('player.drop(resourceName, amount);', self.npc)
+        self.assertIn('selectedGlyph.consumeResources(player)', self.npc)
         self.assertIn('player.equipOrPutOnGround(selectedGlyph.getItem());', self.npc)
 
 if __name__ == '__main__':

@@ -13,7 +13,13 @@ const source = ts.transpileModule(readFileSync(path.join(__dirname,
 	compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
 }).outputText;
 vm.runInNewContext(source, {exports: exportsObject,
-	require: name => name === "marauroa" ? {marauroa: {}} : {}});
+	require: name => {
+		if (name === "marauroa") return {marauroa: {}};
+		if (name === "../../util/GameLanguage") {
+			return {GameLanguage: {getText: text => text, getLanguage: () => "pl"}};
+		}
+		return {};
+	}});
 
 test("glyph percentages retain units and explain thresholds and cooldowns", () => {
 	const item = {tooltip_stats: {
