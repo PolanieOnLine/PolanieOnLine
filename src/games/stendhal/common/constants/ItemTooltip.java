@@ -32,8 +32,14 @@ public final class ItemTooltip {
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
 	public static final String RESISTANCE_PREFIX = "resistance_";
+	/** Innate status resistances, separate from rolled resist_* affixes. */
+	public static final String STATUS_RESISTANCE_PREFIX = "status_resistance_";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
+	public static final String BASE_LIFESTEAL = "base_lifesteal";
+	public static final String AFFIX_LIFESTEAL = "affix_lifesteal";
+	public static final String LIFESTEAL_EFFECTIVENESS = "lifesteal_effectiveness";
+	public static final String EFFECTIVE_LIFESTEAL = "effective_lifesteal";
 	public static final String PARRY_CHANCE = "parry_chance";
 	public static final String ARMOR_PENETRATION = "armor_penetration";
 	public static final String CRITICAL_DAMAGE_BONUS = "critical_damage_bonus";
@@ -110,6 +116,7 @@ public final class ItemTooltip {
 	public static final String MAX_UPGRADE_LEVEL = "max_improves";
 	public static final String DURABILITY = "durability";
 	public static final String USES = "uses";
+	public static final String SAVED_POSITION = "saved_position";
 	public static final String VALUE = "value";
 
 	private ItemTooltip() {

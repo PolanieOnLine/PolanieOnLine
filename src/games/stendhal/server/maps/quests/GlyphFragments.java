@@ -297,7 +297,7 @@ public class GlyphFragments extends AbstractQuest {
 							new IncreaseXPAction(5000),
 							new IncreaseKarmaAction(5),
 							new EquipItemAction(itemName),
-							new SetQuestAction(QUEST_SLOT, "done;;;;;"),
+							new SetQuestAction(QUEST_SLOT, 0, "done"),
 							new IncrementQuestAction(QUEST_SLOT, 6, 1),
 							new SayTextAction("Udało się. Oczyściłem znak i odtworzyłem jego nośnik. Oto fragment glifu. Zoryk Runiczny potrafi nasycić taką matrycę nową mocą.")
 						).fire(player, sentence, raiser);

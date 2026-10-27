@@ -4,6 +4,7 @@ import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.ChestOpenTelemetry;
 import games.stendhal.server.entity.ChestRewardProfile;
 import games.stendhal.server.entity.player.Player;
@@ -42,7 +43,8 @@ public class BrazowaSkrzynia extends StackableBox {
 		removeOne();
 
 		final ChestRewardProfile.RolledReward reward = PROFILE.rollReward();
-		final Item item = SingletonRepository.getEntityManager().getItem(reward.getItemName());
+		final Item item = SingletonRepository.getEntityManager().getItem(reward.getItemName(),
+				ItemCreationContext.drop());
 		if (item instanceof StackableItem) {
 			((StackableItem) item).setQuantity(reward.getQuantity());
 		}

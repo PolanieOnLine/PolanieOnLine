@@ -15,12 +15,15 @@ package games.stendhal.server.entity.npc.condition;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.parser.ConversationParser;
+import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConditionBuilder;
+import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -50,6 +53,25 @@ public class GreetingMatchesNameCondition implements ChatCondition {
 		}
 
 		String subjectName = sentence.getSubjectName();
+		// A player name can register a greeting word as a subject in the parser.
+		// Only the optional name after the greeting should select the NPC.
+		final StringBuilder words = new StringBuilder();
+		for (final Expression word : sentence) {
+			if (words.length() > 0) {
+				words.append(' ');
+			}
+			words.append(word.getNormalized());
+		}
+		final String normalized = words.toString();
+		for (final String greeting : ConversationPhrases.GREETING_MESSAGES) {
+			if (normalized.equals(greeting)) {
+				return true;
+			}
+			if (normalized.startsWith(greeting + " ")) {
+				subjectName = ConversationParser.parse(normalized.substring(greeting.length() + 1)).getSubjectName();
+				break;
+			}
+		}
 		if (subjectName == null) {
 			return true;
 		}

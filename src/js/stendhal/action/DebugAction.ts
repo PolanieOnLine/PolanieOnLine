@@ -21,6 +21,7 @@ import { Panel } from "ui/toolkit/Panel";
 
 import { Chat } from "../util/Chat";
 import { Debug } from "../util/Debug";
+import { GameLanguage } from "../util/GameLanguage";
 import { Paths } from "../data/Paths";
 
 import { marauroa } from "marauroa"
@@ -38,7 +39,7 @@ export class DebugAction extends SlashAction {
 
 	execute(_type: string, params: string[], _remainder: string): boolean {
 		if (params.length < 1) {
-			Chat.logH("error", "Oczekiwane parametry")
+			Chat.logH("error", GameLanguage.getText("Oczekiwane parametry"));
 			this.showUsage();
 		} else if (["help", "?"].indexOf(params[0]) > -1) {
 			this.showUsage();
@@ -136,14 +137,14 @@ export class DebugAction extends SlashAction {
 			return;
 		}
 		if (!stendhal.config.getBoolean("effect.weather")) {
-			Chat.logH("warning", "Pogoda jest wyłączona.");
+			Chat.logH("warning", GameLanguage.getText("Pogoda jest wyłączona."));
 		}
 
 		if (weather) {
 			weather = weather.replace(/ /g, "_");
 			const wfilename = Paths.weather + "/" + weather + ".png";
 			if (!singletons.getSpriteStore().getCached(wfilename)) {
-				Chat.logH("error", "nieznana pogoda: " + wfilename);
+				Chat.logH("error", GameLanguage.getText("nieznana pogoda: {0}").replace("{0}", wfilename));
 				return;
 			}
 		}

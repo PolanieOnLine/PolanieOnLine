@@ -6,6 +6,7 @@ package games.stendhal.server.core.rule.rarity;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -22,6 +23,42 @@ public class ItemRarityTransferSnapshotTest {
 	@BeforeClass
 	public static void setUpClasses() {
 		ItemTestHelper.generateRPClasses();
+	}
+
+	@Test
+	public void transferringToLifeStealWeaponReplacesIncompatibleGrantInsteadOfOverwritingItsStat() {
+		final Item source = sword("grant source", 40, 100);
+		source.setRarity(ItemRarity.RARE);
+		source.put("lifesteal", 0.07);
+		source.put(ItemAffixState.ATTRIBUTE, "lifesteal", "0.07");
+		ItemAffixState.setSeed(source, 654L);
+		final java.util.Map<String, String> attributes = new java.util.HashMap<String, String>();
+		attributes.put("lifesteal", "0.075");
+		attributes.put("atk", "50");
+		final Item target = new Item("authored target", "sword", "test", attributes);
+		target.setEquipableSlots(Arrays.asList("rhand", "bag"));
+
+		ItemRarityTransferSnapshot.apply(target, ItemRarityTransferSnapshot.encode(source));
+
+		assertEquals(0.075, target.getDouble("lifesteal"), 0.000001);
+		assertFalse(ItemAffixState.has(target, "lifesteal"));
+		assertEquals(1, ItemAffixState.getValues(target).size());
+		assertTrue(target.getRarityModifier("lifesteal") == null);
+	}
+
+	@Test
+	public void effectivenessCannotFollowAWeaponIntoADefinitionWithoutLifeSteal() {
+		final Item source = ItemLifestealSeparationTest.weapon(0.10);
+		source.setRarity(ItemRarity.RARE);
+		source.put("lifesteal_effectiveness", 20);
+		source.put(ItemAffixState.ATTRIBUTE, "lifesteal_effectiveness", "20");
+		final Item target = sword("plain target", 50, 100);
+
+		ItemRarityTransferSnapshot.apply(target, ItemRarityTransferSnapshot.encode(source));
+
+		assertFalse(target.has("lifesteal_effectiveness"));
+		assertFalse(ItemAffixState.has(target, "lifesteal_effectiveness"));
+		assertEquals(1, ItemAffixState.getValues(target).size());
 	}
 
 	@Test

@@ -21,6 +21,7 @@ final class EliteCreatureRenderer {
 	private static final String ELITE_TITLE_TYPE = "elite";
 	private static final Color GOLD = new Color(255, 210, 64);
 	private static final int MIN_GLOW_ALPHA = 96;
+	private static final float GLOW_ALPHA = 0.22f;
 	private static final int TITLE_CACHE_SIZE = 64;
 
 	private static final ThreadLocal<BufferedImage> GLOW_BUFFER =
@@ -73,14 +74,14 @@ final class EliteCreatureRenderer {
 			for (int col = 0; col < width; col++) {
 				final int index = offset + col;
 				final int alpha = pixels[index] >>> 24;
+				// Keep the caller's visibility composite for the aura as well as the body.
 				pixels[index] = alpha >= MIN_GLOW_ALPHA
-						? (alpha << 24) | goldRgb : 0;
+						? (Math.round(alpha * GLOW_ALPHA) << 24) | goldRgb : 0;
 			}
 		}
 
 		final Graphics2D copy = (Graphics2D) g2d.create();
 		try {
-			copy.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.22f));
 			for (int dy = -1; dy <= 1; dy++) {
 				for (int dx = -1; dx <= 1; dx++) {
 					if (dx == 0 && dy == 0) {

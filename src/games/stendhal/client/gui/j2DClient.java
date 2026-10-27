@@ -212,7 +212,7 @@ public class j2DClient implements UserInterface {
 				+ System.getProperty("java.vm.name", "unknown")
 				+ ". Mogą wynikać problemy takie jak: czarny lub szary ekran.\n"
 				+ " Jeżeli masz doświadczenie w programowaniu z JDK to zapraszamy do współpracy.";
-			addEventLine(new HeaderLessEventLine(text, NotificationType.ERROR));
+			addEventLine(new HeaderLessEventLine(games.stendhal.client.ClientLanguage.getText(text), NotificationType.ERROR));
 		}
 	}
 

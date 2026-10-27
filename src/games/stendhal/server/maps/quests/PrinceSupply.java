@@ -22,6 +22,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.ZoneEnterExitListener;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.chest.PlayerPrivateStoredChest;
@@ -52,6 +53,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.RPSlot;
 import marauroa.common.game.SlotIsFullException;
 
 public class PrinceSupply extends AbstractQuest {
@@ -174,6 +176,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
@@ -188,7 +191,14 @@ public class PrinceSupply extends AbstractQuest {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(ARMORY_ZONE);
 		removeLegacySharedChests(zone);
 
-		if (findPrivateChest(zone, player) != null) {
+		final PlayerPrivateStoredChest existing = findPrivateChest(zone, player);
+		if (existing != null) {
+			final int previousSize = existing.size();
+			populateMissingQuestItems(player, existing);
+			if (existing.size() != previousSize) {
+				existing.notifyWorldAboutChanges();
+				zone.storeToDatabase();
+			}
 			return;
 		}
 
@@ -261,8 +271,7 @@ public class PrinceSupply extends AbstractQuest {
 	private static void addQuestItemIfMissing(final Player player,
 			final PlayerPrivateStoredChest chest, final String itemName,
 			final String description) {
-		if (new PlayerHasItemdataItemWithHimCondition(itemName, QUEST_SLOT)
-				.fire(player, null, null)) {
+		if (containsQuestItem(player, itemName) || containsQuestItem(chest, itemName)) {
 			return;
 		}
 
@@ -270,7 +279,27 @@ public class PrinceSupply extends AbstractQuest {
 				itemName, ItemCreationContext.quest());
 		item.setItemData(QUEST_SLOT);
 		item.setDescription(description);
+		// Recoverable quest props must not become a source of repeatable shop income.
+		item.setRarityModifier(ItemRarityModifiers.VALUE, 0.0);
+		item.setValue(0);
 		chest.add(item);
+	}
+
+	private static boolean containsQuestItem(final RPObject container, final String name) {
+		if (container instanceof Item) {
+			final Item item = (Item) container;
+			if (name.equals(item.getName()) && QUEST_SLOT.equals(item.getItemData())) {
+				return true;
+			}
+		}
+		for (final RPSlot slot : container.slots()) {
+			for (final RPObject object : slot) {
+				if (containsQuestItem(object, name)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

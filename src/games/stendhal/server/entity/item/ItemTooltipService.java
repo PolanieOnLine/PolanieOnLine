@@ -22,7 +22,10 @@ import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
+import games.stendhal.server.entity.status.StatusType;
 
 /** Builds a presentation-safe map of final item statistics for clients. */
 public final class ItemTooltipService {
@@ -53,16 +56,22 @@ public final class ItemTooltipService {
 		if (item.hasMap(ItemTooltip.ATTRIBUTE)) {
 			// removeMap only schedules deletion until the next RPObject reset.
 			// Clear entries now so rebuilding this map cannot retain old effects.
-			for (final String key : item.getMap(ItemTooltip.ATTRIBUTE).keySet()) {
+			for (final String key : new HashSet<String>(item.getMap(ItemTooltip.ATTRIBUTE).keySet())) {
 				item.remove(ItemTooltip.ATTRIBUTE, key);
 			}
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
 		publishEquipmentSlots(item);
-		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
-		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
-				item.getAttributeWithUpgrade("ratk", 0));
+		// Publish computed zero too, so clients do not fall back to raw penalties
+		// that have already been cancelled by upgrades or deterioration.
+		if (item.has("atk")) {
+			put(item, ItemTooltip.ATTACK, Integer.toString(displayedAttack(item)));
+		}
+		if (item.has("ratk")) {
+			put(item, ItemTooltip.RANGED_ATTACK,
+					Integer.toString(item.getAttributeWithUpgrade("ratk", 0)));
+		}
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
 		putPositiveInt(item, ItemTooltip.DAMAGE_MAX, item.getDamageMax());
 		if (item.has("atk") || item.has("ratk")) {
@@ -86,8 +95,31 @@ public final class ItemTooltipService {
 					Integer.toString(resistance));
 		}
 		putPositiveInt(item, ItemTooltip.RANGE, displayedRange(item));
+		if (item instanceof StatusResistantItem) {
+			final StatusResistantItem resistantItem = (StatusResistantItem) item;
+			// Tooltips may be refreshed before subclass construction has finished.
+			if (resistantItem.getStatusResistancesList() != null) {
+				for (final StatusType type : StatusType.values()) {
+					final double resistance = resistantItem.getStatusResistanceValue(type);
+					if (resistance > 0.0) {
+						put(item, ItemTooltip.STATUS_RESISTANCE_PREFIX + type.getName(),
+								Double.toString(resistance));
+					}
+				}
+			}
+		}
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
+		if (item.has("lifesteal")) {
+			final double value = item.getDouble("lifesteal");
+			final boolean affix = item.getDefinitionLifesteal() == 0.0
+					&& ItemAffixState.has(item, "lifesteal");
+			put(item, ItemTooltip.BASE_LIFESTEAL, Double.toString(affix ? 0.0 : value));
+			put(item, ItemTooltip.AFFIX_LIFESTEAL, Double.toString(affix ? value : 0.0));
+			put(item, ItemTooltip.EFFECTIVE_LIFESTEAL,
+					Double.toString(ItemLifestealService.getEffectiveLifesteal(item)));
+			copyInt(item, ItemLifestealService.EFFECTIVENESS, ItemTooltip.LIFESTEAL_EFFECTIVENESS);
+		}
 		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
 		copyDouble(item, ItemTooltip.ARMOR_PENETRATION,
 				ItemTooltip.ARMOR_PENETRATION);
@@ -173,6 +205,11 @@ public final class ItemTooltipService {
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
 		publishConsumableHealing(item);
+		if (item instanceof RingOfTeleportation) {
+			// Keep an empty value after use to avoid a contained-object deletion delta.
+			put(item, ItemTooltip.SAVED_POSITION,
+					((RingOfTeleportation) item).getSavedPositionForTooltip());
+		}
 
 		if (PUBLISH_ITEM_VALUE && item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));
@@ -250,7 +287,7 @@ public final class ItemTooltipService {
 		int attack = item.getAttributeWithUpgrade("atk", 0);
 		attack -= intAttribute(item, ItemTooltip.FLAT_ATTACK_BONUS);
 		attack -= intAttribute(item, ItemTooltip.LEGENDARY_RELIC_POWER);
-		return Math.max(0, attack);
+		return attack;
 	}
 
 	private static int displayedDefense(final Item item) {

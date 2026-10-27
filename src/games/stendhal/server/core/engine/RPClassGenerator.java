@@ -26,6 +26,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
@@ -252,6 +253,9 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass("cat")) {
 			Cat.generateRPClass();
+		}
+		if (!RPClass.hasRPClass("duszek")) {
+			Duszek.generateRPClass();
 		}
 		if (!RPClass.hasRPClass("baby_dragon")) {
 			BabyDragon.generateRPClass();

@@ -417,6 +417,17 @@ public final class StatsPanelController {
 		});
 	}
 
+	/** Read only a complete merged perception; missing maps clear old-server/logout data. */
+	public void updateCombatStats(RPObject player) {
+		final java.util.Map<String, String> values = player != null
+				&& player.hasMap(games.stendhal.common.constants.CombatStat.ATTRIBUTE)
+				? new java.util.LinkedHashMap<String, String>(player.getMap(games.stendhal.common.constants.CombatStat.ATTRIBUTE))
+				: java.util.Collections.emptyMap();
+		Runnable update = () -> panel.setCombatStats(values);
+		if (SwingUtilities.isEventDispatchThread()) update.run();
+		else SwingUtilities.invokeLater(update);
+	}
+
 	private CoinDescriptor identifyCoin(RPObject obj) {
 		String name = obj.get("name");
 		if (name != null) {

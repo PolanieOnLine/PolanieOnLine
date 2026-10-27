@@ -130,7 +130,7 @@
 		<attributes>
 			<atk value="462"/>
 			<def value="65"/>
-			<armor value="medium"/>
+			<armor value="none"/>
 			<hp value="500"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>

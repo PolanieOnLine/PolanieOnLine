@@ -123,7 +123,7 @@ public class ChallengeArenaInstanceTest {
 		admin.setAdminLevel(8);
 		final ChallengeArenaInfo info = start(owner);
 		final String ownerState = owner.getQuest(ChallengeArenaState.QUEST_SLOT);
-		final int money = MoneyUtils.getTotalMoneyInCopper(admin);
+		final long money = MoneyUtils.getTotalMoneyInCopper(admin);
 		MockStendhalRPRuleProcessor.get().addPlayer(owner);
 		final RPAction teleport = new RPAction();
 		teleport.put("type", "teleportto"); teleport.put("target", owner.getName());

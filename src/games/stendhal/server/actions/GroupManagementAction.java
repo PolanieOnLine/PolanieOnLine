@@ -66,7 +66,8 @@ public class GroupManagementAction implements ActionListener {
 				if (params.trim().equals("")) {
 					player.sendPrivateText(NotificationType.ERROR, "Użyj nazwy docelowego wojownika w tym poleceniu.");
 				} else {
-					player.sendPrivateText(NotificationType.ERROR, "Wojownik " + params + " nie jest teraz " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(params).getGender(), "dostępny") + ".");
+					// The target is offline (getPlayer returned null); its gender is unavailable.
+					player.sendPrivateText(NotificationType.ERROR, "Wojownik " + params + " nie jest teraz dostępny.");
 				}
 				return;
 			}
@@ -347,8 +348,19 @@ public class GroupManagementAction implements ActionListener {
 			return;
 		}
 
-		// tell the members of the kick and remove the target player
-		group.sendGroupMessage("Group", targetPlayer + " " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(targetPlayer).getGender(), "został") + " " + Grammar.genderVerb(SingletonRepository.getRuleProcessor().getPlayer(targetPlayer).getGender(), "wyrzucony") + " przez " + player.getName());
+		// A member can remain in the group for a while after disconnecting.
+		// Preserve gendered messages for online players and use a neutral
+		// announcement for offline members instead of dereferencing null.
+		final Player kickedPlayer = SingletonRepository.getRuleProcessor().getPlayer(targetPlayer);
+		final String announcement;
+		if (kickedPlayer == null) {
+			announcement = "Gracz " + targetPlayer + " został usunięty z grupy przez " + player.getName();
+		} else {
+			announcement = targetPlayer + " " + Grammar.genderVerb(kickedPlayer.getGender(), "został")
+					+ " " + Grammar.genderVerb(kickedPlayer.getGender(), "wyrzucony")
+					+ " przez " + player.getName();
+		}
+		group.sendGroupMessage("Group", announcement);
 		group.removeMember(targetPlayer);
 	}
 

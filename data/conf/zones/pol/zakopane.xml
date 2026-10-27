@@ -15,6 +15,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="85" y="45">
@@ -44,6 +45,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -95,6 +97,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -166,6 +169,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 	</zone>
 
@@ -177,6 +181,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="110" y="25">
@@ -220,6 +225,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="100" y="12">
@@ -315,6 +321,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -415,6 +422,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 	</zone>
 
@@ -426,6 +434,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -519,6 +528,7 @@
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -787,6 +797,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="115" y="105">
@@ -969,6 +980,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 		
 		<!-- NPCs -->
@@ -2009,6 +2021,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="music" condition="!stendhal.christmas">pol-goralskie</parameter>
 			<parameter name="music" condition="stendhal.christmas">snowflakelittlewhiteskirt</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2081,6 +2094,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-dj_zai-darkbells</parameter>
 				<parameter name="volume">30</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2210,6 +2224,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow1</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="54" y="8">
@@ -2331,6 +2346,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<parameter name="file" condition="pol.birthday">interiors/zakopane/tavern_tort.tmx</parameter>
 			<parameter name="music">pol-littlemeadow1</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2466,6 +2482,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/townhall_xmas.tmx</parameter>
 			<parameter name="music">pol-goralskie</parameter>
 			<parameter name="music_volume">0.1</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2531,6 +2548,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2560,6 +2578,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2576,6 +2595,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">pol-inthedark2</parameter>
 			<parameter name="music_volume">0.2</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 	</zone>
 
@@ -2588,6 +2608,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark3</parameter>
 				<parameter name="volume">20</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2622,6 +2643,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">pol-inthedark2</parameter>
 			<parameter name="music_volume">0.2</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2674,6 +2696,7 @@ Aktualne ceny u Gazdy Wojtka:
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
 				<parameter name="volume">50</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">

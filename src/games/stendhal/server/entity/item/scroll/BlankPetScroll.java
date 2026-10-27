@@ -15,6 +15,7 @@ import java.util.Map;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
@@ -58,6 +59,10 @@ public class BlankPetScroll extends Scroll {
 	 */
 	@Override
 	protected boolean useScroll(final Player player) {
+		if (player.getPet() instanceof Duszek) {
+			player.sendPrivateText("Duszek pozostaje przy swoim opiekunie. Ten zwój nie potrafi go przechować.");
+			return false;
+		}
 		final StendhalRPZone zone = player.getZone();
 		final String petName = player.getPet().getName();
 

@@ -242,6 +242,10 @@ public class WeddingRingTest {
 	public void testOnUsedSuccesfull() {
 		final Player romeo = PlayerTestHelper.createPlayer("romeo");
 		final Player juliet = PlayerTestHelper.createPlayer("juliet");
+		romeo.setQuest("marriage", "done");
+		juliet.setQuest("marriage", "done");
+		romeo.setQuest("spouse", "juliet");
+		juliet.setQuest("spouse", "romeo");
 		PlayerTestHelper.registerPlayer(romeo, "int_semos_guard_house");
 		PlayerTestHelper.registerPlayer(juliet, "int_semos_guard_house");
 
@@ -263,6 +267,10 @@ public class WeddingRingTest {
 	public void testCoolingTime() {
 		final Player romeo = PlayerTestHelper.createPlayer("romeo");
 		final Player juliet = PlayerTestHelper.createPlayer("juliet");
+		romeo.setQuest("marriage", "done");
+		juliet.setQuest("marriage", "done");
+		romeo.setQuest("spouse", "juliet");
+		juliet.setQuest("spouse", "romeo");
 		PlayerTestHelper.registerPlayer(romeo, "int_semos_guard_house");
 		PlayerTestHelper.registerPlayer(juliet, "int_semos_guard_house");
 
@@ -286,6 +294,10 @@ public class WeddingRingTest {
 	public void testCoolingTimePassed() {
 		final Player romeo = PlayerTestHelper.createPlayer("romeo");
 		final Player juliet = PlayerTestHelper.createPlayer("juliet");
+		romeo.setQuest("marriage", "done");
+		juliet.setQuest("marriage", "done");
+		romeo.setQuest("spouse", "juliet");
+		juliet.setQuest("spouse", "romeo");
 		PlayerTestHelper.registerPlayer(romeo, "int_semos_guard_house");
 		PlayerTestHelper.registerPlayer(juliet, "int_semos_guard_house");
 

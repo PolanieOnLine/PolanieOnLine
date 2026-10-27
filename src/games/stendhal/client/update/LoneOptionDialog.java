@@ -54,8 +54,9 @@ final class LoneOptionDialog {
 	 * 	JOptionDialog
 	 */
 	static void showMessageDialog(String message, String title, int messageType) {
-		JOptionPane pane = new JOptionPane(new SelectableLabel(message), messageType);
-		JDialog dialog = pane.createDialog(title);
+		JOptionPane pane = new JOptionPane(new SelectableLabel(UpdateLanguage.getText(message)), messageType,
+				JOptionPane.DEFAULT_OPTION, null, new String[] {"OK"});
+		JDialog dialog = pane.createDialog(UpdateLanguage.getText(title));
 		dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setLocation(dialog);
 		dialog.setVisible(true);
@@ -79,7 +80,7 @@ final class LoneOptionDialog {
 	 * @param message message string
 	 */
 	static void showMessageDialog(String message) {
-		showMessageDialog(message, "Message");
+		showMessageDialog(message, "Wiadomość");
 	}
 
 	/**
@@ -94,8 +95,13 @@ final class LoneOptionDialog {
 	 */
 static int showConfirmDialog(String message, String title, int optionType,
 			int messageType) {
-		JOptionPane pane = new JOptionPane(new SelectableLabel(message), messageType, optionType);
-		JDialog dialog = pane.createDialog(title);
+		String[] labels = optionType == JOptionPane.OK_CANCEL_OPTION
+				? new String[] {"OK", UpdateLanguage.getText("Anuluj")}
+				: optionType == JOptionPane.YES_NO_CANCEL_OPTION
+				? new String[] {UpdateLanguage.getText("Tak"), UpdateLanguage.getText("Nie"), UpdateLanguage.getText("Anuluj")}
+				: new String[] {UpdateLanguage.getText("Tak"), UpdateLanguage.getText("Nie")};
+		JOptionPane pane = new JOptionPane(new SelectableLabel(UpdateLanguage.getText(message)), messageType, optionType, null, labels, labels[0]);
+		JDialog dialog = pane.createDialog(UpdateLanguage.getText(title));
 		dialog.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		setLocation(dialog);
 		dialog.setVisible(true);
@@ -116,7 +122,7 @@ static int showConfirmDialog(String message, String title, int optionType,
 
 		for (int i = 0; i < options.length; i++) {
 			if (options[i].equals(selectedValue)) {
-				return i;
+				return optionType == JOptionPane.OK_CANCEL_OPTION && i == 1 ? JOptionPane.CANCEL_OPTION : i;
 			}
 		}
 

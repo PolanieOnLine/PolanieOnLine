@@ -79,8 +79,8 @@ public final class GlyphEffectService {
 			return;
 		}
 
-		final int newBaseHP = Math.max(0, player.getBaseHP() + bonus);
-		player.setBaseHP(newBaseHP);
+		player.setBaseHP(Math.max(0, player.getUncappedBaseHP() + bonus));
+		final int newBaseHP = player.getBaseHP();
 		if (player.getHP() > newBaseHP) {
 			player.setHP(newBaseHP);
 		}
@@ -99,12 +99,12 @@ public final class GlyphEffectService {
 		}
 
 		final int oldBaseHP = player.getBaseHP();
-		final int newBaseHP = Math.max(0, oldBaseHP - bonus);
 		final boolean wasAtFullHealth = player.getHP() == oldBaseHP;
+		player.setBaseHP(Math.max(0, player.getUncappedBaseHP() - bonus));
+		final int newBaseHP = player.getBaseHP();
 		if (wasAtFullHealth || player.getHP() > newBaseHP) {
 			player.setHP(newBaseHP);
 		}
-		player.setBaseHP(newBaseHP);
 	}
 
 	private static int getIntegralBonus(final RPEntity entity,

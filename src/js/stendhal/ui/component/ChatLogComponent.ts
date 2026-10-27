@@ -15,6 +15,7 @@ import { MenuItem } from "../../action/MenuItem";
 import { UIComponentEnum } from "../UIComponentEnum";
 import { singletons } from "../../SingletonRepo";
 import { Chat } from "../../util/Chat";
+import { GameLanguage } from "../../util/GameLanguage";
 
 import { stendhal } from "../../stendhal";
 
@@ -112,6 +113,7 @@ export class ChatLogComponent extends Component {
 	 *   If `false`, suppresses prepending message with timestamp (default: `true`).
 	 */
 	public addLine(type: string, message: string, orator?: string, timestamp = true) {
+		if (type === "client" && !orator) message = GameLanguage.getText(message);
 		const lcol = document.createElement("div");
 		lcol.className = "logcolL";
 		lcol.appendChild(timestamp ? this.createTimestamp() : document.createTextNode(" "));

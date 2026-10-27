@@ -307,6 +307,13 @@ class VisualSettings {
 				"Porównuj statystyki przedmiotów",
 				"Pokazuje w opisie różnice względem aktualnie założonego przedmiotu.");
 		items.add(itemTooltipComparisonToggle);
+		JComponent combatStats = pages.addGroup(SettingsPages.Category.COMBAT, "Statystyki postaci");
+		combatStats.add(SettingsComponentFactory.createSettingsToggle(SettingsProperties.SHOW_COMBAT_STATS_PROPERTY,
+				false, "Pokazuj statystyki",
+				"Pokazuje przycisk otwierający okno statystyk."));
+		combatStats.add(SettingsComponentFactory.createSettingsToggle(SettingsProperties.SHOW_STAT_LIMITS_PROPERTY,
+				false, "Pokazuj limity statystyk",
+				"Pokazuje limity obok wartości statystyk."));
 	}
 
 	/**

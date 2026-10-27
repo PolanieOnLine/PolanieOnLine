@@ -1,0 +1,22 @@
+# Creature data collection. Numeric combat statistics and NPC names stay opaque.
+Jeśli chcesz poszerzyć swoją wiedzę tak jak ja, to znajdzie się dla ciebie jakieś #zadanie, co mógłbym skorzystać.=If you want to expand your knowledge like me, I have a #task that could help us both.
+Pomóż mi w zbieraniu informacji o wrogach, a ja sprzedam ci coś bardzo przydatnego.=Help me collect information about enemies, and I will sell you something very useful.
+Świetnie! Zebrałem już wiele informacji na temat wielu gatunków stworzeń, które napotkałem. Ale wciąż brakuje mi trzech. Po pierwsze potrzebuję trochę informacji na temat {0}.=Great! I have gathered information about many species I encountered, but three are still missing. First I need information about {item:0}.
+Dziękuję Ci! Zanotuję to. Teraz potrzebuję informacji na temat {0}.=Thank you! I will note that down. Now I need information about {item:0}.
+Czy chciałbyś mi pomóc w gromadzeniu informacji na temat różnych gatunków stworzeń hasających po świecie?=Would you help me gather information about the different creatures roaming the world?
+Zgodziłeś się już mi pomóc w zbieraniu informacji o stworach.=You already agreed to help collect information about creatures.
+Dziękuje za pomoc w gromadzeniu informacji o stworach.=Thank you for helping me gather information about creatures.
+Okej, jakoś sobie poradzę.=All right, I will manage somehow.
+Czy przyniosłeś informacje o stworzeniu, o które prosiłem?=Did you bring the information about the creature I asked for?
+W porządku. W czym jeszcze mogę ci pomóc?=All right. How else can I help?
+Nie okłamuj mnie. Nawet nie zabiłeś jednego odkąd rozmawialiśmy.=Do not lie to me. You have not killed even one since we spoke.
+Hmmm, to nie wydaje się być dokładne. Może mógłbyś to sprawdzić jeszcze raz?=Hmm, that does not seem accurate. Could you check again?
+Bardzo Ci dziękuję za pomoc. Teraz mam wszystkie informacje potrzebne do ukończenia mojego #bestiariusza. Jeśli chcesz swój własny, mogę ci go sprzedać.=Thank you very much for helping. Now I have all the information needed to finish my #bestiary. If you want one of your own, I can sell it to you.
+Mogę sprzedać Ci #bestiariusz.=I can sell you a #bestiary.
+Jeśli posiadasz już #bestiariusz, możesz być w stanie znaleźć medium, które da ci więcej wglądu w stwory, które spotkałeś.=If you already have a #bestiary, perhaps a medium can give you more insight into the creatures you encountered.
+Bestiariusz pozwala śledzić wrogów, których pokonałeś.=The bestiary tracks the enemies you have defeated.
+Napotkałem {0}, wędrownego poszukiwacza przygód.=I met {0}, a wandering adventurer.
+Poprosił mnie o zdobycie informacji na temat {0}.=He asked me to obtain information about {item:0}.
+Zgłosiłem informacje na temat {0} dla stworzenia {1}.=I reported {item:0} information for the creature {item:1}.
+Zebrałem wszystkie informacje, których żądał {0} na niektórych napotkanych wrogach w świecie. Teraz mogę kupić od niego bestiariusz.=I gathered all the information {0} requested about enemies in the world. Now I can buy a bestiary from him.
+bestiariusza=bestiary

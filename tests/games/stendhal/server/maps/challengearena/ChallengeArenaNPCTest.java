@@ -66,6 +66,135 @@ public class ChallengeArenaNPCTest {
 	}
 
 	@Test
+	public void arenaBuyerQuotesAndPaysReducedElixirPrices() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-elixirs", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaPotionSeller");
+		zone.add(player);
+		final StackableItem potions = (StackableItem) SingletonRepository.getEntityManager()
+				.getItem("wielki eliksir", ItemCreationContext.restore());
+		potions.setQuantity(5);
+		player.getSlot("bag").add(potions);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj 3 wielki eliksir");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(879)));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertEquals(879, MoneyUtils.getTotalMoneyInCopper(player));
+		assertEquals(2, potions.getQuantity());
+		assertEquals(1174, potions.getValue());
+	}
+
+	@Test
+	public void arenaBuyerPaysTwiceTheGreatElixirPriceForGiantElixirs() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-giant-elixirs", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaGiantPotionSeller");
+		zone.add(player);
+		final StackableItem potions = (StackableItem) SingletonRepository.getEntityManager()
+				.getItem("gigantyczny eliksir", ItemCreationContext.restore());
+		potions.setQuantity(5);
+		player.getSlot("bag").add(potions);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj 3 gigantyczny eliksir");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(1758)));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertEquals(1758, MoneyUtils.getTotalMoneyInCopper(player));
+		assertEquals(2, potions.getQuantity());
+		assertEquals(48000, potions.getValue());
+	}
+
+	@Test
+	public void arenaBuyerQuotesAndPaysRebalancedConsumables() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-consumables", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaConsumableSeller");
+		zone.add(player);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		final String[] names = { "smoczy eliksir", "duży smoczy eliksir", "eliksir miłości",
+				"nakrapiane jajo", "zupa", "zupa grzybowa", "zupa rybna" };
+		final int[] prices = { 879, 1099, 147, 250, 312, 312, 312 };
+		int totalPaid = 0;
+		for (int i = 0; i < names.length; i++) {
+			final String name = names[i];
+			final StackableItem item = (StackableItem) SingletonRepository.getEntityManager()
+					.getItem(name, ItemCreationContext.restore());
+			item.setQuantity(5);
+			player.getSlot("bag").add(item);
+			final int originalValue = item.getValue();
+			final int price = prices[i] * 3;
+			engine.step(player, "sprzedaj 3 " + name);
+			assertEquals(name, ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+			assertTrue(name, getReply(npc).contains(MoneyUtils.formatPrice(price)));
+			engine.step(player, "tak");
+			totalPaid += price;
+			assertEquals(name, ConversationStates.ATTENDING, engine.getCurrentState());
+			assertEquals(name, totalPaid, MoneyUtils.getTotalMoneyInCopper(player));
+			assertEquals(name, 2, item.getQuantity());
+			assertEquals(name, originalValue, item.getValue());
+		}
+	}
+
+	@Test
+	public void blackItemCannotBeSoldUntilUltimateCollectorIsCompleted() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-locked", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaBlackLocked");
+		zone.add(player);
+		final Item black = SingletonRepository.getEntityManager().getItem("czarna tarcza",
+				ItemCreationContext.restore());
+		player.getSlot("bag").add(black);
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(getReply(npc).contains("Balduina"));
+		assertTrue(player.isEquipped("czarna tarcza"));
+		assertEquals(0, MoneyUtils.getTotalMoneyInCopper(player));
+
+		player.setQuest("ultimate_collector", "done");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		assertTrue(getReply(npc).contains(MoneyUtils.formatPrice(black.getValue())));
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(!player.isEquipped("czarna tarcza"));
+		assertEquals(black.getValue(), MoneyUtils.getTotalMoneyInCopper(player));
+	}
+
+	@Test
+	public void blackItemOfferIsRecheckedBeforeCompletingTheSale() {
+		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-baldwin-recheck", 64, 64);
+		ChallengeArenaBuyerNPC.create(zone, ChallengeArenaZone.BUYER_X, ChallengeArenaZone.BUYER_Y);
+		final SpeakerNPC npc = (SpeakerNPC) zone.getEntitiesOfClass(SpeakerNPC.class).iterator().next();
+		final Player player = PlayerTestHelper.createPlayer("ArenaBlackRecheck");
+		zone.add(player);
+		final Item black = SingletonRepository.getEntityManager().getItem("czarna tarcza",
+				ItemCreationContext.restore());
+		player.getSlot("bag").add(black);
+		player.setQuest("ultimate_collector", "done");
+		final Engine engine = npc.getEngine();
+		engine.step(player, "cześć");
+		engine.step(player, "sprzedaj czarna tarcza");
+		assertEquals(ConversationStates.SELL_PRICE_OFFERED, engine.getCurrentState());
+		player.setQuest("ultimate_collector", "start");
+		engine.step(player, "tak");
+		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+		assertTrue(player.isEquipped("czarna tarcza"));
+		assertEquals(0, MoneyUtils.getTotalMoneyInCopper(player));
+	}
+
+	@Test
 	public void buyerHasMerchantClothesAndFacesLeftAtTheRequestedSpot() throws Exception {
 		final StendhalRPZone zone = new StendhalRPZone("arena-buyer-location", 64, 64);
 		final StendhalMapStructure map = TMXLoader.load("data/maps/interiors/tarnow/challenge_arena.tmx");

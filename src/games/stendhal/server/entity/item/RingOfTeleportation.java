@@ -16,6 +16,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TeleportNotifier;
@@ -67,6 +68,7 @@ public class RingOfTeleportation extends Item {
 		} else {
 			setState(1);
 		}
+		updateSavedPositionTooltip();
 	}
 
 	@Override
@@ -83,12 +85,12 @@ public class RingOfTeleportation extends Item {
 		setEntityClass("ring");
 		setEntitySubclass("ametyst-ring");
 		put("amount", 0);
-		put("state", 0);
+		updateState();
 	}
 
 	public void activeRing() {
 		put("amount", 1);
-		put("state", 1);
+		updateState();
 	}
 
 	@Override
@@ -98,12 +100,27 @@ public class RingOfTeleportation extends Item {
 		// the ring and recreate it from an incomplete state delta. Keep an empty
 		// server-only value instead, so the update preserves the existing item.
 		super.setItemData(itemdata == null ? "" : itemdata);
+		updateSavedPositionTooltip();
 	}
 
 	@Override
 	public String getItemData() {
 		final String itemdata = super.getItemData();
 		return itemdata == null || itemdata.isEmpty() ? null : itemdata;
+	}
+
+	/** Presentation of the saved destination without exposing other item data. */
+	public String getSavedPositionForTooltip() {
+		if (!has("amount") || isUsed()) {
+			return "";
+		}
+		final SavedPosition saved = parseSavedPosition(getItemData());
+		return saved == null ? "" : saved.zoneName + " " + saved.x + " " + saved.y;
+	}
+
+	private void updateSavedPositionTooltip() {
+		// Update only this value: rebuilding the map would delete contained keys.
+		put(ItemTooltip.ATTRIBUTE, ItemTooltip.SAVED_POSITION, getSavedPositionForTooltip());
 	}
 
 	@Override

@@ -15,7 +15,10 @@ package games.stendhal.server.core.rp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static utilities.PlayerTestHelper.getPrivateReply;
+
+import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,11 +26,16 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.Projectile;
+import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.server.game.db.DatabaseFactory;
 import utilities.PlayerTestHelper;
@@ -38,6 +46,7 @@ public class StendhalRPActionTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		MockStendlRPWorld.get();
+		MockStendhalRPRuleProcessor.get();
 		new DatabaseFactory().initializeDatabase();
 	}
 
@@ -285,16 +294,76 @@ public class StendhalRPActionTest {
 	}
 
 	@Test
-	public void playerAttackWithoutWeaponDoesNotThrow() {
-		final Player player = PlayerTestHelper.createPlayer("unarmed");
-		final Creature victim = SingletonRepository.getEntityManager()
-				.getCreature("mysz domowa");
+	public void playerAttackRespectsHitRollsImmortalityAndAmmunition() {
+		for (int scenario = 0; scenario < 3; scenario++) {
+			final boolean hits = scenario > 0;
+			final boolean immortal = scenario == 2;
+			final Player player = new Player(PlayerTestHelper.createPlayer("unarmed_" + scenario)) {
+				@Override
+				public boolean canHit(final RPEntity defender) {
+					return hits;
+				}
+
+				@Override
+				public int damageDone(final RPEntity defender, final double attack, final Nature nature) {
+					return 1;
+				}
+			};
+			final Creature victim = SingletonRepository.getEntityManager()
+					.getCreature("mysz domowa");
+			if (immortal) {
+				victim.setAIProfiles(new HashMap<String, String>(victim.getAIProfiles()));
+				victim.getAIProfiles().put("immortal", "");
+			}
+			victim.initHP(100);
+			player.setPosition(5, 5);
+			victim.setPosition(6, 5);
+			zone.add(player);
+			zone.add(victim);
+
+			assertNull(player.getWeapon());
+			assertEquals(hits && !immortal, StendhalRPAction.playerAttack(player, victim));
+			if (!hits || immortal) {
+				assertEquals(100, victim.getHP());
+			}
+			zone.remove(player);
+			zone.remove(victim);
+		}
+		for (boolean hits : new boolean[] {false, true}) {
+			for (boolean adjacent : new boolean[] {false, true}) {
+				verifyAmmunitionUse("ranged", "strzała", hits, adjacent);
+				verifyAmmunitionUse("wand", "magia ziemi", hits, adjacent);
+			}
+		}
+	}
+
+	private void verifyAmmunitionUse(final String weaponClass, final String ammunitionName,
+			final boolean hits, final boolean adjacent) {
+		final Player player = new Player(PlayerTestHelper.createPlayer("ammunition_user")) {
+			@Override public boolean canHit(final RPEntity defender) { return hits; }
+			@Override public int damageDone(final RPEntity defender, final double attack, final Nature nature) { return 1; }
+		};
+		final Weapon weapon = new Weapon("test launcher", weaponClass, "test", null);
+		weapon.put("atk", 10);
+		weapon.put("damage_min", 10);
+		weapon.put("damage_max", 10);
+		weapon.put("range", 7);
+		weapon.put("rate", 5);
+		player.getSlot("lhand").add(weapon);
+		final float attackWithoutAmmunition = player.getItemAtkForAttack();
+		final Projectile ammunition = (Projectile) SingletonRepository.getEntityManager().getItem(ammunitionName);
+		ammunition.setQuantity(2);
+		player.getSlot("rhand").add(ammunition);
+		assertTrue(player.getItemAtkForAttack() > attackWithoutAmmunition);
+		final Creature victim = SingletonRepository.getEntityManager().getCreature("mysz domowa");
+		victim.initHP(100);
 		player.setPosition(5, 5);
-		victim.setPosition(6, 5);
+		victim.setPosition(adjacent ? 6 : 9, 5);
 		zone.add(player);
 		zone.add(victim);
-
-		assertNull(player.getWeapon());
-		StendhalRPAction.playerAttack(player, victim);
+		assertEquals(hits, StendhalRPAction.playerAttack(player, victim));
+		assertEquals(weaponClass + ", adjacent=" + adjacent + ", hits=" + hits, 1, ammunition.getQuantity());
+		zone.remove(player);
+		zone.remove(victim);
 	}
 }

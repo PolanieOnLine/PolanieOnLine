@@ -113,6 +113,7 @@ public final class EntityMap {
 		// NPC
 		register("baby_dragon", null, null, Pet.class);
 		register("cat", null, null, Pet.class);
+		register("duszek", null, null, Pet.class);
 		register("npc", null, null, NPC.class);
 		register("pet", null, null, Pet.class);
 		register("purple_dragon", null, null, Pet.class);

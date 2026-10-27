@@ -140,7 +140,7 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	static String buildGroundItemToolTip(final IEntity entity) {
 		if (entity instanceof Creature) {
 			final CreatureArmor armor = ((Creature) entity).getArmorType();
-			return armor == null ? null : armor.getLabel();
+			return armor == null || armor == CreatureArmor.NONE ? null : armor.getLabel();
 		}
 		if (!(entity instanceof Item)) {
 			return null;

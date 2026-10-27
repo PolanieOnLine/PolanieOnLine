@@ -36,6 +36,7 @@ public final class ItemCreationContext {
 	private final ItemRarityModifiers modifiers;
 	private final boolean randomizeModifiers;
 	private final boolean generateAffixes;
+	private final boolean maximizeAffixes;
 	private final Long affixSeed;
 	private final int rarityRolls;
 	private final String profile;
@@ -49,6 +50,7 @@ public final class ItemCreationContext {
 		this.modifiers = builder.modifiers;
 		this.randomizeModifiers = builder.randomizeModifiers;
 		this.generateAffixes = builder.generateAffixes;
+		this.maximizeAffixes = builder.maximizeAffixes;
 		this.affixSeed = builder.affixSeed;
 		this.rarityRolls = builder.rarityRolls;
 		this.profile = builder.profile;
@@ -157,6 +159,11 @@ public final class ItemCreationContext {
 		return generateAffixes;
 	}
 
+	/** @return whether admin-created affixes use their highest legal rolls */
+	public boolean isMaximizeAffixes() {
+		return maximizeAffixes;
+	}
+
 	/** @return deterministic affix seed, or {@code null} before generation */
 	public Long getAffixSeed() {
 		return affixSeed;
@@ -198,6 +205,7 @@ public final class ItemCreationContext {
 				&& factoryRarity == other.factoryRarity
 				&& randomizeModifiers == other.randomizeModifiers
 				&& generateAffixes == other.generateAffixes
+				&& maximizeAffixes == other.maximizeAffixes
 				&& rarityRolls == other.rarityRolls
 				&& minimumRarity == other.minimumRarity
 				&& Objects.equals(modifiers, other.modifiers)
@@ -208,7 +216,7 @@ public final class ItemCreationContext {
 	@Override
 	public int hashCode() {
 		return Objects.hash(source, forcedRarity, questRarity, factoryRarity, modifiers,
-				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes),
+				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes), Boolean.valueOf(maximizeAffixes),
 				affixSeed, Integer.valueOf(rarityRolls), profile, minimumRarity);
 	}
 
@@ -219,6 +227,7 @@ public final class ItemCreationContext {
 				+ ", factoryRarity=" + factoryRarity
 				+ ", modifiers=" + modifiers + ", randomizeModifiers="
 				+ randomizeModifiers + ", generateAffixes=" + generateAffixes
+				+ ", maximizeAffixes=" + maximizeAffixes
 				+ ", affixSeed=" + affixSeed + ", rarityRolls=" + rarityRolls
 				+ ", profile=" + profile + ", minimumRarity=" + minimumRarity + "]";
 	}
@@ -231,6 +240,7 @@ public final class ItemCreationContext {
 		private ItemRarityModifiers modifiers;
 		private boolean randomizeModifiers;
 		private boolean generateAffixes;
+		private boolean maximizeAffixes;
 		private Long affixSeed;
 		private int rarityRolls = 1;
 		private String profile = DEFAULT_PROFILE;
@@ -319,6 +329,17 @@ public final class ItemCreationContext {
 			return this;
 		}
 
+		public Builder maximizeAffixes(final boolean maximizeAffixes) {
+			if (maximizeAffixes && source != Source.ADMIN) {
+				throw new IllegalArgumentException("Only admin creation may maximize affixes");
+			}
+			this.maximizeAffixes = maximizeAffixes;
+			if (maximizeAffixes) {
+				this.generateAffixes = true;
+			}
+			return this;
+		}
+
 		public Builder withRarityRolls(final int rarityRolls) {
 			if (rarityRolls < 1) {
 				throw new IllegalArgumentException("Rarity rolls must be positive");
@@ -341,6 +362,9 @@ public final class ItemCreationContext {
 		}
 
 		public ItemCreationContext build() {
+			if (maximizeAffixes && !generateAffixes) {
+				throw new IllegalArgumentException("Maximized affixes must be generated");
+			}
 			if (source == Source.ADMIN && forcedRarity == ItemRarity.LEGENDARY) {
 				generateAffixes = true;
 			}

@@ -15,9 +15,9 @@ public final class ItemAffixBalanceService {
 
 	/**
 	 * Run after rarity scaling and flat-bonus materialization, before tooltip
-	 * generation. This also limits definition/legacy bonuses so they cannot
-	 * bypass the bounds used for random affixes. Glyphs and legendary signature
-	 * effects are separate authored systems. Lifesteal and parry are exempt.
+	 * generation. Only recorded random affixes are limited; definition-owned
+	 * and unclassified legacy bonuses retain their values. Glyphs and legendary
+	 * signature effects are separate authored systems. Lifesteal and parry are exempt.
 	 */
 	public static void enforce(final Item item) {
 		if (item == null || item instanceof Glyph) return;
@@ -56,7 +56,8 @@ public final class ItemAffixBalanceService {
 			cap(item, EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE,
 					EquipmentAffixService.MAX_SPIKED_PLATING_PERCENT / 100.0);
 		}
-		if (accessory && item.has(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)) {
+		if (accessory && item.has(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)
+				&& ItemAffixState.has(item, EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)) {
 			final String attribute = EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE;
 			final int previous = item.getInt(attribute);
 			final int maximum = EquipmentAffixService.MAX_ACCESSORY_ATTACK_BONUS;
@@ -73,7 +74,7 @@ public final class ItemAffixBalanceService {
 	}
 
 	private static void cap(final Item item, final String attribute, final double maximum) {
-		if (!item.has(attribute)) return;
+		if (!item.has(attribute) || !ItemAffixState.has(item, attribute)) return;
 		final double value = item.getDouble(attribute);
 		// Preserve lower rolls and deliberate negative drawbacks exactly.
 		if (value > maximum) {

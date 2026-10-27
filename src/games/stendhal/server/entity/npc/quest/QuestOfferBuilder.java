@@ -53,6 +53,18 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 	protected Map<List<String>, String> additionalReplies = new HashMap<>();
 	protected List<ChatAction> acceptWith = new LinkedList<>();
 	protected ConversationStates offerState = ConversationStates.QUEST_OFFERED;
+	private ChatCondition requestCondition;
+
+	/** Restricts requests and reminders to this quest's stage in an NPC's chain. */
+	@SuppressWarnings("unchecked")
+	public T requestOnlyWhen(ChatCondition condition) {
+		this.requestCondition = condition;
+		return (T) this;
+	}
+
+	protected ChatCondition withRequestCondition(ChatCondition condition) {
+		return requestCondition == null ? condition : new AndCondition(requestCondition, condition);
+	}
 
 	// hide constructor
 	QuestOfferBuilder() {
@@ -220,18 +232,18 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 						new QuestNotStartedCondition(questSlot),
-						questPreCondition),
+						questPreCondition)),
 				offerState,
 				respondToRequest,
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 						new QuestNotStartedCondition(questSlot),
-						new NotCondition(questPreCondition)),
+						new NotCondition(questPreCondition))),
 				ConversationStates.ATTENDING,
 				respondToPreconditionIssue,
 				null);
@@ -242,9 +254,9 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestActiveCondition(questSlot),
-					new NotCondition(questCompletedCondition)),
+					new NotCondition(questCompletedCondition))),
 				ConversationStates.ATTENDING,
 				remind,
 				null);
@@ -252,36 +264,36 @@ public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
 		if (repeatableAfterMinutes > -1) {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
-						questPreCondition),
+						questPreCondition)),
 					offerState,
 					respondToRepeatedRequest,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
-						new NotCondition(questPreCondition)),
+						new NotCondition(questPreCondition))),
 					ConversationStates.ATTENDING,
 					respondToPreconditionIssue,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 							new QuestCompletedCondition(questSlot),
-							new NotCondition(new TimePassedCondition(questSlot, 1, repeatableAfterMinutes))),
+							new NotCondition(new TimePassedCondition(questSlot, 1, repeatableAfterMinutes)))),
 					ConversationStates.ATTENDING,
 					null,
 					new SayTimeRemainingAction(questSlot, 1, repeatableAfterMinutes, respondToUnrepeatableRequest, true));
 		} else {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new QuestCompletedCondition(questSlot),
+					withRequestCondition(new QuestCompletedCondition(questSlot)),
 					ConversationStates.ATTENDING,
 					respondToUnrepeatableRequest,
 					null);

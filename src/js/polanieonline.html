@@ -15,7 +15,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>PolanieOnLine</title>
-<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/main.css?v=quick-slot-sprites-1">
 <link rel="stylesheet" type="text/css" href="css/font.css">
 <link rel="stylesheet" type="text/css" href="css/res.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
@@ -33,14 +33,14 @@
 			</div>
 			<div id="statuses-list"></div>
 			<div id="stats">
-				<div id="charname"></div>
+				<div id="charname" data-no-translate></div>
 				<canvas id="karmabar" class="statbar"></canvas>
 				<div id="hptext" class="stattext"></div>
 				<canvas id="hpbar" class="statbar"></canvas>
 				<div id="otherstats" class="stattext"></div>
 			</div>
 			<div id="buddyList">
-				<ul id="buddyListUL"></ul>
+				<ul id="buddyListUL" data-no-translate></ul>
 			</div>
 			<div id="group-panel">
 				<div class="group-nogroup">
@@ -56,7 +56,7 @@
 						Doświadczenie:
 						<button class="group-expmode">
 					</div>
-					Lider: <span class="group-leader"></span> Członkowie:
+					Lider: <span class="group-leader" data-no-translate></span> Członkowie:
 					<div class="group-members"></div>
 				</div>
 				<div class="group-buttons">
@@ -301,7 +301,7 @@
 
 	<template id="group-member-template">
 		<div class="group-member-component">
-			<div class="group-member-name"></div>
+			<div class="group-member-name" data-no-translate></div>
 		</div>
 	</template>
 
@@ -439,7 +439,7 @@
 						<div id="settings_panel3" class="verticalgroup vgroupcolr">
 							<div>
 								<label for="selectlanguage">Język gry:</label>
-								<select id="selectlanguage"><option value="pl">Polski</option><option value="en">English</option></select>
+								<select id="selectlanguage"><option value="pl">Polski</option><option value="en">English</option><option value="es">Español</option></select>
 								<p>Tłumaczenia są jeszcze uzupełniane. Brakujący tekst pozostaje po polsku.</p>
 							</div>
 							<div>
@@ -516,6 +516,10 @@
 							</div>
 							<div>
 								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_loot_button"></span>Przycisk łupów</label>
+							</div>
+							<div>
+								<label class="checksetting"><span class="settings-toggle"
 									data-toggle-id="chk_attack_players"></span>Uwzględniaj graczy przy wyborze
 									celu</label>
 							</div>
@@ -523,6 +527,10 @@
 								<label class="checksetting"><span class="settings-toggle"
 									data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label> <select
 									id="seljoystick"></select>
+							</div>
+							<div>
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_joystick_auto"></span>Automatyczna pozycja joysticka</label>
 							</div>
 							<div>
 								<label for="txtjoystickx">Środek joysticka X:</label> <input
@@ -682,7 +690,7 @@
 	<!-- place at end of document so drawn above all other elements -->
 	<img id="click-indicator" class="unclickable notarget">
 
-	<script type="text/javascript" src="stendhal-compiled.js"></script>
+	<script type="text/javascript" src="stendhal-compiled.js?v=mobile-settings-1"></script>
 </body>
 
 </html>

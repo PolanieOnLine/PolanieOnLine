@@ -44,7 +44,8 @@ test("only known server armor types have Polish labels", () => {
 		assert.equal(renderer.readCreatureArmor(value), undefined);
 		assert.equal(renderer.getCreatureArmorLabel(value), undefined);
 	}
-	assert.equal(renderer.getCreatureArmorLabel("none"), "Brak pancerza");
+	assert.equal(renderer.readCreatureArmor("none"), "none");
+	assert.equal(renderer.getCreatureArmorLabel("none"), undefined);
 	assert.equal(renderer.getCreatureArmorLabel("light"), "Pancerz lekki");
 	assert.equal(renderer.getCreatureArmorLabel("medium"), "Pancerz średni");
 	assert.equal(renderer.getCreatureArmorLabel("heavy"), "Pancerz ciężki");
@@ -84,6 +85,7 @@ test("the actual creature view shows armor only for our current target and respe
 	const { Creature } = load(path.resolve(__dirname, "../../entity/Creature.ts"), {
 		"./RPEntity": { RPEntity },
 		"../data/color/Color": { Color: { CREATURE: "red" } },
+		"../util/GameLanguage": { GameLanguage: { getText: text => text } },
 		"marauroa": { marauroa },
 		"../ui/render/CreatureArmorRenderer": h.renderer
 	});
@@ -110,14 +112,18 @@ test("the actual creature view shows armor only for our current target and respe
 });
 
 test("desktop hover shows armor without replacing cursor actions and clears on other entities", () => {
-	class Creature {
-		getArmorLabel() { return this.label; }
-		getCursor() { return "attack"; }
-	}
+	const { renderer } = harness();
+	const { Creature } = load(path.resolve(__dirname, "../../entity/Creature.ts"), {
+		"./RPEntity": { RPEntity: class {} },
+		"../data/Paths": { Paths: { sprites: "/sprites" } },
+		"../data/color/Color": { Color: { CREATURE: "red" } },
+		"../util/GameLanguage": { GameLanguage: { getText: text => text } },
+		"../ui/render/CreatureArmorRenderer": renderer
+	});
 	const canvas = { style: {}, title: "", removeAttribute(name) {
 		assert.equal(name, "title"); this.title = "";
 	} };
-	let entity = new Creature(); entity.label = "Pancerz ciężki";
+	let entity = new Creature(); entity.armor_type = "heavy";
 	const stendhal = { ui: {
 		html: { extractPosition: () => ({ canvasRelativeX: 10, canvasRelativeY: 20 }) },
 		gamewindow: { offsetX: 0, offsetY: 0, getElement: () => canvas }
@@ -128,10 +134,17 @@ test("desktop hover shows armor without replacing cursor actions and clears on o
 	const viewport = { getElement: () => canvas };
 	ViewPort.prototype.onMouseMove.call(viewport, {});
 	assert.equal(canvas.title, "Pancerz ciężki");
-	assert.equal(canvas.style.cursor, "attack");
-	entity.label = "Pancerz lekki";
+	assert.equal(canvas.style.cursor, "url(/sprites/cursor/attack.png) 1 3, auto");
+	entity.armor_type = "light";
 	ViewPort.prototype.onMouseMove.call(viewport, {});
 	assert.equal(canvas.title, "Pancerz lekki");
+	entity.armor_type = "none";
+	ViewPort.prototype.onMouseMove.call(viewport, {});
+	assert.equal(canvas.title, "");
+	assert.equal(canvas.style.cursor, "url(/sprites/cursor/attack.png) 1 3, auto");
+	entity.armor_type = "medium";
+	ViewPort.prototype.onMouseMove.call(viewport, {});
+	assert.equal(canvas.title, "Pancerz średni");
 	entity = { getCursor: () => "default" };
 	ViewPort.prototype.onMouseMove.call(viewport, {});
 	assert.equal(canvas.title, "");

@@ -111,6 +111,7 @@
 				<parameter name="sound">come_to_rest</parameter>
 				<parameter name="radius">16</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -608,6 +609,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				<parameter name="sound">come_to_rest</parameter>
 				<parameter name="radius">13</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -617,6 +619,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="radius">16</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -647,6 +650,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -677,6 +681,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -769,6 +774,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -848,6 +854,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -927,6 +934,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1006,6 +1014,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1085,6 +1094,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1163,6 +1173,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_magical_tower</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1198,6 +1209,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1275,6 +1287,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2066,6 +2079,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">10</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2075,6 +2089,7 @@ Potrzebna dojrzała owca: Proszę rozmawiać z Sato.
 				<parameter name="sound">dungeon_entrance</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">4</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2298,6 +2313,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				<parameter name="sound">snowflakelittlewhiteskirt</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2323,6 +2339,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="2" y="8" condition="stendhal.christmas">
@@ -2331,6 +2348,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				<parameter name="sound">christmastree</parameter>
 				<parameter name="volume">80</parameter>
 				<parameter name="radius">20</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2466,6 +2484,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_old_tavern</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2503,6 +2522,7 @@ Ahh jak miło, już czujesz ten zapach,a pod spodem widnieje dopisek: "Nowe! Pys
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sacred_moments</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -3166,6 +3186,7 @@ Poszukiwacze przygód opisali mi skutki trucizn potworów i grzybów. Są nie ty
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -3411,6 +3432,7 @@ Wschód: Miasto Ados
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
 				<parameter name="radius">60</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -3433,6 +3455,7 @@ Wschód: Miasto Ados
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
 				<parameter name="radius">30</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -3491,6 +3514,7 @@ Potrzebna dorosła owca: proszę rozmawiać z Sato
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">deep_forest</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -4163,6 +4187,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4186,6 +4211,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4228,6 +4254,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4245,6 +4272,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4265,6 +4293,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4281,6 +4310,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4297,6 +4327,7 @@ Południowy-zachód: Miasto Fado
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">ice_cave</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -4386,6 +4417,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4418,6 +4450,7 @@ Południowy-zachód: Miasto Fado
 			<parameter name="blend_method">bleach</parameter>
 			<parameter name="music">dark_quest</parameter>
 			<parameter name="music_volume">0.8</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<portal x="9" y="6" ref="dragon_portal_1">
@@ -4611,6 +4644,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -4623,6 +4657,7 @@ Południowy-zachód: Miasto Fado
 			<parameter name="blend_method">bleach</parameter>
 			<parameter name="music">dark_quest</parameter>
 			<parameter name="music_volume">0.8</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<configurator
@@ -4660,6 +4695,7 @@ Południowy-zachód: Miasto Fado
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 

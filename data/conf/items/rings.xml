@@ -199,17 +199,15 @@
 	</item>
 
 	<!-- START: Pierścienie klasowe -->
-	<item name="pierścień magnata">
+	<item name="pierścień magnata" rarity-enabled="false">
 		<type class="ring" subclass="tsoh_ring" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="4"/>
 			<def value="4"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
-			<statusresist slots="finger;fingerb;" type="poisoned" value="0.33"/>
-			<statusresist slots="finger;fingerb;" type="shocked" value="0.33"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -221,17 +219,15 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień barona">
+	<item name="pierścień barona" rarity-enabled="false">
 		<type class="ring" subclass="edragons_clan_ring" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
 			<def value="3"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
-			<statusresist slots="finger;fingerb;" type="poisoned" value="0.2"/>
-			<statusresist slots="finger;fingerb;" type="shocked" value="0.1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -243,16 +239,15 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień rycerza">
+	<item name="pierścień rycerza" rarity-enabled="false">
 		<type class="ring" subclass="zrc_ring" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="2"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
-			<statusresist slots="finger;fingerb;" type="poisoned" value="0.1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -264,16 +259,15 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień mieszczanina">
+	<item name="pierścień mieszczanina" rarity-enabled="false">
 		<type class="ring" subclass="zion_ring" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
 			<def value="1"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
-			<statusresist slots="finger;fingerb;" type="poisoned" value="0.05"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>

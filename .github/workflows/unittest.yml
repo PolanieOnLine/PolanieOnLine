@@ -54,6 +54,14 @@ jobs:
           cache: 'npm'
       - name: Compile TypeScript webclient
         run: ant -noinput -buildfile build.xml compilejs
+      - name: Check webclient package assets
+        run: npm run test:webclient-package
+      - name: Check translations and translated interface
+        run: npm run test:translations
+      - name: Check safe contributor page generation
+        run: npm run test:build-tools
+      - name: Test player presence privacy
+        run: npm run test:player-presence
       - name: Check inventory animation and sprite preparation
         run: npm run test:inventory
       - name: Check quest marker rendering

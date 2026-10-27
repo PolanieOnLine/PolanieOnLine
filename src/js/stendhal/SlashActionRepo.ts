@@ -32,6 +32,7 @@ import { ChatLogComponent } from "./ui/component/ChatLogComponent";
 
 import { Chat } from "./util/Chat";
 import { Debug } from "./util/Debug";
+import { GameLanguage } from "./util/GameLanguage";
 
 
 /**
@@ -44,6 +45,8 @@ interface Action {
 
 const ITEM_CREATION_OPTION_KEYS = [
 	"rarity",
+	"affixes",
+	"seed",
 	"randomize-modifiers",
 	"stat-multiplier",
 	"attack-multiplier",
@@ -243,7 +246,7 @@ export class SlashActionRepo {
 				},
 				"emojilist",
 				{type: "group", sparams: "invite <gracz>"},
-				{type: "group", sparams: "join <gracz"},
+				{type: "group", sparams: "join <gracz>"},
 				{type: "group", sparams: "leader <gracz>"},
 				{type: "group", sparams: "lootmode single|shared"},
 				{type: "group", sparams: "expmode standard|lowest|equal"},
@@ -330,8 +333,8 @@ export class SlashActionRepo {
 				"altercreature",
 				"alterkill",
 				"alterquest",
-				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity=<poziom>] [<stat>-multiplier=<wartość>]"},
-				"summonat",
+				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]"},
+				{type: "summonat", sparams: "<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]"},
 				{
 					type: "destroy",
 					getHelp: function(): string[] {
@@ -418,7 +421,7 @@ export class SlashActionRepo {
 					}
 					continue;
 				}
-				const helpTemp = action.getHelp(action.sparams);
+				const helpTemp = action.getHelp(action.sparams).map((line: string) => GameLanguage.getText(line));
 				if (helpTemp && helpTemp.length) {
 					if (helpTemp[0]) {
 						actionHelp[0] += " " + helpTemp[0];
@@ -455,7 +458,7 @@ export class SlashActionRepo {
 		execute: (type: string, params: string[], remainder: string): boolean => {
 			const msg = this.getHelp();
 			for (var i = 0; i < msg.length; i++) {
-				Chat.log("info", msg[i]);
+				Chat.log("info", GameLanguage.getText(msg[i]));
 			}
 			return true;
 		},
@@ -519,7 +522,7 @@ export class SlashActionRepo {
 			}
 
 			for (var i = 0; i < msg.length; i++) {
-				Chat.log("info", msg[i]);
+				Chat.log("info", GameLanguage.getText(msg[i]));
 			}
 
 			return true;
@@ -891,17 +894,17 @@ export class SlashActionRepo {
 		maxParams: 1,
 		getHelp: function(sparams: string): string[] {
 			const desc: string[] = [];
-			if (sparams === "invite <player>") {
+			if (sparams === "invite <gracz>") {
 				desc.push("Zaproś gracza do swojej grupy.");
-			} else if (sparams === "join <player") {
+			} else if (sparams === "join <gracz>") {
 				desc.push("Przyjmij zaproszenie do grupy #gracza.");
-			} else if (sparams === "leader <player>") {
+			} else if (sparams === "leader <gracz>") {
 				desc.push("Uczyń #gracza liderem grupy.");
 			} else if (sparams === "lootmode single|shared") {
 				desc.push("Ustaw tryb zdobywania łupów dla grupy.");
 				desc.push("&nbsp;&nbsp;single: Tylko lider grupy może zbierać łupy.");
 				desc.push("&nbsp;&nbsp;shared: Każdy członek grupy może zbierać łupy.");
-			} else if (sparams === "kick <player>") {
+			} else if (sparams === "kick <gracz>") {
 				desc.push("Wyrzuć #gracza z grupy.");
 			} else if (sparams === "part") {
 				desc.push("Opuść grupę.");
@@ -1072,8 +1075,8 @@ export class SlashActionRepo {
 			this.sendAction(action);
 			// update config
 		stendhal.config.set("move.cont", enable);
-		Chat.log("info", "Ciągły ruch "
-				+ (enable ? "włączony" : "wyłączony") + ".");
+		Chat.log("info", GameLanguage.getText("Ciągły ruch "
+				+ (enable ? "włączony" : "wyłączony") + "."));
 			return true;
 		},
 		minParams: 0,
@@ -1095,9 +1098,9 @@ export class SlashActionRepo {
 		execute: (type: string, params: string[], remainder: string): boolean => {
 			stendhal.sound.toggleSound();
 			if (stendhal.config.getBoolean("sound")) {
-				Chat.log("info", "Dźwięki są teraz włączone.");
+				Chat.log("info", GameLanguage.getText("Dźwięki są teraz włączone."));
 			} else {
-				Chat.log("info", "Dźwięki są teraz wyłączone.");
+				Chat.log("info", GameLanguage.getText("Dźwięki są teraz wyłączone."));
 			}
 			return true;
 		},
@@ -1209,26 +1212,26 @@ export class SlashActionRepo {
 			let vol = params[1];
 			if (typeof(layername) === "undefined") {
 				const layers = ["master", ...stendhal.sound.getLayerNames()];
-				Chat.log("info", "Użyj /volume <warstwa> <wartość>, aby dostosować głośność.");
-				Chat.log("client", "<warstwa> to jedna z \"" + layers.join("\", \"") + "\"");
-				Chat.log("client", "<wartość> to liczba z zakresu od 0 do 100.");
-				Chat.log("client", "Aktualne poziomy głośności:");
+				Chat.log("info", GameLanguage.getText("Użyj /volume <warstwa> <wartość>, aby dostosować głośność."));
+				Chat.log("client", GameLanguage.getText("<warstwa> to jedna z \"" + layers.join("\", \"") + "\""));
+				Chat.log("client", GameLanguage.getText("<wartość> to liczba z zakresu od 0 do 100."));
+				Chat.log("client", GameLanguage.getText("Aktualne poziomy głośności:"));
 				for (const l of layers) {
 					Chat.log("client", "&nbsp;&nbsp;- " + l + " -> " + stendhal.sound.getVolume(l) * 100);
 				}
 			} else if (typeof(vol) !== "undefined") {
 				if (!/^\d+$/.test(vol)) {
-					Chat.log("error", "Wartość musi być liczbą.");
+					Chat.log("error", GameLanguage.getText("Wartość musi być liczbą."));
 					return true;
 				}
 				if (stendhal.sound.setVolume(layername, parseInt(vol, 10) / 100)) {
-					Chat.log("client", "Kanał \"" + layername + "\" ustawiono na "
-							+ (stendhal.sound.getVolume(layername) * 100) + ".");
+					Chat.log("client", GameLanguage.getText("Kanał \"" + layername + "\" ustawiono na "
+							+ (stendhal.sound.getVolume(layername) * 100) + "."));
 				} else {
-					Chat.log("error", "Nieznana warstwa \"" + layername + "\".");
+					Chat.log("error", GameLanguage.getText("Nieznana warstwa \"" + layername + "\"."));
 				}
 			} else {
-				Chat.log("error", "Użyj /volume, aby uzyskać pomoc.");
+				Chat.log("error", GameLanguage.getText("Użyj /volume, aby uzyskać pomoc."));
 			}
 
 			return true;
@@ -1339,7 +1342,7 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [<stat>-multiplier=<wartość>]",
+				"<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [affixes=<random|max|none>] [<stat>-multiplier=<wartość>]",
 				"Przyzwij wskazany przedmiot do określonego slotu #gracza; <ilość> domyślnie wynosi 1, jeśli"
 						+ " nie zostanie podana."
 			];
@@ -1503,7 +1506,7 @@ export class SlashActionRepo {
 
 			const encodedName = encodeURIComponent(name).replace(/%20/g, "_");
 			url += encodedName + ".html";
-			Chat.log("info", "Próba otwarcia #" + url + " w przeglądarce.");
+			Chat.log("info", GameLanguage.getText("Próba otwarcia #" + url + " w przeglądarce."));
 			window.location.href = url;
 			return true;
 		},
@@ -1618,7 +1621,7 @@ export class SlashActionRepo {
 			array.slice(action.maxParams);
 			return action.execute(name, array, remainder.trim());
 		} else {
-			Chat.log("error", "Brak argumentów. Spróbuj /help");
+			Chat.log("error", GameLanguage.getText("Brak argumentów. Spróbuj /help"));
 			return false;
 		}
 		return true;

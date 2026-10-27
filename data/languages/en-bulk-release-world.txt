@@ -1,0 +1,33 @@
+# Complete runtime messages after required-item and countdown substitution.
+Jeszcze nie przyniosłeś {0}. Idź i zdobądź, a wtedy wróć i powiedz #załatwione jak skończysz.=You have not brought {item:0} yet. Go and get it, then return and say #done when you finish.
+Jeszcze nie masz {0}. Idź i zdobądź, a wtedy wróć i powiedz #załatwione jak skończysz.=You do not have {item:0} yet. Go and get it, then return and say #done when you finish.
+Nie posiadasz {0} Co za szkoda.=You do not have {item:0}. What a pity.
+Hm, nie masz {0}, nie próbuj mnie oszukać!=Hmm, you do not have {item:0}. Do not try to trick me!
+Bardzo dobrze, wróć kiedy będziesz mieć the {0} z sobą.=Very well, return when you have the {item:0} with you.
+Jesteś na misji, aby znaleźć {0}. Nie możesz jeszcze poprosić o nowy przedmiot.=You are on a quest to find {item:0}. You cannot ask for a new item yet.
+Jesteś na misji, aby znaleźć {0}. Czy chcesz poszukać innego przedmiotu?=You are on a quest to find {item:0}. Would you like to look for another item?
+Zatem przynieś mi {0}.=Then bring me {item:0}.
+Już masz zadanie przyniesienia do muzeum {0}. Powiedz #zakończone jeżeli będziesz miał ze sobą.=You already have a quest to bring {item:0} to the museum. Say #done when you have it with you.
+Już masz zadanie przyniesienia do muzeum {0}. Powiedz #zakończone jeżeli będziesz miał ze sobą. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej.=You already have a quest to bring {item:0} to the museum. Say #done when you have it with you. This item may be rare at the moment. I can give you #another quest, or you can return with the item I requested earlier.
+Już masz zadanie, aby przynieść {0}. Powiedz #zakończone jeśli zdobędziesz już ten przedmiot.=You already have a quest to bring {item:0}. Say #done when you obtain the item.
+Już masz zadanie, aby przynieść {0}. Powiedz #zakończone jeśli zdobędziesz {0}. Być może teraz ten przedmiot występuje rzadko. Mogę dać Tobie #inne zadanie lub możesz wrócić z tym, o które prosiłem Cię wcześniej.=You already have a quest to bring {item:0}. Say #done when you obtain {item:0}. This item may be rare at the moment. I can give you #another quest, or you can return with the item I requested earlier.
+Bardzo dobrze, wróć kiedy będziesz mieć the {0} ze sobą.=Very well, return when you have the {item:0} with you.
+Już jesteś w trakcie zbierania {0}.=You are already collecting {item:0}.
+*westchnienie* SPECCJALNIE powiedziałam, że potrzebujemy {0}!=*sigh* I SPECIFICALLY said we need {item:0}!
+Hau! Dziękuję mój magazyn z zapasami do zrobienia dobrej #nalewki wystarczy na {0}.=Woof! Thank you. My supplies for making good #liqueur will last for {item:0}.
+# Lua shop dialogue, signs and complete descriptions. Name captures stay opaque.
+Proszę spójrz na tablicę, by sprawdzić przedmioty jakie mam na sprzedaż oraz ich cenę.=Please check the board for the items I sell and their prices.
+Wybacz, ale nie potrzebuję niczego w czym mógłbyś mi pomóc na tę chwilę.=Sorry, there is nothing you can help me with at the moment.
+Możesz zakupić te przedmioty.=You can buy these items.
+Sprawdź na tablicy listę przedmiotów, które skupuję.=Check the board for the list of items I buy.
+Nie, dziękuję. Nie potrzebuję pomocy.=No, thank you. I do not need help.
+Barter Materiałów Pochodzenia Zwierzęcego=Animal Materials Exchange
+Cóż... Nie mam teraz nic, w czym mógłbyś mi pomóc.=Well... There is nothing you can help me with right now.
+W drzewie zostało coś jest wyryte.=Something has been carved into the tree.
+W niczym nie potrzebuję pomocy poza zbieraniem materiałów, aby zarabiać na sklepach w Faimouni.=I only need help collecting materials to make money from the shops in Faimouni.
+{0} skupuje następujące przedmioty={0} buys the following items
+Oto {0}. {0}, która wpatruje się w {1}.=You see {0}. {0} is gazing at {1}.
+Oto {0}. {0}, który wpatruje się w {1}.=You see {0}. {0} is gazing at {1}.
+Oto {0}. Wygląda na właściciela lombardu, który aktualnie prowadzi.=You see {0}. He appears to own the pawn shop he is currently running.
+Oto twój nowy {0}.=Here is your new {item:0}.
+Dobrze, że przypominasz. Oto twój nowy {0}!=Thank you for reminding me. Here is your new {item:0}!

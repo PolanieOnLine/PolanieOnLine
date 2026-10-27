@@ -3,6 +3,8 @@ manifest.mf
 nbbuild.xml
 nbproject
 
+/output
+
 /.vs
 /.settings
 build_client

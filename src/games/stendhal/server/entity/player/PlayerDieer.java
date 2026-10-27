@@ -32,6 +32,7 @@ import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.RingOfLife;
 import games.stendhal.server.entity.item.SlotActivatedItem;
@@ -253,10 +254,9 @@ public class PlayerDieer {
 			if (!objects.isEmpty()) {
 				final Pair<RPObject, RPSlot> object = objects.remove(0);
 
-				// deactivate slot activated items
-				if (object.first() instanceof SlotActivatedItem) {
-					SlotActivatedItem slotItem = (SlotActivatedItem) object.first();
-					slotItem.onUnequipped();
+				// Deactivate equipped bonuses before moving the item to the corpse.
+				if (object.first() instanceof SlotActivatedItem || object.first() instanceof Glyph) {
+					((Item) object.first()).onUnequipped();
 				}
 
 				if (object.first() instanceof StackableItem) {

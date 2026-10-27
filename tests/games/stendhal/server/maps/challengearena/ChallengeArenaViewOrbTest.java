@@ -201,7 +201,7 @@ public class ChallengeArenaViewOrbTest {
 		open(viewer, 27);
 		assertTrue(lastOptions(viewer).get("options").contains("WatchAlice"));
 		assertTrue(lastOptions(viewer).get("options").contains("WatchBob"));
-		final int money = MoneyUtils.getTotalMoneyInCopper(viewer);
+		final long money = MoneyUtils.getTotalMoneyInCopper(viewer);
 		command(viewer, "chat", "obserwuj watchalice");
 		assertSame(first.getZone(), viewer.getZone());
 		assertTrue(viewer.isArenaSpectator());
@@ -318,7 +318,7 @@ public class ChallengeArenaViewOrbTest {
 		final ChallengeArenaInfo info = start(owner);
 		open(first, 27); assertTrue(ChallengeArenaObservation.watch(first, owner.getName()));
 		open(second, 37); assertTrue(ChallengeArenaObservation.watch(second, owner.getName()));
-		final int firstMoney = MoneyUtils.getTotalMoneyInCopper(first);
+		final long firstMoney = MoneyUtils.getTotalMoneyInCopper(first);
 		owner.setQuest(ChallengeArenaState.QUEST_SLOT, ChallengeArenaState.start(ChallengeArenaTier.TRIAL)
 				.withSpawnedCreatures(ChallengeArenaTier.TRIAL.getCreatureCount()).serialize());
 		info.getEngine().onTurnReached(1);

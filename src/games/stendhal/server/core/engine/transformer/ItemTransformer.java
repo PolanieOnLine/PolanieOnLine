@@ -26,6 +26,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemAffixBalanceService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
+import games.stendhal.server.core.rule.rarity.LifestealMigrationService;
 import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
@@ -64,11 +65,16 @@ public class ItemTransformer {
 			}
 
 			/*
-			 * Glyph effects are definition-owned. They deliberately refresh from
-			 * items XML on every restore so balance changes reach existing players
+			 * Glyphs and explicitly rarity-disabled rings use definition-owned stats.
+			 * Refresh them from XML on restore so balance changes reach existing players
 			 * at login instead of preserving an old rarity-scaled copy forever.
 			 */
-			final boolean definitionAuthoritative = item instanceof Glyph;
+			final boolean definitionAuthoritative = item instanceof Glyph
+					|| ("ring".equals(item.getItemClass())
+							&& Boolean.FALSE.equals(item.getRarityEnabledOverride()));
+			// Trophy DEF is advanced exclusively by Deathmatch victories.
+			// Legacy rarity rolls and affixes must not be reapplied on login.
+			final boolean deathmatchTrophy = "zdobyczny hełm".equals(name);
 
 			// Build the current unmodified range before replaying this instance's
 			// saved multipliers. RESTORE itself never rolls rarity or affixes.
@@ -96,7 +102,7 @@ public class ItemTransformer {
 			final boolean savedRarity = rpobject.has(Item.RARITY_ID);
 			final boolean legacyRarityItem = !savedRarity
 					&& ItemRarityService.getInstance().isEligible(item);
-			final boolean restoreAllAttributes = !definitionAuthoritative
+			final boolean restoreAllAttributes = !definitionAuthoritative && !deathmatchTrophy
 					&& rpobject.has("persistent")
 					&& (rpobject.getInt("persistent") == 1);
 			if (restoreAllAttributes) {
@@ -127,15 +133,15 @@ public class ItemTransformer {
 				}
 			}
 
-			if (!definitionAuthoritative && savedRarity) {
+			if (!definitionAuthoritative && !deathmatchTrophy && savedRarity) {
 				restoreRarityMetadata(item, rpobject, savedRarity);
 			}
 			final Set<String> refreshedBaseFields = ItemDefinitionRefreshService.refresh(
 					item, definition, rpobject);
 			// Random affixes are also instance state and must survive RESTORE
-			// independently of current XML definitions and rarity modifiers. Glyphs
-			// are definition-owned and intentionally discard any legacy affix state.
-			if (!definitionAuthoritative) {
+			// independently of current XML definitions and rarity modifiers. Items
+			// with definition-owned stats intentionally discard legacy affix state.
+			if (!definitionAuthoritative && !deathmatchTrophy) {
 				ItemAffixState.restore(item, rpobject, refreshedBaseFields);
 				ItemDefinitionRefreshService.replayFlatBonuses(item, rpobject);
 			}
@@ -180,7 +186,7 @@ public class ItemTransformer {
 			WeaponDamageRangeService.migrateRestored(item, definitionAttack,
 					definitionDamageMin, definitionDamageMax);
 
-			if (!savedRarity && legacyRarityItem) {
+			if (!savedRarity && legacyRarityItem && !deathmatchTrophy) {
 				ItemRarityService.getInstance().markLegacyCommon(item);
 			}
 
@@ -209,6 +215,9 @@ public class ItemTransformer {
 
 			// Rebuild the volatile client presentation after all persisted and
 			// converted values have reached their final state.
+			if (!definitionAuthoritative && !deathmatchTrophy) {
+				LifestealMigrationService.migrate(item, rpobject);
+			}
 			ItemAffixBalanceService.enforce(item);
 			ItemValueService.refresh(item);
 			ItemTooltipService.update(item);

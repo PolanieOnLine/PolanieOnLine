@@ -13,6 +13,7 @@ import { Component } from "../toolkit/Component";
 import { ItemInventoryComponent } from "./ItemInventoryComponent";
 
 import { stendhal } from "../../stendhal";
+import { GameLanguage } from "../../util/GameLanguage";
 
 const SECOND_MS = 1000;
 
@@ -114,14 +115,14 @@ export class GoldenCauldronComponent extends Component {
 		const seconds = totalSeconds % 60;
 		const parts: string[] = [];
 		if (this.baseStatus) {
-			parts.push(this.baseStatus);
+			parts.push(GameLanguage.getText(this.baseStatus));
 		}
 		if (minutes > 0) {
 			const paddedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 			const paddedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-			parts.push(`Pozostało ${paddedMinutes}:${paddedSeconds}.`);
+			parts.push(GameLanguage.getText(`Pozostało ${paddedMinutes}:${paddedSeconds}.`));
 		} else {
-			parts.push(`Pozostało ${seconds} s.`);
+			parts.push(GameLanguage.getText(`Pozostało ${seconds} s.`));
 		}
 		this.statusLabel.textContent = parts.join(" ");
 	}

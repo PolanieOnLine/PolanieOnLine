@@ -25,6 +25,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -46,6 +47,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import marauroa.common.game.RPObject;
 import marauroa.common.game.SlotIsFullException;
 
 public class Burglary extends AbstractQuest {
@@ -95,6 +97,8 @@ public class Burglary extends AbstractQuest {
 	}
 
 	private void prepareBringingStep() {
+		final ChatCondition hasRequiredGold =
+				new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT, 15);
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
@@ -104,7 +108,7 @@ public class Burglary extends AbstractQuest {
 						new AndCondition(
 								new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)))),
+								hasRequiredGold))),
 			ConversationStates.ATTENDING, 
 			"Nie próbuj mnie oszukiwać! *szept* Wróć z tymi przedmiotami do mnie...",
 			null);
@@ -120,7 +124,6 @@ public class Burglary extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					player.dropWithItemdata("sztabka złota", QUEST_SLOT, 15);
 					Burglary.prepareChest();
 				}
 			});
@@ -130,42 +133,71 @@ public class Burglary extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
-					new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)),
+					hasRequiredGold),
 			ConversationStates.ATTENDING,
 			"Dzięki... Tym razem się przekona co to znaczy być okradzionym...",
-			new MultipleActions(reward));
+			new MultipleActions(reward) {
+				@Override
+				public void fire(Player player, Sentence sentence, EventRaiser npc) {
+					if (!player.dropWithItemdata("sztabka złota", QUEST_SLOT, 15)) {
+						npc.say("Wróć z piętnastoma sztabkami złota należącymi do Sołtysa.");
+						return;
+					}
+					super.fire(player, sentence, npc);
+				}
+			});
 	}
 
 	private static void prepareChest() {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_tatry_kuznice_soltys_house");
 
-		final StoredChest chest = new StoredChest();
-		chest.setPosition(5, 23);
-		zone.add(chest);
+		final List<StoredChest> existingChests = zone.getEntitiesAt(5, 23, StoredChest.class);
+		final StoredChest chest;
+		if (existingChests.isEmpty()) {
+			chest = new StoredChest();
+			chest.setPosition(5, 23);
+			zone.add(chest);
+		} else {
+			chest = existingChests.get(0);
+		}
 
 		try {
-			Item item = SingletonRepository.getEntityManager().getItem(
-					"góralski kapelusz", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto góralski kapelusz należący do garderoby Sołtysa.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem(
-					"cuha góralska", ItemCreationContext.quest());
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto cuha góralska należąca do garderoby Sołtysa.");
-			chest.add(item);
-
-			item = SingletonRepository.getEntityManager().getItem("sztabka złota");
-			((StackableItem) item).setQuantity(15);
-			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto sztabki złota, które są własnością Sołtysa.");
-			chest.add(item);
+			addMissingQuestItem(chest, "góralski kapelusz", 1,
+					"Oto góralski kapelusz należący do garderoby Sołtysa.");
+			addMissingQuestItem(chest, "cuha góralska", 1,
+					"Oto cuha góralska należąca do garderoby Sołtysa.");
+			addMissingQuestItem(chest, "sztabka złota", 15,
+					"Oto sztabki złota, które są własnością Sołtysa.");
 		} catch (SlotIsFullException e) {
 			logger.info("Could not add items to quest chest", e);
 		}
+		chest.notifyWorldAboutChanges();
+	}
+
+	private static void addMissingQuestItem(final StoredChest chest, final String name,
+			final int amount, final String description) {
+		int missing = amount;
+		for (final RPObject object : chest.getSlot("content")) {
+			if (object instanceof Item) {
+				final Item item = (Item) object;
+				if (name.equals(item.getName()) && QUEST_SLOT.equals(item.getItemData())) {
+					missing -= item.getQuantity();
+					if (missing <= 0) {
+						return;
+					}
+				}
+			}
+		}
+		final Item item = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.quest());
+		if (item instanceof StackableItem) {
+			((StackableItem) item).setQuantity(missing);
+		}
+		item.setItemData(QUEST_SLOT);
+		item.setDescription(description);
+		chest.add(item);
 	}
 
 	@Override

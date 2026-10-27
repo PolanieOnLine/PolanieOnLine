@@ -78,14 +78,14 @@ You see a suit of plate armor. You imagine it would be heavy but the steel is we
 red armor=armadura roja
 You see a suit of red armor. The color is a striking crimson.=Ves un traje de armadura roja. Su color es de un llamativo tono carmesí.
 
-royal armor=
-You see a suit of royal armor. This armor is fit for a king.=
+# Untranslated legacy source: royal armor=
+# Untranslated legacy source: You see a suit of royal armor. This armor is fit for a king.=
 
 scale armor=armadura de escamas
 You see a suit of scale armor. It is not flexible like chain, but will be a better defense.=Ves un traje de armadura de escamas. No es flexible como la cota de malla, pero te proporcionará una mejor defensa.
 
-scuba gear=
-You see a scuba suit with a heavy helmet attached. It is dense enough to offer protection under the waves but of little use on land.=
+# Untranslated legacy source: scuba gear=
+# Untranslated legacy source: You see a scuba suit with a heavy helmet attached. It is dense enough to offer protection under the waves but of little use on land.=
 
 shadow armor=armadura de sombra
 You see a suit of shadow armor. It's hard to decide with what it is made, it is so dark.=Ves un traje dearmadura de sombra. Es difícil decidir de qué está hecha, es tan oscura.
@@ -219,7 +219,7 @@ You see a high heeled pair of killer boots. Are you brave enough to wear them?=V
 leather boots=botas de cuero
 You see a simple pair of leather boots to give your feet some protection.=Ves un simple par de botas de cuero para dar algo de protección a tus pies.
 
-magic plate boots=
+# Untranslated legacy source: magic plate boots=
 
 mainio boots=botas de mainio
 You see a pair of mainio boots. It's hard to believe that boots looking like this would protect your feet so well as they do.=Ves un par de botas de mainio. Cuesta creer que unas botas con esa apariencia te pudiesen proteger los pies tan bien como lo hacen.
@@ -230,8 +230,8 @@ You see a sparkling set of mithril boots.=Ves un brillante conjunto de botas de 
 red boots=botas rojas
 You see a pair of red boots, the color reminds you of fresh blood.=Ves un par de botas rojas, su color te recuerda a la sangre fresca.
 
-royal boots=
-You see a pair of royal boots. They have magical properties=
+# Untranslated legacy source: royal boots=
+# Untranslated legacy source: You see a pair of royal boots. They have magical properties=
 
 shadow boots=botas de sombra
 You see a pair of shadow boots. You can't fathom what they are made of.=Ves un par de botas de sombra. No puedes entender de qué están hechas.
@@ -305,8 +305,8 @@ You see a huge green dragon cloak. It's probably too big for you but, even dragg
 lich cloak=capa de lich
 You see a purple lich cloak. It's stained with blood - yours, from the previous undead owner, or perhaps the blood of his enemies...=Ves una capa púrpura de lich. Está manchada de sangre - la tuya, la de su anterior dueño, o quizá la sangre de sus enemigos...
 
-magic cloak=
-You see a magic cloak.=
+# Untranslated legacy source: magic cloak=
+# Untranslated legacy source: You see a magic cloak.=
 
 mainio cloak=capa de mainio
 You see a mainio cloak. Its flashing colors are absurd! But you wear it because it's very well made.=Ves una capa de mainio ¡Sus colores parpadeantes son absurdos! Pero la llevas puesta porque está muy bien elaborada.
@@ -613,23 +613,23 @@ You see a coconut. Luckily it's already cracked and you can drink from it.=Ves u
 corn=maíz
 You see an ear of corn. It could be eaten raw, grilled or turned into flour... Your choice.=Ves una oreja de maíz. Se puede comer cruda, asada o convertirla en harina... Tú decides.
 
-grapes=
-You see a bunch of grapes. They look quite juicy and tasty.=
+# Untranslated legacy source: grapes=
+# Untranslated legacy source: You see a bunch of grapes. They look quite juicy and tasty.=
 
-olive=
-You see a small ripe olive. It can be eaten or used to create olive oil.=
+# Untranslated legacy source: olive=
+# Untranslated legacy source: You see a small ripe olive. It can be eaten or used to create olive oil.=
 
-pear=
-You see a pear. Its lovely smell convinces you of taking it.=
+# Untranslated legacy source: pear=
+# Untranslated legacy source: You see a pear. Its lovely smell convinces you of taking it.=
 
 pineapple=piña
 You see a tropical pineapple.=Ves una piña tropical.
 
-pomegranate=
-You see a pomegranate. If you eat it, you will be in great shape soon.=
+# Untranslated legacy source: pomegranate=
+# Untranslated legacy source: You see a pomegranate. If you eat it, you will be in great shape soon.=
 
-watermelon=
-You see a watermelon. It refreshes your throat during hot summer days.=
+# Untranslated legacy source: watermelon=
+# Untranslated legacy source: You see a watermelon. It refreshes your throat during hot summer days.=
 
 artichoke=alcachofa
 You see an artichoke. It can be an ingredient, or you can eat it.=Ves una alcachofa. Puede ser un ingrediente, o te la puedes comer.
@@ -774,11 +774,11 @@ You see a yummy vanilla shake. Absolutely NO calories.=Ves un sabroso batido de 
 potato=papa
 You see a potato.=Ves una papa.
 
-habanero pepper=
-You see a habanero pepper. Could be a very HOT ingredient for a decent meal...=
+# Untranslated legacy source: habanero pepper=
+# Untranslated legacy source: You see a habanero pepper. Could be a very HOT ingredient for a decent meal...=
 
-pinto beans=
-You see a bunch of pinto beans. An ingredient a chef will surely appreciate...=
+# Untranslated legacy source: pinto beans=
+# Untranslated legacy source: You see a bunch of pinto beans. An ingredient a chef will surely appreciate...=
 
 cheese=queso
 You see some cheese. Eat it and see what happens.=Ves un poco de queso. Cometelo y verás lo que pasa.
@@ -789,26 +789,26 @@ You see a tasty leg of chicken.=Ves un sabroso muslo de pollo.
 chocolate bar=barrita de chocolate
 You see an absolutely yummy chocolate bar.=Ves una barrita de chocolate absolutamente deliciosa.
 
-candycane=
-You see a delicious candy cane.=
+# Untranslated legacy source: candycane=
+# Untranslated legacy source: You see a delicious candy cane.=
 
-greenmint=
-You see a green mint.=
+# Untranslated legacy source: greenmint=
+# Untranslated legacy source: You see a green mint.=
 
-gumdrops=
-You see a mix of gum drops.=
+# Untranslated legacy source: gumdrops=
+# Untranslated legacy source: You see a mix of gum drops.=
 
-lemondrop=
-You see a sweet and tangy lemon drop.=
+# Untranslated legacy source: lemondrop=
+# Untranslated legacy source: You see a sweet and tangy lemon drop.=
 
-lollipop=
-You see a lollipop.=
+# Untranslated legacy source: lollipop=
+# Untranslated legacy source: You see a lollipop.=
 
-peppermint=
-You see a sweet, little peppermint.=
+# Untranslated legacy source: peppermint=
+# Untranslated legacy source: You see a sweet, little peppermint.=
 
-taffy=
-You see some ooey gooey taffy.=
+# Untranslated legacy source: taffy=
+# Untranslated legacy source: You see some ooey gooey taffy.=
 
 fairy cake=fairy cake
 You see a luscious fairy cake with icing and sprinkles on top.=Ves un delicioso fairy cake con cobertura y fideos de chocolate por encima.
@@ -837,8 +837,8 @@ You see a tasty pizza, and hope they put extra cheese on it.=Ves una sabrosa piz
 
 ## furniture
 
-picture in wooden frame=
-You see a picture in a wooden frame=
+# Untranslated legacy source: picture in wooden frame=
+# Untranslated legacy source: You see a picture in a wooden frame=
 
 
 ## helmets
@@ -847,7 +847,7 @@ leather helmet=casco de cuero
 You see a leather helmet, it seems more like a hat than a defensive item.=Ves un casco de cuero, parece más un sombrero que un elemento defensivo.
 
 trophy helmet=casco trofeo
-You see a Trophy Helmet. Those who were brave and finished the death match, win this helmet.=
+# Untranslated legacy source: You see a Trophy Helmet. Those who were brave and finished the death match, win this helmet.=
 
 robins hat=sombrero de robin
 You see a robins hat. It's cute but that's about it.=Ves un sombrero de robin. Es gracioso pero eso es todo.
@@ -855,8 +855,8 @@ You see a robins hat. It's cute but that's about it.=Ves un sombrero de robin. E
 studded helmet=casco tachonado
 You see a studded helmet, it should protect your head against cuts but perhaps not hard blows.=Ves un casco tachonado, debería de protegerte la cabeza de cortes pero quizá no de golpes fuertes.
 
-elvish hat=
-You see an elvish hat. The elf craftmanship has made the leafy material stronger than one would think.=
+# Untranslated legacy source: elvish hat=
+# Untranslated legacy source: You see an elvish hat. The elf craftmanship has made the leafy material stronger than one would think.=
 
 chain helmet=casco de cota de malla
 You see a solid chain helmet, it will be excellent protection for your head.=Ves un sólido casco de cota de malla, será una excelente protección para la cabeza.
@@ -882,8 +882,8 @@ You see a horned golden helmet.=Ves un casco de oro con cuernos.
 shadow helmet=casco de sombra
 You see a heavy shadow helmet. Instead of shining, it darkly gleams.=Ves un pesado casco de sombra. En lugar de brillar, emite destellos oscuros.
 
-xeno helmet=
-You see a xeno helmet.=
+# Untranslated legacy source: xeno helmet=
+# Untranslated legacy source: You see a xeno helmet.=
 
 chaos helmet=casco del caos
 You see a chaos helmet.=Ves un casco del caos.
@@ -903,8 +903,8 @@ You see a black helmet.=Ves un casco negro
 mithril helmet=casco de mithril
 You see a mithril helmet.=Ves un casco de mithril.
 
-royal helmet=
-You see a royal helmet.=
+# Untranslated legacy source: royal helmet=
+# Untranslated legacy source: You see a royal helmet.=
 
 
 ## herbs
@@ -924,8 +924,8 @@ You see a root of mandragora. It has medicinal properties, if the right person u
 sclaria=sclaria
 You see the herb sclaria. The smell is calming.=Ves la hierba sclaria. Su olor es calmante.
 
-reindeer moss=
-You see reindeer moss, something that grows only around Semos. It is quite a delicacy to reindeer, but extremely bitter to humans.=
+# Untranslated legacy source: reindeer moss=
+# Untranslated legacy source: You see reindeer moss, something that grows only around Semos. It is quite a delicacy to reindeer, but extremely bitter to humans.=
 
 
 ## jewellery
@@ -942,8 +942,8 @@ You see a carbuncle, a precious gemstone related to the garnet.=Ves un carbúncu
 obsidian=obsidiana
 You see a piece of obsidian, it's known as volcanic glass because it forms when lava cools rapidly. When used as a gemstone it may look jet black or silvery grey, depending on how it is cut.=Ves una pieza de obsidiana, es conocida como vidrio volcánico porque se forma cuando la lava se enfría rápidamente. Cuando se usa como gema puede parecer negro azabache o gris plateado, dependiendo de cómo se corte.
 
-amethyst=
-You see an amethyst, a precious gemstone.=
+# Untranslated legacy source: amethyst=
+# Untranslated legacy source: You see an amethyst, a precious gemstone.=
 
 diamond=diamante
 You see a diamond, not just a beautiful gem but also the hardest naturally occurring material.=Ves un diamante, no es sólo una hermosa gema sino también el material más duro de origen natural.
@@ -981,7 +981,7 @@ You see a key for the pet sanctuary in Ados.=Ves una llave que abre el santuario
 house key=llave de la casa
 You should not see this description=No deberías de poder ver esta descripción
 
-gate key=
+# Untranslated legacy source: gate key=
 You should not see this description=No deberías de poder ver esta descripción
 
 master key=llave maestra
@@ -1004,8 +1004,8 @@ You see a pair of well made chain legs. They should protect you against any atta
 chaos legs=quijotes del caos
 You see a pair of chaos legs. The strange colors confuse you.=Ves un par de quijotes del caos. Sus extraños colores te confunden.
 
-dwarvish legs=
-You see a pair of dwarvish legs, designed by master craftsmen.=
+# Untranslated legacy source: dwarvish legs=
+# Untranslated legacy source: You see a pair of dwarvish legs, designed by master craftsmen.=
 
 elvish legs=quijotes élficos
 You see a pair of elvish legs.=Ves un par de quijotes élficos.
@@ -1019,7 +1019,7 @@ You see a beautiful pair of jewelled legs. A large red gem glints at you and the
 leather legs=quijotes de cuero
 You see a pair of leather legs. They look new but they're poor quality.=Ves un par de quijotes de cuero. Parecen nuevos pero son de mala calidad.
 
-magic plate legs=
+# Untranslated legacy source: magic plate legs=
 
 mainio legs=quijotes de mainio
 You see a pair of odd looking mainio legs. They are somewhat startling but they give you good protection.=Ves un par de quijotes de mainio de extraño aspecto. Son de algún modo sorprendentes pero te proporcionan una buena proteccion.
@@ -1030,14 +1030,14 @@ You see a pair of mithril legs. They will serve you well.=Ves un par de quijotes
 red legs=quijotes rojos
 A pair of red legs are in your grasp.=Un par de quijotes rojos están a tu alcance.
 
-royal legs=
-You see a pair of royal legs.=
+# Untranslated legacy source: royal legs=
+# Untranslated legacy source: You see a pair of royal legs.=
 
 shadow legs=quijotes de sombra
 You see a pair of shadow legs. The weight of them is incredible.=Ves un par de quijotes de sombra. Su peso es increíble.
 
-stone legs=
-You see a pair of stone legs, heavy and durable.=
+# Untranslated legacy source: stone legs=
+# Untranslated legacy source: You see a pair of stone legs, heavy and durable.=
 
 studded legs=quijotes tachonados
 You see a pair of blood stained studded legs. You're not sure if the blood came from their last owner... or his enemies.=Ves un par de quijotes tachonados manchados de sangre. No estás seguro de si la sangre es de su último dueño... o de sus enemigos.
@@ -1048,8 +1048,8 @@ You see a pair of xeno legs. They're very strong and look brand new.=Ves un par 
 
 ## miscs
 
-decent meal=
-You see a decent meal for Groongo Rahnnt. Deliver it to him quickly!=
+# Untranslated legacy source: decent meal=
+# Untranslated legacy source: You see a decent meal for Groongo Rahnnt. Deliver it to him quickly!=
 
 bulb=bulbo
 You see a bulb. It can be planted in fertile ground where it will thrive.=Ves un bulbo. Puede ser plantado en terreno fértil donde se prosperará.
@@ -1069,8 +1069,8 @@ You see a deck of cards. Shuffle them well, to get a winning hand.=Ves una baraj
 teddy=peluche
 You see a teddy bear. It's soft and cuddly, and children love them.=Ves un oso de peluche. Es suave y tierno, y a los niños les encanta.
 
-rodent trap=
-You see a rodent trap.=
+# Untranslated legacy source: rodent trap=
+# Untranslated legacy source: You see a rodent trap.=
 
 vampirette entrails=entrañas de vampiresa
 You see some vampirette entrails. These guts prove that a vampirette was slain.=Ves unas entrañas de vampiresa. Estas vísceras demuestran que una vampiresa fue asesinada.
@@ -1079,7 +1079,7 @@ bat entrails=entrañas de murciégalo
 You see some bat entrails, full of the blood of a living creature.=Ves unas entrañas de murciégalo, llenas de sangre de algún ser vivo.
 
 suntan cream=crema bronceadora
-You see a tube of suntan cream and notice that the outside is slippery. A nice scent of coconut mixed with bannana wafts into the air from it.=
+# Untranslated legacy source: You see a tube of suntan cream and notice that the outside is slippery. A nice scent of coconut mixed with bannana wafts into the air from it.=
 
 marbles=canicas
 You see some marbles. Boys will be boys.=Ves unas canicas. Son cosas de niños.
@@ -1093,17 +1093,17 @@ You see a snowglobe. It's so festive, it reminds you of Christmas!=Ves una esfer
 bobbin=canilla
 You see a bobbin for a sewing machine.=Ves una canilla para una máquina de coser.
 
-venom gland=
-You see the venom gland of a giant king cobra. It is filled with deadly toxin.=
+# Untranslated legacy source: venom gland=
+# Untranslated legacy source: You see the venom gland of a giant king cobra. It is filled with deadly toxin.=
 
-pelt=
-You see a pelt of animal skin. It's used to make clothes and leather armor.=
+# Untranslated legacy source: pelt=
+# Untranslated legacy source: You see a pelt of animal skin. It's used to make clothes and leather armor.=
 
-leather thread=
-You see a strand of sturdy leather thread.=
+# Untranslated legacy source: leather thread=
+# Untranslated legacy source: You see a strand of sturdy leather thread.=
 
-unicorn horn=
-You see a spiral unicorn horn. It is highly valued by traders and used in the creation of magical items.=
+# Untranslated legacy source: unicorn horn=
+# Untranslated legacy source: You see a spiral unicorn horn. It is highly valued by traders and used in the creation of magical items.=
 
 
 ## missiles
@@ -1126,7 +1126,7 @@ You see a wooden spear. You can attack at a distance with this primitive weapon.
 
 ## money
 
-money=dinero
+money=monedas
 
 
 ## ranged
@@ -1170,7 +1170,7 @@ grain=trigo
 You see a sheaf of grain.=Ves una gavilla de trigo.
 
 flour=harina
-You see a sack of flour. It can be used in recipes for pizzas and sandwiches.=
+# Untranslated legacy source: You see a sack of flour. It can be used in recipes for pizzas and sandwiches.=
 
 iron ore=mineral de hierro
 
@@ -1192,7 +1192,7 @@ You see a gold nugget. Its rich golden color shines, and it may be useful.=Ves u
 mithril nugget=pepita de mithril
 You see a mithril nugget. Its pale silvery color shines, and it may be useful.=Ves una pepita de mithril. Su pálido color plateado brilla, y puede resultar útil.
 
-iron bar=
+# Untranslated legacy source: iron bar=
 
 gold bar=barra de oro
 You see a gold bar. It will make beautiful jewelry, or fetch a fine price.=Ves una barra de oro. Servirá para hacer hermosas joyas, o se pagará un buen precio por ella.
@@ -1230,26 +1230,26 @@ You see a piece of beeswax.=Ves un pedazo de cera de abeja.
 candle=vela
 You see a candle in a candle stick.=Ves una vela en un candelero.
 
-charcoal=
-You see charcoal, a component of carbon steel.=
+# Untranslated legacy source: charcoal=
+# Untranslated legacy source: You see charcoal, a component of carbon steel.=
 
 
 ## rings
 
-medicinal ring=
-You see a medicinal ring. It may protect you from being poisoned when worn on the finger.=
+# Untranslated legacy source: medicinal ring=
+# Untranslated legacy source: You see a medicinal ring. It may protect you from being poisoned when worn on the finger.=
 
-antivenom ring=
-You see an antivenom ring. It has a good chance to protect you from poisoning when worn on the finger.=
+# Untranslated legacy source: antivenom ring=
+# Untranslated legacy source: You see an antivenom ring. It has a good chance to protect you from poisoning when worn on the finger.=
 
-placid ring=
-You see a placid ring. It may reduce the effects of being shocked when worn on the finger.=
+# Untranslated legacy source: placid ring=
+# Untranslated legacy source: You see a placid ring. It may reduce the effects of being shocked when worn on the finger.=
 
-insulated ring=
-You see an insulated ring that may protect from being shocked. It must be worn on the finger.=
+# Untranslated legacy source: insulated ring=
+# Untranslated legacy source: You see an insulated ring that may protect from being shocked. It must be worn on the finger.=
 
 wedding ring=anillo de boda
-You see a golden wedding ring, a symbol of love.=
+# Untranslated legacy source: You see a golden wedding ring, a symbol of love.=
 
 engagement ring=anillo de compromiso
 You see a diamond engagement ring, a symbol of love (or a symbol of wealth?)=Ves un anillo de compromiso de diamante, un símbolo de amor (¿o un símbolo de riqueza?)
@@ -1257,27 +1257,27 @@ You see a diamond engagement ring, a symbol of love (or a symbol of wealth?)=Ves
 emerald ring=anillo de esmeralda
 You see an emerald ring, known as ring of life. Wear it, and you risk less from death.=Ves un anillo de esmeralda, conocido como el anillo de la vida. Llevalo, y arriesgarás menos al morir.
 
-turtle shell ring=
-You see a turtle shell ring.=
+# Untranslated legacy source: turtle shell ring=
+# Untranslated legacy source: You see a turtle shell ring.=
 
-imperial ring=
-You see an imperial ring. It is imbued with the strength of a king.=
+# Untranslated legacy source: imperial ring=
+# Untranslated legacy source: You see an imperial ring. It is imbued with the strength of a king.=
 
-enhanced imperial ring=
-You see an enhanced imperial ring. It eminates the auras of strength and defense.=
+# Untranslated legacy source: enhanced imperial ring=
+# Untranslated legacy source: You see an enhanced imperial ring. It eminates the auras of strength and defense.=
 
-ring of clarity=
-You see a ring of clarity. You feel more aware while wearing it.=
+# Untranslated legacy source: ring of clarity=
+# Untranslated legacy source: You see a ring of clarity. You feel more aware while wearing it.=
 
 
 ## scrolls
 
 summon scroll=pergamino de invocación
-You see a summon scroll. It summons a creature to aid in your adventures.=
+# Untranslated legacy source: You see a summon scroll. It summons a creature to aid in your adventures.=
 
-summon pet scroll=
+# Untranslated legacy source: summon pet scroll=
 
-blank pet scroll=
+# Untranslated legacy source: blank pet scroll=
 
 home scroll=pergamino del hogar
 You see a home scroll, it will take you back to semos city.=Ves un pergamino del hogar, te llevará de regreso a la ciudad de semos.
@@ -1297,8 +1297,8 @@ You see a kirdneh city scroll, it will take you back to kirdneh city.=Ves un per
 kalavan city scroll=pergamino de la ciudad de kalavan
 You see a kalavan city scroll, it will take you back to kalavan city.=Ves un pergamino de la ciudad de kalavan, te llevará de regreso a la ciudad de kalavan.
 
-deniran city scroll=
-You see a deniran city scroll, it will take you back to deniran city.=
+# Untranslated legacy source: deniran city scroll=
+# Untranslated legacy source: You see a deniran city scroll, it will take you back to deniran city.=
 
 marked scroll=pergamino marcado
 
@@ -1364,8 +1364,8 @@ You see a solid plate shield. It is in good condition, and might be worth a litt
 red shield=escudo rojo
 You see a red shield. It is a stunning shade of scarlet.=Ves un escudo rojo. Es de un imponente tono escarlata.
 
-royal shield=
-You see a royal shield. It has a magical quality surrounding it.=
+# Untranslated legacy source: royal shield=
+# Untranslated legacy source: You see a royal shield. It has a magical quality surrounding it.=
 
 shadow shield=escudo de sombra
 You see a shadow shield. Rather than reflecting light, it seems to absorb it.=Ves un escudo de sombra. En lugar de reflejar la luz, parece absorberla.
@@ -1385,7 +1385,7 @@ You see a wooden shield. It is made of cheap wood and heavily used. However, it 
 xeno shield=escudo de xeno
 You see a lightweight but strong xeno shield, in the colors of the creature it was looted from.=Ves un escudo de xeno ligero pero resistente, de los mismos tonos que la criatura a la que se le saqueó.
 
-ice shield=
+# Untranslated legacy source: ice shield=
 
 
 ## special
@@ -1403,16 +1403,16 @@ magical eggshells=cáscaras de huevo mágicas
 You see shards from a mythical egg. They have magical properties.=Ves fragmentos de un huevo mítico. Tienen propiedades mágicas.
 
 golden gm token=ficha de dj de oro
-You see a golden gm token. Does it bring you pride?=
+# Untranslated legacy source: You see a golden gm token. Does it bring you pride?=
 
 silvery gm token=ficha de dj de plata
-You see a silvery gm token. Does it bring you pride?=
+# Untranslated legacy source: You see a silvery gm token. Does it bring you pride?=
 
 bronze gm token=ficha de dj de bronce
-You see a bronze gm token. Does it bring you pride?=
+# Untranslated legacy source: You see a bronze gm token. Does it bring you pride?=
 
-four-leaf clover=
-You see a lucky four-leaf clover. What are the chances of finding one!?=
+# Untranslated legacy source: four-leaf clover=
+# Untranslated legacy source: You see a lucky four-leaf clover. What are the chances of finding one!?=
 
 
 ## swords
@@ -1510,8 +1510,8 @@ This orcish sword is badly done and weighs a lot.=Esta espada orca está mal hec
 r hand sword=espada de mano d
 You see r hand sword. It must be used with a left hand sword.=Ves una espada de mano d. Debe usarse con una espada de mano izquierda.
 
-royal dagger=
-You see the rare and precious royal dagger. It can steal life from those you stab with it.=
+# Untranslated legacy source: royal dagger=
+# Untranslated legacy source: You see the rare and precious royal dagger. It can steal life from those you stab with it.=
 
 scimitar=cimitarra
 This scimitar catches the light as you look at it, it will be a powerful weapon.=Esta cimitarra atrapa la luz mientras la miras, sera un arma poderosa.
@@ -1531,8 +1531,8 @@ You see the vampire sword, which will suck life from those you attack with it.=V
 xeno sword=espada de xeno
 You wield a xeno sword. Despite the great strength it is strangely light.=Tu esgrimes una espada de xeno. A pesar de su gran potencia es extrañamente ligera.
 
-training sword=
-You see a wooden training sword not even useful for cutting butter. But it is light and easy to swing.=
+# Untranslated legacy source: training sword=
+# Untranslated legacy source: You see a wooden training sword not even useful for cutting butter. But it is light and easy to swing.=
 
 
 ## tokens
@@ -1567,8 +1567,8 @@ You see a gold pan. It is the traditional tool to prospect for gold.=Ves una sar
 fishing rod=caña de pescar
 You see a fishing rod. If you find a fishing spot you can catch fish with it.=Ves una caña de pescar. Si encuentra un lugar para pescar puedes capturar peces con ella.
 
-lamp=
-You see a lamp.=
+# Untranslated legacy source: lamp=
+# Untranslated legacy source: You see a lamp.=
 
 magical scissors=tijeras mágicas
 You see a sparkling pair of magical scissors. Just think what they could cut!=Ves un par de tijeras mágicas centelleantes ¡Piensa sólo en lo que podrían cortar!
@@ -1579,26 +1579,26 @@ You see a magical needle with a very sharp point.=Ves una aguja mágica con una 
 pick=pico
 You see a pick. It is a tool for excavating coal.=Ves un pico. Es una herramienta para la extracción de carbón.
 
-shovel=
-You see a shovel, a tool for digging.=
+# Untranslated legacy source: shovel=
+# Untranslated legacy source: You see a shovel, a tool for digging.=
 
-leather needle=
-You see a heavy leather needle for working thick hide.=
+# Untranslated legacy source: leather needle=
+# Untranslated legacy source: You see a heavy leather needle for working thick hide.=
 
-rotary cutter=
-You see a rotary cutter. It can be used to cut up pizza. But perhaps it can be used on other things as well.=
+# Untranslated legacy source: rotary cutter=
+# Untranslated legacy source: You see a rotary cutter. It can be used to cut up pizza. But perhaps it can be used on other things as well.=
 
-metal detector=
-You may find buried treasures with this metal detector.=
+# Untranslated legacy source: metal detector=
+# Untranslated legacy source: You may find buried treasures with this metal detector.=
 
-rope=
-You see a sturdy rope.=
+# Untranslated legacy source: rope=
+# Untranslated legacy source: You see a sturdy rope.=
 
 
 ## whips
 
-venom whip=
-You see a venom whip. Its thong has been saturated with cobra venom.=
+# Untranslated legacy source: venom whip=
+# Untranslated legacy source: You see a venom whip. Its thong has been saturated with cobra venom.=
 
 
 # creatures names and descriptions
@@ -1621,7 +1621,7 @@ angel=ángel
 You see an angel. With his flame sword he guards the way and doesn't let you pass.=Ves a un ángel. Con su espada flamígera protege el camino y no te deja pasar.
 
 archangel=arcángel
-You see an archangel. It is Heaven's most terrifying weapon, a fierce and absolute force of primordial creation.=
+# Untranslated legacy source: You see an archangel. It is Heaven's most terrifying weapon, a fierce and absolute force of primordial creation.=
 
 
 ## animal
@@ -1631,7 +1631,7 @@ You see a little crab that comes from the beach, be careful of its pincers.=Ves 
 
 deer=ciervo
 You see a defenseless deer, do not have fear of it.=Ves un ciervo indefenso, no le tengas miedo.
-You see a reindeer running freely, and wonder if he is one of Santa's special helpers.=
+# Untranslated legacy source: You see a reindeer running freely, and wonder if he is one of Santa's special helpers.=
 
 bat=murciégalo
 You see a bat, it will seek your blood, don't be distracted...=Ves un murciégalo, buscará tu sangre, no te distraigas...
@@ -1639,10 +1639,10 @@ You see a bat, it will seek your blood, don't be distracted...=Ves un murciégal
 killer bat=murciégalo asesino
 You see a killer bat which will suck your blood!=¡Ves un murciégalo asesino que te chupará la sangre!
 
-giant bat=
+# Untranslated legacy source: giant bat=
 
-giant killer bat=
-You see a giant killer bat. As if small wasn't pesky enough, these giant ones are capable of taking down anyone who dares come before them.=
+# Untranslated legacy source: giant killer bat=
+# Untranslated legacy source: You see a giant killer bat. As if small wasn't pesky enough, these giant ones are capable of taking down anyone who dares come before them.=
 
 piglet=cerdito
 You see a piglet, a bit dirty.=Ves un cerdito, un poco sucio.
@@ -1689,13 +1689,13 @@ You see a tiger, which likes deer and human meat.=Ves un tigre, al que le gustan
 elephant=elephant
 You see an elephant, a huge animal with lots of ham and meat. Are you sure that you want to attack it?=Ves un elefante, un animal enorme con un montón de jamón y de carne.
 
-bull elephant=
-You see an aggressive bull elephant.=
+# Untranslated legacy source: bull elephant=
+# Untranslated legacy source: You see an aggressive bull elephant.=
 
-musth elephant=
-You see a musth elephant. It is highly aggressive and unpredictable.=
+# Untranslated legacy source: musth elephant=
+# Untranslated legacy source: You see a musth elephant. It is highly aggressive and unpredictable.=
 
-woolly mammoth=
+# Untranslated legacy source: woolly mammoth=
 
 babybear=cachorro de oso
 You see a babybear, isn't it sweet?=Ves un cachorro de oso, ¿a que es dulce?
@@ -1709,20 +1709,20 @@ You see a bear. You are lucky and found it awake.=Ves un oso. Has tenido suerte 
 black bear=oso negro
 You see a strong black bear which hibernates in winter.=Ves un fuerte oso negro que hiberna en invierno.
 
-polar bear=
-You see a polar bear which lives in the icy desert. Beware! It can take you down with its powerful claws!=
+# Untranslated legacy source: polar bear=
+# Untranslated legacy source: You see a polar bear which lives in the icy desert. Beware! It can take you down with its powerful claws!=
 
 
 ## animal_aquatic
 
-kraken=
-From the depths of the sea rises a Kraken!=
+# Untranslated legacy source: kraken=
+# Untranslated legacy source: From the depths of the sea rises a Kraken!=
 
-neo kraken=
-From the horrible darkness of the deep sea rises a giant NEO kraken!=
+# Untranslated legacy source: neo kraken=
+# Untranslated legacy source: From the horrible darkness of the deep sea rises a giant NEO kraken!=
 
-shark=
-A shark! Best move cautiously.=
+# Untranslated legacy source: shark=
+# Untranslated legacy source: A shark! Best move cautiously.=
 
 
 ## animal_fowl
@@ -1733,8 +1733,8 @@ You see a little chick, it doesn't like to be away from its mother.=Ves un peque
 chicken=pollo
 You see a chicken, isn't it nice?=Ves un pollo, ¿a que es bonito?
 
-dodo=
-You see a dodo bird, aren't they supposed to be extinct?=
+# Untranslated legacy source: dodo=
+# Untranslated legacy source: You see a dodo bird, aren't they supposed to be extinct?=
 
 mother hen=madre gallina
 You see a mother hen, she will probably hurt you if you touch her sons.=Ves una madre gallina, probablemente te haga daño si tocas a sus hijos
@@ -1769,8 +1769,8 @@ You see a dark gargoyle, do you feel the fear?=Ves a una gárgola oscura, ¿sien
 venom gargoyle=gárgola de veneno
 You see a venom gargoyle, a hideous and poisonous creature.=Ves a una gárgola de veneno, una criatura horrible y venenosa.
 
-mimic=
-You see a mimic. Its content might be different from what you expect.=
+# Untranslated legacy source: mimic=
+# Untranslated legacy source: You see a mimic. Its content might be different from what you expect.=
 
 snarfkin=snarfkin
 You see a snarfkin, the favorite pet of wizards. Be careful, its claws are poisonous!=Ves a un snarfkin, la mascota favorita de los magos. Ten cuidado, ¡sus garras son venenosas!
@@ -1779,7 +1779,7 @@ googon=googon
 You see a googon that comes from the worst place in this world...Be careful this creature is a deadly killer.=Ves a un googon que viene del peor lugar de este mundo... Ten cuidado esta criatura es una asesina mortal.
 
 grobble monster=monstruo grobble
-You see a grobble monster. You might find this under your bed, inside your closet, or within your darkest nightmares.=
+# Untranslated legacy source: You see a grobble monster. You might find this under your bed, inside your closet, or within your darkest nightmares.=
 
 winged blurble=blurble alado
 
@@ -1836,10 +1836,10 @@ demon=demonio
 You see a demon. He personifies evil.=Ves un demonio. Personifica el mal.
 
 imperial demon servant=sirviente demonio imperial
-You see an imperial demon servant who carries out whims of his demon lords.=
+# Untranslated legacy source: You see an imperial demon servant who carries out whims of his demon lords.=
 
 imperial demon lord=señor demonio imperial
-You see an imperial demon lord. He holds the rank of General among demons, and very few out rank it in hell.=
+# Untranslated legacy source: You see an imperial demon lord. He holds the rank of General among demons, and very few out rank it in hell.=
 
 balrog=balrog
 You see a huge balrog. He is slow hitting, but terribly strong as he stands towering above you.=Ves a un enorme balrog. Es lento en golpear, pero terriblemente potente mientras permanece de pie imponiendose por encima de ti.
@@ -1848,21 +1848,21 @@ imp=diablillo
 You see an imp. He may look a little bit cute, but don't forget he is one of the devil's servants!=Ves a un diablillo¡ Puede parecer un poquito lindo, pero no olvides que es uno de los siervos del demonio!
 
 winged blue imp=diablillo azul alado
-You see a winged blue imp. It's endowed with the power of evil. His trident is able to poison even the bravest warriors.=
+# Untranslated legacy source: You see a winged blue imp. It's endowed with the power of evil. His trident is able to poison even the bravest warriors.=
 
-water demon=
+# Untranslated legacy source: water demon=
 
 
 ## dragon
 
 chaos green dragonrider=jinete de dragón verde del caos
-You see a chaos green dragonrider. Don't misjudge him as to believe it's a normal green dragon, as it is controlled by a mysterious sorcerer seated on his back.=
+# Untranslated legacy source: You see a chaos green dragonrider. Don't misjudge him as to believe it's a normal green dragon, as it is controlled by a mysterious sorcerer seated on his back.=
 
 chaos red dragonrider=jinete de dragón rojo del caos
-You see a chaos red dragonrider. He might look like a red dragon, but the sorcerer seated on his back guides him to give even more strength out.=
+# Untranslated legacy source: You see a chaos red dragonrider. He might look like a red dragon, but the sorcerer seated on his back guides him to give even more strength out.=
 
 green dragon=dragón verde
-You see a green dragon. He looks very tall and strong.=
+# Untranslated legacy source: You see a green dragon. He looks very tall and strong.=
 
 bone dragon=dragon de hueso
 You see a bone dragon. It's been said that there are creatures with enough will to live that their souls still cling to life even as their flesh and blood has failed them. This is living proof.=Ves a un dragón de hueso. Se dice que hay criaturas con la suficiente voluntad de vivir como para que sus almas todavía se aferren a la vida aún cuando su carne y su sangre les han abandonado.
@@ -1871,7 +1871,7 @@ blue dragon=dragón azul
 You see a blue dragon. It has a very beautiful blue skin which shimmers mysteriously in the light. But don't forget that it also has claws and teeth!=Ves a un dragón azul. Tiene un tono de piel azul muy bonito que brilla misteriosamente en la luz¡Pero no olvides que también tiene garras y dientes!
 
 red dragon=dragón rojo
-You see into the emerald eyes of a red dragon. With these it can spot prey in the darkness. Its red scales serve it well, reflecting any light that shines on them blinding enemies. The scales are prized for their beauty, and difficult to obtain from such a ferocious beast.=
+# Untranslated legacy source: You see into the emerald eyes of a red dragon. With these it can spot prey in the darkness. Its red scales serve it well, reflecting any light that shines on them blinding enemies. The scales are prized for their beauty, and difficult to obtain from such a ferocious beast.=
 
 black dragon=dragón negro
 You see a black dragon. As you see this huge black creature you almost faint! If you concentrate you can feel the deep growling of it in your bones.=Ves un dragón negro ¡Al ver a esta enorme criatura negra casi te desmayas!
@@ -1882,13 +1882,13 @@ You see a flying golden dragon. As it spreads its mighty wings you shiver... thi
 twin headed dragon=dragón de dos cabezas
 You see a twin headed dragon. The two heads are staring at you with their four eyes!=Ves a un dragón de dos cabezas ¡Las dos cabezas te están mirando con sus cuatro ojos!
 
-rysin dragon=
+# Untranslated legacy source: rysin dragon=
 
 
 ## dwarf
 
 duergar=duérgar
-You see a duergar. It is a close relative to dwarves but with a diabolically tainted blood.=
+# Untranslated legacy source: You see a duergar. It is a close relative to dwarves but with a diabolically tainted blood.=
 
 duergar axeman=hachero duérgar
 
@@ -1960,8 +1960,8 @@ You see an earth elemental. The earth is quaking as it moves over the surface.=V
 fire elemental=elemental de fuego
 You see a fire elemental and hardly can stand the heat.=Ves a un elemental de fuego y apenas puedes soportar el calor.
 
-legendary ice elemental=
-You see a Legendary Elemental of Ice...=
+# Untranslated legacy source: legendary ice elemental=
+# Untranslated legacy source: You see a Legendary Elemental of Ice...=
 
 ice elemental=elemental de hielo
 You see an ice elemental and sense a shiver on your spine.=Ves a un elemental de hielo y sientes un escalofrío en tu columna vertebral.
@@ -1970,7 +1970,7 @@ ice giant=gigante de hielo
 You see an ice giant. His skin is covered with frozen hoarfrost and his breath feels like the cold north wind.=Ves a un gigante de hielo. Su piel está cubierta de escarcha helada y su aliento se siente como el frío viento del norte.
 
 water elemental=elemental de agua
-You see a Water elemental which is made of water and various other liquids.=
+# Untranslated legacy source: You see a Water elemental which is made of water and various other liquids.=
 
 ent=ent
 You see an ent. First you think it is a tree but you will get a surprise when it starts to walk!=Ves a un ent !Primero piensas que es un árbol pero te llevas una sorpresa cuando empieza a caminar!
@@ -1985,25 +1985,25 @@ You see an entwife. It is stronger than an ent and lives in a group in an ancien
 ## elf
 
 albino elf swordsman=espadachín elfo albino
-You see an albino elf swordsman who is a professional in using swords. He can attack you from behind in a blink of an eye.=
+# Untranslated legacy source: You see an albino elf swordsman who is a professional in using swords. He can attack you from behind in a blink of an eye.=
 
 albino elf archer=arquero elfo albino
-You see an albino elf archer. He is so sharp-eyed that he could hit a bee from a distance of 100 meters.=
+# Untranslated legacy source: You see an albino elf archer. He is so sharp-eyed that he could hit a bee from a distance of 100 meters.=
 
 albino elf magician=mago elfo albino
-You see an albino elf magician. He knows all the secrets of magic. You'd be better to not let him unleash his full power!=
+# Untranslated legacy source: You see an albino elf magician. He knows all the secrets of magic. You'd be better to not let him unleash his full power!=
 
 albino elf queen=reina elfa albina
-You see an albino elf queen. She is the matriarch of the albino elf race and she will do everything to protect it.=
+# Untranslated legacy source: You see an albino elf queen. She is the matriarch of the albino elf race and she will do everything to protect it.=
 
 albino elf king=rey elfo albino
-You see an albino elf king. He is the patriarch of albino elves and won countless of battles with his powerful albino elf army.=
+# Untranslated legacy source: You see an albino elf king. He is the patriarch of albino elves and won countless of battles with his powerful albino elf army.=
 
 child dark elf=niño elfo oscuro
 You see a child dark elf. You should know that dark elves are already quite strong and intelligent when they are children. Don't think you can fight him so easily!=Ves a un niño elfo oscuro. Deberías saber que los elfos oscuros son ya bastante fuertes e inteligentes cuando son niños ¡No creas que puedes enfrentarte a él tan fácilmente!
 
 dark elf archer=arquero elfo oscuro
-You see a dark elf archer. Dark elf archer's flawless aim can be fatal for those who dare to oppose them.=
+# Untranslated legacy source: You see a dark elf archer. Dark elf archer's flawless aim can be fatal for those who dare to oppose them.=
 
 dark elf=elfo oscuro
 
@@ -2014,10 +2014,10 @@ dark elf captain=capitán elfo oscuro
 dark elf knight=caballero elfo oscuro
 
 dark elf general=general elfo oscuro
-You see a Dark Elf General. It is commanding the evil troops of Nalwor Caves against intruders.=
+# Untranslated legacy source: You see a Dark Elf General. It is commanding the evil troops of Nalwor Caves against intruders.=
 
 dark elf wizard=mago elfo oscuro
-Dark elf wizards are very powerful and dangerous. They are specialised in dark magic.=
+# Untranslated legacy source: Dark elf wizards are very powerful and dangerous. They are specialised in dark magic.=
 
 dark elf viceroy=virrey elfo oscuro
 
@@ -2028,10 +2028,10 @@ dark elf sacerdotist=sacerdotisa elfa oscura
 dark elf admiral=almirante elfo oscuro
 
 dark elf master=Maestre elfo oscuro
-You see a dark elf master. Beware of his high skills on magic and swordsmanship!=
+# Untranslated legacy source: You see a dark elf master. Beware of his high skills on magic and swordsmanship!=
 
 dark elf matronmother=matrona madre elfa oscura
-Dusky and shrouded, this matriarch rules her clan with a soft touch and sharp fangs. An expert in venoms and poisons, you wouldn't ever want to turn your back on her.=
+# Untranslated legacy source: Dusky and shrouded, this matriarch rules her clan with a soft touch and sharp fangs. An expert in venoms and poisons, you wouldn't ever want to turn your back on her.=
 
 elf=elfo
 You see an elf which loves the forest and lives in peace.=Ves a un elfo al que le encanta el bosque y que vive en paz.
@@ -2068,22 +2068,22 @@ amazoness giant=giganta amazona
 You see an amazoness giant. She looks very beautiful but don't be deceived by that!=Ves a una giganta amazona ¡Parece muy hermosa pero no te dejes engañar por eso!
 
 giant=gigante
-You look up into the face of a huge giant. His physical proportions and extraordinary strength should give you goosebumps.=
+# Untranslated legacy source: You look up into the face of a huge giant. His physical proportions and extraordinary strength should give you goosebumps.=
 
 elder giant=gigante anciano
 You see an elder giant. For many years he lived alone and had to hide because he was hunted by humans! Now he is old and has decided not to hide any longer because he wants to see something else in his life.=Ves a un gigante anciano. Durante muchos años vivió sólo y tuvo que esconderse ¡porque era cazado por los humanos! Ahora es viejo y ha decidido no esconderse por más tiempo porque quiere ver otra cosa más en su vida.
 
 master giant= Maestre gigante
-You see a master giant with dark black eyes. His blood pumps loudly into his heart.=
+# Untranslated legacy source: You see a master giant with dark black eyes. His blood pumps loudly into his heart.=
 
 black giant=gigante negro
-You see a tall black giant. His armor and sword will hit you hard. Be prepared!=
+# Untranslated legacy source: You see a tall black giant. His armor and sword will hit you hard. Be prepared!=
 
 imperial general giant=general imperial gigante
-You see an imperial general giant. He lurks in caves with his comrades to take you down.=
+# Untranslated legacy source: You see an imperial general giant. He lurks in caves with his comrades to take you down.=
 
 kasarkutominubat=kasarkutominubat
-You see kasarkutominubat, a creature not known to many, told it was a human champion long ago, now it resembles nothing but that, with a mask bearing thousands of souls on it and hands running with nothing but blood.=
+# Untranslated legacy source: You see kasarkutominubat, a creature not known to many, told it was a human champion long ago, now it resembles nothing but that, with a mask bearing thousands of souls on it and hands running with nothing but blood.=
 
 
 ## gnome
@@ -2100,9 +2100,9 @@ You see an infantry gnome who will protect his little town against the humans!=V
 cavalryman gnome=soldado de caballería gnomo
 You see a cavalryman gnome who does long travels to search for gold.=Ves a un soldado de caballería gnomo que realiza largos viajes en busca de oro.
 
-giant gnome=
+# Untranslated legacy source: giant gnome=
 
-giant gnomess=
+# Untranslated legacy source: giant gnomess=
 
 
 ## goblin
@@ -2123,7 +2123,7 @@ dwarf golem=golem enano
 You see a dwarf golem. A long time ago a dwarf got turned into a big rock by some mystical forces. To save their friend the other dwarves created a golem out of this rock! From this day the dwarf golem lives together with them.=Ves a un golem enano. Hace mucho tiempo un enano fue convertido en una gran roca por unas fuerzas místicas. Para salvar a su amigo los otros enanos crearon un golem ¡a partir de esta roca! Desde este día el golem enano convive con ellos.
 
 ice golem=golem de hielo
-You see an Ice golem. Ice Golems are elementals made out of ice. You should watch out for its icy fists or you might get hurt.=
+# Untranslated legacy source: You see an Ice golem. Ice Golems are elementals made out of ice. You should watch out for its icy fists or you might get hurt.=
 
 stone golem=golem de piedra
 You see a stone golem, it only exists to protect. What was it crafted for to protect, and what would one do if it lost its purpose?=Ves a un golem de piedra, existe solamente para proteger. ¿Qué fue diseñado para proteger, y qué haría si perdiese su propósito?
@@ -2147,10 +2147,10 @@ kalavan citizen=ciudadano de kalavan
 You see a kalavan citizen. He lives in kalavan city and tries to protect it from invaders!=Ves a un ciudadano de kalavan. Vive en la ciudad de kalavan ¡e intenta protegerla frente a los invasores!
 
 monk=monje
-You see a monk. Monks are very calm and peaceful. They live alone among themselves, but they don't want to be interrupted by anyone.=
+# Untranslated legacy source: You see a monk. Monks are very calm and peaceful. They live alone among themselves, but they don't want to be interrupted by anyone.=
 
 darkmonk=monje oscuro
-You see a Darkmonk. Darkmonks can control dark powers, and they will do anything to get you out of their way!=
+# Untranslated legacy source: You see a Darkmonk. Darkmonks can control dark powers, and they will do anything to get you out of their way!=
 
 devil monk=monje del diablo
 You see a devil monk. He is a member of a devil cult which practises black rituals.=Ves a un monje del diablo. Es miembro de un culto al diablo que practica negros rituales.
@@ -2168,22 +2168,22 @@ amazoness archer=arquera amazona
 You see an amazoness archer. She handles her bow quite well and her arrows are very dangerous when she shoots them at you out of the forest!=Ves a una arquera amazona ¡Maneja su arco bastante bien y sus flechas son muy peligrosas cuando las dispara hacia ti desde el bosque!
 
 amazoness archer commander=arquera comandante amazona
-You see an amazoness archer commander. She is the leader of amazoness archers. Her bow skills are incredible and her arrows pierce everything.=
+# Untranslated legacy source: You see an amazoness archer commander. She is the leader of amazoness archers. Her bow skills are incredible and her arrows pierce everything.=
 
 amazoness bodyguard=guardaespaldas amazona
-You see an amazoness bodyguard who will guarantee the safety to the people of Amazon island.=
+# Untranslated legacy source: You see an amazoness bodyguard who will guarantee the safety to the people of Amazon island.=
 
 amazoness coastguard=guardacostas amazona
-You see an amazoness coastguard. She protects the coasts of Amazon Island from intruders. She is not too happy to see you running in her island.=
+# Untranslated legacy source: You see an amazoness coastguard. She protects the coasts of Amazon Island from intruders. She is not too happy to see you running in her island.=
 
 amazoness coastguard mistress=guardacostas Maestre amazona
-You see an amazoness coastguard mistress. Even if they are women, these blue haired mistresses should not be underestimated.=
+# Untranslated legacy source: You see an amazoness coastguard mistress. Even if they are women, these blue haired mistresses should not be underestimated.=
 
 amazoness commander=comandante amazona
-You see an amazoness commander who is specialised in eliminating any strangers who dare to take a step to her island.=
+# Untranslated legacy source: You see an amazoness commander who is specialised in eliminating any strangers who dare to take a step to her island.=
 
 amazoness elite coastguard=guardacostas de élite amazona
-You see an amazoness elite coastguard. When it is her shift to protect the island, you would just wish to have stayed at home.=
+# Untranslated legacy source: You see an amazoness elite coastguard. When it is her shift to protect the island, you would just wish to have stayed at home.=
 
 amazoness hunter=cazadora amazona
 You see an amazoness hunter. She creeps through the forest to hunt animals. But she doesn't like that you are in her hunting area!=Ves a una cazadora amazona ¡Se arrastra por el bosque para cazar animales ¡Pero no le gusta que estés en su zona de caza!
@@ -2192,7 +2192,7 @@ amazoness vigilance=vigilante amazona
 You see an amazoness vigilance. Her senses are well tuned, so you have to be very silent when you don't want her to hear you!=Ves a una vigilante amazona ¡Sus sentidos están muy desarrollados, así que tienes que ser muy silencioso cuando no quieras que te oiga!
 
 amazoness imperator=imperator amazona
-You see an amazoness imperator. She is the emperor of Amazon island and has ruled it for decades and won't let you get past her very easily.=
+# Untranslated legacy source: You see an amazoness imperator. She is the emperor of Amazon island and has ruled it for decades and won't let you get past her very easily.=
 
 
 ## human_assassin
@@ -2212,10 +2212,10 @@ assassin=asesino
 You see an assassin. He is very good at killing his victims silently without being seen by anyone.=Ves a un asesino. Es muy bueno matando a sus victimas silenciosamente sin ser visto por nadie.
 
 ninja=ninja
-Your keen eyes made you able to see this fast ninja. Prepare for a fight!=
+# Untranslated legacy source: Your keen eyes made you able to see this fast ninja. Prepare for a fight!=
 
 samurai=samurai
-If this samurai failed to uphold his honor, he could only regain it by performing seppuku.=
+# Untranslated legacy source: If this samurai failed to uphold his honor, he could only regain it by performing seppuku.=
 
 shadows assassin=asesino de las sombras
 You see a shadows assassin. He knows how to become one with the shadows and to move in the dark without being seen or making any sound.=Ves a un asesino de las sombras. Sabe como hacerse uno con las sombras y moverse en la oscuridad sin ser visto o hacer ningún sonido.
@@ -2244,28 +2244,28 @@ barbarian king=rey bárbaro
 ## human_blordrough
 
 blordrough quartermaster=intendente de blordrough
-You see a man who gave up his life as a puppet of the Blordrough army, all for the love of dragons. He is wonderfully happy.=
+# Untranslated legacy source: You see a man who gave up his life as a puppet of the Blordrough army, all for the love of dragons. He is wonderfully happy.=
 
 blordrough corporal=cabo de blordrough
-You see a man who feels his past indicates how he should be treated now but desperately wishes to exercise his intelect in a game of chess.=
+# Untranslated legacy source: You see a man who feels his past indicates how he should be treated now but desperately wishes to exercise his intelect in a game of chess.=
 
 blordrough storm trooper=soldado de asalto de blordrough
-You see a man who is but a fraction of his former glory as one of the most feared foes of Faiumoni. Now, his main concern is keeping his house clean and tidy.=
+# Untranslated legacy source: You see a man who is but a fraction of his former glory as one of the most feared foes of Faiumoni. Now, his main concern is keeping his house clean and tidy.=
 
-blordrough soldier=
-You see a man who is fast and strong.=
+# Untranslated legacy source: blordrough soldier=
+# Untranslated legacy source: You see a man who is fast and strong.=
 
-blordrough elite=
-You see a man who is aging, but he knows how to fight.=
+# Untranslated legacy source: blordrough elite=
+# Untranslated legacy source: You see a man who is aging, but he knows how to fight.=
 
-blordrough infantry=
-You see a man who has flaming red hair and red beady eyes.=
+# Untranslated legacy source: blordrough infantry=
+# Untranslated legacy source: You see a man who has flaming red hair and red beady eyes.=
 
-blordrough captain=
-You see a seasoned warrior.=
+# Untranslated legacy source: blordrough captain=
+# Untranslated legacy source: You see a seasoned warrior.=
 
-blordrough general=
-You see a lean, mean, fighting machine.=
+# Untranslated legacy source: blordrough general=
+# Untranslated legacy source: You see a lean, mean, fighting machine.=
 
 
 ## human_cannibal
@@ -2277,31 +2277,31 @@ cannibal=caníbal
 You see a cannibal. He hunts you for cooking and eating your fresh meat! It's useless to tell him that your flesh is not good, better fight him or run away!=Ves a un caníbal. Te caza para cocinar y comerse tu carne fresca!
 
 elder cannibal=caníbal anciano
-You see an elder cannibal. For years it has eaten humans. It will not stop until its hunger is satisfied.=
+# Untranslated legacy source: You see an elder cannibal. For years it has eaten humans. It will not stop until its hunger is satisfied.=
 
-cannibal warrior=
-You see a cannibal warrior.=
+# Untranslated legacy source: cannibal warrior=
+# Untranslated legacy source: You see a cannibal warrior.=
 
 
 ## human_chaos
 
 chaos soldier=soldado del caos
-You see a chaos soldier. Chaos soldiers are servants of the evil. Killing you is one of their evil plans.=
+# Untranslated legacy source: You see a chaos soldier. Chaos soldiers are servants of the evil. Killing you is one of their evil plans.=
 
 chaos warrior=guerrero del caos
-You see a chaos warrior. This chaotic creature is fighting with a big blade to slay his enemies.=
+# Untranslated legacy source: You see a chaos warrior. This chaotic creature is fighting with a big blade to slay his enemies.=
 
 chaos commander=comandante del caos
-You see a chaos commander who is working on an evil plan. You should take care of him before he fulfills his duty.=
+# Untranslated legacy source: You see a chaos commander who is working on an evil plan. You should take care of him before he fulfills his duty.=
 
 chaos sorcerer=hechicero del caos
-You see a chaos sorcerer. Chaos sorcerers will cast some evil spells on you if you don't obey them.=
+# Untranslated legacy source: You see a chaos sorcerer. Chaos sorcerers will cast some evil spells on you if you don't obey them.=
 
 chaos dragonrider=jinete de dragón del caos
 You see a chaos dragonrider. He is very well trained in dragon riding, but he can also fight well on the ground.=Ves a un jinete de dragón del caos. Está muy bien entrenado en montar a dragón, pero también puede luchar bien en el suelo.
 
 chaos lord=señor del caos
-You see a chaos lord who is one of the strongest chaos creatures in Faiumoni. You should prepare well before attacking him.=
+# Untranslated legacy source: You see a chaos lord who is one of the strongest chaos creatures in Faiumoni. You should prepare well before attacking him.=
 
 chaos overlord=gran señor del caos
 You see a chaos overlord. It is him who directs the creation of evil plans and gives orders to all chaotic creatures which exist.=Ves a un gran señor del caos. Es él quien dirige la creación de los planes malvados y da las órdenes a todas las criaturas que existen.
@@ -2310,7 +2310,7 @@ You see a chaos overlord. It is him who directs the creation of evil plans and g
 ## human_imperial
 
 imperial defender=defensor imperial
-You see an imperial defender. He and his comrades won't let you walk into their territory easily.=
+# Untranslated legacy source: You see an imperial defender. He and his comrades won't let you walk into their territory easily.=
 
 imperial veteran=veterano imperial
 You see an imperial veteran. He fought in many battles and wars. Now he is old, but over the years he always looked for a new enemy to fight against.=Ves a un veterano imperial. Luchó en muchas batallas y guerras. Ahora es viejo, pero a lo largo de los años siempre ha buscado un nuevo enemigo contra el que luchar.
@@ -2318,23 +2318,23 @@ You see an imperial veteran. He fought in many battles and wars. Now he is old, 
 imperial archer=arquero imperial
 
 imperial priest=sacerdote imperial
-You see an imperial priest. The church has fallen out of favor with the citizens as of late, but this imperial priest still clings to the faith.=
+# Untranslated legacy source: You see an imperial priest. The church has fallen out of favor with the citizens as of late, but this imperial priest still clings to the faith.=
 
 imperial elite guardian=guardián de élite imperial
-You see an Imperial Elite Guardian. He is a very well trained guardian and he will protect his environment until the end.=
+# Untranslated legacy source: You see an Imperial Elite Guardian. He is a very well trained guardian and he will protect his environment until the end.=
 
 imperial scientist=científico imperial
 You see an imperial scientist. He is quite clever but also a little bit crazy and unfortunately he uses his intelligence for evil experiments.=Ves a un científico imperial. Es bastante listo pero también un poquito loco y desafortunadamente usa su inteligencia para experimentos malvados.
 
 imperial high priest=sumo sacerdote imperial
-You see an imperial high priest who's troubled by the actions of the imperial science department. Be careful, he might take those frustrations out on you!=
+# Untranslated legacy source: You see an imperial high priest who's troubled by the actions of the imperial science department. Be careful, he might take those frustrations out on you!=
 
 imperial archer leader=líder arquero imperial
 
 imperial elite archer=arquero de élite imperial
 
 imperial leader=líder imperial
-You see a well dressed imperial leader. Its troops will try to dash you.=
+# Untranslated legacy source: You see a well dressed imperial leader. Its troops will try to dash you.=
 
 imperial knight=caballero imperial
 
@@ -2343,10 +2343,10 @@ imperial chief=jefe imperial
 imperial commander=comandante imperial
 
 imperial general=general imperial
-You see an imperial general with a huge scar above his eye. He is still strong, don't think that he will not see you!=
+# Untranslated legacy source: You see an imperial general with a huge scar above his eye. He is still strong, don't think that he will not see you!=
 
 emperor dalmung=emperador dalmung
-You see emperor dalmung who stands before you. Once a powerful warlock trained by a mighty magician, but he disappeared decades ago. Now it seems he's in league with Ivan Abe!=
+# Untranslated legacy source: You see emperor dalmung who stands before you. Once a powerful warlock trained by a mighty magician, but he disappeared decades ago. Now it seems he's in league with Ivan Abe!=
 
 
 ## human_madaram
@@ -2395,7 +2395,7 @@ mithrilbourgh colonel=coronel de mithrilbourgh
 mithrilbourgh wizard=mago de mithrilbourgh
 
 mithrilbourgh general=general de mithrilbourgh
-You see a mithrilbourgh general. Some call him Hawkeyes. He cast his gaze over the city walls and saw you coming from miles away.=
+# Untranslated legacy source: You see a mithrilbourgh general. Some call him Hawkeyes. He cast his gaze over the city walls and saw you coming from miles away.=
 
 
 ## human_risecia
@@ -2432,10 +2432,10 @@ brain ahouga=cerebro ahouga
 You see a brain ahouga, a very strange creature only living in your dreams!=Ves a un cerebro ahouga, ¡una criatura muy extraña que sólo vive en tus sueños!
 
 blue mohiko=mohiko azul
-You see a blue mohiko. A brown alien with a large blue mohawk.=
+# Untranslated legacy source: You see a blue mohiko. A brown alien with a large blue mohawk.=
 
 red roohako=roohako rojo
-You see a red roohako. It is coming for you in your deepest dreams.=
+# Untranslated legacy source: You see a red roohako. It is coming for you in your deepest dreams.=
 
 
 ## hybrid
@@ -2447,25 +2447,25 @@ frogman=hombre-rana
 You see a frogman which lives in a lake which isn't very deep.=Ves a un hombre-rana que vive en un lago no muy profundo.
 
 elite frogman=hombre-rana de élite
-You see an elite frogman. His huge eyes let you shiver!=
+# Untranslated legacy source: You see an elite frogman. His huge eyes let you shiver!=
 
 wizard frogman=mago hombre-rana
-You see a mighty wizard frogman. His wand and magical cloak show his wisdom and power.=
+# Untranslated legacy source: You see a mighty wizard frogman. His wand and magical cloak show his wisdom and power.=
 
 minotaur=minotauro
 You see a minotaur. He escaped from his labyrinth and is very angry now!=Ves a un minotauro ¡Ha escapado de su laberinto y ahora está muy enfadado!
 
 minotaur king=rey minotauro
-You see a Minotaur King. He doesn't have to escape from his labyrinth to be very angry...=
+# Untranslated legacy source: You see a Minotaur King. He doesn't have to escape from his labyrinth to be very angry...=
 
 naga=naga
-You see a naga. She awaits unwary victims to whom she may give her deadly kiss.=
+# Untranslated legacy source: You see a naga. She awaits unwary victims to whom she may give her deadly kiss.=
 
 high naga=naga suprema
 
 armed naga=naga con brazos
 
-lamia=
+# Untranslated legacy source: lamia=
 
 ratman=hombre rata
 You see a ratman. He is a mutation that comes from old times.=Ves a un hombre rata. Es una mutación que procede de tiempos remotos.
@@ -2489,13 +2489,13 @@ xenocium=xenocium
 
 ## insect
 
-killer bee=
-You see a killer bee which will sting you to death!=
+# Untranslated legacy source: killer bee=
+# Untranslated legacy source: You see a killer bee which will sting you to death!=
 
-tiny scarab=
-You see a tiny scarab. It is an insect familiar to desert ecologies that will eat almost anything, including dung. Its hard carapace provides protection from the sun and being crushed, so don't think a little stomp will stop it.=
+# Untranslated legacy source: tiny scarab=
+# Untranslated legacy source: You see a tiny scarab. It is an insect familiar to desert ecologies that will eat almost anything, including dung. Its hard carapace provides protection from the sun and being crushed, so don't think a little stomp will stop it.=
 
-water scarab=
+# Untranslated legacy source: water scarab=
 
 
 ## kobold
@@ -2522,20 +2522,20 @@ You see a giant kobold. Though generally playful it doesn't quite know its own s
 ## mutant
 
 cat woman=mujer gata
-You see a cat woman. She's agile, stealthy, fast and sharp, so stay focused and don't get cut!=
+# Untranslated legacy source: You see a cat woman. She's agile, stealthy, fast and sharp, so stay focused and don't get cut!=
 
 dark mutant=mutante oscuro
 
 glow monster=monstruo del resplandor
-You see a glow monster. Its gleam in the dark sewers fightens you.=
+# Untranslated legacy source: You see a glow monster. Its gleam in the dark sewers fightens you.=
 
 imperial experiment=experimento imperial
-You see an imperial experiment which mirrors the fate of many of science departments test subjects. Its skin glows and standing before it taxes your body.=
+# Untranslated legacy source: You see an imperial experiment which mirrors the fate of many of science departments test subjects. Its skin glows and standing before it taxes your body.=
 
 imperial mutant=mutante imperial
 
-poison shroom=
-You see a toadstool... spitting poison at you?=
+# Untranslated legacy source: poison shroom=
+# Untranslated legacy source: You see a toadstool... spitting poison at you?=
 
 werewolf=hombre lobo
 You see a werewolf. Normally he is a human but at fullmoon nights he turns into a dangerous beast! His poison seems to last forever.=Ves a un hombre lobo. Normalmente es un humano pero ¡en las noches de luna llena se convierte en una bestia peligrosa! Su veneno parece durar para siempre.
@@ -2543,49 +2543,49 @@ You see a werewolf. Normally he is a human but at fullmoon nights he turns into 
 
 ## mythical_being
 
-mermaid=
-You see a mermaid. They perfer their own company and are not too happy to see you here.=
+# Untranslated legacy source: mermaid=
+# Untranslated legacy source: You see a mermaid. They perfer their own company and are not too happy to see you here.=
 
-emerald mermaid=
-You see an emerald mermaid.=
+# Untranslated legacy source: emerald mermaid=
+# Untranslated legacy source: You see an emerald mermaid.=
 
-amethyst mermaid=
-You see an amethyst mermaid.=
+# Untranslated legacy source: amethyst mermaid=
+# Untranslated legacy source: You see an amethyst mermaid.=
 
-ruby mermaid=
-You see a ruby mermaid.=
+# Untranslated legacy source: ruby mermaid=
+# Untranslated legacy source: You see a ruby mermaid.=
 
-sapphire mermaid=
-You see a sapphire mermaid.=
+# Untranslated legacy source: sapphire mermaid=
+# Untranslated legacy source: You see a sapphire mermaid.=
 
 unicorn=unicornio
 You see a rare unicorn. It is widely believed to be only a myth.=Ves un raro unicornio. En general se cree que es sólo un mito.
 
-white unicorn=
+# Untranslated legacy source: white unicorn=
 
-black unicorn=
+# Untranslated legacy source: black unicorn=
 
-golden unicorn=
+# Untranslated legacy source: golden unicorn=
 
 pegasus=pegaso
 You see Pegasus, the winged horse. His name means Lightning and he carries bolts of Thunder.=Ves a Pegasus, el caballo alado. Su nombre significa Relámpago y lleva los rayos del Trueno.
 
-baby pegasus=
+# Untranslated legacy source: baby pegasus=
 
-bronze pegasus=
+# Untranslated legacy source: bronze pegasus=
 
-ivory pegasus=
+# Untranslated legacy source: ivory pegasus=
 
-ebony pegasus=
+# Untranslated legacy source: ebony pegasus=
 
 centaur=centauro
 You see a noble centaur, half man, half horse. He looks capable of great damage but thankfully seems to mean you no harm.=Ves a un noble centauro, mitad hombre, mitad caballo. Parece capaz de causar gran daño pero afortunadamente no parece tener intención de herirte.
 
-solar centaur=
+# Untranslated legacy source: solar centaur=
 
-glacier centaur=
+# Untranslated legacy source: glacier centaur=
 
-centaur king=
+# Untranslated legacy source: centaur king=
 
 
 ## ogre
@@ -2600,25 +2600,25 @@ ogre soldier=soldado ogro
 You see an ogre soldier, smelling like it didn't have had a bath for years. Ewww.=Ves a un soldado ogro, huele como si no se hubiese bañado durante años. Puaj!
 
 superogre=superogro
-You see a superogre which belongs to the family of very material creatures, the Ogres. Ever since this one happened upon a peculiar helmet and has been revered among its peers. Take care, it throws a mean punch!=
+# Untranslated legacy source: You see a superogre which belongs to the family of very material creatures, the Ogres. Ever since this one happened upon a peculiar helmet and has been revered among its peers. Take care, it throws a mean punch!=
 
 
 ## oni
 
 oni warrior=guerrero oni
-You see an oni warrior. His purple skin color should not lull you into a false sense of security!=
+# Untranslated legacy source: You see an oni warrior. His purple skin color should not lull you into a false sense of security!=
 
 oni archer=arquero oni
-You see an oni archer. His arrows will follow you everywhere for protecting his queen!=
+# Untranslated legacy source: You see an oni archer. His arrows will follow you everywhere for protecting his queen!=
 
 oni priest=sacerdote oni
 You see a mysterious oni priest, uttering strange incantations.=Ves a un misterioso sacerdote oni, pronunciando extraños encantamientos.
 
 oni king=rey oni
-You see the oni king. His power leads brave oni troops around his kingdom.=
+# Untranslated legacy source: You see the oni king. His power leads brave oni troops around his kingdom.=
 
 oni queen=reina oni
-You see the oni queen. She supports her husband and takes an eye onto their kingdom while he conquers new land and fights on battlefields.=
+# Untranslated legacy source: You see the oni queen. She supports her husband and takes an eye onto their kingdom while he conquers new land and fights on battlefields.=
 
 
 ## orc
@@ -2639,18 +2639,18 @@ orc chief=jefe orco
 You see an orc chief which is too busy to attend to you!=Ves a un jefe orco ¡que está demasiado ocupado para atenderte!
 
 mountain orc=orco de montaña
-You see a mountain orc. Not very cunning but his robustness, stench and loudness could still overwhelm you!=
+# Untranslated legacy source: You see a mountain orc. Not very cunning but his robustness, stench and loudness could still overwhelm you!=
 
 mountain orc warrior=guerrero orco de montaña
-You see a mountain orc warrior. Not very cunning but you should not underestimate his robustness and stench!=
+# Untranslated legacy source: You see a mountain orc warrior. Not very cunning but you should not underestimate his robustness and stench!=
 
 mountain orc hunter=cazador orco de montaña
-You see a mountain orc hunter. He's in search for raw meat... You could be his next lunch!=
+# Untranslated legacy source: You see a mountain orc hunter. He's in search for raw meat... You could be his next lunch!=
 
 mountain orc chief=jefe orco de montaña
-You see a mountain orc chief. He's proud, loud and reeks like a thousand orcs together...=
+# Untranslated legacy source: You see a mountain orc chief. He's proud, loud and reeks like a thousand orcs together...=
 
-golden orc=
+# Untranslated legacy source: golden orc=
 
 
 ## reptile
@@ -2661,10 +2661,10 @@ You see a grass snake which is quite dangerous.=Ves una serpiente de hierba que 
 snake=serpiente
 You see a snake, it came from the forest to poison you!=Ves una serpiente, ¡vino desde el bosque a envenenarte!
 
-cobra=
+# Untranslated legacy source: cobra=
 
-king cobra=
-You see a king cobra. It is extremely venomous.=
+# Untranslated legacy source: king cobra=
+# Untranslated legacy source: You see a king cobra. It is extremely venomous.=
 
 caiman=caimán
 You see a caiman, which is hidden in the water.=Ves un caimán, que está escondido en el agua.
@@ -2672,8 +2672,8 @@ You see a caiman, which is hidden in the water.=Ves un caimán, que está escond
 crocodile=crocodilo
 You see a crocodile, it arises from the deep waters in the rivers.=Ves un crocodilo, surge de las aguas profundas de los ríos.
 
-turtle=
-You see a turtle swimming quietly in the water. It doesn't want to be disturbed.=
+# Untranslated legacy source: turtle=
+# Untranslated legacy source: You see a turtle swimming quietly in the water. It doesn't want to be disturbed.=
 
 
 ## rodent
@@ -2753,7 +2753,7 @@ death knight=caballero de la muerte
 You see a death knight. Some time ago he fought in tournaments where his only aim was to kill as many enemies as possible.=Ves a un caballero de la muerte. Hace algún tiempo luchó en torneos donde su único objetivo era matar tantos enemigos como fuese posible.
 
 necrosophia=necrosophia
-You see Necrosophia. She is a mighty beast, she will burn you with fire while you are disoriented by the rainbow beans.=
+# Untranslated legacy source: You see Necrosophia. She is a mighty beast, she will burn you with fire while you are disoriented by the rainbow beans.=
 
 green phantom=fantasma verde
 
@@ -2764,7 +2764,7 @@ lich=lich
 You see a lich, a dark desolate creature which has been doomed to wander in endless turmoil, feeding on the souls of the righteous.=Ves a un lich, una criatura oscura solitaria que ha sido condenada a vagar en confusión sin fin, alimentándose de las almas de los justos.
 
 dead lich=lich muerto
-You see a dead lich with his huge green and heavy cloak. Although he is dead and bony, he'll seek revenge for his too early passing and will always return fast and ruthless!=
+# Untranslated legacy source: You see a dead lich with his huge green and heavy cloak. Although he is dead and bony, he'll seek revenge for his too early passing and will always return fast and ruthless!=
 
 high lich=lich supremo
 The terrible grinning skull of a high lich leers at you as it prepares to slaughter you in a myriad of magical ways.=La terrible sonrisa de la calavera de un lich supremo te mira de reojo al prepararse para matarte de una miríada de mágicas maneras.
@@ -2791,22 +2791,22 @@ warrior skeleton=guerrero esqueleto
 You see a warrior skeleton, it's just a normal skeleton with a shield!=Ves a un guerrero esqueleto, ¡es sólo un esqueleto normal con un escudo!
 
 elder skeleton=esqueleto anciano
-You see the bones of an old man. He lived to a ripe old age, and is sure to know a thing or two that separates him from all the vengeful skeletons that died young.=
+# Untranslated legacy source: You see the bones of an old man. He lived to a ripe old age, and is sure to know a thing or two that separates him from all the vengeful skeletons that died young.=
 
 demon skeleton=esqueleto demonio
-You see a demon skeleton. Demon skeletons have ascended from the underworld and they are going to take over this world. You really should slay them before it is too late!=
+# Untranslated legacy source: You see a demon skeleton. Demon skeletons have ascended from the underworld and they are going to take over this world. You really should slay them before it is too late!=
 
 gashadokuro=gashadokuro
 A giant figure made of bone, known only as gashadokuro, towers before you. He is created from the bones of starving humans.=Una figura gigante hecha de hueso, conocida sólo como gashadokuro, se impone ante ti. Se ha creado a partir de los huesos de humanos muertos de hambre.
 
 fallen warrior=guerrero caído
-You see a fallen warrior. Once he fought in great battles but now he has fallen to the depths of hell only to come back up to get his revenge.=
+# Untranslated legacy source: You see a fallen warrior. Once he fought in great battles but now he has fallen to the depths of hell only to come back up to get his revenge.=
 
 fallen priest=sacerdote caído
-You see a fallen priest. He was once just a regular human priest, until the dark powers corrupted him and turned him to the dark side.=
+# Untranslated legacy source: You see a fallen priest. He was once just a regular human priest, until the dark powers corrupted him and turned him to the dark side.=
 
 fallen high priest=sumo sacerdote caído
-You see a fallen high priest. It is manifested through the dark forces seized of this world.=
+# Untranslated legacy source: You see a fallen high priest. It is manifested through the dark forces seized of this world.=
 
 
 ## undead_specter
@@ -2836,7 +2836,7 @@ vampire bride=novia vampira
 You see a vampire bride. She was resurrected from the dead by a wicked vampire lord.=Ves a una novia vampira. Fue resucitada de entre los muertos por un malvado señor vampiro.
 
 vampirette=vampiresa
-You see a Vampirette. Beware of its sharp teeth! She wants to drink your blood and turn you into a vampire!=
+# Untranslated legacy source: You see a Vampirette. Beware of its sharp teeth! She wants to drink your blood and turn you into a vampire!=
 
 vampire lord=señor vampiro
 You see a vampire lord. Be careful, he is after your blood!=Ves a un señor vampiro. Ten cuidado, ¡va tras tu sangre!

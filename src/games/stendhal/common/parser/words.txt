@@ -951,6 +951,71 @@ zantedeschia	OBJ	zantedeschias
 zioło	OBJ	zioła
 zone	OBJ	zones
 zucchini	OBJ-FOO	=courgette	zucchinis
+
+# Polish flower inflections resolve to canonical inventory names.
+stokrotka	OBJ	=stokrotki	stokrotki
+stokrotkę	OBJ	=stokrotki	stokrotki
+stokrotką	OBJ	=stokrotki	stokrotki
+stokrotce	OBJ	=stokrotki	stokrotki
+stokrotko	OBJ	=stokrotki	stokrotki
+stokrotek	OBJ	=stokrotki	stokrotki
+stokrotkom	OBJ	=stokrotki	stokrotki
+stokrotkami	OBJ	=stokrotki	stokrotki
+stokrotkach	OBJ	=stokrotki	stokrotki
+lilię	OBJ	=lilia	lilia
+lilią	OBJ	=lilia	lilia
+lilii	OBJ	=lilia	lilia
+lilie	OBJ	=lilia	lilia
+liliom	OBJ	=lilia	lilia
+liliami	OBJ	=lilia	lilia
+liliach	OBJ	=lilia	lilia
+lilio	OBJ	=lilia	lilia
+bratka	OBJ	=bratek	bratek
+bratkiem	OBJ	=bratek	bratek
+bratku	OBJ	=bratek	bratek
+bratki	OBJ	=bratek	bratek
+bratków	OBJ	=bratek	bratek
+bratkom	OBJ	=bratek	bratek
+bratkami	OBJ	=bratek	bratek
+bratkach	OBJ	=bratek	bratek
+różę	OBJ	=róża	róża
+różą	OBJ	=róża	róża
+róży	OBJ	=róża	róża
+róże	OBJ	=róża	róża
+róż	OBJ	=róża	róża
+różom	OBJ	=róża	róża
+różami	OBJ	=róża	róża
+różach	OBJ	=róża	róża
+różo	OBJ	=róża	róża
+bielikrasę	OBJ	=bielikrasa	bielikrasa
+bielikrasą	OBJ	=bielikrasa	bielikrasa
+bielikrasy	OBJ	=bielikrasa	bielikrasa
+bielikrasie	OBJ	=bielikrasa	bielikrasa
+bielikras	OBJ	=bielikrasa	bielikrasa
+bielikrasom	OBJ	=bielikrasa	bielikrasa
+bielikrasami	OBJ	=bielikrasa	bielikrasa
+bielikrasach	OBJ	=bielikrasa	bielikrasa
+bielikraso	OBJ	=bielikrasa	bielikrasa
+
+# Polish item inflections keep material and content qualifiers unchanged.
+polana	OBJ	=polano	polano
+polan	OBJ	=polano	polano
+sztabkę	OBJ	=sztabka	sztabka
+sztabki	OBJ	=sztabka	sztabka
+sztabek	OBJ	=sztabka	sztabka
+mąki	OBJ	=mąka	mąka
+mąkę	OBJ	=mąka	mąka
+miodu	OBJ	=miód	miód
+butelkę	OBJ	=butelka	butelka
+butelki	OBJ	=butelka	butelka
+butelek	OBJ	=butelka	butelka
+chleba	OBJ	=chleb	chleb
+orchideę	OBJ	=orchidea	orchidea
+orchidei	OBJ	=orchidea	orchidea
+żonkile	OBJ	=żonkil	żonkil
+żonkili	OBJ	=żonkil	żonkil
+przylaszczki	OBJ	=przylaszczka	przylaszczka
+przylaszczkę	OBJ	=przylaszczka	przylaszczka
 świeca	OBJ	świece
 żółty	OBJ	żółte
 

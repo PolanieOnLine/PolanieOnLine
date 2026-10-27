@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-POL_VERSION="1.42"
+POL_VERSION="1.43.3"
 SERVER_JAR="polanieonline-server-${POL_VERSION}.jar"
 
 # change to server directory

@@ -11,8 +11,8 @@ android {
 		applicationId namespace
 		minSdk 21
 		targetSdk 36
-		versionCode 1042000
-		versionName "1.42"
+		versionCode 1043003
+		versionName "1.43.3"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		buildConfigField 'boolean', 'DIRECT_UPDATES', 'true'
 	}

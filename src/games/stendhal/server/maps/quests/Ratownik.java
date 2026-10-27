@@ -338,7 +338,7 @@ public class Ratownik extends AbstractQuest {
 					final Item odznaka = SingletonRepository.getEntityManager().getItem("pazur zielonego smoka");
 					odznaka.setBoundTo(player.getName());
 					player.equipOrPutOnGround(odznaka);
-					player.setBaseHP(10 + player.getBaseHP());
+					player.setBaseHP(10 + player.getUncappedBaseHP());
 					player.heal(10, true);
 					player.addKarma(25);
 					player.addXP(2950);

@@ -1,7 +1,200 @@
 ## Changelog
 ---------
-1.42.1
+1.43.4
+*halloween i duszek*
+---
+* Dodano Jaromirę, którą można spotkać przy biesiadzie w południowym Zakopanem tylko podczas Halloween. Za 5000 monet można kupić u niej duszka jako towarzysza
+* Duszek rośnie po 10 godzinach spędzonych z opiekunem w grze. Postęp zachowuje po wylogowaniu, a kupiony towarzysz pozostaje z graczem również po zakończeniu wydarzenia
+* Duszek nie potrzebuje karmienia i nie bierze udziału w walce. Zajmuje ten sam slot towarzysza co owczarek lub kotek
+* Przygotowano małą i wyrośniętą postać duszka, półprzezroczysty wygląd oraz animację unoszenia, która działa także w bezruchu
+* Uzupełniono halloweenowe dekoracje Zakopanego, oświetlenie dyń i czaszek oraz rozmieszczenie mieszkańców przy biesiadzie
+* Dodano specjalną muzykę Halloween w wybranych miejscach Zakopanego, Kościeliska, Semos i Ados. Zastępuje ona dotychczasową muzykę tła na czas wydarzenia
+* W miejscach z halloweenową muzyką co pewien czas słychać ciche odgłosy duchów. Pojawiają się w losowych odstępach i znikają po zakończeniu wydarzenia
+
+*odrodzenia i walka*
+---
+* Każde z pierwszych dziesięciu odrodzeń zwiększa o 8 punktów limity ataku i obrony wykorzystywanych w walce. Łączny wzrost limitów wynosi do 80 punktów i obejmuje również wcześniej wykonane odrodzenia
+* Podniesienie limitu pozwala wykorzystać wytrenowane umiejętności. Nie przyznaje dodatkowych punktów ataku ani obrony
+* Usunięto dotychczasowy procentowy bonus do siły ataku za odrodzenia, zastępując go rozwojem limitów umiejętności
+* Poprawiono rodzaje pancerza nieopancerzonych potworów i mieszkańców. Szczury, myszy, zjawy oraz inni przeciwnicy objęci zmianą nie są już traktowani jak noszący pancerz. Ich wartości obrony pozostają bez zmian
+
+*pierścienie i wyposażenie*
+---
+* Pierścienie mieszczanina, rycerza, barona i magnata nie zapewniają już dodatkowych odporności na zatrucie i porażenie
+* Wykluczono te cztery pierścienie z systemu rzadkości i losowania afiksów. Wcześniejsze modyfikatory są usuwane po zalogowaniu, bez utraty ulepszeń i przypisania do właściciela
+* Usunięto wbudowaną odporność na krwawienie z wyposażenia ciemnomithrilowego. Odporność pochodząca z wylosowanego afiksa nadal działa
+
+*opisy przedmiotów i statystyki*
+---
+* Dodano do okna Statystyki odporności na światło, mrok, ogień, lód, ziemię, wodę i obrażenia cięte. Wartości uwzględniają aktualnie założone wyposażenie, oba pierścienie i glify, a także podatności zwiększające otrzymywane obrażenia
+* W opisach przedmiotów poprawnie wyświetlane są odporności na negatywne efekty należące do ich stałych właściwości, niezależnie od afiksów
+* Przywrócono informację o miejscu zapisanym w pierścieniu powrotu. Opis aktualizuje się również po zapisaniu nowej lokalizacji lub użyciu pierścienia
+* Usunięto zbędne zera po przecinku w opisach bonusów. Kradzież życia wyświetla teraz np. 22% (+2%) zamiast 22,0% (+2,0%)
+* Poprawiono dopasowanie wielkości okna Statystyki, aby jego zawartość nie była przycinana przez obramowanie i niepotrzebne paski przewijania
+
+*klient gry*
+---
+* Przewijanie bocznego panelu dotyczy teraz listy znajomych. Minimapa, dane postaci i przycisk Statystyki pozostają na swoim miejscu
+* Poprawiono zapamiętywanie opcji zaznaczanych w ustawieniach klienta Java
+* Muzyka tła i zapętlone dźwięki otoczenia uruchamiają się po włączeniu dźwięku w trakcie gry, również gdy klient wystartował z wyciszeniem. Nie trzeba już ponownie uruchamiać klienta
+* Efekty wyróżniające elitarne potwory respektują ich widoczność i przezroczystość, zamiast zasłaniać sylwetkę nieprzezroczystą poświatą
+
 *rozmowy z NPC*
+---
+* Naprawiono zlecenia na butelki wody u Nosiwody Jakuba, które mogły pozostawać zablokowane przez błędną nazwę produktu
+* Rozmowy z NPC rozpoznają więcej polskich odmian nazw kwiatów, m.in. stokrotek, lilii, bratków, róż, orchidei i żonkili
+* Uzupełniono rozpoznawanie odmian nazw surowców i produktów, m.in. polan, sztabek, mąki, miodu, butelek i chleba
+
+*narzędzia administracyjne*
+---
+* Dodano opcję affixes=max w poleceniach przywoływania przedmiotów, pozwalającą uzyskać maksymalne wartości wylosowanych afiksów
+* Poprawiono przywoływanie mgielnych potworów. Zmiany nadawane przywołanemu stworowi nie modyfikują już wzorca wykorzystywanego przez kolejne przywołania
+
+
+1.43.3
+*kradzież życia i afiksy*
+---
+* Kradzież życia należąca do właściwości przedmiotu nie zajmuje już miejsca na afiks i nie jest zwiększana przez mnożnik rzadkości
+* Dodano afiks zwiększający skuteczność kradzieży życia o 10% lub 20%. Może pojawić się na przedmiotach, które już mają kradzież życia
+* Afiks nadający kradzież życia losuje się tylko dla przedmiotów, które nie mają tej właściwości
+* Wcześniej zdobyte bronie, w których kradzież życia zajmowała miejsce na dodatkową właściwość, otrzymują w jej miejsce inny afiks po zalogowaniu
+* Kradzież życia z obu założonych pierścieni sumuje się i działa również podczas walki bez broni
+* Poprawiono naliczanie ujemnych wartości kradzieży życia
+
+*opisy przedmiotów i statystyki*
+---
+* Dodano w kliencie Java okno Statystyki z szansą na trafienie krytyczne, dodatkowymi obrażeniami krytycznymi, parowaniem i odpornościami na negatywne efekty
+* Przycisk otwierający okno można włączyć w ustawieniach. Znajduje się na dole panelu postaci, a samo okno otwiera się nad ekranem gry i dopasowuje do zawartości
+* Dodano osobną opcję wyświetlania limitów obok wartości statystyk. Obie nowe opcje są domyślnie wyłączone
+* Wartości w oknie statystyk są wyrównane w kolumnach, a różnice przy porównywaniu przedmiotów znajdują się po prawej stronie, w tej samej linii co dana właściwość
+* Opisy przedmiotów pokazują ujemny atak. Przy kradzieży życia przyrost wynikający ze skuteczności znajduje się w nawiasie
+* Ujednolicono oznaczenia bonusów, usunięto powtarzający się dodatkowy atak i pancerz oraz przeniesiono określenie szybkości broni do osobnej linii
+* Ujednolicono podpowiedzi dotyczące pieniędzy. Ekwipunek i panel postaci korzystają ze wspólnego opisu łącznej liczby monet
+* Ukryto informację o braku pancerza w opisach i podpowiedziach postaci oraz potworów
+* Skrzynia Myśliwego i skrzynia z Areny Wyzwań mają odrębne ikony
+
+*walka i glify*
+---
+* Naprawiono rozstrzyganie trafień przeciw potworom, które mogło pomijać właściwe losowanie wyniku ataku
+* Łuki i różdżki zużywają amunicję także podczas walki z bliska. Włócznie pozostają wielokrotnego użytku
+* Zdejmowanie glifów nie obniża już trwale zdrowia postaci, gdy wcześniej osiągnięto jego maksymalną wartość. Bonus do zdrowia jest też prawidłowo usuwany po utracie glifu podczas śmierci
+* Poprawiono przeliczanie odporności po zdjęciu pierścieni przy osiągniętym limicie oraz zachowanie niewidzialności podczas przenoszenia zapasowego pierścienia
+* Efekty założonych przedmiotów są prawidłowo wyłączane również wtedy, gdy przedmiot zostaje zużyty
+
+*polowania u Janisława*
+---
+* Propozycja polowania dla każdej trudności jest zapamiętywana na siedem dni. Ponowna rozmowa i rezygnacja z zadania nie losują innego celu; ukończenie polowania pozwala otrzymać nową propozycję
+* Zabójstwa potworów na arenach nie zaliczają się do polowań
+* Nagrody za nowe polowania nie przekraczają 5%, 15% i 30% doświadczenia pełnego poziomu ataku i obrony, odpowiednio dla łatwych, średnich i trudnych łowów. Wcześniej przyjęte zadania zachowują uzgodnione nagrody
+* Uporządkowano rozmowy z Janisławem i wyjaśniono zasady przyjmowania, kończenia oraz przerywania polowań
+
+*zadania i mieszkańcy*
+---
+* Czarnoksiężnik odpowiada na pytania o zadanie zgodnie z bieżącym etapem swojej historii, bez odsyłania do ukończonych już prób
+* Naprawiono rozpoczynanie rozmów z NPC, gdy nazwa postaci przypomina powitanie
+* Kupione w Deniran dodatki do stroju zachowują swój wygląd po ponownym zalogowaniu. Bobby sprawdza właściwy balonik również przy potwierdzaniu jego oddania
+* Poprawiono losowanie miejsc wykopalisk fragmentów glifów, aby nie trafiały na zablokowane pola. Jedno użycie łopaty liczy się jako jedna próba
+* Omar zachowuje liczbę ukończonych rekonstrukcji, a Mistrz Run przyjmuje do wykonania glifu tylko odtworzone fragmenty
+* Naprawiono zadania związane z włamaniem i Odbiciem Arsenału: wymagane przedmioty są sprawdzane przed wydaniem nagrody, a skrzynie uzupełniają tylko brakujące zapasy
+* Naprawa uszkodzonego pierścienia życia wybiera właściwy egzemplarz, zachowuje jego przypisanie do właściciela i ponownie sprawdza możliwość naprawy przed pobraniem opłaty
+
+*przedmioty, pieniądze i handel*
+---
+* Naprawiono obsługę dużych sum pieniędzy przy płatnościach, opłatach targowych i resetowaniu zadań
+* Gotowy napar pozostaje w kotle, gdy brakuje miejsca na jego odebranie. Pusty, porzucony kocioł można ponownie zająć
+* Dzielenie stosów przedmiotów zachowuje ich wariant graficzny
+* Poprawiono własne podpisy zwojów, również tych oznaczonych wcześniej, oraz sprawdzanie ilości przy ich oznaczaniu
+* Zabezpieczono gry u krupiera przed wielokrotnym rozliczaniem tej samej opłaconej rundy
+* Przedmioty przywoływane przez administratora otrzymują afiksy zgodne z wylosowaną rzadkością również bez ręcznego wskazywania jej w poleceniu
+
+*domy i obrączki*
+---
+* Dorabianie klucza, wymiana zamka i sprzedaż domu ponownie sprawdzają właściciela przy potwierdzeniu operacji
+* Obrączka ślubna pozwala przenieść się tylko do aktualnego współmałżonka, z uwzględnieniem rozwodu i ponownego ślubu
+
+*Mine Town*
+---
+* Wydłużono czas ponownego pojawiania się zagubionych latarenek z 30 do 60 minut
+* Wykluczono numerowane domy, banki i wnętrza mieszkalne. Zebrana latarenka pojawia się w innym miejscu niż poprzednio
+
+*wersja hiszpańska*
+---
+* Udostępniono język hiszpański w ustawieniach klienta Java, okna startowego i gry przez przeglądarkę. Brakujące tłumaczenia pozostają w oryginalnej wersji
+* Uzupełniono tłumaczenia ustawień, okna statystyk i rozmów związanych z polowaniami
+
+
+1.43.2
+*balans gry i handel*
+---
+* Zmieniono doświadczenie z potworów po odrodzeniu: do piątego odrodzenia wynosi 100%, a od szóstego kolejno 95%, 90%, 85%, 80% i 75%
+* Zmieniono szanse ogłuszenia u wybranych zwykłych potworów: olbrzymy i duże humanoidy mają 6%, a pozostali przeciwnicy objęci zmianą 3%
+* Obniżono skup eliksirów u Kupca Areny o co najmniej 75%. Gigantyczny eliksir jest wart w skupie dwa razy tyle co wielki
+* Obniżono ceny skupu nakrapianego jaja, zupy, zupy grzybowej i zupy rybnej u Kupca Areny
+* Podniesiono cenę cebuli u Ambrogio z 5 do 33 monet, aby zlikwidować zarabianie na jej odsprzedaży
+* Skorygowano nadmiarowe monety uzyskane na błędnych cenach skupu eliksirów i handlu cebulą
+
+*poprawki w grze*
+---
+* Naprawiono błędną liczbę przeciwników i powtarzające się numery fal na Arenie Wyzwań
+* Naprawiono zaniżone bazowe bonusy przedmiotów po osłabieniu afiksów. Poprawne bonusy wracają po zalogowaniu
+* Naprawiono błędną wartość obrony w opisie Zdobycznego hełmu
+
+*gra przez przeglądarkę i na telefonie*
+---
+* Uporządkowano ustawienia i dodano podgląd wyglądu, poziomu oraz umiejętności na ekranie wyboru postaci
+* Poprawiono płynność gry przy otwartym ekwipunku i usunięto drganie animowanych ikon
+* Naprawiono wyświetlanie i położenie szybkich slotów oraz dostęp do drugiego zestawu wyposażenia na telefonach
+* Przywrócono brakujące opisy przedmiotów, m.in. kluczy, środka uspokajającego i serca olbrzyma
+
+*wersja angielska*
+---
+* Długie nazwy potworów nie zasłaniają już przedmiotów w oknie łupów
+* Poprawiono tłumaczenie liczby powtórzeń zadań w dzienniku
+* Zmieniono nazwę kiełbasy wiejskiej z country sausage na cottage sausage
+
+
+1.43.1
+*deathmatch i zdobyczny hełm*
+---
+* Naprawiono błąd powodujący utratę zdobytych punktów obrony Zdobycznego hełmu po ponownym zalogowaniu. Hełm zachowuje teraz obronę wypracowaną podczas zwycięstw na arenie w Ados
+* Dodano jednorazowe przywracanie obrony hełmów uszkodzonych po aktualizacji 1.43. Wartość jest odtwarzana na podstawie zapisanej liczby zwycięstw i limitu obrony postaci
+* Przy przywracaniu obrony uwzględniane są również odrodzenia. Postacie po odrodzeniu zachowują historyczny limit 124 punktów obrony, niezależnie od obecnego poziomu. Liczba zwycięstw nadal decyduje o przywracanej wartości
+* Zdobyczny hełm nie podlega już systemowi rzadkości i nie otrzymuje losowych dodatkowych właściwości. Ze starszych egzemplarzy usuwane są modyfikatory rzadkości bez utraty zdobytej obrony
+
+*polowania u Janisława*
+---
+* Poszerzono zakres poziomów przeciwników dobieranych do łatwych, średnich i trudnych polowań, szczególnie dla doświadczonych graczy
+* Wyraźniej rozdzielono poziomy trudności, dzięki czemu trudne polowania wymagają pokonywania silniejszych przeciwników niż łatwe i średnie
+* Trudne polowania wymagają teraz pokonania od 40 do 50 przeciwników, zamiast od 20 do 30
+* Poprawiono dobieranie celów polowań na wysokich poziomach, aby Janisław mógł proponować odpowiednich przeciwników również postaciom zbliżającym się do maksymalnego poziomu
+
+*Arena Wyzwań i handel*
+---
+* Kupiec Areny skupuje czarne wyposażenie dopiero po ukończeniu zadania Balduina, tak jak pozostali handlarze wymagający jego ukończenia
+* Pozostałe łupy z Areny Wyzwań można nadal sprzedawać bez wykonywania zadania Balduina
+* Poprawiono sprawdzanie warunków sprzedaży, aby nie można było sprzedać czarnego wyposażenia po utracie wymaganego uprawnienia w trakcie transakcji
+
+*grupy*
+---
+* Naprawiono błąd serwera występujący podczas wyrzucania z grupy członka, który był już rozłączony z grą
+* Poprawiono obsługę niedostępnych graczy podczas zapraszania do grupy i przekazywania jej przywództwa
+
+*klient gry i prywatność*
+---
+* Powiadomienia o zalogowaniu i wylogowaniu graczy pojawiają się na czacie tylko w przypadku osób znajdujących się na liście znajomych
+* Poprawiono ochronę prywatności niewidocznych administratorów. Ich wylogowanie nie ujawnia obecności pozostałym graczom
+* Usunięto powtarzające się powiadomienia o przyjściu i wyjściu tego samego gracza
+
+
+1.43
+*języki gry*
+---
+* Dodano angielską wersję interfejsu w kliencie Java i grze przez przeglądarkę
+* Przetłumaczono rozmowy z NPC, opisy i dzienniki zadań, nazwy i opisy przedmiotów oraz potworów, tablice, poradniki i komunikaty gry
+* Język polski lub angielski można wybrać w ustawieniach gry, a w kliencie Java również przed zalogowaniem, w ustawieniach klienta startowego. Wybór jest zapamiętywany dla postaci
+* Angielskie nazwy przedmiotów można wykorzystywać w handlu z NPC. Wybrane zagadki i hasła zadań przyjmują również angielskie odpowiedzi
+
+*rozmowy z NPC i zadania*
 ---
 * W kliencie Java i webkliencie dodano opcję Porozmawiaj w menu NPC. Rozmowę można rozpocząć bez wpisywania przywitania na czacie
 * Poprawiono rozmowy w zadaniach. NPC rozpoznają więcej polskich nazw przedmiotów i ich odmian, dzięki czemu łatwiej zapytać o wskazówki
@@ -20,7 +213,7 @@
 * Kule w lobby pozwalają wybrać gracza i oglądać jego walkę na arenie. Widzowie nie mogą pomagać w walce ani zabierać łupów, a po jej zakończeniu wracają do lobby
 * Potwory na arenie pozostawiają łupy. Po zwycięstwie gracz ma minutę na ich zebranie
 * Tablica najlepszych wojowników Areny Wyzwań pokazuje miejsce każdego gracza w rankingu
-* Dodano Kupca Areny, u którego można sprzedać zdobyte przedmioty. Przed sprzedażą kupiec podaje cenę, uwzględniając rzadkość przedmiotu
+* Dodano Kupca Areny, który skupuje łupy według aktualnej wartości przedmiotów, uwzględniającej ceny u innych handlarzy oraz rzadkość wyposażenia. Przed sprzedażą podaje oferowaną kwotę
 * Wyposażenie zdobyte z bossów jest co najmniej rzadkie. Taką samą gwarancję dodano do nagrody za najtrudniejszą próbę areny i łupów jej końcowego przeciwnika
 
 *potwory i łupy*
@@ -35,7 +228,6 @@
 ---
 * Rudę i sztabki cieni zastąpiono rudą i sztabkami czarnego żelaza. Posiadane zapasy zachowują swoją ilość
 * Zastąpiono poświatę przedmiotów leżących na ziemi wyraźną obwódką w kolorze ich rzadkości
-* Zaktualizowano wycenę przedmiotów wykorzystywaną przez Kupca Areny, uwzględniając ceny u pozostałych handlarzy
 * Zwiększono cenę sprzedaży rzadkiego wyposażenia. Handlarze płacą za nie o 25% więcej niż za zwykłe, również w przypadku wcześniej zdobytych przedmiotów
 * Poprawiono odmianę nazw i ilości przedmiotów w rozmowach z handlarzami
 * Posiadane przedmioty otrzymują aktualne statystyki i opisy po zalogowaniu. Zachowują swoje ulepszenia, rzadkość i rodzaje wylosowanych bonusów
@@ -48,7 +240,6 @@
 ---
 * Dodano logowanie przez Google i Steam w kliencie Java. Konto można połączyć na stronie gry
 * Uporządkowano ustawienia klienta Java. Kategorie znajdują się po lewej, a opcje są pogrupowane, aby łatwiej było je znaleźć
-* Dodano wybór języka polskiego i angielskiego w ustawieniach gry. Wybór jest zapamiętywany dla postaci. Angielskie tłumaczenia są jeszcze uzupełniane
 * Dodano ikony lekkiego, średniego i ciężkiego pancerza przy pasku zdrowia wybranego przeciwnika. Rodzaj pancerza można też sprawdzić w jego opisie
 * Ograniczono obciążenie ekwipunku w grze przez przeglądarkę: ramki pozostają nieruchome, a przedmioty zachowują swoje animacje
 * Naprawiono odnośniki ze spisu przedmiotów do ich opisów na stronie gry
@@ -58,10 +249,9 @@
 * Poprawiono działanie ustawienia dopasowania widoku gry do okna
 * Poprawiono lewy panel w kliencie Java i grze przez przeglądarkę. Liczba monet jest czytelna i prawidłowo odświeża się po sprzedaży, podnoszeniu i wyrzucaniu pieniędzy. Po najechaniu na stos monet w ekwipunku widać ich dokładną liczbę
 
-*administracja*
+*świat gry*
 ---
-* Dodano możliwość przywoływania mgielnych potworów, również w wersji elitarnej
-* Dodano administratorom testy płynności gry w przeglądarce z możliwością skopiowania raportu, także na telefonie. Testy działają tylko u osoby, która je włączyła
+* Portal z zaświatów do Tarnowa rozpoznaje wcześniejsze odwiedziny miasta i pozwala wrócić postaciom, które już je odwiedziły
 
 
 1.42

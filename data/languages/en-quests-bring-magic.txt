@@ -1,0 +1,19 @@
+# The sorcerer's final experiment. Current elemental resources and helmet transformation are retained.
+Spotkałem Czarnoksiężnika w starej wieży niedaleko Zakopanego.=I met Czarnoksiężnik in the old tower near Zakopane.
+Odmówiłem pomocy przy ostatnim doświadczeniu Czarnoksiężnika.=I refused to help with Czarnoksiężnik's final experiment.
+Czarnoksiężnik poprosił mnie o sto porcji magii ziemi, płomieni, deszczu, mroku i światła.=Czarnoksiężnik asked for a hundred portions each of earth, flame, rain, dark, and light magic.
+Dostarczyłem magiczne zasoby i Czarnoksiężnik przygotował zaklęcie dla hełmu.=I delivered the magical resources, and Czarnoksiężnik prepared a spell for the helmet.
+Czarnoksiężnik nadal przygotowuje zaklęcie dla hełmu.=Czarnoksiężnik is still preparing the spell for the helmet.
+Zaklęcie jest gotowe. Czarnoksiężnik potrzebuje jeszcze hełmu kolczego.=The spell is ready. Czarnoksiężnik still needs a chain helmet.
+Czarnoksiężnik przemienił mój hełm kolczy w magiczny hełm kolczy.=Czarnoksiężnik transformed my chain helmet into a magic chain helmet.
+Najpierw dokończ sprawę górskich elfów. Hełm z tamtej próby będzie potrzebny w ostatnim doświadczeniu.=First finish the matter with the mountain elves. The helmet from that trial is needed for the final experiment.
+Pozostał ostatni etap moich badań. Potrzebuję stu porcji magii ziemi, płomieni, deszczu, mroku i światła. Z ich pomocą wzmocnię hełm kolczy, który ode mnie otrzymałeś. Podejmiesz się tego?=The final stage of my research remains. I need a hundred portions each of earth, flame, rain, dark, and light magic. With them I will strengthen the chain helmet I gave you. Will you do this?
+Ostatnie doświadczenie zostało zakończone. Magiczny hełm kolczy jest już w twoich rękach.=The final experiment is complete. The magic chain helmet is now yours.
+Dobrze. Przynieś mi wszystko naraz\n#'100 magii ziemi'\n#'100 magii płomieni'\n#'100 magii deszczu'\n#'100 magii mroku'\n#'100 magii światła'=Good. Bring everything together:\n#'100 earth magic'\n#'100 flame magic'\n#'100 rain magic'\n#'100 dark magic'\n#'100 light magic'
+Szkoda. Bez tych zasobów nie przeprowadzę ostatniego doświadczenia.=What a pity. Without those resources, I cannot perform the final experiment.
+Do przygotowania zaklęcia potrzebuję wszystkiego naraz\n#'100 magii ziemi'\n#'100 magii płomieni'\n#'100 magii deszczu'\n#'100 magii mroku'\n#'100 magii światła'=To prepare the spell, I need everything together:\n#'100 earth magic'\n#'100 flame magic'\n#'100 rain magic'\n#'100 dark magic'\n#'100 light magic'
+To wystarczy. Połączę te energie w jedno zaklęcie. Teraz przynieś mi hełm kolczy, który dostałeś po poprzedniej próbie.=That is enough. I will combine these energies into one spell. Now bring the chain helmet you received after the previous trial.
+Wróć, gdy będziesz mieć przy sobie wszystkie potrzebne rodzaje magii.=Return when you have all the required kinds of magic.
+Masz hełm kolczy. Oddasz mi go na chwilę?=You have the chain helmet. Will you hand it over for a moment?
+Gotowe. Część przyniesionej magii wzmocniła hełm i ochroni cię przed siłami natury.=Done. Some of the magic you brought strengthened the helmet and will protect you from the forces of nature.
+Dobrze. Wróć z hełmem, gdy zdecydujesz się dokończyć doświadczenie.=All right. Return with the helmet when you decide to finish the experiment.

@@ -430,7 +430,8 @@ public class Creature extends NPC {
 	@Override
 	public String describe() {
 		final CreatureArmor armor = CreatureArmor.fromId(getArmorType());
-		return super.describe() + (armor == null ? "" : " " + armor.getLabel() + ".");
+		return super.describe() + (armor == null || armor == CreatureArmor.NONE
+				? "" : " " + armor.getLabel() + ".");
 	}
 
 	public Creature getNewInstance() {

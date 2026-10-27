@@ -1,8 +1,12 @@
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import games.stendhal.common.grammar.ItemParserResult;
@@ -10,17 +14,62 @@ import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.OwnedItem;
+import games.stendhal.server.entity.item.Potion;
+import games.stendhal.server.entity.item.TwilightElixir;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
-/** A buyer whose catalogue and prices come from item definitions, not a shop list. */
+/** Arena buyer using item values, with reduced purchase prices for consumables. */
 public final class ValueBuyerBehaviour extends BuyerBehaviour {
+	private static final Map<String, Double> ELIXIR_PRICE_RATIOS;
+	private static final Map<String, Integer> CONSUMABLE_PRICE_DIVISORS;
+
+	static {
+		// Keep these elixirs proportional to the great elixir's healing and price.
+		final Map<String, Double> ratios = new HashMap<String, Double>();
+		ratios.put("eliksir miłości", 0.5);
+		ratios.put("gigantyczny eliksir", 2.0);
+		ratios.put("smoczy eliksir", 3.0);
+		ratios.put("duży smoczy eliksir", 3.75);
+		ELIXIR_PRICE_RATIOS = Collections.unmodifiableMap(ratios);
+
+		final Map<String, Integer> divisors = new HashMap<String, Integer>();
+		divisors.put("nakrapiane jajo", 30);
+		divisors.put("zupa", 4);
+		divisors.put("zupa grzybowa", 4);
+		divisors.put("zupa rybna", 4);
+		CONSUMABLE_PRICE_DIVISORS = Collections.unmodifiableMap(divisors);
+	}
+
+	private static final String BALDUIN_REQUIREMENT =
+			"Czarne przedmioty skupuję po ukończeniu wyzwań Balduina. "
+			+ "Jeśli już je ukończyłeś, sprawdź, czy masz przedmiot przy sobie "
+			+ "i czy nie jest przypisany do postaci.";
+
+	private final Set<String> questLockedItems;
+	private final String requiredQuestSlot;
+
 	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions) {
+		this(definitions, Collections.<String>emptySet(), null);
+	}
+
+	/** Optional per-item quest gate; the normal catalogue remains unrestricted. */
+	public ValueBuyerBehaviour(final Collection<DefaultItem> definitions,
+			final Collection<String> questLockedItems, final String requiredQuestSlot) {
 		super(createCatalogue(definitions));
+		if (questLockedItems == null || (!questLockedItems.isEmpty()
+				&& (requiredQuestSlot == null || requiredQuestSlot.isEmpty()))) {
+			throw new IllegalArgumentException("Quest-locked items require a quest slot");
+		}
+		this.questLockedItems = Collections.unmodifiableSet(new HashSet<String>(questLockedItems));
+		this.requiredQuestSlot = requiredQuestSlot;
 	}
 
 	@Override
 	public String getUnavailableOffer(final ItemParserResult res) {
+		if (res != null && questLockedItems.contains(res.getChosenItemName())) {
+			return BALDUIN_REQUIREMENT;
+		}
 		return "Nie mogę odkupić tych rzeczy. Sprawdź, czy masz je przy sobie i czy nie są przypisane do postaci.";
 	}
 
@@ -43,16 +92,45 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 					&& !"key".equals(item.getItemClass())
 					&& item.getEquipableSlots() != null && item.getEquipableSlots().contains("trade")
 					&& (item.getAttributes() == null || !item.getAttributes().containsKey("autobind"))) {
-				prices.put(item.getItemName(), Integer.valueOf(item.getValue()));
+				prices.put(item.getItemName(), Integer.valueOf(
+						getPurchasePrice(item.getValue(), item.getImplementation())));
+			}
+		}
+		final Integer greatElixirPrice = prices.get("wielki eliksir");
+		if (greatElixirPrice != null) {
+			for (final Map.Entry<String, Double> entry : ELIXIR_PRICE_RATIOS.entrySet()) {
+				if (prices.containsKey(entry.getKey())) {
+					prices.put(entry.getKey(), (int) Math.round(greatElixirPrice * entry.getValue()));
+				}
+			}
+		}
+		for (final Map.Entry<String, Integer> entry : CONSUMABLE_PRICE_DIVISORS.entrySet()) {
+			if (prices.containsKey(entry.getKey())) {
+				prices.put(entry.getKey(), prices.get(entry.getKey()) / entry.getValue());
 			}
 		}
 		return prices;
+	}
+
+	private static int getPurchasePrice(final int value, final Class<?> implementation) {
+		if (implementation != null && (Potion.class.isAssignableFrom(implementation)
+				|| TwilightElixir.class.isAssignableFrom(implementation))) {
+			// Round down per unit: neither stacks nor rounding may bypass the 75% reduction.
+			return value / 4;
+		}
+		return value;
 	}
 
 	@Override
 	public int getCharge(final ItemParserResult res, final Player player) {
 		if (res == null || player == null || res.getAmount() <= 0 || res.getAmount() > 1000
 				|| res.getChosenItemName() == null || !hasItem(res.getChosenItemName())) {
+			return 0;
+		}
+		// Check at quote time and again at confirmation (transactAgreedDeal
+		// invokes getCharge) so an earlier quoted price cannot bypass the gate.
+		if (questLockedItems.contains(res.getChosenItemName())
+				&& !player.isQuestCompleted(requiredQuestSlot)) {
 			return 0;
 		}
 		int remaining = res.getAmount();
@@ -66,7 +144,15 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 			ItemValueService.refresh(item);
 			if (item.getValue() <= 0) { return 0; }
 			final int quantity = Math.min(remaining, item.getQuantity());
-			total += (long) quantity * item.getValue();
+			final int unitPrice;
+			if (ELIXIR_PRICE_RATIOS.containsKey(item.getName())
+					|| CONSUMABLE_PRICE_DIVISORS.containsKey(item.getName())) {
+				// Use the adjusted catalogue price without discounting saved item values twice.
+				unitPrice = (int) (getUnitPrice(item.getName()) * ItemValueService.getValueMultiplier(item));
+			} else {
+				unitPrice = getPurchasePrice(item.getValue(), item.getClass());
+			}
+			total += (long) quantity * unitPrice;
 			remaining -= quantity;
 			if (total > Integer.MAX_VALUE) { return 0; }
 		}

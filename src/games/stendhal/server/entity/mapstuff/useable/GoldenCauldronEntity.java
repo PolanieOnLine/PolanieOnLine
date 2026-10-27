@@ -153,6 +153,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return false;
 		}
 
+		releaseReservationIfIdle();
+
 		if (!isOpen()) {
 			if ((brewer != null) && !isControlledBy(player)) {
 				player.sendPrivateText("Kocioł jest teraz zarezerwowany przez " + brewer + ".");
@@ -211,7 +213,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	private boolean isBrewing() {
-		return readyAt > System.currentTimeMillis();
+		return readyAt > 0;
 	}
 
 	private boolean isContentEmpty() {
@@ -331,6 +333,13 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return;
 		}
 
+		if (slot.isFull()) {
+			setStatus("Wywar jest gotowy. Zwolnij miejsce w kotle, aby go odebrać.");
+			notifyWorldAboutChanges();
+			scheduleCompletion(1);
+			return;
+		}
+
 		final Item result = SingletonRepository.getEntityManager().getItem("wywar wąsatych smoków");
 		if (result == null) {
 			LOGGER.error("Unable to create wywar wąsatych smoków item");
@@ -444,8 +453,16 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	private void releaseReservationIfIdle() {
-		if ((brewer == null) || !isContentEmpty() || isOpen()) {
+		if ((brewer == null) || !isContentEmpty() || isBrewing()) {
 			return;
+		}
+
+		if (isOpen()) {
+			final Player owner = SingletonRepository.getRuleProcessor().getPlayer(brewer);
+			if (owner != null && owner.getZone() == getZone() && owner.nextTo(this)) {
+				return;
+			}
+			remove("open");
 		}
 
 		clearBrewer();

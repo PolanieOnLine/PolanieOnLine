@@ -106,7 +106,7 @@ public class MineTownLanternSpawnsTest {
 	}
 
 	@Test
-	public void pickupSchedulesExactlyThirtyMinutesAndStopKeepsCollectedLantern() {
+	public void pickupSchedulesExactlyOneHourAndStopKeepsCollectedLantern() {
 		final StendhalRPZone zone = zone("lantern_pickup_test");
 		spawns.start();
 		final PassiveEntityRespawnPoint point = zone.getPlantGrowers().get(0);
@@ -115,15 +115,17 @@ public class MineTownLanternSpawnsTest {
 			if (object instanceof Item) { collected = (Item) object; }
 		}
 		assertNotNull(collected);
+		final Point previousPosition = new Point(collected.getX(), collected.getY());
 		point.onFruitPicked(collected);
 		zone.remove(collected);
 		final Player player = PlayerTestHelper.createPlayer("lantern_collector");
 		assertTrue(player.equipToInventoryOnly(collected));
-		assertEquals(1800, TurnNotifier.get().getRemainingSeconds(point));
+		assertEquals(3600, TurnNotifier.get().getRemainingSeconds(point));
 		assertEquals(0, count(zones));
 		TurnNotifier.get().dontNotify(point);
 		point.onTurnReached(1);
 		assertEquals(1, count(zones));
+		assertFalse(previousPosition.equals(new Point(point.getX(), point.getY())));
 		assertEquals(1, player.getNumberOfEquipped(MineTownLanternSpawns.LANTERN_NAME));
 		spawns.stop();
 		assertEquals(0, count(zones));
@@ -160,6 +162,10 @@ public class MineTownLanternSpawnsTest {
 		assertFalse(MineTownLanternSpawns.isEligible(zone("int_admin_lantern_test")));
 		assertFalse(MineTownLanternSpawns.isEligible(zone("lantern_arena_test")));
 		assertFalse(MineTownLanternSpawns.isEligible(new StendhalRPZone("small", 8, 8)));
+		assertFalse(MineTownLanternSpawns.isEligible(zone("int_ados_house_71")));
+		assertFalse(MineTownLanternSpawns.isEligible(zone("int_nalwor_house1_basement")));
+		assertFalse(MineTownLanternSpawns.isEligible(zone("int_deniran_bank_blue_roof")));
+		assertFalse(MineTownLanternSpawns.isEligible(zone("int_zakopane_home_-1")));
 		spawns.start();
 		assertEquals(0, count(zones));
 	}

@@ -38,10 +38,9 @@ public class ItemRollMaterializationTest {
 		assertEquals(1.07, item.getRarityModifier("atk").doubleValue(), 0.0);
 		assertEquals(1.07, item.getRarityModifier("def").doubleValue(), 0.0);
 		assertEquals(1.07, item.getRarityModifier("rate").doubleValue(), 0.0);
-		assertEquals(1.07, item.getRarityModifier("lifesteal").doubleValue(), 0.0);
-		assertEquals(0.11, item.getDouble("lifesteal"), 0.0);
-		assertEquals("1.07", item.getMap(Item.RARITY_MODIFIERS).get("lifesteal"));
-		assertEquals("0.11", ItemAffixState.getValues(item).get("lifesteal"));
+		assertFalse(item.getRarityModifiers().containsKey("lifesteal"));
+		assertEquals(0.10, item.getDouble("lifesteal"), 0.0);
+		assertFalse(ItemAffixState.has(item, "lifesteal"));
 	}
 
 	@Test
@@ -58,12 +57,12 @@ public class ItemRollMaterializationTest {
 
 		assertEquals(127, item.getInt("atk"));
 		assertEquals(1.27, item.getRarityModifier("atk").doubleValue(), 0.0);
-		assertEquals(1.27, item.getRarityModifier("lifesteal").doubleValue(), 0.0);
-		assertEquals(0.13, item.getDouble("lifesteal"), 0.0);
+		assertFalse(item.getRarityModifiers().containsKey("lifesteal"));
+		assertEquals(0.10, item.getDouble("lifesteal"), 0.0);
 	}
 
 	@Test
-	public void commonSuppressesPositiveIntrinsicLifesteal() {
+	public void commonPreservesPositiveIntrinsicLifesteal() {
 		final Item item = combatItem();
 		final double intrinsic = 0.12512031523088826;
 		item.put("lifesteal", intrinsic);
@@ -72,7 +71,7 @@ public class ItemRollMaterializationTest {
 				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
 						.withRarity(ItemRarity.COMMON).build());
 
-		assertFalse(item.has("lifesteal"));
+		assertEquals(intrinsic, item.getDouble("lifesteal"), 0.0);
 		assertFalse(item.getRarityModifiers().containsKey("lifesteal"));
 	}
 

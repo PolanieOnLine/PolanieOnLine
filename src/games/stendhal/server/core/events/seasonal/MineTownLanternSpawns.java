@@ -11,6 +11,8 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -27,7 +29,8 @@ import marauroa.common.game.IRPZone;
 /** Bounded, quest-independent lantern population, owned by the live event. */
 public final class MineTownLanternSpawns {
 	private static final Logger LOGGER = Logger.getLogger(MineTownLanternSpawns.class);
-	public static final int RESPAWN_SECONDS = 30 * 60;
+	private static final Pattern EXCLUDED_ROOMS = Pattern.compile("(?:^|_)(?:house_?\\d+|bank|home)(?:_|$)");
+	public static final int RESPAWN_SECONDS = 60 * 60;
 	public static final String LANTERN_NAME = "zagubiona latarenka";
 	private final List<LanternPoint> points = new ArrayList<LanternPoint>();
 
@@ -81,11 +84,11 @@ public final class MineTownLanternSpawns {
 	}
 
 	static boolean isEligible(final StendhalRPZone zone) {
-		final String name = zone.getName();
+		final String name = zone.getName().toLowerCase(Locale.ROOT);
 		return zone.isPublicAccessible() && zone.getWidth() >= 16 && zone.getHeight() >= 16
 				&& !name.contains("admin") && !name.contains("jail") && !name.contains("prison")
 				&& !name.contains("arena") && !name.contains("deathmatch")
-				&& !name.contains("tutorial");
+				&& !name.contains("tutorial") && !EXCLUDED_ROOMS.matcher(name).find();
 	}
 
 	public void stop() {
@@ -154,6 +157,7 @@ public final class MineTownLanternSpawns {
 
 	static final class LanternPoint extends PassiveEntityRespawnPoint {
 		private Item lantern;
+		private Point lastSpawnPosition;
 		private boolean active = true;
 
 		LanternPoint() {
@@ -166,7 +170,7 @@ public final class MineTownLanternSpawns {
 
 		@Override
 		protected int getRandomTurnsForRegrow() {
-			// Exactly 30 minutes from pickup, not a Gaussian approximation.
+			// Use the exact configured interval from pickup, not a Gaussian approximation.
 			return meanTurnsForRegrow;
 		}
 
@@ -185,6 +189,7 @@ public final class MineTownLanternSpawns {
 			for (int attempt = 0; attempt < 50; attempt++) {
 				final Point candidate = zone.getRandomSpawnPosition(this);
 				if (candidate != null && candidate.x > 1 && candidate.y > 1
+						&& !candidate.equals(lastSpawnPosition)
 						&& candidate.x < zone.getWidth() - 2 && candidate.y < zone.getHeight() - 2
 						&& zone.getEntitiesAt(candidate.x, candidate.y).isEmpty()
 						&& zone.getPortal(candidate.x, candidate.y) == null
@@ -209,6 +214,7 @@ public final class MineTownLanternSpawns {
 			item.setPlantGrower(this);
 			item.setFromCorpse(true);
 			zone.add(item, false);
+			lastSpawnPosition = new Point(position);
 			lantern = item;
 			hasPickableFruit = true;
 			return item;

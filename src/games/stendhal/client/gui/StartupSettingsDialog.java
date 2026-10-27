@@ -27,6 +27,8 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import games.stendhal.client.ClientLanguage;
+import games.stendhal.common.Translation;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 
@@ -44,6 +46,7 @@ final class StartupSettingsDialog extends JDialog {
 
 		JComponent settings = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		settings.setBorder(BorderFactory.createEmptyBorder(pad, pad, 0, pad));
+		settings.add(createLanguageSelector(), SLayout.EXPAND_X);
 		settings.add(createWindowModeSelector(), SLayout.EXPAND_X);
 
 		final JSlider masterVolume = createMasterVolumeSlider(startupMusic);
@@ -76,10 +79,31 @@ final class StartupSettingsDialog extends JDialog {
 		add(closeButton);
 
 		WindowUtils.closeOnEscape(this);
+		getRootPane().putClientProperty(UiTranslation.AFTER_TRANSLATION, (Runnable) () -> {
+			if (isDisplayable()) pack();
+		});
 		WindowUtils.watchFontSize(this);
 		setResizable(false);
 		pack();
 		setLocationRelativeTo(parent);
+	}
+
+	private JComponent createLanguageSelector() {
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
+				SBoxLayout.COMMON_PADDING);
+		final JComboBox<String> selector = new JComboBox<String>(new String[] { "Polski", "English", "Español" });
+		selector.setName("language-selector");
+		selector.setSelectedIndex(Translation.SUPPORTED_LANGUAGES.indexOf(ClientLanguage.getLanguage()));
+		selector.addActionListener(event -> {
+			String language = Translation.SUPPORTED_LANGUAGES.get(selector.getSelectedIndex());
+			if (!language.equals(ClientLanguage.getLanguage())) ClientLanguage.choose(language);
+		});
+		JLabel label = new JLabel("Język gry:");
+		label.setLabelFor(selector);
+		row.add(label);
+		row.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		row.add(selector);
+		return row;
 	}
 
 	private JComponent createWindowModeSelector() {
@@ -87,6 +111,15 @@ final class StartupSettingsDialog extends JDialog {
 				SBoxLayout.COMMON_PADDING);
 		JLabel label = new JLabel("Tryb wyświetlania gry");
 		final JComboBox<WindowMode> selector = new JComboBox<WindowMode>(WindowMode.values());
+		final javax.swing.ListCellRenderer<? super WindowMode> renderer = selector.getRenderer();
+		selector.setRenderer((list, value, index, selected, focus) -> {
+			java.awt.Component display = renderer.getListCellRendererComponent(list, value, index, selected, focus);
+			if (display instanceof JLabel) {
+				JLabel option = (JLabel) display;
+				option.setText(ClientLanguage.getText(option.getText()));
+			}
+			return display;
+		});
 		selector.setSelectedItem(WindowModeController.getConfiguredMode());
 		selector.setToolTipText("Wybrany tryb zostanie użyty przez okno gry po zalogowaniu");
 		label.setToolTipText(selector.getToolTipText());

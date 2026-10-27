@@ -22,6 +22,7 @@ import java.util.Set;
 
 import javax.swing.ToolTipManager;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
@@ -40,6 +41,7 @@ final class ItemRarityPresentation {
 	private static final String BETTER_COLOR = "#62d26f";
 	private static final String WORSE_COLOR = "#ef6a62";
 	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
+	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.#");
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -122,7 +124,8 @@ final class ItemRarityPresentation {
 		appendRarityGlowMarker(tooltip, rarity);
 		/* Do not paint a private card background here. StyledToolTipUI tiles the
 		 * currently selected client skin behind this transparent HTML content. */
-		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
+		tooltip.append("<table width='").append(comparisonItem == null ? 190 : 240)
+				.append("' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);
 		appendComparisonHeader(tooltip, comparisonItem);
@@ -141,7 +144,7 @@ final class ItemRarityPresentation {
 		}
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
-		return tooltip.toString();
+		return games.stendhal.client.ClientLanguage.getText(tooltip.toString());
 	}
 
 	/** Exact stack size; the small inventory icon can continue using K/M labels. */
@@ -149,9 +152,7 @@ final class ItemRarityPresentation {
 		if (!(entity instanceof Item) || !"money".equals(entity.getName())) {
 			return null;
 		}
-		final int quantity = Math.max(0, ((Item) entity).getQuantity());
-		final String amount = String.format(Locale.ROOT, "%,d", quantity).replace(',', ' ');
-		return "<html>Monety w stosie: <b>" + amount + "</b></html>";
+		return MoneyTooltip.format(((Item) entity).getQuantity());
 	}
 
 	static String resolveCategory(final RPObject object) {
@@ -220,7 +221,7 @@ final class ItemRarityPresentation {
 		if (rarity != null) {
 			tooltip.append("<br><font size='-1' color='")
 					.append(getTextColor()).append("'>")
-					.append(escapeHtml(rarity.getPolishDisplayName()))
+					.append(escapeHtml(ClientLanguage.getText(rarity.getPolishDisplayName())))
 					.append("</font>");
 		}
 		appendUpgrade(tooltip, object, rarity);
@@ -254,7 +255,8 @@ final class ItemRarityPresentation {
 				: rarity.getColorHex();
 		tooltip.append("<br><font size='-1' color='")
 				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
-				.append("Ulepszenie: +").append(upgradeLevel);
+				.append(escapeHtml(ClientLanguage.getText("Ulepszenie:")))
+				.append(" +").append(upgradeLevel);
 		if (maxUpgradeLevel > 0) {
 			tooltip.append(" / +").append(maxUpgradeLevel);
 		}
@@ -269,20 +271,21 @@ final class ItemRarityPresentation {
 		appendDivider(tooltip);
 		appendPrimaryValue(tooltip,
 				formatOneDecimal(performance.getBaseDps())
-						+ " pkt. obrażeń na sekundę"
-						+ (equipped == null ? "" : delta(
-								performance.getBaseDps(), equipped.getBaseDps(), 1)), null);
+						+ " pkt. obrażeń na sekundę",
+				equipped == null ? "" : delta(
+						performance.getBaseDps(), equipped.getBaseDps(), 1));
 
-		tooltip.append("<table cellpadding='0' cellspacing='0'>");
+		appendStatTableStart(tooltip);
 		appendTreeDetail(tooltip, true,
 				"[" + performance.getDamageMin() + "–"
 						+ performance.getDamageMax()
 						+ "] pkt. obrażeń za trafienie",
 				equipped == null ? "" : damageRangeDelta(performance, equipped));
 		appendTreeDetail(tooltip, false,
-				formatTwoDecimals(performance.getAttacksPerSecond())
+				ClientLanguage.getText(formatTwoDecimals(performance.getAttacksPerSecond())
 						+ " ataku na sekundę ("
-						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")",
+						+ ClientLanguage.getText(getWeaponSpeedLabel(performance.getAttacksPerSecond())) + ")")
+						.replace(" (", "\n("),
 				equipped == null ? "" : delta(performance.getAttacksPerSecond(),
 						equipped.getAttacksPerSecond(), 2));
 		tooltip.append("</table>");
@@ -300,18 +303,17 @@ final class ItemRarityPresentation {
 			tooltip.append("<div style='margin-top:3px'><font size='-1' color='")
 					.append(getTextColor()).append("'>");
 			if (range > 0 || equippedRange > 0) {
-				tooltip.append("Zasięg: ").append(range)
-						.append(delta(range, equippedRange, 0));
+				appendStatTableStart(tooltip);
+				appendStatRow(tooltip, "Zasięg: " + range,
+						equippedItem == null ? "" : delta(range, equippedRange, 0), false);
+				tooltip.append("</table>");
 			}
 			if (damageType != null) {
-				if (range > 0 || equippedRange > 0) {
-					tooltip.append("<br>");
-				}
 				tooltip.append("Typ obrażeń: ")
-						.append(escapeHtml(localizeDamageType(damageType)));
+						.append(escapeHtml(ClientLanguage.getText(localizeDamageType(damageType))));
 			}
 			if (statuses != null && !statuses.isEmpty()) {
-				if (range > 0 || equippedRange > 0 || damageType != null) {
+				if (damageType != null) {
 					tooltip.append("<br>");
 				}
 				tooltip.append("Efekty trafienia: ")
@@ -331,21 +333,42 @@ final class ItemRarityPresentation {
 		appendDivider(tooltip);
 		final int equippedArmour = WeaponPerformanceCalculator.getInt(equippedItem,
 				ItemTooltip.DEFENSE);
-		appendPrimaryValue(tooltip, armour + " pkt. pancerza"
-				+ (equippedItem == null ? ""
-						: delta(armour, equippedArmour, 0)), null);
+		appendPrimaryValue(tooltip, ClientLanguage.getText(armour + " pkt. pancerza"),
+				equippedItem == null ? "" : delta(armour, equippedArmour, 0));
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
-			final String value, final String details) {
+			final String value, final String comparison) {
 		/* Keep the primary value at the client's configured base font size. The
 		 * bold weight establishes hierarchy without oversized Swing HTML text. */
-		tooltip.append("<div><b>").append(value).append("</b>");
-		if (details != null && !details.isEmpty()) {
-			tooltip.append("<br><font size='-1'>").append(details)
-					.append("</font>");
+		appendStatTableStart(tooltip);
+		appendStatRow(tooltip, value, comparison, true);
+		tooltip.append("</table>");
+	}
+
+	private static void appendStatTableStart(final StringBuilder tooltip) {
+		tooltip.append("<table width='100%' cellpadding='0' cellspacing='0'>");
+	}
+
+	private static void appendStatRow(final StringBuilder tooltip,
+			final String valueHtml, final String comparison, final boolean primary) {
+		tooltip.append("<tr><td valign='top'>")
+				.append("<font color='").append(getTextColor())
+				.append(primary ? "'><b>" : "' size='-1'>")
+				.append(valueHtml).append(primary ? "</b></font>" : "</font>").append("</td>");
+		appendComparisonCell(tooltip, comparison, primary);
+		tooltip.append("</tr>");
+	}
+
+	private static void appendComparisonCell(final StringBuilder tooltip,
+			final String comparison, final boolean primary) {
+		if (!comparison.isEmpty()) {
+			tooltip.append("<td align='right' valign='top' nowrap='nowrap'>")
+					.append("<font color='").append(getTextColor())
+					.append(primary ? "'><b>" : "' size='-1'>")
+					.append("&nbsp;").append(comparison)
+					.append(primary ? "</b></font>" : "</font>").append("</td>");
 		}
-		tooltip.append("</div>");
 	}
 
 	private static void appendTreeDetail(final StringBuilder tooltip,
@@ -357,9 +380,10 @@ final class ItemRarityPresentation {
 						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
 				.append("</font></td><td><font size='-1' color='")
 				.append(getTextColor()).append("'>")
-				.append(escapeHtml(details))
-				.append(comparison)
-				.append("</font></td></tr>");
+				.append(escapeHtml(details).replace("\n", "<br>"))
+				.append("</font></td>");
+		appendComparisonCell(tooltip, comparison, false);
+		tooltip.append("</tr>");
 	}
 
 	private static void appendDivider(final StringBuilder tooltip) {
@@ -400,10 +424,54 @@ final class ItemRarityPresentation {
 				WeaponPerformanceCalculator.getInt(object, ItemTooltip.SKILL_ATTACK),
 				WeaponPerformanceCalculator.getInt(equippedItem,
 						ItemTooltip.SKILL_ATTACK), equippedItem != null);
+		if (hasTooltipValue(object, ItemTooltip.BASE_LIFESTEAL)
+				|| hasTooltipValue(equippedItem, ItemTooltip.BASE_LIFESTEAL)) {
+			appendLifeStealStat(stats, object, equippedItem);
+		}
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "poisoned",
+				"odporności na zatrucie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "bleeding",
+				"odporności na krwawienie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "shocked",
+				"odporności na szok", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "confused",
+				"odporności na dezorientację", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "heavy",
+				"odporności na spowolnienie", true);
+		appendPercentageBonus(stats, object, equippedItem,
+				ItemTooltip.STATUS_RESISTANCE_PREFIX + "stunned",
+				"odporności na ogłuszenie", true);
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
-			tooltip.append("<font size='-1'>").append(stats).append("</font>");
+			appendStatTableStart(tooltip);
+			tooltip.append(stats).append("</table>");
 		}
+	}
+
+	private static void appendLifeStealStat(final StringBuilder stats,
+			final RPObject object, final RPObject equippedItem) {
+		final double base = WeaponPerformanceCalculator.getDouble(object, ItemTooltip.BASE_LIFESTEAL) * 100.0;
+		final double previousBase = WeaponPerformanceCalculator.getDouble(equippedItem, ItemTooltip.BASE_LIFESTEAL) * 100.0;
+		if (base == 0.0 && previousBase == 0.0) return;
+		final double value = effectiveLifeStealPercent(object);
+		final double previous = effectiveLifeStealPercent(equippedItem);
+		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
+		final double bonus = WeaponPerformanceCalculator.getInt(object, ItemTooltip.LIFESTEAL_EFFECTIVENESS) > 0
+				? value - base : 0.0;
+		appendBonusLine(stats, signed(formatCompact(value)) + "% " + ClientLanguage.getText("kradzieży życia")
+				+ (bonus > 0.0 ? " (+" + formatCompact(bonus) + "%)" : ""),
+				equippedItem == null ? "" : delta(value, previous, 1));
+	}
+
+	private static double effectiveLifeStealPercent(final RPObject object) {
+		return WeaponPerformanceCalculator.getDouble(object,
+				hasTooltipValue(object, ItemTooltip.EFFECTIVE_LIFESTEAL)
+						? ItemTooltip.EFFECTIVE_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
@@ -416,15 +484,8 @@ final class ItemRarityPresentation {
 		/* Flat equipment values are the most important secondary properties and
 		 * stay directly below the item's primary attack/armour block. */
 		if (!weapon) {
-			final int attack = Math.max(
-					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(object,
-							ItemTooltip.RANGED_ATTACK));
-			final int equippedAttack = Math.max(
-					WeaponPerformanceCalculator.getInt(equippedItem,
-							ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(equippedItem,
-							ItemTooltip.RANGED_ATTACK));
+			final int attack = equipmentAttack(object);
+			final int equippedAttack = equipmentAttack(equippedItem);
 			appendComparableBonusLine(coreBonuses, attack, equippedAttack,
 					"ataku", equippedItem != null);
 		}
@@ -442,14 +503,6 @@ final class ItemRarityPresentation {
 				"zmniejszenia wagi broni (minimum 2)");
 		appendIntegerBonus(coreBonuses, object, equippedItem, ItemTooltip.HEALTH,
 				"zdrowia");
-		appendFlatAffixBonus(coreBonuses, object, equippedItem,
-				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
-				ItemTooltip.FLAT_ATTACK_BONUS, "dodatkowego ataku",
-				"ataku z affixu");
-		appendFlatAffixBonus(coreBonuses, object, equippedItem,
-				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
-				ItemTooltip.FLAT_DEFENSE_BONUS, "dodatkowego pancerza",
-				"pancerza z affixu");
 
 		/* Resistances form their own visual block so the player can separate
 		 * elemental protection from the item's defining flat statistics. */
@@ -534,15 +587,24 @@ final class ItemRarityPresentation {
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
+		appendLifeStealAffix(specialBonuses, object, equippedItem);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
-				ItemTooltip.LIFESTEAL,
-				"kradzieży życia", true);
+				ItemTooltip.LIFESTEAL_EFFECTIVENESS,
+				"skuteczności kradzieży życia", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
+		appendFlatAffixBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
+				ItemTooltip.FLAT_ATTACK_BONUS, "dodatkowego ataku",
+				"ataku z affixu");
+		appendFlatAffixBonus(specialBonuses, object, equippedItem,
+				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
+				ItemTooltip.FLAT_DEFENSE_BONUS, "dodatkowego pancerza",
+				"pancerza z affixu");
 
 		appendBonusSection(tooltip, coreBonuses);
 		appendBonusSection(tooltip, resistances);
@@ -555,7 +617,8 @@ final class ItemRarityPresentation {
 			return;
 		}
 		appendDivider(tooltip);
-		tooltip.append("<font size='-1'>").append(section).append("</font>");
+		appendStatTableStart(tooltip);
+		tooltip.append(section).append("</table>");
 	}
 
 	private static void appendResistance(final StringBuilder bonuses,
@@ -569,7 +632,7 @@ final class ItemRarityPresentation {
 			return;
 		}
 		appendBonusLine(bonuses, signed(formatCompact(modifier.doubleValue()))
-				+ "% odporności na " + label,
+				+ "% odporności na " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(modifier.doubleValue(),
 						equippedModifier == null ? 0.0
 								: equippedModifier.doubleValue(), 1));
@@ -584,8 +647,33 @@ final class ItemRarityPresentation {
 		if (value == 0.0 && (equippedItem == null || equippedValue == 0.0)) {
 			return;
 		}
-		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + label,
+		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(value, equippedValue, 1));
+	}
+
+	private static void appendLifeStealAffix(final StringBuilder bonuses,
+			final RPObject object, final RPObject equippedItem) {
+		final double value = WeaponPerformanceCalculator.getDouble(object,
+				hasTooltipValue(object, ItemTooltip.BASE_LIFESTEAL)
+						? ItemTooltip.AFFIX_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
+		final double previous = WeaponPerformanceCalculator.getDouble(equippedItem,
+				hasTooltipValue(equippedItem, ItemTooltip.BASE_LIFESTEAL)
+						? ItemTooltip.AFFIX_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
+		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
+		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText("kradzieży życia"),
+				equippedItem == null ? "" : delta(value, previous, 1));
+	}
+
+	private static int equipmentAttack(final RPObject object) {
+		final int melee = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.ATTACK);
+		final int ranged = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.RANGED_ATTACK);
+		// An absent or zero attack must not hide a penalty in the other stat.
+		if (melee == 0) {
+			return ranged;
+		}
+		return ranged == 0 ? melee : Math.max(melee, ranged);
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,
@@ -628,13 +716,8 @@ final class ItemRarityPresentation {
 			final String label, final int value, final int equippedValue,
 			final boolean comparing) {
 		if (value != 0 || (comparing && equippedValue != 0)) {
-			if (stats.length() > 0) {
-				stats.append("<br>");
-			}
-			stats.append(escapeHtml(label + ": " + value));
-			if (comparing) {
-				stats.append(delta(value, equippedValue, 0));
-			}
+			appendStatRow(stats, escapeHtml(label + ": " + value),
+					comparing ? delta(value, equippedValue, 0) : "", false);
 		}
 	}
 
@@ -644,7 +727,7 @@ final class ItemRarityPresentation {
 		if (value == 0 && (!comparing || equippedValue == 0)) {
 			return;
 		}
-		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label,
+		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + ClientLanguage.getText(label),
 				comparing ? delta(value, equippedValue, 0) : "");
 	}
 
@@ -655,10 +738,7 @@ final class ItemRarityPresentation {
 
 	private static void appendBonusLine(final StringBuilder bonuses,
 			final String line, final String comparison) {
-		if (bonuses.length() > 0) {
-			bonuses.append("<br>");
-		}
-		bonuses.append("&#9670; ").append(escapeHtml(line)).append(comparison);
+		appendStatRow(bonuses, "&#9670; " + escapeHtml(line), comparison, false);
 	}
 
 	private static Double getResistanceModifier(final RPObject object,
@@ -697,7 +777,8 @@ final class ItemRarityPresentation {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
 					.append("Leczenie: <b>+").append(amount)
-					.append(" PW</b> (natychmiastowe)</font>");
+					.append(' ').append(escapeHtml(ClientLanguage.getText("PW")))
+					.append("</b> (natychmiastowe)</font>");
 			return;
 		}
 
@@ -712,8 +793,9 @@ final class ItemRarityPresentation {
 				ItemTooltip.CONSUMABLE_HEALING_DURATION_SECONDS);
 		appendDivider(tooltip);
 		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'>")
-				.append("Leczenie: <b>+").append(regen).append(" PW co ")
-				.append(formatCompact(frequency)).append(" s</b>");
+				.append("Leczenie: <b>+").append(regen).append(' ')
+				.append(escapeHtml(ClientLanguage.getText("PW co " + formatCompact(frequency) + " s")))
+				.append("</b>");
 		if (duration > 0.0) {
 			tooltip.append("<br>Czas leczenia: ")
 					.append(formatCompact(duration)).append(" s");
@@ -727,7 +809,7 @@ final class ItemRarityPresentation {
 		final int minLevel = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.MIN_LEVEL);
 		if (minLevel > 0) {
-			footer.append("Wymagany poziom: ").append(minLevel);
+			footer.append(escapeHtml(ClientLanguage.getText("Wymagany poziom: " + minLevel)));
 		}
 		final int durability = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.DURABILITY);
@@ -742,6 +824,13 @@ final class ItemRarityPresentation {
 		if (scrollDestination != null) {
 			appendFooterSeparator(footer);
 			footer.append(escapeHtml(scrollDestination));
+		}
+		final String savedPosition = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.SAVED_POSITION);
+		if (savedPosition != null && !savedPosition.isEmpty()) {
+			appendFooterSeparator(footer);
+			footer.append(escapeHtml(ClientLanguage.getText("Zapisana pozycja:")
+					+ " " + savedPosition));
 		}
 		if (footer.length() > 0) {
 			appendDivider(tooltip);
@@ -877,9 +966,8 @@ final class ItemRarityPresentation {
 		return value.startsWith("-") ? value : "+" + value;
 	}
 
-	private static String formatCompact(final double value) {
-		return Math.rint(value) == value
-				? Integer.toString((int) value) : formatOneDecimal(value);
+	private static synchronized String formatCompact(final double value) {
+		return COMPACT_DECIMAL.format(value);
 	}
 
 	private static synchronized String formatOneDecimal(final double value) {

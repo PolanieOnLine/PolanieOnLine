@@ -34,7 +34,8 @@ public class EventLine {
 	}
 
 	public String getText() {
-		return text;
+		if (type == NotificationType.CLIENT) return games.stendhal.client.ClientLanguage.getText(text);
+		return type == NotificationType.SERVER ? games.stendhal.client.ClientLanguage.getWelcomeText(text) : text;
 	}
 
 	public void setText(final String text) {

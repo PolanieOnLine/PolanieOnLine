@@ -21,6 +21,7 @@ import { ItemContainerImplementation } from "../component/ItemContainerImplement
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 import { Chat } from "../../util/Chat";
+import { GameLanguage } from "../../util/GameLanguage";
 import { ConfigManager } from "../../util/ConfigManager";
 
 type QuickSlotData = {
@@ -48,9 +49,12 @@ export class QuickSlots extends Component {
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
 	private viewportObserver?: MutationObserver;
+	private referenceObserver?: MutationObserver;
+	private referenceElement: HTMLElement | null = null;
 	private readonly slots: HTMLButtonElement[] = [];
 	private readonly slotData = new Map<HTMLButtonElement, QuickSlotData>();
 	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
+	private readonly slotIcons = new Map<HTMLButtonElement, HTMLElement>();
 	private assignments: Array<QuickSlotAssignment | null> = [];
 	private readonly containerId: string;
 	private readonly allowedClasses = new Set(["potion", "drink", "food", "scroll"]);
@@ -95,6 +99,9 @@ export class QuickSlots extends Component {
 		this.mutationObserver = undefined;
 		this.viewportObserver?.disconnect();
 		this.viewportObserver = undefined;
+		this.referenceObserver?.disconnect();
+		this.referenceObserver = undefined;
+		this.referenceElement = null;
 	}
 
 	private buildSlots() {
@@ -123,6 +130,11 @@ export class QuickSlots extends Component {
 				this.onTouchEnd(event, slot);
 			});
 
+			const icon = document.createElement("span");
+			icon.className = "item-slot-icon";
+			icon.setAttribute("aria-hidden", "true");
+			slot.appendChild(icon);
+			this.slotIcons.set(slot, icon);
 			const count = document.createElement("span");
 			count.classList.add("quick-slot__count");
 			slot.appendChild(count);
@@ -159,6 +171,26 @@ export class QuickSlots extends Component {
 		}
 	}
 
+	/** Follow the anchor after its own layout observer runs, not only on server updates. */
+	private observeReference(reference: HTMLElement | null) {
+		if (typeof MutationObserver === "undefined"
+				|| (this.referenceObserver && this.referenceElement === reference)) {
+			return;
+		}
+		this.referenceObserver?.disconnect();
+		this.referenceObserver = new MutationObserver(() => this.update());
+		this.referenceElement = reference;
+		const container = this.componentElement.parentElement;
+		if (container) {
+			// Also rebind when a controller mounts, removes or replaces the anchor.
+			// No subtree observation: our slot writes must not trigger this observer.
+			this.referenceObserver.observe(container, { childList: true });
+		}
+		if (reference) {
+			this.referenceObserver.observe(reference, { attributes: true, attributeFilter: ["style", "class"] });
+		}
+	}
+
 	public update(): void {
 		if (!this.slots.length) {
 			return;
@@ -169,6 +201,7 @@ export class QuickSlots extends Component {
 		const reference = document.getElementById("attack-button")
 			|| document.getElementById("right-panel-toggle")
 			|| document.getElementById("loot-button");
+		this.observeReference(reference);
 		const firstSlot = this.slots[0];
 		const width = firstSlot.offsetWidth || 32;
 		const height = firstSlot.offsetHeight || 32;
@@ -244,13 +277,13 @@ export class QuickSlots extends Component {
 		singletons.getHeldObjectManager().onRelease();
 
 		if (!item) {
-			Chat.log("warning", "Nie udało się znaleźć przedmiotu w ekwipunku.");
+			Chat.log("warning", GameLanguage.getText("Nie udało się znaleźć przedmiotu w ekwipunku."));
 			return;
 		}
 
 		const itemClass = String(item["class"] || "").toLowerCase();
 		if (!this.allowedClasses.has(itemClass)) {
-			Chat.log("warning", "Ten przedmiot nie może trafić do szybkiego slotu.");
+			Chat.log("warning", GameLanguage.getText("Ten przedmiot nie może trafić do szybkiego slotu."));
 			return;
 		}
 
@@ -357,6 +390,7 @@ export class QuickSlots extends Component {
 	}
 
 	private updateSlotVisual(slot: HTMLButtonElement, item: Item) {
+		const icon = this.slotIcons.get(slot)!;
 		const count = this.slotCounts.get(slot);
 		if (count) {
 			count.textContent = typeof item.formatQuantity === "function" ? item.formatQuantity() : "";
@@ -376,10 +410,9 @@ export class QuickSlots extends Component {
 			if (atlas) {
 				const atlasPosition = atlas.positions.get(atlasKey);
 				if (atlasPosition) {
-					slot.style.backgroundImage = `url(${atlas.dataUrl}), url(${Paths.gui}/panel/empty_btn.png)`;
-					slot.style.backgroundPosition = `${-(atlasPosition.x) + 1}px ${-(atlasPosition.y) + 1}px, center center`;
-					slot.style.backgroundRepeat = "no-repeat, no-repeat";
-					slot.style.backgroundSize = "auto, contain";
+					icon.style.backgroundImage = `url(${atlas.dataUrl})`;
+					icon.style.backgroundPosition = `${-atlasPosition.x}px ${-atlasPosition.y}px`;
+					icon.style.backgroundSize = "auto";
 					ItemContainerImplementation.updateCursorFor(slot, item);
 					ItemContainerImplementation.updateToolTipFor(slot, item);
 					return;
@@ -395,15 +428,16 @@ export class QuickSlots extends Component {
 		const yOffset = (item["state"] || 0) * -tileSize;
 		const spritePath = singletons.getSpriteStore().checkPath(Paths.sprites
 			+ "/items/" + item["class"] + "/" + item["subclass"] + ".png");
-		slot.style.backgroundImage = `url(${spritePath}), url(${Paths.gui}/panel/empty_btn.png)`;
-		slot.style.backgroundPosition = `${xOffset + 1}px ${yOffset + 1}px, center center`;
-		slot.style.backgroundRepeat = "no-repeat, no-repeat";
-		slot.style.backgroundSize = `${tileSize}px ${tileSize}px, contain`;
+		icon.style.backgroundImage = `url(${spritePath})`;
+		icon.style.backgroundPosition = `${xOffset}px ${yOffset}px`;
+		// Keep the sprite sheet at native size; offsets select one 32px frame.
+		icon.style.backgroundSize = "auto";
 		ItemContainerImplementation.updateCursorFor(slot, item);
 		ItemContainerImplementation.updateToolTipFor(slot, item);
 	}
 
 	private setEmptySlotVisual(slot: HTMLButtonElement) {
+		this.slotIcons.get(slot)!.style.backgroundImage = "none";
 		slot.style.backgroundImage = `url(${Paths.gui}/panel/empty_btn.png)`;
 		slot.style.backgroundPosition = "center center";
 		slot.style.backgroundRepeat = "no-repeat";

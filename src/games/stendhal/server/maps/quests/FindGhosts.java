@@ -216,7 +216,7 @@ public class FindGhosts extends AbstractQuest {
 							reply += " Jeżeli spotkasz inne duchy to proszę powiedz mi ich imiona.";
 							npc.say(reply);
 						} else {
-							player.setBaseHP(100 + player.getBaseHP());
+							player.setBaseHP(100 + player.getUncappedBaseHP());
 							player.heal(100, true);
 							player.addXP(5000);
 							player.addKarma(15);

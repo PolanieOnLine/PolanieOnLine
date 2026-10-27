@@ -201,6 +201,45 @@ div.itemSlot::before {
 	z-index: 3;
 }
 
+/* Prepainted icon + outline: desktop strip transforms or fixed touch-frame opacity. */
+.item-slot-animation {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 34px;
+	height: 34px;
+	overflow: hidden;
+	pointer-events: none;
+	z-index: 2;
+}
+
+.item-slot-animation__sheet {
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 34px;
+	background-repeat: no-repeat;
+	pointer-events: none;
+	image-rendering: pixelated;
+	will-change: transform;
+}
+
+.item-slot-animation__frames,
+.item-slot-animation__frame {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 34px;
+	height: 34px;
+	pointer-events: none;
+}
+
+.item-slot-animation__frame {
+	background-repeat: no-repeat;
+	image-rendering: pixelated;
+	will-change: opacity;
+}
+
 .item-rarity-common { --item-rarity-color: #9e9e9e; }
 /* Session-only administrator experiment; geometry and sprite clipping stay unchanged. */
 .admin-diagnostic-simple-slots div.itemSlot::before {
@@ -337,6 +376,10 @@ div.itemSlot {
 .item-rarity-tooltip.item-rarity-rare {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(74, 144, 226, 0.09);
 }
+
+.item-rarity-tooltip--comparing {
+	width: 240px;
+}
 .item-rarity-tooltip.item-rarity-epic {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(155, 89, 182, 0.12);
 }
@@ -395,8 +438,10 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__tree-value {
+	flex: 1 1 auto;
 	min-width: 0;
 	color: #f3efe7;
+	white-space: pre-line;
 }
 
 .item-rarity-tooltip__detail,
@@ -405,8 +450,29 @@ div.itemSlot {
 	font-size: 11px;
 }
 
-.item-rarity-tooltip__bonus::first-letter {
+.item-rarity-tooltip__bonus > .item-rarity-tooltip__value {
+	display: block;
+}
+
+.item-rarity-tooltip__bonus > .item-rarity-tooltip__value::first-letter {
 	color: #a37861;
+}
+
+.item-rarity-tooltip__stat-row {
+	display: flex;
+	align-items: baseline;
+	column-gap: 8px;
+}
+
+.item-rarity-tooltip__stat-row > .item-rarity-tooltip__value {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.item-tooltip-comparison {
+	flex: 0 0 auto;
+	margin-left: auto;
+	white-space: nowrap;
 }
 
 .item-rarity-tooltip__affix {
@@ -1173,7 +1239,8 @@ span.lognick {
 
 #client.mobile-floating-ui #rightColumn {
 	position: relative;
-	transform: translateX(0);
+	/* A transform would trap the fixed reserve window inside this clipped column. */
+	transform: none;
 	transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease;
 }
 
@@ -1560,6 +1627,7 @@ button.windowtitleminimize:first-child {
 
 .quick-slot__count {
 	position: absolute;
+	z-index: 2;
 	right: 3px;
 	bottom: 2px;
 	color: #fff;
@@ -2026,6 +2094,47 @@ body.mobile-floating-ui #left-panel-toggle,
 
 .toggle--off .toggle__thumb {
 	left: 0;
+}
+
+.settings-dialog {
+	width: min(720px, calc(100vw - 32px));
+	max-height: calc(100dvh - 64px);
+	overflow-y: auto;
+}
+
+.settings-dialog > .verticalgroup,
+.settings-dialog #settings-tabs { min-height: 0; width: 100%; }
+.settings-dialog .tabpanel-h { width: 100%; box-sizing: border-box; min-height: 340px; max-height: 65dvh; gap: 16px; }
+.settings-dialog .tabpanel-tabs { flex: 0 0 165px; gap: 6px; }
+.settings-dialog .tabpanel-tabs button { text-align: left; padding: 6px; white-space: normal; }
+.settings-dialog .tabpanel-content { min-width: 0; }
+.settings-category { padding: 8px; min-width: 0; }
+.settings-category fieldset { margin: 0 0 12px; padding: 8px; min-width: 0; }
+.settings-category fieldset > *:not(legend) { margin-bottom: 8px; }
+.settings-category fieldset > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.settings-category fieldset > div > label { flex: 1 1 160px; }
+.settings-category select, .settings-category input { max-width: 100%; min-width: 0; }
+.settings-category .settings-range { display: flex; align-items: center; gap: 8px; }
+.settings-category .settings-input__layout { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.settings-category .vgroupcolr { padding-left: 0; }
+.settings-category .checksetting { white-space: normal; }
+.settings-category-controls > .verticalgroup { width: 100%; }
+.settings-category-controls .settings-input__layout > div { width: 100%; }
+.settings-saved-note { margin-right: auto; font-size: 12px; align-self: center; }
+.settings-dialog .dialogbuttons { flex-wrap: wrap; gap: 6px; }
+
+.character-selection { width: min(760px, calc(100vw - 32px)); max-width: calc(100vw - 32px); }
+.character-selection #characters { display: grid; width: 100%; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); align-items: stretch; gap: 4px; max-height: 65dvh; overflow-y: auto; }
+.character-card { display: flex; align-items: center; gap: 6px; text-align: left; padding: 8px; min-width: 0; color: inherit; font-size: 13px; background: var(--background-url); }
+.character-card:focus-visible { outline: 2px solid #ffdf80; outline-offset: -3px; }
+.character-card__preview { width: 48px; height: 64px; flex: 0 0 48px; image-rendering: pixelated; }
+.character-card__details { display: flex; flex-direction: column; gap: 3px; overflow-wrap: anywhere; min-width: 0; }
+
+@media (max-width: 600px) {
+	.settings-dialog .tabpanel-h { flex-direction: column; gap: 8px; min-height: 0; max-height: 65dvh; }
+	.settings-dialog .tabpanel-tabs { flex: 0 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.settings-dialog .tabpanel-content { flex: 1 1 auto; }
+	.character-selection #characters { grid-template-columns: 1fr; }
 }
 
 #settings-general {

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.RingOfLife;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -83,9 +84,9 @@ public class RingMaker extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					final RingOfLife emeraldRing = (RingOfLife) player.getFirstEquipped("pierścień szmaragdowy");
+					final RingOfLife emeraldRing = findBrokenRing(player);
 
-						if (emeraldRing.isBroken()) {
+						if (emeraldRing != null) {
 							npc.say("Co za szkoda twój pierścień szmaragdowy jest zepsuty. Mogę go naprawić ale to #kosztuje.");
 						} else {
 							// ring is not broken so he just lets player know
@@ -167,7 +168,8 @@ public class RingMaker extends AbstractQuest {
 							public void fire(final Player player,
 									final Sentence sentence,
 									final EventRaiser npc) {
-								final RingOfLife emeraldRing = (RingOfLife) player.getFirstEquipped("pierścień szmaragdowy");
+								final RingOfLife emeraldRing = findBrokenRing(player);
+								player.drop(emeraldRing);
 								if (player.isBoundTo(emeraldRing)) {
 									player.setQuest(QUEST_SLOT, "forging;"
 											+ System.currentTimeMillis());
@@ -177,8 +179,17 @@ public class RingMaker extends AbstractQuest {
 								}
 
 							}
-						},
-						new DropItemAction("pierścień szmaragdowy")));
+						}) {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						final RingOfLife ring = findBrokenRing(player);
+						if (ring == null) {
+							npc.say("Nie masz przy sobie uszkodzonego pierścienia szmaragdowego do naprawy.");
+							return;
+						}
+						super.fire(player, sentence, npc);
+					}
+				});
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 				ConversationPhrases.YES_MESSAGES,
@@ -198,6 +209,16 @@ public class RingMaker extends AbstractQuest {
 			null);
 	}
 
+	private RingOfLife findBrokenRing(final Player player) {
+		for (final Item item : player.getAllEquipped("pierścień szmaragdowy")) {
+			if (item instanceof RingOfLife && ((RingOfLife) item).isBroken()
+					&& (!item.isBound() || player.isBoundTo(item))) {
+				return (RingOfLife) item;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
@@ -210,11 +231,8 @@ public class RingMaker extends AbstractQuest {
 	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
-		if (player.isEquipped("pierścień szmaragdowy")) {
-			final RingOfLife emeraldRing = (RingOfLife) player.getFirstEquipped("pierścień szmaragdowy");
-			if (emeraldRing.isBroken()) {
-				res.add("O nie! Mój pierścień szmaragdowy jest uszkodzony. Muszę poszukać rzemieślnika, który mi go naprawi.");
-			}
+		if (findBrokenRing(player) != null) {
+			res.add("O nie! Mój pierścień szmaragdowy jest uszkodzony. Muszę poszukać rzemieślnika, który mi go naprawi.");
 		}
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;

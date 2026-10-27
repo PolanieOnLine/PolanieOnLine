@@ -37,6 +37,7 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.Translation;
 
 /**
  * Page for general settings.
@@ -66,11 +67,11 @@ class GeneralSettings {
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
 		JComponent languageGroup = pages.addGroup(SettingsPages.Category.TEXT, "Język");
-		JComboBox<String> languageSelector = new JComboBox<>(new String[] {"Polski", "English"});
+		JComboBox<String> languageSelector = new JComboBox<>(new String[] {"Polski", "English", "Español"});
 		languageSelector.setName("language-selector");
-		languageSelector.setSelectedIndex("en".equals(ClientLanguage.getLanguage()) ? 1 : 0);
+		languageSelector.setSelectedIndex(Translation.SUPPORTED_LANGUAGES.indexOf(ClientLanguage.getLanguage()));
 		languageSelector.addActionListener(event -> {
-			String language = languageSelector.getSelectedIndex() == 1 ? "en" : "pl";
+			String language = Translation.SUPPORTED_LANGUAGES.get(languageSelector.getSelectedIndex());
 			if (!language.equals(ClientLanguage.getLanguage())) ClientLanguage.choose(language);
 		});
 		languageGroup.add(SettingsComponentFactory.createSettingsRow("Język gry:", languageSelector), SLayout.EXPAND_X);

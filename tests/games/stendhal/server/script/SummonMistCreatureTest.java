@@ -47,4 +47,25 @@ public class SummonMistCreatureTest {
 		new SummonMistCreature().execute(admin, Collections.singletonList("kamienny golem"));
 		assertTrue(zone.getEntitiesOfClass(Creature.class).isEmpty());
 	}
+	@Test public void greenDragonUsesVisibleSpawnInstanceForBothVariants() {
+		final Creature prototype = SingletonRepository.getEntityManager().getCreature("dwugłowy zielony smok");
+		final Creature base = prototype.getNewInstance();
+		for (boolean elite : new boolean[] {false, true}) {
+			final StendhalRPZone zone = new StendhalRPZone("mist-dragon-visibility-" + elite, 40, 40);
+			final Player admin = admin(zone, 5000);
+			new SummonMistCreature().execute(admin, Arrays.asList("dwugłowy", "zielony", "smok", "elite=" + elite));
+			assertEquals(1, zone.getEntitiesOfClass(Creature.class).size());
+			final Creature summoned = (Creature) zone.getEntitiesOfClass(Creature.class).iterator().next();
+			assertEquals(100, summoned.getVisibility());
+			assertEquals(100, summoned.getInt("visibility"));
+			assertEquals(base.getResistance(), summoned.getResistance());
+			assertEquals(base.get("class"), summoned.get("class"));
+			assertEquals(base.get("subclass"), summoned.get("subclass"));
+			final int mistHP = (int) (base.getBaseHP() * 1.1);
+			assertEquals(elite ? (int) Math.round(mistHP * 1.4) : mistHP, summoned.getBaseHP());
+			assertEquals(summoned.getBaseHP(), summoned.getHP());
+			assertEquals(elite, EliteCreatureService.isElite(summoned));
+		}
+		assertEquals(prototype.getBaseHP(), SingletonRepository.getEntityManager().getCreature("dwugłowy zielony smok").getBaseHP());
+	}
 }

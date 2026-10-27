@@ -13,6 +13,7 @@ import { stendhal } from "../../stendhal";
 import { Component } from "./Component";
 import { ui } from "../UI";
 import { Point } from "../../util/Point";
+import { GameLanguage } from "../../util/GameLanguage";
 
 
 export class FloatingWindow extends Component {
@@ -104,6 +105,7 @@ export class FloatingWindow extends Component {
 		// add window to DOM
 		let popupcontainer = document.getElementById("popupcontainer")!;
 		popupcontainer.appendChild(this.componentElement);
+		GameLanguage.registerUI(this.componentElement);
 		requestAnimationFrame(() => this.checkPos());
 
 		this.deferPreferredWidthCapture();
@@ -111,6 +113,7 @@ export class FloatingWindow extends Component {
 
 
 	public close() {
+		GameLanguage.unregisterUI(this.componentElement);
 		this.componentElement.remove();
 		this.contentComponent.onParentClose();
 		this.opened = false;

@@ -586,7 +586,7 @@ Inspectable, ReserveSetWindow.Owner {
 					// Clear slots absent on the next character as well as empty ones.
 					entry.getValue().setEntity(contents.get(entry.getKey()));
 				}
-				setTitle(name == null ? "Ekwipunek" : name);
+				setTitle(name == null ? "Ekwipunek" : name, name != null);
 				specialSlots.setVisible(hasBelt);
 				revalidate();
 				repaint();

@@ -16,6 +16,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -30,12 +32,15 @@ import games.stendhal.server.actions.CStatusAction;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.OfferTransformer;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.Log4J;
+import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
 import marauroa.server.game.db.DatabaseFactory;
 import utilities.PlayerTestHelper;
@@ -78,10 +83,26 @@ public class MarketTest {
 		assertFalse(offer.getItem().getContainer().equals(bob));
 		assertTrue(offer.getItem().getContainer().equals(offer));
 		assertNull(bob.getFirstEquipped("topór"));
-		Offer object = (Offer) new OfferTransformer().transform(offer);
-		assertEquals(offer, object);
+		// Compare persisted state, not an offer whose logid can change in the DB queue.
+		final RPObject savedOffer = new RPObject(offer);
+		Offer object = (Offer) new OfferTransformer().transform(savedOffer);
+		assertEquals(savedOffer, object);
+		assertNotSame(offer.getItem(), object.getItem());
 		assertFalse(object.getItem().getContainer().equals(bob));
-		assertTrue(object.getItem().getContainer().equals(offer));
+		assertSame(object, object.getItem().getContainer());
+
+		final Item ring = SingletonRepository.getEntityManager().getItem("pierścień izolacji");
+		assertTrue(bob.equip("finger", ring));
+		ring.onEquipped(bob, "finger");
+		assertEquals(0.66, EquipmentStatusResistanceService.getResistance(bob,
+				StatusType.SHOCKED), 0.0000001);
+
+		final Offer ringOffer = market.createOffer(bob, ring, 10, 1);
+		assertTrue(ringOffer != null);
+		assertEquals(ring, ringOffer.getItem());
+		assertTrue(bob.getSlot("finger").isEmpty());
+		assertEquals(0.0, EquipmentStatusResistanceService.getResistance(bob,
+				StatusType.SHOCKED), 0.0000001);
 	}
 
 	/**

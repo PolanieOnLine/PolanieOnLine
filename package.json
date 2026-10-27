@@ -8,7 +8,11 @@
     "test": "tests"
   },
   "scripts": {
+	"test:webclient-package": "node --test buildtools/webclient-package.test.cjs",
+	"test:build-tools": "node --test buildtools/render-contributors.test.cjs",
+	"test:translations": "node buildtools/check-language-catalogues.cjs pl en es && node buildtools/check-world-translations.cjs && node buildtools/check-spanish-translations.cjs && node --test src/js/stendhal/util/game-language.test.js src/js/stendhal/util/zone-name-language.test.js src/js/stendhal/event/show-item-list-language.test.js src/js/stendhal/ui/component/item-tooltip-language.test.js src/js/stendhal/entity/generated-message-language.test.js src/js/stendhal/slash-action-language.test.js src/js/stendhal/ui/dialog/travel-log-language.test.js src/js/stendhal/ui/web-display-language.test.js",
 	"test:player-mood-icons": "node --test src/js/stendhal/entity/player-mood-icons.test.js",
+	"test:player-presence": "node --test src/js/stendhal/event/player-presence.test.js",
 	"test:arena-observation": "node --test src/js/stendhal/ui/dialog/arena-observation-dialog.test.js",
 	"test:viewport-input": "node --test src/js/stendhal/ui/viewport-input.test.js",
 	"test:arena-view": "node --test src/js/stendhal/ui/arena-view.test.js",
@@ -16,7 +20,7 @@
 	"test:player-stats": "node --test src/js/stendhal/ui/component/player-stats.test.js",
 	"test:creature-armor": "node --test src/js/stendhal/ui/render/creature-armor-renderer.test.js",
 	"test:quest-markers": "node --test src/js/stendhal/ui/render/quest-marker-renderer.test.js",
-	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/ui/component/player-equipment.test.js src/js/stendhal/ui/component/player-stats.test.js src/js/stendhal/data/sprite-store.test.js src/js/stendhal/sprite/item-rarity-effects.test.js",
+	"test:inventory": "node --test src/js/stendhal/ui/component/item-container.test.js src/js/stendhal/ui/component/item-slot-animation.test.js src/js/stendhal/ui/component/player-equipment.test.js src/js/stendhal/ui/component/player-stats.test.js src/js/stendhal/data/sprite-store.test.js src/js/stendhal/sprite/item-rarity-effects.test.js",
 	"test:admin-diagnostics": "node --test src/js/stendhal/util/admin-diagnostics.test.js src/js/stendhal/util/clipboard.test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -40,7 +44,7 @@
   "private": true,
   "devDependencies": {
 	"esbuild": "0.27.2",
-    "showdown": "^2.1.0",
+    "markdown-it": "^14.3.1",
     "typedoc": "^0.28.15",
     "typescript": "^5.9.3"
   }

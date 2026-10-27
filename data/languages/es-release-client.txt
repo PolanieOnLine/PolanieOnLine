@@ -1,0 +1,20 @@
+# Catalogue prepared for Spanish; runtime support remains controlled by the game.
+<html><body><p><font size\="-2">Podczas logowania, informacje, które identyfikują twój komputer zostaną zapisane<br>w celu zapobiegnięcia nadużyciom (np. przy próbie odgadnięcia hasła w celu włamania się na konto<br>lub tworzeniu wielu kont w celu sprawiania problemów).</font></p><p><font size\="-2">Ponadto wszystkie zdarzenia i akcje, które wydarzą się w grze-<br>(np. rozwiązywanie zadań, atakowanie potworów) będą zapisywane w logach.<br>Informacje te wykorzystywane będą w celu analizy luk oraz rzadko w sprawach nadużyć.</font></p><br><p><font size\="-2">PolanieOnLine to niekomercyjny projekt spędzania czasu wolnego. NIE wykorzystujemy<br>Twoich danych do celów reklamowych oraz NIE udostępniamy ich osobom trzecim.</font></p></body></html>=<html><body><p><font size\="-2">Al iniciar sesión, se registra información que identifica tu equipo<br>para evitar abusos (como adivinar contraseñas para entrar en una cuenta<br>o crear varias cuentas para causar problemas).</font></p><p><font size\="-2">También se registran los eventos y las acciones del juego<br>(como completar misiones y atacar criaturas).<br>Esta información se usa para investigar errores y, en ocasiones, abusos.</font></p><br><p><font size\="-2">PolanieOnLine es un proyecto de ocio sin fines comerciales. NO utilizamos<br>tus datos para publicidad ni los compartimos con terceros.</font></p></body></html>
+Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać, a jeśli korzystasz z innego serwera to sprawdź czy poprawnie wpisałeś nazwę i numer portu.=No se puede conectar con el servidor para crear una cuenta. El servidor puede estar desconectado. Si usas otro servidor, comprueba que su nombre y puerto sean correctos.
+Starsza wersja=Versión antigua
+Zablokowane IP=Dirección IP bloqueada
+Zostanie usunięty twój profil z lokalnej listy kont.\nNie usunie to twojego konta z żadnego serwera.\nCzy chcesz usunąć profil '{0}@{1}'?=Se eliminará tu perfil de la lista local de cuentas.\nEsto no eliminará tu cuenta de ningún servidor.\n¿Quieres eliminar el perfil '{0}@{1}'?
+Logowanie {0} jest dostępne tylko na oficjalnym serwerze.=El inicio de sesión con {0} solo está disponible en el servidor oficial.
+{item:0}Adres e-mail jest jedynym sposobem, w jaki administratorzy mogą kontaktować się z prawowitym właścicielem konta.\nJeśli go nie dostarczysz, nie będziesz mógł uzyskać nowego hasła do tego konta, na przykład:\n- Zapomniałeś hasła.\n- Inny gracz w jakiś sposób dostaje hasło i zmienia je.\nCzy mimo to chcesz kontynuować?={item:0}El correo electrónico es el único medio para que los administradores contacten con el propietario legítimo de la cuenta.\nSin él, no podrás recuperar el acceso a esta cuenta, por ejemplo, si:\n- Olvidas tu contraseña.\n- Otro jugador obtiene tu contraseña y la cambia.\n¿Quieres continuar de todos modos?
+<html>Tłumaczenia są jeszcze uzupełniane.<br>Brakujący tekst pozostaje po polsku.</html>=<html>Las traducciones aún se están completando.<br>El texto que falta permanece en polaco.</html>
+<html>Wyjściowe urządzenie dźwięku. <b>auto</b> powinno działać u większości osób,<br>ale wypróbuj inne jeżeli nie możesz otrzymać zadowalającego dźwięku</html>=<html>Dispositivo de salida de audio. <b>auto</b> debería funcionar para la mayoría,<br>pero prueba otro dispositivo si el sonido no es satisfactorio</html>
+Poziom ulepszenia: +{0} / +{1}=Nivel de mejora: +{0} / +{1}
+Sprawdzanie przedmiotu...=Comprobando objeto...
+Styl=Estilo
+Łącznie: {0} {1}=Total: {0} {1}
+Górnictwo:\r {0}\r ({1})=Minería:\r {0}\r ({1})
+Oferta {0}=Oferta de {0}
+Nieaktywny=Inactivo
+ZAAKCEPTOWANE=ACEPTADO
+<html>Nie jesteś członkiem grupy.</html>=<html>No eres miembro de un grupo.</html>
+Błąd podczas uruchamiania przeglądarki:\n{0}=Error al abrir el navegador:\n{0}

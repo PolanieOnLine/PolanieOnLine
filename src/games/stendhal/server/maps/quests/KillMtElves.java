@@ -16,6 +16,12 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
@@ -42,6 +48,9 @@ public class KillMtElves implements QuestManuscript {
 			.whenQuestWasCompleted("Czarnoksiężnik uznał drugą próbę za zakończoną i dał mi hełm kolczy, który ma się przydać przy jego ostatnim doświadczeniu.");
 
 		quest.offer()
+			.requestOnlyWhen(new AndCondition(
+					new OrCondition(new QuestCompletedCondition("clear_tower"), new QuestStartedCondition("kill_mountain_elves")),
+					new NotCondition(new QuestCompletedCondition("kill_mountain_elves")), new QuestNotStartedCondition("bring_magic")))
 			.offerState(ConversationStates.QUEST_2_OFFERED)
 			.respondToPreconditionIssue("Najpierw oczyść moją starą wieżę. Nie będę omawiał z tobą poważniejszych spraw, dopóki nie zobaczę, że potrafisz dokończyć pierwsze zadanie.")
 			.respondToRequest("Poradziłeś sobie z wieżą, więc mogę powiedzieć więcej. Górskie elfy odcięły mi dostęp do miejsc potrzebnych do badań i nie zamierzają ustąpić. Chcę, żebyś przełamał ich opór. Podejmiesz się tego?")

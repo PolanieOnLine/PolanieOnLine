@@ -1357,7 +1357,7 @@ public class KillDragons extends AbstractQuest {
 								"młot wulkanów", ItemCreationContext.questReward());
 						hammer.setBoundTo(player.getName());
 						player.equipOrPutOnGround(hammer);
-						player.setBaseHP(150 + player.getBaseHP());
+						player.setBaseHP(150 + player.getUncappedBaseHP());
 						player.heal(150, true);
 						player.addKarma(200);
 						player.setQuest(QUEST_SLOT, "done");

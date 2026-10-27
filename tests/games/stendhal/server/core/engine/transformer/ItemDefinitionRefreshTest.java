@@ -147,6 +147,77 @@ public class ItemDefinitionRefreshTest {
 	}
 
 	@Test
+	public void deathmatchTrophyKeepsEarnedDefenseAcrossLogins() throws Exception {
+		for (final boolean persistent : new boolean[] { true, false }) {
+			Item helmet = definition("zdobyczny hełm");
+			helmet.setID(new ID(persistent ? 760 : 761, "deathmatch_trophy"));
+			helmet.put("def", 47);
+			helmet.setBoundTo("hunter");
+			helmet.setItemData("hunter");
+			if (persistent) {
+				helmet.setPersistent(true);
+			} else {
+				helmet.remove("persistent");
+			}
+			for (int login = 0; login < 3; login++) {
+				helmet = restore(helmet);
+				assertEquals(47, helmet.getInt("def"));
+				assertEquals(47, helmet.getDefense());
+				assertEquals("hunter", helmet.getBoundTo());
+				assertEquals("hunter", helmet.getItemData());
+				assertEquals("47", helmet.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.DEFENSE));
+			}
+		}
+	}
+
+	@Test
+	public void deathmatchTrophyNeverRollsRarityOrAffixes() {
+		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm",
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withRarity(ItemRarity.LEGENDARY)
+						.withAffixSeed(54321L).build());
+		assertFalse(ItemRarityService.getInstance().isEligible(helmet));
+		assertNull(helmet.getRarity());
+		assertFalse(ItemAffixState.hasAny(helmet));
+		assertFalse(ItemAffixState.hasSeed(helmet));
+		assertTrue(helmet.getRarityModifiers().isEmpty());
+		assertEquals(1, helmet.getInt("def"));
+		assertEquals(1, helmet.getDefense());
+	}
+
+	@Test
+	public void legacyRareDeathmatchTrophyLosesRarityNotEarnedDefenseOnLogin() throws Exception {
+		for (final boolean persistent : new boolean[] { true, false }) {
+			Item helmet = definition("zdobyczny hełm");
+			helmet.setID(new ID(persistent ? 762 : 763, "deathmatch_legacy_rarity"));
+			helmet.setBoundTo("hunter");
+			helmet.setItemData("hunter");
+			helmet.put("def", 47);
+			helmet.setRarity(ItemRarity.LEGENDARY);
+			helmet.setRarityModifier("def", 1.8);
+			helmet.put("flat_defense_bonus", 12);
+			helmet.put(ItemAffixState.ATTRIBUTE, "flat_defense_bonus", "12");
+			ItemAffixState.setSeed(helmet, 12345L);
+			if (persistent) {
+				helmet.setPersistent(true);
+			}
+			for (int login = 0; login < 3; login++) {
+				helmet = restore(helmet);
+				assertEquals(47, helmet.getInt("def"));
+				assertEquals(47, helmet.getDefense());
+				assertNull(helmet.getRarity());
+				assertTrue(helmet.getRarityModifiers().isEmpty());
+				assertFalse(ItemAffixState.hasAny(helmet));
+				assertFalse(ItemAffixState.hasSeed(helmet));
+				assertFalse(helmet.has("flat_defense_bonus"));
+				assertEquals("hunter", helmet.getBoundTo());
+				assertEquals("hunter", helmet.getItemData());
+				assertEquals("47", helmet.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.DEFENSE));
+			}
+		}
+	}
+
+	@Test
 	public void savedDefenseMultiplierIsAppliedToNewBaseExactlyOnce() throws Exception {
 		Item saved = definition("polska płytowa tarcza");
 		saved.setID(new ID(711, "definition_refresh"));
@@ -315,7 +386,7 @@ public class ItemDefinitionRefreshTest {
 		saved.setPersistent(true);
 		final String[] attributes = {"accuracy_bonus", "critical_chance", "critical_damage_bonus", "lifesteal", "parry_chance"};
 		final double[] before = {15, 10, 0.30, 0.41, 0.15};
-		final double[] after = {8, 6, 0.15, 0.41, 0.15};
+		final double[] after = {8, 6, 0.15, 0.30, 0.15};
 		for (int i = 0; i < attributes.length; i++) {
 			saved.put(attributes[i], before[i]);
 			saved.put(ItemAffixState.ATTRIBUTE, attributes[i], saved.get(attributes[i]));
@@ -325,9 +396,13 @@ public class ItemDefinitionRefreshTest {
 			saved = restore(saved);
 			for (int i = 0; i < attributes.length; i++) {
 				assertEquals(attributes[i], after[i], saved.getDouble(attributes[i]), 0.000001);
-				assertEquals(saved.get(attributes[i]), ItemAffixState.getValues(saved).get(attributes[i]));
+				if ("lifesteal".equals(attributes[i])) {
+					assertFalse(ItemAffixState.has(saved, "lifesteal"));
+				} else {
+					assertEquals(saved.get(attributes[i]), ItemAffixState.getValues(saved).get(attributes[i]));
+				}
 			}
-			assertEquals(5, ItemAffixState.getValues(saved).size());
+			assertEquals(4, ItemAffixState.getValues(saved).size());
 			assertEquals(3, saved.getUpgradeLevel());
 			assertEquals(saved.getInt("atk") + 3, saved.getAttack());
 			assertEquals("kokol", saved.getBoundTo());
@@ -359,10 +434,37 @@ public class ItemDefinitionRefreshTest {
 		Item intrinsic = definition("pierścień czystości");
 		assertNotNull(intrinsic);
 		intrinsic.setID(new ID(742, "affix_balance"));
-		intrinsic.put("accuracy_bonus", 25.0);
-		intrinsic = restore(intrinsic);
-		assertEquals(7, intrinsic.getDouble("accuracy_bonus"), 0);
-		assertFalse(ItemAffixState.hasAny(intrinsic));
+		// Simulate a saved instance already damaged by the former global cap.
+		intrinsic.put("accuracy_bonus", 7.0);
+		intrinsic.setPersistent(true);
+		for (int login = 0; login < 3; login++) {
+			intrinsic = restore(intrinsic);
+			assertEquals(25, intrinsic.getDouble("accuracy_bonus"), 0);
+			assertEquals("25.0", intrinsic.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.ACCURACY_BONUS));
+			assertFalse(ItemAffixState.hasAny(intrinsic));
+		}
+	}
+
+	@Test
+	public void damagedXmlBonusRecoversWithRarityScalingAlongsideARandomAffix() throws Exception {
+		Item saved = definition("pierścień czystości");
+		saved.setID(new ID(743, "affix_balance"));
+		saved.setPersistent(true);
+		saved.setRarity(ItemRarity.EPIC);
+		saved.setRarityModifier("accuracy_bonus", 1.15);
+		saved.put("accuracy_bonus", 7.0);
+		saved.put("critical_chance", 10.0);
+		saved.put(ItemAffixState.ATTRIBUTE, "critical_chance", "10.0");
+		ItemAffixState.setSeed(saved, 98765L);
+		for (int login = 0; login < 3; login++) {
+			saved = restore(saved);
+			assertEquals(28.75, saved.getDouble("accuracy_bonus"), 0.000001);
+			assertEquals(4.0, saved.getDouble("critical_chance"), 0);
+			assertEquals("4.0", ItemAffixState.getValues(saved).get("critical_chance"));
+			assertFalse(ItemAffixState.has(saved, "accuracy_bonus"));
+			assertEquals(Long.valueOf(98765L), ItemAffixState.getSeed(saved));
+			assertEquals(Double.valueOf(1.15), saved.getRarityModifier("accuracy_bonus"));
+		}
 	}
 
 	@Test

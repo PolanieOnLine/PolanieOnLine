@@ -14,6 +14,7 @@
 			<parameter name="weather">varying(temperature=+2)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.WielkoludNPC"/>
@@ -61,6 +62,7 @@
 			<parameter name="weather">varying(temperature=+2)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="45" y="45">
@@ -91,6 +93,7 @@
 			<parameter name="weather">varying(temperature=-1)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.DogSellerNPC"/>
@@ -135,6 +138,7 @@
 			<parameter name="weather">varying(temperature=+2)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="64" y="64">
@@ -184,6 +188,7 @@ Oto opuszczona kopalnia węgla!
 			<parameter name="weather">varying(temperature=-2)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="30" y="50">
@@ -207,6 +212,7 @@ Oto opuszczona kopalnia węgla!
 			<parameter name="weather">varying(temperature=+1)</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="30" y="50">
@@ -227,6 +233,7 @@ Oto opuszczona kopalnia węgla!
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<entity x="5" y="10">
@@ -460,6 +467,7 @@ kopalnia węgla!
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">the_forsaken_mine</parameter>
 				<parameter name="volume">30</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
@@ -490,6 +498,7 @@ kopalnia węgla!
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark2</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 		
@@ -574,6 +583,7 @@ kopalnia węgla!
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">main-theme</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<portal x="57" y="19" ref="entrance_cave-1_exit">
@@ -593,6 +603,7 @@ kopalnia węgla!
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">main-theme</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<portal x="29" y="56" ref="entrance_cave-2_exit">
@@ -611,6 +622,7 @@ kopalnia węgla!
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">main-theme</parameter>
 			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.koscielisko.cave.Skille50NPC"/>

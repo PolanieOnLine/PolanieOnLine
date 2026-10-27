@@ -680,6 +680,16 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 		onlinePlayers.tellAllOnlinePlayers(notificationType, message);
 	}
 
+	/** Broadcast game-authored dialogue per recipient; human messages use tellAllPlayers unchanged. */
+	public void tellAllPlayersTranslated(final NotificationType notificationType, final String message) {
+		onlinePlayers.forAllPlayersExecute(new Task<Player>() {
+			@Override public void execute(final Player player) {
+				player.sendPrivateText(notificationType,
+						games.stendhal.common.Translation.getText(player.getLanguage(), message));
+			}
+		});
+	}
+
 	public void sendMessageToSupporters(final String message) {
 		getOnlinePlayers().forFilteredPlayersExecute(
 				new Task<Player>() {
@@ -754,6 +764,11 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 		SingletonRepository.getRuleProcessor().getOnlinePlayers().forAllPlayersExecute(new Task<Player>() {
 			@Override
 			public void execute(final Player player) {
+				// Match login visibility: a hidden player's departure must not reveal
+				// their presence to recipients who cannot see their login either.
+				if (playerToNotifyAbout.isGhost() && !player.isGhost()) {
+					return;
+				}
 				player.addEvent(new PlayerLoggedOutEvent(playerToNotifyAbout.getName()));
 				player.notifyWorldAboutChanges();
 			}

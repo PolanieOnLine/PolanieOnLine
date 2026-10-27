@@ -76,6 +76,7 @@
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -109,6 +110,7 @@
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark1</parameter>
 				<parameter name="volume">15</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 

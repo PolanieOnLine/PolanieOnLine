@@ -62,18 +62,18 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestNotStartedCondition(questSlot),
-					beforeForgingConditions),
+					beforeForgingConditions)),
 				offerState,
 				respondToRequest,
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestNotStartedCondition(questSlot),
-					new NotCondition(beforeForgingConditions)),
+					new NotCondition(beforeForgingConditions))),
 				ConversationStates.ATTENDING,
 				respondToCraftIssue,
 				null);
@@ -108,29 +108,29 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestInStateCondition(questSlot, 0, "start"),
 					beforeForgingConditions,
-					new NotCondition(requiredItemsToForge)),
+					new NotCondition(requiredItemsToForge))),
 				ConversationStates.ATTENDING,
 				remind,
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestInStateCondition(questSlot, 0, "start"),
 					new NotCondition(beforeForgingConditions),
-					new NotCondition(requiredItemsToForge)),
+					new NotCondition(requiredItemsToForge))),
 				ConversationStates.ATTENDING,
 				respondToCraftIssue,
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					forgingState,
-					new NotCondition(questCompletedCondition)),
+					new NotCondition(questCompletedCondition))),
 				ConversationStates.ATTENDING,
 				null,
 				new SayTimeRemainingAction(questSlot, 1, productionTime, respondToCraftNotReady));
@@ -143,10 +143,10 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
-				new AndCondition(
+				withRequestCondition(new AndCondition(
 					new QuestInStateCondition(questSlot, 0, "start"),
 					beforeForgingConditions,
-					requiredItemsToForge),
+					requiredItemsToForge)),
 				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(forgeAction, dropRequiredItemsToForge));
@@ -154,36 +154,36 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 		if (repeatableAfterMinutes > -1) {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
-						beforeForgingConditions),
+						beforeForgingConditions)),
 					offerState,
 					respondToRepeatedRequest,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 						new QuestCompletedCondition(questSlot),
 						new TimePassedCondition(questSlot, 1, repeatableAfterMinutes),
-						new NotCondition(beforeForgingConditions)),
+						new NotCondition(beforeForgingConditions))),
 					ConversationStates.ATTENDING,
 					respondToCraftIssue,
 					null);
 
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
+					withRequestCondition(new AndCondition(
 							new QuestCompletedCondition(questSlot),
-							new NotCondition(new TimePassedCondition(questSlot, 1, repeatableAfterMinutes))),
+							new NotCondition(new TimePassedCondition(questSlot, 1, repeatableAfterMinutes)))),
 					ConversationStates.ATTENDING,
 					null,
 					new SayTimeRemainingAction(questSlot, 1, repeatableAfterMinutes, respondToUnrepeatableRequest, true));
 		} else {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
-					new QuestCompletedCondition(questSlot),
+					withRequestCondition(new QuestCompletedCondition(questSlot)),
 					ConversationStates.ATTENDING,
 					respondToUnrepeatableRequest,
 					null);

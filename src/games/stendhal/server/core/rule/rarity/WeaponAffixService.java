@@ -110,13 +110,32 @@ public final class WeaponAffixService {
 	 * existing lifesteal implementation (for example 7% becomes 0.07).
 	 */
 	public static boolean applyLifesteal(final Item item, final Random random) {
-		if (!isEligible(item, LIFESTEAL_ATTRIBUTE)) {
+		if (!isLifestealEligible(item)) {
 			return false;
 		}
 		final int percent = rollInclusive(random,
 				MIN_LIFESTEAL_PERCENT, MAX_LIFESTEAL_PERCENT);
 		item.put(LIFESTEAL_ATTRIBUTE,
 				ItemRollPrecision.round(percent / 100.0));
+		return true;
+	}
+
+	public static boolean isLifestealEligible(final Item item) {
+		return isWeapon(item) && item.getDefinitionLifesteal() == 0.0
+				&& (!item.has(LIFESTEAL_ATTRIBUTE) || item.getDouble(LIFESTEAL_ATTRIBUTE) == 0.0)
+				&& !item.has(ItemLifestealService.EFFECTIVENESS);
+	}
+
+	public static boolean isLifestealEffectivenessEligible(final Item item) {
+		return isWeapon(item) && item.getDefinitionLifesteal() > 0.0
+				&& item.has(LIFESTEAL_ATTRIBUTE) && item.getDouble(LIFESTEAL_ATTRIBUTE) > 0.0
+				&& !item.has(ItemLifestealService.EFFECTIVENESS)
+				&& !ItemAffixState.has(item, LIFESTEAL_ATTRIBUTE);
+	}
+
+	public static boolean applyLifestealEffectiveness(final Item item, final Random random) {
+		if (!isLifestealEffectivenessEligible(item)) return false;
+		item.put(ItemLifestealService.EFFECTIVENESS, random.nextInt(2) == 0 ? 10 : 20);
 		return true;
 	}
 

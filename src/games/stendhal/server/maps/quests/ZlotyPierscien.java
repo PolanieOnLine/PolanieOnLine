@@ -133,7 +133,7 @@ public class ZlotyPierscien extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("sztabka złota",20),
 								 new PlayerHasItemWithHimCondition("money",100000),
 								 new PlayerHasItemWithHimCondition("polano",10)),
-				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 1 godzinę, a złoty pierścień będzie gotowy. Przypomnij mi mówiąc #/pierścień/.",
+				ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 1 godzinę, a złoty pierścień będzie gotowy. Przypomnij mi mówiąc #pierścień.",
 				new MultipleActions(nagroda));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
@@ -153,7 +153,7 @@ public class ZlotyPierscien extends AbstractQuest {
 		final int delay = REQUIRED_HOURS * TimeUtil.SECONDS_IN_MINUTE;
 
 		npc.add(ConversationStates.ATTENDING, 
-			Arrays.asList("pierścień", "złoty", "nagroda"),
+			Arrays.asList("pierścień", "ring", "złoty", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
@@ -162,7 +162,7 @@ public class ZlotyPierscien extends AbstractQuest {
 			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad twoim pierścieniem. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("pierścień", "złoty", "nagroda"),
+			Arrays.asList("pierścień", "ring", "złoty", "nagroda"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new TimePassedCondition(QUEST_SLOT, 1, delay)),

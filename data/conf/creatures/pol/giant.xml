@@ -65,7 +65,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
@@ -106,7 +106,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
-			<profile name="status_attackers" params="StunnedStatus,12;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="lifesteal" params="0.05"/>
 			<profile name="heal" params="35,50"/>
 			<profile name="patrolling"/>

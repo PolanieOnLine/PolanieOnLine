@@ -828,6 +828,7 @@ używanie zwojów.
 				<parameter name="sound">fire-1</parameter>
 				<parameter name="radius">12</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -1793,6 +1794,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2306,6 +2308,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2336,6 +2339,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">spinning_tavern</parameter>
 				<parameter name="volume">127</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2364,6 +2368,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2644,6 +2649,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2684,6 +2690,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -2730,6 +2737,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">medieval_harp</parameter>
 				<parameter name="volume">80</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -4598,6 +4606,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">lost_in_the_fog</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5066,6 +5075,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">lost_in_the_fog</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5298,6 +5308,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sacred_moments</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5342,6 +5353,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">mystical_aura</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5608,6 +5620,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5626,6 +5639,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5649,6 +5663,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5673,6 +5688,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5704,6 +5720,7 @@ Południowy-wschód: Doki
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">100</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5811,6 +5828,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5831,6 +5849,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5939,6 +5958,7 @@ Wschodni Tunel: Niezbadany</attribute>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -5980,6 +6000,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -5996,6 +6017,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6013,6 +6035,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 
@@ -6044,6 +6067,7 @@ Znalazłem trochę wody, ale boję się, że utknąłem. Muszę jeszcze znaleź�
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">sewers</parameter>
 				<parameter name="volume">120</parameter>
+				<parameter name="sound" condition="stendhal.minetown">pol-halloween-szepty-zaswiatow</parameter>
 			</implementation>
 		</entity>
 

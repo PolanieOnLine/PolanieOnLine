@@ -78,6 +78,8 @@ public class PlayerRPClass {
 		player.addAttribute("reborns", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_rewards", Type.INT, Definition.HIDDEN);
 		player.addAttribute("reborn_migration_version", Type.INT, Definition.HIDDEN);
+		// One-shot restoration of Deathmatch trophy defense lost in version 1.43.
+		player.addAttribute("deathmatch_helmet_recovery_v1", Type.INT, Definition.HIDDEN);
 		// Public, volatile mirror used only by clients to draw the reborn badge.
 		player.addAttribute(RebornBadgeSynchronizer.ATTR_REBORN_BADGE, Type.INT, Definition.VOLATILE);
 
@@ -135,6 +137,8 @@ public class PlayerRPClass {
 		player.addRPSlot("!tutorial", 1, Definition.HIDDEN);
 
 		player.addAttribute("karma", Type.FLOAT, Definition.PRIVATE);
+		player.addAttribute(games.stendhal.common.constants.CombatStat.ATTRIBUTE, Type.MAP,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("tradescore", Type.INT, Definition.PRIVATE);
 		player.addAttribute("sentence", Type.STRING, Definition.HIDDEN);
 
@@ -189,5 +193,6 @@ public class PlayerRPClass {
 		// commerce
 		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
+		player.addAttribute(EconomyCorrection1432.RECORD, Type.MAP, Definition.HIDDEN);
 	}
 }

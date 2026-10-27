@@ -11,6 +11,7 @@
 
 import { stendhal } from "stendhal";
 import { RPEvent } from "marauroa"
+import { GameLanguage } from "util/GameLanguage";
 
 /**
  * displays an achievement banner
@@ -22,6 +23,7 @@ export class ReachedAchievementEvent extends RPEvent {
 	public description!: string;
 
 	public execute(_entity: any): void {
-		stendhal.ui.gamewindow.addAchievementNotif(this["category"], this["title"], this["description"]);
+		stendhal.ui.gamewindow.addAchievementNotif(this["category"], GameLanguage.getText(this["title"]),
+			GameLanguage.getText(this["description"]));
 	}
 };

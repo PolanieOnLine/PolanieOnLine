@@ -24,6 +24,7 @@ import games.stendhal.server.entity.item.HuntingRewardChest;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.maps.quests.hunting.HuntingDifficulty;
 import games.stendhal.server.maps.quests.hunting.HuntingRewards;
+import games.stendhal.server.maps.quests.hunting.HuntingTargetSelector;
 
 
 import games.stendhal.common.Level;
@@ -58,6 +59,8 @@ public class Hunting extends AbstractQuest {
 
 
 	private static final String OFFER_SLOT = "hunting_offer";
+	private static final String OFFER_CACHE_PREFIX = "hunting_offer_";
+	private static final long OFFER_LIFETIME = 7L * 24 * 60 * 60 * 1000;
 	private static final ChatCondition ACTIVE = (player, sentence, entity) ->
 			player.hasQuest(QUEST_SLOT) && player.getQuest(QUEST_SLOT, 0).split(",", -1).length == 5;
 
@@ -82,41 +85,133 @@ public class Hunting extends AbstractQuest {
 	}
 
 	private void offer(Player player, EventRaiser raiser, HuntingDifficulty difficulty) {
+		rememberPreview(player);
 		player.setQuest(OFFER_SLOT, null);
 		if (player.isBadBoy()) {
 			raiser.say("Z twej ręki zginął dzielny rycerz! Precz mi z oczu!");
 			raiser.setCurrentState(ConversationStates.ATTENDING);
 			return;
 		}
-		List<Creature> candidates = new ArrayList<>();
 		List<Creature> available = availableCreatures();
-		for (Creature creature : available) {
-			if (difficulty.accepts(player.getLevel(), creature.getLevel())) { candidates.add(creature); }
-		}
+		List<Creature> candidates = HuntingTargetSelector.select(
+				player.getLevel(), difficulty, available, Creature::getLevel);
 		if (candidates.isEmpty()) {
-			raiser.say("Nie mam teraz dostępnych przeciwników na takie polowanie dla Twojego poziomu. Wybierz #łatwe, #średnie lub #trudne.");
+			raiser.say("Nie znam teraz tropu, który by się dla ciebie nadawał na takie łowy. Może wybierzesz łowy #łatwe, #średnie albo #trudne?");
 			raiser.setCurrentState(ConversationStates.ATTENDING);
 			return;
 		}
-		Creature creature = candidates.get(Rand.rand(candidates.size()));
-		int count = 20 + Rand.rand(11);
-		int bonus = HuntingRewards.rewardBasisPoints(difficulty, count, creature,
-				HuntingRewards.referenceStrength(player.getLevel(), available));
-		player.setQuest(OFFER_SLOT, difficulty.name() + ";" + creature.getName() + ";" + count + ";" + player.getLevel() + ";" + bonus);
-		raiser.say("Polowanie " + difficulty.getLabel() + ": " + creature.getName() + " (poziom "
-				+ creature.getLevel() + "), " + count + " sztuk. Oprócz dotychczasowych nagród otrzymasz "
+		long now = System.currentTimeMillis();
+		String savedOffer = cachedOffer(player, difficulty, candidates, now);
+		if (savedOffer == null) {
+			Creature target = candidates.get(Rand.rand(candidates.size()));
+			int amount = difficulty.getMinimumKillCount()
+					+ Rand.rand(difficulty.getMaximumKillCount() - difficulty.getMinimumKillCount() + 1);
+			int reward = HuntingRewards.rewardBasisPoints(difficulty, amount, target,
+					HuntingRewards.referenceStrength(player.getLevel(), available));
+			savedOffer = difficulty.name() + ";" + target.getName() + ";" + amount + ";" + player.getLevel() + ";" + reward;
+			player.setQuest(OFFER_CACHE_PREFIX + difficulty.name(), savedOffer + ";" + now);
+		}
+		String[] fields = savedOffer.split(";", -1);
+		Creature creature = candidates.stream().filter(c -> c.getName().equals(fields[1])).findFirst().get();
+		int count = Integer.parseInt(fields[2]);
+		int bonus = Integer.parseInt(fields[4]);
+		player.setQuest(OFFER_SLOT, savedOffer);
+		raiser.say("Mam dla ciebie trop. Tym razem nasz cel to " + creature.getName() + ". Upoluj " + count
+				+ " sztuk, a czeka cię zapłata i skrzynia z nagrodą. Przez siedem dni wskażę ci ten sam trop na te łowy, "
+				+ "chyba że wcześniej ukończysz polowanie. Chodzi mi o bestie grasujące po krainie, nie te wypuszczane na arenę. "
+				+ "Podejmiesz się łowów? Powiedz #tak albo #nie.");
+		player.sendPrivateText("Podsumowanie polowania " + difficulty.getLabel() + ": " + creature.getName() + " (poziom "
+				+ creature.getLevel() + "), " + count + " sztuk. Dodatkowo otrzymasz "
 				+ HuntingRewards.percentageLabel(bonus) + " PD pełnego poziomu ataku i obrony oraz Skrzynię Myśliwego. "
 				+ (difficulty == HuntingDifficulty.EASY ? "Skrzynia zawiera zapasy."
 				: difficulty == HuntingDifficulty.MEDIUM ? "Skrzynia zawiera wyposażenie: 25% szans na rzadkie."
-				: "Skrzynia zawiera co najmniej rzadkie wyposażenie: 10% szans na epickie.")
-				+ " Podejmujesz wyzwanie? #tak / #nie");
+				: "Skrzynia zawiera co najmniej rzadkie wyposażenie: 10% szans na epickie."));
+	}
+
+	private boolean validOffer(String offer, HuntingDifficulty difficulty, List<Creature> candidates, boolean legacy) {
+		if (offer == null) return false;
+		String[] parts = offer.split(";", -1);
+		try {
+			return parts.length == 5 && difficulty.name().equals(parts[0])
+					&& validCount(difficulty, Integer.parseInt(parts[2]), legacy)
+					&& Integer.parseInt(parts[4]) >= 1 && Integer.parseInt(parts[4]) <= 10000
+					&& candidates.stream().anyMatch(c -> c.getName().equals(parts[1]));
+		} catch (NumberFormatException invalid) { return false; }
+	}
+
+	private boolean validCount(HuntingDifficulty difficulty, int count, boolean legacy) {
+		return legacy ? count >= 1 && count <= 50
+				: count >= difficulty.getMinimumKillCount() && count <= difficulty.getMaximumKillCount();
+	}
+
+	private void rememberPreview(Player player) {
+		String preview = player.getQuest(OFFER_SLOT);
+		if (preview == null) return;
+		String[] fields = preview.split(";", -1);
+		try {
+			if (fields.length != 5) return;
+			HuntingDifficulty difficulty = HuntingDifficulty.valueOf(fields[0]);
+			String cacheSlot = OFFER_CACHE_PREFIX + difficulty.name();
+			if (player.hasQuest(cacheSlot)) return;
+			List<Creature> candidates = HuntingTargetSelector.select(player.getLevel(), difficulty,
+					availableCreatures(), Creature::getLevel);
+			if (validOffer(preview, difficulty, candidates, false)) {
+				player.setQuest(cacheSlot, preview + ";" + System.currentTimeMillis());
+			}
+		} catch (IllegalArgumentException invalid) { /* Ignore malformed old previews. */ }
+	}
+
+	private boolean isLegacyOffer(Player player, String[] offer) {
+		String cache = player.getQuest(OFFER_CACHE_PREFIX + offer[0]);
+		if (cache == null) return false;
+		String[] saved = cache.split(";", -1);
+		return saved.length == 7 && "legacy".equals(saved[6]) && saved[0].equals(offer[0])
+				&& saved[1].equals(offer[1]) && saved[2].equals(offer[2]) && saved[4].equals(offer[4]);
+	}
+
+	private String cachedOffer(Player player, HuntingDifficulty difficulty, List<Creature> candidates, long now) {
+		String cached = player.getQuest(OFFER_CACHE_PREFIX + difficulty.name());
+		if (cached == null) return null;
+		String[] fields = cached.split(";", -1);
+		try {
+			if (fields.length != 6 && !(fields.length == 7 && "legacy".equals(fields[6]))) return null;
+			long created = Long.parseLong(fields[5]);
+			if (created < 0 || now - Math.min(now, created) >= OFFER_LIFETIME) return null;
+			// Levelling alone must not reroll a still-suitable target or its reward.
+			fields[3] = Integer.toString(player.getLevel());
+			// Upgrade unaccepted old offers without rerolling or restarting their timer.
+			int savedBonus = Integer.parseInt(fields[4]);
+			int bonus = Math.min(savedBonus, difficulty.getPercent() * 100);
+			fields[4] = Integer.toString(bonus);
+			String offer = String.join(";", Arrays.copyOf(fields, 5));
+			if (!validOffer(offer, difficulty, candidates, fields.length == 7)) return null;
+			if (bonus != savedBonus) {
+				player.setQuest(OFFER_CACHE_PREFIX + difficulty.name(), String.join(";", fields));
+			}
+			return offer;
+		} catch (NumberFormatException invalid) { return null; }
+	}
+
+	private void rememberActiveOffer(Player player) {
+		HuntingDifficulty difficulty = HuntingDifficulty.fromQuest(player.getQuest(QUEST_SLOT));
+		if (player.hasQuest(OFFER_CACHE_PREFIX + difficulty.name())) return;
+		String[] kills = player.getQuest(QUEST_SLOT, 0).split(",", -1);
+		if (kills.length != 5) return;
+		long now = System.currentTimeMillis();
+		long created = now;
+		try { created = Math.max(0, Math.min(now, Long.parseLong(player.getQuest(QUEST_SLOT, 1)))); }
+		catch (NumberFormatException invalid) { /* Legacy task without a usable timestamp. */ }
+		player.setQuest(OFFER_CACHE_PREFIX + difficulty.name(), difficulty.name() + ";" + kills[0]
+				+ ";" + kills[2] + ";" + player.getLevel() + ";"
+				+ HuntingRewards.questBasisPoints(player.getQuest(QUEST_SLOT)) + ";" + created + ";legacy");
 	}
 
 	private void acceptOffer(Player player, EventRaiser raiser) {
 		String offer = player.getQuest(OFFER_SLOT);
+		rememberPreview(player);
 		player.setQuest(OFFER_SLOT, null);
 		if (offer == null || ACTIVE.fire(player, null, null) || player.isBadBoy()) {
-			raiser.say("Poproś o #zadanie i wybierz trudność.");
+			raiser.say("Najpierw pomówmy o łowach. Spytaj mnie o #zadanie, a wskażę ci trop.");
 			return;
 		}
 		String[] parts = offer.split(";", -1);
@@ -125,25 +220,30 @@ public class Hunting extends AbstractQuest {
 			HuntingDifficulty difficulty = HuntingDifficulty.valueOf(parts[0]);
 			int count = Integer.parseInt(parts[2]);
 			int bonus = Integer.parseInt(parts[4]);
-			if (count < 20 || count > 30 || bonus < 1 || bonus > 10000 || Integer.parseInt(parts[3]) != player.getLevel()) {
+			if (!validCount(difficulty, count, isLegacyOffer(player, parts))
+					|| bonus < 1 || bonus > 10000 || Integer.parseInt(parts[3]) != player.getLevel()) {
 				throw new IllegalArgumentException();
 			}
-			boolean available = false;
-			for (Creature creature : availableCreatures()) {
-				if (creature.getName().equals(parts[1]) && difficulty.accepts(player.getLevel(), creature.getLevel())) {
-					available = true;
-					break;
-				}
-			}
+			boolean available = HuntingTargetSelector.select(
+					player.getLevel(), difficulty, availableCreatures(), Creature::getLevel)
+					.stream().anyMatch(target -> target.getName().equals(parts[1]));
 			if (!available) { throw new IllegalArgumentException(); }
+			if (bonus > difficulty.getPercent() * 100) {
+				// An old preview can be confirmed directly after an upgrade. Show
+				// the revised terms first; never accept a silently reduced reward.
+				offer(player, raiser, difficulty);
+				raiser.setCurrentState(ConversationStates.QUESTION_1);
+				player.sendPrivateText("Zmieniono zasady nagród za polowania. Sprawdź nową ofertę i potwierdź ją ponownie.");
+				return;
+			}
 			int repetitions = player.hasQuest(QUEST_SLOT) ? player.getNumberOfRepetitions(QUEST_SLOT, 2) : 0;
 			player.setQuest(QUEST_SLOT, parts[1] + ",0," + count + "," + player.getSoloKill(parts[1])
 					+ "," + player.getSharedKill(parts[1]) + ";" + System.currentTimeMillis() + ";"
 					+ repetitions + ";" + difficulty.name() + ";" + bonus);
-			raiser.say("Upoluj " + count + " sztuk: " + parts[1] + ". Powiedz #załatwione, gdy skończysz. "
-					+ "Zmiana trudności wymaga wcześniejszej rezygnacji: #rezygnuję.");
+			raiser.say("Zatem umowa stoi. Twoim celem jest " + parts[1] + ". Do ubicia masz " + count
+					+ " sztuk. Wróć i powiedz #załatwione, gdy skończysz. Gdyby zabrakło ci sił, powiedz #rezygnuję, ale wtedy nie będzie zapłaty.");
 		} catch (IllegalArgumentException e) {
-			raiser.say("Ta oferta nie jest już dostępna. Poproś o nowe #zadanie.");
+			raiser.say("Ten trop już się nie nadaje. Spytaj o #zadanie, poszukamy innego.");
 		}
 	}
 
@@ -174,12 +274,11 @@ public class Hunting extends AbstractQuest {
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, ACTIVE,
 				ConversationStates.ATTENDING, null, (player, sentence, raiser) ->
-					raiser.say("Masz aktywne polowanie: " + getCreatureToKillFromPlayer(player) + ", "
-							+ getCountCreatureToKillFromPlayer(player) + " sztuk. Powiedz #załatwione lub #rezygnuję."));
+					raiser.say("Pamiętasz naszą umowę? Nasz cel to " + getCreatureToKillFromPlayer(player) + ". Umawialiśmy się na "
+							+ getCountCreatureToKillFromPlayer(player) + " sztuk. Jeśli już po łowach, powiedz #załatwione. Jeśli odstępujesz od umowy, powiedz #rezygnuję."));
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES, new NotCondition(ACTIVE),
-				ConversationStates.ATTENDING, "Wybierz polowanie: #łatwe, #średnie albo #trudne. "
-				+ "Im trudniejsze polowanie, tym większa premia do PD ataku i obrony za pokonanie przeciwników. "
-				+ "Nagroda zależy też od ich liczby i siły. Przed przyjęciem zadania poznasz dokładną premię i zawartość skrzyni.", null);
+				ConversationStates.ATTENDING, "Znasz już leśne ścieżki czy dopiero uczysz się tropić? Mam łowy #łatwe, #średnie i #trudne. "
+				+ "Im groźniejsza zwierzyna i dłuższe łowy, tym hojniej cię wynagrodzę. Powiedz, na które się piszesz.", null);
 		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
 			List<String> words = difficulty == HuntingDifficulty.EASY ? Arrays.asList("łatwe", "latwe", "easy")
 					: difficulty == HuntingDifficulty.MEDIUM ? Arrays.asList("średnie", "srednie", "medium")
@@ -187,28 +286,32 @@ public class Hunting extends AbstractQuest {
 			npc.add(ConversationStates.ATTENDING, words, new NotCondition(ACTIVE),
 					ConversationStates.QUESTION_1, null, (player, sentence, raiser) -> offer(player, raiser, difficulty));
 			npc.add(ConversationStates.ATTENDING, words, ACTIVE, ConversationStates.ATTENDING,
-					"Najpierw zakończ obecne polowanie albo powiedz #rezygnuję. Przerwane zadanie nie daje nagrody.", null);
+					"Najpierw dotrzymaj naszej umowy. Jeśli chcesz ją zerwać, powiedz #rezygnuję. Za niedokończone łowy nie zapłacę.", null);
 		}
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING, null, (player, sentence, raiser) -> acceptOffer(player, raiser));
 		npc.add(ConversationStates.QUESTION_1, ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING, "Nie przyjmujesz zadania. Możesz wybrać inną trudność.",
-				(player, sentence, raiser) -> player.setQuest(OFFER_SLOT, null));
+				ConversationStates.ATTENDING, "Nie nalegam. Możemy pomówić o innych łowach, ale ten trop zostawię dla ciebie. Samo kręcenie głową go nie zmieni.",
+				(player, sentence, raiser) -> {
+					rememberPreview(player);
+					player.setQuest(OFFER_SLOT, null);
+				});
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("rezygnuję", "rezygnuje", "rezygnuj", "cancel"),
 				ACTIVE, ConversationStates.QUESTION_2,
-				"Chcesz przerwać polowanie bez nagrody? Dotychczasowy postęp tego zadania przepadnie. #tak / #nie", null);
+				"Chcesz odstąpić od umowy? Twoja wola, ale zapłaty nie będzie. Jeśli wrócisz do tych łowów, zaczniesz je od nowa. Tego właśnie chcesz? Powiedz #tak albo #nie.", null);
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("rezygnuję", "rezygnuje", "rezygnuj", "cancel"),
-				new NotCondition(ACTIVE), ConversationStates.ATTENDING, "Nie masz aktywnego polowania.", null);
+				new NotCondition(ACTIVE), ConversationStates.ATTENDING, "Nie masz teraz u mnie żadnych łowów do dokończenia.", null);
 		npc.add(ConversationStates.QUESTION_2, ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING, null, (player, sentence, raiser) -> {
 					if (ACTIVE.fire(player, null, null)) {
+						rememberActiveOffer(player);
 						player.setQuest(QUEST_SLOT, 0, "cancelled");
 						player.setQuest(OFFER_SLOT, null);
 					}
-					raiser.say("Polowanie przerwane bez nagrody. Liczba ukończonych polowań jest zachowana. Wybierz #łatwe, #średnie lub #trudne.");
+					raiser.say("Niech i tak będzie. Za te łowy nie dostaniesz zapłaty, a trop pozostanie ten sam. Jeśli chcesz spróbować innych łowów, wybierz #łatwe, #średnie albo #trudne.");
 				});
 		npc.add(ConversationStates.QUESTION_2, ConversationPhrases.NO_MESSAGES, null,
-				ConversationStates.ATTENDING, "Kontynuuj polowanie. Powiedz #załatwione, kiedy skończysz.", null);
+				ConversationStates.ATTENDING, "Dobrze. Trzymaj się tropu i wróć z wieścią. Powiedz #załatwione, kiedy skończysz.", null);
 	}
 
 	private void step_2() {
@@ -224,7 +327,7 @@ public class Hunting extends AbstractQuest {
 				ConversationPhrases.FINISH_MESSAGES,
 				(player, sentence, entity) -> !player.hasQuest(QUEST_SLOT) || "cancelled".equals(player.getQuest(QUEST_SLOT, 0)) || "rejected".equals(player.getQuest(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
-				"Obawiam się, że jeszcze nie dałem Tobie #zadania.",
+				"O jakich łowach mówisz? Nie mamy teraz żadnej umowy. Jeśli chcesz ruszyć w głuszę, spytaj o #zadanie.",
 				null);
 
 		// player already completed this quest
@@ -232,7 +335,7 @@ public class Hunting extends AbstractQuest {
 				ConversationPhrases.FINISH_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Już ukończyłeś ostatnie zadanie, które Tobie dałem.",
+				"Za ostatnie łowy już się rozliczyliśmy. Jeśli pora ruszyć na następne, spytaj o #zadanie.",
 				null);
 
 		// player didn't killed creature
@@ -249,8 +352,8 @@ public class Hunting extends AbstractQuest {
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
 							final String questKill = player.getQuest(QUEST_SLOT, 0).split(",")[0];
 							final String questCountKill = player.getQuest(QUEST_SLOT, 0).split(",")[2];
-							npc.say("Jeszcze nie upolowałeś " + questCountKill + " " + questKill
-									+ ". Idź i zrób to oraz powiedz #załatwione, gdy skończysz.");
+							npc.say("Jeszcze nie pora na zapłatę. Nasz cel to " + questKill + ". Umawialiśmy się na " + questCountKill
+									+ " sztuk. Wróć, gdy dokończysz łowy, i powiedz #załatwione.");
 					}
 				});
 
@@ -352,6 +455,13 @@ public class Hunting extends AbstractQuest {
 			}
 		});
 
+		rewards.add((player, sentence, raiser) -> {
+			for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
+				player.setQuest(OFFER_CACHE_PREFIX + difficulty.name(), null);
+			}
+			player.setQuest(OFFER_SLOT, null);
+		});
+
 		// player killed creature
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
@@ -359,7 +469,7 @@ public class Hunting extends AbstractQuest {
 						ACTIVE,
 				        new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
-				"Gratuluje! Zasłużyłeś na odpowiednią nagrodę!",
+				"Dobra robota! Widać, że nie rzucasz słów na wiatr. Oto twoja zapłata i obiecana skrzynia. Niech ci dobrze służą.",
 				new MultipleActions(rewards));
 	}
 

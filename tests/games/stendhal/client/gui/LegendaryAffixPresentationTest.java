@@ -13,6 +13,20 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
+
+	private java.lang.reflect.Field preferences;
+	private Object previousPreferences;
+	@org.junit.Before public void isolatePolishLanguage() throws Exception {
+		preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+		preferences.setAccessible(true);
+		previousPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
+		java.util.Properties values = new java.util.Properties();
+		values.setProperty("config." + games.stendhal.client.ClientLanguage.PROPERTY, "pl");
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), values);
+	}
+	@org.junit.After public void restoreLanguage() throws Exception {
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), previousPreferences);
+	}
 	@Test
 	public void deepWoundsUsesPolishOrangeTextCreamNumbersAndNoDiamond() {
 		final RPObject object = ItemTestHelper.createItem("legendary sword");

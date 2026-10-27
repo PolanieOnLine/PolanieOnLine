@@ -27,12 +27,6 @@ final class LegendaryAffixPresentation {
 
 		final StringBuilder result = new StringBuilder();
 		appendAttackRateReduction(result, object);
-		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
-				"dodatkowego ataku");
-		// Legacy saved/dev items keep their old materialized flat DEF line, but
-		// fresh generation no longer rolls this affix.
-		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
-				"dodatkowego pancerza");
 		appendSpikedPlating(result, object);
 		if (has(object, ItemTooltip.HUNTER_MARK)) {
 			appendRegularText(result, "Znak łowcy",
@@ -179,7 +173,8 @@ final class LegendaryAffixPresentation {
 		}
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
 				.append(Math.abs(value.intValue()))
-				.append(" do wagi broni</font></div>");
+				.append(games.stendhal.client.ClientLanguage.getText(" do wagi broni"))
+				.append("</font></div>");
 	}
 
 	private static void appendSpikedPlating(final StringBuilder result,
@@ -201,23 +196,8 @@ final class LegendaryAffixPresentation {
 	private static void appendRegularText(final StringBuilder result,
 			final String title, final String text) {
 		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
-				.append(title).append(":</b> ").append(text)
-				.append("</font></div>");
-	}
-
-	private static void appendRegularRolled(final StringBuilder result,
-			final RPObject object, final String key, final String label) {
-		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
-		if (raw == null) {
-			return;
-		}
-		final Integer value = parseInteger(raw);
-		if (value == null || value.intValue() == 0) {
-			return;
-		}
-		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; ")
-				.append(value.intValue() > 0 ? "+" : "")
-				.append(value.intValue()).append(" ").append(label)
+				.append(games.stendhal.client.ClientLanguage.getText(title)).append(":</b> ")
+				.append(games.stendhal.client.ClientLanguage.getText(text))
 				.append("</font></div>");
 	}
 
@@ -276,7 +256,7 @@ final class LegendaryAffixPresentation {
 	private static void beginLine(final StringBuilder result, final String title) {
 		result.append("<div style='margin-top:4px'><b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
-				.append(title).append(": </font>");
+				.append(games.stendhal.client.ClientLanguage.getText(title)).append(": </font>");
 	}
 
 	private static void appendColored(final StringBuilder result,
@@ -285,7 +265,7 @@ final class LegendaryAffixPresentation {
 			return;
 		}
 		result.append("<font size='-1' color='").append(color).append("'>")
-				.append(text).append("</font>");
+				.append(games.stendhal.client.ClientLanguage.getText(text)).append("</font>");
 	}
 
 	private static void endLine(final StringBuilder result) {

@@ -106,6 +106,7 @@ public class SoundManagerNG {
 		final VolumeAdjustor mGlobalVolume = new VolumeAdjustor();
 		final SoundSystemNG.Output mOutput;
 		Sound mSound = null;
+		boolean waitingForUnmute;
 
 		SoundChannel() {
 			mOutput = mSoundSystem.openOutput(0, mInterruptor, this,
@@ -136,7 +137,13 @@ public class SoundManagerNG {
 		}
 
 		void resumePlayback() {
+			waitingForUnmute = false;
 			mInterruptor.play();
+		}
+
+		void pauseUntilUnmuted() {
+			waitingForUnmute = true;
+			mInterruptor.pause(ZERO_DURATION);
 		}
 
 		void close() {
@@ -156,6 +163,7 @@ public class SoundManagerNG {
 		}
 
 		synchronized void playSound(Sound newSound, float volume, Time time) {
+			waitingForUnmute = false;
 			if (mSound != null) {
 				mSound.file.get().disconnect();
 				mSound.file.get().restart();
@@ -168,7 +176,11 @@ public class SoundManagerNG {
 					time = ZERO_DURATION;
 				}
 
-				mInterruptor.play();
+				if (mMute) {
+					pauseUntilUnmuted();
+				} else {
+					resumePlayback();
+				}
 				mGlobalVolume.setVolume(0.0f);
 				mGlobalVolume.startFading(volume, time);
 				newSound.channel.set(this);
@@ -180,9 +192,10 @@ public class SoundManagerNG {
 		}
 
 		void stopPlayback(Time time) {
-			if (time == null) {
+			if (time == null || waitingForUnmute) {
 				time = ZERO_DURATION;
 			}
+			waitingForUnmute = false;
 
 			mAutoRepeat.set(false);
 			mGlobalVolume.startFading(0.0f, time);
@@ -301,10 +314,16 @@ public class SoundManagerNG {
 			channel.setVolume(volume);
 			channel.setLayer(layerLevel);
 			channel.setAudibleArea(area);
-			channel.resumePlayback();
+			if (mMute) {
+				channel.pauseUntilUnmuted();
+			} else {
+				channel.resumePlayback();
+			}
 			channel.update();
 		} else {
-			if (!mMute && mSoundSystem.isRunning()) {
+			// Keep loops attached to the suspended mixer so unmuting can resume
+			// music and ambient sources requested while sound was disabled.
+			if (autoRepeat || (!mMute && mSoundSystem.isRunning())) {
 				SoundChannel channel = getInactiveChannel();
 				channel.setAutoRepeat(autoRepeat);
 				channel.setLayer(layerLevel);
@@ -360,9 +379,12 @@ public class SoundManagerNG {
 			logger.info("turning on audio");
 			mSoundSystem.proceed(null, getOutputLine());
 
-			if (useFading) {
-				for (SoundChannel channel : mChannels) {
-					if (channel.isActive()) {
+			for (SoundChannel channel : mChannels) {
+				if (channel.isActive()) {
+					if (channel.waitingForUnmute) {
+						// The original fade-in has not started yet.
+						channel.resumePlayback();
+					} else if (useFading) {
 						channel.startFading(delay);
 					}
 				}

@@ -1,0 +1,21 @@
+# Release client audit: actual Swing labels, hints and generated messages.
+# Account/profile values, providers and numeric parameters remain unchanged.
+<html><body><p><font size\="-2">Podczas logowania, informacje, które identyfikują twój komputer zostaną zapisane<br>w celu zapobiegnięcia nadużyciom (np. przy próbie odgadnięcia hasła w celu włamania się na konto<br>lub tworzeniu wielu kont w celu sprawiania problemów).</font></p><p><font size\="-2">Ponadto wszystkie zdarzenia i akcje, które wydarzą się w grze-<br>(np. rozwiązywanie zadań, atakowanie potworów) będą zapisywane w logach.<br>Informacje te wykorzystywane będą w celu analizy luk oraz rzadko w sprawach nadużyć.</font></p><br><p><font size\="-2">PolanieOnLine to niekomercyjny projekt spędzania czasu wolnego. NIE wykorzystujemy<br>Twoich danych do celów reklamowych oraz NIE udostępniamy ich osobom trzecim.</font></p></body></html>=<html><body><p><font size\="-2">When you log in, information identifying your computer is recorded<br>to prevent abuse (such as guessing passwords to break into an account<br>or creating multiple accounts to cause trouble).</font></p><p><font size\="-2">Events and actions that take place in the game<br>(such as completing quests and attacking creatures) are also logged.<br>This information is used to investigate bugs and, occasionally, abuse.</font></p><br><p><font size\="-2">PolanieOnLine is a non-commercial leisure project. We do NOT use<br>your data for advertising and do NOT share it with third parties.</font></p></body></html>
+Nie można się połączyć z serwerem w celu utworzenia konta. Serwer może nie działać, a jeśli korzystasz z innego serwera to sprawdź czy poprawnie wpisałeś nazwę i numer portu.=Unable to connect to the server to create an account. The server may be offline. If you are using another server, check that you entered its name and port correctly.
+Starsza wersja=Outdated version
+Zablokowane IP=Blocked IP address
+Zostanie usunięty twój profil z lokalnej listy kont.\nNie usunie to twojego konta z żadnego serwera.\nCzy chcesz usunąć profil '{0}@{1}'?=Your profile will be removed from the local account list.\nThis will not delete your account from any server.\nDo you want to remove the profile '{0}@{1}'?
+Logowanie {0} jest dostępne tylko na oficjalnym serwerze.={0} login is only available on the official server.
+{item:0}Adres e-mail jest jedynym sposobem, w jaki administratorzy mogą kontaktować się z prawowitym właścicielem konta.\nJeśli go nie dostarczysz, nie będziesz mógł uzyskać nowego hasła do tego konta, na przykład:\n- Zapomniałeś hasła.\n- Inny gracz w jakiś sposób dostaje hasło i zmienia je.\nCzy mimo to chcesz kontynuować?={item:0}Email is the only way administrators can contact the rightful account owner.\nWithout it, you will not be able to recover access to this account, for example if:\n- You forget your password.\n- Another player obtains your password and changes it.\nDo you still want to continue?
+<html>Tłumaczenia są jeszcze uzupełniane.<br>Brakujący tekst pozostaje po polsku.</html>=<html>Translations are still being added.<br>Missing text stays in Polish.</html>
+<html>Wyjściowe urządzenie dźwięku. <b>auto</b> powinno działać u większości osób,<br>ale wypróbuj inne jeżeli nie możesz otrzymać zadowalającego dźwięku</html>=<html>Audio output device. <b>auto</b> should work for most people,<br>but try another if the sound does not work properly</html>
+Poziom ulepszenia: +{0} / +{1}=Upgrade level: +{0} / +{1}
+Sprawdzanie przedmiotu...=Checking item...
+Styl=Style
+Łącznie: {0} {1}=Total: {0} {1}
+Górnictwo:\r {0}\r ({1})=Mining:\r {0}\r ({1})
+Oferta {0}={0}'s offer
+Nieaktywny=Inactive
+ZAAKCEPTOWANE=ACCEPTED
+<html>Nie jesteś członkiem grupy.</html>=<html>You are not a member of a group.</html>
+Błąd podczas uruchamiania przeglądarki:\n{0}=Error opening the browser:\n{0}

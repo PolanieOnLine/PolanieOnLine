@@ -36,6 +36,55 @@ public class ItemRaritySnapshotTest {
 	}
 
 	@Test
+	public void preservesLifeStealAffixSeedAndMigrationMetadata() {
+		final java.util.Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("lifesteal", "0.075");
+		final Item source = new Item("snapshot life steal", "sword", "test", attributes);
+		source.setRarity(ItemRarity.EPIC);
+		source.put("lifesteal_effectiveness", 20);
+		source.put("lifesteal_version", 1);
+		source.put("lifesteal_legacy", "lifesteal", "0.09");
+		source.put(ItemAffixState.ATTRIBUTE, "lifesteal_effectiveness", "20");
+		ItemAffixState.setSeed(source, 123456L);
+		final String encoded = ItemRaritySnapshot.encode(source);
+		final Item restored = new Item("snapshot life steal", "sword", "test", attributes);
+
+		ItemRaritySnapshot.restore(restored, encoded);
+
+		assertEquals(ItemAffixState.getValues(source), ItemAffixState.getValues(restored));
+		assertEquals(ItemAffixState.getSeed(source), ItemAffixState.getSeed(restored));
+		assertEquals(source.getMap("lifesteal_legacy"), restored.getMap("lifesteal_legacy"));
+		assertEquals(1, restored.getInt("lifesteal_version"));
+		assertEquals(0.09, ItemLifestealService.getEffectiveLifesteal(restored), 0.000001);
+		assertEquals(encoded, ItemRaritySnapshot.encode(restored));
+	}
+
+	@Test
+	public void readsVersionTwoLifeStealWithoutReapplyingItsOldMultiplier() throws IOException {
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		final DataOutputStream output = new DataOutputStream(bytes);
+		output.writeByte(2);
+		output.writeUTF("epic");
+		output.writeUTF("default");
+		output.writeInt(1000);
+		output.writeInt(1);
+		output.writeUTF("lifesteal");
+		output.writeDouble(1.2);
+		output.writeInt(1);
+		output.writeUTF("lifesteal");
+		output.writeDouble(0.36);
+		output.close();
+		final Item item = new Item("old snapshot", "sword", "test",
+				java.util.Collections.singletonMap("lifesteal", "0.30"));
+
+		ItemRaritySnapshot.restore(item, Base64.getUrlEncoder().withoutPadding().encodeToString(bytes.toByteArray()));
+
+		assertEquals(0.30, item.getDouble("lifesteal"), 0.000001);
+		assertEquals(null, item.getRarityModifier("lifesteal"));
+		assertFalse(ItemAffixState.hasAny(item));
+	}
+
+	@Test
 	public void restoresFinalValuesWithoutApplyingModifiersAgain() {
 		final Item source = eligibleItem();
 		final ItemRarityModifiers fixed = ItemRarityModifiers.builder()

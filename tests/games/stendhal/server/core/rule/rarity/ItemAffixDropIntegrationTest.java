@@ -148,26 +148,23 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void intrinsicLifestealConsumesOneLegendaryRegularAffixSlot() {
+	public void intrinsicLifestealLeavesAllLegendaryRegularAffixSlotsAvailable() {
 		final Item item = sword();
 		item.put(WeaponAffixService.LIFESTEAL_ATTRIBUTE, 0.30);
 
 		new ItemRarityService(new Random(5L)).initialize(item,
 				drop(ItemRarity.LEGENDARY));
 
-		// The XML value still participates in rarity scaling, but is now recorded
-		// as a guaranteed regular affix instead of adding a free fifth affix.
-		assertEquals(1.28, item.getRarityModifier(
-				WeaponAffixService.LIFESTEAL_ATTRIBUTE).doubleValue(), 0.0);
-		assertEquals(0.38, item.getDouble(
+		assertTrue(item.getRarityModifier(WeaponAffixService.LIFESTEAL_ATTRIBUTE) == null);
+		assertEquals(0.30, item.getDouble(
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
-		assertTrue(ItemAffixState.has(item,
+		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
 		assertEquals(4, ItemAffixState.getValues(item).size());
 	}
 
 	@Test
-	public void intrinsicLifestealFillsTheOnlyRareAffixSlot() {
+	public void intrinsicLifestealDoesNotFillTheOnlyRareAffixSlot() {
 		final Item item = sword();
 		item.put(WeaponAffixService.LIFESTEAL_ATTRIBUTE, 0.10);
 
@@ -175,14 +172,14 @@ public class ItemAffixDropIntegrationTest {
 				drop(ItemRarity.RARE));
 
 		assertEquals(1, ItemAffixState.getValues(item).size());
-		assertTrue(ItemAffixState.has(item,
+		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
-		assertEquals(0.11, item.getDouble(
+		assertEquals(0.10, item.getDouble(
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
 	}
 
 	@Test
-	public void intrinsicLifestealLeavesOneRandomEpicAffixSlot() {
+	public void intrinsicLifestealLeavesBothRandomEpicAffixSlots() {
 		final Item item = sword();
 		item.put(WeaponAffixService.LIFESTEAL_ATTRIBUTE, 0.10);
 
@@ -190,19 +187,19 @@ public class ItemAffixDropIntegrationTest {
 				drop(ItemRarity.EPIC));
 
 		assertEquals(2, ItemAffixState.getValues(item).size());
-		assertTrue(ItemAffixState.has(item,
+		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
 	}
 
 	@Test
-	public void commonRemovesPositiveIntrinsicLifesteal() {
+	public void commonRetainsPositiveIntrinsicLifesteal() {
 		final Item item = sword();
 		item.put(WeaponAffixService.LIFESTEAL_ATTRIBUTE, 0.10);
 
 		new ItemRarityService(new Random(5L)).initialize(item,
 				drop(ItemRarity.COMMON));
 
-		assertFalse(item.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE));
+		assertEquals(0.10, item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
 		assertFalse(ItemAffixState.hasAny(item));
 	}
 

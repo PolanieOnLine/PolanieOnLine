@@ -135,6 +135,12 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 
 	Map<Player, TurnListener> runningTimers = new IdentityHashMap<>();
 
+	/** Format authored scenes before inserting names, which are never dictionary input. */
+	private static String formatMessage(final Player player, final String template, final int fee) {
+		return games.stendhal.common.Translation.getText(player.getLanguage(), template)
+				.replace("$FEE", Integer.toString(fee)).replace("$NAME", player.getName());
+	}
+
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
@@ -194,7 +200,7 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 
 		@Override
 		public void onTurnReached(int currentTurn) {
-			player.sendPrivateText(NotificationType.SCENE_SETTING, "Piekielny urzędnik zauważył cię i podchodzi.");
+			player.sendPrivateText(NotificationType.SCENE_SETTING, games.stendhal.common.Translation.getText(player.getLanguage(), "Piekielny urzędnik zauważył cię i podchodzi."));
 			// The state is set immediately so that the player can't avoid
 			// being kicked out by logging out when they get the message
 			new SetQuestToTimeStampAction(QUEST_SLOT, 0).fire(player, null, null);
@@ -228,7 +234,7 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 			} else {
 				msg = Rand.rand(MESSAGES);
 			}
-			String message = msg[0].replaceAll("\\$NAME", player.getName());
+			String message = formatMessage(player, msg[0], 0);
 			if (LAWYER_MSG.equals(msg[1])) {
 				// In principle a player can logout before being deducted the
 				// money. That's a feature, not a bug - that can be interpreted
@@ -240,7 +246,7 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 				}
 				int fee = Math.min(sum, LAWYER_FEE);
 				new DropItemAction("money", fee).fire(player, null, null);
-				message = msg[0].replaceAll("\\$FEE", Integer.toString(fee));
+				message = formatMessage(player, msg[0], fee);
 			}
 			player.sendPrivateText(message);
 			TurnListener timer = new TimerStage3(player, msg[1]);
@@ -264,7 +270,7 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 
 		@Override
 		public void onTurnReached(int currentTurn) {
-			player.sendPrivateText(NotificationType.SCENE_SETTING, message);
+			player.sendPrivateText(NotificationType.SCENE_SETTING, games.stendhal.common.Translation.getText(player.getLanguage(), message));
 			TurnListener timer = new FinalTimer(player);
 			runningTimers.put(player, timer);
 			SingletonRepository.getTurnNotifier().notifyInSeconds(GRACE_TIME_INTERVAL, timer);

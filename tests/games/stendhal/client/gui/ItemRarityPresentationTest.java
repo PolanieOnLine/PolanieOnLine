@@ -16,6 +16,20 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemRarityPresentationTest {
+
+	private java.lang.reflect.Field preferences;
+	private Object previousPreferences;
+	@org.junit.Before public void isolatePolishLanguage() throws Exception {
+		preferences = games.stendhal.client.gui.wt.core.WtWindowManager.class.getDeclaredField("properties");
+		preferences.setAccessible(true);
+		previousPreferences = preferences.get(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance());
+		java.util.Properties values = new java.util.Properties();
+		values.setProperty("config." + games.stendhal.client.ClientLanguage.PROPERTY, "pl");
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), values);
+	}
+	@org.junit.After public void restoreLanguage() throws Exception {
+		preferences.set(games.stendhal.client.gui.wt.core.WtWindowManager.getInstance(), previousPreferences);
+	}
 	private static final String DIVIDER_MARKER =
 			"&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;&#9472;&#9472;&#9472;&#9472;";
 	private static final String BETTER_COLOR_MARKER = "color='#62d26f'";
@@ -122,7 +136,7 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("&#9500;&#9472;&#9670;"));
 		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
 		assertTrue(tooltip.contains(
-				"1,67 ataku na sekundę (Szybka broń)"));
+				"1,67 ataku na sekundę<br>(Szybka broń)"));
 		assertFalse(tooltip.contains("53,3 DPS"));
 		assertFalse(tooltip.contains("pkt. ataku"));
 		assertFalse(tooltip.contains("Moc przedmiotu"));
@@ -181,7 +195,7 @@ public class ItemRarityPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains(
-				"0,90 ataku na sekundę (Powolna broń)"));
+				"0,90 ataku na sekundę<br>(Powolna broń)"));
 	}
 
 	@Test
@@ -308,7 +322,7 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("10,0 pkt. obrażeń na sekundę"));
 		assertTrue(tooltip.contains("[15–15] pkt. obrażeń za trafienie"));
-		assertTrue(tooltip.contains("0,67 ataku na sekundę (Powolna broń)"));
+		assertTrue(tooltip.contains("0,67 ataku na sekundę<br>(Powolna broń)"));
 	}
 
 	@Test

@@ -59,10 +59,11 @@ public final class HuntingRewards {
 	public static double referenceStrength(int level, List<Creature> creatures) {
 		List<Double> scores = new ArrayList<>();
 		int nearest = Integer.MAX_VALUE;
+		for (Creature creature : HuntingTargetSelector.select(
+				level, HuntingDifficulty.MEDIUM, creatures, Creature::getLevel)) {
+			scores.add(strength(creature));
+		}
 		for (Creature creature : creatures) {
-			if (HuntingDifficulty.MEDIUM.accepts(level, creature.getLevel())) {
-				scores.add(strength(creature));
-			}
 			nearest = Math.min(nearest, Math.abs(level - creature.getLevel()));
 		}
 		if (scores.isEmpty()) {
@@ -74,33 +75,33 @@ public final class HuntingRewards {
 		Collections.sort(scores);
 		int middle = scores.size() / 2;
 		double reference = scores.size() % 2 == 0 ? (scores.get(middle - 1) + scores.get(middle)) / 2 : scores.get(middle);
-		// Scale all three difficulties together if an unusually tough target
-		// would exceed the one-level safety limit. Capping only its reward would
-		// otherwise make that hard task pay less per unit of work than easy tasks.
-		for (Creature creature : creatures) {
-			for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
-				if (difficulty.accepts(level, creature.getLevel())) {
-					// Keep the original strength calibration independent of payout changes.
-					// Otherwise lowering the bonus also lowers its divisor and cancels
-					// the reduction for the toughest targets.
-					double referenceShare = difficulty == HuntingDifficulty.EASY ? 0.10
-							: difficulty == HuntingDifficulty.MEDIUM ? 0.25 : 0.50;
-					reference = Math.max(reference, strength(creature) * referenceShare * 30 / 25.0);
-				}
+		// One shared scale preserves relative rewards for different targets.
+		// Account for each difficulty's actual count range, including 40-50
+		// opponents on hard hunts, so no normally generated reward hits a flat cap.
+		for (HuntingDifficulty difficulty : HuntingDifficulty.values()) {
+			for (Creature creature : HuntingTargetSelector.select(
+					level, difficulty, creatures, Creature::getLevel)) {
+				reference = Math.max(reference, strength(creature)
+						* difficulty.getMaximumKillCount() / normalKillCount(difficulty));
 			}
 		}
 		return reference;
 	}
 
-	/** Normalised to 25 opponents; no fixed minimum payout for trivial targets.
-	 * A full skill-level gap per hunt is the safety limit, not several levels. */
+	private static double normalKillCount(HuntingDifficulty difficulty) {
+		return (difficulty.getMinimumKillCount() + difficulty.getMaximumKillCount()) / 2.0;
+	}
+
+	/** New rewards use the actual difficulty count range and a 5/15/30% ceiling.
+	 * Existing accepted tasks are read separately by questBasisPoints. */
 	public static int rewardBasisPoints(HuntingDifficulty difficulty, int count,
 			Creature target, double reference) {
 		if (count < 1 || count > 50 || !Double.isFinite(reference) || reference <= 0) {
 			throw new IllegalArgumentException("Invalid hunting task weight");
 		}
-		double bonus = difficulty.getPercent() * 100.0 * count / 25.0 * strength(target) / reference;
-		return (int) Math.max(1, Math.min(10000, Math.round(bonus)));
+		double bonus = difficulty.getPercent() * 100.0 * count / normalKillCount(difficulty)
+				* strength(target) / reference;
+		return (int) Math.max(1, Math.min(difficulty.getPercent() * 100, Math.round(bonus)));
 	}
 
 	public static String percentageLabel(int basisPoints) {

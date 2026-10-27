@@ -209,6 +209,14 @@ public class AlterActionTest {
 		assertEquals(100, player.getHP());
 		action.perform(player , rpAction);
 		assertEquals(5, player.getHP());
+
+		player.setBaseHP(33000);
+		rpAction.put("stat", "base_hp");
+		rpAction.put("mode", "set");
+		rpAction.put("value", "1000");
+		action.perform(player, rpAction);
+		assertEquals(1000, player.getBaseHP());
+		assertEquals(1000, player.getUncappedBaseHP());
 	}
 
 

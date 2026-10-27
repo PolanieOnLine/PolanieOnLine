@@ -13,6 +13,7 @@ import { Paths } from "../../data/Paths";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
+import { GameLanguage } from "../../util/GameLanguage";
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../../stendhal";
@@ -30,7 +31,8 @@ export class TravelLogDialog extends DialogContentComponent {
 		ui.registerComponent(UIComponentEnum.TravelLogDialog, this);
 		this.refresh();
 
-		this.child(".travellogitems")!.innerHTML = "<option value=\"\">(ładowanie)</option>";
+		this.child(".travellogitems")!.innerHTML = "<option value=\"\">"
+			+ stendhal.ui.html.esc(GameLanguage.getText("(ładowanie)")) + "</option>";
 		if (dataItems) {
 			this.setDataItems(dataItems);
 		}
@@ -161,7 +163,8 @@ export class TravelLogDialog extends DialogContentComponent {
 			itemList.dispatchEvent(new Event("change"));
 		} else if (stendhal.session.touchOnly()) {
 			// show a "none" option for touch enabled devices
-			itemList.innerHTML = "<option value=\"\">(nic)</option>";
+			itemList.innerHTML = "<option value=\"\">"
+				+ stendhal.ui.html.esc(GameLanguage.getText("(nic)")) + "</option>";
 			itemList.selectedIndex = 0;
 		}
 	}
@@ -177,7 +180,8 @@ export class TravelLogDialog extends DialogContentComponent {
 		detailsSpan.innerHTML = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>";
 		if (this.repeatable[selectedItem]) {
 			detailsSpan.innerHTML += "<p id=\"travellogrepeatable\">"
-				+ "<img src=\"" + Paths.gui + "/rp.png\" /> <em>Mogę wykonać to zadanie jeszcze raz.</em></p>";
+				+ "<img src=\"" + Paths.gui + "/rp.png\" /> <em>"
+				+ stendhal.ui.html.esc(GameLanguage.getText("Mogę wykonać to zadanie jeszcze raz.")) + "</em></p>";
 		}
 
 		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"

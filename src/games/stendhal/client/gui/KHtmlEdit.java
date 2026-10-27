@@ -219,7 +219,8 @@ public class KHtmlEdit extends KTextEdit {
 					 * Emit link (if any)
 					 */
 					if (link != null) {
-						buildLink(sbuf, link);
+						buildLink(sbuf, link, games.stendhal.common.Translation.getOriginalKeyword(
+								games.stendhal.client.ClientLanguage.getLanguage(), link, text));
 					}
 
 					ch = ci.current();
@@ -251,23 +252,28 @@ public class KHtmlEdit extends KTextEdit {
 		// color quoted compound words like "#'iron sword'"
 		if (ch == '\'') {
 			terminator = ch;
+			ch = ci.next();
 		}
 
 		while (ch != CharacterIterator.DONE) {
 			if (ch == terminator) {
 				if (terminator == ' ') {
+					if (sbuf.length() > 0 && isWordDelim(sbuf.charAt(sbuf.length() - 1))) break;
     				/*
     				 * Continued link (#abc #def)?
     				 */
     				ch = ci.next();
 
-    				if (ch == '#') {
+					if (ch == '#' && ci.next() != '\'') {
+						ci.previous();
     					ch = ' ';
     				} else {
+						if (ch == '#') ci.previous();
     					ci.previous();
     					break;
     				}
 				} else {
+					ci.next();
 					break;
 				}
 			}
@@ -335,6 +341,11 @@ public class KHtmlEdit extends KTextEdit {
 	 *            The text to convert.
 	 */
 	protected void buildLink(final StringBuilder sbuf, final String text) {
+		buildLink(sbuf, text, text);
+	}
+
+	/** Keep the original NPC command separate from its translated caption. */
+	protected void buildLink(final StringBuilder sbuf, final String text, final String target) {
 		sbuf.append("<a href='");
 
 		if (text.startsWith("http://") || text.startsWith("https://")
@@ -344,10 +355,10 @@ public class KHtmlEdit extends KTextEdit {
 			sbuf.append("say:");
 
 			try {
-				sbuf.append(URLEncoder.encode(text, "UTF-8"));
+				sbuf.append(URLEncoder.encode(target, "UTF-8"));
 			} catch (final UnsupportedEncodingException ex) {
 				// Nothing left to try
-				sbuf.append(text);
+				sbuf.append(target);
 			}
 		}
 

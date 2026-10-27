@@ -40,6 +40,31 @@ public class ChallengeArenaTierTest {
 	}
 
 	@Test
+	public void partialLegendWaveRequestsOnlyItsMissingCreatures() {
+		final ChallengeArenaTier tier = ChallengeArenaTier.LEGEND;
+		assertEquals(5, tier.getRemainingWaveSize(5));
+		assertEquals(1, tier.getRemainingWaveSize(9));
+		assertEquals(5, tier.getRemainingWaveSize(10));
+		assertEquals(1, tier.getRemainingWaveSize(44));
+		assertEquals(0, tier.getRemainingWaveSize(45));
+		assertEquals(0, tier.getRemainingWaveSize(100));
+		assertEquals(5, tier.getRemainingWaveSize(-1));
+	}
+
+	@Test
+	public void partialTrialWavePreservesUnevenWaveBoundaries() {
+		final ChallengeArenaTier tier = ChallengeArenaTier.TRIAL;
+		assertEquals(4, tier.getRemainingWaveSize(0));
+		assertEquals(3, tier.getRemainingWaveSize(1));
+		assertEquals(1, tier.getRemainingWaveSize(3));
+		assertEquals(3, tier.getRemainingWaveSize(4));
+		assertEquals(1, tier.getRemainingWaveSize(6));
+		assertEquals(3, tier.getRemainingWaveSize(7));
+		assertEquals(1, tier.getRemainingWaveSize(9));
+		assertEquals(0, tier.getRemainingWaveSize(10));
+	}
+
+	@Test
 	public void hunterUsesTwentyCreaturesInSixWaves() {
 		final ChallengeArenaTier tier = ChallengeArenaTier.HUNTER;
 		assertEquals(20, tier.getCreatureCount());

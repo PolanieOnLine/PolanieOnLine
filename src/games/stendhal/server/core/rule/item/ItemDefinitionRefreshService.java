@@ -10,6 +10,7 @@ import games.stendhal.server.core.rule.rarity.EquipmentAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.core.rule.rarity.ItemRollPrecision;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
 import games.stendhal.server.core.rule.rarity.WeaponAffixService;
 import games.stendhal.server.entity.item.GateKey;
@@ -59,17 +60,19 @@ public final class ItemDefinitionRefreshService {
 					|| ("amount".equals(attribute) && "ring".equals(item.getItemClass()))) {
 				continue;
 			}
+			// The Deathmatch trophy earns its defense from arena victories, not XML.
+			// Restoring the definition would reset every earned bonus to def=1.
+			if ("def".equals(attribute) && "zdobyczny hełm".equals(item.getName())
+					&& saved.has("def")) {
+				item.put("def", saved.get("def"));
+				baseFields.add("def");
+				continue;
+			}
 			item.put(attribute, definition.get(attribute));
 			if (statistics.contains(attribute)) {
 				baseFields.add(attribute);
 				replayModifier(item, attribute, definition.get(attribute));
 			}
-		}
-		// A newly generated Common weapon suppresses intrinsic life steal. Do not
-		// reintroduce it on login; old Common weapons that owned it still refresh.
-		if (item.getRarity() == ItemRarity.COMMON && WeaponAffixService.isWeapon(item) && !saved.has("lifesteal")
-				&& item.has("lifesteal")) {
-			item.remove("lifesteal");
 		}
 		refreshDescription(item, definition, saved);
 		preserveUpgrade(item, saved);
@@ -78,6 +81,7 @@ public final class ItemDefinitionRefreshService {
 
 	private static void replayModifier(final Item item, final String attribute,
 			final String baseValue) {
+		if (ItemLifestealService.isUnscaled(attribute)) return;
 		Double savedMultiplier = item.getRarityModifier(attribute);
 		if (savedMultiplier == null && ("damage_min".equals(attribute) || "damage_max".equals(attribute))) {
 			savedMultiplier = item.getRarityModifier("atk");

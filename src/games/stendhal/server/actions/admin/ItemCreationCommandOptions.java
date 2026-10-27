@@ -74,6 +74,9 @@ final class ItemCreationCommandOptions {
 				throw new IllegalArgumentException("Nieznana rzadkość przedmiotu: " + rarityId);
 			}
 			context.withRarity(requestedRarity);
+		} else {
+			// Rolled rarity should receive its normal affixes too; explicit options below can opt out.
+			context.generateAffixes(true);
 		}
 
 		Boolean randomizeModifiers = null;
@@ -119,7 +122,12 @@ final class ItemCreationCommandOptions {
 
 		Boolean generateAffixes = null;
 		if (action.has(AFFIXES)) {
-			generateAffixes = parseAffixes(action.get(AFFIXES));
+			if ("max".equalsIgnoreCase(action.get(AFFIXES))) {
+				context.maximizeAffixes(true);
+				generateAffixes = Boolean.TRUE;
+			} else {
+				generateAffixes = parseAffixes(action.get(AFFIXES));
+			}
 		}
 		if (requestedRarity == ItemRarity.LEGENDARY
 				&& Boolean.FALSE.equals(generateAffixes)) {
@@ -151,7 +159,7 @@ final class ItemCreationCommandOptions {
 			return Boolean.FALSE;
 		}
 		throw new IllegalArgumentException(
-				"affixes musi mieć wartość random albo none.");
+				"affixes musi mieć wartość random, max albo none.");
 	}
 
 	private static long parseSeed(final String text) {

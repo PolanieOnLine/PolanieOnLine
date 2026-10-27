@@ -139,12 +139,14 @@ public class SummonAtActionTest {
 				assertEquals("epic", action.get("rarity"));
 				assertEquals("1.15", action.get("defense-multiplier"));
 				assertEquals("false", action.get("randomize-modifiers"));
+				assertEquals("max", action.get("affixes"));
+				assertEquals("321", action.get("seed"));
 			}
 		};
 
 		final SummonAtAction action = new SummonAtAction();
 		assertTrue(action.execute(new String[]{"player", "bag", "silver"},
-				"sword rarity=epic defense-multiplier=1.15 randomize-modifiers=false"));
+				"sword rarity=epic defense-multiplier=1.15 randomize-modifiers=false affixes=max seed=321"));
 		assertNull(getInterface().getLastEventLine());
 	}
 

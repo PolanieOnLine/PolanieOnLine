@@ -24,6 +24,10 @@ final class ChangeLockAction extends HouseChatAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+		if (HouseUtilities.getPlayersHouse(player) == null) {
+			raiser.say("Nie jesteś już właścicielem tego domu.");
+			return;
+		}
 		if (player.isEquipped("money", HouseChatAction.COST_OF_SPARE_KEY)) {
 			// we need to find out which this houseportal is so we can change lock
 			final String claimedHouse = player.getQuest(questslot);

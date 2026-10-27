@@ -14,6 +14,15 @@ import games.stendhal.server.entity.item.Item;
 /** Selects unique random affixes according to item rarity. */
 public final class ItemAffixGenerator {
 	private static final String EXCLUDED_MISSILE_CLASS = "missile";
+	/** Value rolls only: selection continues to use the seeded random source. */
+	private static final Random MAXIMUM_ROLL = new Random(0L) {
+		private static final long serialVersionUID = 1L;
+		@Override public int nextInt(final int bound) {
+			if (bound <= 0) throw new IllegalArgumentException("bound must be positive");
+			return bound - 1;
+		}
+		@Override public double nextDouble() { return Math.nextDown(1.0); }
+	};
 
 	private final ItemAffixRegistry registry;
 	private final LegendaryItemAffixRegistry legendaryRegistry;
@@ -95,11 +104,6 @@ public final class ItemAffixGenerator {
 		}
 
 		final List<String> applied = new ArrayList<String>();
-		final int guaranteedSlots = recordGuaranteedRegularAffixes(item,
-				regularSlots, applied);
-
-		// Definition-provided affixes remain guaranteed even for creation paths
-		// which deliberately disable random rolls (for example quest rewards).
 		if (!shouldGenerate(item, context)) {
 			return Collections.unmodifiableList(applied);
 		}
@@ -108,11 +112,12 @@ public final class ItemAffixGenerator {
 				? random.nextLong() : context.getAffixSeed().longValue();
 		ItemAffixState.setSeed(item, seed);
 		final Random rollRandom = new Random(seed);
-		applyRegularAffixes(item, regularSlots - guaranteedSlots, applied,
-				rollRandom);
+		final Random valueRandom = context.isMaximizeAffixes() ? MAXIMUM_ROLL : rollRandom;
+		applyRegularAffixes(item, regularSlots, applied,
+				rollRandom, valueRandom);
 
 		if (legendarySlots > 0
-				&& !applyLegendarySignature(item, applied, rollRandom)) {
+				&& !applyLegendarySignature(item, applied, rollRandom, valueRandom)) {
 			throw new IllegalStateException(
 					"Legendary item has no eligible signature affix: "
 							+ item.getItemClass() + "/" + item.getName());
@@ -120,26 +125,13 @@ public final class ItemAffixGenerator {
 		return Collections.unmodifiableList(applied);
 	}
 
-	/**
-	 * Materializes positive lifesteal supplied by the XML definition as one
-	 * regular affix. Its existing value is preserved (including rarity scaling)
-	 * instead of being rerolled by the random lifesteal definition.
-	 */
-	private int recordGuaranteedRegularAffixes(final Item item,
-			final int availableSlots, final List<String> applied) {
-		if (availableSlots <= 0 || !WeaponAffixService.isWeapon(item)
-				|| !item.has(WeaponAffixService.LIFESTEAL_ATTRIBUTE)
-				|| item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) <= 0.0) {
-			return 0;
-		}
-		final ItemAffixDefinition definition = registry.get(
-				WeaponAffixService.LIFESTEAL_ATTRIBUTE);
-		if (definition == null || ItemAffixState.has(item, definition.getId())) {
-			return 0;
-		}
-		ItemAffixState.record(item, definition);
-		applied.add(definition.getId());
-		return 1;
+	/** Adds only missing eligible regular affixes; never rerolls existing ones. */
+	public List<String> refillRegularAffixes(final Item item, final int slots,
+			final long seed) {
+		final List<String> applied = new ArrayList<String>();
+		final Random rollRandom = new Random(seed);
+		applyRegularAffixes(item, slots, applied, rollRandom, rollRandom);
+		return Collections.unmodifiableList(applied);
 	}
 
 	private boolean shouldGenerate(final Item item,
@@ -150,7 +142,7 @@ public final class ItemAffixGenerator {
 	}
 
 	private void applyRegularAffixes(final Item item, final int slots,
-			final List<String> applied, final Random rollRandom) {
+			final List<String> applied, final Random rollRandom, final Random valueRandom) {
 		if (slots <= 0) {
 			return;
 		}
@@ -161,7 +153,7 @@ public final class ItemAffixGenerator {
 			if (regularApplied >= slots) {
 				break;
 			}
-			if (definition.apply(item, rollRandom)) {
+			if (definition.apply(item, valueRandom)) {
 				ItemAffixState.record(item, definition);
 				applied.add(definition.getId());
 				regularApplied++;
@@ -170,12 +162,12 @@ public final class ItemAffixGenerator {
 	}
 
 	private boolean applyLegendarySignature(final Item item,
-			final List<String> applied, final Random rollRandom) {
+			final List<String> applied, final Random rollRandom, final Random valueRandom) {
 		final List<ItemAffixDefinition> eligible =
 				legendaryRegistry.getEligible(item);
 		Collections.shuffle(eligible, rollRandom);
 		for (final ItemAffixDefinition definition : eligible) {
-			if (definition.apply(item, rollRandom)) {
+			if (definition.apply(item, valueRandom)) {
 				ItemAffixState.record(item, definition);
 				applied.add(definition.getId());
 				return true;

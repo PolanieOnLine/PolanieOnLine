@@ -25,6 +25,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 import games.stendhal.client.entity.StatusID;
+import games.stendhal.client.gui.MoneyTooltip;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
@@ -51,6 +52,7 @@ class StatsPanel extends JPanel {
 	private final KarmaIndicator karmaIndicator;
 	private final ManaIndicator manaIndicator;
 	private final MoneyPanel moneyPanel;
+	private final CombatStatsPanel combatStatsPanel;
 	private final Color defaultCapacityColor;
 
 	StatsPanel() {
@@ -112,6 +114,13 @@ class StatsPanel extends JPanel {
 		add(capacityLabel, SLayout.EXPAND_X);
 		capacityLabel.setVisible(false);
 		defaultCapacityColor = capacityLabel.getForeground();
+		combatStatsPanel = new CombatStatsPanel();
+		combatStatsPanel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+		add(combatStatsPanel, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
+	}
+
+	void setCombatStats(java.util.Map<String, String> values) {
+		combatStatsPanel.setSnapshot(values);
 	}
 
 	/**
@@ -331,12 +340,25 @@ class StatsPanel extends JPanel {
 	 * A multi line, label like component for the status rows.
 	 */
 	private static class StatLabel extends JTextArea {
+		private String originalText;
+		@Override public Dimension getMinimumSize() {
+			final Dimension minimum = super.getMinimumSize();
+			// Wrapped text can become narrower again after the dock is expanded.
+			minimum.width = getInsets().left + getInsets().right;
+			return minimum;
+		}
+		@Override public void setText(String text) {
+			originalText = text;
+			super.setText(games.stendhal.client.ClientLanguage.getText(text));
+		}
 		public StatLabel() {
 			setOpaque(false);
 			setEditable(false);
 			setFocusable(false);
 			setWrapStyleWord(true);
 			setLineWrap(true);
+			putClientProperty(games.stendhal.client.gui.UiTranslation.AFTER_TRANSLATION,
+					(Runnable) () -> super.setText(games.stendhal.client.ClientLanguage.getText(originalText)));
 			Style style = StyleUtil.getStyle();
 			if (style != null) {
 				setForeground(style.getForeground());
@@ -394,13 +416,12 @@ class StatsPanel extends JPanel {
 
 		void setMoney(long dukaty, long talary, long miedziaki, long totalCopper) {
 			if (!CurrencyReform.useReformedCurrency()) {
+				final String tooltip = MoneyTooltip.format(totalCopper);
 				if (legacyLabel != null) {
 					legacyLabel.setAmount(totalCopper);
-					legacyLabel.setToolTipText("Łącznie: " + totalCopper + " "
-						+ coinQuantity("money", totalCopper));
+					legacyLabel.setToolTipText(tooltip);
 				}
-				setToolTipText("Łącznie: " + totalCopper + " "
-					+ coinQuantity("money", totalCopper));
+				setToolTipText(tooltip);
 				return;
 			}
 

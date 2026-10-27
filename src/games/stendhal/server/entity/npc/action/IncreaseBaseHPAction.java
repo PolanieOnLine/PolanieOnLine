@@ -37,7 +37,7 @@ public class IncreaseBaseHPAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		player.setBaseHP(player.getBaseHP() + baseHpDiff);
+		player.setBaseHP(player.getUncappedBaseHP() + baseHpDiff);
 		player.heal(baseHpDiff);
 
 		player.notifyWorldAboutChanges();

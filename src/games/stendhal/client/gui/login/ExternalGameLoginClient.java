@@ -1,5 +1,7 @@
 package games.stendhal.client.gui.login;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,7 +39,7 @@ final class ExternalGameLoginClient {
 				throw new IllegalArgumentException("Invalid HTTPS site URL");
 			}
 		} catch (IllegalArgumentException exception) {
-			throw new IOException("Nieprawidłowy adres strony logowania " + provider.label + ".", exception);
+			throw new IOException(getText("Nieprawidłowy adres strony logowania " + provider.label + "."), exception);
 		}
 	}
 
@@ -51,7 +53,7 @@ final class ExternalGameLoginClient {
 		if (!id.matches("[0-9a-fA-F-]{36}") || !secret.matches("[0-9a-f]{64}")
 				|| !code.matches("[0-9A-F]{10}") || !(lifetime instanceof Number)
 				|| ((Number) lifetime).longValue() < 1 || ((Number) lifetime).longValue() > 600) {
-			throw new IOException("Strona zwróciła nieprawidłowe żądanie logowania.");
+			throw new IOException(getText("Strona zwróciła nieprawidłowe żądanie logowania."));
 		}
 		final URI verification = URI.create(verificationUrl);
 		if (!"https".equalsIgnoreCase(verification.getScheme())
@@ -59,7 +61,7 @@ final class ExternalGameLoginClient {
 				|| effectivePort(site) != effectivePort(verification)
 				|| verification.getUserInfo() != null
 				|| !verification.getPath().equals("/auth/external/" + provider.id + "/redirect")) {
-			throw new IOException("Strona zwróciła nieprawidłowy adres logowania.");
+			throw new IOException(getText("Strona zwróciła nieprawidłowy adres logowania."));
 		}
 		return new StartResult(id, secret, code, verificationUrl, ((Number) lifetime).longValue());
 	}
@@ -71,19 +73,19 @@ final class ExternalGameLoginClient {
 			return null;
 		}
 		if (result.status == 410) {
-			throw new IOException("Czas logowania przez " + provider.label + " minął. Spróbuj ponownie.");
+			throw new IOException(getText("Czas logowania przez " + provider.label + " minął. Spróbuj ponownie."));
 		}
 		if (result.status == 403) {
 			final Object message = result.body.get("message");
-			throw new IOException(message instanceof String ? (String) message : "Logowanie przez " + provider.label + " zostało odrzucone.");
+			throw new IOException(message instanceof String ? (String) message : getText("Logowanie przez " + provider.label + " zostało odrzucone."));
 		}
 		if (result.status != 200) {
-			throw new IOException("Nie udało się potwierdzić logowania " + provider.label + " (HTTP " + result.status + ").");
+			throw new IOException(getText("Nie udało się potwierdzić logowania " + provider.label + " (HTTP " + result.status + ")."));
 		}
 		final String username = requiredString(result.body, "username");
 		final String seed = requiredString(result.body, "seed");
 		if (seed.getBytes(StandardCharsets.UTF_8).length != 16) {
-			throw new IOException("Strona zwróciła nieprawidłowy kod logowania do gry.");
+			throw new IOException(getText("Strona zwróciła nieprawidłowy kod logowania do gry."));
 		}
 		return new Credentials(username, seed);
 	}
@@ -93,7 +95,7 @@ final class ExternalGameLoginClient {
 		if (result.status != expectedStatus) {
 			final Object message = result.body.get("message");
 			throw new IOException(message instanceof String ? (String) message
-					: "Usługa logowania " + provider.label + " jest niedostępna (HTTP " + result.status + ").");
+					: getText("Usługa logowania " + provider.label + " jest niedostępna (HTTP " + result.status + ")."));
 		}
 		return result.body;
 	}
@@ -133,7 +135,7 @@ final class ExternalGameLoginClient {
 	private static String requiredString(final JSONObject object, final String key) throws IOException {
 		final Object value = object.get(key);
 		if (!(value instanceof String) || ((String) value).isEmpty()) {
-			throw new IOException("Niepełna odpowiedź strony logowania.");
+			throw new IOException(getText("Niepełna odpowiedź strony logowania."));
 		}
 		return (String) value;
 	}

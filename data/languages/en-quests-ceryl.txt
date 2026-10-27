@@ -1,0 +1,19 @@
+# Ceryl's borrowed book. Current Jynath location and reward are retained.
+Spotkałem Ceryla w bibliotece, on jest tam bibliotekarzem.=I met Ceryl, the librarian, at the library.
+Nie chcę szukać tej książki.=I do not want to look for that book.
+Obiecałem zdobyć czarną książkę od Jynath.=I promised to get the black book from Jynath.
+Porozmawiałem z Jynath i zdobyłem książkę.=I spoke to Jynath and got the book.
+Oddałem książkę Cerylowi i dostałem małą nagrodę.=I returned the book to Ceryl and received a small reward.
+Szukam bardzo specjalnej książki. Czy mógłbyś poprosić #Jynath, żeby ją zwróciła? Ma ją od miesięcy, a ludzie pytają o nią.=I am looking for a very special book. Could you ask #Jynath to return it? She has had it for months, and people keep asking for it.
+Świetnie! Proszę, zdobądź ją tak szybko, jak to możliwe... jest długa lista oczekujących!=Great! Please get it as soon as possible... There is a long waiting list!
+Jynath to czarownica mieszkająca na południowy zachód od zamku Or'ril, na południowy zachód stąd. Więc, zdobędziesz dla mnie tę książkę?=Jynath is a witch living southwest of Or'ril Castle, southwest of here. So, will you get the book for me?
+Och... przypuszczam, że będę musiał znaleźć kogoś innego, kto to zrobi.=Oh... I suppose I must find someone else to do it.
+Teraz naprawdę potrzebuję tej książki! Idź porozmawiaj z #Jynath.=I really need that book now! Go and speak to #Jynath.
+Jynath to czarownica mieszkająca na południowy zachód od zamku Or'ril, na południowy zachód stąd.=Jynath is a witch living southwest of Or'ril Castle, southwest of here.
+Cześć, czy zdobyłeś książkę od Jynath?=Hello, did you get the book from Jynath?
+O, odebrałeś książkę! Uff, dzięki!=Oh, you got the book! Phew, thank you!
+Czy nie odzyskałeś jeszcze tej książki od Jynath? Proszę, poszukaj jej szybko!=Have you still not recovered that book from Jynath? Please find it quickly!
+Och, Ceryl szuka tej książki z powrotem? O rany! Całkiem o niej zapomniałam... proszę bardzo!=Oh, Ceryl wants that book back? Oh dear! I completely forgot... Here you go!
+Lepiej szybko oddaj tę książkę do #Ceryla... na pewno będzie na ciebie czekał.=You had better return the book to #Ceryl quickly... He will certainly be waiting.
+Ceryl to oczywiście bibliotekarz w Semos.=Ceryl is the librarian in Semos, of course.
+Sssz! Koncentruję się na przepisie na tę miksturę... to trudne wyzwanie.=Shh! I am concentrating on this potion recipe... It is a difficult challenge.

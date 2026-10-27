@@ -206,7 +206,7 @@ public class StendhalFirstScreen extends JFrame {
 		};
 		settingsAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
 		settingsAction.putValue(Action.SHORT_DESCRIPTION,
-				"Zmień tryb wyświetlania gry i ustawienia dźwięku.");
+				"Zmień język, tryb wyświetlania gry i ustawienia dźwięku.");
 
 		settingsButton = createTransparentButton();
 		settingsButton.setFont(font);
@@ -294,6 +294,7 @@ public class StendhalFirstScreen extends JFrame {
 
 		URL url = DataLoader.getResource(ClientGameConfiguration.get("GAME_ICON"));
 		this.setIconImage(new ImageIcon(url).getImage());
+		UiTranslation.register(this);
 		pack();
 	}
 
@@ -313,6 +314,8 @@ public class StendhalFirstScreen extends JFrame {
 	private void createSoundButton() {
 		soundButton = createTransparentButton();
 		configureSoundButton(soundButton);
+		soundButton.putClientProperty(UiTranslation.AFTER_TRANSLATION,
+				(Runnable) () -> soundButton.getAccessibleContext().setAccessibleName(soundButton.getToolTipText()));
 		soundButton.addActionListener(new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

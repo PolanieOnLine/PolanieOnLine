@@ -325,7 +325,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="status_attackers" params="StunnedStatus,10;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

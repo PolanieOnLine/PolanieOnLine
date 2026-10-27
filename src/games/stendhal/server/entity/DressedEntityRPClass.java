@@ -24,6 +24,8 @@ public class DressedEntityRPClass {
 		final RPClass entity = new RPClass("dressed_entity");
 
 		entity.isA("rpentity");
+		// Preserve HP cut off by SHORT storage so removing a glyph is reversible.
+		entity.addAttribute("base_hp_overflow", Type.INT, Definition.HIDDEN);
 		entity.addAttribute("outfit_ext", Type.STRING);
 		entity.addAttribute("outfit_ext_orig", Type.STRING, Definition.PRIVATE);
 		entity.addAttribute("outfit", Type.INT);

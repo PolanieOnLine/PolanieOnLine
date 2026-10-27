@@ -178,7 +178,7 @@
 			<item value="borowik" quantity="[1,10]" probability="10.0"/>
 		</drops>
 		<ai>
-			<profile name="status_attackers" params="StunnedStatus,5;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
@@ -206,7 +206,7 @@
 			<item value="borowik" quantity="[1,10]" probability="10.0"/>
 		</drops>
 		<ai>
-			<profile name="status_attackers" params="StunnedStatus,5;"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>

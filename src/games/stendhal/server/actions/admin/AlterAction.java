@@ -27,6 +27,7 @@ import static games.stendhal.common.constants.Actions.VALUE;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.DefinitionClass;
@@ -167,7 +168,11 @@ public class AlterAction extends AdministrationAction {
 					}
 
 					new GameEvent(player.getName(), ALTER, action.get(TARGET), stat, Integer.toString(numberValue)).raise();
-					changed.put(stat, numberValue);
+					if ("base_hp".equals(stat) && changed instanceof RPEntity) {
+						((RPEntity) changed).setBaseHP(numberValue);
+					} else {
+						changed.put(stat, numberValue);
+					}
 				} else {
 					// If value is not a number, only SET and UNSET can be used
 					if (mode.equalsIgnoreCase(SET)) {

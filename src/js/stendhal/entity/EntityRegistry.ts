@@ -16,6 +16,7 @@ import { Chest} from "./Chest";
 import { Corpse } from "./Corpse";
 import { Creature } from "./Creature";
 import { DomesticAnimal } from "./DomesticAnimal";
+import { GhostCompanion } from "./GhostCompanion";
 import { Door } from "./Door";
 import { Food } from "./Food";
 import { GameBoard } from "./GameBoard";
@@ -46,6 +47,7 @@ export class EntityRegistry {
 		marauroa.rpobjectFactory.register("block", VisibleEntity);
 		marauroa.rpobjectFactory.register("blood", Blood);
 		marauroa.rpobjectFactory.register("cat", DomesticAnimal);
+		marauroa.rpobjectFactory.register("duszek", GhostCompanion);
 		marauroa.rpobjectFactory.register("chest", Chest);
 		marauroa.rpobjectFactory.register("corpse", Corpse);
 		marauroa.rpobjectFactory.register("creature", Creature);

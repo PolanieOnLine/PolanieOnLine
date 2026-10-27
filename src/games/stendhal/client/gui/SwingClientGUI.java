@@ -41,9 +41,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.TabbedPaneUI;
@@ -365,24 +367,45 @@ class SwingClientGUI implements J2DClientGUI {
 		tabBackground.add(tabs, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
 		leftColumn.add(tabBackground, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));
 
-		return leftColumn;
+		return createLeftColumnScrollPane(leftColumn);
 	}
 
 	/** Keep statistics visible when the player narrows the left dock. */
 	static JComponent createLeftColumn() {
-		final JComponent column = new JComponent() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Dimension getMinimumSize() {
-				final Dimension minimum = super.getMinimumSize();
-				minimum.width = Math.max(180, minimum.width);
-				minimum.height = 0;
-				return minimum;
-			}
-		};
+		final JComponent column = new LeftColumn();
 		column.setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
 		return column;
+	}
+
+	static JScrollPane createLeftColumnScrollPane(JComponent column) {
+		JScrollPane scroll = new JScrollPane(column, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setBorder(null);
+		scroll.setMinimumSize(new Dimension(180, 0));
+		scroll.getVerticalScrollBar().setUnitIncrement(SCROLLING_SPEED);
+		return scroll;
+	}
+
+	/** Fit the dock so that only the friends list scrolls within its remaining space. */
+	private static class LeftColumn extends JComponent implements Scrollable {
+		private static final long serialVersionUID = 1L;
+
+		@Override public Dimension getMinimumSize() {
+			final Dimension minimum = super.getMinimumSize();
+			minimum.width = Math.max(180, minimum.width);
+			minimum.height = 0;
+			return minimum;
+		}
+
+		@Override public Dimension getPreferredScrollableViewportSize() { return getPreferredSize(); }
+		@Override public boolean getScrollableTracksViewportWidth() { return true; }
+		@Override public boolean getScrollableTracksViewportHeight() { return true; }
+		@Override public int getScrollableUnitIncrement(Rectangle visible, int orientation, int direction) {
+			return SCROLLING_SPEED;
+		}
+		@Override public int getScrollableBlockIncrement(Rectangle visible, int orientation, int direction) {
+			return Math.max(SCROLLING_SPEED, visible.height - SCROLLING_SPEED);
+		}
 	}
 
 	private JFrame prepareMainWindow(JFrame splash) {

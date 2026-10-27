@@ -22,6 +22,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Ball;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
+import games.stendhal.server.entity.mapstuff.sign.PrizeSign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -48,7 +49,7 @@ public class BilliardGame extends AbstractQuest {
 
 		final StendhalRPZone zone = npc.getZone();
 
-		Sign blackboard = new Sign();
+		Sign blackboard = new PrizeSign();
 		blackboard.setPosition(3, 1);
 		blackboard.setEntityClass("blackboard");
 		StringBuilder prizelistBuffer = new StringBuilder("NAGRODY:\n");
@@ -58,7 +59,7 @@ public class BilliardGame extends AbstractQuest {
 		blackboard.setText(prizelistBuffer.toString());
 		zone.add(blackboard);
 
-		blackboard = new Sign();
+		blackboard = new PrizeSign();
 		blackboard.setPosition(4, 1);
 		blackboard.setEntityClass("blackboard");
 		prizelistBuffer = new StringBuilder("NAGRODY:\n");

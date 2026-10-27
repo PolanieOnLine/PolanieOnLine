@@ -12,6 +12,7 @@
 import { marauroa } from "marauroa";
 
 import { Item } from "../../entity/Item";
+import { GameLanguage } from "../../util/GameLanguage";
 
 
 const TOOLTIP_STATS = "tooltip_stats";
@@ -69,7 +70,6 @@ const SPECIAL_BONUSES: PercentageBonusDefinition[] = [
 	{key: "resist_heavy", label: "odporności na spowolnienie", fraction: true},
 	{key: "resist_stunned", label: "odporności na ogłuszenie", fraction: true},
 	{key: "critical_additional_bonus", label: "obrażeń krytycznych", fraction: false},
-	{key: "lifesteal", label: "kradzieży życia", fraction: true},
 	{key: "lifesteal_increase", label: "zwiększonej kradzieży życia", fraction: false},
 	{key: "def_additional_bonus", label: "bonusu pancerza", fraction: false}
 ];
@@ -82,6 +82,15 @@ const RESISTANCES: Array<[string, string]> = [
 	["earth", "naturę"],
 	["water", "wodę"],
 	["cut", "obrażenia fizyczne"]
+];
+
+const STATUS_RESISTANCES: Array<[string, string]> = [
+	["poisoned", "odporności na zatrucie"],
+	["bleeding", "odporności na krwawienie"],
+	["shocked", "odporności na szok"],
+	["confused", "odporności na dezorientację"],
+	["heavy", "odporności na spowolnienie"],
+	["stunned", "odporności na ogłuszenie"]
 ];
 
 const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
@@ -139,9 +148,9 @@ export function buildStructuredItemTooltip(item: Item,
 		comparisonName: equippedItem?.getDisplayName(),
 		titleSuffix: upgrade > 0 ? " +" + upgrade : undefined,
 		upgradeText: maxUpgrade > 0 || upgrade > 0
-				? "Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : "")
+				? GameLanguage.getText("Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : ""))
 				: undefined,
-		lines
+		lines: lines.map(line => ({...line, text: GameLanguage.getText(line.text)}))
 	};
 }
 
@@ -184,8 +193,9 @@ function appendWeaponPerformance(lines: ItemTooltipLine[], current: Record<strin
 		weaponLines.push({
 			kind: "tree",
 			branchContinues: false,
-			text: formatNumber(attacksPerSecond, 2) + " ataku na sekundę ("
-					+ getWeaponSpeedLabel(attacksPerSecond) + ")",
+			text: GameLanguage.getText(formatNumber(attacksPerSecond, 2) + " ataku na sekundę ("
+					+ GameLanguage.getText(getWeaponSpeedLabel(attacksPerSecond)) + ")")
+					.replace(" (", "\n("),
 			deltas: equipped
 					? [createDelta(attacksPerSecond - equippedAttacksPerSecond, 2)]
 					: undefined
@@ -203,7 +213,7 @@ function appendWeaponPerformance(lines: ItemTooltipLine[], current: Record<strin
 	}
 	const damageType = current["damage_type"];
 	if (damageType) {
-		weaponLines.push({kind: "detail", text: "Typ obrażeń: " + localizeDamageType(damageType)});
+		weaponLines.push({kind: "detail", text: "Typ obrażeń: " + GameLanguage.getText(localizeDamageType(damageType))});
 	}
 	const statuses = current["statusattack"];
 	if (statuses) {
@@ -238,7 +248,32 @@ function appendCoreStats(lines: ItemTooltipLine[], current: Record<string, strin
 	}
 	appendPlainStat(section, "Siła ataku", intValue(current, "skill_atk"),
 			intValue(equipped, "skill_atk"), !!equipped);
+	if (hasValue(current, "base_lifesteal") || hasValue(equipped, "base_lifesteal")) {
+		appendLifeStealStat(section, current, equipped);
+	}
+	for (const [status, label] of STATUS_RESISTANCES) {
+		const key = "status_resistance_" + status;
+		const value = percentageValue(current, key, true);
+		const previous = percentageValue(equipped, key, true);
+		if (value === 0 && (!equipped || previous === 0)) continue;
+		section.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
+			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
+	}
 	appendSection(lines, section);
+}
+
+function appendLifeStealStat(lines: ItemTooltipLine[],
+		current: Record<string, string>, equipped: Record<string, string>|undefined) {
+	const base = numberValue(current, "base_lifesteal") * 100;
+	const previousBase = numberValue(equipped, "base_lifesteal") * 100;
+	if (base === 0 && previousBase === 0) return;
+	const value = numberValue(current, hasValue(current, "effective_lifesteal") ? "effective_lifesteal" : "lifesteal") * 100;
+	const previous = numberValue(equipped, hasValue(equipped, "effective_lifesteal") ? "effective_lifesteal" : "lifesteal") * 100;
+	if (value === 0 && (!equipped || previous === 0)) return;
+	const bonus = intValue(current, "lifesteal_effectiveness") > 0 ? value - base : 0;
+	lines.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText("kradzieży życia")
+			+ (bonus > 0 ? " (+" + formatCompact(bonus) + "%)" : ""),
+		deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
 }
 
 function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>,
@@ -248,8 +283,8 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	const special: ItemTooltipLine[] = [];
 
 	if (!weapon) {
-		appendIntegerBonus(core, Math.max(intValue(current, "atk"), intValue(current, "ratk")),
-				Math.max(intValue(equipped, "atk"), intValue(equipped, "ratk")), "ataku", !!equipped);
+		appendIntegerBonus(core, equipmentAttack(current), equipmentAttack(equipped),
+				"ataku", !!equipped);
 	}
 	if (!weapon && !armour) {
 		appendIntegerBonus(core, intValue(current, "def"), intValue(equipped, "def"),
@@ -260,14 +295,6 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 			"zmniejszenia wagi broni (minimum 2)", !!equipped);
 	appendIntegerBonus(core, intValue(current, "health"), intValue(equipped, "health"),
 			"zdrowia", !!equipped);
-	appendIntegerBonus(core,
-			intValueWithFallback(current, "affix_flat_attack_bonus", "flat_attack_bonus"),
-			intValueWithFallback(equipped, "affix_flat_attack_bonus", "flat_attack_bonus"),
-			"dodatkowego ataku", !!equipped);
-	appendIntegerBonus(core,
-			intValueWithFallback(current, "affix_flat_defense_bonus", "flat_defense_bonus"),
-			intValueWithFallback(equipped, "affix_flat_defense_bonus", "flat_defense_bonus"),
-			"dodatkowego pancerza", !!equipped);
 
 	for (const [nature, label] of RESISTANCES) {
 		const value = resistanceValue(current, nature);
@@ -277,23 +304,41 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		}
 		resistances.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% odporności na " + label,
+			text: signed(formatCompact(value)) + "% odporności na " + GameLanguage.getText(label),
 			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
 		});
 	}
 
-	for (const bonus of SPECIAL_BONUSES) {
+	const lifeSteal = numberValue(current, hasValue(current, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
+	const previousLifeSteal = numberValue(equipped, hasValue(equipped, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
+	if (lifeSteal !== 0 || (equipped && previousLifeSteal !== 0)) {
+		special.push({kind: "bonus", text: signed(formatCompact(lifeSteal)) + "% " + GameLanguage.getText("kradzieży życia"),
+			deltas: equipped ? [createDelta(lifeSteal - previousLifeSteal, 1, "%")] : undefined});
+	}
+	const lifeStealBonuses: PercentageBonusDefinition[] = [
+		{key: "lifesteal_effectiveness", label: "skuteczności kradzieży życia", fraction: false}
+	];
+	for (const bonus of [...SPECIAL_BONUSES, ...lifeStealBonuses]) {
 		const value = percentageValue(current, bonus.key, bonus.fraction);
 		const previous = percentageValue(equipped, bonus.key, bonus.fraction);
 		if (value === 0 && (!equipped || previous === 0)) {
 			continue;
 		}
-		special.push({
+			special.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% " + bonus.label,
+			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(bonus.label),
 			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
 		});
 	}
+
+	appendIntegerBonus(special,
+			intValueWithFallback(current, "affix_flat_attack_bonus", "flat_attack_bonus"),
+			intValueWithFallback(equipped, "affix_flat_attack_bonus", "flat_attack_bonus"),
+			"dodatkowego ataku", !!equipped);
+	appendIntegerBonus(special,
+			intValueWithFallback(current, "affix_flat_defense_bonus", "flat_defense_bonus"),
+			intValueWithFallback(equipped, "affix_flat_defense_bonus", "flat_defense_bonus"),
+			"dodatkowego pancerza", !!equipped);
 
 	appendSection(lines, core);
 	appendSection(lines, resistances);
@@ -347,7 +392,7 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	}
 	for (const [key, title, description] of LEGENDARY_AFFIXES) {
 		if (hasValue(current, key)) {
-			affixes.push({kind: "affix", text: title + ": " + description});
+			affixes.push({kind: "affix", text: GameLanguage.getText(title) + ": " + GameLanguage.getText(description)});
 		}
 	}
 	appendRolledAffix(affixes, current, "legendary_bastion_bonus", "Niezłomny Bastion",
@@ -363,7 +408,7 @@ function appendRolledAffix(lines: ItemTooltipLine[], current: Record<string, str
 		return;
 	}
 	const value = intValue(current, key);
-	lines.push({kind: "affix", text: title + ": " + prefix + value + suffix});
+	lines.push({kind: "affix", text: GameLanguage.getText(title) + ": " + prefix + value + GameLanguage.getText(suffix)});
 }
 
 function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>) {
@@ -377,6 +422,10 @@ function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>)
 		const uses = intValue(current, "uses");
 		footer.push({kind: "footer", text: "Wytrzymałość: "
 				+ Math.max(0, durability - uses) + "/" + durability});
+	}
+	if (current["saved_position"]) {
+		footer.push({kind: "footer", text: GameLanguage.getText("Zapisana pozycja:")
+				+ " " + current["saved_position"]});
 	}
 	appendSection(lines, footer);
 }
@@ -456,6 +505,16 @@ function stats(item?: Item): Record<string, string>|undefined {
 
 function hasValue(value: Record<string, string>|undefined, key: string): boolean {
 	return !!value && Object.prototype.hasOwnProperty.call(value, key);
+}
+
+function equipmentAttack(value: Record<string, string>|undefined): number {
+	const melee = intValue(value, "atk");
+	const ranged = intValue(value, "ratk");
+	// An absent or zero attack must not hide a penalty in the other stat.
+	if (melee === 0) {
+		return ranged;
+	}
+	return ranged === 0 ? melee : Math.max(melee, ranged);
 }
 
 function weaponAttack(value: Record<string, string>|undefined): number {
@@ -538,19 +597,19 @@ function createDelta(value: number, precision: number, suffix = ""): ItemTooltip
 }
 
 function signed(value: string): string {
-	return value.startsWith("-") || value === "0" || value.startsWith("0,")
+	return value.startsWith("-") || value === "0" || value.startsWith("0,") || value.startsWith("0.")
 			? value : "+" + value;
 }
 
 function formatCompact(value: number): string {
-	return value.toLocaleString("pl-PL", {
+	return value.toLocaleString(GameLanguage.getLanguage() === "en" ? "en-GB" : "pl-PL", {
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 1
 	});
 }
 
 function formatNumber(value: number, precision: number): string {
-	return value.toLocaleString("pl-PL", {
+	return value.toLocaleString(GameLanguage.getLanguage() === "en" ? "en-GB" : "pl-PL", {
 		minimumFractionDigits: precision,
 		maximumFractionDigits: precision
 	});

@@ -1107,7 +1107,8 @@ public class Player extends DressedEntity implements UseListener {
 	public void sendPrivateText(final NotificationType type, final String text) {
 		boolean system = type == NotificationType.SERVER || type == NotificationType.ERROR
 				|| type == NotificationType.INFORMATION || type == NotificationType.DETAILED
-				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE;
+				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE
+				|| type == NotificationType.TUTORIAL || type == NotificationType.SCENE_SETTING;
 		RPEvent event = new PrivateTextEvent(type, system
 				? games.stendhal.common.Translation.getText(getLanguage(), text) : text);
 		this.addEvent(event);
@@ -2190,12 +2191,18 @@ public class Player extends DressedEntity implements UseListener {
 	// Entity
 	//
 
-	/**
-	 * Perform cycle logic.
-	 */
+	/** Refresh the private combat summary alongside ordinary equipment totals. */
+	@Override
+	public void updateItemAtkDef() {
+		super.updateItemAtkDef();
+		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
+	}
+
+	/** Perform cycle logic, including state-dependent combat summary changes. */
 	@Override
 	public void logic() {
 		GlyphRecoveryService.tick(this);
+		games.stendhal.server.core.rule.damage.CombatStatsService.update(this);
 		/*
 		 * TODO: Refactor Most of these things can be handled as RPEvents
 		 */
@@ -2660,7 +2667,7 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
-	protected double getSusceptibility(Nature type) {
+	public double getSusceptibility(Nature type) {
 		double sus = 1.0;
 		/**
 		 * Check weapon and shield separately, so that holding 2 resistant
@@ -3421,7 +3428,7 @@ public class Player extends DressedEntity implements UseListener {
 	public int getCappedAtk() {
 		// Blue line in https://sourceforge.net/p/arianne/feature-requests/1330/
 		// reduced using median instead of average as reference
-		return Math.min(this.atk, getMaxAtkForLevel(level));
+		return Math.min(this.atk, getMaxAtkForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**
@@ -3433,7 +3440,7 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public int getCappedDef() {
 		// Red line in https://sourceforge.net/p/arianne/feature-requests/1330/
-		return Math.min(this.def, getMaxDefForLevel(level));
+		return Math.min(this.def, getMaxDefForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**
@@ -3459,7 +3466,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public int getCappedRatk() {
-		return Math.min(this.ratk, getMaxAtkForLevel(level));
+		return Math.min(this.ratk, getMaxAtkForLevel(level) + RebornSystem.getSkillCapBonus(this));
 	}
 
 	/**

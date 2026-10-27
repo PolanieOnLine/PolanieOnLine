@@ -129,7 +129,7 @@ public class ItemRarityServiceTest {
 		assertEquals(Short.MAX_VALUE, item.getInt("atk"));
 		assertEquals(Short.MAX_VALUE, item.getInt("def"));
 		assertEquals(1, item.getInt("rate"));
-		assertEquals((double) Float.MAX_VALUE, item.getDouble("lifesteal"), 0.0);
+		assertEquals(0.2, item.getDouble("lifesteal"), 0.0);
 		assertEquals(Integer.MAX_VALUE, item.getValue());
 	}
 

@@ -50,7 +50,11 @@ public class GroundItemTooltipTest {
 		object.put("armor_type", "heavy");
 		assertEquals("Pancerz ciężki", GroundContainer.buildGroundItemToolTip(creature));
 		object.put("armor_type", "none");
-		assertEquals("Brak pancerza", GroundContainer.buildGroundItemToolTip(creature));
+		assertNull(GroundContainer.buildGroundItemToolTip(creature));
+		object.put("armor_type", "medium");
+		assertEquals("Pancerz średni", GroundContainer.buildGroundItemToolTip(creature));
+		object.put("armor_type", "unknown");
+		assertNull(GroundContainer.buildGroundItemToolTip(creature));
 		object.remove("armor_type");
 		assertNull(GroundContainer.buildGroundItemToolTip(creature));
 	}

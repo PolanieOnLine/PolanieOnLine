@@ -55,6 +55,7 @@ import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.item.CaptureTheFlagFlag;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.player.Player;
@@ -66,6 +67,7 @@ import games.stendhal.server.entity.status.StatusList;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.events.AttackEvent;
 import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.maps.quests.hunting.HuntingKillCredit;
 import games.stendhal.server.util.CounterMap;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -523,10 +525,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		final double weaponComponent = 1.0 + attackingWeaponsValue;
 		// XXX: Is correct to use sourceAtk here instead of atkStrength?
-		double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
-		if (this instanceof Player) {
-			maxAttack *= 1.0 + RebornSystem.getAttackBonusPercent((Player) this) / 100.0;
-		}
+		final double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
 		double attack = Rand.rand() * maxAttack;
 
 		/*
@@ -993,6 +992,11 @@ public abstract class RPEntity extends CombatEntity {
 		return this.base_hp;
 	}
 
+	/** Maximum HP before any storage limit, for reversible stat changes. */
+	public int getUncappedBaseHP() {
+		return getBaseHP();
+	}
+
 	/**
 	 * Set the HP. <br>
 	 * DO NOT USE THIS UNLESS YOU REALLY KNOW WHAT YOU ARE DOING. <br>
@@ -1183,7 +1187,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		// In case we level up several levels at a single time.
 		for (int i = 0; i < Math.abs(levels); i++) {
-			setBaseHP(getBaseHP() + (int) Math.signum(levels) * 10);
+			setBaseHP(getUncappedBaseHP() + (int) Math.signum(levels) * 10);
 			setHP(getBaseHP());
 			new GameEvent(getName(), "level", Integer.toString(oldLevel + (i + 1) * ((int) Math.signum(levels))))
 					.raise();
@@ -1680,6 +1684,8 @@ public abstract class RPEntity extends CombatEntity {
 				} else {
 					killer.setSharedKill(killedName);
 				}
+				HuntingKillCredit.excludeArenaKill(
+						killer, this, damageDone == totalDamageReceived);
 			}
 
 			SingletonRepository.getAchievementNotifier().onKill(killer);
@@ -2230,6 +2236,7 @@ public abstract class RPEntity extends CombatEntity {
 			final int quantity = item.getQuantity();
 			if (amount >= quantity) {
 				new ItemLogger().destroy(this, slot, item);
+				item.onUnequipped();
 				slot.remove(item.getID());
 				return quantity;
 			} else {
@@ -2240,6 +2247,7 @@ public abstract class RPEntity extends CombatEntity {
 		} else {
 			// The item is not stackable, so we only remove a
 			// single one.
+			item.onUnequipped();
 			slot.remove(item.getID());
 			new ItemLogger().destroy(this, slot, item);
 			return 1;
@@ -3569,16 +3577,21 @@ public abstract class RPEntity extends CombatEntity {
 				sumAll += weaponItem.getAttack();
 				double weaponAttack = weaponItem.getAttack();
 				if (weaponItem.has("lifesteal")) {
-					sumLifesteal += weaponAttack * weaponItem.getDouble("lifesteal");
+					sumLifesteal += weaponAttack * ItemLifestealService.getEffectiveLifesteal(weaponItem);
 				}
 			}
+			// Equipment and glyph percentages also apply to damage dealt without a weapon.
+			if (attackerWeapons.isEmpty()) {
+				sumAll = 1;
+			}
 			if (hasGloves() && getGloves().has("lifesteal")) {
-				sumLifesteal += sumAll * getGloves().getDouble("lifesteal");
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getGloves());
 			}
 			if (hasRing() && getRing().has("lifesteal")) {
-				sumLifesteal += sumAll * getRing().getDouble("lifesteal");
-			} else if (hasRingB() && getRingB().has("lifesteal")) {
-				sumLifesteal += sumAll * getRingB().getDouble("lifesteal");
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRing());
+			}
+			if (hasRingB() && getRingB().has("lifesteal")) {
+				sumLifesteal += sumAll * ItemLifestealService.getEffectiveLifesteal(getRingB());
 			}
 
 			// Add lifesteal increase from glyphs
@@ -3591,8 +3604,9 @@ public abstract class RPEntity extends CombatEntity {
 
 		// process the lifesteal
 		if (sumLifesteal != 0) {
-			// 0.5f is used for rounding
-			final int lifesteal = (int) (damage * sumLifesteal / sumAll + 0.5f);
+			// Round the magnitude so life loss and healing follow the same rule.
+			final float lifeChange = damage * sumLifesteal / sumAll;
+			final int lifesteal = Math.round(Math.abs(lifeChange)) * (lifeChange < 0 ? -1 : 1);
 
 			if (lifesteal >= 0) {
 				attacker.heal(lifesteal, true);

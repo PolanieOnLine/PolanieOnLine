@@ -120,6 +120,7 @@ public final class ItemRarityTransferSnapshot {
 
 	private static void restoreCompatibleAffixes(final Item target,
 			final TransferData data) {
+		int replacedLifeSteal = 0;
 		if (data.affixSeed != null) {
 			ItemAffixState.setSeed(target, data.affixSeed.longValue());
 		}
@@ -127,11 +128,19 @@ public final class ItemRarityTransferSnapshot {
 			final ItemAffixDefinition definition = findDefinition(entry.getKey());
 			if (definition == null) {
 				target.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
+			} else if (("lifesteal".equals(entry.getKey())
+					|| ItemLifestealService.EFFECTIVENESS.equals(entry.getKey()))
+					&& !definition.isEligible(target)) {
+				replacedLifeSteal++;
 			} else if (data.itemClass.equals(target.getItemClass())
 					|| definition.isEligible(target)) {
 				target.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
 				target.put(definition.getAttribute(), entry.getValue());
 			}
+		}
+		if (replacedLifeSteal > 0) {
+			new ItemAffixGenerator(new java.util.Random(0)).refillRegularAffixes(target,
+					replacedLifeSteal, (data.affixSeed == null ? 0L : data.affixSeed.longValue()) ^ 0x4c494645L);
 		}
 	}
 

@@ -35,6 +35,7 @@ public abstract class DressedEntity extends RPEntity {
 
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DressedEntity.class);
+	private static final String BASE_HP_OVERFLOW = "base_hp_overflow";
 
 	public DressedEntity() {
 		super();
@@ -50,7 +51,18 @@ public abstract class DressedEntity extends RPEntity {
 	 */
 	@Override
 	public void setBaseHP(final int newhp) {
-		super.setBaseHP(clampHitPoints("base_hp", newhp));
+		final int clamped = clampHitPoints("base_hp", newhp);
+		if (newhp == clamped) {
+			remove(BASE_HP_OVERFLOW);
+		} else {
+			put(BASE_HP_OVERFLOW, newhp - clamped);
+		}
+		super.setBaseHP(clamped);
+	}
+
+	@Override
+	public int getUncappedBaseHP() {
+		return getBaseHP() + (has(BASE_HP_OVERFLOW) ? getInt(BASE_HP_OVERFLOW) : 0);
 	}
 
 	@Override
@@ -173,36 +185,6 @@ public abstract class DressedEntity extends RPEntity {
 		return Math.max(0.0f,
 				(float) (getItemAtk()
 						+ weaponRollDelta * glyphAttackMultiplier));
-	}
-
-	/**
-	 * Applies glyph-granted lifesteal even when the hit was made without a held
-	 * weapon. The blood glyph is described as granting a percentage of lifesteal,
-	 * while the inherited implementation weights all player lifesteal against
-	 * held weapon ATK and therefore gives a glyph no effect when that sum is zero.
-	 *
-	 * Armed attacks keep using the inherited implementation unchanged so weapon,
-	 * glove and ring lifesteal weighting is not altered.
-	 */
-	@Override
-	public void handleLifesteal(final RPEntity attacker,
-			final List<Item> attackerWeapons, final int damage) {
-		final double glyphLifesteal =
-				GlyphEffectService.getLifestealBonusFraction(attacker);
-		if (!attackerWeapons.isEmpty()
-				|| Double.compare(glyphLifesteal, 0.0) == 0) {
-			super.handleLifesteal(attacker, attackerWeapons, damage);
-			return;
-		}
-
-		// Match the inherited lifesteal rounding and negative-value semantics.
-		final int lifesteal = (int) (damage * glyphLifesteal + 0.5f);
-		if (lifesteal >= 0) {
-			attacker.heal(lifesteal, true);
-		} else {
-			attacker.damage(-lifesteal, attacker);
-		}
-		attacker.notifyWorldAboutChanges();
 	}
 
 	public static void generateRPClass() {

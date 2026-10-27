@@ -159,7 +159,7 @@
 		</copy>
 		<copy todir="${build_client_data}/data/conf" file="data/conf/log4j.properties"/>
 		<copy todir="${build_client_data}/data/languages">
-			<fileset dir="data/languages" includes="pl.txt,en.txt"/>
+			<fileset dir="data/languages" includes="pl.txt,pl-*.txt,en.txt,en-*.txt,es.txt,es-*.txt"/>
 		</copy>
 
 		<!-- music data -->
@@ -554,6 +554,9 @@
 		</copy>
 
 		<jar jarfile="${lib}/${client_starter_jarname}">
+			<fileset dir=".">
+				<include name="data/languages/en-updater.txt"/>
+			</fileset>
 			<fileset dir="${build_client}">
 				<include name="games/stendhal/client/update/*"/>
 			</fileset>
@@ -766,12 +769,9 @@
 
 
 	<target name="js-prepare-contribs" depends="js-prepare-node">
-		<exec executable="${executable.npx}" failonerror="true">
-			<arg value="showdown"/>
-			<arg value="makehtml"/>
-			<arg value="--input"/>
+		<exec executable="node" failonerror="true">
+			<arg value="buildtools/render-contributors.cjs"/>
 			<arg value="doc/contributors.md"/>
-			<arg value="--output"/>
 			<arg value="${srcjs}/contributors.html"/>
 		</exec>
 	</target>
@@ -825,7 +825,7 @@
 			<fileset dir="${srcjs}">
 				<include name="polanieonline.html"/>
 				<include name="css/**/*.css"/>
-				<include name="polanieonline-compiled.js"/>
+				<include name="stendhal-compiled.js"/>
 				<include name="LICENSE.html"/>
 				<include name="favicon.ico"/>
 				<include name="contributors.html"/>

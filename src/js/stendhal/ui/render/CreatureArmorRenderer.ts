@@ -15,7 +15,7 @@ export function readCreatureArmor(value: unknown): CreatureArmor | undefined {
 
 export function getCreatureArmorLabel(value: unknown): string | undefined {
 	const armor = readCreatureArmor(value);
-	return armor ? LABELS[armor] : undefined;
+	return armor && armor !== "none" ? LABELS[armor] : undefined;
 }
 
 /** No animation, filters or image generation in the render loop. */

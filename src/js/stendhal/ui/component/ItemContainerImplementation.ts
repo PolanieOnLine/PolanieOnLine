@@ -26,7 +26,9 @@ import { Paths } from "../../data/Paths";
 import { ItemRarity } from "../../data/ItemRarity";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
+import { GameLanguage } from "../../util/GameLanguage";
 import { getItemSlotLayers, ItemSlotLayers } from "./ItemSlotPresentation";
+import { ItemSlotAnimation } from "./ItemSlotAnimation";
 import {
 	buildStructuredItemTooltip,
 	hasStructuredItemTooltip,
@@ -48,6 +50,7 @@ interface InventorySlotView extends ItemSlotLayers {
 	animated: boolean;
 	animationPending: boolean;
 	visible: boolean;
+	composited?: boolean;
 }
 
 
@@ -218,7 +221,7 @@ export class ItemContainerImplementation {
 			}
 			if (!freeze) { item.stepAnimation(now); }
 			this.updatePosition(view, item);
-			ItemRarityEffects.updateSlot(view.element, item);
+			ItemRarityEffects.updateSlot(view.element, view.composited ? undefined : item);
 		}
 	}
 
@@ -227,6 +230,7 @@ export class ItemContainerImplementation {
 		this.slotVisibilityObserver?.disconnect();
 		for (const view of this.slots) {
 			if (view) {
+				ItemSlotAnimation.clear(view.element, view.icon);
 				ItemContainerImplementation.hideRarityToolTip(view.element);
 			}
 		}
@@ -246,6 +250,8 @@ export class ItemContainerImplementation {
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
+		view.composited = ItemSlotAnimation.update(view.element, view.icon, item);
+		if (view.composited) return;
 		const position = (-item.getXFrameIndex() * 32) + "px "
 			+ (-item.getYFrameIndex() * 32) + "px";
 		if (view.backgroundPosition !== position) {
@@ -333,6 +339,8 @@ export class ItemContainerImplementation {
 					this.animationSlots.push(view);
 				}
 			} else {
+				ItemSlotAnimation.clear(element, view.icon);
+				view.composited = false;
 				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
 				if (view.backgroundImage !== image) {
 					view.icon.style.backgroundImage = image;
@@ -360,7 +368,7 @@ export class ItemContainerImplementation {
 			}
 			view.item = item;
 			(element as any).dataItem = item;
-			ItemRarityEffects.updateSlot(element, item);
+			ItemRarityEffects.updateSlot(element, view.composited ? undefined : item);
 		}
 		this.renderedObject = myobject;
 		this.dirty = false;
@@ -612,7 +620,7 @@ export class ItemContainerImplementation {
 		if (item?.["name"] === "money") {
 			return;
 		}
-		if (item && (item.getRarity() || hasStructuredItemTooltip(item))) {
+		if (item) {
 			ItemContainerImplementation.showRarityToolTip(target, item, evt.clientX, evt.clientY);
 		}
 	}
@@ -716,7 +724,7 @@ export class ItemContainerImplementation {
 		const hasStructured = hasStructuredItemTooltip(item);
 		const structured = buildStructuredItemTooltip(item,
 				singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
-		if (!rarity && structured.lines.length === 0 && !structured.upgradeText) {
+		if (!item.getDisplayName() && !rarity && structured.lines.length === 0 && !structured.upgradeText) {
 			return;
 		}
 
@@ -741,7 +749,7 @@ export class ItemContainerImplementation {
 		if (rarity) {
 			const rarityLine = document.createElement("div");
 			rarityLine.className = "item-rarity-tooltip__rarity";
-			rarityLine.textContent = rarity.polishDisplayName;
+			rarityLine.textContent = GameLanguage.getText(rarity.polishDisplayName);
 			toolTip.appendChild(rarityLine);
 		}
 
@@ -753,9 +761,10 @@ export class ItemContainerImplementation {
 		}
 
 		if (structured.comparisonName) {
+			toolTip.classList.add("item-rarity-tooltip--comparing");
 			const comparison = document.createElement("div");
 			comparison.className = "item-rarity-tooltip__comparison";
-			comparison.textContent = "Porównanie z: " + structured.comparisonName;
+			comparison.textContent = GameLanguage.getText("Porównanie z:") + " " + structured.comparisonName;
 			toolTip.appendChild(comparison);
 		}
 
@@ -765,7 +774,7 @@ export class ItemContainerImplementation {
 
 		// Legacy servers do not publish tooltip_stats, so preserve their plain text.
 		if (!hasStructured) {
-			const rarityText = rarity ? "Rzadkość: " + rarity.polishDisplayName : "";
+			const rarityText = rarity ? GameLanguage.getText("Rzadkość: " + rarity.polishDisplayName) : "";
 			for (const line of item.getToolTip().split("\n")) {
 				if (!line || line === item.getDisplayName() || line === rarityText) {
 					continue;
@@ -808,8 +817,8 @@ export class ItemContainerImplementation {
 			const value = document.createElement("span");
 			value.className = "item-rarity-tooltip__tree-value";
 			value.appendChild(document.createTextNode(line.text));
-			ItemContainerImplementation.appendTooltipDeltas(value, line.deltas);
 			detail.appendChild(value);
+			ItemContainerImplementation.appendTooltipDeltas(detail, line.deltas);
 			toolTip.appendChild(detail);
 			return;
 		}
@@ -820,7 +829,6 @@ export class ItemContainerImplementation {
 			break;
 		case "bonus":
 			detail.className = "item-rarity-tooltip__bonus";
-			detail.appendChild(document.createTextNode("◆ "));
 			break;
 		case "affix":
 			detail.className = "item-rarity-tooltip__affix";
@@ -832,7 +840,13 @@ export class ItemContainerImplementation {
 			detail.className = "item-rarity-tooltip__detail";
 			break;
 		}
-		detail.appendChild(document.createTextNode(line.text));
+		const value = document.createElement("span");
+		value.className = "item-rarity-tooltip__value";
+		value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		detail.appendChild(value);
+		if (line.deltas?.length) {
+			detail.classList.add("item-rarity-tooltip__stat-row");
+		}
 		ItemContainerImplementation.appendTooltipDeltas(detail, line.deltas);
 		toolTip.appendChild(detail);
 	}
@@ -841,17 +855,20 @@ export class ItemContainerImplementation {
 		if (!deltas?.length) {
 			return;
 		}
-		target.appendChild(document.createTextNode(" ("));
+		const comparison = document.createElement("span");
+		comparison.className = "item-tooltip-comparison";
+		comparison.appendChild(document.createTextNode(" ("));
 		deltas.forEach((delta, index) => {
 			if (index > 0) {
-				target.appendChild(document.createTextNode("–"));
+				comparison.appendChild(document.createTextNode("–"));
 			}
 			const value = document.createElement("span");
 			value.className = "item-tooltip-delta item-tooltip-delta--" + delta.direction;
 			value.textContent = delta.text;
-			target.appendChild(value);
+			comparison.appendChild(value);
 		});
-		target.appendChild(document.createTextNode(")"));
+		comparison.appendChild(document.createTextNode(")"));
+		target.appendChild(comparison);
 	}
 
 	private static hideRarityToolTip(target?: HTMLElement, restoreTitle = true) {

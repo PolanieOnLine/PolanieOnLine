@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -81,6 +81,7 @@ function createHarness() {
 		set textContent(value) { metrics.quantityWrites++; this.replaceChildren(); this.text = value; }
 		get textContent() { return (this.text || "") + this.children.map(child => child.textContent).join(""); }
 		appendChild(child) { child.parentElement = this; this.children.push(child); return child; }
+		remove() { if (this.parentElement) { this.parentElement.children = this.parentElement.children.filter(child => child !== this); } }
 		replaceChildren(...children) {
 			for (const child of this.children) { child.parentElement = null; }
 			this.children = []; this.text = "";
@@ -113,7 +114,8 @@ function createHarness() {
 			this.callback([{ target: element, isIntersecting: visible }]);
 		}
 	}
-	const document = { visibilityState: "visible", createElement: () => new Element() };
+	const document = { body: new Element(), visibilityState: "visible", createElement: () => new Element(), querySelectorAll: () => [] };
+	document.createTextNode = text => ({textContent: text});
 	const sentActions = [], dragFrames = [];
 	const marauroa = { me: undefined, currentZoneName: "0_test",
 		clientFramework: { sendAction: action => sentActions.push(action) } };
@@ -159,7 +161,8 @@ function createHarness() {
 	function load(name, dependencies) {
 		const exports = {};
 		vm.runInNewContext(compiled.get(name), {
-			exports, Date: Clock, document, console,
+			exports, Date: Clock, document, console, window: {innerWidth: 1024, innerHeight: 768},
+			fetch: async url => ({ok: true, text: async () => readFileSync(path.resolve(stendhalRoot, "../../../data/languages", path.basename(url)), "utf8")}),
 			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent,
 			getComputedStyle: element => ({ visibility: element.visible ? "visible" : "hidden" }),
 			require: name => {
@@ -183,10 +186,18 @@ function createHarness() {
 		"../sprite/ItemRarityEffects": rarityEffects,
 		"../data/Paths": { Paths: { sprites: "/sprites" } },
 		"../data/ItemRarity": { ItemRarity }, "../SingletonRepo": { singletons },
+		"../util/GameLanguage": { GameLanguage },
 		marauroa: { marauroa }
 	});
 	const slotPresentation = load("ui/component/ItemSlotPresentation.ts", {
 		"../../data/Paths": { Paths: { gui: "/gui" } }
+	});
+	const tooltipPresentation = load("ui/component/ItemTooltipPresentation.ts", {
+		marauroa: {marauroa}, "../../entity/Item": {Item}, "../../util/GameLanguage": {GameLanguage}
+	});
+	const slotAnimation = load("ui/component/ItemSlotAnimation.ts", {
+		"../../SingletonRepo": {singletons}, "../../sprite/ItemRarityEffects": rarityEffects,
+		"../../util/AdminDiagnostics": {AdminDiagnostics}
 	});
 	const { ItemContainerImplementation: Container } = load("ui/component/ItemContainerImplementation.ts", {
 		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {} },
@@ -194,10 +205,12 @@ function createHarness() {
 		"../dialog/ItemUpgradeDialog": {}, "../../entity/Item": { Item },
 		"../../SingletonRepo": { singletons }, "../../util/Point": {},
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
-		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": {},
+		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": tooltipPresentation,
 		"../../sprite/ItemRarityEffects": rarityEffects,
 		"../../util/AdminDiagnostics": { AdminDiagnostics },
-		"./ItemSlotPresentation": slotPresentation
+		"../../util/GameLanguage": { GameLanguage },
+		"./ItemSlotPresentation": slotPresentation,
+		"./ItemSlotAnimation": slotAnimation
 	});
 	const { ActionContextMenu } = load("ui/dialog/ActionContextMenu.ts", {
 		"../../util/GameLanguage": { GameLanguage },
@@ -249,7 +262,7 @@ function createHarness() {
 	}
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
-		metrics, document, marauroa, images, observers, Container, ItemRarity, raritySlotCalls, groundCalls,
+		metrics, document, marauroa, images, observers, Container, ItemRarity, GameLanguage, raritySlotCalls, groundCalls,
 		diagnostics, diagnosticCounts,
 		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
 		setNow: value => { now = value; }
@@ -258,6 +271,65 @@ function createHarness() {
 
 function iconOf(slot) { return slot.children.find(child => child.className === "item-slot-icon"); }
 
+test("ordinary items retain a name tooltip without rarity or published statistics", () => {
+	const h = createHarness(), item = h.makeItem(1);
+	item.set("name", "polano");
+	const {parent} = h.makeContainer([item]);
+	assert.equal(parent.elements[0].title, "polano");
+});
+
+test("ordinary items with category-only metadata show a popup on hover", () => {
+	const h = createHarness(), item = h.makeItem(1);
+	item.set("name", "polano");
+	item.set("tooltip_stats", {category: "other"});
+	const {parent} = h.makeContainer([item]);
+	const slot = parent.elements[0];
+	for (const listener of slot.listeners.get("mouseenter") || []) {
+		listener({currentTarget: slot, clientX: 10, clientY: 10});
+	}
+	assert.equal(h.document.body.children.length, 1);
+	assert.equal(h.document.body.children[0].textContent, "POLANO");
+	for (const listener of slot.listeners.get("mouseleave") || []) { listener({currentTarget: slot}); }
+	assert.equal(h.document.body.children.length, 0);
+	assert.equal(slot.title, "polano");
+});
+
+test("common equipment, potions and food show their server statistics on hover", () => {
+	for (const [name, stats, expected] of [
+		["zdobyczny hełm", {category: "armour", def: "124"}, /124 pkt\. pancerza/],
+		["wielki eliksir", {category: "other", consumable_healing_instant: "true",
+			consumable_healing_amount: "800"}, /Leczenie: \+800 PW/],
+		["kanapka", {category: "other", consumable_healing_regen: "10",
+			consumable_healing_frequency_seconds: "3", consumable_healing_duration_seconds: "36"},
+			/Leczenie: \+10 PW co 3 s.*Czas leczenia: 36 s/]
+	]) {
+		const h = createHarness(), item = h.makeItem(1);
+		item.set("name", name);
+		item.set("tooltip_stats", stats);
+		const {parent} = h.makeContainer([item]);
+		const slot = parent.elements[0];
+		for (const listener of slot.listeners.get("mouseenter") || []) {
+			listener({currentTarget: slot, clientX: 10, clientY: 10});
+		}
+		assert.equal(h.document.body.children.length, 1, name);
+		assert.match(h.document.body.children[0].textContent, expected, name);
+	}
+});
+
+test("utility items, keys and trophies have hover popups even without tooltip metadata", () => {
+	for (const name of ["środek uspokajający", "spis", "klucz do skrzyni", "róg demona", "serce olbrzyma"]) {
+		const h = createHarness(), item = h.makeItem(1);
+		item.set("name", name);
+		const {parent} = h.makeContainer([item]);
+		const slot = parent.elements[0];
+		for (const listener of slot.listeners.get("mouseenter") || []) {
+			listener({currentTarget: slot, clientX: 10, clientY: 10});
+		}
+		assert.equal(h.document.body.children.length, 1, name);
+		assert.equal(h.document.body.children[0].textContent, name.toUpperCase());
+	}
+});
+
 test("only money stacks show their full quantity even while the icon still says 992M", () => {
 	const h = createHarness(), item = h.makeItem(1, {width: 32, quantity: "992550648"});
 	item.set("name", "money");
@@ -265,21 +337,36 @@ test("only money stacks show their full quantity even while the icon still says 
 	const {container, parent} = h.makeContainer([item]);
 	const slot = parent.elements[0];
 	assert.equal(slot.textContent, "992M");
-	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+	assert.equal(slot.title, "Łącznie: 992550648 monet");
 	item.set("quantity", "992550348");
 	container.update();
 	assert.equal(slot.textContent, "992M");
-	assert.equal(slot.title, "Monety w stosie: 992 550 348");
+	assert.equal(slot.title, "Łącznie: 992550348 monet");
 	assert.equal(slot.attributes.get("aria-label"), slot.title);
 	item.set("quantity", "2147483647");
 	container.update();
-	assert.equal(slot.title, "Monety w stosie: 2 147 483 647");
+	assert.equal(slot.title, "Łącznie: 2147483647 monet");
 	item.set("quantity", "1");
 	container.update();
-	assert.equal(slot.title, "Monety w stosie: 1");
+	assert.equal(slot.title, "Łącznie: 1 moneta");
 	item.set("name", "polano");
 	container.update();
-	assert.equal(slot.title, "");
+	assert.equal(slot.title, "polano");
+});
+
+test("money tooltips use the panel wording, correct coin forms and viewer language", async () => {
+	const h = createHarness(), item = h.makeItem(1);
+	item.set("name", "money");
+	for (const [quantity, noun] of [[0,"monet"], [1,"moneta"], [2,"monety"], [5,"monet"], [12,"monet"], [22,"monety"], [101,"monet"]]) {
+		item.set("quantity", quantity);
+		assert.equal(item.getToolTip(), "Łącznie: " + quantity + " " + noun);
+	}
+	await h.GameLanguage.load("/data");
+	h.GameLanguage.synchronize("en");
+	item.set("quantity", 1);
+	assert.equal(item.getToolTip(), "Total: 1 coin");
+	item.set("quantity", 22);
+	assert.equal(item.getToolTip(), "Total: 22 coins");
 });
 
 test("the money quantity tooltip is not hidden by structured item tooltip metadata", () => {
@@ -291,7 +378,7 @@ test("the money quantity tooltip is not hidden by structured item tooltip metada
 	for (const listener of slot.listeners.get("mouseenter") || []) {
 		listener({currentTarget: slot, clientX: 0, clientY: 0});
 	}
-	assert.equal(slot.title, "Monety w stosie: 992 550 648");
+	assert.equal(slot.title, "Łącznie: 992550648 monet");
 });
 
 test("animation and quantity updates never rewrite the static slot or replace its layers", () => {
@@ -879,6 +966,34 @@ test("a received return-ring perception dims the existing icon without losing it
 	const actions = [];
 	ring.buildActions(actions);
 	assert.equal(actions[0].type, "use");
+});
+
+test("tooltip keeps life-steal gain with its value and comparison in a separate right-hand group", () => {
+	const h = createHarness();
+	const tooltip = h.document.createElement("div");
+	h.Container.appendStructuredTooltipLine(tooltip, {
+		kind: "bonus", text: "+12% kradzieży życia (+2%)",
+		deltas: [{ text: "+3,0%", direction: "better" }]
+	});
+	const row = tooltip.children[0];
+	const comparison = row.children.find(child => child.className === "item-tooltip-comparison");
+	assert.ok(comparison, "Comparison must have its own right-hand group");
+	assert.equal(row.children[0].textContent, "◆ +12% kradzieży życia (+2%)");
+	assert.equal(comparison.textContent, " (+3,0%)");
+	assert.equal(comparison.children[1].className, "item-tooltip-delta item-tooltip-delta--better");
+});
+
+test("tooltip damage-range comparisons stay together beside the tree value", () => {
+	const h = createHarness();
+	const tooltip = h.document.createElement("div");
+	h.Container.appendStructuredTooltipLine(tooltip, {
+		kind: "tree", text: "[5–20] pkt. obrażeń za trafienie", branchContinues: true,
+		deltas: [{ text: "-2", direction: "worse" }, { text: "+5", direction: "better" }]
+	});
+	const row = tooltip.children[0];
+	assert.equal(row.children[1].textContent, "[5–20] pkt. obrażeń za trafienie");
+	assert.equal(row.children[2].className, "item-tooltip-comparison");
+	assert.equal(row.children[2].textContent, " (-2–+5)");
 });
 
 test("return ring uses the same state row on the ground and while dragging", () => {

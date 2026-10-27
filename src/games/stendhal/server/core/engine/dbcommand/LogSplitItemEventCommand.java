@@ -73,6 +73,6 @@ public class LogSplitItemEventCommand extends AbstractLogItemEventCommand {
 	 */
 	@Override
 	public String toString() {
-		return MoreObjects.toStringHelper(this).add("player", player).toString();
+		return MoreObjects.toStringHelper(this).add("player", player == null ? null : player.getName()).toString();
 	}
 }

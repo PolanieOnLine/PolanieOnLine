@@ -8,7 +8,9 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.Point;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,7 @@ import games.stendhal.client.gui.MockUserInterface;
 import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import utilities.MemoryClientPersistence;
 
 public class SettingsPagesTest {
 	private WtWindowManager manager;
@@ -44,10 +47,12 @@ public class SettingsPagesTest {
 	private UserInterface originalInterface;
 	private List<Dimension> displaySizes;
 	private List<Dimension> originalDisplaySizes;
+	private MemoryClientPersistence persistence;
 
 	@Before
 	@SuppressWarnings("unchecked")
 	public void isolatePreferences() throws Exception {
+		persistence = new MemoryClientPersistence();
 		manager = WtWindowManager.getInstance();
 		propertiesField = WtWindowManager.class.getDeclaredField("properties");
 		propertiesField.setAccessible(true);
@@ -79,6 +84,7 @@ public class SettingsPagesTest {
 		ClientSingletonRepository.setUserInterface(originalInterface);
 		displaySizes.clear();
 		displaySizes.addAll(originalDisplaySizes);
+		persistence.close();
 	}
 
 	private SettingsPages createPages() {
@@ -87,6 +93,36 @@ public class SettingsPagesTest {
 		new VisualSettings(pages);
 		new SoundSettings(pages);
 		return pages;
+	}
+
+	@Test public void statLimitsAreOffByDefaultAndPersistWhenEnabled() throws Exception {
+		SwingUtilities.invokeAndWait(() -> assertToggleSurvivesPreferenceReload(
+				"Pokazuj limity statystyk", SettingsProperties.SHOW_STAT_LIMITS_PROPERTY));
+	}
+
+	@Test public void combatStatsAccessIsOffByDefaultAndPersistsWhenEnabled() throws Exception {
+		SwingUtilities.invokeAndWait(() -> assertToggleSurvivesPreferenceReload(
+				"Pokazuj statystyki", SettingsProperties.SHOW_COMBAT_STATS_PROPERTY));
+	}
+
+	private void assertToggleSurvivesPreferenceReload(String label, String parameter) {
+		try {
+			JCheckBox toggle = check(createPages().getPage(SettingsPages.Category.COMBAT), label);
+			assertFalse(toggle.isSelected());
+			assertNull(persistence.savedPreferences().getProperty("config." + parameter));
+			Method reload = WtWindowManager.class.getDeclaredMethod("read");
+			reload.setAccessible(true);
+			for (boolean enabled : new boolean[] {true, false}) {
+				toggle.doClick();
+				assertEquals(Boolean.toString(enabled), manager.getProperty(parameter, ""));
+				assertEquals(Boolean.toString(enabled), persistence.savedPreferences().getProperty("config." + parameter));
+				reload.invoke(manager);
+				toggle = check(createPages().getPage(SettingsPages.Category.COMBAT), label);
+				assertEquals(enabled, toggle.isSelected());
+			}
+		} catch (ReflectiveOperationException | IOException error) {
+			throw new AssertionError(error);
+		}
 	}
 
 	@Test
@@ -120,7 +156,7 @@ public class SettingsPagesTest {
 	public void allExistingOptionsArePresentOnceAndInTheRightCategories() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			SettingsPages pages = createPages();
-			assertEquals(25, find(pages, JCheckBox.class).size());
+			assertEquals(27, find(pages, JCheckBox.class).size());
 			assertEquals(11, find(pages, JComboBox.class).size());
 			assertEquals(6, find(pages, JSlider.class).size());
 			assertNotNull(check(pages.getPage(SettingsPages.Category.CONTROLS), "Ciągły ruch"));

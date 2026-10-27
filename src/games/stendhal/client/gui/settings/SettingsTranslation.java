@@ -12,6 +12,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import games.stendhal.client.ClientLanguage;
+import games.stendhal.common.Translation;
 
 /** Translates display labels only, never option values or saved preferences. */
 final class SettingsTranslation {
@@ -48,12 +49,13 @@ final class SettingsTranslation {
 
 	private static <T> void translateSelector(JComboBox<T> selector) {
 		if ("language-selector".equals(selector.getName())) {
-			selector.setSelectedIndex("en".equals(ClientLanguage.getLanguage()) ? 1 : 0);
+			selector.setSelectedIndex(Translation.SUPPORTED_LANGUAGES.indexOf(ClientLanguage.getLanguage()));
 		}
 		if (selector.getClientProperty("translation.renderer") == null) {
 			ListCellRenderer<? super T> renderer = selector.getRenderer();
 			selector.setRenderer((list, value, index, selected, focus) -> {
 				Component display = renderer.getListCellRendererComponent(list, value, index, selected, focus);
+				list.setToolTipText(ClientLanguage.getText(list.getToolTipText()));
 				if (display instanceof JLabel) {
 					JLabel label = (JLabel) display;
 					label.setText(ClientLanguage.getText(label.getText()));
@@ -70,9 +72,7 @@ final class SettingsTranslation {
 		String renderedKey = "translation.rendered." + property;
 		if (!current.equals(control.getClientProperty(renderedKey))) control.putClientProperty(originalKey, current);
 		String original = (String) control.getClientProperty(originalKey);
-		boolean html = original.startsWith("<html>") && original.endsWith("</html>");
-		String result = ClientLanguage.getText(html ? original.substring(6, original.length() - 7) : original);
-		if (html) result = "<html>" + result + "</html>";
+		String result = ClientLanguage.getText(original);
 		control.putClientProperty(renderedKey, result);
 		return result;
 	}

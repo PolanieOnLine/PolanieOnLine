@@ -18,6 +18,7 @@ import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
+import { GameLanguage } from "../util/GameLanguage";
 
 import { marauroa } from "marauroa"
 
@@ -150,19 +151,24 @@ export class Item extends Entity {
 	public getToolTip(): string {
 		if (this["name"] === "money") {
 			const quantity = Number(this["quantity"]);
-			return Number.isSafeInteger(quantity) && quantity >= 0
-					? "Monety w stosie: " + String(quantity).replace(/\B(?=(\d{3})+(?!\d))/g, " ") : "";
+			if (!Number.isSafeInteger(quantity) || quantity < 0) {
+				return "";
+			}
+			const few = quantity % 10 >= 2 && quantity % 10 <= 4
+					&& !(quantity % 100 >= 12 && quantity % 100 <= 14);
+			const noun = quantity === 1 ? "moneta" : few ? "monety" : "monet";
+			return GameLanguage.getText("Łącznie: " + GameLanguage.getText(quantity + " " + noun));
 		}
 		const lines: string[] = [];
 		const rarity = this.getRarity();
 		const upgradeLevel = this.getUpgradeValue("improve");
 		const maxUpgradeLevel = this.getUpgradeValue("max_improves");
+		const title = this.getDisplayName()
+				+ (upgradeLevel > 0 ? " +" + upgradeLevel : "");
+		if (title) {
+			lines.push(title);
+		}
 		if (rarity || upgradeLevel > 0 || maxUpgradeLevel > 0) {
-			const title = this.getDisplayName()
-					+ (upgradeLevel > 0 ? " +" + upgradeLevel : "");
-			if (title) {
-				lines.push(title);
-			}
 			if (rarity) {
 				lines.push("Rzadkość: " + rarity.polishDisplayName);
 			}
@@ -178,7 +184,7 @@ export class Item extends Entity {
 				lines.push(dest[0] + " " + dest[1] + "," + dest[2]);
 			}
 		}
-		return lines.join("\n");
+		return lines.map(line => GameLanguage.getText(line)).join("\n");
 	}
 
 	public getRarity(): ItemRarity|undefined {
@@ -187,7 +193,7 @@ export class Item extends Entity {
 
 	public getDisplayName(): string {
 		const title = this["title"] || this["_name"] || this["name"];
-		return typeof title === "string" ? title : "";
+		return typeof title === "string" ? GameLanguage.getText(title) : "";
 	}
 
 	private getUpgradeValue(key: string): number {

@@ -19,6 +19,11 @@ import java.awt.Graphics;
 import java.awt.font.TextAttribute;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -33,6 +38,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import games.stendhal.client.GameScreen;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.textformat.HTMLBuilder;
@@ -52,6 +58,16 @@ import marauroa.common.game.RPSlot;
  */
 public final class ItemListImageViewerEvent extends ViewPanel {
 	private static final int PAD = 5;
+	/** Only labels emitted by Item.describe may be translated inside its stats suffix. */
+	private static final Set<String> STAT_LABELS = new HashSet<>(Arrays.asList(
+			"ATK", "SIŁA-ATAKU", "BONUS-ATAKU", "OBR", "BONUS-OBRONY", "STR", "WAGA",
+			"ZMNIEJSZA-WAGĘ-BRONI", "PZ", "CYKL", "REGEN", "ZASIĘG", "KRADZIEŻ-ŻYCIA",
+			"ŚWIATŁO", "MROK", "OGIEŃ", "LÓD", "NATURA", "WODA", "BONUS-PRECYZJI",
+			"MIN-UŻYCIE", "MIN-POZIOM", "PODTRZYMUJĄCE-ŻYCIE", "SZANSA-NA-ATAK-KRYTYCZNY",
+			"SILNIEJSZE-ATAKI-KRYTYCZNE", "ZWIĘKSZONA-KRADZIEŻ-ŻYCIA", "ZDROWIE", "CIĘŻAR",
+			"Value", "Wartość"));
+	private static final Pattern STAT_LABEL = Pattern.compile(
+			"(?<!\\S)([\\p{L}-]+)(?=:)|(?<!\\S)(ZMNIEJSZA-WAGĘ-BRONI)(?= |$)");
 	private static final long serialVersionUID = -6114543463410539585L;
 	/** Formatter for item name underlining. */
 	private final StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> formatter
@@ -79,7 +95,7 @@ public final class ItemListImageViewerEvent extends ViewPanel {
 	 * Shows the window.
 	 */
 	public void view() {
-		new ImageViewWindow(event.get("title"), this);
+		new ImageViewWindow(ClientLanguage.getText(event.get("title")), this);
 	}
 
 
@@ -89,7 +105,7 @@ public final class ItemListImageViewerEvent extends ViewPanel {
 		int maxPreferredWidth = screenSize.width - 80;
 		if (event.has("caption")) {
 			JLabel caption = new JLabel("<html><div width=" + (maxPreferredWidth
-					- 10) + ">" + event.get("caption") + "</div></html>");
+					- 10) + ">" + escapeHtml(ClientLanguage.getText(event.get("caption"))) + "</div></html>");
 			caption.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 			add(caption, BorderLayout.NORTH);
 		}
@@ -255,7 +271,8 @@ public final class ItemListImageViewerEvent extends ViewPanel {
 	 * @return new table
 	 */
 	private JTable createTable(int maxPreferredWidth) {
-		String[] columnNames = { "Przedmiot", "Cena", "Opis" };
+		String[] columnNames = { ClientLanguage.getText("Przedmiot"),
+				ClientLanguage.getText("Cena"), ClientLanguage.getText("Opis") };
 		Object[][] data = new Object[event.getSlot("content").size()][];
 		RPSlot slot = event.getSlot("content");
 		int i = 0;
@@ -282,12 +299,55 @@ public final class ItemListImageViewerEvent extends ViewPanel {
 		html.append(maxPreferredWidth - 170);
 		html.append('>');
 		String text = item.get("description_info");
+		if (item.has("name")) {
+			// Restore the authored sentence before looking it up in the catalogue.
+			// Its translated name is underlined again after HTML formatting below.
+			String name = item.get("name");
+			text = text.replace("§'" + name + "'", name);
+		}
+		// The server appends legacy statistics to the authored description.
+		// Translate each independently so the full description catalogue can match.
+		int statsStart = text.lastIndexOf(" Parametry (");
+		text = statsStart < 0 ? ClientLanguage.getText(text)
+				: ClientLanguage.getText(text.substring(0, statsStart)) + " "
+						+ translateStatistics(text.substring(statsStart + 1));
 		HTMLBuilder build = new HTMLBuilder();
-		formatter.format(text, defaultAttrs, build);
-		html.append(colorHighlightedItemName(build.toHTML(), Item.getRarity(item)));
+		formatter.format(escapeHtml(text), defaultAttrs, build);
+		String description = build.toHTML();
+		// Older shop descriptions may not mark the name with the § formatter.
+		if (!description.contains("<u>") && item.has("name")) {
+			String name = escapeHtml(ClientLanguage.getText(item.get("name")));
+			int nameStart = name.isEmpty() ? -1 : description.indexOf(name);
+			if (nameStart >= 0) {
+				description = description.substring(0, nameStart) + "<u>" + name + "</u>"
+						+ description.substring(nameStart + name.length());
+			}
+		}
+		html.append(colorHighlightedItemName(description, Item.getRarity(item)));
 		html.append("</div></html>");
 		rval[2] = html.toString();
 		return rval;
+	}
+
+	private static String escapeHtml(String text) {
+		return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+	}
+
+	private static String translateStatistics(String text) {
+		String translated = ClientLanguage.getText(text);
+		if (!translated.equals(text) || !text.startsWith("Parametry (") || !text.endsWith(").")) {
+			return translated;
+		}
+		String body = text.substring("Parametry (".length(), text.length() - 2);
+		Matcher labels = STAT_LABEL.matcher(body);
+		StringBuffer result = new StringBuffer();
+		while (labels.find()) {
+			String label = labels.group();
+			labels.appendReplacement(result, Matcher.quoteReplacement(
+					STAT_LABELS.contains(label) ? ClientLanguage.getText(label) : label));
+		}
+		labels.appendTail(result);
+		return ClientLanguage.getText("Parametry") + " (" + result + ").";
 	}
 
 	/**

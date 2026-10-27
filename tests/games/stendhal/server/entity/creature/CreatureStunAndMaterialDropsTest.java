@@ -38,14 +38,14 @@ import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.RPClass.CreatureTestHelper;
 
-/** Loaded creature definitions, stun profiles and material drop odds for 1.42.1. */
+/** Loaded creature definitions, stun profiles and material drop odds. */
 public class CreatureStunAndMaterialDropsTest {
 	private static final String[] FILES = {
 		"stendhal/giant", "pol/giant", "stendhal/elemental", "pol/elemental",
 		"stendhal/troll", "pol/alien", "stendhal/kobold", "stendhal/gnome",
 		"stendhal/dwarf", "pol/wraith", "pol/beast", "stendhal/angel",
 		"pol/angel", "pol/solemn", "pol/dragon",
-		"stendhal/undead_skeleton", "stendhal/undead", "stendhal/hybrid"
+		"stendhal/undead_skeleton", "stendhal/undead", "stendhal/hybrid", "stendhal/golem"
 	};
 	private static final Map<String, Element> DEFINITIONS = new HashMap<>();
 
@@ -79,35 +79,54 @@ public class CreatureStunAndMaterialDropsTest {
 
 	@Test
 	public void largeHumanoidsLoadExactlyOneStunAttacker() {
-		final String[] weaker = {"cyklop", "kobold olbrzymi", "olbrzymi gnom",
-			"olbrzymia panna gnom", "gigantyczny krasnal", "kasarkutominubat"};
-		final String[] giants = {"amazonka olbrzymia", "olbrzym", "olbrzym starszy",
-			"olbrzym mistrz", "czarny olbrzym", "imperialny generał gigant",
-			"lodowy olbrzym", "lodowy starszy olbrzym", "mega mag", "szarak gigant",
-			"czarny szkielet gigant", "gigantyczne monstrum", "superczłowiek olbrzym",
-			"kostucha wielka", "kostucha różowa wielka", "kostucha złota wielka"};
-		for (final String name : weaker) {
-			assertStun(name, 5.0);
-		}
+		final String[] giants = {"cyklop", "kobold olbrzymi", "olbrzymi gnom",
+			"olbrzymia panna gnom", "olbrzym", "olbrzym starszy", "olbrzym mistrz",
+			"imperialny generał gigant", "mega mag", "szarak gigant",
+			"gigantyczne monstrum", "gigantyczna lili"};
 		for (final String name : giants) {
-			assertStun(name, 10.0);
+			assertFalse(name, creature(name).isBoss());
+			assertStun(name, 6.0);
 		}
-		assertStun("gigantyczna lili", 12.0);
-		// Existing stun users keep their authored probabilities.
-		assertStun("trol jaskiniowy", 8.0);
 	}
 
 	@Test
-	public void angelsAndArchangelsHaveTenPercentStunAndBossAngelsHaveTwelve() {
-		final String[] angels = {"aniołek", "anioł", "upadły anioł", "anioł ciemności",
+	public void otherNonBossStunUsersHaveThreePercentChance() {
+		final String[] names = {"aniołek", "kamienny golem", "lodowy golem", "krasnal golem",
+			"trol jaskiniowy", "książę szkieletów", "szkielet anioła",
+			"kostucha wielka", "kostucha różowa wielka"};
+		for (final String name : names) {
+			assertFalse(name, creature(name).isBoss());
+			assertStun(name, 3.0);
+		}
+	}
+
+	@Test
+	public void giantAndReaperBossesKeepTheirStunChances() {
+		for (final String name : new String[] {"gigantyczny krasnal", "kasarkutominubat"}) {
+			assertTrue(name, creature(name).isBoss());
+			assertStun(name, 5.0);
+		}
+		for (final String name : new String[] {"amazonka olbrzymia", "czarny olbrzym",
+			"lodowy olbrzym", "lodowy starszy olbrzym", "superczłowiek olbrzym",
+			"kostucha złota wielka"}) {
+			assertTrue(name, creature(name).isBoss());
+			assertStun(name, 10.0);
+		}
+	}
+
+	@Test
+	public void angelBossesKeepTenOrTwelvePercentStun() {
+		final String[] angels = {"anioł", "upadły anioł", "anioł ciemności",
 			"archanioł", "archanioł ciemności"};
 		for (final String name : angels) {
+			assertTrue(name, creature(name).isBoss());
 			assertStun(name, 10.0);
 		}
 		final String[] stronger = {"serafin", "azazel", "cherubin", "lilith",
 			"świąteczny serafin", "świąteczny azazel", "świąteczny cherubin", "świąteczna lilith",
 			"Smok Wawelski", "świąteczny Smok Wawelski"};
 		for (final String name : stronger) {
+			assertTrue(name, creature(name).isBoss());
 			assertStun(name, 12.0);
 		}
 		assertEquals("5", creature("Smok Wawelski").getAIProfile("bleeding_attack"));
@@ -117,10 +136,11 @@ public class CreatureStunAndMaterialDropsTest {
 	}
 
 	@Test
-	public void namedUndeadAndXenociumHaveOneTenPercentStunAttacker() {
+	public void undeadAndHybridBossesKeepTenPercentStun() {
 		final String[] names = {"gashadokuro", "necrosophia", "xenocium",
-			"szkielet anioła", "książę szkieletów", "czarny szkielet gigant"};
+			"czarny szkielet gigant"};
 		for (final String name : names) {
+			assertTrue(name, creature(name).isBoss());
 			assertStun(name, 10.0);
 		}
 		assertEquals("5", creature("gashadokuro").getAIProfile("bleeding_attack"));

@@ -45,6 +45,7 @@ public class WeddingRing extends Item {
 	private static final long MIN_COOLING_PERIOD = 5 * 60;
 
 	private static final String LAST_USE = "amount";
+	private static final String SPOUSE_QUEST_SLOT = "spouse";
 
 	private static final Logger logger = Logger.getLogger(WeddingRing.class);
 
@@ -208,6 +209,12 @@ public class WeddingRing extends Item {
 		if (player.getKeyedSlot("!visited", zoneName) == null) {
 			player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele plotek o miejscu docelowym. "
 					+ "Nie możesz dołączyć do " + spouseName + " ponieważ znajduje się w nieznany dla Ciebie miejscu.");
+			return false;
+		}
+
+		if (!spouseName.equals(player.getQuest(SPOUSE_QUEST_SLOT))
+				|| !player.getName().equals(spouse.getQuest(SPOUSE_QUEST_SLOT))) {
+			player.sendPrivateText("Ta obrączka nie łączy cię już z tą osobą.");
 			return false;
 		}
 

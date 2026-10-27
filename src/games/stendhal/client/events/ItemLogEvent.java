@@ -46,10 +46,12 @@ import javax.swing.table.TableColumnModel;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.GameScreen;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.gui.imageviewer.ImageViewWindow;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.imageviewer.ViewPanel;
+import games.stendhal.client.gui.UiTranslation;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.update.ClientGameConfiguration;
@@ -76,8 +78,12 @@ public class ItemLogEvent extends Event<RPEntity> {
 			logger.warn("Could not create item log: Event does not have \"dropped_items\" attribute");
 			return;
 		}
+		new ImageViewWindow("Spis Przedmiotów", createView());
+	}
+
+	ViewPanel createView() {
 		// much of this is taken from games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent
-		final ViewPanel panel = new ViewPanel() {
+		return new ViewPanel() {
 			private static final int PAD = 5;
 			@Override
 			public void prepareView(Dimension maxSize) {
@@ -131,7 +137,8 @@ public class ItemLogEvent extends Event<RPEntity> {
 			 * @return data.
 			 */
 			private JTable createTableForCategory(List<String> itemsList) {
-				final String[] columnNames = {"#", "Nazwa przedmiotu", "Ile sztuk", "Zdobyto"};
+				final String[] columnKeys = {"#", "Nazwa przedmiotu", "Ile sztuk", "Zdobyto"};
+				final String[] columnNames = Arrays.stream(columnKeys).map(ClientLanguage::getText).toArray(String[]::new);
 				final Object[][] data = new Object[itemsList.size()][];
 
 				int i = 0;
@@ -142,6 +149,16 @@ public class ItemLogEvent extends Event<RPEntity> {
 				}
 
 				JTable table = new JTable(data, columnNames);
+				table.putClientProperty(UiTranslation.AFTER_TRANSLATION, (Runnable) () -> {
+					for (int column = 0; column < columnKeys.length; column++) {
+						TableColumn displayed = table.getColumnModel().getColumn(column);
+						displayed.setHeaderValue(ClientLanguage.getText(columnKeys[displayed.getModelIndex()]));
+					}
+					for (int row = 0; row < itemsList.size(); row++) {
+						table.getModel().setValueAt(ClientLanguage.getText(itemsList.get(row).split(",")[0]), row, 1);
+					}
+					table.getTableHeader().repaint();
+				});
 
 				// Ustawianie właściwości tabeli
 				table.setEnabled(true);
@@ -299,7 +316,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				boolean dropped = item[1].equals("true") ? true : false;
 
 				rval[0] = getItemImage(clazz, subclazz, dropped);
-				rval[1] = name;
+				rval[1] = ClientLanguage.getText(name);
 				rval[2] = "";
 				rval[3] = "";
 
@@ -409,7 +426,5 @@ public class ItemLogEvent extends Event<RPEntity> {
 				}
 			}
 		};
-
-		new ImageViewWindow("Spis Przedmiotów", panel);
 	}
 }

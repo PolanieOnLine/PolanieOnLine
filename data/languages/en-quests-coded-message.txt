@@ -1,0 +1,19 @@
+# Finn and George. The secret message itself is deliberately not translated.
+Dziękuję, że zgodziłeś się przekazać George'owi tą wiadomość:=Thank you for agreeing to deliver this message to George:
+Może jutro będę miał kolejną wiadomość.=Perhaps I will have another message tomorrow.
+Mam pilną wiadomość dla #George'#a! Jest naprawdę ważna! Ale moi rodzice nie pozwalają mi samemu na spacerować po Ados, dlatego że jestem dzieckiem! Czy mógłbyś dostarczyć mu tą wiadomość?=I have an urgent message for #George! It is really important! But my parents do not let me walk around Ados alone, because I am a child! Could you deliver it?
+Znajdź Tommiego. Może jest w Parku Ados. George nie będzie daleko. Czy mógłbyś dostarczyć mu tą wiadomość?=Find Tommy. He may be in Ados Park, and George will be nearby. Could you deliver the message?
+Nie powinienem rozmawiać z obcymi, ale wyglądasz na takiego co ma coś ważnego do powiedzenia. Co to jest?=I should not talk to strangers, but you seem to have something important to say. What is it?
+Dziękuję, że zgodziłeś się przekazać wiadomość Finnowi:=Thank you for agreeing to deliver this message to Finn:
+Rzeczywiście jest całkiem interesujące. Proszę daj znać Finnowi:=That is quite interesting. Please tell Finn:
+I co powiedział George?=What did George say?
+Dziękuję za powiedzenie George'owi!=Thank you for telling George!
+Jego odpowiedź jest naprawdę interesująca!=His answer is really interesting!
+Rozmawiałem w Ados z chłopcem o imieniu Finn Farmer.=I spoke to a boy named Finn Farmer in Ados.
+Rozmawiałam w Ados z chłopcem o imieniu Finn Farmer.=I spoke to a boy named Finn Farmer in Ados.
+Finn poprosił mnie o przekazanie George'owi tajnej wiadomości. Mogę go spotkać niedaleko jego psa Tommy w parku Ados.=Finn asked me to deliver a secret message to George. I can find him near his dog Tommy in Ados Park.
+Odrzuciłem jego prośbę.=I rejected his request.
+Zgodziłem się na przekazanie wiadomości.=I agreed to deliver the message.
+Zgodziłam się na przekazanie wiadomości.=I agreed to deliver the message.
+George przekazał mi tajną wiadomość, którą muszę dostarczyć Finnowi.=George gave me a secret message to deliver to Finn.
+Zakończyłem moją misję jako posłaniec. Finn Farmer prawie oszalał z radości, gdy przekazałem mu odpowiedź George'a.=I finished my messenger mission. Finn Farmer was overjoyed when I delivered George's reply.

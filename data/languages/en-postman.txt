@@ -1,0 +1,4 @@
+# Delivery-time labels. Message bodies written by players or staff stay verbatim.
+nie znana data=unknown date
+W odpowiedzi na twoje pytanie:=In reply to your question:
+Jeżeli chcesz odpowiedzieć użyj /support.=To reply, use /support.

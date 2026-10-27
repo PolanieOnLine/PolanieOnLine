@@ -18,10 +18,20 @@ import { Chat } from "../util/Chat";
 import { Paths } from "../data/Paths";
 import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
+import { GameLanguage } from "../util/GameLanguage";
 
 import { stendhal } from "../stendhal";
 
 export class ShowItemListEvent extends RPEvent {
+	/** Labels emitted by Item.describe; other text and numeric values stay intact. */
+	private static readonly statLabels = new Set([
+		"ATK", "SIŁA-ATAKU", "BONUS-ATAKU", "OBR", "BONUS-OBRONY", "STR", "WAGA",
+		"ZMNIEJSZA-WAGĘ-BRONI", "PZ", "CYKL", "REGEN", "ZASIĘG", "KRADZIEŻ-ŻYCIA",
+		"ŚWIATŁO", "MROK", "OGIEŃ", "LÓD", "NATURA", "WODA", "BONUS-PRECYZJI",
+		"MIN-UŻYCIE", "MIN-POZIOM", "PODTRZYMUJĄCE-ŻYCIE", "SZANSA-NA-ATAK-KRYTYCZNY",
+		"SILNIEJSZE-ATAKI-KRYTYCZNE", "ZWIĘKSZONA-KRADZIEŻ-ŻYCIA", "ZDROWIE", "CIĘŻAR",
+		"Value", "Wartość"
+	]);
 
 	title!: string;
 	caption!: string;
@@ -33,16 +43,17 @@ export class ShowItemListEvent extends RPEvent {
 		let items = [];
 
 		if (this.hasOwnProperty("title")) {
-			title = this["title"];
+			title = GameLanguage.getText(this["title"]);
 		}
 		if (this.hasOwnProperty("caption")) {
-			caption = this["caption"];
+			caption = GameLanguage.getText(this["caption"]);
 		}
 		if (this.hasOwnProperty("content")) {
 			for (let obj in this["content"]) {
 				if (this["content"].hasOwnProperty(obj)) {
 					let data = this["content"][obj]["a"];
 					let item = {
+						name: data["name"],
 						clazz: data["class"],
 						subclass: data["subclass"],
 						img: data["class"] + "/" + data["subclass"] + ".png",
@@ -77,7 +88,7 @@ export class ShowItemListEvent extends RPEvent {
 		const thead = document.createElement("thead");
 		const headerRow = document.createElement("tr");
 
-		const headers = ["Przedmiot", "Cena", "Opis"];
+		const headers = ["Przedmiot", "Cena", "Opis"].map(text => GameLanguage.getText(text));
 		for (const text of headers) {
 			const th = document.createElement("th");
 			th.textContent = text;
@@ -113,7 +124,7 @@ export class ShowItemListEvent extends RPEvent {
 
 			// Description
 			const descCell = document.createElement("td");
-			descCell.innerHTML = Chat.formatLogEntry(i.desc);
+			descCell.innerHTML = this.formatDescription(i.desc, i.name);
 			row.appendChild(descCell);
 
 			tbody.appendChild(row);
@@ -123,6 +134,38 @@ export class ShowItemListEvent extends RPEvent {
 
 		stendhal.ui.globalInternalWindow.set(
 			ui.createSingletonFloatingWindow(title, content, 20, 20));
+	}
+
+	private formatDescription(text: string, canonicalName?: string): string {
+		if (canonicalName) {
+			// Item.describe marks the name before the authored sentence is translated.
+			text = text.split("§'" + canonicalName + "'").join(canonicalName);
+		}
+		// Statistics are appended by the server, outside the authored description.
+		const statsStart = text.lastIndexOf(" Parametry (");
+		text = statsStart < 0 ? GameLanguage.getText(text)
+			: GameLanguage.getText(text.substring(0, statsStart)) + " "
+				+ this.translateStatistics(text.substring(statsStart + 1));
+		if (!text.includes("§") && canonicalName) {
+			const name = GameLanguage.getText(canonicalName);
+			const nameStart = name ? text.indexOf(name) : -1;
+			if (nameStart >= 0) {
+				const escapedName = name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+				return Chat.formatLogEntry(text.substring(0, nameStart))
+					+ '<span class="logi">' + escapedName + "</span>"
+					+ Chat.formatLogEntry(text.substring(nameStart + name.length));
+			}
+		}
+		return Chat.formatLogEntry(text);
+	}
+
+	private translateStatistics(text: string): string {
+		const translated = GameLanguage.getText(text);
+		if (translated !== text || !text.startsWith("Parametry (") || !text.endsWith(").")) return translated;
+		const body = text.substring("Parametry (".length, text.length - 2).replace(
+			/(?<!\S)([\p{L}-]+)(?=:)|(?<!\S)(ZMNIEJSZA-WAGĘ-BRONI)(?= |$)/gu,
+			label => ShowItemListEvent.statLabels.has(label) ? GameLanguage.getText(label) : label);
+		return GameLanguage.getText("Parametry") + " (" + body + ").";
 	}
 }
 

@@ -46,16 +46,19 @@ function harness() {
 		"../../../util/Clipboard": { copyTextToClipboard: async text => { clipboard.texts.push(text); return clipboard.result; } }
 	});
 	const { SettingsDialog: Settings } = load("../ui/dialog/SettingsDialog.ts", {
+		"../../util/GameLanguage": { GameLanguage: { translateSettings() {} } },
 		"../../stendhal": { stendhal: { config: { get: () => "default" } } },
 		"./settings/GeneralTab": { GeneralTab: class {} },
 		"./settings/InputTab": { InputTab: class {} },
 		"./settings/SoundTab": { SoundTab: class {} },
 		"./settings/VisualsTab": { VisualsTab: class {} },
+		"./settings/AbstractSettingsTab": { AbstractSettingsTab: class {} },
+		"./settings/SettingsCategoryLayout": { organizeSettings: () => [] },
 		"./settings/AdminDiagnosticsTab": { AdminDiagnosticsTab: Tab },
 		"../../util/AdminDiagnostics": { AdminDiagnostics: D },
 		"../toolkit/TabDialogContentComponent": { TabDialogContentComponent: class {
 			constructor() { this.tabs = []; this.componentElement = { classList: { add() {} } }; }
-			child() { return {}; }
+			child() { return {prepend() {}}; }
 			addTab(label, content) { this.tabs.push({ label, content }); }
 			addButton() { return {}; }
 			addCloseButton() { return {}; }

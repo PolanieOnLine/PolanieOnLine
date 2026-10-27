@@ -108,7 +108,7 @@ public class YerenaRebornNPC implements ZoneConfigurator {
 						if (nextReborn <= 5) {
 							raiser.say(firstFiveOffer(nextReborn));
 						} else {
-							raiser.say("Pięć najważniejszych darów czasu już do ciebie należy. Mogę jednak ponownie cofnąć twoją drogę. Nie otrzymasz kolejnej premii do siły, zdrowia ani doświadczenia, ale twoje następne odrodzenie pozostanie częścią historii tej postaci. Czy chcesz tego?");
+							raiser.say(laterOffer(nextReborn));
 						}
 					}
 				});
@@ -165,13 +165,11 @@ public class YerenaRebornNPC implements ZoneConfigurator {
 	}
 
 	private String firstFiveOffer(final int nextReborn) {
-		final int attackBonus = nextReborn * 2;
-		final int experienceBonus = nextReborn * 5;
+		final int skillCapBonus = RebornSystem.getSkillCapBonusForRebornCount(nextReborn);
 		final StringBuilder text = new StringBuilder();
 		text.append("Mogę cofnąć twoją drogę po raz ").append(nextReborn)
-				.append(". Po tym odrodzeniu twoje ciosy otrzymają łącznie ")
-				.append(attackBonus).append(" procent premii, a doświadczenie zdobywane w walce ")
-				.append(experienceBonus).append(" procent premii.");
+				.append(". Po tym odrodzeniu premia do każdego z limitów ATK, RATK i DEF wyniesie +")
+				.append(skillCapBonus).append(". Wyższe limity pozwalają wykorzystać wytrenowane umiejętności. Doświadczenie z potworów pozostanie na poziomie 100 procent wartości bazowej.");
 
 		if (nextReborn == 3) {
 			text.append(" Zachowam też dla ciebie dwa szczególne sztylety jako pamiątkę trzeciej podróży.");
@@ -181,6 +179,21 @@ public class YerenaRebornNPC implements ZoneConfigurator {
 			text.append(" Piąta podróż zakończy drogę szczególnych darów i przyniesie ci ekskalibur.");
 		}
 		text.append(" Czy chcesz narodzić się ponownie?");
+		return text.toString();
+	}
+
+	private String laterOffer(final int nextReborn) {
+		final StringBuilder text = new StringBuilder("Pięć najważniejszych darów czasu już do ciebie należy. Mogę jednak ponownie cofnąć twoją drogę. ");
+		if (nextReborn <= RebornSystem.SKILL_CAP_REBORN_LIMIT) {
+			text.append("Po tym odrodzeniu premia do każdego z limitów ATK, RATK i DEF wyniesie +")
+					.append(RebornSystem.getSkillCapBonusForRebornCount(nextReborn))
+					.append(". Nie otrzymasz kolejnej premii do zdrowia. ");
+		} else {
+			text.append("Nie otrzymasz kolejnego zwiększenia limitów umiejętności ani premii do zdrowia. ");
+		}
+		text.append("Po tym odrodzeniu będziesz otrzymywać ")
+				.append(RebornSystem.getCombatExperiencePercentForRebornCount(nextReborn))
+				.append(" procent wartości bazowej doświadczenia z potworów. Nagrody doświadczenia z zadań pozostaną bez zmian. Czy chcesz tego?");
 		return text.toString();
 	}
 

@@ -20,7 +20,7 @@
 		</equipable>
 	</item>
 
-	<item name="zdobyczny hełm">
+	<item name="zdobyczny hełm" rarity-enabled="false">
 		<type class="helmet" subclass="golden_horned_barbute" tileid="-1"/>
 		<description>Oto zdobyczny hełm. Ci co byli dzielni i ukończyli death matcha wygrali ten hełm.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
@@ -404,7 +404,6 @@
 			<atk value="1"/>
 			<def value="42"/>
 			<min_level value="300"/>
-			<statusresist slots="head;" type="bleeding" value="0.1"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="32618"/>

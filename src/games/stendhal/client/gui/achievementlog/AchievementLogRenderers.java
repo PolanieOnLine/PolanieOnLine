@@ -66,7 +66,8 @@ public class AchievementLogRenderers {
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
-			super.getTableCellRendererComponent(table, value, isSelected,
+			super.getTableCellRendererComponent(table, value instanceof String
+					? games.stendhal.client.ClientLanguage.getText((String) value) : value, isSelected,
 					hasFocus, row, column);
 			setBorder(border);
 			return this;

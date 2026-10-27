@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.login;
 
+import static games.stendhal.client.ClientLanguage.getText;
+
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Frame;
@@ -322,7 +324,9 @@ public class LoginDialog extends JDialog {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		contentPane.add(providers, c);
 
-		externalStatusLabel = new JLabel();
+		externalStatusLabel = new JLabel() {
+			@Override public void setText(String text) { super.setText(games.stendhal.client.ClientLanguage.getText(text)); }
+		};
 		externalStatusLabel.setVisible(false);
 		c.gridx = 0;
 		c.gridwidth = 2;
@@ -412,8 +416,8 @@ public class LoginDialog extends JDialog {
 
 		} catch (final NumberFormatException ex) {
 			JOptionPane.showMessageDialog(this,
-					"Nieprawidłowy numer portu. Spróbuj ponownie.",
-					"Nieprawidłowy port", JOptionPane.WARNING_MESSAGE);
+					getText("Nieprawidłowy numer portu. Spróbuj ponownie."),
+					getText("Nieprawidłowy port"), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -458,13 +462,13 @@ public class LoginDialog extends JDialog {
 		Profile profile;
 
 		profile = (Profile) profilesComboBox.getSelectedItem();
-		Object[] options = { "Usuń", "Anuluj" };
+		Object[] options = { getText("Usuń"), getText("Anuluj") };
 
 		Integer confirmRemoveProfile = JOptionPane.showOptionDialog(this,
-			"Zostanie usunięty twój profil z lokalnej listy kont.\n"
+			getText("Zostanie usunięty twój profil z lokalnej listy kont.\n"
 			+ "Nie usunie to twojego konta z żadnego serwera.\n"
-			+ "Czy chcesz usunąć profil \'" + profile.getUser() + "@" + profile.getHost() + "\'?",
-			"Usuwa profil użytkownika z lokalnej listy kont",
+			+ "Czy chcesz usunąć profil \'" + profile.getUser() + "@" + profile.getHost() + "\'?"),
+			getText("Usuwa profil użytkownika z lokalnej listy kont"),
 			JOptionPane.OK_CANCEL_OPTION,
 			JOptionPane.QUESTION_MESSAGE,
 			null,
@@ -492,13 +496,13 @@ public class LoginDialog extends JDialog {
 		try {
 			port = Integer.parseInt(serverPortField.getText().trim());
 		} catch (NumberFormatException exception) {
-			JOptionPane.showMessageDialog(this, "Nieprawidłowy port serwera.", "Logowanie " + provider.label, JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, getText("Nieprawidłowy port serwera."), getText("Logowanie " + provider.label), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		if (!host.equalsIgnoreCase(defaultHost)
 				|| port != Integer.parseInt(ClientGameConfiguration.get("DEFAULT_PORT"))) {
-			JOptionPane.showMessageDialog(this, "Logowanie " + provider.label + " jest dostępne tylko na oficjalnym serwerze.",
-					"Logowanie " + provider.label, JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this, getText("Logowanie " + provider.label + " jest dostępne tylko na oficjalnym serwerze."),
+					getText("Logowanie " + provider.label), JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -522,7 +526,7 @@ public class LoginDialog extends JDialog {
 					}
 				});
 				if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-					throw new IOException("Nie można otworzyć systemowej przeglądarki.");
+					throw new IOException(getText("Nie można otworzyć systemowej przeglądarki."));
 				}
 				Desktop.getDesktop().browse(URI.create(request.verificationUrl));
 				final long deadline = System.currentTimeMillis() + request.expiresInSeconds * 1000L;
@@ -546,13 +550,13 @@ public class LoginDialog extends JDialog {
 					}
 				}
 				if (isDisplayable()) {
-					throw new IOException("Czas logowania " + provider.label + " minął. Spróbuj ponownie.");
+					throw new IOException(getText("Czas logowania " + provider.label + " minął. Spróbuj ponownie."));
 				}
 			} catch (IOException | InterruptedException | RuntimeException exception) {
 				if (isDisplayable()) {
 					SwingUtilities.invokeLater(() -> {
 						externalStatusLabel.setText("Nie udało się zalogować przez " + provider.label + ".");
-						JOptionPane.showMessageDialog(this, exception.getMessage(), "Logowanie " + provider.label, JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(this, exception.getMessage(), getText("Logowanie " + provider.label), JOptionPane.ERROR_MESSAGE);
 					});
 				}
 			} finally {
@@ -633,7 +637,7 @@ public class LoginDialog extends JDialog {
 				message = message + ", because profile was null";
 			}
 			Logger.getLogger(LoginDialog.class).error(message, ex);
-			handleError("Nie można połączyć się z serwerem. Źle wpisałeś nazwę serwera?", "Nieprawidłowe połączenie");
+			handleError(getText("Nie można połączyć się z serwerem. Źle wpisałeś nazwę serwera?"), "Nieprawidłowe połączenie");
 			return;
 		}
 
@@ -656,10 +660,10 @@ public class LoginDialog extends JDialog {
 			});
 
 		} catch (final InvalidVersionException e) {
-			handleError("Uruchomiłeś starszą wersję gry. Proszę zaktualizuj",
+			handleError(getText("Uruchomiłeś starszą wersję gry. Proszę zaktualizuj"),
 					"Starsza wersja");
 		} catch (final TimeoutException e) {
-			handleError("Serwer jest niedostępny. Możliwe, że padł, a jeżeli używasz innego serwera to sprawdź czy dobrze wpisałeś jego nazwę i numer portu.",
+			handleError(getText("Serwer jest niedostępny. Możliwe, że padł, a jeżeli używasz innego serwera to sprawdź czy dobrze wpisałeś jego nazwę i numer portu."),
 					"Błąd logowania");
 		} catch (final LoginFailedException e) {
 			handleError(e.getMessage(), "Nie powiodło się logowanie");
@@ -668,7 +672,7 @@ public class LoginDialog extends JDialog {
 				System.exit(1);
 			}
 		} catch (final BannedAddressException e) {
-			handleError("Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z tą decyzją to skontaktuj się z nami na https://polanieonline.eu/kontakt",
+			handleError(getText("Twoje IP zostało zablokowane. Jeżeli nie zgadzasz się z tą decyzją to skontaktuj się z nami na https://polanieonline.eu/kontakt"),
 					"Zablokowane IP");
 		}
 	}
@@ -687,7 +691,7 @@ public class LoginDialog extends JDialog {
 			public void run() {
 				progressBar.cancel();
 				JOptionPane.showMessageDialog(
-						LoginDialog.this, errorMessage, errorTitle, JOptionPane.ERROR_MESSAGE);
+						LoginDialog.this, errorMessage, getText(errorTitle), JOptionPane.ERROR_MESSAGE);
 
 				if (isVisible()) {
 					setEnabled(true);
@@ -719,8 +723,8 @@ public class LoginDialog extends JDialog {
 			// Ignore
 		} catch (final IOException ioex) {
 			JOptionPane.showMessageDialog(this,
-					"Wystąpił błąd podczas ładowania informacji o logowaniu",
-					"Błąd Ładowania Informacji Logowania",
+					getText("Wystąpił błąd podczas ładowania informacji o logowaniu"),
+					getText("Błąd Ładowania Informacji Logowania"),
 					JOptionPane.WARNING_MESSAGE);
 		}
 
@@ -861,8 +865,8 @@ public class LoginDialog extends JDialog {
 			}
 		} catch (final IOException ioex) {
 			JOptionPane.showMessageDialog(this,
-					"Wystąpił błąd podczas zapisywania informacji o logowaniu",
-					"Błąd Zapisu Informacji Logowania",
+					getText("Wystąpił błąd podczas zapisywania informacji o logowaniu"),
+					getText("Błąd Zapisu Informacji Logowania"),
 					JOptionPane.WARNING_MESSAGE);
 		}
 	}

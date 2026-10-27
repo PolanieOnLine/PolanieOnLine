@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -18,9 +19,65 @@ import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
+import games.stendhal.server.entity.status.StatusType;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixGeneratorTest {
+	@Test
+	public void maxModeUsesHighestRollsWithoutChangingPoolsOrIntrinsicLifesteal() {
+		final Map<String, Double> maximums = new HashMap<String, Double>();
+		maximums.put("lifesteal", 0.10);
+		maximums.put("lifesteal_effectiveness", 20.0);
+		maximums.put("parry_chance", 0.15);
+		maximums.put("critical_damage_bonus", 0.15);
+		maximums.put("bleed_on_hit", 0.08);
+		maximums.put("poison_on_hit", 0.08);
+		maximums.put("execute_damage", 0.15);
+		maximums.put("distance_damage", 0.12);
+		maximums.put("armor_penetration", 0.15);
+		maximums.put("flat_attack_bonus", 2.0);
+		maximums.put("spiked_plating", 0.04);
+		maximums.put("hunter_mark", 1.0);
+		maximums.put("giant_slayer", 1.0);
+		maximums.put("legendary_relic_power", 7.0);
+		for (StatusType status : StatusType.values()) {
+			maximums.put(EquipmentStatusResistanceService.getResistanceAttribute(status), 0.12);
+		}
+		final java.util.Set<String> seen = new HashSet<String>();
+		for (String itemClass : new String[] {"sword", "axe", "dagger", "club", "ranged", "wand", "whip", "armor", "shield", "helmet", "ring", "necklace"}) {
+			final boolean accessory = "ring".equals(itemClass) || "necklace".equals(itemClass);
+			maximums.put("accuracy_bonus", accessory ? 7.0 : 8.0);
+			maximums.put("critical_chance", accessory ? 4.0 : 6.0);
+			maximums.put("critical_damage_bonus", accessory ? 0.10 : 0.15);
+			for (int seed = 0; seed < 64; seed++) {
+				final Map<String, String> attributes = new HashMap<String, String>();
+				attributes.put("atk", "20"); attributes.put("def", "20");
+				if ("axe".equals(itemClass)) attributes.put("lifesteal", "0.07");
+				final Item item = new Item("max affix test", itemClass, "test", attributes);
+				item.setRarity(ItemRarity.LEGENDARY);
+				final ItemCreationContext context = ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.maximizeAffixes(true).withAffixSeed(seed).build();
+				final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(1L));
+				assertEquals(4, generator.generate(item, context).size());
+				for (Map.Entry<String, String> entry : ItemAffixState.getValues(item).entrySet()) {
+					final String id = entry.getKey();
+					final double expected = maximums.containsKey(id) ? maximums.get(id) : 1.0;
+					assertEquals(itemClass + ": " + id, expected, Double.parseDouble(entry.getValue()), 0.000001);
+					seen.add(id);
+				}
+				if ("axe".equals(itemClass)) {
+					assertEquals(0.07, item.getDouble("lifesteal"), 0.000001);
+					assertFalse(ItemAffixState.has(item, "lifesteal"));
+				}
+				final Map<String, String> saved = ItemAffixState.getValues(item);
+				assertTrue(generator.generate(item, context).isEmpty());
+				assertEquals(saved, ItemAffixState.getValues(item));
+			}
+		}
+		assertTrue(seen.containsAll(Arrays.asList("parry_chance", "lifesteal_effectiveness", "legendary_relic_power")));
+	}
+
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		ItemTestHelper.generateRPClasses();

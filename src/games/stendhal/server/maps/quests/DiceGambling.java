@@ -22,6 +22,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Dice;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
+import games.stendhal.server.entity.mapstuff.sign.PrizeSign;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -45,7 +46,7 @@ public class DiceGambling extends AbstractQuest {
 
 		final StendhalRPZone zone = ricardo.getZone();
 
-		Sign blackboard = new Sign();
+		Sign blackboard = new PrizeSign();
 		blackboard.setPosition(25, 0);
 		blackboard.setEntityClass("blackboard");
 		StringBuilder prizelistBuffer = new StringBuilder("NAGRODY:\n");
@@ -55,7 +56,7 @@ public class DiceGambling extends AbstractQuest {
 		blackboard.setText(prizelistBuffer.toString());
 		zone.add(blackboard);
 
-		blackboard = new Sign();
+		blackboard = new PrizeSign();
 		blackboard.setPosition(26, 0);
 		blackboard.setEntityClass("blackboard");
 		prizelistBuffer = new StringBuilder("NAGRODY:\n");

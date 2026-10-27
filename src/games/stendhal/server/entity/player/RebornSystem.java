@@ -14,19 +14,24 @@ import marauroa.common.game.RPSlot;
 /**
  * Permanent character reborn progression.
  *
- * Reborns are character progression, not quests. The first five reborns grant
- * capped combat and health bonuses. Later reborns remain available without
- * increasing character power further.
+ * Reborns are character progression, not quests. The first ten reborns raise
+ * combat skill caps; health and item rewards stop after the fifth reborn.
+ * Monster experience remains at its base value through five reborns,
+ * then falls by five percentage points per reborn
+ * until it reaches 75 percent at ten reborns.
  */
 public final class RebornSystem {
 	public static final String ATTR_REBORNS = "reborns";
 	public static final String ATTR_REWARDS = "reborn_rewards";
 	public static final String ATTR_MIGRATION_VERSION = "reborn_migration_version";
+	public static final int SKILL_CAP_REBORN_LIMIT = 10;
 
 	private static final int MIGRATION_VERSION = 1;
-	private static final int POWER_REBORN_LIMIT = 5;
-	private static final int ATTACK_BONUS_PER_REBORN = 2;
-	private static final int COMBAT_XP_BONUS_PER_REBORN = 5;
+	private static final int SKILL_CAP_BONUS_PER_REBORN = 8;
+	private static final int HEALTH_REBORN_LIMIT = 5;
+	private static final int COMBAT_XP_REDUCTION_START = 5;
+	private static final int COMBAT_XP_REDUCTION_PER_REBORN = 5;
+	private static final int MAX_COMBAT_XP_REDUCTION = 25;
 	private static final int HEALTH_PER_LEVEL = 10;
 
 	private static final int REWARD_THIRD = 1;
@@ -54,30 +59,37 @@ public final class RebornSystem {
 		return Math.max(0, player.getInt(ATTR_REBORNS));
 	}
 
-	public static int getAttackBonusPercent(final Player player) {
-		return getPowerRebornCount(player) * ATTACK_BONUS_PER_REBORN;
+	public static int getSkillCapBonus(final Player player) {
+		return getSkillCapBonusForRebornCount(getRebornCount(player));
 	}
 
+	public static int getSkillCapBonusForRebornCount(final int reborns) {
+		return Math.min(SKILL_CAP_REBORN_LIMIT, Math.max(0, reborns))
+				* SKILL_CAP_BONUS_PER_REBORN;
+	}
+
+	/** Signed adjustment to base monster experience, not a permanent power bonus. */
 	public static int getCombatExperienceBonusPercent(final Player player) {
-		return getPowerRebornCount(player) * COMBAT_XP_BONUS_PER_REBORN;
+		return getCombatExperiencePercentForRebornCount(getRebornCount(player)) - 100;
+	}
+
+	/** Also used by Yerena to describe the next reborn before it is accepted. */
+	public static int getCombatExperiencePercentForRebornCount(final int reborns) {
+		final int penaltyReborns = Math.min(
+				MAX_COMBAT_XP_REDUCTION / COMBAT_XP_REDUCTION_PER_REBORN,
+				Math.max(COMBAT_XP_REDUCTION_START, reborns) - COMBAT_XP_REDUCTION_START);
+		return 100 - penaltyReborns * COMBAT_XP_REDUCTION_PER_REBORN;
 	}
 
 	public static int getHealthBonus(final Player player) {
-		final int reborns = getPowerRebornCount(player);
+		final int reborns = Math.min(HEALTH_REBORN_LIMIT, getRebornCount(player));
 		if (reborns <= 0) {
 			return 0;
 		}
-		if (reborns < POWER_REBORN_LIMIT) {
+		if (reborns < HEALTH_REBORN_LIMIT) {
 			return reborns * 1000;
 		}
 		return 6000;
-	}
-
-	public static int applyAttackBonus(final Player player, final int damage) {
-		if (damage <= 0) {
-			return damage;
-		}
-		return scaleByPercent(damage, getAttackBonusPercent(player));
 	}
 
 	public static int applyCombatExperienceBonus(final Player player,
@@ -85,26 +97,16 @@ public final class RebornSystem {
 		if (experience <= 0) {
 			return experience;
 		}
-		return scaleByPercent(experience, getCombatExperienceBonusPercent(player));
-	}
-
-	private static int scaleByPercent(final int value, final int bonusPercent) {
-		if (bonusPercent <= 0) {
-			return value;
-		}
-		return Math.max(value,
-				(int) Math.round(value * (1.0 + bonusPercent / 100.0)));
-	}
-
-	private static int getPowerRebornCount(final Player player) {
-		return Math.min(POWER_REBORN_LIMIT, getRebornCount(player));
+		final int percent = getCombatExperiencePercentForRebornCount(getRebornCount(player));
+		// Long arithmetic preserves rounding without overflowing large XP rewards.
+		return (int) ((experience * (long) percent + 50) / 100);
 	}
 
 	private static int getHealthRewardForReborn(final int reborn) {
 		if (reborn >= 1 && reborn <= 4) {
 			return 1000;
 		}
-		if (reborn == 5) {
+		if (reborn == HEALTH_REBORN_LIMIT) {
 			return 2000;
 		}
 		return 0;
@@ -131,8 +133,8 @@ public final class RebornSystem {
 		final int reborns = getRebornCount(player) + 1;
 		final int healthReward = getHealthRewardForReborn(reborns);
 		final int levelHealth = getLevelHealthToReset();
-		final int resetBaseHP = player.getBaseHP() - levelHealth + healthReward;
-		final int resetHP = player.getHP() - levelHealth + healthReward;
+		final int resetBaseHP = player.getUncappedBaseHP() - levelHealth + healthReward;
+		final int missingHealth = player.getBaseHP() - player.getHP();
 
 		player.put(ATTR_REBORNS, reborns);
 		RebornBadgeSynchronizer.sync(player);
@@ -143,7 +145,7 @@ public final class RebornSystem {
 		// Only health gained from the maximum level is removed. Permanent health
 		// from quests and earlier reborns remains on the character.
 		player.setBaseHP(resetBaseHP);
-		player.setHP(resetHP);
+		player.setHP(player.getBaseHP() - missingHealth);
 
 		claimPendingRewards(player);
 
@@ -170,11 +172,11 @@ public final class RebornSystem {
 	private static void updateBaseHP(final Player player,
 			final int missingHealth) {
 		UpdateConverter.updateBaseHP(player);
-		final int expectedBaseHP = player.getBaseHP() + getHealthBonus(player);
-		if (player.getBaseHP() != expectedBaseHP) {
+		final int expectedBaseHP = player.getUncappedBaseHP() + getHealthBonus(player);
+		if (player.getUncappedBaseHP() != expectedBaseHP) {
 			player.setBaseHP(expectedBaseHP);
 		}
-		player.setHP(Math.max(0, expectedBaseHP - missingHealth));
+		player.setHP(Math.max(0, player.getBaseHP() - missingHealth));
 	}
 
 	/**
