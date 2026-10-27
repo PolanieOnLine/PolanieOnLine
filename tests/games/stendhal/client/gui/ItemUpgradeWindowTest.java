@@ -193,6 +193,48 @@ public class ItemUpgradeWindowTest {
         onEdt(() -> assertFalse(((Timer)field("inventoryRefresh")).isRunning()));
     }
 
+    private RPEvent glyphSelectionPreview(String id, String name) {
+        RPEvent event = selected(); event.put("phase", "preview"); event.put("service", "glyph");
+        event.put("selected_recipe", id); event.put("operation", "create"); event.put("name", name);
+        event.put("upgrade_level", 1); event.put("next_upgrade_level", 1); event.put("max_upgrade_level", 3);
+        event.remove("selected_path");
+        event.put("recipe_ids", Arrays.asList("1:glif siły", "1:glif tarczy"));
+        event.put("recipe_names", Arrays.asList("glif siły", "glif tarczy"));
+        event.put("recipe_levels", Arrays.asList("1", "1")); event.put("recipe_ready", Arrays.asList("0", "0"));
+        return event;
+    }
+
+    @Test
+    public void clickingAnotherGlyphKeepsItsSelectionWhileOlderResponsesArrive() throws Exception {
+        onEdt(() -> {
+            RPEvent open = empty(); open.put("service", "glyph"); apply(open);
+            RPEvent previous = glyphSelectionPreview("1:glif siły", "glif siły"); apply(previous);
+            JList<?> rows = (JList<?>)nestedField(field("creationCategory"), "rows");
+            Field provider = ItemUpgradeWindow.class.getDeclaredField("npcId"); provider.setAccessible(true); provider.setInt(window, 0);
+            rows.getSelectionModel().setValueIsAdjusting(true); rows.setSelectedIndex(1);
+            assertEquals("Mouse press must record the new recipe before mouse release", "1:glif tarczy", field("selectedRecipe"));
+            apply(previous);
+            assertEquals(1, rows.getSelectedIndex()); assertEquals("1:glif tarczy", field("selectedRecipe"));
+            RPEvent oldRefresh = empty(); oldRefresh.put("phase", "refresh"); oldRefresh.put("service", "glyph"); apply(oldRefresh);
+            assertEquals(1, rows.getSelectedIndex()); assertEquals("1:glif tarczy", field("selectedRecipe"));
+            rows.getSelectionModel().setValueIsAdjusting(false);
+            apply(glyphSelectionPreview("1:glif tarczy", "glif tarczy"));
+            assertTrue(label("itemName").getText().contains("glif tarczy")); assertEquals(1, rows.getSelectedIndex());
+        });
+    }
+
+    @Test
+    public void refreshingTheSameCatalogueDoesNotReplaceItsRowsDuringInput() throws Exception {
+        onEdt(() -> {
+            RPEvent open = empty(); open.put("service", "glyph"); apply(open);
+            RPEvent preview = glyphSelectionPreview("1:glif siły", "glif siły"); apply(preview);
+            JList<?> rows = (JList<?>)nestedField(field("creationCategory"), "rows");
+            Object first = rows.getModel().getElementAt(0); apply(preview);
+            assertSame("An unchanged server catalogue must preserve the rows being clicked", first, rows.getModel().getElementAt(0));
+            assertEquals(0, rows.getSelectedIndex());
+        });
+    }
+
     @Test
     public void glyphRecipeAcceptsTheNextMatchingCopyAfterSuccessfulUpgrade() throws Exception {
         onEdt(() -> {

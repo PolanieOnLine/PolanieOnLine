@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -383,14 +384,21 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         final boolean responseGlyph = event.has("service") && "glyph".equals(event.get("service"));
         if (!"open".equals(phase) && (responseGlyph != glyphMode
                 || (event.has("npc_id") && npcId != 0 && event.getInt("npc_id") != npcId))) return;
+        final String responseRecipe = event.has("selected_recipe") ? event.get("selected_recipe") : null;
+        final String responsePath = event.has("selected_path") ? event.get("selected_path") : null;
+        if (!"open".equals(phase)) {
+            if (selectionCleared && !"refresh".equals(phase)) return;
+            if (responseRecipe != null && selectedRecipe != null && !selectedRecipe.equals(responseRecipe)) return;
+            if ("refresh".equals(phase) && (selectedPath != null || (glyphMode && selectedRecipe != null))) return;
+            if (!(glyphMode && responseRecipe != null) && responsePath != null
+                    && selectedPath != null && !selectedPath.equals(responsePath)) return;
+        }
         if ("open".equals(phase)) {
             glyphMode = responseGlyph;
             refresh.setVisible(!glyphMode); inventoryRefresh.stop(); inventorySignature = null; catalogReceived = false;
             setTitle(glyphMode ? "Stół runiczny" : "Ulepszanie przedmiotu");
             recipeCatalog.setVisible(glyphMode); selectedRecipe = null;
         }
-        final String responseRecipe = event.has("selected_recipe") ? event.get("selected_recipe") : null;
-        if (!"open".equals(phase) && responseRecipe != null && selectedRecipe != null && !selectedRecipe.equals(responseRecipe)) return;
         final String stateForRecipe = event.has("status") ? event.get("status") : "";
         if (responseRecipe != null) selectedRecipe = responseRecipe;
         else if (!isInteractionStatus(stateForRecipe)) selectedRecipe = null;
@@ -400,19 +408,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         setSectionTitle(costSection, glyphMode ? "Koszt" : "Koszt i szansa");
         if (glyphMode && event.has("recipe_ids")) { updateRecipes(event); catalogReceived = true; }
         upgrade.setText(glyphMode ? (creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
-		final String responsePath = event.has("selected_path")
-				? event.get("selected_path") : null;
-		if (!(glyphMode && responseRecipe != null) && !"open".equals(phase) && responsePath != null
-				&& selectedPath != null && !selectedPath.equals(responsePath)) {
-			return;
-		}
-		if ("refresh".equals(phase) && selectedPath != null) {
-			return;
-		}
-		if (selectionCleared && !"open".equals(phase)
-				&& !"refresh".equals(phase)) {
-			return;
-		}
 		if ("open".equals(phase)) {
 			selectionCleared = false;
 		}
@@ -601,25 +596,42 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         try {
             Point creationPosition = creationCategory.scroll.getViewport().getViewPosition();
             Point upgradePosition = upgradeCategory.scroll.getViewport().getViewPosition();
-            creationCategory.model.clear(); upgradeCategory.model.clear();
+            List<RecipeRow> creationRows = new ArrayList<RecipeRow>(), upgradeRows = new ArrayList<RecipeRow>();
             List<String> ids = list(event, "recipe_ids"), names = list(event, "recipe_names"), levels = list(event, "recipe_levels");
             List<String> ready = list(event, "recipe_ready"), sprites = list(event, "recipe_subclasses");
             for (int i = 0; i < ids.size() && i < names.size() && i < levels.size(); i++) {
                 RecipeRow row = new RecipeRow(ids.get(i), names.get(i), integer(levels.get(i)),
                         i < ready.size() && "1".equals(ready.get(i)), i < sprites.size() ? sprites.get(i) : null);
-                RecipeCategory category = row.level == 1 ? creationCategory : upgradeCategory;
-                category.model.addElement(row);
-                if (row.id.equals(selectedRecipe)) category.rows.setSelectedIndex(category.model.size() - 1);
+                (row.level == 1 ? creationRows : upgradeRows).add(row);
             }
+            updateCategory(creationCategory, creationRows); updateCategory(upgradeCategory, upgradeRows);
             recipeCatalog.revalidate();
             creationCategory.scroll.getViewport().setViewPosition(creationPosition);
             upgradeCategory.scroll.getViewport().setViewPosition(upgradePosition);
         } finally { updatingRecipes = false; }
     }
+    /** Availability changes update existing entries without interrupting a mouse gesture. */
+    private void updateCategory(RecipeCategory category, List<RecipeRow> rows) {
+        boolean sameOrder = category.model.size() == rows.size();
+        for (int i = 0; sameOrder && i < rows.size(); i++) sameOrder = category.model.get(i).id.equals(rows.get(i).id);
+        if (!sameOrder) category.model.clear();
+        int selected = -1;
+        for (int i = 0; i < rows.size(); i++) {
+            RecipeRow row = rows.get(i);
+            if (!sameOrder) category.model.addElement(row);
+            else if (!row.sameContent(category.model.get(i))) category.model.set(i, row);
+            if (row.id.equals(selectedRecipe)) selected = i;
+        }
+        if (category.rows.getSelectedIndex() != selected) category.rows.setSelectedIndex(selected);
+    }
     private static final class RecipeRow {
         final String id, name, sprite; final int level; final boolean ready;
         RecipeRow(String id, String name, int level, boolean ready, String sprite) {
             this.id = id; this.name = name; this.level = level; this.ready = ready; this.sprite = sprite;
+        }
+        boolean sameContent(RecipeRow other) {
+            return id.equals(other.id) && name.equals(other.name) && level == other.level
+                    && ready == other.ready && Objects.equals(sprite, other.sprite);
         }
         @Override public String toString() { return name + " " + roman(level); }
     }
@@ -646,14 +658,16 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
             rows.setFont(new JLabel().getFont()); rows.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             rows.setCellRenderer(new RecipeRenderer()); ToolTipManager.sharedInstance().registerComponent(rows);
             rows.addListSelectionListener(event -> {
-                if (updatingRecipes || event.getValueIsAdjusting() || rows.getSelectedValue() == null) return;
+                if (updatingRecipes || rows.getSelectedValue() == null) return;
                 RecipeRow selected = rows.getSelectedValue();
+                if (selected.id.equals(selectedRecipe)) return;
                 updatingRecipes = true;
                 try {
                     if (creationCategory != null && creationCategory != this) creationCategory.rows.clearSelection();
                     if (upgradeCategory != null && upgradeCategory != this) upgradeCategory.rows.clearSelection();
                 } finally { updatingRecipes = false; }
                 selectedRecipe = selected.id; selectedPath = null; requestToken = null; selectionCleared = false;
+                inventoryRefresh.stop();
                 upgrade.setEnabled(false); status.setText("Sprawdzanie wymagań..."); send("preview", null, null);
             });
             scroll.setOpaque(false); scroll.getViewport().setOpaque(false); scroll.setBorder(BorderFactory.createEmptyBorder(2, 2, 4, 3));

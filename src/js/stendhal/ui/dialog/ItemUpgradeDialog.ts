@@ -41,6 +41,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
     private itemHeading!: HTMLHeadingElement;
     private readonly categoryOpen = new Map<string, boolean>();
     private recipeButtons: HTMLButtonElement[] = [];
+    private recipeCatalogKey = "";
+    private readonly recipeRows = new Map<string, {button: HTMLButtonElement; label: HTMLElement}>();
     private readonly categoryLists = new Map<string, HTMLDivElement>();
 	private selectedPath?: string;
 	private requestToken?: string;
@@ -210,6 +212,14 @@ export class ItemUpgradeDialog extends DialogContentComponent {
         const responseGlyph = data.service === "glyph";
         if (data.phase !== "open" && (responseGlyph !== this.glyphMode
                 || (data.npc_id !== undefined && this.npcId && Number(data.npc_id) !== this.npcId))) return;
+        const responseRecipe = data.selected_recipe ? String(data.selected_recipe) : undefined;
+        const responsePath = data.selected_path ? this.normalizePath(String(data.selected_path)) : undefined;
+        if (data.phase !== "open") {
+            if (this.selectionCleared && data.phase !== "refresh") return;
+            if (responseRecipe && this.selectedRecipe && responseRecipe !== this.selectedRecipe) return;
+            if (data.phase === "refresh" && (this.selectedPath || (this.glyphMode && this.selectedRecipe))) return;
+            if (!(this.glyphMode && responseRecipe) && responsePath && this.selectedPath && responsePath !== this.selectedPath) return;
+        }
         if (data.phase === "open") {
             this.glyphMode = responseGlyph;
             this.refreshButton.hidden = this.glyphMode; this.inventorySignature = undefined; this.catalogReceived = false;
@@ -218,21 +228,12 @@ export class ItemUpgradeDialog extends DialogContentComponent {
             this.componentElement.classList.toggle("glyph-workbench-dialog", this.glyphMode);
             this.recipeCatalog.hidden = !this.glyphMode; this.selectedRecipe = undefined;
         }
-        const responseRecipe = data.selected_recipe ? String(data.selected_recipe) : undefined;
-        if (data.phase !== "open" && responseRecipe && this.selectedRecipe && responseRecipe !== this.selectedRecipe) return;
         if (responseRecipe) this.selectedRecipe = responseRecipe;
         else if (!this.isInteractionStatus(String(data.status || ""))) this.selectedRecipe = undefined;
         this.creatingGlyph = this.glyphMode && data.operation === "create";
         this.itemHeading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
         if (this.glyphMode && data.recipe_ids !== undefined) { this.fillRecipeCatalog(data); this.catalogReceived = true; }
         this.upgradeButton.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
-		const responsePath = data.selected_path
-				? this.normalizePath(String(data.selected_path)) : undefined;
-		if (!(this.glyphMode && data.selected_recipe) && data.phase !== "open" && responsePath && this.selectedPath
-				&& responsePath !== this.selectedPath) return;
-		if (data.phase === "refresh" && this.selectedPath) return;
-		if (this.selectionCleared && data.phase !== "open"
-				&& data.phase !== "refresh") return;
 		if (data.phase === "open") this.selectionCleared = false;
 		if (data.npc_id !== undefined) this.npcId = Number(data.npc_id || 0);
 		if (data.candidate_paths !== undefined) {
@@ -319,10 +320,20 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
     private fillRecipeCatalog(data: UpgradeEventData): void {
-        const positions = new Map(Array.from(this.categoryLists, ([mode, list]) => [mode, list.scrollTop]));
-        this.recipeCatalog.replaceChildren(); this.recipeButtons = []; this.categoryLists.clear();
         const ids = this.list(data.recipe_ids), names = this.list(data.recipe_names), levels = this.list(data.recipe_levels);
         const ready = this.list(data.recipe_ready), sprites = this.list(data.recipe_subclasses);
+        const catalogKey = JSON.stringify([ids, levels, sprites]);
+        if (catalogKey === this.recipeCatalogKey && ids.length === this.recipeRows.size) {
+            ids.forEach((id, index) => {
+                const row = this.recipeRows.get(id)!;
+                row.label.textContent = names[index] + " " + ["I", "II", "III"][Number(levels[index]) - 1];
+                this.updateRecipeButton(row.button, id, ready[index] === "1");
+            });
+            return;
+        }
+        this.recipeCatalogKey = catalogKey;
+        const positions = new Map(Array.from(this.categoryLists, ([mode, list]) => [mode, list.scrollTop]));
+        this.recipeCatalog.replaceChildren(); this.recipeButtons = []; this.categoryLists.clear(); this.recipeRows.clear();
         for (const mode of ["create", "upgrade"]) {
             const category = document.createElement("section"); category.className = "glyph-catalog-group";
             const expanded = this.categoryOpen.get(mode) ?? mode === "create";
@@ -342,24 +353,29 @@ export class ItemUpgradeDialog extends DialogContentComponent {
                 if ((level === 1) !== (mode === "create")) return;
                 const button = document.createElement("button"); button.type = "button";
                 button.className = "glyph-recipe-row";
-                button.classList.toggle("glyph-recipe-missing", ready[index] !== "1");
-                button.classList.toggle("glyph-recipe-selected", id === this.selectedRecipe);
-                button.title = GameLanguage.getText(ready[index] === "1" ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania.");
+                this.updateRecipeButton(button, id, ready[index] === "1");
                 if (sprites[index]) {
                     button.appendChild(this.spriteIcon("glyph", sprites[index], 20));
                 }
                 const label = document.createElement("span"); label.textContent = names[index] + " " + ["I", "II", "III"][level - 1]; button.appendChild(label);
                 button.onclick = () => {
                     this.selectedRecipe = id; this.selectedPath = undefined; this.requestToken = undefined; this.selectionCleared = false;
+                    if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh); this.inventoryRefresh = undefined;
                     this.recipeButtons.forEach(row => row.classList.toggle("glyph-recipe-selected", row === button));
                     this.upgradeButton.disabled = true; this.status.textContent = GameLanguage.getText("Sprawdzanie wymagań...");
                     this.send("preview");
                 };
-                this.recipeButtons.push(button); rows.appendChild(button);
+                this.recipeButtons.push(button); this.recipeRows.set(id, {button, label}); rows.appendChild(button);
             });
             this.recipeCatalog.appendChild(category);
             rows.scrollTop = positions.get(mode) || 0;
         }
+    }
+
+    private updateRecipeButton(button: HTMLButtonElement, id: string, ready: boolean): void {
+        button.classList.toggle("glyph-recipe-missing", !ready);
+        button.classList.toggle("glyph-recipe-selected", id === this.selectedRecipe);
+        button.title = GameLanguage.getText(ready ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania.");
     }
 
 	private fillMaterials(data: UpgradeEventData): void {
