@@ -225,7 +225,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         JPanel root = plainPanel(new BorderLayout(8, 0));
         root.add(buildContent(), BorderLayout.CENTER);
         recipeCatalog.setPreferredSize(new Dimension(236, 1));
-        recipeCatalog.setBorder(BorderFactory.createEmptyBorder(8, 4, 8, 0));
+        final Style catalogStyle = StyleUtil.getStyle();
+        recipeCatalog.setBorder(BorderFactory.createCompoundBorder(
+                catalogStyle != null ? catalogStyle.getBorderDown() : BorderFactory.createEtchedBorder(),
+                BorderFactory.createEmptyBorder(8, 4, 8, 4)));
         recipeCatalog.setVisible(false); layoutRecipeCategories();
         root.add(recipeCatalog, BorderLayout.WEST); return root;
     }
