@@ -33,6 +33,15 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private readonly upgradeButton: HTMLButtonElement;
 
 	private npcId = 0;
+	private glyphMode = false;
+    private creatingGlyph = false;
+    private selectedRecipe?: string;
+    private readonly recipeCatalog = document.createElement("div");
+    private readonly details = document.createElement("div");
+    private itemHeading!: HTMLHeadingElement;
+    private readonly categoryOpen = new Map<string, boolean>();
+    private recipeButtons: HTMLButtonElement[] = [];
+    private readonly categoryLists = new Map<string, HTMLDivElement>();
 	private selectedPath?: string;
 	private requestToken?: string;
 	private selectionCleared = false;
@@ -41,15 +50,19 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private constructor() {
 		super("empty-div-template");
 		this.componentElement.classList.add("item-upgrade-dialog");
+        const layout = document.createElement("div"); layout.className = "glyph-workbench-layout";
+        this.recipeCatalog.className = "glyph-recipe-catalog"; this.recipeCatalog.hidden = true;
+        this.details.className = "item-upgrade-details";
+        layout.append(this.recipeCatalog, this.details); this.componentElement.appendChild(layout);
 
-		const itemHeading = document.createElement("h4");
+		const itemHeading = document.createElement("h4"); this.itemHeading = itemHeading;
 		itemHeading.textContent = "Przedmiot do ulepszenia";
-		this.componentElement.appendChild(itemHeading);
+		this.details.appendChild(itemHeading);
 
 		const identity = document.createElement("div");
 		identity.className = "item-upgrade-identity";
 		this.icon.className = "item-upgrade-slot";
-		this.icon.title = "Przeciągnij tutaj przedmiot z ekwipunku.";
+		this.icon.title = this.selectionHint();
 		this.icon.addEventListener("dragover", (event: DragEvent) => {
 			this.onDragOver(event);
 		});
@@ -68,29 +81,29 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		identity.appendChild(this.icon);
 		const identityText = document.createElement("div");
 		this.nameLabel.className = "item-upgrade-name";
-		this.nameLabel.textContent = "Przeciągnij tutaj przedmiot";
-		this.levelLabel.textContent = "Przedmiot pozostanie w ekwipunku.";
+		this.nameLabel.textContent = this.selectionPrompt();
+		this.levelLabel.textContent = this.selectionInfo();
 		identityText.append(this.nameLabel, this.levelLabel);
 		identity.appendChild(identityText);
-		this.componentElement.appendChild(identity);
+		this.details.appendChild(identity);
 
 		this.stats.className = "item-upgrade-stats";
-		this.componentElement.append(this.stats, this.chance, this.fee);
+		this.details.append(this.stats, this.chance, this.fee);
 		const materialHeading = document.createElement("h4");
 		materialHeading.textContent = "Materiały (posiadasz / wymagane)";
-		this.componentElement.append(materialHeading, this.materials);
+		this.details.append(materialHeading, this.materials);
 		this.status.className = "item-upgrade-status";
-		this.componentElement.appendChild(this.status);
+		this.details.appendChild(this.status);
 
 		this.refreshButton = this.addButton("Odśwież", () => {
-			if (this.selectedPath) {
+			if (this.selectedPath || this.selectedRecipe) {
 				this.send("preview", this.selectedPath);
 			} else {
 				this.send("refresh");
 			}
 		});
 		this.upgradeButton = this.addButton("Ulepsz", () => {
-			if (this.selectedPath && this.requestToken) {
+			if ((this.selectedPath || this.selectedRecipe) && this.requestToken) {
 				this.upgradeButton.disabled = true;
 				this.send("upgrade", this.selectedPath, this.requestToken);
 			}
@@ -110,7 +123,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	public static canSelectItem(item: Item): boolean {
-		return !!ItemUpgradeDialog.active
+		return !!ItemUpgradeDialog.active && !ItemUpgradeDialog.active.glyphMode
 				&& ItemUpgradeDialog.active.upgradeCandidatePaths.has(
 						ItemUpgradeDialog.active.normalizePath(item.getIdPath()));
 	}
@@ -127,9 +140,26 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	private apply(data: UpgradeEventData): void {
+        const responseGlyph = data.service === "glyph";
+        if (data.phase !== "open" && (responseGlyph !== this.glyphMode
+                || (data.npc_id !== undefined && this.npcId && Number(data.npc_id) !== this.npcId))) return;
+        if (data.phase === "open") {
+            this.glyphMode = responseGlyph;
+            this.frame?.setTitle(this.glyphMode ? "Stół runiczny" : "Ulepszanie przedmiotu");
+            this.componentElement.classList.toggle("glyph-workbench-dialog", this.glyphMode);
+            this.recipeCatalog.hidden = !this.glyphMode; this.selectedRecipe = undefined;
+        }
+        const responseRecipe = data.selected_recipe ? String(data.selected_recipe) : undefined;
+        if (data.phase !== "open" && responseRecipe && this.selectedRecipe && responseRecipe !== this.selectedRecipe) return;
+        if (responseRecipe) this.selectedRecipe = responseRecipe;
+        else if (!this.isInteractionStatus(String(data.status || ""))) this.selectedRecipe = undefined;
+        this.creatingGlyph = this.glyphMode && data.operation === "create";
+        this.itemHeading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
+        if (this.glyphMode && data.recipe_ids !== undefined) this.fillRecipeCatalog(data);
+        this.upgradeButton.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
 		const responsePath = data.selected_path
 				? this.normalizePath(String(data.selected_path)) : undefined;
-		if (data.phase !== "open" && responsePath && this.selectedPath
+		if (!(this.glyphMode && data.selected_recipe) && data.phase !== "open" && responsePath && this.selectedPath
 				&& responsePath !== this.selectedPath) return;
 		if (data.phase === "refresh" && this.selectedPath) return;
 		if (this.selectionCleared && data.phase !== "open"
@@ -142,7 +172,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		}
 		const state = String(data.status || "");
 		const preservePreview = !data.name && this.isInteractionStatus(state)
-				&& !!this.selectedPath;
+				&& !!(this.selectedPath || this.selectedRecipe);
 		if (data.selected_path) {
 			this.selectedPath = String(data.selected_path);
 		} else if (!preservePreview) {
@@ -157,24 +187,26 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			this.icon.appendChild(sprite.cloneNode());
 			const rarity = ItemRarity.fromId(data.rarity_id) || ItemRarity.COMMON;
 			this.nameLabel.textContent = data.name;
-			this.nameLabel.style.color = rarity.colorHex;
-			this.levelLabel.textContent = "Poziom ulepszenia: +" + data.upgrade_level
-					+ " / +" + data.max_upgrade_level;
+			this.nameLabel.style.color = this.glyphMode ? "" : rarity.colorHex;
+			this.levelLabel.textContent = this.glyphMode ? (this.creatingGlyph ? "Poziom glifu: I" : "Poziom glifu: "
+                    + ["I", "II", "III"][Number(data.upgrade_level) - 1] + " → " + ["I", "II", "III"][Number(data.next_upgrade_level) - 1]
+                    + (data.source_location ? " (" + data.source_location + ")" : ""))
+                    : "Poziom ulepszenia: +" + data.upgrade_level + " / +" + data.max_upgrade_level;
 		} else if (!preservePreview) {
 			this.icon.replaceChildren();
 			this.nameLabel.textContent = state === "NO_UPGRADEABLE_ITEMS"
-					? "Brak przedmiotu do ulepszenia"
-					: "Przeciągnij tutaj przedmiot";
+					? (this.glyphMode ? "Brak glifu do rozwinięcia" : "Brak przedmiotu do ulepszenia")
+					: this.selectionPrompt();
 			this.nameLabel.style.color = "";
-			this.levelLabel.textContent = "Przedmiot pozostanie w ekwipunku.";
+			this.levelLabel.textContent = this.selectionInfo();
 		}
 
 		if (data.name || !preservePreview) {
 			this.fillStats(data);
-			this.chance.textContent = GameLanguage.getText(data.success_percent !== undefined
+			this.chance.textContent = GameLanguage.getText(this.glyphMode ? "Gwarantowane powodzenie." : data.success_percent !== undefined
 					? "Szansa powodzenia: " + data.success_percent + "%"
 					: "Szansa powodzenia: —");
-			this.fee.textContent = GameLanguage.getText(data.fee_text ? "Koszt: " + data.fee_text
+			this.fee.textContent = GameLanguage.getText(this.creatingGlyph ? "Koszt: wymagane składniki" : data.fee_text ? "Koszt: " + data.fee_text
 					: "Koszt: —");
 			this.fillMaterials(data);
 		}
@@ -184,14 +216,14 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		this.refreshButton.disabled = !this.npcId;
 		this.status.textContent = data.message || this.statusText(state);
 		this.status.dataset.status = state.toLowerCase();
-		this.upgradeButton.title = canUpgrade ? "Wykonaj próbę ulepszenia"
+		this.upgradeButton.title = canUpgrade ? (this.glyphMode ? "Ulepsz glif" : "Wykonaj próbę ulepszenia")
 				: this.statusText(state);
 	}
 
 	private fillStats(data: UpgradeEventData): void {
 		this.stats.replaceChildren();
 		const heading = document.createElement("h4");
-		heading.textContent = "Statystyki po ulepszeniu";
+		heading.textContent = GameLanguage.getText(this.creatingGlyph ? "Właściwości glifu" : "Statystyki po ulepszeniu");
 		this.stats.appendChild(heading);
 		const names = this.list(data.stat_names);
 		const current = this.list(data.current_stat_values);
@@ -209,14 +241,59 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			if ((name === "damage_min" || name === "damage_max")
 					&& currentByName.damage_min !== undefined
 					&& currentByName.damage_max !== undefined) return;
-			this.addStatRow(this.statLabel(name), current[index], upgraded[index]);
+			this.addStatRow(this.statLabel(name), this.creatingGlyph ? "" : current[index], upgraded[index]);
 		});
 		if (names.length === 0) {
 			const row = document.createElement("div");
-			row.textContent = "Po wybraniu przedmiotu zobaczysz zmianę statystyk.";
+			row.textContent = this.previewHint();
 			this.stats.appendChild(row);
 		}
 	}
+
+    private fillRecipeCatalog(data: UpgradeEventData): void {
+        const positions = new Map(Array.from(this.categoryLists, ([mode, list]) => [mode, list.scrollTop]));
+        this.recipeCatalog.replaceChildren(); this.recipeButtons = []; this.categoryLists.clear();
+        const ids = this.list(data.recipe_ids), names = this.list(data.recipe_names), levels = this.list(data.recipe_levels);
+        const ready = this.list(data.recipe_ready), sprites = this.list(data.recipe_subclasses);
+        for (const mode of ["create", "upgrade"]) {
+            const category = document.createElement("section"); category.className = "glyph-catalog-group";
+            const expanded = this.categoryOpen.get(mode) ?? mode === "create";
+            const heading = document.createElement("button"); heading.type = "button"; heading.className = "glyph-catalog-heading";
+            const title = GameLanguage.getText(mode === "create" ? "Tworzenie glifów" : "Ulepszanie");
+            const rows = document.createElement("div"); rows.className = "glyph-catalog-rows";
+            const toggle = (open: boolean) => {
+                this.categoryOpen.set(mode, open); rows.hidden = !open;
+                category.classList.toggle("glyph-catalog-open", open);
+                heading.textContent = (open ? "▾ " : "▸ ") + title;
+                heading.setAttribute("aria-expanded", String(open));
+            };
+            heading.onclick = () => toggle(!this.categoryOpen.get(mode)); toggle(expanded);
+            category.append(heading, rows); this.categoryLists.set(mode, rows);
+            ids.forEach((id, index) => {
+                const level = Number(levels[index]);
+                if ((level === 1) !== (mode === "create")) return;
+                const button = document.createElement("button"); button.type = "button";
+                button.className = "glyph-recipe-row";
+                button.classList.toggle("glyph-recipe-missing", ready[index] !== "1");
+                button.classList.toggle("glyph-recipe-selected", id === this.selectedRecipe);
+                button.title = GameLanguage.getText(ready[index] === "1" ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania.");
+                if (sprites[index]) {
+                    const icon = document.createElement("img"); icon.src = Paths.sprites + "/items/glyph/" + sprites[index] + ".png"; icon.alt = "";
+                    button.appendChild(icon);
+                }
+                const label = document.createElement("span"); label.textContent = names[index] + " " + ["I", "II", "III"][level - 1]; button.appendChild(label);
+                button.onclick = () => {
+                    this.selectedRecipe = id; this.selectedPath = undefined; this.requestToken = undefined; this.selectionCleared = false;
+                    this.recipeButtons.forEach(row => row.classList.toggle("glyph-recipe-selected", row === button));
+                    this.upgradeButton.disabled = true; this.status.textContent = GameLanguage.getText("Sprawdzanie wymagań...");
+                    this.send("preview");
+                };
+                this.recipeButtons.push(button); rows.appendChild(button);
+            });
+            this.recipeCatalog.appendChild(category);
+            rows.scrollTop = positions.get(mode) || 0;
+        }
+    }
 
 	private fillMaterials(data: UpgradeEventData): void {
 		this.materials.replaceChildren();
@@ -288,6 +365,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	private canAcceptHeldItem(): boolean {
+        if (this.glyphMode) return false;
 		if (!stendhal.ui.heldObject || !stendhal.ui.heldObject.path) return false;
 		return this.isOwnedPath(stendhal.ui.heldObject.path);
 	}
@@ -322,7 +400,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	private clearSelection(): void {
 		this.send("clear");
-		this.apply({status: "SELECT_ITEM"});
+        this.selectedRecipe = undefined;
+		this.apply({status: "SELECT_ITEM", service: this.glyphMode ? "glyph" : undefined, npc_id: this.npcId});
 		this.selectionCleared = true;
 	}
 
@@ -340,7 +419,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		const result = document.createElement("strong");
 		result.className = "item-upgrade-owned";
 		result.textContent = upgraded;
-		row.append(label, current + "  →  ", result);
+		row.append(label, current ? current + "  →  " : "", result);
 		this.stats.appendChild(row);
 	}
 
@@ -359,6 +438,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			command,
 			npc_id: String(this.npcId)
 		};
+		if (this.glyphMode) action.service = "glyph";
+        if (this.glyphMode && this.selectedRecipe) action.glyph_recipe = this.selectedRecipe;
 		if (path) {
 			action.target_path = "[" + path.split("/").join("\t") + "]";
 		}
@@ -377,7 +458,18 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			damage_max: "Obrażenia max.", range: "Zasięg", rate: "Czas ataku"} as any)[stat] || stat;
 	}
 
-	private statusText(state: string): string {
+    private previewHint(): string { return this.glyphMode ? "Po wybraniu glifu zobaczysz zmianę jego mocy." : "Po wybraniu przedmiotu zobaczysz zmianę statystyk."; }
+	private selectionPrompt(): string { return this.glyphMode ? "Wybierz glif z listy" : "Przeciągnij tutaj przedmiot"; }
+    private selectionInfo(): string { return this.glyphMode ? "Glif pozostanie w ekwipunku." : "Przedmiot pozostanie w ekwipunku."; }
+    private selectionHint(): string { return this.glyphMode ? "Wybierz glif z listy po lewej stronie." : "Przeciągnij tutaj przedmiot z ekwipunku."; }
+    private statusText(state: string): string {
+        if (this.glyphMode) {
+            if (state === "SELECT_ITEM") return this.selectionHint();
+            if (state === "NO_UPGRADEABLE_ITEMS") return "Nie masz przy sobie glifu I lub II, który można rozwinąć.";
+            if (state === "NPC_TOO_FAR") return "Podejdź do stołu runicznego, aby rozwijać glify.";
+            if (state === "MAX_LEVEL") return "Glif osiągnął poziom III.";
+            if (state === "INVALID_ITEM" || state === "NOT_UPGRADEABLE") return "Tego glifu nie można ulepszyć.";
+        }
 		const messages: {[key: string]: string} = {
 			SELECT_ITEM: "Przeciągnij przedmiot z ekwipunku do slotu.",
 			NO_UPGRADEABLE_ITEMS: "Nie masz przedmiotu, który można ulepszyć.",

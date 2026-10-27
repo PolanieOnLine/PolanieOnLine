@@ -50,6 +50,7 @@ public abstract class UseableEntity extends Entity implements UseListener {
 
 		// state (row in sprite image)
 		rpclass.addAttribute("state", Type.INT);
+		rpclass.addAttribute("title", Type.STRING);
 	}
 
 	/**

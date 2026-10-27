@@ -4,6 +4,9 @@
 package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -27,6 +30,13 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.Icon;
+import javax.swing.JList;
+import javax.swing.DefaultListModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.ListSelectionModel;
+import javax.swing.JScrollPane;
+import javax.swing.ToolTipManager;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -36,9 +46,11 @@ import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.styled.Style;
@@ -65,8 +77,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static ItemUpgradeWindow instance;
 
 	private final ItemIcon icon = new ItemIcon();
-	private final JLabel itemName = centered("Przeciągnij tutaj przedmiot");
-	private final JLabel level = centered("Przedmiot pozostanie w ekwipunku.");
+	private final JLabel itemName = centered(selectionPrompt());
+	private final JLabel level = centered(selectionInfo());
 	private final JPanel stats = plainPanel(new GridLayout(0, 1, 0, 4));
 	private final JLabel chance = centered("");
 	private final JLabel fee = centered("");
@@ -76,6 +88,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private final JButton refresh = new JButton("Odśwież");
 
 	private int npcId;
+	private boolean glyphMode;
+    private boolean creatingGlyph;
+    private String selectedRecipe;
+    private final JPanel recipeCatalog = plainPanel(new GridBagLayout());
+    private final RecipeCategory creationCategory = new RecipeCategory("Tworzenie glifów", true);
+    private final RecipeCategory upgradeCategory = new RecipeCategory("Ulepszanie", false);
+    private JScrollPane recipeScroll;
+    private boolean updatingRecipes;
+    private JPanel identitySection, statsSection, costSection;
 	private String selectedPath;
 	private String requestToken;
 	private boolean selectionCleared;
@@ -85,7 +106,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		super("item-upgrade", "Ulepszanie przedmiotu");
 		setCloseable(true);
 		setMinimizable(false);
-		setContent(buildContent());
+		setContent(buildWindowContent());
 		addCloseListener(new CloseListener() {
 			@Override
 			public void windowClosed(final InternalWindow window) {
@@ -134,7 +155,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	/** Check whether the server listed this exact item as an upgrade candidate. */
 	public static boolean canSelectItemForUpgrade(final Item item) {
-		return isOpenForItemSelection() && item != null
+		return isOpenForItemSelection() && !instance.glyphMode && item != null
 				&& instance.upgradeCandidatePaths.contains(
 						encodePath(item.getPath()));
 	}
@@ -152,7 +173,35 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		});
 	}
 
-	private JComponent buildContent() {
+	private JComponent buildWindowContent() {
+        JPanel root = plainPanel(new BorderLayout(8, 0));
+        root.add(buildContent(), BorderLayout.CENTER);
+        recipeCatalog.setPreferredSize(new Dimension(236, 1));
+        layoutRecipeCategories();
+        recipeScroll = new JScrollPane(recipeCatalog);
+        recipeScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        recipeScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        recipeScroll.setPreferredSize(new Dimension(236, 1)); recipeScroll.setOpaque(false);
+        recipeScroll.getViewport().setOpaque(false); recipeScroll.setVisible(false);
+        root.add(recipeScroll, BorderLayout.WEST); return root;
+    }
+
+    private void layoutRecipeCategories() {
+        recipeCatalog.removeAll();
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0; constraints.weightx = 1; constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridy = 0; constraints.weighty = creationCategory.expanded ? 1 : 0;
+        recipeCatalog.add(creationCategory.panel, constraints);
+        constraints.gridy = 1; constraints.weighty = upgradeCategory.expanded ? 1 : 0;
+        recipeCatalog.add(upgradeCategory.panel, constraints);
+        if (!creationCategory.expanded && !upgradeCategory.expanded) {
+            constraints.gridy = 2; constraints.weighty = 1;
+            recipeCatalog.add(plainPanel(new BorderLayout()), constraints);
+        }
+        recipeCatalog.revalidate(); recipeCatalog.repaint();
+    }
+
+    private JComponent buildContent() {
 		final JPanel content = new LayoutPanel(new BorderLayout(0, 8)) {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -181,7 +230,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		icon.addMouseListener(selectionPopup);
 		itemName.addMouseListener(selectionPopup);
 		level.addMouseListener(selectionPopup);
-		content.add(sectionPanel("Przedmiot do ulepszenia", identity), BorderLayout.NORTH);
+		content.add(identitySection = sectionPanel("Przedmiot do ulepszenia", identity), BorderLayout.NORTH);
 
 		final JPanel center = plainPanel(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -197,10 +246,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 		constraints.gridy = 0;
 		constraints.insets = new Insets(0, 0, 8, 0);
-		center.add(sectionPanel("Po ulepszeniu", stats),
+		center.add(statsSection = sectionPanel("Po ulepszeniu", stats),
 				constraints);
 		constraints.gridy++;
-		center.add(sectionPanel("Koszt i szansa", requirements), constraints);
+		center.add(costSection = sectionPanel("Koszt i szansa", requirements), constraints);
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 0, 0);
 		center.add(sectionPanel("Materiały (posiadasz / potrzebne)", materials),
@@ -221,7 +270,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		refresh.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				send(selectedPath == null ? "refresh" : "preview",
+				send(selectedPath == null && selectedRecipe == null ? "refresh" : "preview",
 						selectedPath, null);
 			}
 		});
@@ -259,19 +308,20 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		send("clear", null, null);
 		selectionCleared = true;
 		selectedPath = null;
+        selectedRecipe = null; creationCategory.rows.clearSelection(); upgradeCategory.rows.clearSelection();
 		requestToken = null;
-		itemName.setText("Przeciągnij tutaj przedmiot");
-		level.setText("Przedmiot pozostanie w ekwipunku.");
+		itemName.setText(selectionPrompt());
+		level.setText(selectionInfo());
 		icon.setItem(null, null);
-		icon.setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
+		icon.setToolTipText(selectionHint());
 		stats.removeAll();
 		stats.add(centered(
-				"Po wybraniu przedmiotu zobaczysz zmianę statystyk."));
-		chance.setText(htmlValue("Szansa powodzenia", "brak danych"));
+				previewHint()));
+		chance.setText(glyphMode ? "Gwarantowane powodzenie." : htmlValue("Szansa powodzenia", "brak danych"));
 		fee.setText(htmlValue("Koszt", "brak danych"));
 		showEmptyMaterials();
 		status.setForeground(ACCENT);
-		status.setText(wrappedText("Przeciągnij tutaj przedmiot z ekwipunku.",
+		status.setText(wrappedText(selectionHint(),
 				CONTENT_WIDTH - 40));
 		refresh.setEnabled(npcId != 0);
 		upgrade.setEnabled(false);
@@ -283,9 +333,28 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	private void apply(final RPEvent event) {
 		final String phase = event.has("phase") ? event.get("phase") : "";
+        final boolean responseGlyph = event.has("service") && "glyph".equals(event.get("service"));
+        if (!"open".equals(phase) && (responseGlyph != glyphMode
+                || (event.has("npc_id") && npcId != 0 && event.getInt("npc_id") != npcId))) return;
+        if ("open".equals(phase)) {
+            glyphMode = responseGlyph;
+            setTitle(glyphMode ? "Stół runiczny" : "Ulepszanie przedmiotu");
+            recipeScroll.setVisible(glyphMode); selectedRecipe = null;
+        }
+        final String responseRecipe = event.has("selected_recipe") ? event.get("selected_recipe") : null;
+        if (!"open".equals(phase) && responseRecipe != null && selectedRecipe != null && !selectedRecipe.equals(responseRecipe)) return;
+        final String stateForRecipe = event.has("status") ? event.get("status") : "";
+        if (responseRecipe != null) selectedRecipe = responseRecipe;
+        else if (!isInteractionStatus(stateForRecipe)) selectedRecipe = null;
+        creatingGlyph = glyphMode && event.has("operation") && "create".equals(event.get("operation"));
+        setSectionTitle(identitySection, glyphMode ? (creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
+        setSectionTitle(statsSection, creatingGlyph ? "Właściwości glifu" : "Po ulepszeniu");
+        setSectionTitle(costSection, glyphMode ? "Koszt" : "Koszt i szansa");
+        if (glyphMode && event.has("recipe_ids")) updateRecipes(event);
+        upgrade.setText(glyphMode ? (creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
 		final String responsePath = event.has("selected_path")
 				? event.get("selected_path") : null;
-		if (!"open".equals(phase) && responsePath != null
+		if (!(glyphMode && responseRecipe != null) && !"open".equals(phase) && responsePath != null
 				&& selectedPath != null && !selectedPath.equals(responsePath)) {
 			return;
 		}
@@ -306,7 +375,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		upgradeCandidatePaths.addAll(list(event, "candidate_paths"));
 		final String state = event.has("status") ? event.get("status") : "";
 		final boolean preservePreview = !event.has("name")
-				&& isInteractionStatus(state) && selectedPath != null;
+				&& isInteractionStatus(state) && (selectedPath != null || selectedRecipe != null);
 		if (event.has("selected_path")) {
 			selectedPath = event.get("selected_path");
 		} else if (!preservePreview) {
@@ -315,26 +384,27 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		requestToken = event.has("request_token") ? event.get("request_token") : null;
 
 		if (event.has("name")) {
-			itemName.setText(colorName(event.get("name"),
-					event.has("rarity_id") ? event.get("rarity_id") : "common"));
-			level.setText("Poziom ulepszenia: +" + event.getInt("upgrade_level")
-					+ " / +" + event.getInt("max_upgrade_level"));
+			itemName.setText(glyphMode ? "<html><b>" + escapeHtml(event.get("name")) + "</b></html>"
+                    : colorName(event.get("name"), event.has("rarity_id") ? event.get("rarity_id") : "common"));
+			level.setText(glyphMode ? (creatingGlyph ? "Poziom glifu: I" : "Poziom glifu: " + roman(event.getInt("upgrade_level")) + " -> " + roman(event.getInt("next_upgrade_level"))
+                    + (event.has("source_location") ? " (" + event.get("source_location") + ")" : ""))
+                    : "Poziom ulepszenia: +" + event.getInt("upgrade_level") + " / +" + event.getInt("max_upgrade_level"));
 			icon.setItem(event.get("class"), event.get("subclass"));
 			icon.setToolTipText("Prawy przycisk myszy: wyczyść wybór.");
 		} else if (!preservePreview) {
 			itemName.setText("NO_UPGRADEABLE_ITEMS".equals(state)
-					? "Brak przedmiotu do ulepszenia"
-					: "Przeciągnij tutaj przedmiot");
-			level.setText("Przedmiot pozostanie w ekwipunku.");
+					? (glyphMode ? "Brak glifu do rozwinięcia" : "Brak przedmiotu do ulepszenia")
+					: selectionPrompt());
+			level.setText(selectionInfo());
 			icon.setItem(null, null);
-			icon.setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
+			icon.setToolTipText(selectionHint());
 		}
 		if (event.has("name") || !preservePreview) {
 			updateStats(event);
-			chance.setText(event.has("success_percent")
+			chance.setText(glyphMode ? "Gwarantowane powodzenie." : event.has("success_percent")
 					? htmlValue("Szansa powodzenia", event.getInt("success_percent") + "%")
 					: htmlValue("Szansa powodzenia", "brak danych"));
-			fee.setText(event.has("fee_text")
+			fee.setText(creatingGlyph ? "Koszt: wymagane składniki" : event.has("fee_text")
 					? htmlValue("Koszt", event.get("fee_text"))
 					: htmlValue("Koszt", "brak danych"));
 			updateMaterials(event);
@@ -349,7 +419,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				CONTENT_WIDTH - 40));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
 				? AVAILABLE : "SELECT_ITEM".equals(state) ? ACCENT : UNAVAILABLE);
-		upgrade.setToolTipText(canUpgrade ? "Wykonaj próbę ulepszenia" : statusText(state));
+		upgrade.setToolTipText(canUpgrade ? (glyphMode ? "Ulepsz glif" : "Wykonaj próbę ulepszenia") : statusText(state));
 		setSize(getPreferredSize());
 		revalidate();
 		repaint();
@@ -376,12 +446,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				continue;
 			}
 			if (index < current.size() && index < upgradedValues.size()) {
-				stats.add(statRow(statLabel(name), current.get(index),
-						upgradedValues.get(index)));
+				stats.add(glyphMode ? glyphStatRow(statLabel(name), creatingGlyph ? null : current.get(index), upgradedValues.get(index))
+                        : statRow(statLabel(name), current.get(index), upgradedValues.get(index)));
 			}
 		}
 		if (stats.getComponentCount() == 0) {
-			stats.add(centered("Po wybraniu przedmiotu zobaczysz zmianę statystyk."));
+			stats.add(centered(previewHint()));
 		}
 	}
 
@@ -466,6 +536,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		action.put("type", Actions.ITEM_UPGRADE);
 		action.put("command", command);
 		action.put("npc_id", npcId);
+        if (glyphMode) action.put("service", "glyph");
+        if (glyphMode && selectedRecipe != null) action.put("glyph_recipe", selectedRecipe);
 		if (path != null) {
 			action.put("target_path", decodePath(path));
 		}
@@ -474,6 +546,104 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 		StendhalClient.get().send(action);
 	}
+
+    private void updateRecipes(RPEvent event) {
+        updatingRecipes = true;
+        try {
+            Point creationPosition = creationCategory.scroll.getViewport().getViewPosition();
+            Point upgradePosition = upgradeCategory.scroll.getViewport().getViewPosition();
+            creationCategory.model.clear(); upgradeCategory.model.clear();
+            List<String> ids = list(event, "recipe_ids"), names = list(event, "recipe_names"), levels = list(event, "recipe_levels");
+            List<String> ready = list(event, "recipe_ready"), sprites = list(event, "recipe_subclasses");
+            for (int i = 0; i < ids.size() && i < names.size() && i < levels.size(); i++) {
+                RecipeRow row = new RecipeRow(ids.get(i), names.get(i), integer(levels.get(i)),
+                        i < ready.size() && "1".equals(ready.get(i)), i < sprites.size() ? sprites.get(i) : null);
+                RecipeCategory category = row.level == 1 ? creationCategory : upgradeCategory;
+                category.model.addElement(row);
+                if (row.id.equals(selectedRecipe)) category.rows.setSelectedIndex(category.model.size() - 1);
+            }
+            recipeCatalog.revalidate();
+            creationCategory.scroll.getViewport().setViewPosition(creationPosition);
+            upgradeCategory.scroll.getViewport().setViewPosition(upgradePosition);
+        } finally { updatingRecipes = false; }
+    }
+    private static final class RecipeRow {
+        final String id, name, sprite; final int level; final boolean ready;
+        RecipeRow(String id, String name, int level, boolean ready, String sprite) {
+            this.id = id; this.name = name; this.level = level; this.ready = ready; this.sprite = sprite;
+        }
+        @Override public String toString() { return name + " " + roman(level); }
+    }
+    private final class RecipeCategory {
+        final JPanel panel = plainPanel(new BorderLayout());
+        final DefaultListModel<RecipeRow> model = new DefaultListModel<RecipeRow>();
+        final JList<RecipeRow> rows = new JList<RecipeRow>(model);
+        final JButton header = new JButton();
+        final JScrollPane scroll = new JScrollPane(rows);
+        final String title;
+        boolean expanded;
+        RecipeCategory(String title, boolean initiallyExpanded) {
+            this.title = title; this.expanded = initiallyExpanded;
+            header.setText((expanded ? "▾ " : "▸ ") + ClientLanguage.getText(title));
+            header.setHorizontalAlignment(SwingConstants.LEFT); header.setFocusable(false);
+            header.setForeground(ACCENT); header.setFont(header.getFont().deriveFont(Font.BOLD));
+            header.setContentAreaFilled(false);
+            header.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(130, 106, 75)),
+                    BorderFactory.createEmptyBorder(7, 6, 7, 6)));
+            header.addActionListener(event -> {
+                expanded = !expanded; scroll.setVisible(expanded);
+                header.setText((expanded ? "▾ " : "▸ ") + ClientLanguage.getText(title));
+                layoutRecipeCategories();
+            });
+            rows.setOpaque(false); rows.setFixedCellHeight(25); rows.setFixedCellWidth(228);
+            rows.setFont(new JLabel().getFont()); rows.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            rows.setCellRenderer(new RecipeRenderer()); ToolTipManager.sharedInstance().registerComponent(rows);
+            rows.addListSelectionListener(event -> {
+                if (updatingRecipes || event.getValueIsAdjusting() || rows.getSelectedValue() == null) return;
+                RecipeRow selected = rows.getSelectedValue();
+                updatingRecipes = true;
+                try {
+                    if (creationCategory != null && creationCategory != this) creationCategory.rows.clearSelection();
+                    if (upgradeCategory != null && upgradeCategory != this) upgradeCategory.rows.clearSelection();
+                } finally { updatingRecipes = false; }
+                selectedRecipe = selected.id; selectedPath = null; requestToken = null; selectionCleared = false;
+                upgrade.setEnabled(false); status.setText("Sprawdzanie wymagań..."); send("preview", null, null);
+            });
+            scroll.setOpaque(false); scroll.getViewport().setOpaque(false); scroll.setBorder(BorderFactory.createEmptyBorder());
+            scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            scroll.setPreferredSize(new Dimension(228, 120)); scroll.setVisible(expanded);
+            panel.add(header, BorderLayout.NORTH); panel.add(scroll, BorderLayout.CENTER);
+        }
+    }
+    private static final class RecipeRenderer extends DefaultListCellRenderer {
+        private static final long serialVersionUID = 1L;
+        @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                boolean selected, boolean focus) {
+            super.getListCellRendererComponent(list, value, index, selected, focus);
+            RecipeRow recipe = (RecipeRow)value;
+            setText(recipe.toString()); setIcon(new RecipeIcon(recipe)); setIconTextGap(6);
+            setEnabled(true); setOpaque(selected); setBackground(new Color(105, 72, 34));
+            setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 4));
+            setFont(list.getFont().deriveFont(selected ? Font.BOLD : Font.PLAIN));
+            setForeground(recipe.ready ? new Color(243, 235, 217) : new Color(210, 194, 170, 120));
+            setToolTipText(ClientLanguage.getText(recipe.ready ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania."));
+            return this;
+        }
+    }
+    private static final class RecipeIcon implements Icon {
+        private final RecipeRow row;
+        RecipeIcon(RecipeRow row) { this.row = row; }
+        @Override public int getIconWidth() { return 18; }
+        @Override public int getIconHeight() { return 18; }
+        @Override public void paintIcon(Component component, Graphics graphics, int x, int y) {
+            if (row.sprite == null || row.sprite.isEmpty()) return;
+            Graphics2D copy = (Graphics2D)graphics.create();
+            if (!row.ready) copy.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.45f));
+            copy.translate(x, y); copy.scale(0.5, 0.5);
+            SpriteStore.get().getSprite("data/sprites/items/glyph/" + row.sprite + ".png").draw(copy, 0, 0); copy.dispose();
+        }
+    }
 
 	private static List<String> decodePath(final String path) {
 		final List<String> result = new ArrayList<String>();
@@ -494,6 +664,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static JLabel centered(final String text) {
 		return new JLabel(text, SwingConstants.CENTER);
 	}
+
+    private static void setSectionTitle(JPanel section, String title) {
+        Border border = section.getBorder();
+        if (border instanceof CompoundBorder) border = ((CompoundBorder)border).getOutsideBorder();
+        if (border instanceof TitledBorder) ((TitledBorder)border).setTitle(ClientLanguage.getText(title));
+    }
 
 	private static JPanel sectionPanel(final String title,
 			final JComponent body) {
@@ -582,8 +758,24 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return stat;
 	}
 
-	private static String statusText(final String state) {
-		if ("SELECT_ITEM".equals(state)) return "Przeciągnij tutaj przedmiot z ekwipunku.";
+	private String previewHint() { return glyphMode ? "Po wybraniu glifu zobaczysz zmianę jego mocy." : "Po wybraniu przedmiotu zobaczysz zmianę statystyk."; }
+	private String selectionPrompt() { return glyphMode ? "Wybierz glif z listy" : "Przeciągnij tutaj przedmiot"; }
+    private String selectionInfo() { return glyphMode ? "Glif pozostanie w ekwipunku." : "Przedmiot pozostanie w ekwipunku."; }
+    private String selectionHint() { return glyphMode ? "Wybierz glif z listy po lewej stronie." : "Przeciągnij tutaj przedmiot z ekwipunku."; }
+    private static String roman(int level) { return level >= 1 && level <= 3 ? new String[] {"I", "II", "III"}[level - 1] : ""; }
+    private static JLabel glyphStatRow(String name, String current, String next) {
+        return centered("<html><table width='" + (CONTENT_WIDTH - 56) + "' cellpadding='0' cellspacing='2'><tr><td width='"
+                + (CONTENT_WIDTH - 180) + "'><b>" + escapeHtml(name) + "</b></td><td align='right' nowrap='nowrap'>"
+                + (current == null ? "" : escapeHtml(current) + " &rarr; ") + "<font color='#5cbe69'><b>" + escapeHtml(next) + "</b></font></td></tr></table></html>");
+    }
+    private String statusText(final String state) {
+        if (glyphMode) {
+            if ("NO_UPGRADEABLE_ITEMS".equals(state)) return "Nie masz przy sobie glifu I lub II, który można rozwinąć.";
+            if ("NPC_TOO_FAR".equals(state)) return "Podejdź do stołu runicznego, aby rozwijać glify.";
+            if ("MAX_LEVEL".equals(state)) return "Glif osiągnął poziom III.";
+            if ("INVALID_ITEM".equals(state) || "NOT_UPGRADEABLE".equals(state)) return "Tego glifu nie można ulepszyć.";
+        }
+		if ("SELECT_ITEM".equals(state)) return selectionHint();
 		if ("NO_UPGRADEABLE_ITEMS".equals(state)) return "Nie masz przedmiotu, który można ulepszyć.";
 		if ("READY".equals(state)) return "Wymagania są spełnione.";
 		if ("NOT_ENOUGH_MONEY".equals(state)) return "Brakuje pieniędzy.";
@@ -630,7 +822,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		private ItemIcon() {
 			setPreferredSize(new Dimension(48, 48));
 			setMinimumSize(new Dimension(48, 48));
-			setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
+			setToolTipText(selectionHint());
 		}
 
 		private void setItem(final String itemClass, final String subclass) {
@@ -660,7 +852,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 		@Override
 		public boolean canAccept(final IEntity entity) {
-			return entity instanceof Item;
+			return !glyphMode && entity instanceof Item;
 		}
 
 		@Override

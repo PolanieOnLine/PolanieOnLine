@@ -67,6 +67,10 @@ public final class ItemUpgradeAction implements ActionListener {
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		if (action.has("service") && "glyph".equals(action.get("service"))) {
+			GlyphUpgradeAction.handle(player, action);
+			return;
+		}
 		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
 		if (CLEAR.equals(command) || CLOSE.equals(command)) {
 			SERVICE.clearPendingAttempt(player);

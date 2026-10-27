@@ -11,12 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.tarnow.city;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -28,12 +25,13 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
+import games.stendhal.server.core.rule.glyph.GlyphUpgradePresentation;
+import games.stendhal.server.entity.mapstuff.useable.GlyphWorkbench;
 import games.stendhal.server.core.rule.glyph.GlyphUpgradeService;
+import games.stendhal.server.core.rule.glyph.GlyphCraftingService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -55,170 +53,13 @@ public class RuneMasterNPC implements ZoneConfigurator {
 	private GlyphManager glyphManager;
 
 	private void initializeGlyphs() {
-		Map<String, Map<String, Integer>> glyphConfig = new LinkedHashMap<String, Map<String, Integer>>();
-		glyphConfig.put("glif daru Mokoszy", createResourceMap(
-			"serce olbrzyma", 100,
-			"smocza krew", 40,
-			"fragment glifu", 4
-		));
-		glyphConfig.put("glif siły", createResourceMap(
-			"miecz", 1,
-			"kieł smoka", 20,
-			"kość dla psa", 50,
-			"fragment glifu", 2
-		));
-		glyphConfig.put("glif Peruna", createResourceMap(
-			"glif siły", 1,
-			"rubin", 18,
-			"pióro azazela", 12,
-			"pióro lilith", 4,
-			"fragment glifu", 5
-		));
-		glyphConfig.put("glif czaszy", createResourceMap(
-			"kieł złotej kostuchy", 1,
-			"pióro archanioła", 22,
-			"ruda srebra", 40,
-			"fragment glifu", 3
-		));
-		glyphConfig.put("glif tarczy", createResourceMap(
-			"bryłka mithrilu", 30,
-			"lodowa tarcza", 1,
-			"ruda żelaza", 100,
-			"fragment glifu", 2
-		));
-		glyphConfig.put("glif Swaroga", createResourceMap(
-			"glif tarczy", 1,
-			"szafir", 22,
-			"pióro serafina", 16,
-			"pióro cherubina", 4,
-			"fragment glifu", 5
-		));
-		glyphConfig.put("glif Tytana", createResourceMap(
-			"glif tarczy", 1,
-			"glif siły", 1,
-			"serce olbrzyma", 50,
-			"cudowna krew", 4,
-			"kolorowe kulki", 30,
-			"fragment glifu", 3
-		));
-		glyphConfig.put("glif Strzyboga", createResourceMap(
-			"piórko", 100,
-			"pióro anioła", 40,
-			"cudowna krew", 3,
-			"bursztyn", 20,
-			"ametyst", 32,
-			"fragment glifu", 4
-		));
-		glyphConfig.put("glif Jarowita", createResourceMap(
-			"magia ziemi", 1000,
-			"magia płomieni", 800,
-			"magia deszczu", 800,
-			"magia mrozu", 600,
-			"magia wiatru", 400,
-			"magia mroku", 400,
-			"magia światła", 300,
-			"kryształ obsydianu", 11,
-			"fragment glifu", 3
-		));
-		glyphConfig.put("glif kryzysu", createResourceMap(
-			"kości do gry", 1,
-			"diament", 14,
-			"ząb potwora", 3,
-			"sztabka platyny", 40,
-			"sztabka miedzi", 32,
-			"fragment glifu", 2
-		));
-		glyphConfig.put("glif krwi", createResourceMap(
-			"wampirza krew", 36,
-			"truchło nietoperza", 14,
-			"truchło wampira", 22,
-			"obsydian", 22,
-			"fragment glifu", 3
-		));
-
-		glyphConfig.put("glif świętego dębu", createResourceMap(
-			"fragment glifu", 3,
-			"magia ziemi", 800,
-			"bryłka mithrilu", 20,
-			"szafir", 12
-		));
-		glyphConfig.put("glif żywej wody", createResourceMap(
-			"fragment glifu", 4,
-			"magia deszczu", 800,
-			"serce olbrzyma", 40,
-			"cudowna krew", 3
-		));
-		glyphConfig.put("glif Rodzanic", createResourceMap(
-			"fragment glifu", 4,
-			"serce olbrzyma", 60,
-			"smocza krew", 24,
-			"bursztyn", 20
-		));
-		glyphConfig.put("glif wichru", createResourceMap(
-			"glif Strzyboga", 1,
-			"fragment glifu", 2,
-			"magia wiatru", 600,
-			"ametyst", 16,
-			"pióro anioła", 20
-		));
-		glyphConfig.put("glif wytrwałości", createResourceMap(
-			"glif Strzyboga", 1,
-			"fragment glifu", 2,
-			"serce olbrzyma", 40,
-			"ametyst", 16,
-			"cudowna krew", 2
-		));
-		glyphConfig.put("glif ogniska", createResourceMap(
-			"fragment glifu", 3,
-			"magia płomieni", 1000,
-			"bursztyn", 30,
-			"kryształ obsydianu", 8
-		));
-		glyphConfig.put("glif korzeni", createResourceMap(
-			"fragment glifu", 3,
-			"magia ziemi", 800,
-			"magia deszczu", 800,
-			"kryształ obsydianu", 8
-		));
-		glyphConfig.put("glif zmory", createResourceMap(
-			"fragment glifu", 3,
-			"magia mroku", 800,
-			"wampirza krew", 24,
-			"truchło nietoperza", 12,
-			"obsydian", 16
-		));
-		glyphConfig.put("glif Świętowita", createResourceMap(
-			"fragment glifu", 5,
-			"glif siły", 1,
-			"glif tarczy", 1,
-			"diament", 8,
-			"rubin", 12,
-			"szafir", 12
-		));
-		glyphConfig.put("glif przodków", createResourceMap(
-			"fragment glifu", 5,
-			"glif tarczy", 1,
-			"serce olbrzyma", 50,
-			"cudowna krew", 4,
-			"magia ziemi", 400,
-			"magia światła", 400
-		));
-
+		Map<String, Map<String, Integer>> glyphConfig = GlyphCraftingService.getRecipes();
 		glyphConfig.forEach((glyphName, resources) -> {
 			Glyph glyph = glyphManager.createGlyph(glyphName);
 			resources.forEach(glyph::addResource);
 		});
 	}
 
-	private Map<String, Integer> createResourceMap(final Object... keyValuePairs) {
-		Map<String, Integer> resources = new LinkedHashMap<String, Integer>();
-		for (int i = 0; i < keyValuePairs.length; i += 2) {
-			String key = (String) keyValuePairs[i];
-			Integer value = (Integer) keyValuePairs[i + 1];
-			resources.put(key, value);
-		}
-		return resources;
-	}
 
 	/**
 	 * Configure a zone.
@@ -236,17 +77,15 @@ public class RuneMasterNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Zoryk Runiczny") {
-            private final GlyphUpgradeService upgrades = GlyphUpgradeService.getInstance();
-            private List<Item> upgradeCandidates = new ArrayList<Item>();
-            private Item selectedUpgrade;
-            private int selectedLevel;
 
 			@Override
 			protected void createDialog() {
-                addUpgradeDialog();
+                add(ConversationStates.ATTENDING, Arrays.asList("ulepsz", "ulepszenie", "ulepszanie", "upgrade", "mejorar", "stół", "stół runiczny", "stole runicznym", "runic workbench", "mesa rúnica"),
+                        null, ConversationStates.ATTENDING, null, (player, sentence, raiser) ->
+                        raiser.say(text(player, "Podejdź do stołu runicznego obok mnie i kliknij go. W oknie wybierzesz glif, zobaczysz zmianę jego mocy oraz koszt ulepszenia.")));
 				addGreeting("Witaj, poszukiwaczu starożytnej mocy! Czy szukasz tajemnicy run?");
 				addJob("Jestem strażnikiem starożytnej sztuki runicznej. Potrafię nasycać odzyskane matryce glifów nową mocą. Omar, pustynny poszukiwacz reliktów, bada miejsca, w których zachowały się takie nośniki. Możesz zapytać mnie o #listę glifów.");
-				addOffer("Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Jeśli masz już gotowy glif, powiedz #ulepsz.");
+				addOffer("Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie.");
 				addGoodbye("Powodzenia w zdobywaniu glifów, młody poszukiwaczu mocy!");
 
 				String allGlyphNames = glyphManager.getAllGlyphs().stream()
@@ -318,7 +157,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 							if (obj != null && !obj.getNormalized().equalsIgnoreCase(glyphName)) {
 								raiser.say("Nie znam takiego glifu jak " + obj.getOriginal() + ".");
 							} else {
-								raiser.say(text(player, getGlyphDescription(glyphName)) + " " + text(player, "Moc na poziomie I: ") + describeEffects(player, glyph.getItem(), 1) + ". " + text(player, "Do wytworzenia potrzebuję: ") + glyph.getFormattedResources() + text(player, ". Czy wybrać ten wzór?"));
+								raiser.say(text(player, getGlyphDescription(glyphName)) + " " + text(player, "Moc na poziomie I: ") + GlyphUpgradePresentation.describe(player, glyph.getItem(), 1) + ". " + text(player, "Do wytworzenia potrzebuję: ") + glyph.getFormattedResources() + text(player, ". Czy wybrać ten wzór?"));
 								player.setQuest("glyph_request", glyphName);
 							}
 						}
@@ -421,122 +260,9 @@ public class RuneMasterNPC implements ZoneConfigurator {
                 return Translation.getText(player.getLanguage(), value);
             }
 
-            private String roman(int level) { return new String[] {"I", "II", "III"}[level - 1]; }
-
-            private String describeEffects(Player player, Item item, int level) {
-                StringBuilder result = new StringBuilder();
-                NumberFormat format = NumberFormat.getNumberInstance(new Locale(player.getLanguage()));
-                format.setGroupingUsed(false); format.setMaximumFractionDigits(2);
-                for (Map.Entry<String, Double> effect : GlyphProgressionService.getEffects(item, level).entrySet()) {
-                    if (result.length() > 0) result.append(", ");
-                    String key = effect.getKey();
-                    boolean percent = !Arrays.asList("health", "atk", "def", "glyph_attack_rate_reduction", "out_of_combat_regen_cap").contains(key);
-                    result.append(text(player, effectLabel(key))).append(": ").append(format.format(effect.getValue()));
-                    if (percent) result.append('%');
-                }
-                return result.toString();
-            }
-
-            private String effectLabel(String key) {
-                switch (key) {
-                case "health": return "PZ";
-                case "atk": return "ATK";
-                case "def": return "DEF";
-                case "atk_additional_bonus": return "bonus obrażeń";
-                case "def_additional_bonus": return "bonus obrony";
-                case "critical_additional_bonus": return "dodatkowe obrażenia krytyczne";
-                case "glyph_attack_rate_reduction": return "zmniejszenie wagi broni (minimum 2)";
-                case "critical_chance": return "szansa na trafienie krytyczne";
-                case "lifesteal_increase": return "kradzież życia";
-                case "critical_bonus_reduction": return "redukcja dodatkowych obrażeń krytycznych";
-                case "out_of_combat_regen": return "regeneracja co 5 s po 10 s bez zadawania i otrzymywania obrażeń";
-                case "out_of_combat_regen_cap": return "maksymalna regeneracja PZ na impuls";
-                case "consumable_healing_bonus": return "bonus leczenia z jedzenia, napojów i mikstur";
-                case "physical_dodge_chance": return "unik zwykłego niekrytycznego trafienia fizycznego";
-                case "low_health_damage_reduction": return "redukcja obrażeń poniżej 35% PZ";
-                case "nightmare_chance": return "szansa na osłabienie ataku o 10% na 6 s (odnowienie 12 s, bez kumulacji)";
-                case "resistance_fire": return "odporność na ogień";
-                case "resistance_earth": return "odporność na ziemię";
-                case "resistance_water": return "odporność na wodę";
-                case "resistance_ice": return "odporność na lód";
-                case "resistance_dark": return "odporność na mrok";
-                case "resistance_light": return "odporność na światło";
-                default: return key;
-                }
-            }
-
-            private String resourceLine(Player player, String name, int required) {
-                return text(player, name) + ": " + required + " (" + text(player, "masz: ")
-                        + upgrades.getResourceCount(player, name) + ")";
-            }
-
-            private void addUpgradeDialog() {
-                add(ConversationStates.ATTENDING, Arrays.asList("ulepsz", "ulepszenie", "ulepszanie", "upgrade", "mejorar"),
-                        null, ConversationStates.QUESTION_4, null, (player, sentence, raiser) -> {
-                    upgrades.clearPending(player); selectedUpgrade = null;
-                    upgradeCandidates = upgrades.findUpgradeCandidates(player);
-                    if (upgradeCandidates.isEmpty()) {
-                        raiser.say(text(player, "Nie masz przy sobie glifu, który mogę ulepszyć. Rozwijam glify I i II; glif wiedzy zachowuje stałą moc."));
-                        raiser.setCurrentState(ConversationStates.ATTENDING); return;
-                    }
-                    StringBuilder list = new StringBuilder(text(player, "Wybierz numer glifu do ulepszenia: "));
-                    for (int i = 0; i < upgradeCandidates.size(); i++) {
-                        Item item = upgradeCandidates.get(i);
-                        if (i > 0) list.append("; ");
-                        list.append("#'").append(i + 1).append("' ").append(text(player, item.getName()))
-                                .append(' ').append(roman(GlyphProgressionService.getLevel(item)));
-                    }
-                    raiser.say(list.toString());
-                });
-                add(ConversationStates.QUESTION_4, "", null, ConversationStates.QUESTION_4,
-                        null, (player, sentence, raiser) -> {
-                    int index;
-                    try { index = Integer.parseInt(sentence.getOriginalText().trim()) - 1; }
-                    catch (NumberFormatException invalid) { index = -1; }
-                    if (index < 0 || index >= upgradeCandidates.size()) {
-                        raiser.say(text(player, "Podaj numer glifu z listy albo powiedz nie, aby zrezygnować.")); return;
-                    }
-                    Item item = upgradeCandidates.get(index);
-                    if (!upgrades.prepareUpgrade(player, item)) {
-                        raiser.say(text(player, "Ten glif nie jest już dostępny. Wybierz ulepszanie ponownie."));
-                        raiser.setCurrentState(ConversationStates.ATTENDING); return;
-                    }
-                    selectedUpgrade = item; selectedLevel = GlyphProgressionService.getLevel(item);
-                    int target = selectedLevel + 1;
-                    StringBuilder preview = new StringBuilder(text(player, item.getName()) + " " + roman(selectedLevel)
-                            + " -> " + roman(target) + ". " + text(player, "Obecna moc: ") + describeEffects(player, item, selectedLevel)
-                            + ". " + text(player, "Po ulepszeniu: ") + describeEffects(player, item, target) + ". " + text(player, "Koszt: ")
-                            + upgrades.getRequiredCoins(item, target) + " " + text(player, "monet") + " (" + text(player, "masz: ")
-                            + MoneyUtils.getTotalMoneyInCopper(player) + "); "
-                            + resourceLine(player, "fragment glifu", upgrades.getRequiredFragments(item, target)));
-                    for (Map.Entry<String, Integer> material : upgrades.getRequiredMaterials(item, target).entrySet()) {
-                        preview.append("; ").append(resourceLine(player, material.getKey(), material.getValue()));
-                    }
-                    preview.append(text(player, ". Ulepszenie jest pewne. Czy ulepszyć wybrany glif?"));
-                    raiser.say(preview.toString()); raiser.setCurrentState(ConversationStates.CONFIRM_REQUESTED);
-                });
-                List<String> yes = new ArrayList<String>(ConversationPhrases.YES_MESSAGES);
-                yes.addAll(Arrays.asList("sí", "si"));
-                add(ConversationStates.CONFIRM_REQUESTED, yes, null, ConversationStates.ATTENDING,
-                        null, (player, sentence, raiser) -> {
-                    boolean upgraded = upgrades.upgrade(player, selectedUpgrade, selectedLevel);
-                    selectedUpgrade = null; upgradeCandidates.clear();
-                    raiser.say(text(player, upgraded
-                            ? "Gotowe. Twój glif otrzymał wyższy poziom i większą moc."
-                            : "Nie mogę wykonać tego ulepszenia. Sprawdź wybrany glif, monety i komplet czystych składników, a potem ponownie powiedz ulepsz."));
-                });
-                ChatAction cancel = (player, sentence, raiser) -> {
-                    upgrades.clearPending(player); selectedUpgrade = null; upgradeCandidates.clear();
-                    raiser.say(text(player, "Dobrze. Wróć, gdy zechcesz rozwinąć swój glif."));
-                };
-                add(ConversationStates.QUESTION_4, ConversationPhrases.NO_MESSAGES, null, ConversationStates.ATTENDING, null, cancel);
-                add(ConversationStates.CONFIRM_REQUESTED, ConversationPhrases.NO_MESSAGES, null, ConversationStates.ATTENDING, null, cancel);
-            }
 
 			@Override
 			protected void onGoodbye(RPEntity player) {
-                if (player instanceof Player) upgrades.clearPending((Player)player);
-                selectedUpgrade = null; upgradeCandidates.clear();
 				setDirection(Direction.DOWN);
 			}
 		};
@@ -546,6 +272,9 @@ public class RuneMasterNPC implements ZoneConfigurator {
 		npc.setGender("M");
 		npc.setPosition(60, 18);
 		zone.add(npc);
+        GlyphWorkbench table = new GlyphWorkbench();
+        table.setPosition(60, 19);
+        zone.add(table);
 	}
 }
 

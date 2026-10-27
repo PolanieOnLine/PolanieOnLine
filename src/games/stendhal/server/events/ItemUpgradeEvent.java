@@ -7,6 +7,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import games.stendhal.common.Translation;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
+import games.stendhal.server.core.rule.glyph.GlyphUpgradePresentation;
+import games.stendhal.server.core.rule.glyph.GlyphUpgradeService;
+import games.stendhal.server.core.rule.glyph.GlyphWorkbenchCatalog;
+import games.stendhal.server.core.rule.glyph.GlyphWorkbenchCatalog.Entry;
+import games.stendhal.server.entity.slot.Slots;
+import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.entity.player.Player;
 
 import games.stendhal.common.constants.Events;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -59,6 +69,13 @@ public final class ItemUpgradeEvent extends RPEvent {
 		add(rpclass, "material_subclasses", Type.VERY_LONG_STRING);
 		add(rpclass, "material_values", Type.VERY_LONG_STRING);
 		add(rpclass, "owned_material_values", Type.VERY_LONG_STRING);
+		add(rpclass, "service", Type.STRING);
+        add(rpclass, "selected_recipe", Type.STRING);
+        add(rpclass, "operation", Type.STRING);
+        add(rpclass, "source_location", Type.STRING);
+        for (String key : new String[] {"recipe_ids", "recipe_names", "recipe_levels", "recipe_ready", "recipe_subclasses"}) {
+            add(rpclass, key, Type.VERY_LONG_STRING);
+        }
 	}
 
 	private static void add(final RPClass rpclass, final String name,
@@ -145,15 +162,15 @@ public final class ItemUpgradeEvent extends RPEvent {
 		putMaterials(requirements);
 	}
 
-	private void putParallelMaps(final Map<String, Integer> current,
-			final Map<String, Integer> upgraded) {
+	private void putParallelMaps(final Map<String, ?> current,
+			final Map<String, ?> upgraded) {
 		final List<String> names = new ArrayList<String>();
 		final List<String> currentValues = new ArrayList<String>();
 		final List<String> upgradedValues = new ArrayList<String>();
-		for (final Map.Entry<String, Integer> entry : current.entrySet()) {
+		for (final Map.Entry<String, ?> entry : current.entrySet()) {
 			names.add(entry.getKey());
-			currentValues.add(Integer.toString(entry.getValue()));
-			upgradedValues.add(Integer.toString(upgraded.get(entry.getKey())));
+			currentValues.add(entry.getValue().toString());
+			upgradedValues.add(upgraded.get(entry.getKey()).toString());
 		}
 		if (!names.isEmpty()) {
 			put("stat_names", names);
@@ -163,13 +180,17 @@ public final class ItemUpgradeEvent extends RPEvent {
 	}
 
 	private void putMaterials(final ItemUpgradeRequirements requirements) {
+		putMaterials(requirements.getMaterials(), requirements.getOwnedMaterials());
+	}
+
+	private void putMaterials(final Map<String, Integer> materials, final Map<String, Integer> ownedMaterials) {
 		final List<String> names = new ArrayList<String>();
 		final List<String> classes = new ArrayList<String>();
 		final List<String> subclasses = new ArrayList<String>();
 		final List<String> required = new ArrayList<String>();
 		final List<String> owned = new ArrayList<String>();
 		for (final Map.Entry<String, Integer> entry
-				: requirements.getMaterials().entrySet()) {
+				: materials.entrySet()) {
 			names.add(entry.getKey());
 			final Item template = SingletonRepository.getEntityManager().getItem(
 					entry.getKey(), ItemCreationContext.restore());
@@ -177,7 +198,7 @@ public final class ItemUpgradeEvent extends RPEvent {
 			subclasses.add(template == null ? "" : template.getItemSubclass());
 			required.add(Integer.toString(entry.getValue()));
 			owned.add(Integer.toString(
-					requirements.getOwnedMaterials().get(entry.getKey())));
+					ownedMaterials.get(entry.getKey())));
 		}
 		if (!names.isEmpty()) {
 			put("material_names", names);
@@ -187,6 +208,73 @@ public final class ItemUpgradeEvent extends RPEvent {
 			put("owned_material_values", owned);
 		}
 	}
+
+    /** Shared workbench catalogue and the selected recipe's server-owned preview. */
+    public static ItemUpgradeEvent workbench(Player player, int tableId, List<Item> candidates,
+            Entry entry, Item source, String phase, ItemUpgradeResult.Status status, String message, String token) {
+        ItemUpgradeEvent event = new ItemUpgradeEvent(tableId, candidates, null, null, phase);
+        event.put("service", "glyph"); event.put("status", status.name());
+        event.put("message", Translation.getText(player.getLanguage(), message));
+        if (status != ItemUpgradeResult.Status.NPC_TOO_FAR) event.putGlyphCatalog(player);
+        if (entry == null) return event;
+        Item display = entry.template();
+        event.put("selected_recipe", entry.id); event.put("operation", entry.creates() ? "create" : "upgrade");
+        event.put("name", Translation.getText(player.getLanguage(), entry.name));
+        event.put("class", display.getItemClass()); event.put("subclass", display.getItemSubclass());
+        if (source != null) {
+            event.put("selected_path", encodePath(source));
+            event.put("source_location", Translation.getText(player.getLanguage(), source.getContainer() == player
+                    && Slots.GLYPHS.getNames().contains(source.getContainerSlot().getName()) ? "Założony glif" : "Glif z ekwipunku"));
+        }
+        event.put("upgrade_level", entry.creates() ? 1 : entry.level - 1);
+        event.put("next_upgrade_level", entry.level); event.put("max_upgrade_level", 3);
+        event.put("success_percent", 100); event.put("can_upgrade", token == null ? 0 : 1);
+        if (token != null) event.put("request_token", token);
+        event.putParallelMaps(GlyphUpgradePresentation.effects(player, display, entry.creates() ? 1 : entry.level - 1),
+                GlyphUpgradePresentation.effects(player, display, entry.level));
+        GlyphUpgradeService service = GlyphUpgradeService.getInstance();
+        int fee = entry.creates() ? 0 : (int)service.getRequiredCoins(display, entry.level);
+        event.put("fee", fee); event.put("fee_text", MoneyUtils.formatPrice(fee));
+        event.put("owned_money", (int)Math.min(Integer.MAX_VALUE, MoneyUtils.getTotalMoneyInCopper(player)));
+        Map<String, Integer> required = new LinkedHashMap<String, Integer>();
+        if (!entry.creates()) required.put("fragment glifu", service.getRequiredFragments(display, entry.level));
+        required.putAll(entry.materials());
+        Map<String, Integer> owned = new LinkedHashMap<String, Integer>();
+        for (String name : required.keySet()) owned.put(name, service.getResourceCount(player, name));
+        event.putMaterials(required, owned);
+        List<String> names = new ArrayList<String>(event.getList("material_names"));
+        int index = 0;
+        for (String name : required.keySet()) {
+            Item ingredient = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
+            if (GlyphProgressionService.isUpgradeable(ingredient)) names.set(index, names.get(index) + " I");
+            index++;
+        }
+        event.put("material_names", names);
+        if (!entry.creates()) event.prependSourceIngredient(player, entry, display);
+        return event;
+    }
+
+    private void putGlyphCatalog(Player player) {
+        List<String> ids = new ArrayList<String>(), names = new ArrayList<String>(), levels = new ArrayList<String>();
+        List<String> ready = new ArrayList<String>(), subclasses = new ArrayList<String>();
+        for (Entry entry : GlyphWorkbenchCatalog.entries()) {
+            ids.add(entry.id); names.add(Translation.getText(player.getLanguage(), entry.name));
+            levels.add(Integer.toString(entry.level));
+            ready.add(entry.status(player) == ItemUpgradeResult.Status.READY ? "1" : "0");
+            subclasses.add(entry.template().getItemSubclass());
+        }
+        put("recipe_ids", ids); put("recipe_names", names); put("recipe_levels", levels);
+        put("recipe_ready", ready); put("recipe_subclasses", subclasses);
+    }
+
+    private void prependSourceIngredient(Player player, Entry entry, Item template) {
+        String[] keys = {"material_names", "material_classes", "material_subclasses", "material_values", "owned_material_values"};
+        String[] values = {Translation.getText(player.getLanguage(), entry.name) + " " + (entry.level == 2 ? "I" : "II"),
+                template.getItemClass(), template.getItemSubclass(), "1", Integer.toString(entry.sourceCount(player))};
+        for (int index = 0; index < keys.length; index++) {
+            List<String> list = new ArrayList<String>(getList(keys[index])); list.add(0, values[index]); put(keys[index], list);
+        }
+    }
 
 	public static String encodePath(final RPObject object) {
 		final LinkedList<String> path = new LinkedList<String>();

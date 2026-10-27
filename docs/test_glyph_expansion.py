@@ -16,6 +16,7 @@ class GlyphExpansionTest(unittest.TestCase):
     def setUpClass(cls):
         cls.items = {i.attrib['name']: i for i in ET.parse(ROOT / 'data/conf/items/glyphs.xml').getroot()}
         cls.npc = (ROOT / 'src/games/stendhal/server/maps/tarnow/city/RuneMasterNPC.java').read_text(encoding='utf-8')
+        cls.recipes = (ROOT / 'src/games/stendhal/server/core/rule/glyph/GlyphCraftingService.java').read_text(encoding='utf-8')
 
     def test_three_glyphs_per_slot(self):
         counts = collections.Counter()
@@ -45,7 +46,7 @@ class GlyphExpansionTest(unittest.TestCase):
         known = set()
         for path in (ROOT / 'data/conf/items').glob('*.xml'):
             known.update(i.attrib['name'] for i in ET.parse(path).getroot() if 'name' in i.attrib)
-        recipes = dict(re.findall(r'glyphConfig\.put\("([^"]+)", createResourceMap\((.*?)\)\);', self.npc, re.S))
+        recipes = dict(re.findall(r'glyphConfig\.put\("([^"]+)", createResourceMap\((.*?)\)\);', self.recipes, re.S))
         self.assertEqual(len(recipes), 21)
         for expected in CONTRACT:
             with self.subTest(glyph=expected['name']):

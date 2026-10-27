@@ -3,16 +3,26 @@ package games.stendhal.server.maps.tarnow.city;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.common.constants.Events;
+import games.stendhal.server.actions.ItemUpgradeAction;
+import games.stendhal.server.entity.mapstuff.useable.GlyphWorkbench;
+import games.stendhal.server.events.ItemUpgradeEvent;
+import marauroa.common.game.RPAction;
+import marauroa.common.game.RPObject;
+import marauroa.common.game.RPEvent;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.glyph.GlyphUpgradeService;
+import games.stendhal.server.core.rule.glyph.GlyphCraftingService;
+import games.stendhal.server.core.rule.glyph.GlyphWorkbenchCatalog;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Glyph;
@@ -22,7 +32,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.PlayerTestHelper;
-import utilities.SpeakerNPCTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class RuneMasterNPCTest {
@@ -172,51 +181,129 @@ public class RuneMasterNPCTest {
         return SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.quest());
     }
 
-    @Test public void conversationSelectsExactCopyAndShowsBothEffectsAndAllCosts() {
-        Player player = PlayerTestHelper.createPlayer("rune-dialog");
+    @Test public void workbenchOpensWindowAndUpgradesTheSelectedCopyWithAnExactPreview() {
+        Player player = PlayerTestHelper.createPlayer("rune-window");
         Item first = glyph("glif daru Mokoszy"), second = glyph("glif daru Mokoszy");
         GlyphProgressionService.applyLevel(second, 2);
         player.getSlot("bag").add(first); player.getSlot("bag").add(second);
         fund(player, new GlyphUpgradeService(), second, 3);
-        SpeakerNPC npc = npc(player);
-        try {
-            say(npc, player, "hi"); say(npc, player, "ulepsz");
-            String list = SpeakerNPCTestHelper.getReply(npc);
-            assertTrue(list, list.contains("Mokoszy I")); assertTrue(list, list.contains("Mokoszy II"));
-            say(npc, player, "2");
-            String preview = SpeakerNPCTestHelper.getReply(npc);
-            for (String expected : new String[] {"250", "500", "60", "500000", "3000", "polano", "serce olbrzyma", "magia ziemi"}) {
-                assertTrue(preview, preview.contains(expected));
-            }
-            assertEquals(2, GlyphProgressionService.getLevel(second));
-            say(npc, player, "tak");
-            assertEquals(1, GlyphProgressionService.getLevel(first));
-            assertEquals(3, GlyphProgressionService.getLevel(second));
-            assertEquals(0L, MoneyUtils.getTotalMoneyInCopper(player));
-            say(npc, player, "tak"); assertEquals(3, GlyphProgressionService.getLevel(second));
-        } finally { SingletonRepository.getNPCList().remove("Zoryk Runiczny"); }
+        npc(player);
+        GlyphWorkbench table = workbench(player);
+        assertNotNull(table); assertEquals(2.0, table.getWidth(), 0.0); assertEquals(1.0, table.getHeight(), 0.0);
+        player.setPosition(table.getX(), table.getY() + 1);
+        assertTrue(table.onUsed(player));
+        RPEvent open = lastUpgradeEvent(player);
+        assertEquals("glyph", open.get("service")); assertEquals("open", open.get("phase"));
+        action(player, table, "preview", second, null);
+        RPEvent preview = lastUpgradeEvent(player);
+        assertEquals(2, preview.getInt("upgrade_level"));
+        assertEquals(500000, preview.getInt("fee"));
+        assertTrue(preview.getList("current_stat_values").contains("250"));
+        assertTrue(preview.getList("upgraded_stat_values").contains("500"));
+        assertTrue(preview.getList("material_values").contains("3000"));
+        assertTrue(preview.getList("material_values").contains("60"));
+        String token = preview.get("request_token");
+        action(player, table, "upgrade", second, token);
+        assertEquals(1, GlyphProgressionService.getLevel(first)); assertEquals(3, GlyphProgressionService.getLevel(second));
+        assertEquals(0L, MoneyUtils.getTotalMoneyInCopper(player));
+        action(player, table, "upgrade", second, token);
+        assertEquals(3, GlyphProgressionService.getLevel(second));
     }
 
-    @Test public void englishAndSpanishUpgradeConversationsTranslateAndAllowCancellation() {
-        for (String language : new String[] {"en", "es"}) {
-            Player player = PlayerTestHelper.createPlayer("rune-dialog-" + language); player.setLanguage(language);
-            Item glyph = glyph("glif daru Mokoszy"); player.getSlot("bag").add(glyph);
-            fund(player, new GlyphUpgradeService(), glyph, 2);
-            SpeakerNPC npc = npc(player);
-            try {
-                String command = "en".equals(language) ? "upgrade" : "mejorar";
-                say(npc, player, "hi"); say(npc, player, command); say(npc, player, "1");
-                String preview = SpeakerNPCTestHelper.getReply(npc);
-                assertTrue(preview, preview.contains("en".equals(language) ? "Current power:" : "Poder actual:"));
-                assertTrue(preview, preview.contains("en".equals(language) ? "you have:" : "tienes:"));
-                say(npc, player, "no");
-                assertEquals(1, GlyphProgressionService.getLevel(glyph));
-                assertEquals(200000L, MoneyUtils.getTotalMoneyInCopper(player));
-                say(npc, player, command); say(npc, player, "1");
-                say(npc, player, "en".equals(language) ? "yes" : "sí");
-                assertEquals(2, GlyphProgressionService.getLevel(glyph));
-            } finally { SingletonRepository.getNPCList().remove("Zoryk Runiczny"); }
+    @Test public void catalogContainsEveryRecipeAndDimsUnavailableRowsWithoutHidingThem() {
+        assertEquals(63, GlyphWorkbenchCatalog.entries().size());
+        assertEquals(21, GlyphWorkbenchCatalog.entries().stream().filter(entry -> entry.level == 1).count());
+        Player player = PlayerTestHelper.createPlayer("catalog-empty"); npc(player);
+        GlyphWorkbench table = workbench(player); player.setPosition(table.getX(), table.getY() + 1); table.onUsed(player);
+        RPEvent event = lastUpgradeEvent(player);
+        assertEquals(63, event.getList("recipe_ids").size());
+        assertEquals(63, event.getList("recipe_ready").size());
+        assertFalse(event.getList("recipe_ready").contains("1"));
+        RPAction select = new RPAction(); select.put("service", "glyph"); select.put("command", "preview");
+        select.put("npc_id", table.getID().getObjectID()); select.put("glyph_recipe", GlyphWorkbenchCatalog.find("glif siły", 1).id);
+        new ItemUpgradeAction().onAction(player, select);
+        RPEvent detail = lastUpgradeEvent(player);
+        assertEquals("create", detail.get("operation"));
+        assertTrue(detail.getList("material_names").contains("fragment glifu"));
+        assertEquals(0, detail.getInt("can_upgrade"));
+        assertNull(GlyphWorkbenchCatalog.find("glif wiedzy", 1));
+        for (Map.Entry<String, Integer> resource : GlyphCraftingService.getRecipes().get("glif siły").entrySet()) {
+            Item ingredient = SingletonRepository.getEntityManager().getItem(resource.getKey());
+            if (ingredient instanceof StackableItem) ((StackableItem)ingredient).setQuantity(resource.getValue());
+            player.getSlot("bag").add(ingredient);
         }
+        new ItemUpgradeAction().onAction(player, select);
+        detail = lastUpgradeEvent(player); assertEquals(1, detail.getInt("can_upgrade"));
+        select.put("command", "upgrade"); select.put("request_token", detail.get("request_token"));
+        new ItemUpgradeAction().onAction(player, select);
+        assertEquals(1, player.getNumberOfEquipped("glif siły"));
+        new ItemUpgradeAction().onAction(player, select);
+        assertEquals(1, player.getNumberOfEquipped("glif siły"));
+    }
+
+    @Test public void craftingCreatesLevelOneOnceAndMissingIngredientsOrFullBagConsumeNothing() {
+        Player player = PlayerTestHelper.createPlayer("glyph-crafting");
+        for (Map.Entry<String, Integer> resource : GlyphCraftingService.getRecipes().get("glif siły").entrySet()) {
+            Item item = SingletonRepository.getEntityManager().getItem(resource.getKey());
+            if (item instanceof StackableItem) ((StackableItem)item).setQuantity(resource.getValue() + 1);
+            player.getSlot("bag").add(item);
+        }
+        // One non-stackable sword, plus one spare of each stackable material.
+        String token = GlyphCraftingService.prepare(player, "glif siły"); assertNotNull(token);
+        Item result = GlyphCraftingService.craft(player, "glif siły", token); assertNotNull(result);
+        assertSame(result, player.getFirstEquipped("glif siły")); assertEquals(1, GlyphProgressionService.getLevel(result));
+        assertNull(GlyphCraftingService.craft(player, "glif siły", token));
+        assertEquals(1, player.getNumberOfEquipped("fragment glifu"));
+        assertNull(GlyphCraftingService.prepare(player, "glif siły"));
+        Player full = PlayerTestHelper.createPlayer("glyph-full-bag");
+        for (Map.Entry<String, Integer> resource : GlyphCraftingService.getRecipes().get("glif żywej wody").entrySet()) {
+            add(full, resource.getKey(), resource.getValue() + 1);
+        }
+        while (!full.getSlot("bag").isFull()) full.getSlot("bag").add(glyph("glif tarczy"));
+        int fragments = full.getNumberOfEquipped("fragment glifu");
+        token = GlyphCraftingService.prepare(full, "glif żywej wody"); assertNotNull(token);
+        assertNull(GlyphCraftingService.craft(full, "glif żywej wody", token));
+        assertEquals(fragments, full.getNumberOfEquipped("fragment glifu"));
+        assertEquals(0, full.getNumberOfEquipped("glif żywej wody"));
+    }
+
+    @Test public void windowRejectsWrongTokensAndRemoteUseWithoutTakingResources() {
+        Player player = PlayerTestHelper.createPlayer("rune-window-security");
+        Item glyph = glyph("glif daru Mokoszy"); player.getSlot("bag").add(glyph);
+        fund(player, new GlyphUpgradeService(), glyph, 2);
+        npc(player); GlyphWorkbench table = workbench(player); assertNotNull(table);
+        player.setPosition(table.getX(), table.getY() + 1); table.onUsed(player);
+        action(player, table, "preview", glyph, null);
+        action(player, table, "upgrade", glyph, "forged");
+        assertEquals(1, GlyphProgressionService.getLevel(glyph));
+        action(player, table, "preview", glyph, null);
+        String token = lastUpgradeEvent(player).get("request_token");
+        player.setPosition(100, 90);
+        assertFalse(table.onUsed(player));
+        action(player, table, "upgrade", glyph, token);
+        assertEquals(1, GlyphProgressionService.getLevel(glyph));
+        assertEquals(200000L, MoneyUtils.getTotalMoneyInCopper(player));
+        assertEquals(1000, player.getNumberOfEquipped("polano"));
+    }
+
+    private GlyphWorkbench workbench(Player player) {
+        for (RPObject object : player.getZone()) if (object instanceof GlyphWorkbench) return (GlyphWorkbench)object;
+        return null;
+    }
+    private RPEvent lastUpgradeEvent(Player player) {
+        RPEvent result = null;
+        for (RPEvent event : player.events()) if (Events.ITEM_UPGRADE.equals(event.getName())) result = event;
+        assertNotNull(result); return result;
+    }
+    private void action(Player player, GlyphWorkbench table, String command, Item item, String token) {
+        RPAction action = new RPAction();
+        action.put("service", "glyph"); action.put("command", command); action.put("npc_id", table.getID().getObjectID());
+        if (item != null) {
+            action.put("target_path", ItemUpgradeEvent.decodePath(ItemUpgradeEvent.encodePath(item)));
+            action.put("glyph_recipe", GlyphWorkbenchCatalog.find(item.getName(), Math.min(3, GlyphProgressionService.getLevel(item) + 1)).id);
+        }
+        if (token != null) action.put("request_token", token);
+        new ItemUpgradeAction().onAction(player, action);
     }
 
     @Test public void originalRecipesDoNotConsumeAdvancedGlyphsAndStillCreateLevelOne() {

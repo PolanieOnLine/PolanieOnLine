@@ -239,6 +239,11 @@ export class FloatingWindow extends Component {
 		this.windowId = id;
 	}
 
+	public setTitle(title: string): void {
+		const label = this.child(".windowtitle");
+		if (label) label.textContent = GameLanguage.getText(title);
+	}
+
 	/**
 	 * Sets visibility of close button.
 	 *

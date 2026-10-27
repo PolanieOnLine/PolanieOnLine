@@ -2300,3 +2300,24 @@ table.shoptable tr.item-rarity span.logi {
 td.number {
 	text-align: right;
 }
+
+/* The workbench adds a recipe catalogue beside the shared upgrade details. */
+.item-upgrade-dialog.glyph-workbench-dialog { width: 720px; max-width: calc(100vw - 32px); }
+.glyph-workbench-layout { display: flex; align-items: stretch; gap: 12px; }
+.item-upgrade-details { flex: 1 1 auto; min-width: 0; }
+.glyph-recipe-catalog { flex: 0 0 240px; height: 520px; display: flex; flex-direction: column; overflow: hidden; padding: 3px; border: 1px solid #826a4b; }
+.glyph-recipe-catalog[hidden] { display: none; }
+.glyph-catalog-group { display: flex; flex-direction: column; min-height: 0; }
+.glyph-catalog-open { flex: 1; }
+.glyph-catalog-heading { flex: 0 0 auto; cursor: pointer; color: #ffbe40; background: transparent; border: 0; border-bottom: 1px solid #826a4b; text-align: left; font-weight: bold; padding: 7px 4px; }
+.glyph-catalog-rows { min-height: 0; overflow-y: auto; }
+.glyph-catalog-rows[hidden] { display: none; }
+.glyph-recipe-row { display: flex; align-items: center; gap: 6px; width: 100%; padding: 3px 5px; border: 1px solid transparent; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.glyph-recipe-row img { width: 20px; height: 20px; image-rendering: pixelated; }
+.glyph-recipe-missing { opacity: 0.45; }
+.glyph-recipe-row:hover { background: rgba(255,190,64,0.12); }
+.glyph-recipe-selected { border-color: #c59b57; background: rgba(255,190,64,0.16); }
+@media (max-width: 620px) {
+ .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; }
+ .glyph-recipe-catalog { flex: 0 0 auto; height: 180px; }
+}

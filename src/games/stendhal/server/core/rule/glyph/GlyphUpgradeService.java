@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.BooleanSupplier;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Logger;
 import games.stendhal.server.core.engine.GameEvent;
@@ -18,6 +20,7 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.Slots;
+import games.stendhal.server.core.rule.item.upgrade.ItemUpgradeResult.Status;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -128,10 +131,32 @@ public final class GlyphUpgradeService implements LogoutListener {
 
     @Override public void onLoggedOut(Player player) { clearPending(player); }
 
+    public Status getUpgradeStatus(Player player, Item item) {
+        if (!GlyphProgressionService.isUpgradeable(item)) return Status.NOT_UPGRADEABLE;
+        if (GlyphProgressionService.getLevel(item) >= 3) return Status.MAX_LEVEL;
+        if (!available(player, item)) return Status.INVALID_ITEM;
+        int target = GlyphProgressionService.getLevel(item) + 1;
+        if (MoneyUtils.getTotalMoneyInCopper(player) < getRequiredCoins(item, target)) return Status.NOT_ENOUGH_MONEY;
+        if (getResourceCount(player, "fragment glifu") < getRequiredFragments(item, target)) return Status.MISSING_RESOURCES;
+        for (Map.Entry<String, Integer> material : getRequiredMaterials(item, target).entrySet()) {
+            if (getResourceCount(player, material.getKey()) < material.getValue()) return Status.MISSING_RESOURCES;
+        }
+        return Status.READY;
+    }
+
+    public String getRequestToken(Player player, Item item) {
+        Offer offer = offers.get(player.getName());
+        return offer != null && offer.item == item && offer.matches(item) ? offer.token : null;
+    }
+
     public boolean upgrade(Player player, Item item, int expectedLevel) {
+        return upgrade(player, item, expectedLevel, player == null ? null : getRequestToken(player, item));
+    }
+
+    public boolean upgrade(Player player, Item item, int expectedLevel, String token) {
         if (player == null) return false;
         Offer offer = offers.remove(player.getName());
-        if (offer == null || offer.item != item || offer.level != expectedLevel
+        if (offer == null || token == null || !offer.token.equals(token) || offer.item != item || offer.level != expectedLevel
                 || !available(player, item) || GlyphProgressionService.getLevel(item) != expectedLevel
                 || !offer.matches(item)) return false;
         int target = expectedLevel + 1;
@@ -191,6 +216,18 @@ public final class GlyphUpgradeService implements LogoutListener {
     public boolean consumeResources(Player player, Map<String, Integer> required) {
         ResourcePayment payment = planPayment(player, required);
         return payment != null && payment.consume(player);
+    }
+
+    public boolean consumeResources(Player player, Map<String, Integer> required, BooleanSupplier reward) {
+        ResourcePayment payment = planPayment(player, required);
+        if (payment == null || !payment.consume(player)) return false;
+        try {
+            if (reward.getAsBoolean()) return true;
+        } catch (RuntimeException error) {
+            LOGGER.error("Unable to grant crafted glyph", error);
+        }
+        payment.restore(player);
+        return false;
     }
 
     private ResourcePayment planPayment(Player player, Map<String, Integer> required) {
@@ -254,6 +291,7 @@ public final class GlyphUpgradeService implements LogoutListener {
     }
 
     private static final class Offer {
+        final String token = UUID.randomUUID().toString();
         final Item item;
         final int level;
         final String boundTo;

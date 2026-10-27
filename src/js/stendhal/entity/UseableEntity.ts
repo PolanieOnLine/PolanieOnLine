@@ -34,9 +34,11 @@ export class UseableEntity extends Entity {
 			this.sprite.filename = Paths.sprites + "/"
 				+ this["class"] + "/" + this["_name"] + ".png";
 		}
-		if (key === "state") {
-			this.sprite.offsetY = this["state"] * 32;
-		}
+        if (key === "state" || key === "width" || key === "height") {
+            this.sprite.width = Number(this["width"] || 1) * 32;
+            this.sprite.height = Number(this["height"] || 1) * 32;
+            this.sprite.offsetY = Number(this["state"] || 0) * this.sprite.height;
+        }
 	}
 
 	override isVisibleToAction(_filter: boolean) {

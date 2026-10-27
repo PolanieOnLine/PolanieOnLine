@@ -14,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -90,6 +91,73 @@ public class ItemUpgradeWindowTest {
 					((JComponent) field("icon")).getPreferredSize());
 		});
 	}
+
+	@Test
+	public void glyphWindowUsesRomanLevelsFractionalValuesAndGuaranteedUpgrade() throws Exception {
+		onEdt(() -> {
+			RPEvent open = empty(); open.put("phase", "open"); open.put("service", "glyph"); apply(open);
+			RPEvent preview = selected(); preview.put("service", "glyph");
+			preview.put("name", "glif żywej wody"); preview.put("class", "glyph");
+			preview.put("subclass", "glyph_living_water");
+			preview.put("upgrade_level", 1); preview.put("max_upgrade_level", 3); preview.put("next_upgrade_level", 2);
+			preview.put("stat_names", Arrays.asList("regeneracja co 5 s po 10 s bez zadawania i otrzymywania obrażeń"));
+			preview.put("current_stat_values", Arrays.asList("0,5%"));
+			preview.put("upgraded_stat_values", Arrays.asList("0,75%")); apply(preview);
+			assertTrue(window.titleLabel.getText().contains("Stół"));
+			assertTrue(label("level").getText().contains("I ->"));
+			assertTrue(label("chance").getText().contains("Gwarantowane"));
+			assertTrue(allText((Container)field("stats")).contains("0,75%"));
+			assertTrue(button("upgrade").isEnabled());
+			RPEvent smith = selected(); smith.put("phase", "preview"); smith.put("message", "late smith response"); apply(smith);
+			assertFalse(label("status").getText().contains("late smith response"));
+		});
+	}
+
+    private Object nestedField(Object parent, String name) {
+        try { Field value = parent.getClass().getDeclaredField(name); value.setAccessible(true); return value.get(parent); }
+        catch (ReflectiveOperationException error) { throw new AssertionError(error); }
+    }
+
+    @Test
+    public void glyphCatalogHasTwoCategoriesAndUnavailableRecipesStaySelectable() throws Exception {
+        onEdt(() -> {
+            RPEvent event = empty(); event.put("service", "glyph");
+            event.put("recipe_ids", Arrays.asList("1:glif siły", "2:glif siły", "3:glif siły"));
+            event.put("recipe_names", Arrays.asList("glif siły", "glif siły", "glif siły"));
+            event.put("recipe_levels", Arrays.asList("1", "2", "3"));
+            event.put("recipe_ready", Arrays.asList("0", "1", "0")); apply(event);
+            Object create = field("creationCategory"), improve = field("upgradeCategory");
+            JList<?> rows = (JList<?>) nestedField(create, "rows");
+            assertEquals(1, rows.getModel().getSize());
+            assertEquals(2, ((JList<?>)nestedField(improve, "rows")).getModel().getSize());
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            Component row = ((javax.swing.ListCellRenderer)rows.getCellRenderer()).getListCellRendererComponent(rows, rows.getModel().getElementAt(0), 0, false, false);
+            JButton header = (JButton) nestedField(create, "header");
+            JComponent listScroll = (JComponent) nestedField(create, "scroll");
+            header.doClick(); assertFalse(listScroll.isVisible()); header.doClick(); assertTrue(listScroll.isVisible());
+            assertTrue(row.isEnabled()); assertTrue(row.getForeground().getAlpha() < 255);
+            RPEvent preview = selected(); preview.put("service", "glyph"); preview.put("operation", "create");
+            preview.put("selected_recipe", "1:glif siły"); preview.remove("selected_path"); apply(preview);
+            assertEquals("Utwórz glif", button("upgrade").getText());
+            assertNull(field("selectedPath")); assertTrue(button("upgrade").isEnabled());
+        });
+    }
+
+    @Test
+    public void glyphRecipeAcceptsTheNextMatchingCopyAfterSuccessfulUpgrade() throws Exception {
+        onEdt(() -> {
+            RPEvent open = empty(); open.put("service", "glyph"); apply(open);
+            RPEvent preview = selected(); preview.put("service", "glyph");
+            preview.put("selected_recipe", "2:glif siły"); preview.put("operation", "upgrade");
+            preview.put("upgrade_level", 1); preview.put("next_upgrade_level", 2); preview.put("max_upgrade_level", 3);
+            apply(preview);
+            RPEvent result = preview; result.put("phase", "result");
+            result.put("status", "SUCCESS"); result.put("selected_path", "bag/2"); result.put("request_token", "next-copy");
+            apply(result);
+            assertEquals("bag/2", field("selectedPath")); assertEquals("next-copy", field("requestToken"));
+            assertTrue(button("upgrade").isEnabled());
+        });
+    }
 
 	@Test
 	public void materialRowsGrowAndShrinkWithoutChangingSlotSize() throws Exception {
