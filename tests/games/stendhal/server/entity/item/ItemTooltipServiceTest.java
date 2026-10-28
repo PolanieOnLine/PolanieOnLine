@@ -129,7 +129,7 @@ public class ItemTooltipServiceTest {
 			assertEquals(Double.parseDouble(attributes.get(key)),
 					Double.parseDouble(stat(item, key)), 0.0001);
 		}
-		assertEquals("1", stat(item, ItemTooltip.RATE_INCREASE));
+		assertEquals(1.0, Double.parseDouble(stat(item, ItemTooltip.RATE_INCREASE)), 0.0001);
 		item.remove(ItemTooltip.NIGHTMARE_CHANCE);
 		ItemTooltipService.update(item);
 		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(ItemTooltip.NIGHTMARE_CHANCE));

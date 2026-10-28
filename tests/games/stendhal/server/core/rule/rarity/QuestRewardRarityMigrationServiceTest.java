@@ -124,7 +124,7 @@ public class QuestRewardRarityMigrationServiceTest {
 	}
 
 	@Test
-	public void completedQuestRingRemainsCommon() {
+	public void completedStatusQuestRingRemainsOutsideRaritySystem() {
 		final Player player = PlayerTestHelper.createPlayer("old_quest_ring");
 		player.setQuest("pierscien_mieszczanina", "done");
 		final Item ring = SingletonRepository.getEntityManager().getItem(
@@ -134,7 +134,7 @@ public class QuestRewardRarityMigrationServiceTest {
 
 		assertEquals(0, QuestRewardRarityMigrationService.migrate(player));
 
-		assertSame(ItemRarity.COMMON, ring.getRarity());
+		assertFalse(ring.has("rarity"));
 		assertEquals(1, player.getNumberOfEquipped("pierścień mieszczanina"));
 	}
 

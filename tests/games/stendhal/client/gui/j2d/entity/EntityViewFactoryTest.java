@@ -167,6 +167,7 @@ public class EntityViewFactoryTest {
 		// NPC
 		checkImplementation("baby_dragon", null, null, Pet2DView.class);
 		checkImplementation("cat", null, null, Pet2DView.class);
+		checkImplementation("duszek", null, null, GhostPet2DView.class);
 		checkImplementation("goat", null, null, Goat2DView.class);
 		checkImplementation("npc", null, null, NPC2DView.class);
 		checkImplementation("owczarek", null, null, Pet2DView.class);

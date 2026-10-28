@@ -415,7 +415,7 @@ public class ItemDefinitionRefreshTest {
 
 	@Test
 	public void flatAttackAndIntrinsicJewelleryBonusesRefreshExactlyOnce() throws Exception {
-		Item saved = definition("pierścień magnata");
+		Item saved = definition("złoty pierścień");
 		saved.setID(new ID(741, "affix_balance"));
 		final int baseAttack = saved.has("atk") ? saved.getInt("atk") : 0;
 		saved.put("atk", baseAttack + 3);

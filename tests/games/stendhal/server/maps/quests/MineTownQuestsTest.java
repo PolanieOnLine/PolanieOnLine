@@ -116,7 +116,7 @@ public class MineTownQuestsTest {
 		assertEquals(0, player.getNumberOfEquipped("szynka"));
 		assertEquals(0, player.getNumberOfEquipped("ser"));
 		assertEquals(1, player.getNumberOfEquipped("stek"));
-		assertEquals(player.getName(), player.getFirstEquipped("skrzynka").getBoundTo());
+		assertEquals(player.getName(), player.getFirstEquipped("srebrna skrzynia").getBoundTo());
 		quest.time += 6 * 3600000L - 1;
 		assertFalse(quest.isRepeatable(player));
 		assertTrue(engine.step(player, "zadanie"));
@@ -128,7 +128,7 @@ public class MineTownQuestsTest {
 		assertEquals(1, quest.completionCount(player));
 		deliver();
 		assertEquals(2, quest.completionCount(player));
-		assertEquals(2, player.getNumberOfEquipped("skrzynka"));
+		assertEquals(2, player.getNumberOfEquipped("srebrna skrzynia"));
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class MineTownQuestsTest {
 		assertTrue(engine.step(player, "zadanie"));
 		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
 		assertEquals(100, player.getNumberOfEquipped("mięso"));
-		assertEquals(0, player.getNumberOfEquipped("skrzynka"));
+		assertEquals(0, player.getNumberOfEquipped("srebrna skrzynia"));
 		assertFalse(quest.isCompleted(player));
 	}
 
@@ -191,7 +191,7 @@ public class MineTownQuestsTest {
 		assertTrue(player.drop("stek", 1));
 		assertTrue(engine.step(player, "tak"));
 		assertEquals(100, player.getNumberOfEquipped("mięso"));
-		assertEquals(0, player.getNumberOfEquipped("skrzynka"));
+		assertEquals(0, player.getNumberOfEquipped("srebrna skrzynia"));
 		assertFalse(quest.isCompleted(player));
 	}
 
@@ -209,7 +209,7 @@ public class MineTownQuestsTest {
 		System.clearProperty("stendhal.minetown");
 		assertTrue(engine.step(player, "tak"));
 		assertEquals(100, player.getNumberOfEquipped("mięso"));
-		assertEquals(0, player.getNumberOfEquipped("skrzynka"));
+		assertEquals(0, player.getNumberOfEquipped("srebrna skrzynia"));
 	}
 
 	@Test
@@ -371,7 +371,7 @@ public class MineTownQuestsTest {
 		final MineTownCollectionQuest[] quests = {
 				new MineTownFeast(), new MineTownLanterns(), new MineTownRitual()
 		};
-		final String[] offeredRewards = { "skrzynkę", "srebrną skrzynię", "złotą skrzynię" };
+		final String[] offeredRewards = { "srebrną skrzynię", "srebrną skrzynię", "złotą skrzynię" };
 		for (int i = 0; i < quests.length; i++) {
 			final SpeakerNPC speaker = SpeakerNPCTestHelper.createSpeakerNPC("festival_dialog_" + i);
 			try {

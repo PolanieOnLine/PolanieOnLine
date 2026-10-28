@@ -61,7 +61,7 @@ public class SpanishQuantityCatalogueTest {
   if(source.startsWith(count+" "))assertTrue("Changed amount: "+source+" => "+translated,translated.startsWith(count+" "));
  }
  @Test public void everyCurrentItemHasAllActualQuantityAndTradeForms()throws Exception {
-  Set<String> names=definitions("items","item");assertEquals(878,names.size());
+  Set<String> names=definitions("items","item");assertEquals(889,names.size());
   for(String name:names)for(int count:COUNTS){
    quantityExists(name,count,Grammar.quantityplnoun(count,name));
    quantityExists(name,count,Grammar.itemQuantityAccusative(count,name));
