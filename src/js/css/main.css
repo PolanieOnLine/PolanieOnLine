@@ -2305,7 +2305,7 @@ td.number {
 .item-upgrade-dialog.glyph-workbench-dialog { width: 720px; max-width: calc(100vw - 32px); }
 .glyph-workbench-layout { display: flex; align-items: stretch; gap: 12px; }
 .item-upgrade-details { flex: 1 1 auto; min-width: 0; }
-.glyph-recipe-catalog { flex: 0 0 240px; height: 520px; display: flex; flex-direction: column; overflow: hidden; padding: 3px; border: 1px solid #826a4b; }
+.glyph-recipe-catalog { flex: 0 0 240px; height: auto; max-height: 520px; contain: size; display: flex; flex-direction: column; overflow: hidden; padding: 3px; border: 1px solid #826a4b; }
 .glyph-recipe-catalog[hidden] { display: none; }
 .glyph-catalog-group { display: flex; flex-direction: column; min-height: 0; }
 .glyph-catalog-open { flex: 1; }
@@ -2316,7 +2316,7 @@ td.number {
 .glyph-recipe-row img { width: 20px; height: 20px; image-rendering: pixelated; }
 .glyph-recipe-missing { opacity: 0.45; }
 .glyph-recipe-row:hover { background: rgba(255,190,64,0.12); }
-.glyph-recipe-selected { border-color: #c59b57; background: rgba(255,190,64,0.16); }
+.glyph-recipe-selected { opacity: 1; border-color: #c59b57; background: rgba(255,190,64,0.16); }
 @media (max-width: 620px) {
  .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; }
  .glyph-recipe-catalog { flex: 0 0 auto; height: 180px; }
@@ -2324,3 +2324,16 @@ td.number {
 
 .workbench-item-icon { display: inline-block; flex: 0 0 auto; overflow: hidden; position: relative; pointer-events: none; }
 .workbench-item-frame { display: block; width: 32px; height: 32px; background-repeat: no-repeat; transform-origin: top left; image-rendering: pixelated; }
+
+.glyph-workbench-dialog .item-upgrade-materials { display: grid; gap: 8px 6px; padding: 8px 6px; border: 1px solid #826a4b; }
+.glyph-workbench-dialog .item-upgrade-material { min-width: 0; gap: 4px; font-size: 12px; }
+.glyph-workbench-dialog .item-upgrade-material > div:nth-child(2) { min-height: 30px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; }
+.glyph-workbench-dialog .item-upgrade-material > div:last-child { white-space: nowrap; font-size: 11px; font-variant-numeric: tabular-nums; }
+.glyph-workbench-dialog .item-upgrade-stats { padding: 6px 8px; border: 1px solid #826a4b; margin-bottom: 10px; }
+.glyph-stat-row { display: grid; grid-template-columns: minmax(0,1fr) 65px; align-items: baseline; gap: 8px; margin: 6px 0; }
+.glyph-stat-upgrade { grid-template-columns: minmax(0,1fr) 65px 65px; }
+.glyph-stat-row > span:not(:first-child) { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.glyph-stat-note, .glyph-stat-caption { color: #d8bea1; }
+.glyph-stat-note { margin: -2px 0 8px; }
+.glyph-fee { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
+.glyph-fee[hidden] { display: none; }

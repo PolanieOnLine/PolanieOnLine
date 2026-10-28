@@ -140,6 +140,9 @@ public class ItemUpgradeWindowTest {
             JComponent listScroll = (JComponent) nestedField(create, "scroll");
             header.doClick(); assertFalse(listScroll.isVisible()); header.doClick(); assertTrue(listScroll.isVisible());
             assertTrue(row.isEnabled()); assertTrue(row.getForeground().getAlpha() < 255);
+            @SuppressWarnings({"rawtypes", "unchecked"})
+            Component chosen = ((javax.swing.ListCellRenderer)rows.getCellRenderer()).getListCellRendererComponent(rows, rows.getModel().getElementAt(0), 0, true, false);
+            assertEquals("The selected recipe must remain readable even without materials", 255, chosen.getForeground().getAlpha());
             RPEvent preview = selected(); preview.put("service", "glyph"); preview.put("operation", "create");
             preview.put("selected_recipe", "1:glif siły"); preview.remove("selected_path"); apply(preview);
             assertEquals("Utwórz glif", button("upgrade").getText());
@@ -191,6 +194,30 @@ public class ItemUpgradeWindowTest {
         });
         ItemUpgradeWindow.onInventoryChanged(player);
         onEdt(() -> assertFalse(((Timer)field("inventoryRefresh")).isRunning()));
+    }
+
+    @Test
+    public void compactGlyphDetailsKeepMaterialsOnOneRowAndShowConditionsSeparately() throws Exception {
+        onEdt(() -> {
+            RPEvent event = glyphSelectionPreview("1:glif żywej wody", "glif żywej wody"); event.put("phase", "open");
+            event.put("stat_names", Arrays.asList("regen", "cap"));
+            event.put("stat_keys", Arrays.asList("out_of_combat_regen", "out_of_combat_regen_cap"));
+            event.put("stat_short_names", Arrays.asList("Regeneracja PZ co 5 s", "Maksymalnie na impuls"));
+            event.put("stat_note_keys", Arrays.asList("out_of_combat_regen"));
+            event.put("stat_note_values", Arrays.asList("Po 10 s bez zadawania i otrzymywania obrażeń."));
+            event.put("current_stat_values", Arrays.asList("0,5%", "8")); event.put("upgraded_stat_values", Arrays.asList("0,5%", "8"));
+            event.put("material_names", Arrays.asList("fragment glifu", "magia deszczu", "serce olbrzyma", "cudowna krew"));
+            event.put("material_classes", Arrays.asList("glyph", "magia", "misc", "resource"));
+            event.put("material_subclasses", Arrays.asList("glyph_fragment", "mana_blue", "giant_heart", "fiolka_zielona"));
+            event.put("material_values", Arrays.asList("4", "800", "40", "3")); event.put("owned_material_values", Arrays.asList("36", "1950", "0", "4"));
+            event.put("status", "MISSING_RESOURCES"); event.put("can_upgrade", 0); apply(event); layout(window);
+            JPanel resources = (JPanel)field("materials"); int top = resources.getComponent(0).getY();
+            for (Component material : resources.getComponents()) assertEquals(top, material.getY());
+            assertFalse(((JPanel)field("costSection")).isVisible()); assertFalse(label("status").isVisible());
+            assertTrue(allText((Container)field("stats")).contains("Po 10 s bez zadawania i otrzymywania obrażeń."));
+            assertTrue(allText((Container)field("stats")).contains("8 PZ"));
+            assertTrue("The compact workbench must fit comfortably on the game screen", window.getHeight() < 520);
+        });
     }
 
     private RPEvent glyphSelectionPreview(String id, String name) {

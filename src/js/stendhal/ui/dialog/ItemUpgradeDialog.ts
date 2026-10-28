@@ -27,6 +27,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private readonly stats = document.createElement("div");
 	private readonly chance = document.createElement("div");
 	private readonly fee = document.createElement("div");
+    private readonly glyphFee = document.createElement("div");
+    private readonly materialHeading = document.createElement("h4");
 	private readonly materials = document.createElement("div");
 	private readonly status = document.createElement("div");
 	private readonly refreshButton: HTMLButtonElement;
@@ -96,9 +98,10 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		this.stats.className = "item-upgrade-stats";
 		this.details.append(this.stats, this.chance, this.fee);
-		const materialHeading = document.createElement("h4");
+		const materialHeading = this.materialHeading;
 		materialHeading.textContent = "Materiały (posiadasz / wymagane)";
-		this.details.append(materialHeading, this.materials);
+		this.glyphFee.className = "glyph-fee"; this.glyphFee.hidden = true;
+        this.details.append(materialHeading, this.materials, this.glyphFee);
 		this.status.className = "item-upgrade-status";
 		this.details.appendChild(this.status);
 
@@ -231,6 +234,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
         if (responseRecipe) this.selectedRecipe = responseRecipe;
         else if (!this.isInteractionStatus(String(data.status || ""))) this.selectedRecipe = undefined;
         this.creatingGlyph = this.glyphMode && data.operation === "create";
+        this.itemHeading.hidden = this.glyphMode;
+        this.chance.hidden = this.glyphMode; this.fee.hidden = this.glyphMode;
+        this.materialHeading.textContent = GameLanguage.getText(this.glyphMode ? "Składniki (masz / potrzeba)" : "Materiały (posiadasz / wymagane)");
         this.itemHeading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
         if (this.glyphMode && data.recipe_ids !== undefined) { this.fillRecipeCatalog(data); this.catalogReceived = true; }
         this.upgradeButton.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
@@ -255,8 +261,8 @@ export class ItemUpgradeDialog extends DialogContentComponent {
             this.icon.appendChild(this.spriteIcon(data["class"], data.subclass));
 			const rarity = ItemRarity.fromId(data.rarity_id) || ItemRarity.COMMON;
 			this.nameLabel.textContent = data.name;
-			this.nameLabel.style.color = this.glyphMode ? "" : rarity.colorHex;
-			this.levelLabel.textContent = this.glyphMode ? (this.creatingGlyph ? "Poziom glifu: I" : "Poziom glifu: "
+			this.nameLabel.style.color = this.glyphMode ? "#ffcc70" : rarity.colorHex;
+			this.levelLabel.textContent = this.glyphMode ? (this.creatingGlyph ? GameLanguage.getText("Tworzenie · poziom I") : GameLanguage.getText("Ulepszanie") + " · "
                     + ["I", "II", "III"][Number(data.upgrade_level) - 1] + " → " + ["I", "II", "III"][Number(data.next_upgrade_level) - 1]
                     + (data.source_location ? " (" + data.source_location + ")" : ""))
                     : "Poziom ulepszenia: +" + data.upgrade_level + " / +" + data.max_upgrade_level;
@@ -283,7 +289,15 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		this.upgradeButton.disabled = !canUpgrade;
 		this.refreshButton.disabled = !this.npcId;
         if (this.glyphMode && state === "STALE_PREVIEW") this.scheduleRefresh();
-		this.status.textContent = data.message || this.statusText(state);
+		this.status.hidden = this.glyphMode && ["READY", "MISSING_RESOURCES", "NOT_ENOUGH_MONEY"].includes(state);
+        this.status.textContent = data.message || this.statusText(state);
+        this.glyphFee.hidden = !this.glyphMode || this.creatingGlyph || !(Number(data.fee) > 0);
+        if (!this.glyphFee.hidden) {
+            const label = document.createElement("span"); label.textContent = GameLanguage.getText("Koszt ulepszenia");
+            const value = document.createElement("span"); value.textContent = data.fee_text;
+            value.className = Number(data.owned_money) >= Number(data.fee) ? "item-upgrade-owned" : "item-upgrade-missing";
+            this.glyphFee.replaceChildren(label, value);
+        }
 		this.status.dataset.status = state.toLowerCase();
 		this.upgradeButton.title = canUpgrade ? (this.glyphMode ? "Ulepsz glif" : "Wykonaj próbę ulepszenia")
 				: this.statusText(state);
@@ -292,8 +306,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private fillStats(data: UpgradeEventData): void {
 		this.stats.replaceChildren();
 		const heading = document.createElement("h4");
-		heading.textContent = GameLanguage.getText(this.creatingGlyph ? "Właściwości glifu" : "Statystyki po ulepszeniu");
+		heading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Właściwości" : "Zmiana mocy") : "Statystyki po ulepszeniu");
 		this.stats.appendChild(heading);
+        if (this.glyphMode) { this.fillGlyphStats(data); return; }
 		const names = this.list(data.stat_names);
 		const current = this.list(data.current_stat_values);
 		const upgraded = this.list(data.upgraded_stat_values);
@@ -318,6 +333,29 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			this.stats.appendChild(row);
 		}
 	}
+
+    private fillGlyphStats(data: UpgradeEventData): void {
+        const names = this.list(data.stat_short_names ?? data.stat_names), keys = this.list(data.stat_keys);
+        const current = this.list(data.current_stat_values), next = this.list(data.upgraded_stat_values);
+        const notes = this.valuesByName(this.list(data.stat_note_keys), this.list(data.stat_note_values));
+        const add = (name: string, before: string|undefined, after: string, heading = false) => {
+            const row = document.createElement("div"); row.className = "glyph-stat-row" + (before === undefined ? "" : " glyph-stat-upgrade");
+            const label = document.createElement("span"); label.textContent = name; row.appendChild(label);
+            if (before !== undefined) { const value = document.createElement("span"); value.textContent = before; row.appendChild(value); }
+            const value = document.createElement("span"); value.textContent = after; value.className = heading ? "glyph-stat-caption" : "item-upgrade-owned"; row.appendChild(value);
+            this.stats.appendChild(row);
+        };
+        if (!this.creatingGlyph && names.length) add("", GameLanguage.getText("Teraz"), GameLanguage.getText("Po zmianie"), true);
+        names.forEach((name, index) => {
+            if (current[index] === undefined || next[index] === undefined) return;
+            const unit = keys[index] === "out_of_combat_regen_cap" ? " " + GameLanguage.getText("PZ") : "";
+            add(name, this.creatingGlyph ? undefined : current[index] + unit, next[index] + unit);
+            if (notes[keys[index]]) {
+                const note = document.createElement("div"); note.className = "glyph-stat-note"; note.textContent = notes[keys[index]]; this.stats.appendChild(note);
+            }
+        });
+        if (!names.length) { const hint = document.createElement("div"); hint.textContent = this.previewHint(); this.stats.appendChild(hint); }
+    }
 
     private fillRecipeCatalog(data: UpgradeEventData): void {
         const ids = this.list(data.recipe_ids), names = this.list(data.recipe_names), levels = this.list(data.recipe_levels);
@@ -381,6 +419,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	private fillMaterials(data: UpgradeEventData): void {
 		this.materials.replaceChildren();
 		const names = this.list(data.material_names);
+        this.materials.style.gridTemplateColumns = this.glyphMode && names.length ? `repeat(${Math.min(5, names.length)}, minmax(0, 1fr))` : "";
 		const classes = this.list(data.material_classes);
 		const subclasses = this.list(data.material_subclasses);
 		const required = this.list(data.material_values);
@@ -401,14 +440,14 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			if (classes[index] && subclasses[index]) {
                 this.registerSprite(layers.icon, classes[index], subclasses[index]);
 			}
-			layers.quantityLabel.textContent = need > 1 ? String(need) : "";
+			layers.quantityLabel.textContent = !this.glyphMode && need > 1 ? String(need) : "";
 
 			const label = document.createElement("div");
 			label.textContent = name;
 			const count = document.createElement("div");
 			count.className = available ? "item-upgrade-owned"
 					: "item-upgrade-missing";
-			count.textContent = (available ? "✓ " : "✗ ") + have + " / " + need;
+			count.textContent = (this.glyphMode ? "" : available ? "✓ " : "✗ ") + have + " / " + need;
 			card.append(slot, label, count);
 			this.materials.appendChild(card);
 		});

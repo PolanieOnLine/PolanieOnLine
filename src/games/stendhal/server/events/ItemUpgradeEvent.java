@@ -73,7 +73,7 @@ public final class ItemUpgradeEvent extends RPEvent {
         add(rpclass, "selected_recipe", Type.STRING);
         add(rpclass, "operation", Type.STRING);
         add(rpclass, "source_location", Type.STRING);
-        for (String key : new String[] {"recipe_ids", "recipe_names", "recipe_levels", "recipe_ready", "recipe_subclasses"}) {
+        for (String key : new String[] {"recipe_ids", "recipe_names", "recipe_levels", "recipe_ready", "recipe_subclasses", "stat_keys", "stat_short_names", "stat_note_keys", "stat_note_values"}) {
             add(rpclass, key, Type.VERY_LONG_STRING);
         }
 	}
@@ -232,6 +232,15 @@ public final class ItemUpgradeEvent extends RPEvent {
         if (token != null) event.put("request_token", token);
         event.putParallelMaps(GlyphUpgradePresentation.effects(player, display, entry.creates() ? 1 : entry.level - 1),
                 GlyphUpgradePresentation.effects(player, display, entry.level));
+        List<String> statKeys = new ArrayList<String>(GlyphProgressionService.getEffects(display, entry.level).keySet());
+        List<String> shortNames = new ArrayList<String>(), noteKeys = new ArrayList<String>(), notes = new ArrayList<String>();
+        for (String key : statKeys) {
+            shortNames.add(GlyphUpgradePresentation.compactLabel(player, key));
+            String note = GlyphUpgradePresentation.note(player, key);
+            if (!note.isEmpty()) { noteKeys.add(key); notes.add(note); }
+        }
+        event.put("stat_keys", statKeys); event.put("stat_short_names", shortNames);
+        if (!noteKeys.isEmpty()) { event.put("stat_note_keys", noteKeys); event.put("stat_note_values", notes); }
         GlyphUpgradeService service = GlyphUpgradeService.getInstance();
         int fee = entry.creates() ? 0 : (int)service.getRequiredCoins(display, entry.level);
         event.put("fee", fee); event.put("fee_text", MoneyUtils.formatPrice(fee));

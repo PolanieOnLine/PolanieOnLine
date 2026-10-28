@@ -32,6 +32,35 @@ public final class GlyphUpgradePresentation {
         }
         return result.toString();
     }
+    public static String compactLabel(Player player, String key) {
+        String label;
+        switch (key) {
+        case "out_of_combat_regen": label = "Regeneracja PZ co 5 s"; break;
+        case "out_of_combat_regen_cap": label = "Maksymalnie na impuls"; break;
+        case "glyph_attack_rate_reduction": label = "Zmniejszenie wagi broni"; break;
+        case "consumable_healing_bonus": label = "Skuteczność leczenia"; break;
+        case "physical_dodge_chance": label = "Szansa na unik"; break;
+        case "low_health_damage_reduction": label = "Redukcja obrażeń"; break;
+        case "nightmare_chance": label = "Szansa na osłabienie"; break;
+        default:
+            label = Translation.getText(player.getLanguage(), effectLabel(key));
+            return label.isEmpty() ? label : Character.toUpperCase(label.charAt(0)) + label.substring(1);
+        }
+        return Translation.getText(player.getLanguage(), label);
+    }
+    public static String note(Player player, String key) {
+        String text;
+        switch (key) {
+        case "out_of_combat_regen": text = "Po 10 s bez zadawania i otrzymywania obrażeń."; break;
+        case "glyph_attack_rate_reduction": text = "Waga broni po zmniejszeniu nie może spaść poniżej 2."; break;
+        case "consumable_healing_bonus": text = "Dotyczy jedzenia, napojów i mikstur."; break;
+        case "physical_dodge_chance": text = "Dotyczy zwykłych, niekrytycznych trafień fizycznych."; break;
+        case "low_health_damage_reduction": text = "Działa poniżej 35% PZ."; break;
+        case "nightmare_chance": text = "Atak celu niższy o 10% przez 6 s. Odnowienie: 12 s. Efekt nie kumuluje się."; break;
+        default: return "";
+        }
+        return Translation.getText(player.getLanguage(), text);
+    }
             private static String effectLabel(String key) {
                 switch (key) {
                 case "health": return "PZ";

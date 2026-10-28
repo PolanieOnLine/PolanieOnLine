@@ -30,6 +30,8 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.Icon;
 import javax.swing.JList;
@@ -100,7 +102,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
     private final RecipeCategory creationCategory = new RecipeCategory("Tworzenie glifów", true);
     private final RecipeCategory upgradeCategory = new RecipeCategory("Ulepszanie", false);
     private boolean updatingRecipes;
-    private JPanel identitySection, statsSection, costSection;
+    private JPanel identitySection, statsSection, costSection, materialsSection, footerTop;
+    private Border identityBorder;
+    private final JLabel glyphFee = centered("");
+    private final JSeparator footerSeparator = new JSeparator();
 	private String selectedPath;
 	private String requestToken;
 	private boolean selectionCleared;
@@ -279,6 +284,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		itemName.addMouseListener(selectionPopup);
 		level.addMouseListener(selectionPopup);
 		content.add(identitySection = sectionPanel("Przedmiot do ulepszenia", identity), BorderLayout.NORTH);
+        identityBorder = identitySection.getBorder();
 
 		final JPanel center = plainPanel(new GridBagLayout());
 		final GridBagConstraints constraints = new GridBagConstraints();
@@ -300,13 +306,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		center.add(costSection = sectionPanel("Koszt i szansa", requirements), constraints);
 		constraints.gridy++;
 		constraints.insets = new Insets(0, 0, 0, 0);
-		center.add(sectionPanel("Materiały (posiadasz / potrzebne)", materials),
+		center.add(materialsSection = sectionPanel("Materiały (posiadasz / potrzebne)", materials),
 				constraints);
 
 		content.add(center, BorderLayout.CENTER);
 
 		final JPanel bottom = plainPanel(new BorderLayout(0, 6));
-		bottom.add(new JSeparator(), BorderLayout.NORTH);
+		footerTop = plainPanel(new BorderLayout());
+        glyphFee.setVisible(false); footerTop.add(glyphFee, BorderLayout.NORTH); footerTop.add(footerSeparator, BorderLayout.SOUTH);
+        bottom.add(footerTop, BorderLayout.NORTH);
 		status.setVerticalAlignment(SwingConstants.TOP);
 		status.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		bottom.add(status, BorderLayout.CENTER);
@@ -363,6 +371,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		icon.setItem(null, null);
 		icon.setToolTipText(selectionHint());
 		stats.removeAll();
+        glyphFee.setVisible(false); footerTop.setVisible(!glyphMode); status.setVisible(true);
 		stats.add(centered(
 				previewHint()));
 		chance.setText(glyphMode ? "Gwarantowane powodzenie." : htmlValue("Szansa powodzenia", "brak danych"));
@@ -403,8 +412,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         if (responseRecipe != null) selectedRecipe = responseRecipe;
         else if (!isInteractionStatus(stateForRecipe)) selectedRecipe = null;
         creatingGlyph = glyphMode && event.has("operation") && "create".equals(event.get("operation"));
+        identitySection.setBorder(glyphMode ? BorderFactory.createEmptyBorder(4, 6, 8, 6) : identityBorder);
+        costSection.setVisible(!glyphMode); footerSeparator.setVisible(!glyphMode);
+        setSectionTitle(materialsSection, glyphMode ? "Składniki (masz / potrzeba)" : "Materiały (posiadasz / potrzebne)");
         setSectionTitle(identitySection, glyphMode ? (creatingGlyph ? "Tworzony glif" : "Wybrany glif") : "Przedmiot do ulepszenia");
-        setSectionTitle(statsSection, creatingGlyph ? "Właściwości glifu" : "Po ulepszeniu");
+        setSectionTitle(statsSection, glyphMode ? (creatingGlyph ? "Właściwości" : "Zmiana mocy") : "Po ulepszeniu");
         setSectionTitle(costSection, glyphMode ? "Koszt" : "Koszt i szansa");
         if (glyphMode && event.has("recipe_ids")) { updateRecipes(event); catalogReceived = true; }
         upgrade.setText(glyphMode ? (creatingGlyph ? "Utwórz glif" : "Ulepsz glif") : "Ulepsz");
@@ -427,9 +439,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		requestToken = event.has("request_token") ? event.get("request_token") : null;
 
 		if (event.has("name")) {
-			itemName.setText(glyphMode ? "<html><b>" + escapeHtml(event.get("name")) + "</b></html>"
+			itemName.setText(glyphMode ? "<html><font color='#ffcc70'><b>" + escapeHtml(event.get("name")) + "</b></font></html>"
                     : colorName(event.get("name"), event.has("rarity_id") ? event.get("rarity_id") : "common"));
-			level.setText(glyphMode ? (creatingGlyph ? "Poziom glifu: I" : "Poziom glifu: " + roman(event.getInt("upgrade_level")) + " -> " + roman(event.getInt("next_upgrade_level"))
+			level.setText(glyphMode ? (creatingGlyph ? ClientLanguage.getText("Tworzenie · poziom I") : ClientLanguage.getText("Ulepszanie") + " · " + roman(event.getInt("upgrade_level")) + " -> " + roman(event.getInt("next_upgrade_level"))
                     + (event.has("source_location") ? " (" + event.get("source_location") + ")" : ""))
                     : "Poziom ulepszenia: +" + event.getInt("upgrade_level") + " / +" + event.getInt("max_upgrade_level"));
 			icon.setItem(event.get("class"), event.get("subclass"));
@@ -451,6 +463,13 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 					? htmlValue("Koszt", event.get("fee_text"))
 					: htmlValue("Koszt", "brak danych"));
 			updateMaterials(event);
+            glyphFee.setVisible(glyphMode && !creatingGlyph && event.has("fee") && event.getInt("fee") > 0);
+            if (glyphFee.isVisible()) {
+                Color moneyColor = event.has("owned_money") && event.getInt("owned_money") >= event.getInt("fee") ? AVAILABLE : UNAVAILABLE;
+                glyphFee.setText("<html><table width='" + (CONTENT_WIDTH - 40) + "'><tr><td>" + ClientLanguage.getText("Koszt ulepszenia")
+                        + "</td><td align='right'><font color='" + String.format("#%02x%02x%02x", moneyColor.getRed(), moneyColor.getGreen(), moneyColor.getBlue())
+                        + "'>" + escapeHtml(event.get("fee_text")) + "</font></td></tr></table></html>");
+            }
 		}
 
 		final boolean canUpgrade = event.has("can_upgrade")
@@ -461,6 +480,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final String message = event.has("message") ? event.get("message") : "";
 		status.setText(wrappedText(message.length() > 0 ? message : statusText(state),
 				CONTENT_WIDTH - 40));
+        footerTop.setVisible(!glyphMode || glyphFee.isVisible());
+        status.setVisible(!glyphMode || !("READY".equals(state) || "MISSING_RESOURCES".equals(state) || "NOT_ENOUGH_MONEY".equals(state)));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
 				? AVAILABLE : "SELECT_ITEM".equals(state) ? ACCENT : UNAVAILABLE);
 		upgrade.setToolTipText(canUpgrade ? (glyphMode ? "Ulepsz glif" : "Wykonaj próbę ulepszenia") : statusText(state));
@@ -470,8 +491,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private void updateStats(final RPEvent event) {
-		stats.removeAll();
-		final List<String> names = list(event, "stat_names");
+        stats.removeAll();
+        if (glyphMode) { updateGlyphStats(event); return; }
+        stats.setLayout(new GridLayout(0, 1, 0, 4));
+        final List<String> names = list(event, "stat_names");
 		final List<String> current = list(event, "current_stat_values");
 		final List<String> upgradedValues = list(event, "upgraded_stat_values");
 		final Map<String, String> currentByName = valuesByName(names, current);
@@ -499,6 +522,26 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 	}
 
+    private void updateGlyphStats(RPEvent event) {
+        stats.setLayout(new BoxLayout(stats, BoxLayout.Y_AXIS));
+        List<String> labels = list(event, event.has("stat_short_names") ? "stat_short_names" : "stat_names");
+        List<String> keys = list(event, "stat_keys"), current = list(event, "current_stat_values"), next = list(event, "upgraded_stat_values");
+        Map<String, String> notes = valuesByName(list(event, "stat_note_keys"), list(event, "stat_note_values"));
+        if (!creatingGlyph && !labels.isEmpty()) stats.add(glyphStatRow("", ClientLanguage.getText("Teraz"), ClientLanguage.getText("Po zmianie")));
+        for (int index = 0; index < labels.size() && index < current.size() && index < next.size(); index++) {
+            String key = index < keys.size() ? keys.get(index) : "";
+            String unit = "out_of_combat_regen_cap".equals(key) ? " " + ClientLanguage.getText("PZ") : "";
+            stats.add(glyphStatRow(labels.get(index), creatingGlyph ? null : current.get(index) + unit, next.get(index) + unit));
+            String note = notes.get(key);
+            if (note != null) {
+                JLabel caption = new JLabel("<html><table width='" + (CONTENT_WIDTH - 56) + "' cellspacing='0'><tr><td>" + escapeHtml(note) + "</td></tr></table></html>");
+                caption.setFont(caption.getFont().deriveFont(Font.PLAIN)); caption.setForeground(new Color(216, 190, 161)); stats.add(caption);
+            }
+            if (index + 1 < labels.size()) stats.add(Box.createVerticalStrut(5));
+        }
+        if (labels.isEmpty()) stats.add(centered(previewHint()));
+    }
+
 	private void updateMaterials(final RPEvent event) {
 		materials.removeAll();
 		final List<String> names = list(event, "material_names");
@@ -510,7 +553,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			showEmptyMaterials();
 			return;
 		}
-		final int columns = Math.min(3, names.size());
+		final int columns = Math.min(glyphMode ? 5 : 3, names.size());
+        final int cardWidth = glyphMode ? (CONTENT_WIDTH - 52 - MATERIAL_ROW_GAP * (columns - 1)) / columns : MATERIAL_CARD_WIDTH;
 		materials.setLayout(new GridLayout(0, columns, MATERIAL_ROW_GAP, MATERIAL_ROW_GAP));
 		int rowHeight = 0;
 		for (int index = 0; index < names.size(); index++) {
@@ -519,7 +563,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final JComponent card = materialCard(names.get(index),
 					index < classes.size() ? classes.get(index) : null,
 					index < subclasses.size() ? subclasses.get(index) : null,
-					have, need);
+					have, need, cardWidth);
 			materials.add(card);
 			rowHeight = Math.max(rowHeight, card.getPreferredSize().height);
 		}
@@ -546,17 +590,18 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	private JComponent materialCard(final String name,
 			final String itemClass, final String subclass, final int owned,
-			final int required) {
+			final int required, final int cardWidth) {
 		final boolean available = owned >= required;
 		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
 		final JPanel card = plainPanel(new BorderLayout(0, 3));
 		final JPanel slot = plainPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		slot.add(new MaterialIcon(itemClass, subclass, required));
+		slot.add(new MaterialIcon(itemClass, subclass, glyphMode ? 0 : required));
 		card.add(slot, BorderLayout.NORTH);
 
 		final JPanel description = plainPanel(new BorderLayout(0, 2));
-		description.add(centered(wrappedText(name, MATERIAL_CARD_WIDTH)),
-				BorderLayout.CENTER);
+		JLabel materialName = centered(wrappedText(name, cardWidth));
+        if (glyphMode) materialName.setFont(materialName.getFont().deriveFont(Font.PLAIN));
+        description.add(materialName, BorderLayout.CENTER);
 		final JLabel count = centered(owned + " / " + required);
 		count.setForeground(stateColor);
 		description.add(count, BorderLayout.SOUTH);
@@ -565,7 +610,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				+ ", wymagane " + required;
 		card.setToolTipText(tooltip);
 		final Dimension naturalSize = card.getPreferredSize();
-		final Dimension cardSize = new Dimension(MATERIAL_CARD_WIDTH,
+		final Dimension cardSize = new Dimension(cardWidth,
 				naturalSize.height);
 		card.setMinimumSize(cardSize);
 		card.setPreferredSize(cardSize);
@@ -682,24 +727,25 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
                 boolean selected, boolean focus) {
             super.getListCellRendererComponent(list, value, index, selected, focus);
             RecipeRow recipe = (RecipeRow)value;
-            setText(recipe.toString()); setIcon(new RecipeIcon(recipe)); setIconTextGap(6);
+            setText(recipe.toString()); setIcon(new RecipeIcon(recipe, selected)); setIconTextGap(6);
             setEnabled(true); setOpaque(selected); setBackground(new Color(105, 72, 34));
             setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 4));
             setFont(list.getFont().deriveFont(selected ? Font.BOLD : Font.PLAIN));
-            setForeground(recipe.ready ? new Color(243, 235, 217) : new Color(210, 194, 170, 120));
+            setForeground(recipe.ready || selected ? new Color(243, 235, 217) : new Color(210, 194, 170, 120));
             setToolTipText(ClientLanguage.getText(recipe.ready ? "Wymagania są spełnione." : "Brakuje składników. Kliknij, aby sprawdzić wymagania."));
             return this;
         }
     }
     private final class RecipeIcon implements Icon {
         private final RecipeRow row;
-        RecipeIcon(RecipeRow row) { this.row = row; }
+        private final boolean selected;
+        RecipeIcon(RecipeRow row, boolean selected) { this.row = row; this.selected = selected; }
         @Override public int getIconWidth() { return 18; }
         @Override public int getIconHeight() { return 18; }
         @Override public void paintIcon(Component component, Graphics graphics, int x, int y) {
             if (row.sprite == null || row.sprite.isEmpty()) return;
             Graphics2D copy = (Graphics2D)graphics.create();
-            if (!row.ready) copy.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.45f));
+            if (!row.ready && !selected) copy.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.45f));
             copy.translate(x, y); copy.scale(0.5, 0.5);
             itemSprite("glyph", row.sprite).draw(copy, 0, 0); copy.dispose();
         }
@@ -824,9 +870,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
     private String selectionHint() { return glyphMode ? "Wybierz glif z listy po lewej stronie." : "Przeciągnij tutaj przedmiot z ekwipunku."; }
     private static String roman(int level) { return level >= 1 && level <= 3 ? new String[] {"I", "II", "III"}[level - 1] : ""; }
     private static JLabel glyphStatRow(String name, String current, String next) {
-        return centered("<html><table width='" + (CONTENT_WIDTH - 56) + "' cellpadding='0' cellspacing='2'><tr><td width='"
-                + (CONTENT_WIDTH - 180) + "'><b>" + escapeHtml(name) + "</b></td><td align='right' nowrap='nowrap'>"
-                + (current == null ? "" : escapeHtml(current) + " &rarr; ") + "<font color='#5cbe69'><b>" + escapeHtml(next) + "</b></font></td></tr></table></html>");
+        boolean heading = name.isEmpty();
+        return centered("<html><table width='" + (CONTENT_WIDTH - 56) + "' cellpadding='0' cellspacing='2'><tr><td>"
+                + escapeHtml(name) + "</td>" + (current == null ? "" : "<td width='65' align='right' nowrap='nowrap'>" + escapeHtml(current) + "</td>")
+                + "<td width='65' align='right' nowrap='nowrap'><font color='" + (heading ? "#d8bea1" : "#5cbe69") + "'><b>" + escapeHtml(next) + "</b></font></td></tr></table></html>");
     }
     private String statusText(final String state) {
         if (glyphMode) {
