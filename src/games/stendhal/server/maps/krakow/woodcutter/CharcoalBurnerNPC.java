@@ -53,7 +53,7 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 				resources.put("polano", 2);
 				resources.put("money", 5);
 				final ProducerBehaviour production = new ProducerBehaviour(PRODUCTION_SLOT,
-						Arrays.asList("wypal", "wypalaj", "burn"), "węgiel drzewny", resources, 6) {
+						Arrays.asList("wypal", "wypalaj", "burn"), "węgiel drzewny", resources, 30) {
 					@Override
 					protected String formatProductQuantity(final int amount) {
 						return Grammar.itemQuantityAccusative(amount, getProductName());
@@ -103,7 +103,7 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 				new ProducerAdder().addProducer(this, production,
 						"Witaj na mojej polanie! Uważaj na dym z #mielerza. Jeżeli potrzebujesz węgla drzewnego, powiedz #wypal.");
 				addJob("Jestem węglarzem. Powoli wypalam drewno w #mielerzu, żeby otrzymać węgiel drzewny.");
-				addOffer("Za każde 2 polana i 5 monet wypalę jedną sztukę węgla drzewnego. Przyjmuję do 1000 sztuk w jednym zleceniu. Wypalanie jednej sztuki trwa 6 sekund.");
+				addOffer("Za każde 2 polana i 5 monet wypalę jedną sztukę węgla drzewnego. Przyjmuję do 1000 sztuk w jednym zleceniu. Wypalanie jednej sztuki trwa 30 sekund.");
 				addHelp("Powiedz na przykład #'wypal 100 węgla drzewnego'. Przygotuję zlecenie do potwierdzenia, a później odbierzesz je słowem #odbierz albo przy następnym powitaniu. Nie musisz czekać tutaj ani pozostawać w grze.");
 				addReply(Arrays.asList("mielerz", "mielerza"),
 						"Pod tą warstwą ziemi leżą ciasno ułożone polana. Pilnuję dopływu powietrza, żeby drewno nie spłonęło na popiół.");
