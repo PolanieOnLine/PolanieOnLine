@@ -58,7 +58,9 @@ public class WoodcutterNPC implements ZoneConfigurator {
 				// Remaining behaviour is in games.stendhal.server.maps.quests.SolveRiddles
 				addReply(Arrays.asList("test"), "Zdałeś już test. Idź teraz szukać drzew oznaczonych do wyrębu.");
 				addJob("Zajmuje się wyrębem lasu, możesz u mnie przystąpić do #egzaminu na drwala.");
-				addHelp("Organizuje egzaminy na drwala. Czy chcesz przystąpić do egzaminu, aby otrzymać pozwolenie do wyrębu drzew?");
+				addHelp("Organizuje egzaminy na drwala. Czy chcesz przystąpić do egzaminu, aby otrzymać pozwolenie do wyrębu drzew? Zebrane polana możesz też zanieść do pobliskiego #węglarza.");
+				addReply(Arrays.asList("węglarz", "węglarza", "Smolisław", "Smolisława"),
+						"Smolisław wypala węgiel drzewny na polanie tuż przy mojej chacie. Przynieś mu polana i zapytaj o #ofertę.");
 				addGoodbye("Do zobaczenia i uważaj na spadające drzewa podczas wyrębu...");
 			}
 		};

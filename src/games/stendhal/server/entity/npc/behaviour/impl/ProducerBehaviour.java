@@ -237,6 +237,15 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		return productName;
 	}
 
+	/** Quantity wording for producers whose products need a specific unit or case. */
+	protected String formatProductQuantity(final int amount) {
+		return Grammar.quantityplnoun(amount, getProductName());
+	}
+
+	protected String formatProductCollectionError(final int amount) {
+		return Grammar.plnoun(amount, getProductName());
+	}
+
 	private int getProductsPerUnit() {
 		return productsPerUnit;
 	}
@@ -421,7 +430,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			return false;
 		} else if (getMaximalAmount(player) < amount) {
 			npc.say("Mogę zrobić "
-					+ Grammar.quantityplnoun(amount, getProductName())
+					+ formatProductQuantity(amount)
 					+ " jeżeli przyniesiesz mi "
 					+ getRequiredResourceNamesWithHashes(amount) + ".");
 			return false;
@@ -459,7 +468,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			player.setQuest(questSlot, res.getAmount() + ";" + getProductName() + ";" + timeNow);
 
 			String agreed = "Dobrze, zrobię dla Ciebie "
-					+ Grammar.quantityplnoun(res.getAmount(), getProductName())
+					+ formatProductQuantity(res.getAmount())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
 					+ getApproximateRemainingTime(player) + ".";
 			if (getRemind()) {
@@ -490,7 +499,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 		if (!isOrderReady(player)) {
 			String stillWorking = "Wciąż zajmuje się twoim zleceniem "
-					+ Grammar.quantityplnoun(numberOfProductItems, getProductName())
+					+ formatProductQuantity(numberOfProductItems)
 					+ ". Wróć za " + getApproximateRemainingTime(player) + ", aby odebrać.";
 			if (getRemind()) {
 				npc.say(stillWorking + " Nie zapomnij mi #'przypomnieć'...");
@@ -509,7 +518,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 			if (player.equipToInventoryOnly(products)) {
 				String reward = Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie. Trzymaj, oto "
-						+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".";
+						+ formatProductQuantity(numberOfProductItems) + ".";
 				if (getRemind()) {
 					npc.say("Ach tak, zapomniałem. " + reward);
 				} else {
@@ -528,7 +537,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			} else {
 				String notEnough = Grammar.genderVerb(npc.getGender(), "Skończyłem")
 						+ " twoje zlecenie, ale w tym momencie nie możesz wziąć "
-						+ Grammar.plnoun(numberOfProductItems, getProductName())
+						+ formatProductCollectionError(numberOfProductItems)
 						+ ". Wróć, gdy będziesz miał wolne miejsce.";
 				if (getRemind()) {
 					npc.say("Ach tak, zapomniałem. " + notEnough);
