@@ -17,8 +17,6 @@ import games.stendhal.common.parser.NameSearch;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -40,13 +38,6 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		final SpeakerNPC npc = new SpeakerNPC("Smolisław") {
-			@Override
-			protected void createPath() {
-				setPath(new FixedPath(Arrays.asList(
-						new Node(57, 58), new Node(57, 59),
-						new Node(56, 59), new Node(56, 58)), true));
-			}
-
 			@Override
 			protected void createDialog() {
 				final Map<String, Integer> resources = new LinkedHashMap<>();
