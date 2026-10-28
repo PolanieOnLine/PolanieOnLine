@@ -37,26 +37,26 @@ public final class GlyphUpgradeService implements LogoutListener {
     private static Map<String, Map<String, Integer>> materials() {
         Map<String, Map<String, Integer>> result = new LinkedHashMap<String, Map<String, Integer>>();
         add(result, "glif daru Mokoszy", "polano", 1000, "serce olbrzyma", 100, "magia ziemi", 1000);
-        add(result, "glif siły", "sztabka żelaza", 300, "węgiel", 500, "magia ziemi", 1000);
-        add(result, "glif Peruna", "sztabka miedzi", 300, "magia wiatru", 1500, "rubin", 50);
-        add(result, "glif czaszy", "sztabka platyny", 50, "obsydian", 100, "magia mroku", 1000);
-        add(result, "glif tarczy", "sztabka żelaza", 400, "sztabka mithrilu", 60, "węgiel", 500);
-        add(result, "glif Swaroga", "sztabka czarnego żelaza", 200, "magia płomieni", 1500, "węgiel drzewny", 1000);
-        add(result, "glif Tytana", "sztabka żelaza", 300, "sztabka mithrilu", 100, "serce olbrzyma", 100);
-        add(result, "glif Strzyboga", "polano", 1500, "sztabka miedzi", 200, "magia wiatru", 1500);
-        add(result, "glif Jarowita", "polano", 1000, "sztabka złota", 100, "magia światła", 1000, "magia mroku", 1000);
-        add(result, "glif kryzysu", "sztabka złota", 100, "ametyst", 100, "magia światła", 1500);
-        add(result, "glif krwi", "sztabka czarnego żelaza", 200, "wampirza krew", 100, "magia mroku", 1500);
-        add(result, "glif świętego dębu", "polano", 2000, "sztabka mithrilu", 100, "magia ziemi", 1500);
-        add(result, "glif żywej wody", "sztabka srebra", 150, "magia deszczu", 2000, "cudowna krew", 20);
-        add(result, "glif Rodzanic", "polano", 1500, "bursztyn", 150, "magia deszczu", 1500);
-        add(result, "glif wichru", "polano", 1500, "sztabka platyny", 50, "pióro anioła", 150, "magia wiatru", 2000);
-        add(result, "glif wytrwałości", "sztabka żelaza", 300, "sztabka mithrilu", 100, "serce olbrzyma", 150);
+        add(result, "glif siły", "sztabka żelaza", 200, "węgiel", 500, "magia ziemi", 1000);
+        add(result, "glif Peruna", "sztabka miedzi", 200, "magia wiatru", 1500, "rubin", 50);
+        add(result, "glif czaszy", "sztabka platyny", 30, "obsydian", 60, "magia mroku", 1000);
+        add(result, "glif tarczy", "sztabka żelaza", 250, "sztabka mithrilu", 40, "węgiel", 500);
+        add(result, "glif Swaroga", "sztabka czarnego żelaza", 150, "magia płomieni", 1500, "węgiel drzewny", 1000);
+        add(result, "glif Tytana", "sztabka żelaza", 200, "sztabka mithrilu", 60, "serce olbrzyma", 100);
+        add(result, "glif Strzyboga", "polano", 1500, "sztabka miedzi", 100, "magia wiatru", 1500);
+        add(result, "glif Jarowita", "polano", 1000, "sztabka złota", 60, "magia światła", 1000, "magia mroku", 1000);
+        add(result, "glif kryzysu", "sztabka złota", 60, "ametyst", 60, "magia światła", 1500);
+        add(result, "glif krwi", "sztabka czarnego żelaza", 150, "wampirza krew", 60, "magia mroku", 1500);
+        add(result, "glif świętego dębu", "polano", 2000, "sztabka mithrilu", 60, "magia ziemi", 1500);
+        add(result, "glif żywej wody", "sztabka srebra", 100, "magia deszczu", 2000, "cudowna krew", 20);
+        add(result, "glif Rodzanic", "polano", 1500, "bursztyn", 75, "magia deszczu", 1500);
+        add(result, "glif wichru", "polano", 1500, "sztabka platyny", 30, "pióro anioła", 75, "magia wiatru", 2000);
+        add(result, "glif wytrwałości", "sztabka żelaza", 200, "sztabka mithrilu", 60, "serce olbrzyma", 100);
         add(result, "glif ogniska", "polano", 2000, "węgiel drzewny", 1000, "magia płomieni", 2000);
-        add(result, "glif korzeni", "polano", 2000, "sztabka miedzi", 300, "magia ziemi", 1000, "magia deszczu", 1000);
-        add(result, "glif zmory", "sztabka czarnego żelaza", 200, "wampirza krew", 150, "magia mroku", 2000);
-        add(result, "glif Świętowita", "sztabka złota", 120, "sztabka platyny", 80, "diament", 60, "magia światła", 1500);
-        add(result, "glif przodków", "polano", 2000, "sztabka mithrilu", 120, "serce olbrzyma", 150, "magia ziemi", 1500);
+        add(result, "glif korzeni", "polano", 2000, "sztabka miedzi", 150, "magia ziemi", 1000, "magia deszczu", 1000);
+        add(result, "glif zmory", "sztabka czarnego żelaza", 100, "wampirza krew", 75, "magia mroku", 2000);
+        add(result, "glif Świętowita", "sztabka złota", 80, "sztabka platyny", 50, "diament", 40, "magia światła", 1500);
+        add(result, "glif przodków", "polano", 2000, "sztabka mithrilu", 80, "serce olbrzyma", 100, "magia ziemi", 1500);
         return Collections.unmodifiableMap(result);
     }
 
