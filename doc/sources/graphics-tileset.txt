@@ -1184,3 +1184,7 @@ brick_wall.*      Crack.com; CC0; https://opengameart.org/node/79144
 brick_wall_red.*  Crack.com; CC0; https://opengameart.org/node/79144
 stone.*           Jordan Irwin (AntumDeluge); OGA BY 3.0; https://opengameart.org/node/79141
 stone_red.*       Jordan Irwin (AntumDeluge); OGA BY 3.0; https://opengameart.org/node/79141
+
+data/maps/tileset/pol/
+
+charcoal_worksite.png  Agent Sprite Forge (Codex image generation); PolanieOnLine original artwork
