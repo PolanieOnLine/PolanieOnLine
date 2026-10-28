@@ -3,6 +3,7 @@ import type { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
+import { glyphColourFilter } from "../../data/GlyphAppearance";
 
 interface Atlas {
 	key: string;
@@ -77,6 +78,8 @@ export class ItemSlotAnimation {
 			this.setAtlas(layer, atlas);
 		}
 		if (layer.clip.parentElement !== target) target.appendChild(layer.clip);
+        const filter = item["class"] === "glyph" ? glyphColourFilter(Number(item["glyph_level"] || 0)) : "";
+        if (layer.clip.style.filter !== filter) layer.clip.style.filter = filter;
 		const frame = item.getXFrameIndex();
 		if (frame < 0 || (frame + 1) * 34 > atlas.width) {
 			this.clear(target, icon);

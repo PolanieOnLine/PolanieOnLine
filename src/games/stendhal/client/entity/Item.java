@@ -124,6 +124,7 @@ public class Item extends Entity {
 		if (changes.has("state")) {
 			fireChange(PROP_STATE);
 		}
+        if (changes.has("glyph_level")) fireChange(PROP_CLASS);
 		if (changes.has("quantity")) {
 			quantity = changes.getInt("quantity");
 			fireChange(PROP_QUANTITY);

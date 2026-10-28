@@ -10,7 +10,7 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
-for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "data/GlyphAppearance.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -173,6 +173,7 @@ function createHarness() {
 		return exports;
 	}
 	const { ItemRarity } = load("data/ItemRarity.ts", {});
+    const glyphAppearance = load("data/GlyphAppearance.ts", {});
 	const { GameLanguage } = load("util/GameLanguage.ts", {});
 	class Entity {
 		set(key, value) { this[key] = value; }
@@ -185,6 +186,7 @@ function createHarness() {
 		"./Entity": { Entity }, "../sprite/TextSprite": { TextSprite: class {} },
 		"../sprite/ItemRarityEffects": rarityEffects,
 		"../data/Paths": { Paths: { sprites: "/sprites" } },
+        "../data/GlyphAppearance": glyphAppearance,
 		"../data/ItemRarity": { ItemRarity }, "../SingletonRepo": { singletons },
 		"../util/GameLanguage": { GameLanguage },
 		marauroa: { marauroa }
@@ -196,10 +198,12 @@ function createHarness() {
 		marauroa: {marauroa}, "../../entity/Item": {Item}, "../../util/GameLanguage": {GameLanguage}
 	});
 	const slotAnimation = load("ui/component/ItemSlotAnimation.ts", {
+        "../../data/GlyphAppearance": glyphAppearance,
 		"../../SingletonRepo": {singletons}, "../../sprite/ItemRarityEffects": rarityEffects,
 		"../../util/AdminDiagnostics": {AdminDiagnostics}
 	});
 	const { ItemContainerImplementation: Container } = load("ui/component/ItemContainerImplementation.ts", {
+        "../../data/GlyphAppearance": glyphAppearance,
 		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {} },
 		"../dialog/ActionContextMenu": {}, "../dialog/DropQuantitySelectorDialog": {},
 		"../dialog/ItemUpgradeDialog": {}, "../../entity/Item": { Item },

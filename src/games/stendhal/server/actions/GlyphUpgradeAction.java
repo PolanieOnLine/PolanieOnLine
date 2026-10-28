@@ -36,7 +36,13 @@ public final class GlyphUpgradeAction {
             player.addEvent(ItemUpgradeEvent.workbench(player, tableId, Collections.<Item>emptyList(), null, null,
                     "preview", Status.NPC_TOO_FAR, "Podejdź do stołu runicznego, aby rozwijać glify.", null)); return;
         }
-        if ("open".equals(command)) { open(player, (GlyphWorkbench)table); return; }
+        if ("open".equals(command)) {
+            clear(player);
+            ItemUpgradeEvent event = ItemUpgradeEvent.workbench(player, tableId, SERVICE.findUpgradeCandidates(player), null, null,
+                    "open", Status.SELECT_ITEM, "", null);
+            if (action.has("window_request")) event.put("window_request", action.get("window_request"));
+            player.addEvent(event); return;
+        }
         if ("refresh".equals(command)) { clear(player); send(player, tableId, null, null, "refresh", null, ""); return; }
         Item requested = ItemUpgradeAction.resolveOwnedItem(player, action);
         Entry entry = action.has("glyph_recipe") ? GlyphWorkbenchCatalog.byId(action.get("glyph_recipe")) : null;

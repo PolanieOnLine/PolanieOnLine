@@ -23,6 +23,7 @@ import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
 import { Paths } from "../../data/Paths";
+import { glyphColourFilter } from "../../data/GlyphAppearance";
 import { ItemRarity } from "../../data/ItemRarity";
 import { ItemRarityEffects } from "../../sprite/ItemRarityEffects";
 import { AdminDiagnostics } from "../../util/AdminDiagnostics";
@@ -250,6 +251,8 @@ export class ItemContainerImplementation {
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
+        const filter = item["class"] === "glyph" ? glyphColourFilter(Number(item["glyph_level"] || 0)) : "";
+        if (view.icon.style.filter !== filter) view.icon.style.filter = filter;
 		view.composited = ItemSlotAnimation.update(view.element, view.icon, item);
 		if (view.composited) return;
 		const position = (-item.getXFrameIndex() * 32) + "px "
@@ -340,6 +343,7 @@ export class ItemContainerImplementation {
 				}
 			} else {
 				ItemSlotAnimation.clear(element, view.icon);
+                if (view.icon.style.filter) view.icon.style.filter = "";
 				view.composited = false;
 				const image = this.defaultImage ? "url(" + Paths.gui + "/" + this.defaultImage + ")" : "none";
 				if (view.backgroundImage !== image) {

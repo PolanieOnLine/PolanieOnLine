@@ -51,6 +51,7 @@ function harness() {
 		"ui/UIComponentEnum": { UIComponentEnum: { PlayerStats: "stats" } },
 		"./stendhal": { stendhal }, "SingletonRepo": { singletons },
 		"util/GameLanguage": { GameLanguage },
+        "ui/dialog/ItemUpgradeDialog": {ItemUpgradeDialog: {onInventoryChanged() {}}},
 		"Client": { Client: { get: () => ({ loaded: true }) } }
 	});
 	return { stats, marauroa, Item, slot, elements, GameLanguage, writes: () => writes,

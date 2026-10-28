@@ -14,12 +14,16 @@ import { FloatingWindow } from "../toolkit/FloatingWindow";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { getItemSlotLayers } from "../component/ItemSlotPresentation";
 import { GameLanguage } from "../../util/GameLanguage";
+import { glyphColourFilter } from "../../data/GlyphAppearance";
 
 type UpgradeEventData = {[key: string]: any};
 
 /** Web client window backed entirely by the server preview DTO. */
 export class ItemUpgradeDialog extends DialogContentComponent {
 	private static active?: ItemUpgradeDialog;
+    private static readonly openedWindows = new Set<string>();
+    private static pendingOpenRequest?: string;
+    private static nextOpenRequest = 0;
 
 	private readonly icon = document.createElement("div");
 	private readonly nameLabel = document.createElement("div");
@@ -121,6 +125,15 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	public static show(data: UpgradeEventData): void {
+        if (data.phase === "open") {
+            if (data.window_request && data.window_request !== this.pendingOpenRequest) return;
+            if (data.window_id) {
+                if (this.openedWindows.has(data.window_id)) return;
+                this.openedWindows.add(data.window_id);
+                if (this.openedWindows.size > 64) this.openedWindows.delete(this.openedWindows.values().next().value!);
+            }
+            this.pendingOpenRequest = undefined;
+        }
 		if (!ItemUpgradeDialog.active) {
 			if (data.phase !== "open") return;
 			const dialog = new ItemUpgradeDialog();
@@ -132,6 +145,11 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		ItemUpgradeDialog.active.apply(data);
         ItemUpgradeDialog.active.startAnimation();
 	}
+
+    public static glyphOpenAction(tableId: number): {[key: string]: any} {
+        this.pendingOpenRequest = Date.now() + ":" + ++this.nextOpenRequest;
+        return {type: "item_upgrade_action", service: "glyph", command: "open", npc_id: String(tableId), window_request: this.pendingOpenRequest};
+    }
 
     public static onInventoryChanged(): void {
         const dialog = this.active;
@@ -169,17 +187,18 @@ export class ItemUpgradeDialog extends DialogContentComponent {
         if (this.animationTimer === undefined) this.animationTimer = setInterval(() => this.animateIcons(), 100);
         this.animateIcons();
     }
-    private spriteIcon(itemClass: string, subclass: string, size = 32): HTMLElement {
+    private spriteIcon(itemClass: string, subclass: string, size = 32, glyphLevel = 0): HTMLElement {
         const clip = document.createElement("span"); clip.className = "workbench-item-icon";
         clip.style.width = clip.style.height = size + "px";
         const image = document.createElement("span"); image.className = "workbench-item-frame";
         if (size !== 32) image.style.transform = `scale(${size / 32})`;
-        clip.appendChild(image); this.registerSprite(image, itemClass, subclass); return clip;
+        clip.appendChild(image); this.registerSprite(image, itemClass, subclass, glyphLevel); return clip;
     }
-    private registerSprite(element: HTMLElement, itemClass: string, subclass: string): void {
+    private registerSprite(element: HTMLElement, itemClass: string, subclass: string, glyphLevel = 0): void {
         const filename = Paths.sprites + "/items/" + itemClass + "/" + subclass + ".png";
         element.style.backgroundImage = "url(" + singletons.getSpriteStore().checkPath(filename) + ")";
         element.style.backgroundPosition = "0px 0px";
+        element.style.filter = itemClass === "glyph" ? glyphColourFilter(glyphLevel) : "none";
         this.animatedIcons.set(element, filename);
     }
     private animateIcons(now = Date.now()): void {
@@ -204,6 +223,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	}
 
 	public override onParentClose(): void {
+        ItemUpgradeDialog.pendingOpenRequest = undefined;
 		this.send("close");
         if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh);
         if (this.animationTimer !== undefined) clearInterval(this.animationTimer);
@@ -234,6 +254,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
         if (responseRecipe) this.selectedRecipe = responseRecipe;
         else if (!this.isInteractionStatus(String(data.status || ""))) this.selectedRecipe = undefined;
         this.creatingGlyph = this.glyphMode && data.operation === "create";
+        this.icon.title = this.glyphMode ? "" : this.selectionHint();
         this.itemHeading.hidden = this.glyphMode;
         this.chance.hidden = this.glyphMode; this.fee.hidden = this.glyphMode;
         this.materialHeading.textContent = GameLanguage.getText(this.glyphMode ? "Składniki (masz / potrzeba)" : "Materiały (posiadasz / wymagane)");
@@ -258,7 +279,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 		if (data.name) {
 			this.icon.replaceChildren();
-            this.icon.appendChild(this.spriteIcon(data["class"], data.subclass));
+            this.icon.appendChild(this.spriteIcon(data["class"], data.subclass, 32, this.glyphMode ? Number(data.next_upgrade_level) : 0));
 			const rarity = ItemRarity.fromId(data.rarity_id) || ItemRarity.COMMON;
 			this.nameLabel.textContent = data.name;
 			this.nameLabel.style.color = this.glyphMode ? "#ffcc70" : rarity.colorHex;
@@ -393,7 +414,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
                 button.className = "glyph-recipe-row";
                 this.updateRecipeButton(button, id, ready[index] === "1");
                 if (sprites[index]) {
-                    button.appendChild(this.spriteIcon("glyph", sprites[index], 20));
+                    button.appendChild(this.spriteIcon("glyph", sprites[index], 20, level));
                 }
                 const label = document.createElement("span"); label.textContent = names[index] + " " + ["I", "II", "III"][level - 1]; button.appendChild(label);
                 button.onclick = () => {
@@ -424,6 +445,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		const subclasses = this.list(data.material_subclasses);
 		const required = this.list(data.material_values);
 		const owned = this.list(data.owned_material_values);
+        const glyphLevels = this.list(data.material_glyph_levels);
 		this.materials.className = names.length > 0
 				? "item-upgrade-materials" : "";
 		names.forEach((name, index) => {
@@ -438,9 +460,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			slot.className = "itemSlot item-upgrade-material-slot";
 			const layers = getItemSlotLayers(slot);
 			if (classes[index] && subclasses[index]) {
-                this.registerSprite(layers.icon, classes[index], subclasses[index]);
+                this.registerSprite(layers.icon, classes[index], subclasses[index], Number(glyphLevels[index] || 0));
 			}
-			layers.quantityLabel.textContent = !this.glyphMode && need > 1 ? String(need) : "";
+			layers.quantityLabel.textContent = need > 1 ? String(need) : "";
 
 			const label = document.createElement("div");
 			label.textContent = name;
@@ -509,7 +531,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	private onIconContextMenu(event: MouseEvent): void {
 		event.preventDefault();
-		if (!this.selectedPath) return;
+		if (this.glyphMode || !this.selectedPath) return;
 		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow(
 				"Czynności", new ActionContextMenu(undefined, [{
 					title: "Wyczyść",

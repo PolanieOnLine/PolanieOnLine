@@ -18,12 +18,15 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.UUID;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,6 +42,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+import javax.swing.Scrollable;
 import javax.swing.ToolTipManager;
 import javax.swing.Timer;
 import javax.swing.JComponent;
@@ -60,6 +64,7 @@ import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.sprite.GlyphSprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.constants.Actions;
@@ -76,12 +81,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static final Color AVAILABLE = new Color(92, 190, 105);
 	private static final Color UNAVAILABLE = new Color(225, 90, 75);
 	private static final int CONTENT_WIDTH = 420;
+    private static final int GLYPH_WINDOW_HEIGHT = 568;
 	private static final int MATERIAL_CARD_WIDTH = 112;
 	private static final int MATERIAL_ROW_GAP = 6;
 	private static final Sprite SLOT_BACKGROUND =
 			SpriteStore.get().getSprite("data/gui/slot.png");
 	private static volatile ItemUpgradeWindow instance;
     private static volatile boolean openingGlyphWindow;
+    private static final Set<String> openedWindows = new LinkedHashSet<String>();
+    private static String pendingOpenRequest;
 
 	private final ItemIcon icon = new ItemIcon();
 	private final JLabel itemName = centered(selectionPrompt());
@@ -129,6 +137,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		addCloseListener(new CloseListener() {
 			@Override
 			public void windowClosed(final InternalWindow window) {
+				pendingOpenRequest = null; openingGlyphWindow = false;
 				send("close", null, null);
                 inventoryRefresh.stop(); animationTimer.stop();
 				instance = null;
@@ -141,6 +150,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+                final boolean opening = event.has("phase") && "open".equals(event.get("phase"));
+                if (opening) {
+                    if (event.has("window_request") && !event.get("window_request").equals(pendingOpenRequest)) { openingGlyphWindow = false; return; }
+                    if (event.has("window_id")) {
+                        if (!openedWindows.add(event.get("window_id"))) { openingGlyphWindow = false; return; }
+                        if (openedWindows.size() > 64) openedWindows.remove(openedWindows.iterator().next());
+                    }
+                    pendingOpenRequest = null;
+                }
 				if (instance == null) {
 					if (!event.has("phase") || !"open".equals(event.get("phase"))) {
 						return;
@@ -151,10 +169,23 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				instance.apply(event);
                 openingGlyphWindow = false;
 				instance.setVisible(true);
-				instance.raise();
+				if (opening) instance.raise();
 			}
 		});
 	}
+
+    /** Correlate a table click with its response, including immediately after closing. */
+    public static void openGlyphWorkbench(int tableId) {
+        pendingOpenRequest = UUID.randomUUID().toString();
+        RPAction action = new RPAction(); action.put("type", Actions.ITEM_UPGRADE);
+        action.put("service", "glyph"); action.put("command", "open"); action.put("npc_id", tableId);
+        action.put("window_request", pendingOpenRequest); StendhalClient.get().send(action);
+    }
+
+    @Override public Dimension getPreferredSize() {
+        Dimension natural = super.getPreferredSize();
+        return glyphMode ? new Dimension(natural.width, GLYPH_WINDOW_HEIGHT) : natural;
+    }
 
     @Override public void addNotify() { super.addNotify(); animationTimer.start(); }
     @Override public void removeNotify() { animationTimer.stop(); inventoryRefresh.stop(); super.removeNotify(); }
@@ -191,6 +222,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	/** A smith's preview cannot remain open after leaving the map. */
 	public static void closeOnZoneChange() {
 		SwingUtilities.invokeLater(() -> {
+			pendingOpenRequest = null; openingGlyphWindow = false;
 			if (instance != null) {
 				instance.close();
 			}
@@ -260,7 +292,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				final Dimension size = super.getPreferredSize();
-				return new Dimension(Math.max(CONTENT_WIDTH, size.width), size.height);
+				return new Dimension(Math.max(CONTENT_WIDTH + (glyphMode ? 18 : 0), size.width), size.height);
 			}
 		};
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -286,7 +318,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		content.add(identitySection = sectionPanel("Przedmiot do ulepszenia", identity), BorderLayout.NORTH);
         identityBorder = identitySection.getBorder();
 
-		final JPanel center = plainPanel(new GridBagLayout());
+		final JPanel center = new DetailSections();
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = 0;
 		constraints.weightx = 1.0;
@@ -309,7 +341,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		center.add(materialsSection = sectionPanel("Materiały (posiadasz / potrzebne)", materials),
 				constraints);
 
-		content.add(center, BorderLayout.CENTER);
+        JScrollPane detailScroll = new JScrollPane(center);
+        detailScroll.setBorder(BorderFactory.createEmptyBorder()); detailScroll.setOpaque(false); detailScroll.getViewport().setOpaque(false);
+        detailScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        detailScroll.getVerticalScrollBar().setUnitIncrement(16);
+		content.add(detailScroll, BorderLayout.CENTER);
 
 		final JPanel bottom = plainPanel(new BorderLayout(0, 6));
 		footerTop = plainPanel(new BorderLayout());
@@ -344,8 +380,19 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return content;
 	}
 
+    /** Keep long recipes accessible without resizing or compressing their rows. */
+    private static final class DetailSections extends LayoutPanel implements Scrollable {
+        private static final long serialVersionUID = 1L;
+        DetailSections() { super(new GridBagLayout()); }
+        @Override public Dimension getPreferredScrollableViewportSize() { return getPreferredSize(); }
+        @Override public int getScrollableUnitIncrement(Rectangle visible, int orientation, int direction) { return 16; }
+        @Override public int getScrollableBlockIncrement(Rectangle visible, int orientation, int direction) { return Math.max(16, visible.height - 16); }
+        @Override public boolean getScrollableTracksViewportWidth() { return true; }
+        @Override public boolean getScrollableTracksViewportHeight() { return false; }
+    }
+
 	private void showSelectionPopup(final MouseEvent event) {
-		if (selectedPath == null) {
+		if (glyphMode || selectedPath == null) {
 			return;
 		}
 		final JPopupMenu menu = new JPopupMenu();
@@ -444,15 +491,15 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			level.setText(glyphMode ? (creatingGlyph ? ClientLanguage.getText("Tworzenie · poziom I") : ClientLanguage.getText("Ulepszanie") + " · " + roman(event.getInt("upgrade_level")) + " -> " + roman(event.getInt("next_upgrade_level"))
                     + (event.has("source_location") ? " (" + event.get("source_location") + ")" : ""))
                     : "Poziom ulepszenia: +" + event.getInt("upgrade_level") + " / +" + event.getInt("max_upgrade_level"));
-			icon.setItem(event.get("class"), event.get("subclass"));
-			icon.setToolTipText("Prawy przycisk myszy: wyczyść wybór.");
+			icon.setItem(event.get("class"), event.get("subclass"), glyphMode && event.has("next_upgrade_level") ? event.getInt("next_upgrade_level") : 0);
+			icon.setToolTipText(glyphMode ? null : "Prawy przycisk myszy: wyczyść wybór.");
 		} else if (!preservePreview) {
 			itemName.setText("NO_UPGRADEABLE_ITEMS".equals(state)
 					? (glyphMode ? "Brak glifu do rozwinięcia" : "Brak przedmiotu do ulepszenia")
 					: selectionPrompt());
 			level.setText(selectionInfo());
 			icon.setItem(null, null);
-			icon.setToolTipText(selectionHint());
+			icon.setToolTipText(glyphMode ? null : selectionHint());
 		}
 		if (event.has("name") || !preservePreview) {
 			updateStats(event);
@@ -549,6 +596,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final List<String> subclasses = list(event, "material_subclasses");
 		final List<String> required = list(event, "material_values");
 		final List<String> owned = list(event, "owned_material_values");
+        final List<String> glyphLevels = list(event, "material_glyph_levels");
 		if (names.isEmpty()) {
 			showEmptyMaterials();
 			return;
@@ -563,7 +611,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final JComponent card = materialCard(names.get(index),
 					index < classes.size() ? classes.get(index) : null,
 					index < subclasses.size() ? subclasses.get(index) : null,
-					have, need, cardWidth);
+					have, need, cardWidth, index < glyphLevels.size() ? integer(glyphLevels.get(index)) : 0);
 			materials.add(card);
 			rowHeight = Math.max(rowHeight, card.getPreferredSize().height);
 		}
@@ -590,12 +638,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 	private JComponent materialCard(final String name,
 			final String itemClass, final String subclass, final int owned,
-			final int required, final int cardWidth) {
+			final int required, final int cardWidth, final int glyphLevel) {
 		final boolean available = owned >= required;
 		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
 		final JPanel card = plainPanel(new BorderLayout(0, 3));
 		final JPanel slot = plainPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		slot.add(new MaterialIcon(itemClass, subclass, glyphMode ? 0 : required));
+		slot.add(new MaterialIcon(itemClass, subclass, required, glyphLevel));
 		card.add(slot, BorderLayout.NORTH);
 
 		final JPanel description = plainPanel(new BorderLayout(0, 2));
@@ -747,7 +795,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
             Graphics2D copy = (Graphics2D)graphics.create();
             if (!row.ready && !selected) copy.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.45f));
             copy.translate(x, y); copy.scale(0.5, 0.5);
-            itemSprite("glyph", row.sprite).draw(copy, 0, 0); copy.dispose();
+            itemSprite("glyph", row.sprite, row.level).draw(copy, 0, 0); copy.dispose();
         }
     }
 
@@ -923,13 +971,18 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
     private Sprite itemSprite(String itemClass, String subclass) {
+        return itemSprite(itemClass, subclass, 0);
+    }
+    private Sprite itemSprite(String itemClass, String subclass, int glyphLevel) {
         String path = "data/sprites/items/" + itemClass + "/" + subclass + ".png";
-        Sprite sprite = itemSprites.get(path);
+        String key = path + "#" + glyphLevel;
+        Sprite sprite = itemSprites.get(key);
         if (sprite == null) {
             SpriteStore store = SpriteStore.get(); Sprite sheet = store.getSprite(path);
+            if ("glyph".equals(itemClass)) sheet = GlyphSprite.forLevel(sheet, glyphLevel);
             sprite = sheet.getWidth() > 32 ? store.getAnimatedSprite(sheet, 0, 0, sheet.getWidth() / 32, 32, 32, 100)
                     : sheet.getHeight() > 32 ? store.getTile(sheet, 0, 0, 32, 32) : sheet;
-            itemSprites.put(path, sprite);
+            itemSprites.put(key, sprite);
         }
         return sprite;
     }
@@ -945,10 +998,13 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 
 		private void setItem(final String itemClass, final String subclass) {
+            setItem(itemClass, subclass, 0);
+        }
+        private void setItem(final String itemClass, final String subclass, final int glyphLevel) {
 			if (itemClass == null || subclass == null) {
 				sprite = null;
 			} else {
-                sprite = itemSprite(itemClass, subclass);
+                sprite = itemSprite(itemClass, subclass, glyphLevel);
 			}
 			repaint();
 		}
@@ -986,11 +1042,11 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		private final Sprite quantity;
 
 		private MaterialIcon(final String itemClass, final String subclass,
-				final int required) {
+				final int required, final int glyphLevel) {
 			setPreferredSize(new Dimension(40, 40));
 			setMinimumSize(new Dimension(40, 40));
             sprite = itemClass == null || itemClass.isEmpty() || subclass == null || subclass.isEmpty()
-                    ? null : itemSprite(itemClass, subclass);
+                    ? null : itemSprite(itemClass, subclass, glyphLevel);
 			quantity = required > 1 ? TextSprite.createTextSprite(
 					Integer.toString(required), Color.WHITE) : null;
 		}

@@ -14,11 +14,16 @@ import { stendhal } from "../stendhal";
 import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";
 import { Paths } from "../data/Paths";
+import { ItemUpgradeDialog } from "../ui/dialog/ItemUpgradeDialog";
 
 
 export class UseableEntity extends Entity {
 	override zIndex = 3000
 	action = "use";
+
+    override getDefaultAction(): any {
+        return this["_name"] === "rune_workbench" ? ItemUpgradeDialog.glyphOpenAction(Number(this["id"])) : super.getDefaultAction();
+    }
 
 	constructor() {
 		super();
@@ -47,6 +52,9 @@ export class UseableEntity extends Entity {
 
 	override buildActions(list: MenuItem[]) {
 		super.buildActions(list);
+        if (this["_name"] === "rune_workbench") {
+            for (const entry of list) if (entry.type === "use") entry.action = () => this.onclick(0, 0);
+        }
 		// FIXME: Java client adds "look" to Entity super class. Should this do the same? If so, there
 		//        is an issue where certain entities, such as signs, end up with two options, "read" &
 		//        "look" which do the same thing.

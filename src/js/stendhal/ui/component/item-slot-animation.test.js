@@ -25,7 +25,12 @@ function harness() {
 		}
 	}
 	const exports = {};
+    const glyphAppearance = {};
+    vm.runInNewContext(ts.transpileModule(readFileSync(path.join(__dirname, "../../data/GlyphAppearance.ts"), "utf8"), {
+        compilerOptions: {module: ts.ModuleKind.CommonJS}
+    }).outputText, {exports: glyphAppearance});
 	const dependencies = {
+        "../../data/GlyphAppearance": glyphAppearance,
 		"../../SingletonRepo": {singletons: {getSpriteStore: () => ({get: () => source})}},
 		"../../sprite/ItemRarityEffects": {ItemRarityEffects: {getFrame: () => {metrics.outlines++; return {outline: true};}}},
 		"../../util/AdminDiagnostics": {AdminDiagnostics: {get: key => !!flags[key]}}
@@ -74,6 +79,15 @@ test("state rows and diagnostic outline visibility select their own reusable atl
 	h.flags.hideRarity = false; h.item.row = 0; h.Animation.update(target, icon, h.item);
 	assert.equal(h.metrics.encodes, 3);
 	assert.equal(target.children.length, 1);
+    h.item.class = "glyph"; h.item.glyph_level = 1; h.Animation.update(target, icon, h.item);
+    assert.equal(target.children[0].style.filter, "saturate(0.55)");
+    h.item.glyph_level = 2; h.Animation.update(target, icon, h.item);
+    assert.equal(target.children[0].style.filter, "none");
+    h.item.glyph_level = 3; h.Animation.update(target, icon, h.item);
+    assert.equal(target.children[0].style.filter, "saturate(1.55)");
+    assert.equal(h.metrics.encodes, 3, "Changing glyph tier reuses every animation frame");
+    h.item.class = "sword"; h.Animation.update(target, icon, h.item);
+    assert.equal(target.children[0].style.filter, "");
 });
 
 test("pending atlas decoding keeps original icons visible until the replacement is ready", () => {

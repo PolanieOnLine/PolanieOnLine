@@ -4,10 +4,13 @@ import static org.junit.Assert.*;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -32,7 +35,9 @@ import org.junit.Test;
 
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.AnimatedSprite;
+import games.stendhal.client.sprite.GlyphSprite;
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
 import games.stendhal.client.gui.styled.styles.StyleFactory;
 import marauroa.common.game.RPEvent;
@@ -170,6 +175,36 @@ public class ItemUpgradeWindowTest {
     }
 
     @Test
+    public void glyphLevelsChangeColourWithoutChangingTransparencyOrAnimationSheetSize() throws Exception {
+        onEdt(() -> {
+            Sprite base = SpriteStore.get().getSprite("data/sprites/items/glyph/glyph_attack.png");
+            assertSame(base, GlyphSprite.forLevel(base, 2));
+            BufferedImage original = spriteImage(base);
+            double previous = -1;
+            for (int tier = 1; tier <= 3; tier++) {
+                Sprite sprite = GlyphSprite.forLevel(base, tier);
+                assertEquals(base.getWidth(), sprite.getWidth()); assertEquals(base.getHeight(), sprite.getHeight());
+                BufferedImage image = spriteImage(sprite); double saturation = 0;
+                for (int y = 0; y < image.getHeight(); y++) for (int x = 0; x < image.getWidth(); x++) {
+                    int pixel = image.getRGB(x, y); assertEquals(original.getRGB(x, y) >>> 24, pixel >>> 24);
+                    if ((pixel >>> 24) != 0) saturation += colorSaturation(pixel);
+                }
+                assertTrue("Higher glyph tiers must have richer colours", saturation > previous); previous = saturation;
+            }
+        });
+    }
+
+    private static double colorSaturation(int pixel) {
+        float[] hsb = Color.RGBtoHSB((pixel >> 16) & 255, (pixel >> 8) & 255, pixel & 255, null);
+        return hsb[1];
+    }
+
+    private static BufferedImage spriteImage(Sprite sprite) {
+        BufferedImage image = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics(); sprite.draw(g, 0, 0); g.dispose(); return image;
+    }
+
+    @Test
     public void inventoryChangesInvalidateTheGlyphReceiptAndRefreshOnlyWhenContentsChange() throws Exception {
         RPObject player = new RPObject(); player.addSlot("bag");
         RPObject material = new RPObject(); material.put("id", 1); material.put("name", "fragment glifu"); material.put("quantity", 2);
@@ -216,8 +251,35 @@ public class ItemUpgradeWindowTest {
             assertFalse(((JPanel)field("costSection")).isVisible()); assertFalse(label("status").isVisible());
             assertTrue(allText((Container)field("stats")).contains("Po 10 s bez zadawania i otrzymywania obrażeń."));
             assertTrue(allText((Container)field("stats")).contains("8 PZ"));
-            assertTrue("The compact workbench must fit comfortably on the game screen", window.getHeight() < 520);
+            int height = window.getHeight();
+            assertTrue("Reserve room for the largest two-row recipe", height >= 540 && height <= 580);
+            assertNull(((JComponent)field("icon")).getToolTipText());
+            assertNotNull(nestedField(findMaterialIcon((Container)resources.getComponent(2)), "quantity"));
+            apply(glyphSelectionPreview("1:glif siły", "glif siły"));
+            assertEquals("Changing recipes must not resize the workbench", height, window.getHeight());
         });
+    }
+
+    @Test
+    public void repeatedOpenCannotResetSelectionOrReopenAClosedWindow() throws Exception {
+        RPEvent open = empty(); open.put("service", "glyph"); open.put("window_id", "replay-fixture");
+        onEdt(() -> {
+            Field active = ItemUpgradeWindow.class.getDeclaredField("instance"); active.setAccessible(true); active.set(null, window);
+            new JPanel().add(window);
+            ItemUpgradeWindow.show(open);
+        });
+        onEdt(() -> {
+            apply(glyphSelectionPreview("1:glif siły", "glif siły"));
+            ItemUpgradeWindow.show(open);
+        });
+        onEdt(() -> {
+            assertEquals("1:glif siły", field("selectedRecipe"));
+            Field provider = ItemUpgradeWindow.class.getDeclaredField("npcId"); provider.setAccessible(true); provider.setInt(window, 0);
+            window.close(); ItemUpgradeWindow.show(open);
+            RPEvent late = (RPEvent)open.clone(); late.put("window_id", "late-fixture"); late.put("window_request", "closed-click");
+            ItemUpgradeWindow.show(late);
+        });
+        onEdt(() -> assertFalse(ItemUpgradeWindow.isOpenForItemSelection()));
     }
 
     private RPEvent glyphSelectionPreview(String id, String name) {

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 import games.stendhal.common.Translation;
 import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.glyph.GlyphUpgradePresentation;
@@ -76,6 +77,9 @@ public final class ItemUpgradeEvent extends RPEvent {
         for (String key : new String[] {"recipe_ids", "recipe_names", "recipe_levels", "recipe_ready", "recipe_subclasses", "stat_keys", "stat_short_names", "stat_note_keys", "stat_note_values"}) {
             add(rpclass, key, Type.VERY_LONG_STRING);
         }
+        add(rpclass, "window_id", Type.STRING);
+        add(rpclass, "window_request", Type.STRING);
+        add(rpclass, "material_glyph_levels", Type.VERY_LONG_STRING);
 	}
 
 	private static void add(final RPClass rpclass, final String name,
@@ -110,6 +114,7 @@ public final class ItemUpgradeEvent extends RPEvent {
 		super(Events.ITEM_UPGRADE);
 		put("npc_id", npcId);
 		put("phase", phase);
+        if (PHASE_OPEN.equals(phase)) put("window_id", UUID.randomUUID().toString());
 		putCandidates(candidates);
 
 		if (preview != null) {
@@ -252,13 +257,16 @@ public final class ItemUpgradeEvent extends RPEvent {
         for (String name : required.keySet()) owned.put(name, service.getResourceCount(player, name));
         event.putMaterials(required, owned);
         List<String> names = new ArrayList<String>(event.getList("material_names"));
+        List<String> glyphLevels = new ArrayList<String>();
         int index = 0;
         for (String name : required.keySet()) {
             Item ingredient = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
             if (GlyphProgressionService.isUpgradeable(ingredient)) names.set(index, names.get(index) + " I");
+            glyphLevels.add(GlyphProgressionService.isUpgradeable(ingredient) ? "1" : "0");
             index++;
         }
         event.put("material_names", names);
+        event.put("material_glyph_levels", glyphLevels);
         if (!entry.creates()) event.prependSourceIngredient(player, entry, display);
         return event;
     }
@@ -277,9 +285,9 @@ public final class ItemUpgradeEvent extends RPEvent {
     }
 
     private void prependSourceIngredient(Player player, Entry entry, Item template) {
-        String[] keys = {"material_names", "material_classes", "material_subclasses", "material_values", "owned_material_values"};
+        String[] keys = {"material_names", "material_classes", "material_subclasses", "material_values", "owned_material_values", "material_glyph_levels"};
         String[] values = {Translation.getText(player.getLanguage(), entry.name) + " " + (entry.level == 2 ? "I" : "II"),
-                template.getItemClass(), template.getItemSubclass(), "1", Integer.toString(entry.sourceCount(player))};
+                template.getItemClass(), template.getItemSubclass(), "1", Integer.toString(entry.sourceCount(player)), Integer.toString(entry.level - 1)};
         for (int index = 0; index < keys.length; index++) {
             List<String> list = new ArrayList<String>(getList(keys[index])); list.add(0, values[index]); put(keys[index], list);
         }

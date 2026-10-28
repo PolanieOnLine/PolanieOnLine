@@ -17,6 +17,7 @@ import java.util.List;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.StatefulEntity;
+import games.stendhal.client.gui.ItemUpgradeWindow;
 
 /**
  * The 2D view of a useable entity
@@ -105,7 +106,9 @@ class UseableEntity2DView<T extends StatefulEntity> extends VariableSpriteEntity
 			return;
 		}
 		if (at.getActionCode().equals(this.action.getActionCode())) {
-			at.send(at.fillTargetInfo(entity));
+            if (entity.getRPObject().has("name") && "rune_workbench".equals(entity.getRPObject().get("name"))) {
+                ItemUpgradeWindow.openGlyphWorkbench(entity.getRPObject().getID().getObjectID());
+            } else at.send(at.fillTargetInfo(entity));
 		} else {
 			super.onAction(at);
 		}

@@ -16,6 +16,7 @@ import { TextSprite } from "../sprite/TextSprite";
 import { ItemRarityEffects } from "../sprite/ItemRarityEffects";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
+import { glyphColourFilter } from "../data/GlyphAppearance";
 import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
 import { GameLanguage } from "../util/GameLanguage";
@@ -104,7 +105,10 @@ export class Item extends Entity {
 
 	drawAt(ctx: RenderingContext2D, x: number, y: number) {
 		if (this.sprite) {
-			this.drawSpriteAt(ctx, x, y);
+            const filter = this["class"] === "glyph" ? glyphColourFilter(Number(this["glyph_level"] || 0)) : "none";
+            if (filter !== "none") {
+                ctx.save(); ctx.filter = filter; this.drawSpriteAt(ctx, x, y); ctx.restore();
+            } else this.drawSpriteAt(ctx, x, y);
 			let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
 			if (!textMetrics) {
 				throw new Error("textMetrics is undefined");

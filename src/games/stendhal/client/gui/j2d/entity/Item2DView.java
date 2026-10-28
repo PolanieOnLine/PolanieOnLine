@@ -38,6 +38,7 @@ import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.ItemRarityOutline;
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.sprite.GlyphSprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.MathHelper;
@@ -104,6 +105,9 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 		 * Items are always 1x1 (they need to fit in entity slots). Extra
 		 * columns are animation, extra rows are different states.
 		 */
+        if ("glyph".equals(entity.getEntityClass()) && entity.getRPObject().has("glyph_level")) {
+            sprite = GlyphSprite.forLevel(sprite, entity.getRPObject().getInt("glyph_level"));
+        }
 		final int width = sprite.getWidth();
 		final int yOffset = 32 * entity.getState();
 		store.getTile(sprite, 0, yOffset, IGameScreen.SIZE_UNIT_PIXELS,

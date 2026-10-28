@@ -2303,6 +2303,8 @@ td.number {
 
 /* The workbench adds a recipe catalogue beside the shared upgrade details. */
 .item-upgrade-dialog.glyph-workbench-dialog { width: 720px; max-width: calc(100vw - 32px); }
+.glyph-workbench-dialog .glyph-workbench-layout { height: 520px; }
+.glyph-workbench-dialog .item-upgrade-details { min-height: 0; overflow-y: auto; }
 .glyph-workbench-layout { display: flex; align-items: stretch; gap: 12px; }
 .item-upgrade-details { flex: 1 1 auto; min-width: 0; }
 .glyph-recipe-catalog { flex: 0 0 240px; height: auto; max-height: 520px; contain: size; display: flex; flex-direction: column; overflow: hidden; padding: 3px; border: 1px solid #826a4b; }
@@ -2318,7 +2320,7 @@ td.number {
 .glyph-recipe-row:hover { background: rgba(255,190,64,0.12); }
 .glyph-recipe-selected { opacity: 1; border-color: #c59b57; background: rgba(255,190,64,0.16); }
 @media (max-width: 620px) {
- .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; }
+ .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; height: min(700px, 75vh); }
  .glyph-recipe-catalog { flex: 0 0 auto; height: 180px; }
 }
 

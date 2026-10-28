@@ -194,6 +194,11 @@ public class RuneMasterNPCTest {
         assertTrue(table.onUsed(player));
         RPEvent open = lastUpgradeEvent(player);
         assertEquals("glyph", open.get("service")); assertEquals("open", open.get("phase"));
+        RPAction reopen = new RPAction(); reopen.put("service", "glyph"); reopen.put("command", "open");
+        reopen.put("npc_id", table.getID().getObjectID()); reopen.put("window_request", "table-click");
+        new ItemUpgradeAction().onAction(player, reopen);
+        assertEquals("table-click", lastUpgradeEvent(player).get("window_request"));
+        assertFalse(open.get("window_id").equals(lastUpgradeEvent(player).get("window_id")));
         action(player, table, "preview", second, null);
         RPEvent preview = lastUpgradeEvent(player);
         assertEquals(2, preview.getInt("upgrade_level"));
@@ -202,6 +207,8 @@ public class RuneMasterNPCTest {
         assertTrue(preview.getList("upgraded_stat_values").contains("500"));
         assertTrue(preview.getList("material_values").contains("3000"));
         assertTrue(preview.getList("material_values").contains("60"));
+        assertEquals(preview.getList("material_names").size(), preview.getList("material_glyph_levels").size());
+        assertEquals("2", preview.getList("material_glyph_levels").get(0));
         String token = preview.get("request_token");
         action(player, table, "upgrade", second, token);
         assertEquals(1, GlyphProgressionService.getLevel(first)); assertEquals(3, GlyphProgressionService.getLevel(second));
