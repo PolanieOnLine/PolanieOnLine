@@ -2892,6 +2892,11 @@ public abstract class RPEntity extends CombatEntity {
 	 * Retrieves total ATK value of held weapons.
 	 */
 	public float getItemAtk() {
+		return Math.round(getPreciseItemAtk());
+	}
+
+	/** Keep percentage bonuses unrounded until the actual weapon roll is resolved. */
+	protected double getPreciseItemAtk() {
 		double atkBonus = 0;
 
 		// Obliczanie łącznego bonusu z glifów
@@ -2902,7 +2907,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Inicjalizacja ataku z różnych przedmiotów
-		float totalAttack = getWeaponsAtk(false);
+		double totalAttack = getWeaponsAtk(false);
 
 		if (hasGloves()) {
 			totalAttack += getGloves().getAttack();
@@ -2952,9 +2957,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Dodaj bonus procentowy do całkowitego ataku
-		totalAttack += totalAttack * atkBonus;
-
-		return (int) Math.round(totalAttack);
+		return totalAttack * (1.0 + atkBonus);
 	}
 
 	/** Retrieves melee attack using one server-side damage roll per weapon. */
@@ -3109,9 +3112,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Dodaj bonus procentowy do całkowitej obrony
-		totalDefense += totalDefense * defBonus;
-
-		return (int) Math.round(totalDefense);
+		return (int) Math.round(totalDefense * (1.0 + defBonus));
 	}
 
 	/**

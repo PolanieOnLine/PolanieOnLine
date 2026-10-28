@@ -17,8 +17,10 @@ import games.stendhal.common.Level;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
+import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.npc.action.IncreaseBaseHPAction;
@@ -109,6 +111,35 @@ public class RPEntityWeaponDamageRollTest {
 						weapon, defender));
 
 		assertEquals(expected, attack, 0.0001f);
+	}
+
+	@Test
+	public void glyphAttackPercentagesKeepSmallBonusesInActualWeaponRolls() {
+		for (double bonus : new double[] {4.0, 7.0, 10.0}) {
+			final TestDressedEntity attacker = new TestDressedEntity(
+					Arrays.<Item>asList(fixedWeapon("sword", 10)), 0, bonus);
+			final float expected = (float) (10.0 * (1.0 + bonus / 100.0));
+			assertEquals(expected, attacker.getItemAtkForAttack(), 0.0001f);
+			assertEquals((float) Math.round(expected), attacker.getItemAtk(), 0.0f);
+			assertEquals(expected / 2.0f,
+					attacker.getItemAtkForAttack(weapon -> 0.5), 0.0001f);
+		}
+	}
+
+	@Test
+	public void swarogRoundsTheCompleteDefenseBonusAtEveryLevel() {
+		final Player player = PlayerTestHelper.createPlayer("swarog-rounding");
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("def", "11");
+		player.getSlot("armor").add(new Item("test armor", "armor", "test", attributes));
+		final Glyph glyph = new Glyph("glif Swaroga", "glyph", "glyph_defensive", null);
+		player.getSlot("defensive_rune").add(glyph);
+		for (int level = 1; level <= 3; level++) {
+			GlyphProgressionService.applyLevel(glyph, level);
+			final double bonus = new double[] {8.0, 14.0, 20.0}[level - 1];
+			assertEquals((float) Math.round(11.0 * (1.0 + bonus / 100.0)),
+					player.getItemDef(), 0.0f);
+		}
 	}
 
 	@Test

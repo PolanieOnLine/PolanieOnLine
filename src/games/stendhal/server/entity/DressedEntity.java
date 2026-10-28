@@ -194,7 +194,7 @@ public abstract class DressedEntity extends RPEntity {
 
 		final double glyphAttackMultiplier = 1.0 + glyphAttackBonus;
 		return Math.max(0.0f,
-				(float) (getItemAtk()
+				(float) (getPreciseItemAtk()
 						+ weaponRollDelta * glyphAttackMultiplier));
 	}
 
