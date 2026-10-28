@@ -451,6 +451,8 @@ Południowy-Wschód: Kraków
 			<parameter name="music_volume">0.8</parameter>
 		</attributes>
 
+		<configurator class-name="games.stendhal.server.maps.krakow.woodcutter.CharcoalBurnerNPC" />
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
@@ -505,7 +507,7 @@ Południowy-Wschód: Kraków
 			</implementation>
 		</entity>
 
-		<entity x="56" y="52">
+		<entity x="54" y="48">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.WoodSource">
 				<parameter name="species">polano</parameter>
 			</implementation>
