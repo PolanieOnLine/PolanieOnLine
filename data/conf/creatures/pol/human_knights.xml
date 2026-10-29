@@ -129,6 +129,7 @@
 			<def value="40"/>
 			<armor_type value="heavy"/>
 			<hp value="800"/>
+			<armor_hp value="200"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -263,6 +264,7 @@
 			<def value="90"/>
 			<armor_type value="heavy"/>
 			<hp value="2800"/>
+			<armor_hp value="700"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
 		</attributes>

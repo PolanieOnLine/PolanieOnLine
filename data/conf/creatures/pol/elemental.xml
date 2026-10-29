@@ -144,6 +144,7 @@
 			<def value="750"/>
 			<armor_type value="heavy"/>
 			<hp value="20000"/>
+			<armor_hp value="5000"/>
 			<speed value="0.1"/>
 			<size value="4,3"/>
 			<resistance value="50"/>

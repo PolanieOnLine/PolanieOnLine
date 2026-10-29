@@ -11,6 +11,7 @@
 			<def value="124"/>
 			<armor_type value="medium"/>
 			<hp value="2218"/>
+			<armor_hp value="555"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 		</attributes>
@@ -173,6 +174,7 @@
 			<def value="119"/>
 			<armor_type value="medium"/>
 			<hp value="4300"/>
+			<armor_hp value="1075"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
 		</attributes>
@@ -268,6 +270,7 @@
 			<def value="86"/>
 			<armor_type value="medium"/>
 			<hp value="850"/>
+			<armor_hp value="213"/>
 			<speed value="0.6"/>
 			<size value="2,2"/>
 		</attributes>

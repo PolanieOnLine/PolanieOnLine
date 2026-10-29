@@ -7,6 +7,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -115,6 +118,30 @@ public class CreatureArmorTest {
 			}
 		}
 		assertTrue(foundArmored && foundUnarmored);
+	}
+
+	@Test
+	public void armoredBossesAndAngelsKeepFullHealthWithAdditionalArmor() throws Exception {
+		final Map<String, Integer> expectedHealth = new HashMap<>();
+		expectedHealth.put("serafin", 9000);
+		expectedHealth.put("archanioł", 7000);
+		expectedHealth.put("archanioł ciemności", 18000);
+		expectedHealth.put("Smok Wawelski", 19000);
+		expectedHealth.put("balrog", 10000);
+		expectedHealth.put("czarny rycerz", 800);
+		expectedHealth.put("superczłowiek olbrzym", 4618);
+		for (final DefaultCreature definition : new CreatureGroupsXMLLoader("/data/conf/creatures.xml").load()) {
+			final Integer health = expectedHealth.remove(definition.getCreatureName());
+			if (health == null) {
+				continue;
+			}
+			final Creature creature = definition.getCreature();
+			assertEquals(definition.getCreatureName(), health.intValue(), creature.getBaseHP());
+			assertEquals(health.intValue(), creature.getHP());
+			assertEquals(Math.round(health / 4.0f), creature.getBaseArmorHP());
+			assertEquals(creature.getBaseArmorHP(), creature.getArmorHP());
+		}
+		assertTrue("All representative creatures must be loaded", expectedHealth.isEmpty());
 	}
 
 	private static final class TrackedCreature extends Creature {

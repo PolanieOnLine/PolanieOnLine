@@ -231,6 +231,7 @@
 			<def value="37"/>
 			<armor_type value="light"/>
 			<hp value="461"/>
+			<armor_hp value="115"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 		</attributes>
@@ -572,6 +573,7 @@
 			<def value="36"/>
 			<armor_type value="light"/>
 			<hp value="500"/>
+			<armor_hp value="125"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
