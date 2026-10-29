@@ -8,7 +8,7 @@
 		<attributes>
 			<atk value="186"/>
 			<def value="4"/>
-			<armor value="none"/>
+			<armor_type value="none"/>
 			<hp value="800"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -49,7 +49,7 @@
 		<attributes>
 			<atk value="353"/>
 			<def value="43"/>
-			<armor value="none"/>
+			<armor_type value="none"/>
 			<hp value="140"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -90,7 +90,7 @@
 		<attributes>
 			<atk value="497"/>
 			<def value="35"/>
-			<armor value="none"/>
+			<armor_type value="none"/>
 			<hp value="750"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>

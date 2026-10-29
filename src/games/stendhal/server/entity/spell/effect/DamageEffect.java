@@ -18,7 +18,7 @@ import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnListenerDecorator;
-import games.stendhal.server.core.rule.glyph.GlyphCombatService;
+import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
@@ -64,17 +64,13 @@ public class DamageEffect extends AbstractEffect implements TurnListener {
 		if(numberOfLeftOverHits > 0 && rpEntityToDamage.getHP() > 0) {
 
 			int damageDone = damageOrigin.damageDone(rpEntityToDamage, getAtk(), getNature());
-			final int resolvedDamage = Math.max(0, Math.min(rpEntityToDamage.getHP(),
-					GlyphCombatService.reduceIncomingDamage(rpEntityToDamage, damageDone)));
-			int toSteal = (int) Math.ceil(resolvedDamage * Double.valueOf(getLifesteal()));
-
 			if(damageDone > 0) {
-				rpEntityToDamage.onDamaged(damageOrigin, damageDone);
-				damageOrigin.addEvent(new AttackEvent(true, resolvedDamage, getNature(), null, true));
+				final DamageResult dealt = rpEntityToDamage.receiveCombatDamage(damageOrigin, damageDone);
+				damageOrigin.addEvent(new AttackEvent(true, dealt.getHealthDamage(), getNature(), null, true)
+						.withArmorDamage(dealt.getArmorDamage()));
 				damageOrigin.notifyWorldAboutChanges();
+				damageOrigin.heal((int) Math.ceil(dealt.getHealthDamage() * getLifesteal()));
 			}
-
-			damageOrigin.heal(toSteal);
 			numberOfLeftOverHits = numberOfLeftOverHits -1;
 			if (numberOfLeftOverHits > 0 && rpEntityToDamage.getHP() > 0) {
 				SingletonRepository.getTurnNotifier().notifyInTurns(getRate(), new TurnListenerDecorator(this));

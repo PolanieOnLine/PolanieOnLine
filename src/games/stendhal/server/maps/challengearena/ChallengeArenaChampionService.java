@@ -21,6 +21,7 @@ public final class ChallengeArenaChampionService {
 				tier.getChampionHpMultiplier());
 		creature.setBaseHP(hp);
 		creature.setHP(hp);
+		creature.scaleArmorHP(tier.getChampionHpMultiplier());
 		creature.setAtk(scaleCombat(creature.getAtk(),
 				tier.getChampionAttackMultiplier()));
 		if (creature.getRatk() > 0) {

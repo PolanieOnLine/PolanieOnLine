@@ -153,8 +153,6 @@ public class DamagingArea extends OccupantArea {
 		// logger.info("defense: " + defense);
 		// logger.info("damage: " + damage);
 
-		actualDamage = Math.min(actualDamage, entity.getHP());
-
 		if (actualDamage != 0) {
 			entity.onDamaged(this, actualDamage);
 		}

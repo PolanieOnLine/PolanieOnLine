@@ -10,7 +10,7 @@
 			<atk value="1867"/>
 			<ratk value="1867"/>
 			<def value="98"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="2022"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -59,7 +59,7 @@
 			<atk value="2044"/>
 			<ratk value="2044"/>
 			<def value="107"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="3618"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -107,8 +107,9 @@
 		<attributes>
 			<atk value="803"/>
 			<def value="75"/>
-			<armor value="medium"/>
-			<hp value="300"/>
+			<armor_type value="medium"/>
+			<hp value="240"/>
+			<armor_hp value="60"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -193,8 +194,9 @@
 			<atk value="1511"/>
 			<ratk value="1511"/>
 			<def value="57"/>
-			<armor value="medium"/>
-			<hp value="900"/>
+			<armor_type value="medium"/>
+			<hp value="720"/>
+			<armor_hp value="180"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -240,8 +242,9 @@
 			<atk value="1777"/>
 			<ratk value="1777"/>
 			<def value="115"/>
-			<armor value="medium"/>
-			<hp value="1200"/>
+			<armor_type value="medium"/>
+			<hp value="960"/>
+			<armor_hp value="240"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -285,7 +288,7 @@
 			<atk value="3227"/>
 			<ratk value="3227"/>
 			<def value="127"/>
-			<armor value="heavy"/>
+			<armor_type value="heavy"/>
 			<hp value="3300"/>
 			<speed value="1.0"/>
 			<size value="6,5"/>
@@ -335,8 +338,9 @@
 			<atk value="837"/>
 			<ratk value="837"/>
 			<def value="138"/>
-			<armor value="medium"/>
-			<hp value="1100"/>
+			<armor_type value="medium"/>
+			<hp value="880"/>
+			<armor_hp value="220"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -381,8 +385,9 @@
 		<attributes>
 			<atk value="1836"/>
 			<def value="96"/>
-			<armor value="medium"/>
-			<hp value="1900"/>
+			<armor_type value="medium"/>
+			<hp value="1520"/>
+			<armor_hp value="380"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -430,8 +435,9 @@
 			<atk value="1350"/>
 			<ratk value="1350"/>
 			<def value="153"/>
-			<armor value="medium"/>
-			<hp value="5610"/>
+			<armor_type value="medium"/>
+			<hp value="4488"/>
+			<armor_hp value="1122"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>

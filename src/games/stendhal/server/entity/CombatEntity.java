@@ -73,6 +73,8 @@ public abstract class CombatEntity extends GuidedEntity {
 			// hp/mana/etc.
 			rpclass.addAttribute("base_hp", Type.SHORT);
 			rpclass.addAttribute("hp", Type.SHORT);
+			rpclass.addAttribute("base_armor_hp", Type.INT);
+			rpclass.addAttribute("armor_hp", Type.INT);
 			rpclass.addAttribute("base_mana", Type.INT);
 			rpclass.addAttribute("mana", Type.INT);
 

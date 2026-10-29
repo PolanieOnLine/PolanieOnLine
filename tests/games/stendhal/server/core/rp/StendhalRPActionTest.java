@@ -337,6 +337,38 @@ public class StendhalRPActionTest {
 		}
 	}
 
+	@Test
+	public void lifestealWaitsUntilTheHitReachesHealth() {
+		final Player player = new Player(PlayerTestHelper.createPlayer("armor_lifesteal")) {
+			@Override public boolean canHit(final RPEntity defender) { return true; }
+			@Override public int damageDone(final RPEntity defender, final double attack, final Nature nature) { return 100; }
+		};
+		final Weapon weapon = new Weapon("test lifesteal sword", "sword", "test", null);
+		weapon.put("atk", 30);
+		weapon.put("damage_min", 100);
+		weapon.put("damage_max", 100);
+		weapon.put("rate", 5);
+		weapon.put("lifesteal", 0.5);
+		player.getSlot("rhand").add(weapon);
+		player.initHP(100);
+		player.setHP(50);
+		final Creature target = SingletonRepository.getEntityManager().getCreature("mysz domowa");
+		target.initHP(1000);
+		target.initArmorHP(1000);
+		player.setPosition(5, 5);
+		target.setPosition(6, 5);
+		zone.add(player);
+		zone.add(target);
+		assertTrue(StendhalRPAction.playerAttack(player, target));
+		assertTrue(target.getArmorHP() < 1000);
+		assertEquals(1000, target.getHP());
+		assertEquals(50, player.getHP());
+		target.setArmorHP(0);
+		assertTrue(StendhalRPAction.playerAttack(player, target));
+		assertTrue(target.getHP() < 1000);
+		assertTrue(player.getHP() > 50);
+	}
+
 	private void verifyAmmunitionUse(final String weaponClass, final String ammunitionName,
 			final boolean hits, final boolean adjacent) {
 		final Player player = new Player(PlayerTestHelper.createPlayer("ammunition_user")) {

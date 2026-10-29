@@ -15,6 +15,7 @@ import { Paths } from "../data/Paths";
 export class AttackEvent extends RPEvent {
 
 	public damage!: string;
+	public armor_damage?: string;
 	public type!: string;
 	public weapon!: string;
 
@@ -25,11 +26,12 @@ export class AttackEvent extends RPEvent {
 		}
 		if (this.hasOwnProperty("hit")) {
 			var damage = parseInt(this["damage"], 10);
+			const armorDamage = Number(this["armor_damage"]) || 0;
 			if (this.hasOwnProperty("parried")) {
 				target.onBlocked(entity);
 				target.attackResult = target.createResultIcon(Paths.sprites + "/ideas/parry.png");
-			} else if (damage !== 0) {
-				target.onDamaged(entity, damage);
+			} else if (damage !== 0 || armorDamage > 0) {
+				target.onDamaged(entity, damage + armorDamage);
 			} else {
 				target.onBlocked(entity);
 			}

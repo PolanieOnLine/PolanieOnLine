@@ -84,7 +84,7 @@ public class LifeDrainArea extends OccupantArea {
 		damage = Math.min(damage, hp);
 
 		if (damage != 0) {
-			entity.onDamaged(this, damage);
+			entity.onHealthDamaged(this, damage);
 		}
 
 		return true;

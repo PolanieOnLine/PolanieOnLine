@@ -90,6 +90,7 @@ public abstract class RPEntity extends AudibleEntity {
 	 * Hp and max HP property.
 	 */
 	public static final Property PROP_HP_RATIO = new Property();
+	public static final Property PROP_ARMOR_HP = new Property();
 	/**
 	 * Property for showing and hiding the HP bar.
 	 */
@@ -213,6 +214,8 @@ public abstract class RPEntity extends AudibleEntity {
 	private String gender;
 
 	private int baseHP;
+	private int armorHP;
+	private int baseArmorHP;
 
 	private float hpRatio;
 
@@ -347,6 +350,12 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public int getBaseHP() {
 		return baseHP;
+	}
+
+	public int getArmorHP() { return Math.max(0, Math.min(baseArmorHP, armorHP)); }
+	public int getBaseArmorHP() { return Math.max(0, baseArmorHP); }
+	public double getArmorRatio() {
+		return baseArmorHP > 0 ? getArmorHP() / (double) baseArmorHP : 0.0;
 	}
 
 	/**
@@ -1147,6 +1156,8 @@ public abstract class RPEntity extends AudibleEntity {
 		} else {
 			hp = 0;
 		}
+		baseArmorHP = object.has("base_armor_hp") ? object.getInt("base_armor_hp") : 0;
+		armorHP = object.has("armor_hp") ? object.getInt("armor_hp") : 0;
 
 		/*
 		 * HP ratio
@@ -1266,6 +1277,8 @@ public abstract class RPEntity extends AudibleEntity {
 
 		addSounds(SoundLayer.FIGHTING_NOISE.groupName, "block",
 				"clang-metallic-1",	"clang-dull-1");
+		addSounds(SoundLayer.FIGHTING_NOISE.groupName, "armor-break",
+				"pol-armor-break");
 	}
 
 	/**
@@ -1380,6 +1393,23 @@ public abstract class RPEntity extends AudibleEntity {
 			}
 
 			boolean hpRatioChange = false;
+			if (changes.has("base_armor_hp") || changes.has("armor_hp")) {
+				final int previousArmor = getArmorHP();
+				if (changes.has("base_armor_hp")) {
+					baseArmorHP = changes.getInt("base_armor_hp");
+				}
+				if (changes.has("armor_hp")) {
+					armorHP = changes.getInt("armor_hp");
+				}
+				if (object.has("armor_hp") && previousArmor > getArmorHP() && isInHearingRange()) {
+					addTextIndicator(String.valueOf(getArmorHP() - previousArmor), NotificationType.ARMOR);
+					if (getArmorHP() == 0) {
+						addTextIndicator(getText("Rozbite opancerzenie"), NotificationType.ARMOR);
+						playRandomSoundFromCategory(SoundLayer.FIGHTING_NOISE.groupName, "armor-break");
+					}
+				}
+				fireChange(PROP_ARMOR_HP);
+			}
 
 			/*
 			 * Base HP
@@ -1757,6 +1787,11 @@ public abstract class RPEntity extends AudibleEntity {
 		if (changes.has("no_hpbar")) {
 			showHP = true;
 			fireChange(PROP_HP_DISPLAY);
+		}
+		if (changes.has("armor_hp") || changes.has("base_armor_hp")) {
+			if (changes.has("armor_hp")) armorHP = 0;
+			if (changes.has("base_armor_hp")) baseArmorHP = 0;
+			fireChange(PROP_ARMOR_HP);
 		}
 	}
 

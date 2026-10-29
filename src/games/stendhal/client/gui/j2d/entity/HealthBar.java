@@ -27,6 +27,7 @@ class HealthBar implements ChangeListener {
 	private final int width, height;
 	private BufferedImage image;
 	private final LinearScalingModel model;
+	private double armorRatio;
 	/** A flag for signaling that the image needs updating. */
 	private volatile boolean needsRedraw = true;
 
@@ -70,6 +71,14 @@ class HealthBar implements ChangeListener {
 		model.setValue(hpRatio);
 	}
 
+	void setArmorRatio(final double ratio) {
+		final double clamped = Double.isFinite(ratio) ? Math.max(0.0, Math.min(1.0, ratio)) : 0.0;
+		if (armorRatio != clamped) {
+			armorRatio = clamped;
+			needsRedraw = true;
+		}
+	}
+
 	/**
 	 * Draw the health bar.
 	 *
@@ -110,6 +119,10 @@ class HealthBar implements ChangeListener {
 
 		g.setColor(determineColor());
 		g.fillRect(1, 1, model.getRepresentation(), height - 2);
+		if (armorRatio > 0.0) {
+			g.setColor(new Color(154, 164, 175));
+			g.fillRect(1, 1, (int) Math.round((width - 2) * armorRatio), height - 2);
+		}
 
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, width - 1, height - 1);

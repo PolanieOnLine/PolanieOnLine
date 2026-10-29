@@ -50,8 +50,9 @@
 		<attributes>
 			<atk value="421"/>
 			<def value="52"/>
-			<armor value="heavy"/>
-			<hp value="500"/>
+			<armor_type value="heavy"/>
+			<hp value="400"/>
+			<armor_hp value="100"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="100"/>
@@ -86,7 +87,7 @@
 		<attributes>
 			<atk value="1292"/>
 			<def value="154"/>
-			<armor value="none"/>
+			<armor_type value="none"/>
 			<hp value="4118"/>
 			<speed value="0.8"/>
 			<size value="4,3"/>
@@ -130,7 +131,7 @@
 		<attributes>
 			<atk value="462"/>
 			<def value="65"/>
-			<armor value="none"/>
+			<armor_type value="none"/>
 			<hp value="500"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>

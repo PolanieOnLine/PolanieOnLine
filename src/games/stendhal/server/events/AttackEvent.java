@@ -37,6 +37,7 @@ public class AttackEvent extends RPEvent {
 		final RPClass rpclass = new RPClass(Events.ATTACK);
 		rpclass.addAttribute(HIT_ATTR, Type.FLAG);
 		rpclass.addAttribute(DAMAGE_ATTR, Type.INT);
+		rpclass.addAttribute("armor_damage", Type.INT);
 		rpclass.addAttribute(DAMAGE_TYPE_ATTR, Type.INT);
 		rpclass.addAttribute(RANGED_ATTR, Type.FLAG);
 		rpclass.addAttribute(WEAPON_ATTR, Type.STRING);
@@ -58,6 +59,13 @@ public class AttackEvent extends RPEvent {
 	 */
 	public AttackEvent(boolean canHit, int damage, Nature type, String weapon, boolean ranged) {
 		this(canHit, damage, type, weapon, ranged, false);
+	}
+
+	public AttackEvent withArmorDamage(final int damage) {
+		if (damage > 0) {
+			put("armor_damage", damage);
+		}
+		return this;
 	}
 
 	/**

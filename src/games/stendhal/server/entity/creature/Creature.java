@@ -241,6 +241,7 @@ public class Creature extends NPC {
 		if (copy.has("armor_type")) {
 			setArmorType(copy.get("armor_type"));
 		}
+		initArmorHP(copy.getBaseArmorHP());
 		if (Occasion.MOREXP) {
 			setXP((int) (copy.getXP() * 1.5));
 		} else if (Occasion.SECOND_WORLD) {
@@ -427,11 +428,16 @@ public class Creature extends NPC {
 		return has("armor_type") ? get("armor_type") : "none";
 	}
 
+	public String getEffectiveArmorType() {
+		return getBaseArmorHP() > 0 && getArmorHP() == 0 ? "none" : getArmorType();
+	}
+
 	@Override
 	public String describe() {
 		final CreatureArmor armor = CreatureArmor.fromId(getArmorType());
 		return super.describe() + (armor == null || armor == CreatureArmor.NONE
-				? "" : " " + armor.getLabel() + ".");
+				? "" : " " + armor.getLabel() + ".")
+				+ (getBaseArmorHP() > 0 ? " Opancerzenie: " + getArmorHP() + "/" + getBaseArmorHP() + "." : "");
 	}
 
 	public Creature getNewInstance() {

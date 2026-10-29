@@ -78,6 +78,15 @@ export class RPEntity extends ActiveEntity {
 		super.set(key, value);
 		if (key == "text") {
 			this.say(value);
+		} else if (key === "armor_hp" || key === "base_armor_hp") {
+			this[key] = Math.max(0, Number.parseInt(value, 10) || 0);
+			if (key === "armor_hp" && oldValue !== undefined && this[key] < Number(oldValue)) {
+				this.addFloater(String(this[key] - Number(oldValue)), "#9aa4af");
+				if (this[key] === 0) {
+					this.addFloater(GameLanguage.getText("Rozbite opancerzenie"), "#9aa4af");
+					stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, "pol-armor-break", 1);
+				}
+			}
 		} else if (["hp", "base_hp"].indexOf(key) !== -1) {
 			this[key] = parseInt(value, 10);
 			if (key === "hp" && oldValue != undefined) {
@@ -662,6 +671,12 @@ export class RPEntity extends ActiveEntity {
 		var hpRatio = this["hp"] / this["base_hp"];
 		ctx.fillStyle = Color.getStatBarColor(hpRatio);
 		ctx.fillRect(drawX, drawY, this["drawWidth"] * hpRatio, HEALTH_BAR_HEIGHT - 2);
+		const maximumArmor = Number(this["base_armor_hp"]) || 0;
+		const armor = Math.max(0, Number(this["armor_hp"]) || 0);
+		if (maximumArmor > 0 && armor > 0) {
+			ctx.fillStyle = "#9aa4af";
+			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor), HEALTH_BAR_HEIGHT - 2);
+		}
 	}
 
 	createTitleTextSprite() {

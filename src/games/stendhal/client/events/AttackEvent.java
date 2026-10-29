@@ -41,13 +41,14 @@ public class AttackEvent extends Event<RPEntity> {
 			ParryIndicator.clear(target);
 			if (event.has("hit")) {
 				int damage = event.getInt("damage");
+				final int armorDamage = event.has("armor_damage") ? event.getInt("armor_damage") : 0;
 				if (event.has("parried")) {
 					// Preserve normal block timing/sound behavior while allowing the
 					// player view to replace the generic block icon with parry.png.
 					target.onBlocked();
 					ParryIndicator.mark(target);
-				} else if (damage != 0) {
-					target.onDamaged(entity, damage);
+				} else if (damage != 0 || armorDamage > 0) {
+					target.onDamaged(entity, damage + armorDamage);
 				} else {
 					target.onBlocked();
 				}

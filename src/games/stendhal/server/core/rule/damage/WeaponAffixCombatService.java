@@ -90,7 +90,7 @@ public final class WeaponAffixCombatService {
 					LEGENDARY_EXECUTIONER_ATTRIBUTE,
 					LEGENDARY_EXECUTION_DAMAGE_BONUS);
 		}
-		if (isCrushingBlowActive(defender)) {
+		if (defender.getBaseArmorHP() == 0 && isCrushingBlowActive(defender)) {
 			multiplier *= 1.0 + getWeightedFixedBonus(weapons,
 					LEGENDARY_CRUSHING_BLOW_ATTRIBUTE,
 					LEGENDARY_CRUSHING_BLOW_DAMAGE_BONUS);
@@ -151,9 +151,14 @@ public final class WeaponAffixCombatService {
 		}
 		final WeaponArmorInteractionService.ArmorTier tier =
 				WeaponArmorInteractionService.classify(
-						((Creature) defender).getArmorType());
+						((Creature) defender).getEffectiveArmorType());
 		return tier == WeaponArmorInteractionService.ArmorTier.MEDIUM
 				|| tier == WeaponArmorInteractionService.ArmorTier.HEAVY;
+	}
+
+	public static double getArmorBreakingMultiplier(final List<Item> weapons, final RPEntity target) {
+		return isCrushingBlowActive(target) ? 1.0 + getWeightedFixedBonus(weapons,
+				LEGENDARY_CRUSHING_BLOW_ATTRIBUTE, LEGENDARY_CRUSHING_BLOW_DAMAGE_BONUS) : 1.0;
 	}
 
 	private static boolean isBelowHealthThreshold(final RPEntity defender,
@@ -213,8 +218,14 @@ public final class WeaponAffixCombatService {
 
 	public static void applyOnHitProcs(final Player attacker,
 			final RPEntity defender, final List<Item> weapons, final int damage) {
+		applyOnHitProcs(attacker, defender, weapons, damage, damage);
+	}
+
+	public static void applyOnHitProcs(final Player attacker,
+			final RPEntity defender, final List<Item> weapons, final int damage,
+			final int totalDamage) {
 		if (attacker == null || defender == null || defender.getHP() <= 0
-				|| damage <= 0) {
+				|| totalDamage <= 0) {
 			return;
 		}
 
@@ -226,7 +237,7 @@ public final class WeaponAffixCombatService {
 		final double poisonChance = effectiveStatusChance(defender,
 				StatusType.POISONED,
 				combinedProcChance(weapons, POISON_ON_HIT_ATTRIBUTE));
-		if (poisonChance > 0.0
+		if (damage > 0 && poisonChance > 0.0
 				&& rollChance(poisonChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
 			defender.getStatusList().inflictStatus(createPoisonStatus(damage),
 					attacker);

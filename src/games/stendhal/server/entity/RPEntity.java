@@ -38,6 +38,8 @@ import games.stendhal.server.core.rule.damage.WallOfGordService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
+import games.stendhal.server.core.rule.damage.ArmorPoolService;
+import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.maps.quests.FirstGlyph;
 import games.stendhal.common.constants.SoundLayer;
@@ -1427,27 +1429,53 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param damage
 	 */
 	public void onDamaged(final Entity attacker, final int incomingDamage) {
-		final int damage = Math.min(getHP(),
-				GlyphCombatService.reduceIncomingDamage(this, incomingDamage));
+		receiveCombatDamage(attacker, incomingDamage);
+	}
+
+	public DamageResult receiveCombatDamage(final Entity attacker, final int incomingDamage) {
+		return receiveCombatDamage(attacker, incomingDamage, 1.0);
+	}
+
+	public DamageResult receiveCombatDamage(final Entity attacker, final int incomingDamage,
+			final double armorMultiplier) {
+		return receiveDamage(attacker, incomingDamage, armorMultiplier, false);
+	}
+
+	/** Existing wounds bypass armor; their original attacker still receives credit. */
+	public void onHealthDamaged(final Entity attacker, final int damage) {
+		receiveDamage(attacker, damage, 1.0, true);
+	}
+
+	private DamageResult receiveDamage(final Entity attacker, final int incomingDamage,
+			final double armorMultiplier, final boolean bypassArmor) {
+		if ((this instanceof Creature && ((Creature) this).isImmortal())
+				|| (this instanceof Player && ((Player) this).isArenaSpectator())) {
+			return DamageResult.NONE;
+		}
+		final DamageResult result = ArmorPoolService.resolve(this,
+				GlyphCombatService.reduceIncomingDamage(this, incomingDamage), armorMultiplier, bypassArmor);
+		final int damage = result.getTotalDamage();
+		if (damage <= 0) {
+			return result;
+		}
 		GlyphRecoveryService.recordDamage(this, attacker, damage);
 		if (logger.isDebugEnabled() || Testing.DEBUG) {
 			logger.debug("Damaged " + damage + " points by " + attacker.getID());
 		}
 
-		if (this instanceof Creature) {
-			Creature creature = (Creature) this;
-			if (creature.isImmortal()) {
-				return;
-			}
+		if (result.getArmorDamage() > 0) {
+			setArmorHP(getArmorHP() - result.getArmorDamage());
 		}
 
-		bleedOnGround();
+		if (result.getHealthDamage() > 0) {
+			bleedOnGround();
+		}
 		if (attacker instanceof RPEntity) {
 			final int currentTurn = SingletonRepository.getRuleProcessor().getTurn();
 			enemiesThatGiveFightXP.put((RPEntity) attacker, currentTurn);
 		}
 
-		final int leftHP = getHP() - damage;
+		final int leftHP = getHP() - result.getHealthDamage();
 
 		totalDamageReceived += damage;
 
@@ -1462,6 +1490,36 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		notifyWorldAboutChanges();
+		return result;
+	}
+
+	public int getBaseArmorHP() {
+		return has("base_armor_hp") ? Math.max(0, getInt("base_armor_hp")) : 0;
+	}
+
+	public int getArmorHP() {
+		return has("armor_hp") ? Math.max(0, Math.min(getBaseArmorHP(), getInt("armor_hp"))) : 0;
+	}
+
+	public void setBaseArmorHP(final int maximum) {
+		put("base_armor_hp", Math.max(0, maximum));
+		setArmorHP(getArmorHP());
+	}
+
+	public void setArmorHP(final int amount) {
+		put("armor_hp", Math.max(0, Math.min(getBaseArmorHP(), amount)));
+	}
+
+	public void initArmorHP(final int amount) {
+		setBaseArmorHP(amount);
+		setArmorHP(amount);
+	}
+
+	public void scaleArmorHP(final double multiplier) {
+		if (getBaseArmorHP() > 0) {
+			initArmorHP((int) Math.max(0L, Math.min(Integer.MAX_VALUE,
+					Math.round(getBaseArmorHP() * multiplier))));
+		}
 	}
 
 	/**
@@ -3516,14 +3574,12 @@ public abstract class RPEntity extends CombatEntity {
 			}
 
 			if (didDamage) {
-				// limit damage to target HP
-				final int resolvedDamage = Math.min(defender.getHP(),
-						GlyphCombatService.reduceIncomingDamage(defender, damage));
-				this.handleLifesteal(this, this.getWeapons(), resolvedDamage);
-
-				defender.onDamaged(this, damage);
-				damage = resolvedDamage;
-				GlyphCombatService.onHit(this, defender, damage);
+				final DamageResult dealt = defender.receiveCombatDamage(this, damage);
+				damage = dealt.getHealthDamage();
+				this.handleLifesteal(this, this.getWeapons(), damage);
+				GlyphCombatService.onHit(this, defender, dealt.getTotalDamage());
+				this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged)
+						.withArmorDamage(dealt.getArmorDamage()));
 
 				if (logger.isDebugEnabled() || Testing.DEBUG) {
 					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + damage);
@@ -3536,7 +3592,9 @@ public abstract class RPEntity extends CombatEntity {
 					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + 0);
 				}
 			}
-			this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
+			if (!didDamage) {
+				this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
+			}
 
 			// Try to inflict a status effect
 			for (StatusAttacker statusAttacker : allStatusAttackers) {

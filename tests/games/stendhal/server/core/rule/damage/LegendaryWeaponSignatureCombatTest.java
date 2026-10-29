@@ -126,7 +126,7 @@ public class LegendaryWeaponSignatureCombatTest {
 
 	private Creature creatureWithArmor(final String armorType) {
 		final Creature creature = createMock(Creature.class);
-		expect(creature.getArmorType()).andReturn(armorType);
+		expect(creature.getEffectiveArmorType()).andReturn(armorType);
 		replay(creature);
 		return creature;
 	}

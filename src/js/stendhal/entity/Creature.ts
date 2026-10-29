@@ -41,8 +41,18 @@ export class Creature extends RPEntity {
 	override titleStyle = "#ffc8c8";
 
 	getArmorLabel(): string | undefined {
-		const label = getCreatureArmorLabel(this["armor_type"]);
-		return label === undefined ? undefined : GameLanguage.getText(label);
+		const label = getCreatureArmorLabel(this.getEffectiveArmorType());
+		const translated = label === undefined ? "" : GameLanguage.getText(label);
+		if (Number(this["base_armor_hp"]) > 0) {
+			return translated + (translated ? ", " : "") + GameLanguage.getText("Opancerzenie")
+				+ ": " + (Number(this["armor_hp"]) || 0) + "/" + Number(this["base_armor_hp"]);
+		}
+		return translated || undefined;
+	}
+
+	getEffectiveArmorType() {
+		return Number(this["base_armor_hp"]) > 0 && Number(this["armor_hp"]) <= 0
+			? "none" : this["armor_type"];
 	}
 
 	override drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
@@ -53,7 +63,7 @@ export class Creature extends RPEntity {
 		if (marauroa.me?.getAttackTarget() === this) {
 			const barX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 			const barY = y + this["height"] * 32 - this["drawHeight"] - 6 + this.titleDrawYOffset;
-			drawCreatureArmor(ctx, this["armor_type"], barX, barY, this["drawWidth"], 4);
+			drawCreatureArmor(ctx, this.getEffectiveArmorType(), barX, barY, this["drawWidth"], 4);
 		}
 	}
 

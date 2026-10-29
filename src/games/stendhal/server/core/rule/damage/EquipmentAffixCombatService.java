@@ -59,7 +59,7 @@ public final class EquipmentAffixCombatService {
 		}
 		final int reflected = getReflectedDamage(player, damage);
 		if (reflected > 0) {
-			attacker.onDamaged(player, Math.min(reflected, attacker.getHP()));
+			attacker.onDamaged(player, reflected);
 		}
 	}
 

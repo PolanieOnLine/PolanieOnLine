@@ -27,6 +27,7 @@ public enum ChallengeArenaModifier {
 			final int hp = scalePositive(creature.getBaseHP(), 1.20);
 			creature.setBaseHP(hp);
 			creature.setHP(hp);
+			creature.scaleArmorHP(1.20);
 		}
 	},
 	IRON_SKIN("Twarda skóra") {

@@ -62,6 +62,20 @@ public class RPEntityTest {
 		assertNull(attacker.getResolution());
 	}
 
+	@Test
+	public void armorAbsorptionIsDisplayedAsAHitRatherThanABlock() {
+		final RPEvent event = new RPEvent();
+		event.put("type", 0);
+		event.put("hit", "");
+		event.put("damage", 0);
+		event.put("armor_damage", 50);
+		final Event<RPEntity> clientEvent = new AttackEvent();
+		clientEvent.init(attacker, event);
+		attacker.attackTarget = defender;
+		clientEvent.execute();
+		assertThat(defender.getResolution(), is(Resolution.HIT));
+	}
+
 	/**
 	 * Tests for AttackEvents without "hit" being missed.
 	 */

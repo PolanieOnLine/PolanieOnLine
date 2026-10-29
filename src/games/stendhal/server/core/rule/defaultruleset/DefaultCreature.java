@@ -60,6 +60,7 @@ public class DefaultCreature {
 	private int def;
 	/** Optional semantic creature armor type. */
 	private String armorType;
+	private int armorHP;
 	/** experience points for killing this creature. */
 	private int xp;
 	private int level;
@@ -162,6 +163,15 @@ public class DefaultCreature {
 	public String getArmorType() {
 		return armorType;
 	}
+
+	public void setArmorHP(final int value) {
+		if (value < 0) {
+			throw new IllegalArgumentException("armor_hp must not be negative");
+		}
+		armorHP = value;
+	}
+
+	public int getArmorHP() { return armorHP; }
 
 	public double getSpeed() {
 		return speed;
@@ -367,6 +377,7 @@ public class DefaultCreature {
 		if (armorType != null) {
 			creature.setArmorType(armorType);
 		}
+		creature.initArmorHP(armorHP);
 		creature.equip(equipsItems);
 
 		creature.setCorpse(corpseName, harmlessCorpseName, corpseWidth, corpseHeight);
@@ -511,7 +522,11 @@ public class DefaultCreature {
 		os.append("      <atk value=\"" + atk + "\"/>\n");
 		os.append("      <ratk value=\"" + ratk + "\"/>\n");
 		os.append("      <def value=\"" + def + "\"/>\n");
+		if (armorType != null) {
+			os.append("      <armor_type value=\"" + armorType + "\"/>\n");
+		}
 		os.append("      <hp value=\"" + hp + "\"/>\n");
+		os.append("      <armor_hp value=\"" + armorHP + "\"/>\n");
 		os.append("      <speed value=\"" + speed + "\"/>\n");
 		os.append("      <size value=\"" + width + "," + height + "\"/>\n");
 		os.append("      <resistance value=\"" + resistance + "\"/>\n");

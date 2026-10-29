@@ -14,6 +14,7 @@ package games.stendhal.server.entity.npc;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.entity.RPEntity;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -93,6 +94,17 @@ public class TrainingDummy extends NPC {
 	@Override
 	public void onDamaged(final Entity attacker, final int damage) {
 		// training dummies not damaged
+	}
+
+	@Override
+	public DamageResult receiveCombatDamage(final Entity attacker, final int damage,
+			final double armorMultiplier) {
+		return DamageResult.NONE;
+	}
+
+	@Override
+	public void onHealthDamaged(final Entity attacker, final int damage) {
+		// Training dummies are also protected from health-only effects.
 	}
 
 	/**

@@ -14,6 +14,24 @@ import games.stendhal.common.CreatureArmor;
 
 public class CreatureArmorRendererTest {
 	@Test
+	public void armorOverlayRecedesWithoutChangingTheUnderlyingHealthBar() {
+		final HealthBar bar = new HealthBar(34, 6);
+		bar.setHPRatio(1.0);
+		bar.setArmorRatio(0.5);
+		final BufferedImage image = new BufferedImage(34, 6, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D graphics = image.createGraphics();
+		try {
+			bar.draw(graphics, 0, 0);
+			assertEquals(new Color(154, 164, 175).getRGB(), image.getRGB(8, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 2));
+			bar.setArmorRatio(0.0);
+			bar.draw(graphics, 0, 0);
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 2));
+		} finally {
+			graphics.dispose();
+		}
+	}
+	@Test
 	public void onlyKnownTypesHaveNamesAndArmorIcons() {
 		assertNull(CreatureArmor.fromId(null));
 		assertNull(CreatureArmor.fromId("unknown"));

@@ -48,9 +48,8 @@ public class BleedingStatusTurnListener implements TurnListener {
 			entity.put(ATTRIBUTE_NAME, -damage);
 			final Entity source = bleeding.getSource();
 			if (source != null) {
-				// onDamaged expects its caller to cap damage at remaining HP. Doing
-				// that here also keeps damage contribution and XP attribution exact.
-				entity.onDamaged(source, damage);
+				// An existing wound damages health directly and keeps source credit.
+				entity.onHealthDamaged(source, damage);
 			} else {
 				// Compatibility fallback for legacy/environmental bleeding callers.
 				entity.damage(damage, bleeding);

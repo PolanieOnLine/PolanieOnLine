@@ -46,6 +46,7 @@ import games.stendhal.client.gui.styled.cursor.CursorRepository;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.common.Direction;
 import games.stendhal.common.CreatureArmor;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.common.EquipActionConsts;
 import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPAction;
@@ -139,8 +140,14 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	 */
 	static String buildGroundItemToolTip(final IEntity entity) {
 		if (entity instanceof Creature) {
-			final CreatureArmor armor = ((Creature) entity).getArmorType();
-			return armor == null || armor == CreatureArmor.NONE ? null : armor.getLabel();
+			final Creature creature = (Creature) entity;
+			final CreatureArmor armor = creature.getArmorType();
+			final String label = armor == null || armor == CreatureArmor.NONE ? "" : ClientLanguage.getText(armor.getLabel());
+			if (creature.getBaseArmorHP() > 0) {
+				return label + (label.isEmpty() ? "" : ", ") + ClientLanguage.getText("Opancerzenie") + ": "
+						+ creature.getArmorHP() + "/" + creature.getBaseArmorHP();
+			}
+			return label.isEmpty() ? null : label;
 		}
 		if (!(entity instanceof Item)) {
 			return null;

@@ -52,6 +52,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 	private Integer ratk = 0;
 	private int def;
 	private String armorType;
+	private int armorHP;
 	private int hp;
 	private double speed;
 	private int sizeWidth;
@@ -165,6 +166,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			statusAttack = null;
 			statusAttackProbability = 0;
 			armorType = null;
+			armorHP = 0;
 		} else if (qName.equals("type")) {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
@@ -259,8 +261,13 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 				ratk = Integer.parseInt(attrs.getValue("value"));
 			} else if (qName.equals("def")) {
 				def = Integer.parseInt(attrs.getValue("value"));
-			} else if (qName.equals("armor")) {
+			} else if (qName.equals("armor_type")) {
 				armorType = attrs.getValue("value");
+			} else if (qName.equals("armor_hp")) {
+				armorHP = Integer.parseInt(attrs.getValue("value"));
+				if (armorHP < 0) {
+					throw new IllegalArgumentException("Negative armor_hp for " + name);
+				}
 			} else if (qName.equals("hp")) {
 				hp = Integer.parseInt(attrs.getValue("value"));
 			} else if (qName.equals("speed")) {
@@ -351,6 +358,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			final DefaultCreature creature = new DefaultCreature(clazz, subclass, name, tileid);
 			creature.setRPStats(hp, atk, ratk, def, speed);
 			creature.setArmorType(armorType);
+			creature.setArmorHP(armorHP);
 			creature.setLevel(level, xp);
 			creature.setSize(sizeWidth, sizeHeight);
 			creature.setResistance(resistance);

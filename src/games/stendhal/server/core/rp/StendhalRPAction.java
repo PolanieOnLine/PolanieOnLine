@@ -31,6 +31,7 @@ import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
+import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.events.TutorialNotifier;
@@ -385,6 +386,7 @@ public class StendhalRPAction {
 		}
 
 		int damage = -1;
+		int armorDamage = 0;
 		if (beaten) {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
@@ -397,8 +399,13 @@ public class StendhalRPAction {
 
 			damage = player.damageDone(defender, itemAtk,
 					player.getDamageType());
-			damage = WeaponArmorInteractionService.applyDamageMultiplier(
-					damage, weapons, defender);
+			final boolean layeredArmor = defender.getBaseArmorHP() > 0;
+			final double armorMultiplier = layeredArmor
+					? WeaponArmorInteractionService.getCombinedDamageMultiplier(weapons, defender)
+							* WeaponAffixCombatService.getArmorBreakingMultiplier(weapons, defender) : 1.0;
+			if (!layeredArmor) {
+				damage = WeaponArmorInteractionService.applyDamageMultiplier(damage, weapons, defender);
+			}
 			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 					damage, weapons, defender, isRanged);
 
@@ -423,16 +430,13 @@ public class StendhalRPAction {
 					player.onDamaged(player, damage);
 				}
 
-				// limit damage to target HP
-				final int resolvedDamage = Math.min(defender.getHP(),
-						GlyphCombatService.reduceIncomingDamage(defender, damage));
-				player.handleLifesteal(player, weapons, resolvedDamage);
-
-				defender.onDamaged(player, damage);
-				damage = resolvedDamage;
-				GlyphCombatService.onHit(player, defender, damage);
+				final DamageResult dealt = defender.receiveCombatDamage(player, damage, armorMultiplier);
+				damage = dealt.getHealthDamage();
+				armorDamage = dealt.getArmorDamage();
+				player.handleLifesteal(player, weapons, damage);
+				GlyphCombatService.onHit(player, defender, dealt.getTotalDamage());
 				WeaponAffixCombatService.applyOnHitProcs(player, defender,
-						weapons, damage);
+						weapons, damage, dealt.getTotalDamage());
 				logger.debug("attack from " + player.getID() + " to "
 						+ defender.getID() + ": Damage: " + damage);
 
@@ -475,7 +479,8 @@ public class StendhalRPAction {
 				}
 			}
 
-			player.addEvent(new AttackEvent(true, damage, player.getDamageType(), weaponClass, isRanged));
+			player.addEvent(new AttackEvent(true, damage, player.getDamageType(), weaponClass, isRanged)
+					.withArmorDamage(armorDamage));
 			player.notifyWorldAboutChanges();
 		} else {
 			// Missed

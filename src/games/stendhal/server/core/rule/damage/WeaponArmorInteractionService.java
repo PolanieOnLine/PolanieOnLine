@@ -52,7 +52,7 @@ public final class WeaponArmorInteractionService {
 			return 1.0;
 		}
 		final double baseMultiplier = getDamageMultiplier(weapon.getWeaponType(),
-				((Creature) defender).getArmorType());
+				((Creature) defender).getEffectiveArmorType());
 		final double normalPenetration = weapon.has(ARMOR_PENETRATION_ATTRIBUTE)
 				? weapon.getDouble(ARMOR_PENETRATION_ATTRIBUTE) : 0.0;
 		final double legendaryPenetration =

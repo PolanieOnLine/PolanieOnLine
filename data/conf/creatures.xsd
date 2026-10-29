@@ -86,7 +86,7 @@
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="armor" minOccurs="0" maxOccurs="1">
+			<xsd:element name="armor_type" minOccurs="0" maxOccurs="1">
 				<xsd:complexType>
 					<xsd:attribute name="value" use="required">
 						<xsd:simpleType>
@@ -103,6 +103,11 @@
 			<xsd:element name="hp" minOccurs="1">
 				<xsd:complexType>
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="armor_hp" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="value" type="xsd:nonNegativeInteger" use="required" />
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="speed" minOccurs="1">

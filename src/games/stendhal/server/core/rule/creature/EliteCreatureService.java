@@ -112,6 +112,7 @@ public final class EliteCreatureService {
 		final int eliteHP = scalePositive(creature.getBaseHP(), HP_MULTIPLIER);
 		creature.setBaseHP(eliteHP);
 		creature.setHP(eliteHP);
+		creature.scaleArmorHP(HP_MULTIPLIER);
 		creature.setAtk(scaleCombatStat(creature.getAtk(), ATTACK_MULTIPLIER));
 		if (creature.getRatk() > 0) {
 			creature.setRatk(scaleCombatStat(creature.getRatk(), ATTACK_MULTIPLIER));

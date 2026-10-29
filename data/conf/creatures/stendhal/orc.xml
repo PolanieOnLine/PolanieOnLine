@@ -10,7 +10,7 @@
 		<attributes>
 			<atk value="122"/>
 			<def value="32"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="55"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
@@ -47,7 +47,7 @@
 			<atk value="128"/>
 			<ratk value="128"/>
 			<def value="35"/>
-			<armor value="light"/>
+			<armor_type value="light"/>
 			<hp value="80"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -84,7 +84,7 @@
 		<attributes>
 			<atk value="140"/>
 			<def value="44"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="60"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -123,7 +123,7 @@
 		<attributes>
 			<atk value="149"/>
 			<def value="28"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="114"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -162,7 +162,7 @@
 		<attributes>
 			<atk value="180"/>
 			<def value="60"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="65"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -208,7 +208,7 @@
 		<attributes>
 			<atk value="352"/>
 			<def value="57"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="260"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
@@ -244,7 +244,7 @@
 		<attributes>
 			<atk value="377"/>
 			<def value="66"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="310"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -280,7 +280,7 @@
 		<attributes>
 			<atk value="411"/>
 			<def value="68"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="360"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -317,7 +317,7 @@
 		<attributes>
 			<atk value="474"/>
 			<def value="75"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="460"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -362,7 +362,7 @@
 		<attributes>
 			<atk value="500"/>
 			<def value="110"/>
-			<armor value="medium"/>
+			<armor_type value="medium"/>
 			<hp value="650"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>

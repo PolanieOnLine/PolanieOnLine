@@ -180,6 +180,12 @@ public enum NotificationType {
 			return COLOR_WARNING;
 		}
 	},
+	ARMOR("armor") {
+		@Override
+		public Color getColor() { return new Color(154, 164, 175); }
+		@Override
+		public String getStyleDescription() { return REGULAR; }
+	},
 	EMOJI("emoji") {
 		@Override
 		public String getStyleDescription() {

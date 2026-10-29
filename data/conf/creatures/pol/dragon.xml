@@ -9,8 +9,9 @@
 		<attributes>
 			<atk value="3666"/>
 			<def value="110"/>
-			<armor value="heavy"/>
-			<hp value="6600"/>
+			<armor_type value="heavy"/>
+			<hp value="5280"/>
+			<armor_hp value="1320"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -58,8 +59,9 @@
 		<attributes>
 			<atk value="3211"/>
 			<def value="84"/>
-			<armor value="heavy"/>
-			<hp value="6000"/>
+			<armor_type value="heavy"/>
+			<hp value="4800"/>
+			<armor_hp value="1200"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -108,8 +110,9 @@
 		<attributes>
 			<atk value="2951"/>
 			<def value="71"/>
-			<armor value="heavy"/>
-			<hp value="5400"/>
+			<armor_type value="heavy"/>
+			<hp value="4320"/>
+			<armor_hp value="1080"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -159,8 +162,9 @@
 		<attributes>
 			<atk value="2631"/>
 			<def value="64"/>
-			<armor value="heavy"/>
-			<hp value="5200"/>
+			<armor_type value="heavy"/>
+			<hp value="4160"/>
+			<armor_hp value="1040"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -209,8 +213,9 @@
 		<attributes>
 			<atk value="2171"/>
 			<def value="58"/>
-			<armor value="heavy"/>
-			<hp value="4800"/>
+			<armor_type value="heavy"/>
+			<hp value="3840"/>
+			<armor_hp value="960"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -258,8 +263,9 @@
 		<attributes>
 			<atk value="613"/>
 			<def value="60"/>
-			<armor value="heavy"/>
-			<hp value="2160"/>
+			<armor_type value="heavy"/>
+			<hp value="1728"/>
+			<armor_hp value="432"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -302,8 +308,9 @@
 		<attributes>
 			<atk value="546"/>
 			<def value="45"/>
-			<armor value="heavy"/>
-			<hp value="1440"/>
+			<armor_type value="heavy"/>
+			<hp value="1152"/>
+			<armor_hp value="288"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -381,8 +388,9 @@
 		<attributes>
 			<atk value="3659"/>
 			<def value="77"/>
-			<armor value="heavy"/>
-			<hp value="3960"/>
+			<armor_type value="heavy"/>
+			<hp value="3168"/>
+			<armor_hp value="792"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -430,8 +438,9 @@
 		<attributes>
 			<atk value="4222"/>
 			<def value="165"/>
-			<armor value="heavy"/>
-			<hp value="3960"/>
+			<armor_type value="heavy"/>
+			<hp value="3168"/>
+			<armor_hp value="792"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -476,8 +485,9 @@
 		<attributes>
 			<atk value="4777"/>
 			<def value="188"/>
-			<armor value="heavy"/>
-			<hp value="4960"/>
+			<armor_type value="heavy"/>
+			<hp value="3968"/>
+			<armor_hp value="992"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -523,8 +533,9 @@
 		<attributes>
 			<atk value="5444"/>
 			<def value="211"/>
-			<armor value="heavy"/>
-			<hp value="5960"/>
+			<armor_type value="heavy"/>
+			<hp value="4768"/>
+			<armor_hp value="1192"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -568,8 +579,9 @@
 		<attributes>
 			<atk value="5999"/>
 			<def value="244"/>
-			<armor value="heavy"/>
-			<hp value="6960"/>
+			<armor_type value="heavy"/>
+			<hp value="5568"/>
+			<armor_hp value="1392"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
 		</attributes>
@@ -617,7 +629,7 @@
 		<attributes>
 			<atk value="3300"/>
 			<def value="777"/>
-			<armor value="heavy"/>
+			<armor_type value="heavy"/>
 			<hp value="1300"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
@@ -669,7 +681,7 @@
 		<attributes>
 			<atk value="4000"/>
 			<def value="999"/>
-			<armor value="heavy"/>
+			<armor_type value="heavy"/>
 			<hp value="1300"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -722,7 +734,7 @@
 		<attributes>
 			<atk value="22222"/>
 			<def value="999"/>
-			<armor value="heavy"/>
+			<armor_type value="heavy"/>
 			<hp value="19000"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
