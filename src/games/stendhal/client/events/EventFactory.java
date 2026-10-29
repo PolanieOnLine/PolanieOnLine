@@ -131,6 +131,8 @@ class EventFactory {
 			event = new ItemUpgradeEvent();
 		} else if (name.equals(Events.PRODUCTION)) {
 			event = new ProductionEvent();
+		} else if (name.equals(Events.NPC_SHOP)) {
+			event = new NpcShopEvent();
 		}
 
 		if (event != null) {

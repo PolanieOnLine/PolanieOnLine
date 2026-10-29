@@ -198,5 +198,8 @@ public class PlayerRPClass {
 
 		// Append new definitions to preserve the numeric codes in character saves.
 		player.addRPEvent(Events.PRODUCTION, Definition.PRIVATE);
+
+		// Keep the new event last to preserve existing saved attribute codes.
+		player.addRPEvent(Events.NPC_SHOP, Definition.PRIVATE);
 	}
 }

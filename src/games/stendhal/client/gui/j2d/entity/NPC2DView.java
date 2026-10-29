@@ -148,6 +148,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 		}
 		// NPC can't be pushed
 		list.remove(ActionType.PUSH.getRepresentation());
+		if (entity.getRPObject().has("job_item_merchant")) {
+			list.add(ActionType.NPC_SHOP.getRepresentation());
+		}
 		if (entity.getRPObject().has("job_item_upgrader")) {
 			list.add(ActionType.ITEM_UPGRADE.getRepresentation());
 		}
@@ -198,6 +201,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	public void onAction(final ActionType at) {
 		switch (at) {
 		case TALK:
+		case NPC_SHOP:
+			at.send(at.fillTargetInfo(entity));
+			break;
 		case ITEM_UPGRADE:
 			at.send(at.fillTargetInfo(entity));
 			break;

@@ -225,6 +225,9 @@ public final class Actions {
 	public static final String ITEM_UPGRADE = "item_upgrade_action";
 	public static final String PRODUCTION = "production_action";
 
+	/** Right-click merchant catalogue and shop requests. */
+	public static final String NPC_SHOP = "npc_shop_action";
+
 	private Actions() {
 		// hide constructor
 	}

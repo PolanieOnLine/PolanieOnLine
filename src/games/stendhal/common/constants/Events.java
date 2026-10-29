@@ -76,4 +76,7 @@ public final class Events {
 	 */
 	public static final String ITEM_UPGRADE = "item_upgrade_event";
 	public static final String PRODUCTION = "production_event";
+
+	/** Merchant catalogue and shop responses. */
+	public static final String NPC_SHOP = "npc_shop_event";
 }

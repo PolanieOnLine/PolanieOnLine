@@ -12,7 +12,9 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.journal;
 
+import java.util.IdentityHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.List;
 
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -27,6 +29,8 @@ public class MerchantsRegister {
 
 	private final List<Pair<String, BuyerBehaviour>> buyers;
 	private final List<Pair<String, SellerBehaviour>> sellers;
+	private final Map<SpeakerNPC, BuyerBehaviour> buyersByNpc;
+	private final Map<SpeakerNPC, SellerBehaviour> sellersByNpc;
 
 	/**
 	 * Singleton access method.
@@ -46,6 +50,8 @@ public class MerchantsRegister {
 		instance = this;
 		buyers  = new LinkedList<Pair<String, BuyerBehaviour>>();
 		sellers  = new LinkedList<Pair<String, SellerBehaviour>>();
+		buyersByNpc = new IdentityHashMap<SpeakerNPC, BuyerBehaviour>();
+		sellersByNpc = new IdentityHashMap<SpeakerNPC, SellerBehaviour>();
 	}
 
 	/**
@@ -64,11 +70,22 @@ public class MerchantsRegister {
 		if (behaviour instanceof BuyerBehaviour) {
 			Pair<String, BuyerBehaviour> pair = new Pair<String, BuyerBehaviour>(npcName, (BuyerBehaviour) behaviour);
 			buyers.add(pair);
+			buyersByNpc.put(npc, (BuyerBehaviour) behaviour);
 		}
 		else {
 			Pair<String, SellerBehaviour> pair = new Pair<String, SellerBehaviour>(npcName, (SellerBehaviour) behaviour);
 			sellers.add(pair);
+			sellersByNpc.put(npc, (SellerBehaviour) behaviour);
 		}
+	}
+
+	/** Return the exact behaviour registered for this NPC instance. */
+	public BuyerBehaviour getBuyerFor(final SpeakerNPC npc) {
+		return buyersByNpc.get(npc);
+	}
+
+	public SellerBehaviour getSellerFor(final SpeakerNPC npc) {
+		return sellersByNpc.get(npc);
 	}
 
 	public List<Pair<String, BuyerBehaviour>> getBuyers() {

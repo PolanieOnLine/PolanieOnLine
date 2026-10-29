@@ -126,6 +126,29 @@ public final class MoneyUtils {
 		return formatPrice(totalCopper, false);
 	}
 
+	/** Inventory totals can exceed the per-transaction integer limit. */
+	public static String formatPrice(final long totalCopper) {
+		if (totalCopper <= Integer.MAX_VALUE && totalCopper >= Integer.MIN_VALUE) {
+			return formatPrice((int) totalCopper);
+		}
+		if (!CurrencyReform.useReformedCurrency()) {
+			return totalCopper + " " + Grammar.polishQuantity(MONEY, 100 + (int) (totalCopper % 100));
+		}
+		final List<String> parts = new ArrayList<>();
+		final long gold = totalCopper / 10000;
+		final int silver = (int) (totalCopper % 10000 / 100);
+		final int copper = (int) (totalCopper % 100);
+		if (gold > 0) {
+			parts.add(gold + " " + Grammar.polishQuantity(GOLD, gold <= Integer.MAX_VALUE
+					? (int) gold : 100 + (int) (gold % 100)));
+		}
+		if (silver > 0) { parts.add(silver + " " + quantityForm(SILVER, silver, false)); }
+		if (copper > 0 || parts.isEmpty()) { parts.add(copper + " " + quantityForm(COPPER, copper, false)); }
+		return parts.size() == 1 ? parts.get(0) : parts.size() == 2
+				? parts.get(0) + " i " + parts.get(1)
+				: parts.get(0) + ", " + parts.get(1) + " i " + parts.get(2);
+	}
+
 	/** Currency names in the case needed after "dam ci" or "zapłacę". */
 	public static String formatPayment(int totalCopper) {
 		return formatPrice(totalCopper, true);
