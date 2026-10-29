@@ -81,6 +81,10 @@ test("clicking the charcoal mound selects production while other usable objects 
     assert.equal(action.type, "production_action"); assert.equal(action.npc_id, "24");
     assert.ok(action.request_id); assert.match(entity.sprite.filename, /furniture\/charcoal_mound.png$/);
     assert.equal(entity.sprite.width, 128); assert.equal(entity.sprite.height, 96);
+    entity.set("name", "production_table_cooking"); entity.set("width", 2); entity.set("height", 1);
+    assert.equal(entity.getDefaultAction().type, "production_action");
+    assert.equal(entity.sprite.width, 64); assert.equal(entity.sprite.height, 32);
+    assert.match(entity.sprite.filename, /furniture\/production_table_cooking.png$/);
     entity.set("name", "switch"); assert.equal(entity.getDefaultAction().type, "use");
 });
 
@@ -133,4 +137,33 @@ test("a persisted ready order has an enabled collection action, leaving the map 
     dialog.collect.onclick(); assert.equal(h.actions.at(-1).command, "collect");
     h.marauroa.currentZoneName = "zakopane"; h.Dialog.onZoneChanged();
     assert.equal(h.actions.at(-1).command, "close"); assert.equal(h.timers.size, 0);
+});
+
+test("recipe selection invalidates old previews and keeps catalogue options stable on refresh", () => {
+    const h = harness();
+    const catalog = {recipe_ids: ["iron", "gold"], recipe_names: ["sztabka żelaza", "sztabka złota"], selected_recipe: "iron"};
+    h.Dialog.show(snapshot(catalog)); const dialog = h.frames[0].content;
+    const option = dialog.recipes.children[0];
+    dialog.send("refresh"); const oldRequest = h.actions.at(-1);
+    dialog.recipes.value = "gold"; dialog.recipes.onchange(); const selected = h.actions.at(-1);
+    assert.equal(selected.recipe, "gold"); assert.equal(dialog.start.disabled, true);
+    h.Dialog.show(snapshot({...catalog, phase: "update", request_id: oldRequest.request_id}));
+    assert.equal(dialog.recipes.value, "gold");
+    h.Dialog.show(snapshot({...catalog, phase: "update", request_id: selected.request_id, selected_recipe: "gold", name: "sztabka złota"}));
+    assert.equal(dialog.recipes.children[0], option);
+    assert.equal(dialog.name.textContent, "sztabka złota");
+    dialog.start.onclick(); assert.equal(h.actions.at(-1).recipe, "gold");
+    assert.equal(dialog.recipes.disabled, true);
+});
+
+test("batched quantities show actual ingredient costs and the persisted order's product", () => {
+    const h = harness(); h.Dialog.show(snapshot({name: "strzała", amount: 5, amount_step: 5, duration: 30,
+        material_values: ["2", "1"], order_state: "working", order_name: "strzała złota", order_amount: 15, order_duration: 120, remaining: 60}));
+    const dialog = h.frames[0].content;
+    assert.equal(dialog.amount.min, "5"); assert.equal(dialog.amount.step, "5");
+    assert.equal(dialog.materials.children[0].children[2].textContent, "50 / 2");
+    assert.equal(dialog.orderLabel.textContent, "strzała złota: 15");
+    dialog.amount.value = "10"; dialog.amount.onchange();
+    assert.equal(dialog.materials.children[0].children[2].textContent, "50 / 4");
+    assert.equal(dialog.duration.textContent, "Czas produkcji: 1 min 0 s");
 });

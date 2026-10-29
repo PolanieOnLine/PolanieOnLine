@@ -26,6 +26,7 @@ import games.stendhal.server.entity.npc.action.ComplainAboutSentenceErrorAction;
 import games.stendhal.server.entity.npc.action.MultiProducerBehaviourAction;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.ProductionRecipe;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
@@ -78,6 +79,7 @@ public class MultiProducerAdder {
 
 		/* add to producer register */
 		producerRegister.add(npcName, behaviour);
+		ProductionRecipe.register(npc, behaviour, questComplete);
 		npc.put("job_producer", "");
 
 		/* The Player greets the NPC.
@@ -147,7 +149,7 @@ public class MultiProducerAdder {
 
 		/* Player agrees to the proposed production deal */
 		engine.add(ConversationStates.PRODUCTION_OFFERED,
-			ConversationPhrases.YES_MESSAGES, null,
+			ConversationPhrases.YES_MESSAGES, new AndCondition(new QuestNotActiveCondition(QUEST_SLOT), setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ChatAction() {
 				@Override

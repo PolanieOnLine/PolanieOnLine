@@ -109,7 +109,8 @@ class UseableEntity2DView<T extends StatefulEntity> extends VariableSpriteEntity
 		if (at.getActionCode().equals(this.action.getActionCode())) {
             if (entity.getRPObject().has("name") && "rune_workbench".equals(entity.getRPObject().get("name"))) {
                 ItemUpgradeWindow.openGlyphWorkbench(entity.getRPObject().getID().getObjectID());
-            } else if (entity.getRPObject().has("name") && "charcoal_mound".equals(entity.getRPObject().get("name"))) {
+            } else if (entity.getRPObject().has("name") && ("charcoal_mound".equals(entity.getRPObject().get("name"))
+                    || entity.getRPObject().get("name").startsWith("production_table_"))) {
                 ActionType.USE.send(ProductionWindow.openAction(entity.getRPObject().getID().getObjectID()));
             } else at.send(at.fillTargetInfo(entity));
 		} else {

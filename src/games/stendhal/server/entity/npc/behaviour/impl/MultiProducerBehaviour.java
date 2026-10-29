@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import java.util.Collections;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
@@ -152,6 +153,20 @@ public class MultiProducerBehaviour extends TransactionBehaviour {
 
 	public String getQuestSlot() {
 		return questSlot;
+	}
+
+	public Map<String, Integer> getRecipeResources(final String productName) {
+		return Collections.unmodifiableMap(getRequiredResourcesPerProduct(productName));
+	}
+
+	public int getProductionDuration(final String productName, final int amount) {
+		return getProductionTime(productName, amount);
+	}
+
+	public long getRemainingTimeMillis(final Player player) {
+		final String[] order = player.getQuest(questSlot).split(";");
+		return Math.max(0L, Long.parseLong(order[2])
+				+ getProductionTime(order[1], Integer.parseInt(order[0])) * 1000L - System.currentTimeMillis());
 	}
 
 	protected Map<String, Integer> getRequiredResourcesPerProduct(final String productName) {

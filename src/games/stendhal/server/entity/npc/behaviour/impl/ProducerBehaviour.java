@@ -234,6 +234,16 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		return unitsPerTime;
 	}
 
+	public int getBatchSize() { return productsPerUnit; }
+
+	public long getCooldownRemainingMillis(final Player player) {
+		if (waitingTime <= 0 || !player.hasQuest(questSlot)) return 0;
+		final String[] state = player.getQuest(questSlot).split(";");
+		if (state.length != 3 || !"done".equals(state[0])) return 0;
+		return Math.max(0L, Long.parseLong(state[2])
+				+ Long.parseLong(state[1]) * TimeUtil.MILLISECONDS_IN_HOUR * waitingTime - System.currentTimeMillis());
+	}
+
 	public long getRemainingTimeMillis(final Player player) {
 		final String[] order = player.getQuest(questSlot).split(";");
 		return Math.max(0L, Long.parseLong(order[2])

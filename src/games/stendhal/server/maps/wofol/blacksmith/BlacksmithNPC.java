@@ -36,6 +36,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.ProducerBehaviourAction;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.ProductionRecipe;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.player.Player;
@@ -193,6 +194,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 				final ProducerBehaviour behaviour = new SpecialProducerBehaviour(Arrays.asList("make", "zrób"), "szpulka do maszyny",
 				        requiredResources, 10 * 60);
+				ProductionRecipe.register(this, behaviour, null);
 
 				// we are not using producer adder at all here because that uses Conversations states IDLE and saying 'hi' heavily.
 				// we can't do that here because Pequod uses that all the time in his fishing quest. so player is going to have to #remind

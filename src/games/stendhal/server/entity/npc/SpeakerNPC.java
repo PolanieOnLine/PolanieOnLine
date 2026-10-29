@@ -32,6 +32,8 @@ import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.behaviour.ProductionRecipe;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.RPEntity;
@@ -126,6 +128,13 @@ import games.stendhal.server.entity.player.Player;
  * exception of the IDLE state.
  */
 public class SpeakerNPC extends PassiveNPC {
+	@Override public void onAdded(final StendhalRPZone zone) {
+		super.onAdded(zone); ProductionRecipe.requestWorksite(this);
+	}
+
+	@Override public void onRemoved(final StendhalRPZone zone) {
+		ProductionRecipe.removeWorksite(this); super.onRemoved(zone);
+	}
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(SpeakerNPC.class);
 

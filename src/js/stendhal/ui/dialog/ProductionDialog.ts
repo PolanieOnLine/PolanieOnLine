@@ -18,6 +18,9 @@ export class ProductionDialog extends DialogContentComponent {
     private static openSequence = 0;
     private readonly product = document.createElement("div");
     private readonly name = document.createElement("strong");
+    private readonly recipes = document.createElement("select");
+    private selectedRecipe?: string;
+    private recipeCatalogKey = "";
     private readonly amount = document.createElement("input");
     private readonly materials = document.createElement("div");
     private readonly duration = document.createElement("div");
@@ -43,7 +46,12 @@ export class ProductionDialog extends DialogContentComponent {
         this.componentElement.classList.add("production-dialog");
         const identity = document.createElement("div"); identity.className = "production-identity";
         this.product.className = "itemSlot";
-        identity.append(this.product, this.name); this.componentElement.appendChild(identity);
+        this.recipes.className = "production-recipes"; this.recipes.hidden = true;
+        this.recipes.setAttribute("aria-label", text("Produkt"));
+        identity.append(this.product, this.name, this.recipes); this.componentElement.appendChild(identity);
+
+        const body = document.createElement("div"); body.className = "production-body";
+        this.componentElement.appendChild(body);
 
         const controls = document.createElement("div");
         const quantities = document.createElement("div"); quantities.className = "production-quantity";
@@ -53,22 +61,32 @@ export class ProductionDialog extends DialogContentComponent {
         label.appendChild(this.amount); quantities.appendChild(label);
         for (const count of [1, 10, 100]) {
             const button = document.createElement("button"); button.textContent = String(count);
-            button.addEventListener("click", () => { this.amount.value = String(Math.min(count, Number(this.amount.max))); this.quantityChanged(); });
+            button.addEventListener("click", () => {
+                const step = Number(this.amount.step) || 1;
+                this.amount.value = String(Math.max(step, Math.min(Math.ceil(count / step) * step, Number(this.amount.max))));
+                this.quantityChanged();
+            });
             quantities.appendChild(button);
         }
         controls.append(quantities, this.duration);
-        this.componentElement.appendChild(this.section("Zamówienie", controls));
+        body.appendChild(this.section("Zamówienie", controls));
         this.materials.className = "production-materials";
-        this.componentElement.appendChild(this.section("Składniki (masz / potrzeba)", this.materials));
+        body.appendChild(this.section("Składniki (masz / potrzeba)", this.materials));
         const order = document.createElement("div"); order.className = "production-order";
         this.progress.max = 1000; order.append(this.orderLabel, this.progress, this.remaining);
-        this.componentElement.appendChild(this.section("Bieżące zamówienie", order));
+        body.appendChild(this.section("Bieżące zamówienie", order));
         this.status.className = "production-status"; this.status.setAttribute("aria-live", "polite");
         this.componentElement.appendChild(this.status);
         this.start = this.addButton(text("Zleć produkcję"), () => this.send("start"));
         this.collect = this.addButton(text("Odbierz zamówienie"), () => this.send("collect"));
         this.amount.addEventListener("input", () => this.quantityChanged());
         this.amount.addEventListener("change", () => this.quantityChanged());
+        this.recipes.addEventListener("change", () => {
+            if (!this.data || this.busy) return;
+            this.selectedRecipe = this.recipes.value; this.lastRequest = "";
+            if (this.preview !== undefined) clearTimeout(this.preview);
+            this.start.disabled = true; this.collect.disabled = true; this.send("refresh");
+        });
     }
 
     public static openAction(npcId: number): ProductionData {
@@ -116,6 +134,16 @@ export class ProductionDialog extends DialogContentComponent {
     private apply(data: ProductionData): void {
         this.data = data; this.busy = false;
         this.name.textContent = text(data.name);
+        this.selectedRecipe = data.selected_recipe;
+        const ids = this.list(data.recipe_ids), names = this.list(data.recipe_names);
+        const key = JSON.stringify([ids, names]);
+        if (key !== this.recipeCatalogKey) {
+            this.recipeCatalogKey = key; this.recipes.replaceChildren();
+            ids.forEach((id, index) => { const option = document.createElement("option"); option.value = id; option.textContent = text(names[index]); this.recipes.appendChild(option); });
+        }
+        this.recipes.value = this.selectedRecipe || ""; this.recipes.hidden = ids.length <= 1;
+        this.recipes.disabled = false; this.name.hidden = ids.length > 1;
+        this.amount.min = this.amount.step = String(data.amount_step || 1);
         this.amount.max = String(data.max_amount); this.amount.value = String(data.amount);
         this.readyAt = Date.now() + Number(data.remaining) * 1000;
         this.updateRequirements(); this.updateClock();
@@ -137,16 +165,18 @@ export class ProductionDialog extends DialogContentComponent {
     private updateRequirements(): void {
         const data = this.data!;
         const amount = Number(this.amount.value);
-        const valid = Number.isInteger(amount) && amount >= 1 && amount <= Number(data.max_amount);
+        const step = Number(data.amount_step) || 1;
+        const valid = Number.isInteger(amount) && amount >= step && amount <= Number(data.max_amount) && amount % step === 0;
         const count = valid ? amount : 0;
         this.setSlot(this.product, data.class, data.subclass, count);
         this.duration.textContent = valid ? text("Czas produkcji:") + " " + this.formatTime(Number(data.duration) / Number(data.amount) * count)
-                : text("Wybierz ilość od 1 do 1000.");
+                : text("Wybierz poprawną ilość.");
         const names = this.list(data.material_names), classes = this.list(data.material_classes), subclasses = this.list(data.material_subclasses);
+        this.materials.style.gridTemplateColumns = `repeat(${Math.max(1, Math.min(3, names.length))}, minmax(0, 1fr))`;
         const required = this.list(data.material_values), owned = this.list(data.owned_material_values);
         this.materials.replaceChildren();
         names.forEach((name, index) => {
-            const need = Number(required[index]) / Number(data.amount) * count, have = Number(owned[index]);
+            const need = Math.round(Number(required[index]) / Number(data.amount) * count), have = Number(owned[index]);
             const card = document.createElement("div"); card.className = "production-material";
             const slot = document.createElement("div"); slot.className = "itemSlot";
             this.setSlot(slot, classes[index], subclasses[index], need);
@@ -162,7 +192,7 @@ export class ProductionDialog extends DialogContentComponent {
         if (!this.data) return;
         const active = this.data.order_state !== "idle";
         const left = Math.max(0, Math.ceil((this.readyAt - Date.now()) / 1000));
-        this.orderLabel.textContent = active ? text("Węgiel drzewny:") + " " + this.data.order_amount : text("Brak aktywnego zamówienia.");
+        this.orderLabel.textContent = active ? text(this.data.order_name || this.data.name) + ": " + this.data.order_amount : text("Brak aktywnego zamówienia.");
         this.remaining.textContent = !active ? text("Możesz odejść. Produkcja trwa również poza grą.")
                 : left === 0 ? text("Gotowe do odbioru.") : text("Pozostało:") + " " + this.formatTime(left);
         this.progress.value = !active ? 0 : 1000 * Math.max(0, Number(this.data.order_duration) - left) / Math.max(1, Number(this.data.order_duration));
@@ -189,11 +219,13 @@ export class ProductionDialog extends DialogContentComponent {
         if (!this.data) return;
         if (command === "start" || command === "collect") {
             this.busy = true; this.start.disabled = true; this.collect.disabled = true;
+            this.recipes.disabled = true;
             if (this.preview !== undefined) clearTimeout(this.preview);
         }
         this.lastRequest = String(++this.sequence);
         marauroa.clientFramework.sendAction({type: "production_action", command, npc_id: String(this.data.npc_id),
-            window_id: this.data.window_id, request_id: this.lastRequest, amount: this.amount.value});
+            window_id: this.data.window_id, request_id: this.lastRequest, amount: this.amount.value,
+            ...(this.selectedRecipe ? {recipe: this.selectedRecipe} : {})});
     }
 
     private section(title: string, body: HTMLElement): HTMLElement {

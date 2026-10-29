@@ -1875,7 +1875,8 @@ public class StendhalRPZone extends MarauroaRPZone {
 	}
 
 	public void onRemoved() {
-		for (RPObject inspected : this) {
+		// Entity cleanup may remove owned objects, such as production worksites.
+		for (RPObject inspected : new ArrayList<RPObject>(objects.values())) {
 			if (inspected instanceof ActiveEntity) {
 				((ActiveEntity) inspected).onRemoved(this);
 			}
