@@ -195,5 +195,8 @@ public class PlayerRPClass {
 		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
 		player.addAttribute(EconomyCorrection1432.RECORD, Type.MAP, Definition.HIDDEN);
+
+		// Append new definitions to preserve the numeric codes in character saves.
+		player.addRPEvent(Events.PRODUCTION, Definition.PRIVATE);
 	}
 }

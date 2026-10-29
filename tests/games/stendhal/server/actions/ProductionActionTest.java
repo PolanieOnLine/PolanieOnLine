@@ -2,6 +2,10 @@ package games.stendhal.server.actions;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +21,11 @@ import games.stendhal.server.maps.krakow.woodcutter.CharcoalBurnerNPC;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.DetailLevel;
+import marauroa.common.game.Definition.DefinitionClass;
+import marauroa.common.game.RPClass;
+import marauroa.common.net.InputSerializer;
+import marauroa.common.net.OutputSerializer;
 import utilities.PlayerTestHelper;
 
 /** Exercises the window against the actual persistent charcoal recipe. */
@@ -82,6 +91,32 @@ public class ProductionActionTest {
         assertEquals("50", data.getList("material_values").get(1));
         assertEquals("idle", data.get("order_state"));
         assertEquals(worksite.getID().getObjectID(), data.getInt("npc_id"));
+    }
+
+    @Test public void productionEventSerializesWithThePlayerAndRemainsPrivate() throws IOException {
+        resources(20, 50);
+        RPEvent opened = send("open", 10, null);
+        for (DetailLevel level : new DetailLevel[] {DetailLevel.FULL, DetailLevel.PRIVATE, DetailLevel.NORMAL}) {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            player.writeObject(new OutputSerializer(bytes), level);
+            RPObject restored = new RPObject();
+            restored.readObject(new InputSerializer(new ByteArrayInputStream(bytes.toByteArray())));
+            RPEvent production = null;
+            for (RPEvent event : restored.events()) if ("production_event".equals(event.getName())) production = event;
+            if (level == DetailLevel.NORMAL) {
+                assertNull("Other players must not receive the owner's production data", production);
+            } else {
+                assertNotNull("Production can be sent and saved with the actual player schema", production);
+                assertEquals(opened.get("window_id"), production.get("window_id"));
+                assertEquals(opened.getList("material_values"), production.getList("material_values"));
+            }
+        }
+        RPClass schema = RPClass.getRPClass("player");
+        assertEquals("Existing character-save codes must remain unchanged", 223,
+                schema.getCode(DefinitionClass.ATTRIBUTE, "economy_correction_1432"));
+        assertEquals("The new event must follow the last existing definition",
+                schema.getCode(DefinitionClass.ATTRIBUTE, "economy_correction_1432") + 1,
+                schema.getCode(DefinitionClass.RPEVENT, "production_event"));
     }
 
     @Test public void usingTheMoundOpensTheWindowOnlyWhenStandingNextToIt() {
