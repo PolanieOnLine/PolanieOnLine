@@ -281,29 +281,84 @@ div.itemSlot::before {
 
 .production-dialog {
 	box-sizing: border-box;
-	width: 380px;
+	width: 360px;
 	max-width: calc(100vw - 32px);
-	min-height: 420px;
+	height: 420px;
+	max-height: calc(100dvh - 64px);
+	overflow-y: auto;
 	padding: 8px 10px;
 	display: flex;
 	flex-direction: column;
-	gap: 7px;
+	gap: 6px;
+	font: bold 12px/15px Arial, sans-serif;
 }
-.production-identity { display: flex; align-items: center; gap: 12px; min-height: 42px; }
-.production-dialog fieldset { margin: 0; padding: 8px; min-width: 0; border: 2px groove #ba9573; }
+.production-identity { display: flex; align-items: center; gap: 8px; min-height: 42px; }
+.production-dialog fieldset {
+	margin: 0;
+	padding: 6px 8px 8px;
+	min-width: 0;
+	flex-shrink: 0;
+	border: 1px solid var(--border-bottom-color);
+	box-shadow: inset 1px 1px var(--border-top-color), 1px 1px var(--border-top-color);
+}
 .production-dialog legend { font-weight: bold; padding: 0 3px; }
-.production-quantity { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
-.production-quantity input { box-sizing: border-box; width: 68px; margin-left: 6px; }
-.production-quantity button { min-width: 37px; }
-.production-materials { display: flex; justify-content: space-evenly; gap: 10px; }
-.production-material { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.production-dialog button {
+	box-sizing: border-box;
+	min-height: 24px;
+	padding: 2px 12px;
+	font: inherit;
+	color: var(--text-color);
+	background: var(--background-url) repeat;
+	border: 2px solid;
+	border-color: var(--border-top-color) var(--border-bottom-color) var(--border-bottom-color) var(--border-top-color);
+	border-radius: 0;
+	cursor: pointer;
+}
+.production-dialog button:hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.08); }
+.production-dialog button:active:not(:disabled) { border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color); }
+.production-dialog button:focus-visible { outline: 1px dotted var(--text-color); outline-offset: -5px; }
+.production-dialog button:disabled { color: var(--border-bottom-color); text-shadow: 1px 1px var(--border-top-color); cursor: default; }
+.production-quantity { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-bottom: 4px; }
+.production-quantity label { display: flex; align-items: center; }
+.production-quantity input {
+	box-sizing: border-box;
+	width: 78px;
+	min-width: 0;
+	height: 25px;
+	margin-left: 6px;
+	padding: 2px 3px;
+	font: inherit;
+	font-weight: normal;
+	color: #000;
+	background: #fff;
+	border: 2px solid;
+	border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);
+	border-radius: 0;
+}
+.production-quantity input::-webkit-inner-spin-button { opacity: 1; }
+.production-quantity button { min-width: 38px; padding: 2px 10px; }
+.production-materials { display: flex; gap: 12px; }
+.production-material { display: flex; flex: 1 1 0; min-width: 0; flex-direction: column; align-items: center; gap: 2px; text-align: center; overflow-wrap: anywhere; }
 .production-dialog div.itemSlot { float: none; flex: 0 0 auto; }
-.production-order { display: flex; flex-direction: column; gap: 6px; }
-.production-order progress { width: 100%; height: 12px; accent-color: #ad925d; }
-.production-status { min-height: 30px; margin-top: auto; color: #5cbe69; }
+.production-order { display: flex; flex-direction: column; gap: 3px; }
+.production-order progress {
+	box-sizing: border-box;
+	appearance: none;
+	width: 100%;
+	height: 15px;
+	border: 2px solid;
+	border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);
+	border-radius: 0;
+	background: var(--border-top-color);
+}
+.production-order progress::-webkit-progress-bar { background: var(--border-top-color); }
+.production-order progress::-webkit-progress-value { background: var(--background-url) repeat; }
+.production-order progress::-moz-progress-bar { background: var(--background-url) repeat; }
+.production-status { flex: 1 0 34px; min-height: 34px; color: #5cbe69; }
 .production-available { color: #5cbe69; }
 .production-missing { color: #e15a4b; }
-.production-dialog .dialogbuttons { justify-content: flex-end; gap: 5px; }
+.production-dialog .dialogbuttons { align-self: stretch; flex-shrink: 0; justify-content: flex-end; flex-wrap: wrap; margin: 0; gap: 5px; background: none; }
+.production-dialog .dialogbutton + .dialogbutton { margin-left: 0; }
 
 .item-upgrade-identity {
 	display: flex;
