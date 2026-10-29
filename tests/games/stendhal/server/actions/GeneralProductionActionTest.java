@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.ArrayDeque;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +23,11 @@ import games.stendhal.server.entity.npc.behaviour.ProductionRecipe;
 import games.stendhal.server.entity.mapstuff.useable.ProductionWorksite;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import games.stendhal.common.tiled.StendhalMapStructure;
+import games.stendhal.server.core.config.zone.TMXLoader;
+import games.stendhal.server.entity.mapstuff.portal.Portal;
+import games.stendhal.server.entity.npc.NPCList;
+import games.stendhal.server.maps.zakopane.blacksmith.DwojakiElwirkaNPC;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
@@ -140,6 +148,38 @@ public class GeneralProductionActionTest {
         ProductionRecipe.ensureWorksite(npc);
         npc.getZone().onRemoved();
         // onRemoved iterates active entities, whose owned worksites may be removed.
+    }
+
+    @Test public void elwirkasTableCanBeReachedFromTheActualCustomerEntrance() throws Exception {
+        StendhalRPZone zone = new StendhalRPZone("customer_access_" + sequence, 32, 32);
+        StendhalMapStructure map = TMXLoader.load("data/maps/interiors/zakopane/blacksmith.tmx");
+        zone.addCollisionLayer(zone.getName() + ".collision", map.getLayer("collision"));
+        MockStendlRPWorld.get().addRPZone(zone);
+        Portal entrance = new Portal(); entrance.setPosition(15, 14); zone.add(entrance);
+        NPCList.get().remove("Elwirka");
+        new DwojakiElwirkaNPC().configureZone(zone, null);
+        SpeakerNPC elwirka = NPCList.get().get("Elwirka");
+        try {
+            Map<String, Integer> costs = new HashMap<>(); costs.put("ziemniaki", 3);
+            new ProducerAdder().addProducer(elwirka, new ProducerBehaviour("customer_dwojaki", Arrays.asList("ugotuj"), "dwojaki", costs, 300), null);
+            ProductionRecipe.ensureWorksite(elwirka);
+            ProductionWorksite table = null;
+            for (Object object : zone) if (object instanceof ProductionWorksite && ((ProductionWorksite) object).getProducer() == elwirka) table = (ProductionWorksite) object;
+            assertNotNull(table);
+            ArrayDeque<Point> pending = new ArrayDeque<>(); HashSet<Point> seen = new HashSet<>();
+            pending.add(new Point(15, 14)); Point approach = null;
+            while (!pending.isEmpty()) {
+                Point p = pending.remove();
+                if (p.x < 0 || p.y < 0 || p.x >= zone.getWidth() || p.y >= zone.getHeight()
+                        || zone.collides(p.x, p.y) || table.getArea().intersects(p.x, p.y, 1, 1) || !seen.add(p)) continue;
+                if (new Rectangle2D.Double(p.x - .25, p.y - .25, 1.5, 1.5).intersects(table.getArea())) { approach = p; break; }
+                pending.add(new Point(p.x - 1, p.y)); pending.add(new Point(p.x + 1, p.y));
+                pending.add(new Point(p.x, p.y - 1)); pending.add(new Point(p.x, p.y + 1));
+            }
+            assertNotNull("Customers entering at (15,14) must be able to approach Elwirka's table at " + table.getX() + "," + table.getY(), approach);
+            player.getZone().remove(player); player.setPosition(approach.x, approach.y); zone.add(player);
+            assertTrue("Using the table from the accessible customer floor opens production", table.onUsed(player));
+        } finally { NPCList.get().remove("Elwirka"); }
     }
 
     @Test public void multiProducerRestoresAndCollectsTheActualOrderedProductAfterSelectionChanges() {
