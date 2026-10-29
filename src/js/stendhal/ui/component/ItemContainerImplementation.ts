@@ -741,7 +741,7 @@ export class ItemContainerImplementation {
 		if (rarity) {
 			toolTip.classList.add(rarity.cssClass);
 		} else {
-			toolTip.style.setProperty("--item-rarity-color", "#a37861");
+			toolTip.style.setProperty("--item-rarity-color", "var(--text-color, #fff)");
 		}
 		toolTip.setAttribute("role", "tooltip");
 

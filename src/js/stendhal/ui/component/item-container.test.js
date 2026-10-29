@@ -298,6 +298,19 @@ test("ordinary items with category-only metadata show a popup on hover", () => {
 	assert.equal(slot.title, "polano");
 });
 
+test("marked scroll popup shows the saved destination with category-only metadata", () => {
+    const h = createHarness(), item = h.makeItem(1);
+    item.set("class", "scroll"); item.set("name", "zwój zapisany");
+    item.set("dest", "int_zakopane_townhall,15,7");
+    item.set("tooltip_stats", {category: "other"});
+    const {parent} = h.makeContainer([item]); const slot = parent.elements[0];
+    for (const listener of slot.listeners.get("mouseenter") || []) listener({currentTarget: slot, clientX: 10, clientY: 10});
+    const tooltip = h.document.body.children[0];
+    assert.match(tooltip.textContent, /ZWÓJ ZAPISANY/);
+    assert.match(tooltip.textContent, /int_zakopane_townhall 15,7/);
+    assert.equal(tooltip.style["--item-rarity-color"], "var(--text-color, #fff)");
+});
+
 test("common equipment, potions and food show their server statistics on hover", () => {
 	for (const [name, stats, expected] of [
 		["zdobyczny hełm", {category: "armour", def: "124"}, /124 pkt\. pancerza/],

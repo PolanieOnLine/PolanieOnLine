@@ -142,7 +142,7 @@ export function buildStructuredItemTooltip(item: Item,
 	appendBonuses(lines, current, equipped, weapon, armour);
 	appendConsumableHealing(lines, current);
 	appendAffixes(lines, current);
-	appendFooter(lines, current);
+	appendFooter(lines, current, item);
 
 	return {
 		comparisonName: equippedItem?.getDisplayName(),
@@ -150,7 +150,8 @@ export function buildStructuredItemTooltip(item: Item,
 		upgradeText: maxUpgrade > 0 || upgrade > 0
 				? GameLanguage.getText("Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : ""))
 				: undefined,
-		lines: lines.map(line => ({...line, text: GameLanguage.getText(line.text)}))
+		lines: lines.map(line => ({...line, text: GameLanguage.getText(line.text),
+			deltas: line.deltas?.some(delta => delta.direction !== "equal") ? line.deltas : undefined}))
 	};
 }
 
@@ -257,7 +258,7 @@ function appendCoreStats(lines: ItemTooltipLine[], current: Record<string, strin
 		const previous = percentageValue(equipped, key, true);
 		if (value === 0 && (!equipped || previous === 0)) continue;
 		section.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
-			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
+			deltas: equipped ? [createDelta(value - previous, 1)] : undefined});
 	}
 	appendSection(lines, section);
 }
@@ -273,7 +274,7 @@ function appendLifeStealStat(lines: ItemTooltipLine[],
 	const bonus = intValue(current, "lifesteal_effectiveness") > 0 ? value - base : 0;
 	lines.push({kind: "bonus", text: signed(formatCompact(value)) + "% " + GameLanguage.getText("kradzieży życia")
 			+ (bonus > 0 ? " (+" + formatCompact(bonus) + "%)" : ""),
-		deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined});
+		deltas: equipped ? [createDelta(value - previous, 1)] : undefined});
 }
 
 function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>,
@@ -300,7 +301,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	if (experienceBonus !== 0 || (equipped && previousExperienceBonus !== 0)) {
 		core.push({kind: "bonus", text: signed(formatCompact(experienceBonus)) + "% "
 				+ GameLanguage.getText("doświadczenia z potworów"),
-				deltas: equipped ? [createDelta(experienceBonus - previousExperienceBonus, 1, "%")] : undefined});
+				deltas: equipped ? [createDelta(experienceBonus - previousExperienceBonus, 1)] : undefined});
 	}
 
 	for (const [nature, label] of RESISTANCES) {
@@ -312,7 +313,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		resistances.push({
 			kind: "bonus",
 			text: signed(formatCompact(value)) + "% odporności na " + GameLanguage.getText(label),
-			deltas: equipped ? [createDelta(value - previous, 1, "%")] : undefined
+			deltas: equipped ? [createDelta(value - previous, 1)] : undefined
 		});
 	}
 
@@ -320,7 +321,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	const previousLifeSteal = numberValue(equipped, hasValue(equipped, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
 	if (lifeSteal !== 0 || (equipped && previousLifeSteal !== 0)) {
 		special.push({kind: "bonus", text: signed(formatCompact(lifeSteal)) + "% " + GameLanguage.getText("kradzieży życia"),
-			deltas: equipped ? [createDelta(lifeSteal - previousLifeSteal, 1, "%")] : undefined});
+			deltas: equipped ? [createDelta(lifeSteal - previousLifeSteal, 1)] : undefined});
 	}
 	const lifeStealBonuses: PercentageBonusDefinition[] = [
 		{key: "lifesteal_effectiveness", label: "skuteczności kradzieży życia", fraction: false}
@@ -337,7 +338,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		special.push({
 			kind: "bonus",
 			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
-			deltas: equipped ? [createDelta(value - previous, bonus.key === "out_of_combat_regen" ? 2 : 1, "%")] : undefined
+			deltas: equipped ? [createDelta(value - previous, bonus.key === "out_of_combat_regen" ? 2 : 1)] : undefined
 		});
 	}
 
@@ -421,7 +422,7 @@ function appendRolledAffix(lines: ItemTooltipLine[], current: Record<string, str
 	lines.push({kind: "affix", text: GameLanguage.getText(title) + ": " + prefix + value + GameLanguage.getText(suffix)});
 }
 
-function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>) {
+function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>, item: Item) {
 	const footer: ItemTooltipLine[] = [];
 	const minLevel = intValue(current, "min_level");
 	if (minLevel > 0) {
@@ -432,6 +433,10 @@ function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>)
 		const uses = intValue(current, "uses");
 		footer.push({kind: "footer", text: "Wytrzymałość: "
 				+ Math.max(0, durability - uses) + "/" + durability});
+	}
+	// `dest` is the public presentation field; itemdata remains server-private.
+	if (item["class"] === "scroll" && typeof item["dest"] === "string" && item["dest"].trim()) {
+		footer.push({kind: "footer", text: item["dest"].replace(",", " ")});
 	}
 	if (current["saved_position"]) {
 		footer.push({kind: "footer", text: GameLanguage.getText("Zapisana pozycja:")
@@ -611,16 +616,18 @@ function getWeaponSpeedLabel(attacksPerSecond: number): string {
 	return "Bardzo powolna broń";
 }
 
-function createDelta(value: number, precision: number, suffix = ""): ItemTooltipDelta {
+function createDelta(value: number, precision: number): ItemTooltipDelta {
+	// Match the desktop tooltip: omit unchanged rows and retain a plain zero
+	// only when it shares a damage-range comparison with a changed endpoint.
+	if (Math.abs(value) < 0.5 * Math.pow(10, -precision)) return {text: "0", direction: "equal"};
 	return {
-		text: signed(formatNumber(value, precision)) + suffix,
+		text: signed(formatNumber(value, precision)),
 		direction: value > 0 ? "better" : value < 0 ? "worse" : "equal"
 	};
 }
 
 function signed(value: string): string {
-	return value.startsWith("-") || /^0([,.]0+)?$/.test(value)
-			? value : "+" + value;
+	return value.startsWith("-") ? value : "+" + value;
 }
 
 function formatCompact(value: number): string {

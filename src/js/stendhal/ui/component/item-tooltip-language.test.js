@@ -50,6 +50,41 @@ test("equipment attack penalties survive missing or zero other attack values", a
 	}
 });
 
+test("structured scroll tooltips retain the published destination just like Java", async () => {
+    const h = await harness();
+    const scroll = new h.Item({category: "other"});
+    scroll.class = "scroll"; scroll.dest = "int_zakopane_townhall,15,7";
+    const lines = h.build(scroll).lines;
+    assert.equal(lines.filter(line => line.text === "int_zakopane_townhall 15,7").length, 1);
+    assert.equal(lines.at(-1).kind, "footer");
+    scroll.class = "ring";
+    assert.ok(h.build(scroll).lines.every(line => !line.text.includes("int_zakopane")));
+});
+
+test("unchanged comparisons disappear and changed percentages match Java delta formatting", async () => {
+    const h = await harness();
+    const equipped = new h.Item({category: "armour", def: "62", resistance_light: "110", resistance_dark: "150"});
+    h.marauroa.me = {armor: {count: () => 1, getByIndex: () => equipped}};
+    const item = new h.Item({category: "armour", equipment_slots: "armor", def: "62",
+        resistance_light: "110", resistance_dark: "120"});
+    const lines = h.build(item, true).lines;
+    assert.equal(lines.find(line => line.text === "62 pkt. pancerza").deltas, undefined);
+    assert.equal(lines.find(line => line.text.includes("światło")).deltas, undefined);
+    assert.equal(lines.find(line => line.text.includes("mrok")).deltas[0].text, "-30,0");
+});
+
+test("damage range preserves its unchanged endpoint without a spurious zero-only comparison", async () => {
+    const h = await harness();
+    const equipped = new h.Item({category: "weapon", damage_min: "10", damage_max: "20", attacks_per_second: "1"});
+    h.marauroa.me = {rhand: {count: () => 1, getByIndex: () => equipped}};
+    const item = new h.Item({category: "weapon", equipment_slots: "rhand", damage_min: "10", damage_max: "25", attacks_per_second: "1"});
+    const lines = h.build(item, true).lines;
+    const range = lines.find(line => line.text.startsWith("[10"));
+    assert.equal(range.deltas[0].text, "0");
+    assert.equal(range.deltas[1].text, "+5");
+    assert.equal(lines.find(line => line.text.includes("ataku na sekundę")).deltas, undefined);
+});
+
 test("attack comparison retains equipped penalties and marks a smaller penalty as better", async () => {
 	const h = await harness();
 	const equipped = new h.Item({category: "accessory", atk: "-5"});
@@ -114,11 +149,11 @@ test("a plain item compares missing life steal against the equipped core stat", 
 	h.marauroa.me = {finger: {count: () => 1, getByIndex: () => equipped}};
 	const item = new h.Item({category: "accessory", equipment_slots: "finger"});
 	const lines = h.build(item, true).lines;
-	const total = lines.find(line => line.text === "0% kradzieży życia");
+	const total = lines.find(line => line.text === "+0% kradzieży życia");
 	assert.ok(total);
-	assert.equal(total.deltas[0].text, "-9,0%");
+	assert.equal(total.deltas[0].text, "-9,0");
 	assert.equal(total.deltas[0].direction, "worse");
-	assert.equal(lines.filter(line => line.text === "0% kradzieży życia").length, 1);
+	assert.equal(lines.filter(line => line.text === "+0% kradzieży życia").length, 1);
 });
 
 test("weapon speed descriptions start on their own line in Polish and English", async () => {
@@ -198,5 +233,5 @@ test("living water comparison retains the quarter point improvement", async () =
     const item = new h.Item({category: "other", equipment_slots: "healing_rune",
         out_of_combat_regen: "0.75", out_of_combat_regen_cap: "14"});
     const line = h.build(item, true).lines.find(line => line.text.includes("regeneracji co 5 s"));
-    assert.equal(line.deltas[0].text, "+0,25%");
+    assert.equal(line.deltas[0].text, "+0,25");
 });

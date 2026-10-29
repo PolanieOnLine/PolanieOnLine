@@ -382,12 +382,12 @@ div.itemSlot {
 	z-index: 100000;
 	pointer-events: none;
 	box-sizing: border-box;
-	width: 195px;
+	width: 202px;
 	max-width: calc(100vw - 16px);
-	padding: 7px 8px;
+	padding: 4px;
 	white-space: normal;
-	color: #f3efe7;
-	background: var(--background-url) repeat;
+	color: var(--text-color, #fff);
+	background: linear-gradient(rgba(0, 0, 0, 0.28), rgba(0, 0, 0, 0.44)), var(--background-url) repeat;
 	border-top: 1px solid var(--border-top-color);
 	border-left: 1px solid var(--border-top-color);
 	border-right: 1px solid var(--border-bottom-color);
@@ -395,6 +395,8 @@ div.itemSlot {
 	border-radius: 1px;
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78);
 	font-size: 12px;
+	font-family: Arial, sans-serif;
+	font-weight: normal;
 	line-height: 1.24;
 	text-align: left;
 }
@@ -404,7 +406,7 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip--comparing {
-	width: 240px;
+	width: 252px;
 }
 .item-rarity-tooltip.item-rarity-epic {
 	box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.78), 0 0 5px rgba(155, 89, 182, 0.12);
@@ -417,11 +419,10 @@ div.itemSlot {
 	color: var(--item-rarity-color);
 	font-weight: bold;
 	font-size: 12px;
-	letter-spacing: 0.03em;
 }
 
 .item-rarity-tooltip__rarity {
-	color: #f3efe7;
+	color: inherit;
 	font-size: 11px;
 }
 
@@ -432,7 +433,7 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__comparison {
-	color: #c6a58f;
+	color: #a37861;
 	font-size: 11px;
 	margin-top: 3px;
 }
@@ -446,7 +447,7 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__primary {
-	color: #f3efe7;
+	color: inherit;
 	font-weight: bold;
 	margin: 1px 0;
 }
@@ -466,14 +467,14 @@ div.itemSlot {
 .item-rarity-tooltip__tree-value {
 	flex: 1 1 auto;
 	min-width: 0;
-	color: #f3efe7;
+	color: inherit;
 	white-space: pre-line;
 }
 
 .item-rarity-tooltip__detail,
 .item-rarity-tooltip__bonus {
-	color: #f3efe7;
-	font-size: 11px;
+	color: inherit;
+	font-size: 12px;
 }
 
 .item-rarity-tooltip__bonus > .item-rarity-tooltip__value {
@@ -481,13 +482,13 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__bonus > .item-rarity-tooltip__value::first-letter {
-	color: #a37861;
+	color: inherit;
 }
 
 .item-rarity-tooltip__stat-row {
 	display: flex;
 	align-items: baseline;
-	column-gap: 8px;
+	column-gap: 4px;
 }
 
 .item-rarity-tooltip__stat-row > .item-rarity-tooltip__value {
@@ -509,13 +510,14 @@ div.itemSlot {
 }
 
 .item-rarity-tooltip__footer {
-	color: #c6a58f;
+	color: color-mix(in srgb, var(--text-color, #fff) 65%, #a37861);
 	font-size: 11px;
 	text-align: right;
+	overflow-wrap: anywhere;
 }
 
 .item-tooltip-delta {
-	font-weight: bold;
+	font-weight: inherit;
 }
 
 .item-tooltip-delta--better { color: #62d26f; }
