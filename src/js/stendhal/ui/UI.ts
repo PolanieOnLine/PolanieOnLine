@@ -181,16 +181,11 @@ class UI {
 	 * Instructions to execute when menu style changes.
 	 */
 	public onMenuUpdate() {
-		switch (stendhal.ui.getMenuStyle()) {
-			case "traditional":
-				document.getElementById("menupanel")!.style["display"] = "";
-				QuickMenu.setVisible(false);
-				break;
-			case "floating":
-				document.getElementById("menupanel")!.style["display"] = "none";
-				QuickMenu.setVisible(true);
-				break;
-		}
+		const floating = stendhal.ui.getMenuStyle() === "floating";
+		// Keep the main menu accessible above equipment on mouse-driven clients.
+		const touchFloating = floating && singletons.getSessionManager().touchOnly();
+		document.getElementById("menupanel")!.style.display = touchFloating ? "none" : "";
+		QuickMenu.setVisible(floating);
 		this.updateMobileUiClass();
 		singletons.getLeftPanelToggleController().update();
 		singletons.getRightPanelToggleController().update();
