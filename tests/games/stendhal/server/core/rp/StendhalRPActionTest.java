@@ -369,6 +369,45 @@ public class StendhalRPActionTest {
 		assertTrue(player.getHP() > 50);
 	}
 
+	@Test
+	public void weaponMatchupsApplyOnceToArmorAndHealthIncludingAfterArmorBreaks() {
+		verifyPersistentMatchup("dagger", 40);
+		verifyPersistentMatchup("sword", 80);
+		verifyPersistentMatchup("axe", 130);
+	}
+
+	private void verifyPersistentMatchup(final String weaponClass, final int expectedDamage) {
+		final Player player = new Player(PlayerTestHelper.createPlayer("armor_" + weaponClass)) {
+			@Override public boolean canHit(final RPEntity defender) { return true; }
+			@Override public int damageDone(final RPEntity defender, final double attack, final Nature nature) { return 100; }
+		};
+		final Weapon weapon = new Weapon("test matchup weapon", weaponClass, "test", null);
+		weapon.put("atk", 30);
+		weapon.put("damage_min", 100);
+		weapon.put("damage_max", 100);
+		weapon.put("rate", 5);
+		player.getSlot("rhand").add(weapon);
+		player.initHP(100);
+		final Creature target = SingletonRepository.getEntityManager().getCreature("mysz domowa");
+		target.initHP(1000);
+		target.setArmorType("heavy");
+		target.initArmorHP(50);
+		player.setPosition(5, 5);
+		target.setPosition(6, 5);
+		zone.add(player);
+		zone.add(target);
+		assertTrue(StendhalRPAction.playerAttack(player, target));
+		final int firstDamage = expectedDamage * (target.has("crit") ? 2 : 1);
+		assertEquals(weaponClass, Math.max(0, 50 - firstDamage), target.getArmorHP());
+		assertEquals(weaponClass, 1000 - Math.max(0, firstDamage - 50), target.getHP());
+		target.setArmorHP(0);
+		final int healthBefore = target.getHP();
+		assertTrue(StendhalRPAction.playerAttack(player, target));
+		assertEquals(weaponClass, healthBefore - expectedDamage * (target.has("crit") ? 2 : 1), target.getHP());
+		zone.remove(player);
+		zone.remove(target);
+	}
+
 	private void verifyAmmunitionUse(final String weaponClass, final String ammunitionName,
 			final boolean hits, final boolean adjacent) {
 		final Player player = new Player(PlayerTestHelper.createPlayer("ammunition_user")) {

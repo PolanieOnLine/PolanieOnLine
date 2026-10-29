@@ -399,13 +399,10 @@ public class StendhalRPAction {
 
 			damage = player.damageDone(defender, itemAtk,
 					player.getDamageType());
+			damage = WeaponArmorInteractionService.applyDamageMultiplier(damage, weapons, defender);
 			final boolean layeredArmor = defender.getBaseArmorHP() > 0;
 			final double armorMultiplier = layeredArmor
-					? WeaponArmorInteractionService.getCombinedDamageMultiplier(weapons, defender)
-							* WeaponAffixCombatService.getArmorBreakingMultiplier(weapons, defender) : 1.0;
-			if (!layeredArmor) {
-				damage = WeaponArmorInteractionService.applyDamageMultiplier(damage, weapons, defender);
-			}
+					? WeaponAffixCombatService.getArmorBreakingMultiplier(weapons, defender) : 1.0;
 			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 					damage, weapons, defender, isRanged);
 

@@ -82,7 +82,7 @@ public class CreatureArmorTest {
 		assertEquals(50, dealt.getHealthDamage());
 		assertEquals(50, target.getHP());
 		assertEquals("heavy", target.getArmorType());
-		assertEquals("none", target.getEffectiveArmorType());
+		assertEquals("heavy", target.getEffectiveArmorType());
 	}
 
 	@Test

@@ -24,7 +24,7 @@ public final class ArmorPoolService {
 		}
 	}
 
-	/** The weapon matchup affects only the armored fraction of a layered hit. */
+	/** Incoming damage already includes weapon matchups; armor-only bonuses apply to the absorbed part. */
 	public static DamageResult resolve(final RPEntity target, final int damage,
 			final double armorMultiplier, final boolean bypassArmor) {
 		if (damage <= 0 || target.getHP() <= 0) {
@@ -39,7 +39,7 @@ public final class ArmorPoolService {
 		final long potentialArmorDamage = Math.round(damage * multiplier);
 		final int absorbed = (int) Math.min(armor, potentialArmorDamage);
 		// The part spent breaking armor cannot also damage health. In particular,
-		// an axe's armor advantage does not become bonus HP damage on the last hit.
+		// an armor-breaking affix does not become bonus HP damage on the last hit.
 		final int remainder = potentialArmorDamage <= armor ? 0
 				: (int) Math.max(0L, Math.round(damage - absorbed / multiplier));
 		return new DamageResult(absorbed, Math.min(remainder, target.getHP()));

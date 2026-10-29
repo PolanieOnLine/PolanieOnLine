@@ -54,7 +54,7 @@ public class GroundItemTooltipTest {
 		assertEquals("Pancerz ciężki", GroundContainer.buildGroundItemToolTip(creature));
 		object.put("armor_hp", 0);
 		creature.initialize(object);
-		assertNull(GroundContainer.buildGroundItemToolTip(creature));
+		assertEquals("Pancerz ciężki", GroundContainer.buildGroundItemToolTip(creature));
 		object.put("armor_hp", 1122);
 		creature.initialize(object);
 		object.put("armor_type", "none");

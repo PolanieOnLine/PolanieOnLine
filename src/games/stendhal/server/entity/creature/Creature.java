@@ -429,7 +429,7 @@ public class Creature extends NPC {
 	}
 
 	public String getEffectiveArmorType() {
-		return getBaseArmorHP() > 0 && getArmorHP() == 0 ? "none" : getArmorType();
+		return getArmorType();
 	}
 
 	@Override

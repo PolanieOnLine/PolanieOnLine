@@ -59,9 +59,6 @@ public class Creature extends RPEntity {
 
 	/** Reads live server updates; legacy servers without this field stay unknown. */
 	public CreatureArmor getArmorType() {
-		if (getBaseArmorHP() > 0 && getArmorHP() == 0) {
-			return CreatureArmor.NONE;
-		}
 		final RPObject object = getRPObject();
 		return object != null && object.has("armor_type")
 				? CreatureArmor.fromId(object.get("armor_type")) : null;

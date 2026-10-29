@@ -46,8 +46,7 @@ export class Creature extends RPEntity {
 	}
 
 	getEffectiveArmorType() {
-		return Number(this["base_armor_hp"]) > 0 && Number(this["armor_hp"]) <= 0
-			? "none" : this["armor_type"];
+		return this["armor_type"];
 	}
 
 	override drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
