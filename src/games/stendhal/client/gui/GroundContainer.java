@@ -143,10 +143,6 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 			final Creature creature = (Creature) entity;
 			final CreatureArmor armor = creature.getArmorType();
 			final String label = armor == null || armor == CreatureArmor.NONE ? "" : ClientLanguage.getText(armor.getLabel());
-			if (creature.getBaseArmorHP() > 0) {
-				return label + (label.isEmpty() ? "" : ", ") + ClientLanguage.getText("Opancerzenie") + ": "
-						+ creature.getArmorHP() + "/" + creature.getBaseArmorHP();
-			}
 			return label.isEmpty() ? null : label;
 		}
 		if (!(entity instanceof Item)) {

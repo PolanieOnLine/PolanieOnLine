@@ -51,8 +51,8 @@
 			<atk value="421"/>
 			<def value="52"/>
 			<armor_type value="heavy"/>
-			<hp value="400"/>
-			<armor_hp value="100"/>
+			<hp value="500"/>
+			<armor_hp value="125"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
 			<resistance value="100"/>

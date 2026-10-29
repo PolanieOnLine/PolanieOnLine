@@ -104,9 +104,10 @@ public class CreatureArmorTest {
 			if ("dwugłowy czarny smok".equals(definition.getCreatureName())) {
 				final Creature creature = definition.getCreature();
 				assertEquals("heavy", creature.getArmorType());
-				assertEquals(5280, creature.getBaseHP());
-				assertEquals(1320, creature.getBaseArmorHP());
-				assertEquals(1320, creature.getArmorHP());
+				assertEquals(6600, creature.getBaseHP());
+				assertEquals(6600, creature.getHP());
+				assertEquals(1650, creature.getBaseArmorHP());
+				assertEquals(1650, creature.getArmorHP());
 				foundArmored = true;
 			} else if ("szczur".equals(definition.getCreatureName())) {
 				assertEquals(0, definition.getCreature().getBaseArmorHP());

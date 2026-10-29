@@ -436,8 +436,7 @@ public class Creature extends NPC {
 	public String describe() {
 		final CreatureArmor armor = CreatureArmor.fromId(getArmorType());
 		return super.describe() + (armor == null || armor == CreatureArmor.NONE
-				? "" : " " + armor.getLabel() + ".")
-				+ (getBaseArmorHP() > 0 ? " Opancerzenie: " + getArmorHP() + "/" + getBaseArmorHP() + "." : "");
+				? "" : " " + armor.getLabel() + ".");
 	}
 
 	public Creature getNewInstance() {

@@ -98,7 +98,12 @@ test("the actual creature view shows armor only for our current target and respe
 	assert.equal(h.draws.length, 1);
 	assert.deepEqual(h.draws[0].slice(1), [20, 32]);
 	creature.armor_type = "light";
+	creature.base_armor_hp = 1122;
+	creature.armor_hp = 1122;
 	assert.equal(creature.getArmorLabel(), "Pancerz lekki");
+	creature.armor_hp = 0;
+	assert.equal(creature.getArmorLabel(), undefined);
+	creature.armor_hp = 1122;
 	creature.drawHealthBar(h.ctx, 30, 40);
 	assert.equal(h.draws.length, 2);
 	target = new Creature();

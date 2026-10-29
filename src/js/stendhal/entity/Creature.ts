@@ -42,12 +42,7 @@ export class Creature extends RPEntity {
 
 	getArmorLabel(): string | undefined {
 		const label = getCreatureArmorLabel(this.getEffectiveArmorType());
-		const translated = label === undefined ? "" : GameLanguage.getText(label);
-		if (Number(this["base_armor_hp"]) > 0) {
-			return translated + (translated ? ", " : "") + GameLanguage.getText("Opancerzenie")
-				+ ": " + (Number(this["armor_hp"]) || 0) + "/" + Number(this["base_armor_hp"]);
-		}
-		return translated || undefined;
+		return label === undefined ? undefined : GameLanguage.getText(label);
 	}
 
 	getEffectiveArmorType() {

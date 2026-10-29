@@ -108,8 +108,8 @@
 			<atk value="803"/>
 			<def value="75"/>
 			<armor_type value="medium"/>
-			<hp value="240"/>
-			<armor_hp value="60"/>
+			<hp value="300"/>
+			<armor_hp value="75"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -195,8 +195,8 @@
 			<ratk value="1511"/>
 			<def value="57"/>
 			<armor_type value="medium"/>
-			<hp value="720"/>
-			<armor_hp value="180"/>
+			<hp value="900"/>
+			<armor_hp value="225"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -243,8 +243,8 @@
 			<ratk value="1777"/>
 			<def value="115"/>
 			<armor_type value="medium"/>
-			<hp value="960"/>
-			<armor_hp value="240"/>
+			<hp value="1200"/>
+			<armor_hp value="300"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -339,8 +339,8 @@
 			<ratk value="837"/>
 			<def value="138"/>
 			<armor_type value="medium"/>
-			<hp value="880"/>
-			<armor_hp value="220"/>
+			<hp value="1100"/>
+			<armor_hp value="275"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -386,8 +386,8 @@
 			<atk value="1836"/>
 			<def value="96"/>
 			<armor_type value="medium"/>
-			<hp value="1520"/>
-			<armor_hp value="380"/>
+			<hp value="1900"/>
+			<armor_hp value="475"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
@@ -436,8 +436,8 @@
 			<ratk value="1350"/>
 			<def value="153"/>
 			<armor_type value="medium"/>
-			<hp value="4488"/>
-			<armor_hp value="1122"/>
+			<hp value="5610"/>
+			<armor_hp value="1403"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
 		</attributes>
