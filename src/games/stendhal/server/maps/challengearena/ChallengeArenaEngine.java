@@ -149,6 +149,9 @@ public final class ChallengeArenaEngine implements TurnListener {
 		}
 		final int waveSize = tier.getRemainingWaveSize(alreadySpawned);
 		final boolean firstBatch = waveSize == tier.getWaveSizeForWave(waveNumber);
+		if (firstBatch) {
+			spawner.beginWave(tier.getTargetCreatureLevel(player.getLevel(), alreadySpawned + 1));
+		}
 		int spawnedNow = 0;
 
 		for (int i = 0; i < waveSize; i++) {

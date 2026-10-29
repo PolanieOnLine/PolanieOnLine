@@ -41,18 +41,28 @@ public final class ChallengeArenaCreatureSpawner {
 	private final List<Creature> sortedCreatures = new LinkedList<Creature>();
 	private final List<Creature> spawnedCreatures = new ArrayList<Creature>();
 	private final List<Creature> currentWaveCreatures = new ArrayList<Creature>();
+	private ChallengeArenaEncounterPool encounterPool;
+	private final boolean loadConfiguredPools;
+	private boolean endgameLoaded;
 
 	public ChallengeArenaCreatureSpawner() {
-		this(SingletonRepository.getEntityManager().getCreatures());
+		this(new ArrayList<>(SingletonRepository.getEntityManager().getCreatures()), true);
 	}
 
 	ChallengeArenaCreatureSpawner(final Collection<Creature> creatures) {
+		this(creatures, false);
+	}
+
+	private ChallengeArenaCreatureSpawner(final Collection<Creature> creatures,
+			final boolean loadConfiguredPools) {
+		this.loadConfiguredPools = loadConfiguredPools;
 		for (final Creature creature : creatures) {
 			if (isUsableTemplate(creature)) {
 				sortedCreatures.add(creature);
 			}
 		}
 		Collections.sort(sortedCreatures, new LevelBasedComparator());
+		encounterPool = new ChallengeArenaEncounterPool(sortedCreatures);
 	}
 
 	private boolean isUsableTemplate(final Creature creature) {
@@ -69,11 +79,37 @@ public final class ChallengeArenaCreatureSpawner {
 						|| "enemy".equals(creature.get("title_type")));
 	}
 
-	/** Selects the configured creature level nearest to the requested level. */
+	/** Selects a themed endgame enemy, with the original nearest-level fallback. */
 	Creature calculateCreature(final int targetLevel) {
-		if (sortedCreatures.isEmpty()) {
-			return null;
+		loadEndgamePool(targetLevel);
+		final Creature themed = encounterPool.select(targetLevel);
+		if (themed != null) return themed;
+		final List<Creature> candidates = nearestCreatures(targetLevel);
+		Collections.shuffle(candidates);
+		return candidates.isEmpty() ? null : candidates.get(0);
+	}
+
+	void beginWave(final int targetLevel) {
+		loadEndgamePool(targetLevel);
+		encounterPool.beginWave();
+	}
+
+	private void loadEndgamePool(final int targetLevel) {
+		if (!loadConfiguredPools || endgameLoaded
+				|| targetLevel < ChallengeArenaEncounterPool.MINIMUM_LEVEL) return;
+		final Set<String> known = new HashSet<>();
+		for (final Creature creature : sortedCreatures) known.add(creature.getName());
+		for (final Creature creature : ChallengeArenaEncounterPool.loadTemplates()) {
+			if (isUsableTemplate(creature) && known.add(creature.getName())) {
+				sortedCreatures.add(creature);
+			}
 		}
+		Collections.sort(sortedCreatures, new LevelBasedComparator());
+		encounterPool = new ChallengeArenaEncounterPool(sortedCreatures);
+		endgameLoaded = true;
+	}
+
+	private List<Creature> nearestCreatures(final int targetLevel) {
 		final List<Creature> candidates = new ArrayList<Creature>();
 		int bestDistance = Integer.MAX_VALUE;
 		int bestLevel = Integer.MIN_VALUE;
@@ -90,8 +126,7 @@ public final class ChallengeArenaCreatureSpawner {
 				candidates.add(creature);
 			}
 		}
-		Collections.shuffle(candidates);
-		return candidates.isEmpty() ? sortedCreatures.get(0) : candidates.get(0);
+		return candidates;
 	}
 
 	Creature spawn(final Player player, final ChallengeArenaInfo arenaInfo,
@@ -105,6 +140,7 @@ public final class ChallengeArenaCreatureSpawner {
 
 		final ArenaCreature creature = new ArenaCreature(template.getNewInstance(),
 				arenaInfo.getArena().getShape());
+		encounterPool.balance(creature, targetLevel, nearestCreatures(targetLevel));
 		if (forceElite || finalChampion) {
 			EliteCreatureService.promote(creature);
 		}
