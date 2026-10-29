@@ -51,7 +51,7 @@ public class UpdaterTranslationTest {
  @Test public void progressWindowUsesEnglishWithoutLoadingAnyRemotePage() throws Exception {
   SwingUtilities.invokeAndWait(()->{
    UpdateProgressBar progress=new UpdateProgressBar(100,null,"1.42","1.42");
-   try {assertEquals("Downloading...",progress.getTitle());
+   try {assertEquals("PolanieOnLine update",progress.getTitle());
     assertTrue(hasLabel(progress,"Downloading updates..."));}
    finally {progress.dispose();}
   });

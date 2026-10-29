@@ -20,6 +20,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.SwingUtilities;
+
 /**
  * Manages download and installation of updates.
  *
@@ -139,7 +141,7 @@ class UpdateManager {
 			removeAlreadyExistingFiles(files);
 			int updateSize = getSizeOfFilesToUpdate(files);
 			if (downloadFiles(files, updateSize)) {
-				updateClasspathConfig(filesToAddToClasspath);
+				completeUpdate(filesToAddToClasspath);
 			}
 			break;
 
@@ -151,7 +153,7 @@ class UpdateManager {
 			updateSize = getSizeOfFilesToUpdate(files);
 			if ((updateSize == 0) || (UpdateGUIDialogs.askForDownload(updateSize, true))) {
 				if (downloadFiles(files, updateSize)) {
-					updateClasspathConfig(filesToAddToClasspath);
+					completeUpdate(filesToAddToClasspath);
 				}
 			}
 			break;
@@ -295,16 +297,38 @@ class UpdateManager {
 	 * @return true on success, false otherwise
 	 */
 	private boolean downloadFiles(final List<String> files, final int size) {
-		updateProgressBar = new UpdateProgressBar(size, updateProp.getProperty("greetingUrl"), fromVersion, toVersion);
-		updateProgressBar.setVisible(true);
-		for (final String file : files) {
-			boolean res = downloadFile(file);
-			if (!res) {
-				return false;
+		if (files.isEmpty()) {
+			return true;
+		}
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+				updateProgressBar = new UpdateProgressBar(size, null, fromVersion, toVersion);
+				updateProgressBar.setVisible(true);
+			});
+		} catch (final Exception error) {
+			throw new IllegalStateException("Cannot open update window", error);
+		}
+		boolean success = false;
+		try {
+			for (final String file : files) {
+				if (!downloadFile(file)) {
+					return false;
+				}
+			}
+			success = true;
+			return true;
+		} finally {
+			if (!success) {
+				SwingUtilities.invokeLater(updateProgressBar::dispose);
 			}
 		}
-		updateProgressBar.dispose();
-		return true;
+	}
+
+	private void completeUpdate(final List<String> files) {
+		updateClasspathConfig(files);
+		if (updateProgressBar != null) {
+			updateProgressBar.awaitLaunch();
+		}
 	}
 
 	/**
@@ -314,10 +338,13 @@ class UpdateManager {
 	 * @return true, if the download was successful, false otherwise
 	 */
 	private boolean downloadFile(final String file) {
+		updateProgressBar.beginFile();
 		boolean res = tryDownloadFromPreferredLocation(file);
 		if (res) {
+			updateProgressBar.fileVerified();
 			return true;
 		}
+		updateProgressBar.beginFile();
 		System.out.println("Pobieram " + file + " ...");
 		final HttpClient httpClient = new HttpClient(serverFolder + file, true);
 		httpClient.setProgressListener(updateProgressBar);
@@ -336,15 +363,14 @@ class UpdateManager {
 						+ fileObj.length()
 						+ ", a powinien mieć "
 						+ shouldSize);
-				updateProgressBar.dispose();
 				return false;
 			}
 			bootProp.put("file-signature." + file, signature);
 		} catch (final NumberFormatException e) {
 			e.printStackTrace(System.err);
-			updateProgressBar.dispose();
 			return false;
 		}
+		updateProgressBar.fileVerified();
 		return true;
 	}
 

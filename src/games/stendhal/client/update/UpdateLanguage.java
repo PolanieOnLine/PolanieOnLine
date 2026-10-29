@@ -12,6 +12,10 @@ final class UpdateLanguage {
  private static final Pattern SLOT = Pattern.compile("\\{(\\d+)\\}");
  private UpdateLanguage() { }
 
+ static Locale getLocale() {
+  return "en".equals(savedLanguage()) ? Locale.ENGLISH : new Locale("pl");
+ }
+
  static String getText(String source) {
   if(source==null || !"en".equals(savedLanguage()))return source;
   String exact=ENGLISH.get(source);if(exact!=null)return exact;

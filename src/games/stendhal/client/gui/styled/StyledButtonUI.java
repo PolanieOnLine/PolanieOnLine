@@ -32,7 +32,7 @@ import javax.swing.plaf.basic.BasicButtonUI;
  */
 public class StyledButtonUI extends BasicButtonUI {
 	/** Shared UI instance for all buttons. */
-	private static final StyledButtonUI UI = new StyledButtonUI(StyleUtil.getStyle());
+	private static StyledButtonUI ui;
 	/**
 	 * Listener for button focus changes. Contains no state so it can be
 	 * shared for all buttons.
@@ -56,8 +56,12 @@ public class StyledButtonUI extends BasicButtonUI {
 	 * @param button component to create UI for
 	 * @return UI delegate
 	 */
-	public static ComponentUI createUI(JComponent button) {
-		return UI;
+	public static synchronized ComponentUI createUI(JComponent button) {
+		final Style currentStyle = StyleUtil.getStyle();
+		if (ui == null || ui.style != currentStyle) {
+			ui = new StyledButtonUI(currentStyle);
+		}
+		return ui;
 	}
 
 	@Override

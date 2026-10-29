@@ -21,6 +21,10 @@ import javax.swing.border.BevelBorder;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.gui.styled.Style;
+import games.stendhal.client.gui.wt.core.SettingChangeAdapter;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.common.MathHelper;
 
 /**
  * Factory for creating Styles.
@@ -60,10 +64,14 @@ public class StyleFactory {
 		WOOD("Drewno (default)") {
 			@Override
 			Style create() {
-				Color highlight = new Color(163, 120, 97);
-				Color shadow = new Color(50, 25, 12);
-				return new PixmapStyle("data/gui/panel_wood.jpg",
-						true, highlight, shadow, new Color(107, 72, 50), Color.white);
+				final WoodStyle style = new WoodStyle(SpriteStore.get().getSprite("data/gui/panel_wood.jpg"));
+				WtWindowManager.getInstance().registerSettingChangeListener("ui.font_size",
+						new SettingChangeAdapter("ui.font_size", "12") {
+					@Override public void changed(final String newValue) {
+						style.setFontSize(MathHelper.parseIntDefault(newValue, 12));
+					}
+				});
+				return style;
 			}
 		},
 

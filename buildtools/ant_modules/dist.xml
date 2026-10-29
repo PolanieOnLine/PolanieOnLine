@@ -556,9 +556,20 @@
 		<jar jarfile="${lib}/${client_starter_jarname}">
 			<fileset dir=".">
 				<include name="data/languages/en-updater.txt"/>
+				<include name="data/gui/POLsplash.png"/>
+				<include name="data/gui/POLicon.png"/>
+				<include name="data/gui/panel_wood.jpg"/>
 			</fileset>
 			<fileset dir="${build_client}">
 				<include name="games/stendhal/client/update/*"/>
+				<include name="games/stendhal/client/gui/styled/Style.class"/>
+				<include name="games/stendhal/client/gui/styled/StyleUtil.class"/>
+				<include name="games/stendhal/client/gui/styled/PixmapBorder.class"/>
+				<include name="games/stendhal/client/gui/styled/StyledButtonUI*.class"/>
+				<include name="games/stendhal/client/gui/styled/StyledCheckBoxUI*.class"/>
+				<include name="games/stendhal/client/gui/styled/StyledProgressBarUI.class"/>
+				<include name="games/stendhal/client/gui/styled/styles/WoodStyle.class"/>
+				<include name="games/stendhal/client/sprite/Sprite.class"/>
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="PolanieOnLine"/>
