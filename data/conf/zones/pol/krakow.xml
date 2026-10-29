@@ -1074,11 +1074,11 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 
-		<!-- Keep creatures from blocking trading area -->
-		<entity x="0" y="0">
+		<!-- Keep creatures out of the trading stalls, but leave the upstairs entrances accessible. -->
+		<entity x="0" y="16">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.CreatureProtectionArea">
 				<parameter name="width">19</parameter>
-				<parameter name="height">44</parameter>
+				<parameter name="height">28</parameter>
 				<parameter name="default">block</parameter>
 				<parameter name="rules"/>
 			</implementation>
