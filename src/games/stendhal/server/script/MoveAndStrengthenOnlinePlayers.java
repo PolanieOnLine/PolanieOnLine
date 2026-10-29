@@ -143,10 +143,10 @@ public class MoveAndStrengthenOnlinePlayers extends ScriptImpl {
 						Item boots = SingletonRepository.getEntityManager().getItem("buty zabójcy");
 						player.equip("feet", boots);
 					}
-					if(!player.isEquipped("szmaragdowy płaszcz smoczy")) {
+					if(!player.isEquipped("płaszcz smoczy szmaragdowy")) {
 						Item first = (Item) player.getSlot("cloak").getFirst();
 						player.drop(first);
-						Item cloak = SingletonRepository.getEntityManager().getItem("szmaragdowy płaszcz smoczy");
+						Item cloak = SingletonRepository.getEntityManager().getItem("płaszcz smoczy szmaragdowy");
 						player.equip("cloak", cloak);
 					}
 				}

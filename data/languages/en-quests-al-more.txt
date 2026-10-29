@@ -424,15 +424,15 @@ W dół po schodach, jak mówiłam. Proszę, pozbądź się tych wszystkich szcz
 Nareszcie! Mój bohater się odnalazł, dziękuję!=At last! My hero has returned. Thank you!
 # Bario's winter cloaks.
 Hej! Jak się tutaj dostałeś? Co zrobiłeś? Ha. Cóż jestem Bario. Przypuszczam, że nie zrobiłbyś dla mnie drobnego #'zadania'.=Hey! How did you get here? What did you do? Ha. Well, I am Bario. I suppose you would not do a little #'quest' for me.
-Obiecałeś, że przyniesiesz mi lazurowe płaszcze elfickie. Pamiętasz?=You promised to bring me azure elf cloaks. Remember?
-Potrzebuję lazurowych płaszczy elfickich jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.=I need azure elf cloaks to survive the winter. Bring ten, and I will reward you.
+Obiecałeś, że przyniesiesz mi płaszcze elfickie lazurowe. Pamiętasz?=You promised to bring me azure elf cloaks. Remember?
+Potrzebuję płaszczy elfickich lazurowych jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.=I need azure elf cloaks to survive the winter. Bring ten, and I will reward you.
 Och nie... Będę miał kłopoty...=Oh no...I will be in trouble...
 Witaj! Jeszcze raz dziękuję za te płaszcze.=Hello! Thank you again for those cloaks.
 Bardzo dziękuję! Masz więcej? Wciąż potrzebuję {0}.=Thank you very much! Do you have more? I still need {item:0}.
 Dziękuję bardzo! Mam teraz odpowiednio dużo płaszczy, aby przetrwać zimę. Weź tę złotą tarcze jako nagrodę.=Thank you very much! I have enough cloaks to survive the winter now. Take this golden shield as your reward.
 Naprawdę? Nie widzę żadnego...=Really? I cannot see any...
-Spotkałem zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym przyniósł  mu 10 lazurowych płaszczy elfickich.=I met a freezing dwarf hiding underground near Ados. He asked me to bring 10 azure elf cloaks.
-Spotkałam zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym przyniosła  mu 10 lazurowych płaszczy elfickich.=I met a freezing dwarf hiding underground near Ados. He asked me to bring 10 azure elf cloaks.
+Spotkałem zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym przyniósł  mu 10 płaszczy elfickich lazurowych.=I met a freezing dwarf hiding underground near Ados. He asked me to bring 10 azure elf cloaks.
+Spotkałam zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym przyniosła  mu 10 płaszczy elfickich lazurowych.=I met a freezing dwarf hiding underground near Ados. He asked me to bring 10 azure elf cloaks.
 Nie chcę pomagać Bario...=I do not want to help Bario...
 Muszę przynieść Bario {0}.=I must bring Bario {item:0}.
 Bario dał mi cenną złotą tarczę w zamian za płaszcze!=Bario gave me a valuable golden shield in exchange for the cloaks!

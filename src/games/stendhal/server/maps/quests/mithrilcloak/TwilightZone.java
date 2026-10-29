@@ -119,7 +119,7 @@ class TwilightZone {
 				Arrays.asList("magical", "mithril", "cloak", "mithril cloak", "task", "quest", "twilight", "elixir", "zadanie", "misja"),
 				new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"),
 				ConversationStates.ATTENDING,
-				"Gdy byłam chora to byłam do tyłu z pracą. Obiecałam #Josephine, że zrobię jej płaszcz w paski, ale nie mam czasu. Proszę. Mam nadzieję, że kupisz jeden i zaniesiesz jej. Prążkowany płaszcz lazurowy sprzedają w Ados abandoned keep. Dziękuję!",				
+				"Gdy byłam chora to byłam do tyłu z pracą. Obiecałam #Josephine, że zrobię jej płaszcz w paski, ale nie mam czasu. Proszę. Mam nadzieję, że kupisz jeden i zaniesiesz jej. Płaszcz prążkowany lazurowy sprzedają w Ados abandoned keep. Dziękuję!",
 				null);
 
 

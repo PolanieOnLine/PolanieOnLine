@@ -89,7 +89,7 @@ public class HelpKrasnolud extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("krasnolud", "armor", "zbroja","zbroję"),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING, "Ten krasnal wysłał cię po lazurową zbroję powiadasz... Ostatnio chyba ktoś przyniósł do mnie coś takiego. "
-			+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'lazurowy hełm' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
+			+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'hełm lazurowy' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
 			+ " Tymczasem udaj się do Gulimo w górach Ados on podobnież jest w posiadaniu takowego hełmu, o który cię proszę."
 			+ " Wystarczy jak powiesz mu moje imię #/Wielkolud/, on już będzie wiedział, o co chodzi.",
 			new SetQuestAction(QUEST_SLOT, "gulimo"));
@@ -102,16 +102,16 @@ public class HelpKrasnolud extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "helmet", "zbroja", "zbroję", "armor"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
-			new PlayerHasItemWithHimCondition("lazurowy hełm")),
+			new PlayerHasItemWithHimCondition("hełm lazurowy")),
 			ConversationStates.ATTENDING, "Bardzo dobrze! Teraz chcę byś jeszcze przyniósł mi przedmioty z listy zanim dam ci #zbroję."
 			+ " Potrzebuję:\n"
 			+ "#'30 skór czerwonego smoka'\n"+ "#'30 skór zielonego smoka'\n"+ "#'30 skór niebieskiego smoka'\n"+ "#'30 skór czarnego smoka'\n"+ "i #'10 złotego smoka'",
-			new MultipleActions(new SetQuestAction(QUEST_SLOT, "armor"), new DropItemAction("lazurowy hełm")));
+			new MultipleActions(new SetQuestAction(QUEST_SLOT, "armor"), new DropItemAction("hełm lazurowy")));
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "hełm", "zbroja", "zbroję", "armor"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
-			new NotCondition(new PlayerHasItemWithHimCondition("lazurowy hełm"))),
-			ConversationStates.ATTENDING, "Rozumiem, iż byłeś już u Gulimo. Więc gdzie masz lazurowy hełm, o który cię prosiłem?",
+			new NotCondition(new PlayerHasItemWithHimCondition("hełm lazurowy"))),
+			ConversationStates.ATTENDING, "Rozumiem, iż byłeś już u Gulimo. Więc gdzie masz hełm lazurowy, o który cię prosiłem?",
 			null);
 
 		final List<ChatAction> armoractions = new LinkedList<ChatAction>();
@@ -152,7 +152,7 @@ public class HelpKrasnolud extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, "wielkolud",
 			new QuestInStateCondition(QUEST_SLOT, "gulimo"),
-			ConversationStates.ATTENDING, "Twierdzisz, że Wielkolud cię przysyła do mnie. Zapewne chodzi o Hełm. Hełm... Hełm... Lazurowy hełm gdzie ja go położyłem... Ech pamięć już nie ta, co kiedyś. "
+			ConversationStates.ATTENDING, "Twierdzisz, że Wielkolud cię przysyła do mnie. Zapewne chodzi o Hełm. Hełm... Hełm... Hełm lazurowy gdzie ja go położyłem... Ech pamięć już nie ta, co kiedyś. "
 			+ " Jest coś co potrzebuję do mojej kolekcji a mianowicie #kieł smoka."
 			+ " Ja poszukam hełmu a ty mógłbyś w tym czasie przynieść 100 kłów smoka.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "kiel_smoka", 1.0));
@@ -308,7 +308,7 @@ public class HelpKrasnolud extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add("Wielkolud zażądał lazurowego hełmu w zamian za zbroje. Mam udać się do Gulimo po niego i powiedzieć: wielkolud.");
+		res.add("Wielkolud zażądał hełmu lazurowego w zamian za zbroje. Mam udać się do Gulimo po niego i powiedzieć: wielkolud.");
 		if ("gulimo".equals(questState)) {
 			return res;
 		}

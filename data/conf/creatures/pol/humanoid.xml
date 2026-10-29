@@ -288,7 +288,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[9,29]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="płaszcz smoczy szmaragdowy" quantity="[1,1]" probability="10.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
 			<item value="półtorak" quantity="[1,1]" probability="5.0"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="1.0"/>
@@ -321,7 +321,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[9,89]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="20.0"/>
+			<item value="płaszcz smoczy szmaragdowy" quantity="[1,1]" probability="20.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="10.0"/>
 			<item value="miecz cieni" quantity="[1,1]" probability="7.5"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
@@ -355,9 +355,9 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[9,49]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="płaszcz smoczy szmaragdowy" quantity="[1,1]" probability="10.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
-			<item value="szmaragdowa tarcza smocza" quantity="[1,1]" probability="2.5"/>
+			<item value="tarcza smocza szmaragdowa" quantity="[1,1]" probability="2.5"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>
 			<item value="pazury wilcze" quantity="[1,1]" probability="10.0"/>
 		</drops>
@@ -388,7 +388,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[4,77]" probability="100.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="10.0"/>
+			<item value="płaszcz smoczy szmaragdowy" quantity="[1,1]" probability="10.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="1.0"/>
 			<item value="maczeta" quantity="[1,1]" probability="22.5"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="50.0"/>
@@ -460,7 +460,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[9,129]" probability="80.0"/>
-			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="15.0"/>
+			<item value="płaszcz prążkowany lazurowy" quantity="[1,1]" probability="15.0"/>
 			<item value="kryształ szafiru" quantity="[1,1]" probability="30.0"/>
 			<item value="różdżka" quantity="[1,1]" probability="12.5"/>
 			<item value="magia mroku" quantity="[1,15]" probability="30.0"/>
@@ -534,7 +534,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="money" quantity="[2,97]" probability="60.0"/>
-			<item value="szmaragdowy płaszcz smoczy" quantity="[1,1]" probability="25.0"/>
+			<item value="płaszcz smoczy szmaragdowy" quantity="[1,1]" probability="25.0"/>
 			<item value="kryształ szmaragdu" quantity="[1,1]" probability="15.0"/>
 			<item value="klejony łuk" quantity="[1,1]" probability="7.5"/>
 			<item value="kieł wilczy" quantity="[1,1]" probability="10.0"/>

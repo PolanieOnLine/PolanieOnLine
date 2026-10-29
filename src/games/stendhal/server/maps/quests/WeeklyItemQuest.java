@@ -167,9 +167,9 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addHard("buty xenocyjskie",1); // 3.33, 170
 
 		// cloak (easy)
-		addEasy("prążkowany płaszcz lazurowy",1); // 39.38, 26 (purchasable)
+		addEasy("płaszcz prążkowany lazurowy",1); // 39.38, 26 (purchasable)
 		// cloak (medium)
-		addMed("lazurowy płaszcz smoczy",1); // 42.19, 70
+		addMed("płaszcz smoczy lazurowy",1); // 42.19, 70
 		addMed("płaszcz chaosu",1); // 200.67, 74
 		addMed("złoty płaszcz",1); // 71.0, 70
 		addMed("magiczny płaszcz",1); // 20.76, 114
@@ -231,7 +231,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addMed("mityczne jajo",1); // n/a, n/a (quest reward)
 
 		// shield (easy)
-		addEasy("szmaragdowa tarcza smocza",1); // 11.3, 50
+		addEasy("tarcza smocza szmaragdowa",1); // 11.3, 50
 		addEasy("tarcza cieni",1); // 113.19, 36 (purchasable)
 		// shield (medium)
 		addMed("tarcza chaosu",1); // 165.18, 75

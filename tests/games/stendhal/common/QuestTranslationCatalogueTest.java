@@ -103,7 +103,7 @@ public class QuestTranslationCatalogueTest {
 
 	@Test public void barioAndOrcShamanJournalUseActualGenderVerbResults() {
 		for (String gender : new String[] {"M", "F"}) {
-			String source = Grammar.genderVerb(gender, "Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + Grammar.genderVerb(gender, "przyniósł") + "  mu 10 lazurowych płaszczy elfickich.";
+			String source = Grammar.genderVerb(gender, "Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + Grammar.genderVerb(gender, "przyniósł") + "  mu 10 płaszczy elfickich lazurowych.";
 			assertEquals("I met a freezing dwarf hiding underground near Ados. He asked me to bring 10 azure elf cloaks.", Translation.getText("en", source));
 			source = Grammar.genderVerb(gender, "Powiedziałem") + " Szamanowi o wykonaniu zadania, a w zamian " + Grammar.genderVerb(gender, "otrzymałem") + " potężną maczugę cierniową.";
 			assertEquals("I told the Shaman that the task was complete and received a powerful club of thorns.", Translation.getText("en", source));

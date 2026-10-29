@@ -102,7 +102,7 @@ public class CloaksForBario extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Obiecałeś, że przyniesiesz mi lazurowe płaszcze elfickie. Pamiętasz?",
+				"Obiecałeś, że przyniesiesz mi płaszcze elfickie lazurowe. Pamiętasz?",
 				null);
 
 		// player has already finished the quest
@@ -116,7 +116,7 @@ public class CloaksForBario extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING,
-				"Potrzebuję lazurowych płaszczy elfickich jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.",
+				"Potrzebuję płaszczy elfickich lazurowych jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.",
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, Integer.toString(REQUIRED_CLOAKS), 5.0));
 
 		// player is not willing to help
@@ -143,11 +143,11 @@ public class CloaksForBario extends AbstractQuest {
 						raiser.say("Witaj znów! Wciąż potrzebuję "
 							+ player.getQuest(QUEST_SLOT)
 							+ " "
-							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "lazurowy")
-							+ " "
 							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "płaszcz")
 							+ " "
 							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "elficki")
+							+ " "
+							+ Grammar.plnoun(MathHelper.parseInt(player.getQuest(QUEST_SLOT)), "lazurowy")
 							+ ". Masz jakiś dla mnie?");
 					}
 				});
@@ -167,10 +167,10 @@ public class CloaksForBario extends AbstractQuest {
 		// could also have used GreaterThanCondition for Quest State but this is okay, note we can only get to question 1 if we were active
 		npc.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
-				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
+				new AndCondition(new QuestNotInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("płaszcz elficki lazurowy")),
 				ConversationStates.QUESTION_1, null,
 				new MultipleActions(
-						new DropItemAction("lazurowy płaszcz elficki"),
+						new DropItemAction("płaszcz elficki lazurowy"),
 						new ChatAction() {
 							@Override
 							public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -188,21 +188,21 @@ public class CloaksForBario extends AbstractQuest {
 
 		// player says he has a blue elf cloak with him and it's the last one
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("lazurowy płaszcz elficki"));
+		reward.add(new DropItemAction("płaszcz elficki lazurowy"));
 		reward.add(new EquipItemAction("złota tarcza", 1, true, ItemRarity.EPIC));
 		reward.add(new IncreaseXPAction(80000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 		reward.add(new IncreaseKarmaAction(25));
 		npc.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "1"), new PlayerHasItemWithHimCondition("płaszcz elficki lazurowy")),
 				ConversationStates.ATTENDING,
 				"Dziękuję bardzo! Mam teraz odpowiednio dużo płaszczy, aby przetrwać zimę. Weź tę złotą tarcze jako nagrodę.",
 				new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUESTION_1,
 				ConversationPhrases.YES_MESSAGES,
-				new NotCondition(new PlayerHasItemWithHimCondition("lazurowy płaszcz elficki")),
+				new NotCondition(new PlayerHasItemWithHimCondition("płaszcz elficki lazurowy")),
 				ConversationStates.ATTENDING,
 				"Naprawdę? Nie widzę żadnego...", 
 				null);
@@ -225,13 +225,13 @@ public class CloaksForBario extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(player.getGenderVerb("Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + player.getGenderVerb("przyniósł") + "  mu 10 lazurowych płaszczy elfickich.");
+		res.add(player.getGenderVerb("Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + player.getGenderVerb("przyniósł") + "  mu 10 płaszczy elfickich lazurowych.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Bario...");
 		} else if (!questState.equals("done")) {
 			int cloaks = MathHelper.parseIntDefault(player.getQuest(QUEST_SLOT),  REQUIRED_CLOAKS);
-			res.add("Muszę przynieść Bario " + Grammar.quantityplnoun(cloaks, "lazurowy płaszcz elficki") + "." );
+			res.add("Muszę przynieść Bario " + Grammar.quantityplnoun(cloaks, "płaszcz elficki lazurowy") + "." );
 		} else {
 			res.add("Bario dał mi cenną złotą tarczę w zamian za płaszcze!");
 		}

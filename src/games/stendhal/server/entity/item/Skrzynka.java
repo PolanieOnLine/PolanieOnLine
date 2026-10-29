@@ -28,7 +28,7 @@ import games.stendhal.server.entity.player.Player;
 public class Skrzynka extends Box {
 
 	private static final String[] ITEMS = { "wielki eliksir", "jabłko niezgody",
-			"kanapka", "wisienka", "lazurowy płaszcz elficki", "zwój przywołania", "bilet turystyczny",
+			"kanapka", "wisienka", "płaszcz elficki lazurowy", "zwój przywołania", "bilet turystyczny",
 			"zwój tatrzański" };
 
 	/**

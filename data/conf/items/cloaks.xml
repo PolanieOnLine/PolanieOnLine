@@ -103,9 +103,9 @@
 		</equipable>
 	</item>
 
-	<item name="lazurowy płaszcz smoczy">
+	<item name="płaszcz smoczy lazurowy">
 		<type class="cloak" subclass="blue_dragon_cloak" tileid="-1"/>
-		<description>Oto lazurowy płaszcz smoczy. Wiele byś dał, żeby jego kolor nie rzucał się tak w oczy.</description>
+		<description>Oto płaszcz smoczy lazurowy. Wiele byś dał, żeby jego kolor nie rzucał się tak w oczy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="13"/>
@@ -123,9 +123,9 @@
 		</equipable>
 	</item>
 
-	<item name="lazurowy płaszcz elficki">
+	<item name="płaszcz elficki lazurowy">
 		<type class="cloak" subclass="blue_elf_cloak" tileid="-1"/>
-		<description>Oto lazurowy płaszcz elficki. Materiał jest gruby i ciepły.</description>
+		<description>Oto płaszcz elficki lazurowy. Materiał jest gruby i ciepły.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="8"/>
@@ -144,9 +144,9 @@
 		</equipable>
 	</item>
 
-	<item name="prążkowany płaszcz lazurowy">
+	<item name="płaszcz prążkowany lazurowy">
 		<type class="cloak" subclass="blue_striped_cloak" tileid="-1"/>
-		<description>Oto modny prążkowany płaszcz lazurowy.</description>
+		<description>Oto modny płaszcz prążkowany lazurowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>
@@ -304,9 +304,9 @@
 		</equipable>
 	</item>
 
-	<item name="szmaragdowy płaszcz smoczy">
+	<item name="płaszcz smoczy szmaragdowy">
 		<type class="cloak" subclass="green_dragon_cloak" tileid="-1"/>
-		<description>Oto wielki szmaragdowy płaszcz smoczy. Jest chyba za duży na ciebie, ale za to ma potężną obronę.</description>
+		<description>Oto wielki płaszcz smoczy szmaragdowy. Jest chyba za duży na ciebie, ale za to ma potężną obronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="10"/>

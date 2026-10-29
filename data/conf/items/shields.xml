@@ -169,9 +169,9 @@
 		</equipable>
 	</item>
 
-	<item name="szmaragdowa tarcza smocza">
+	<item name="tarcza smocza szmaragdowa">
 		<type class="shield" subclass="green_dragon_shield" tileid="-1"/>
-		<description>Oto szmaragdowa tarcza smocza, przerażająca i silna.</description>
+		<description>Oto tarcza smocza szmaragdowa, przerażająca i silna.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="105"/>

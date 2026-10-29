@@ -148,7 +148,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		addEasy("złoty płaszcz",1);
 		addEasy("płaszcz licha",1);
 		// cloak (medium)
-		addMed("szmaragdowy płaszcz smoczy",1);
+		addMed("płaszcz smoczy szmaragdowy",1);
 		addMed("czarny płaszcz smoczy",1);
 		addMed("lodowy płaszcz",1);
 		addMed("płaszcz chaosu",1);
@@ -196,7 +196,7 @@ public class WeeklyItemWieliczkaQuest extends AbstractQuest {
 		addHard("spodnie nabijane klejnotami",1);
 
 		// shield (easy)
-		addEasy("szmaragdowa tarcza smocza",1);
+		addEasy("tarcza smocza szmaragdowa",1);
 		addEasy("polska tarcza ciężka",1);
 		addEasy("polska tarcza drewniana",1);
 		addEasy("polska tarcza lekka",1);

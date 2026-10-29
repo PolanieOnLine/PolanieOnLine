@@ -60,9 +60,9 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 	private final SpeakerNPC npc = npcs.get("Josephine");
 
 	private static final List<String> NEEDED_CLOAKS = Arrays.asList("peleryna",
-			"peleryna elficka", "płaszcz krasnoludzki", "lazurowy płaszcz elficki", "płaszcz kamienny",
-			"szmaragdowy płaszcz smoczy", "kościany płaszcz smoczy", "płaszcz licha",
-			"płaszcz wampirzy", "lazurowy płaszcz smoczy");
+			"peleryna elficka", "płaszcz krasnoludzki", "płaszcz elficki lazurowy", "płaszcz kamienny",
+			"płaszcz smoczy szmaragdowy", "kościany płaszcz smoczy", "płaszcz licha",
+			"płaszcz wampirzy", "płaszcz smoczy lazurowy");
 
 	private BringListOfItemsQuestLogic bringItems;
 

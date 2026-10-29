@@ -57,44 +57,44 @@ class CloakForJosephine {
 		final SpeakerNPC npc = npcs.get("Josephine");
 
 		// overlapping with CloaksCollector quest deliberately
-		npc.add(ConversationStates.QUESTION_1, "prążkowany płaszcz lazurowy", new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"),
+		npc.add(ConversationStates.QUESTION_1, "płaszcz prążkowany lazurowy", new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"),
 			ConversationStates.QUESTION_1, null,
 			new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						if (player.drop("prążkowany płaszcz lazurowy")) {
+						if (player.drop("płaszcz prążkowany lazurowy")) {
 							npc.say("Zaczekaj czy to nie jest od Idy?! Ach tak! Dziękuję! Podziękuj jej ode mnie!!");
 							player.setQuest(mithrilcloak.getQuestSlot(), "gave_striped_cloak");
 							npc.setCurrentState(ConversationStates.ATTENDING);
 						} else {
-							npc.say("Nie masz prążkowanego płaszcza lazurowego ze sobą.");
+							npc.say("Nie masz płaszcza prążkowanego lazurowego ze sobą.");
 						}
 					}
 			});
 
 		// overlapping with CloaksCollector2 quest deliberately
-		npc.add(ConversationStates.QUESTION_2, "prążkowany płaszcz lazurowy", new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"),
+		npc.add(ConversationStates.QUESTION_2, "płaszcz prążkowany lazurowy", new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"),
 				ConversationStates.QUESTION_2, null,
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						if (player.drop("prążkowany płaszcz lazurowy")) {
+						if (player.drop("płaszcz prążkowany lazurowy")) {
 							npc.say("Zaczekaj czy to nie jest od Idy?! Ach tak! Dziękuję! Podziękuj jej ode mnie!!");
 							npc.setCurrentState(ConversationStates.ATTENDING);
 							player.setQuest(mithrilcloak.getQuestSlot(), "gave_striped_cloak");
 						} else {
-							npc.say("Nie masz prążkowanego płaszcza lazurowego ze sobą.");
+							npc.say("Nie masz płaszcza prążkowanego lazurowego ze sobą.");
 						}
 					}
 			});
 				
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("prążkowany płaszcz lazurowy", "mithril", "mithril cloak", "ida"),
-				new AndCondition(new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"), new PlayerHasItemWithHimCondition("prążkowany płaszcz lazurowy")),
+				Arrays.asList("płaszcz prążkowany lazurowy", "mithril", "mithril cloak", "ida"),
+				new AndCondition(new QuestInStateCondition(mithrilcloak.getQuestSlot(), "taking_striped_cloak"), new PlayerHasItemWithHimCondition("płaszcz prążkowany lazurowy")),
 				ConversationStates.ATTENDING,
 				"Zaczekaj czy to nie jest od Idy?! Ach tak! Dziękuję! Podziękuj jej ode mnie!!",
 				new MultipleActions(
-									 new DropItemAction("prążkowany płaszcz lazurowy"), 
+									 new DropItemAction("płaszcz prążkowany lazurowy"),
 									 new SetQuestAction(mithrilcloak.getQuestSlot(), "gave_striped_cloak") 
 									)
 				);
@@ -110,7 +110,7 @@ class CloakForJosephine {
 				Arrays.asList("thanks", "josephine", "mithril", "cloak", "mithril cloak", "task", "quest", "dziękuję", "zadanie", "misja"),
 				new QuestInStateCondition(mithrilcloak.getQuestSlot(), "gave_striped_cloak"),
 				ConversationStates.ATTENDING,
-				"Josephine jest taka cudowna. Cieszę się, że podoba się jej prążkowany płaszcz lazurowy. TWOJA peleryna jest już prawie gotowa. Potrzebuje tylko broszy do niej! Mój przyjaciel #Pedinghaus zrobi dla Ciebie jeżeli go poprosisz.",
+				"Josephine jest taka cudowna. Cieszę się, że podoba się jej płaszcz prążkowany lazurowy. TWOJA peleryna jest już prawie gotowa. Potrzebuje tylko broszy do niej! Mój przyjaciel #Pedinghaus zrobi dla Ciebie jeżeli go poprosisz.",
 				new SetQuestAndModifyKarmaAction(mithrilcloak.getQuestSlot(), "need_clasp", 10.0)
 				);
 

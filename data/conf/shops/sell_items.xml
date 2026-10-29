@@ -134,8 +134,8 @@
 	<shop name="sellbetterstuff1" type="sell">
 		<item name="zbroja lazurowa" price="16000" />
 		<item name="buty lazurowe" price="5000" />
-		<item name="prążkowany płaszcz lazurowy" price="7000" />
-		<item name="lazurowy hełm" price="8000" />
+		<item name="płaszcz prążkowany lazurowy" price="7000" />
+		<item name="hełm lazurowy" price="8000" />
 		<item name="spodnie lazurowe" price="8000" />
 		<item name="rękawice lazurowe" price="7000" />
 		<item name="tarcza lazurowa" price="22000" />

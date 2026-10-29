@@ -202,7 +202,7 @@ public class MithrilCloak extends AbstractQuest {
 		if (questState.equals("twilight_zone")) {
 			return res;
 		}
-		res.add(player.getGenderVerb("Dałem") + " dla Idy eliksir mroku, aby przywrócić jej zdrowie. Teraz dała mi inne zadanie. Muszę iść i znaleźć prążkowany płaszcz lazurowy, który zaniosę do Josephine. W tym czasie Ida może szyć mój płaszcz.");
+		res.add(player.getGenderVerb("Dałem") + " dla Idy eliksir mroku, aby przywrócić jej zdrowie. Teraz dała mi inne zadanie. Muszę iść i znaleźć płaszcz prążkowany lazurowy, który zaniosę do Josephine. W tym czasie Ida może szyć mój płaszcz.");
 		if (questState.equals("taking_striped_cloak")) {
 			return res;
 		}

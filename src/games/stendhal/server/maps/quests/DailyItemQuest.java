@@ -146,11 +146,11 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("buty nabijane ćwiekami",1);
 
 		// cloaks
-		items.put("lazurowy płaszcz elficki",1);
+		items.put("płaszcz elficki lazurowy",1);
 		items.put("peleryna",1);
 		items.put("płaszcz krasnoludzki",1);
 		items.put("peleryna elficka",1);
-		items.put("szmaragdowy płaszcz smoczy",1);
+		items.put("płaszcz smoczy szmaragdowy",1);
 
 		// club
 		items.put("maczuga",1);
@@ -233,7 +233,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("oliwka",5);
 
 		// helmet
-		items.put("lazurowy hełm",1);
+		items.put("hełm lazurowy",1);
 		items.put("misiurka",1);
 		items.put("hełm kolczy",1);
 		items.put("skórzany hełm",1);

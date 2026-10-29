@@ -24,6 +24,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.ItemNameAliases;
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
@@ -433,7 +434,7 @@ public class DefaultEntityManager implements EntityManager {
 			throw new IllegalArgumentException("entity class is null");
 		}
 		synchronized (createdItem) {
-			return classToItem.containsKey(clazz);
+			return classToItem.containsKey(ItemNameAliases.canonicalName(clazz));
 		}
 	}
 
@@ -458,12 +459,13 @@ public class DefaultEntityManager implements EntityManager {
 			throw new IllegalArgumentException("item creation context is null");
 		}
 
+		final String canonicalName = ItemNameAliases.canonicalName(clazz);
 		synchronized (createdItem) {
-			final DefaultItem item = classToItem.get(clazz);
+			final DefaultItem item = classToItem.get(canonicalName);
 			if (item != null) {
-				if (createdItem.get(clazz) == null) {
+				if (createdItem.get(canonicalName) == null) {
 					// The representative item must never consume rarity randomness.
-					createdItem.put(clazz, item.getItem(ItemCreationContext.restore()));
+					createdItem.put(canonicalName, item.getItem(ItemCreationContext.restore()));
 				}
 				return item.getItem(context);
 			}

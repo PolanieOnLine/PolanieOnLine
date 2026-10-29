@@ -156,9 +156,9 @@
 		</equipable>
 	</item>
 
-	<item name="lazurowy hełm">
+	<item name="hełm lazurowy">
 		<type class="helmet" subclass="blue_helmet" tileid="-1"/>
-		<description>Oto całkiem nowy lazurowy hełm.</description>
+		<description>Oto całkiem nowy hełm lazurowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<def value="7"/>

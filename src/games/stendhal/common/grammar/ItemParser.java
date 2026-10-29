@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 import games.stendhal.common.Translation;
+import games.stendhal.common.ItemNameAliases;
 
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.NameSearch;
@@ -140,6 +141,7 @@ public class ItemParser {
 	private static Set<String> translatedAliases(final String name) {
 		return TRANSLATED_ITEM_ALIASES.computeIfAbsent(name, canonical -> {
 			Set<String> result = new HashSet<String>();
+			result.addAll(ItemNameAliases.legacyNames(canonical));
 			String singular = Translation.getText("en", canonical);
 			if (!singular.equals(canonical)) result.add(singular);
 			// A displayed plural or mass noun, such as "pieces of wood", is still the same ware.

@@ -130,9 +130,9 @@
 
 	<!-- Ida kupuje: -->
 	<shop name="buycloaks" type="buy">
-		<item name="lazurowy płaszcz elficki" price="300" />
-		<item name="szmaragdowy płaszcz smoczy" price="400" />
-		<item name="lazurowy płaszcz smoczy" price="2000" />
+		<item name="płaszcz elficki lazurowy" price="300" />
+		<item name="płaszcz smoczy szmaragdowy" price="400" />
+		<item name="płaszcz smoczy lazurowy" price="2000" />
 		<item name="karmazynowy płaszcz smoczy" price="2500" />
 		<item name="płaszcz cieni" price="3000" />
 		<item name="czarny płaszcz smoczy" price="4000" />
@@ -365,7 +365,7 @@
 		<item name="lodowa zbroja" price="19000" />
 		<item name="zbroja xenocyjska" price="21000" />
 		<item name="zbroja barbarzyńcy" price="5000" />
-		<item name="szmaragdowa tarcza smocza" price="13000" />
+		<item name="tarcza smocza szmaragdowa" price="13000" />
 		<item name="tarcza xenocyjska" price="20000" />
 
 		<merchant name="Lawrence" flags="configure,noOffer"/>
@@ -378,7 +378,7 @@
 		<item name="peleryna elficka" price="50" />
 		<item name="płaszcz licha" price="10000" />
 		<item name="płaszcz kamienny" price="350" />
-		<item name="prążkowany płaszcz lazurowy" price="280" />
+		<item name="płaszcz prążkowany lazurowy" price="280" />
 		<item name="karmazynowy płaszcz smoczy" price="4000" />
 		<item name="kościany płaszcz smoczy" price="1500" />
 
@@ -420,9 +420,9 @@
 
 	<!-- Alexander kupuje: -->
 	<shop name="buyadosarmors" type="buy">
-		<item name="lazurowy hełm" price="900" />
+		<item name="hełm lazurowy" price="900" />
 		<item name="buty lazurowe" price="200" />
-		<item name="prążkowany płaszcz lazurowy" price="500" />
+		<item name="płaszcz prążkowany lazurowy" price="500" />
 		<item name="zbroja lazurowa" price="13000" />
 		<item name="spodnie lazurowe" price="400" />
 		<item name="rękawice lazurowe" price="750" />
@@ -774,7 +774,7 @@
 
 	<!-- Kilian kupuje: -->
 	<shop name="buyarmorywieliczka" type="buy">
-		<item name="lazurowy hełm" price="1000" />
+		<item name="hełm lazurowy" price="1000" />
 		<item name="tarcza lazurowa" price="1200" />
 		<item name="pas kolczy" price="21" />
 		<item name="złoty pas kolczy" price="32" />

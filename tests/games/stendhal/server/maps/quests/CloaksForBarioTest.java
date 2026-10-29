@@ -69,7 +69,7 @@ public class CloaksForBarioTest {
 		en.step(player, "task");
 		assertEquals("Nigdy nie zamierzam wyjść na górę, ponieważ ukradłem beczkę piwa należącą do krasnali. Tutaj jest strasznie zimno... Pomożesz mi?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Potrzebuję lazurowych płaszczy elfickich jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.", getReply(npc));
+		assertEquals("Potrzebuję płaszczy elfickich lazurowych jeżeli chcę przeżyć zimę. Przynieś mi dziesięć, a dam Ci nagrodę.", getReply(npc));
 		en.step(player, "ok");
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -78,7 +78,7 @@ public class CloaksForBarioTest {
 		equipCloaks(4);
 
 		en.step(player, "hi");
-		assertEquals("Witaj znów! Wciąż potrzebuję 10 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 10 płaszczy elfickich lazurowych. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
 		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 9 płaszczy.", getReply(npc));
 		en.step(player, "yes");
@@ -92,7 +92,7 @@ public class CloaksForBarioTest {
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Witaj znów! Wciąż potrzebuję 6 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 6 płaszczy elfickich lazurowych. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
 		// was lying
 		assertEquals("Naprawdę? Nie widzę żadnego...", getReply(npc));
@@ -104,7 +104,7 @@ public class CloaksForBarioTest {
 		equipCloaks(6);
 
 		en.step(player, "hi");
-		assertEquals("Witaj znów! Wciąż potrzebuję 6 lazurowych płaszczy elfickich. Masz jakiś dla mnie?", getReply(npc));
+		assertEquals("Witaj znów! Wciąż potrzebuję 6 płaszczy elfickich lazurowych. Masz jakiś dla mnie?", getReply(npc));
 		en.step(player, "yes");
 		assertEquals("Bardzo dziękuję! Masz więcej? Wciąż potrzebuję 5 płaszczy.", getReply(npc));
 		en.step(player, "yes");
@@ -135,7 +135,7 @@ public class CloaksForBarioTest {
 
 	private void equipCloaks(final int quantity) {
 		for (int i = 0; i < quantity; i++) {
-			final Item item = ItemTestHelper.createItem("lazurowy płaszcz elficki");
+			final Item item = ItemTestHelper.createItem("płaszcz elficki lazurowy");
 			player.getSlot("bag").add(item);
 		}
 	}

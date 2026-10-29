@@ -95,7 +95,7 @@
 			<item value="money" quantity="[5,30]" probability="100.0"/>
 			<item value="pstrąg" quantity="[1,1]" probability="10.0"/>
 			<item value="tarcza lazurowa" quantity="[1,1]" probability="2.0"/>
-			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="2.0"/>
+			<item value="płaszcz prążkowany lazurowy" quantity="[1,1]" probability="2.0"/>
 			<item value="spodnie lazurowe" quantity="[1,1]" probability="1.5"/>
 		</drops>
 		<equips>
@@ -130,9 +130,9 @@
 			<item value="money" quantity="[5,40]" probability="100.0"/>
 			<item value="dorsz" quantity="[1,4]" probability="20.0"/>
 			<item value="magia ziemi" quantity="[1,3]" probability="10.0"/>
-			<item value="prążkowany płaszcz lazurowy" quantity="[1,1]" probability="1.0"/>
+			<item value="płaszcz prążkowany lazurowy" quantity="[1,1]" probability="1.0"/>
 			<item value="buty lazurowe" quantity="[1,1]" probability="1.5"/>
-			<item value="lazurowy hełm" quantity="[1,1]" probability="2.5"/>
+			<item value="hełm lazurowy" quantity="[1,1]" probability="2.5"/>
 		</drops>
 		<equips>
 		</equips>

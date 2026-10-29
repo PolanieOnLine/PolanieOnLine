@@ -53,7 +53,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"rękawice karmazynowe", "pas karmazynowy"
 	};
 	public static final String[] BLUE = {
-			"zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy",
+			"zbroja lazurowa", "hełm lazurowy", "płaszcz prążkowany lazurowy",
 			"spodnie lazurowe", "buty lazurowe", "tarcza lazurowa",
 			"rękawice lazurowe"
 	};
@@ -132,8 +132,8 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	};
 
 	public static final String[] DRAGON_CLOAKS = {
-			"czarny płaszcz smoczy", "lazurowy płaszcz smoczy", "kościany płaszcz smoczy",
-			"szmaragdowy płaszcz smoczy", "karmazynowy płaszcz smoczy"
+			"czarny płaszcz smoczy", "płaszcz smoczy lazurowy", "kościany płaszcz smoczy",
+			"płaszcz smoczy szmaragdowy", "karmazynowy płaszcz smoczy"
 	};
 	private static final String[] WANDS = {
 			"różdżka", "trójząb Trzygłowa", "różdżka Strzyboga",
