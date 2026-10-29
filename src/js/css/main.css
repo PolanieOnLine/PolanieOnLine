@@ -279,6 +279,32 @@ div.itemSlot::before {
 	padding: 10px;
 }
 
+.production-dialog {
+	box-sizing: border-box;
+	width: 380px;
+	max-width: calc(100vw - 32px);
+	min-height: 420px;
+	padding: 8px 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+}
+.production-identity { display: flex; align-items: center; gap: 12px; min-height: 42px; }
+.production-dialog fieldset { margin: 0; padding: 8px; min-width: 0; border: 2px groove #ba9573; }
+.production-dialog legend { font-weight: bold; padding: 0 3px; }
+.production-quantity { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+.production-quantity input { box-sizing: border-box; width: 68px; margin-left: 6px; }
+.production-quantity button { min-width: 37px; }
+.production-materials { display: flex; justify-content: space-evenly; gap: 10px; }
+.production-material { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.production-dialog div.itemSlot { float: none; flex: 0 0 auto; }
+.production-order { display: flex; flex-direction: column; gap: 6px; }
+.production-order progress { width: 100%; height: 12px; accent-color: #ad925d; }
+.production-status { min-height: 30px; margin-top: auto; color: #5cbe69; }
+.production-available { color: #5cbe69; }
+.production-missing { color: #e15a4b; }
+.production-dialog .dialogbuttons { justify-content: flex-end; gap: 5px; }
+
 .item-upgrade-identity {
 	display: flex;
 	align-items: center;

@@ -12,6 +12,7 @@
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -222,6 +223,21 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	protected Map<String, Integer> getRequiredResourcesPerUnit() {
 		return requiredResourcesPerUnit;
+	}
+
+	/** Read-only recipe data for the production window. */
+	public Map<String, Integer> getRecipeResources() {
+		return Collections.unmodifiableMap(requiredResourcesPerUnit);
+	}
+
+	public int getOrderLimit() {
+		return unitsPerTime;
+	}
+
+	public long getRemainingTimeMillis(final Player player) {
+		final String[] order = player.getQuest(questSlot).split(";");
+		return Math.max(0L, Long.parseLong(order[2])
+				+ getProductionTime(Integer.parseInt(order[0])) * 1000L - System.currentTimeMillis());
 	}
 
 	public List<String> getProductionActivity() {

@@ -52,6 +52,7 @@ function harness() {
 		"./stendhal": { stendhal }, "SingletonRepo": { singletons },
 		"util/GameLanguage": { GameLanguage },
         "ui/dialog/ItemUpgradeDialog": {ItemUpgradeDialog: {onInventoryChanged() {}}},
+        "ui/dialog/ProductionDialog": {ProductionDialog: {onZoneChanged() {}}},
 		"Client": { Client: { get: () => ({ loaded: true }) } }
 	});
 	return { stats, marauroa, Item, slot, elements, GameLanguage, writes: () => writes,

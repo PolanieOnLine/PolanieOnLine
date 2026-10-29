@@ -18,6 +18,7 @@ import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.StatefulEntity;
 import games.stendhal.client.gui.ItemUpgradeWindow;
+import games.stendhal.client.gui.ProductionWindow;
 
 /**
  * The 2D view of a useable entity
@@ -108,6 +109,8 @@ class UseableEntity2DView<T extends StatefulEntity> extends VariableSpriteEntity
 		if (at.getActionCode().equals(this.action.getActionCode())) {
             if (entity.getRPObject().has("name") && "rune_workbench".equals(entity.getRPObject().get("name"))) {
                 ItemUpgradeWindow.openGlyphWorkbench(entity.getRPObject().getID().getObjectID());
+            } else if (entity.getRPObject().has("name") && "charcoal_mound".equals(entity.getRPObject().get("name"))) {
+                ActionType.USE.send(ProductionWindow.openAction(entity.getRPObject().getID().getObjectID()));
             } else at.send(at.fillTargetInfo(entity));
 		} else {
 			super.onAction(at);

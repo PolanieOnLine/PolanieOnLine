@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import games.stendhal.common.Direction;
+import games.stendhal.server.actions.ProductionAction;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.NameSearch;
@@ -18,6 +19,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.entity.mapstuff.useable.ProductionWorksite;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -45,6 +47,15 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 				resources.put("money", 5);
 				final ProducerBehaviour production = new ProducerBehaviour(PRODUCTION_SLOT,
 						Arrays.asList("wypal", "wypalaj", "burn"), "węgiel drzewny", resources, 30) {
+					@Override
+					public boolean transactAgreedDeal(final ItemParserResult result, final EventRaiser raiser, final Player player) {
+						if (ProductionAction.hasOrder(player, this) || result.getAmount() < 1 || result.getAmount() > MAX_ORDER) {
+							raiser.say("Najpierw odbierz poprzednie zamówienie. Przyjmuję od 1 do 1000 sztuk naraz.");
+							return false;
+						}
+						return super.transactAgreedDeal(result, raiser, player);
+					}
+
 					@Override
 					protected String formatProductQuantity(final int amount) {
 						return Grammar.itemQuantityAccusative(amount, getProductName());
@@ -95,7 +106,7 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 						"Witaj na mojej polanie! Uważaj na dym z #mielerza. Jeżeli potrzebujesz węgla drzewnego, powiedz #wypal.");
 				addJob("Jestem węglarzem. Powoli wypalam drewno w #mielerzu, żeby otrzymać węgiel drzewny.");
 				addOffer("Za każde 2 polana i 5 monet wypalę jedną sztukę węgla drzewnego. Przyjmuję do 1000 sztuk w jednym zleceniu. Wypalanie jednej sztuki trwa 30 sekund.");
-				addHelp("Powiedz na przykład #'wypal 100 węgla drzewnego'. Przygotuję zlecenie do potwierdzenia, a później odbierzesz je słowem #odbierz albo przy następnym powitaniu. Nie musisz czekać tutaj ani pozostawać w grze.");
+				addHelp("Kliknij mój #mielerz, aby otworzyć okno wypalania węgla. Możesz też powiedzieć na przykład #'wypal 100 węgla drzewnego'. Gotowy węgiel odbierzesz w oknie albo słowem #odbierz. Nie musisz czekać tutaj ani pozostawać w grze.");
 				addReply(Arrays.asList("mielerz", "mielerza"),
 						"Pod tą warstwą ziemi leżą ciasno ułożone polana. Pilnuję dopływu powietrza, żeby drewno nie spłonęło na popiół.");
 				addReply(Arrays.asList("Drwal", "drwal", "drewno", "polano", "polana"),
@@ -119,5 +130,8 @@ public class CharcoalBurnerNPC implements ZoneConfigurator {
 		npc.setPosition(57, 58);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
+		ProductionWorksite worksite = new ProductionWorksite(npc);
+		worksite.setPosition(57, 55);
+		zone.add(worksite);
 	}
 }

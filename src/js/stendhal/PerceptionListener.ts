@@ -23,6 +23,7 @@ import { singletons } from "SingletonRepo";
 import { Client } from "Client";
 import { GameLanguage } from "util/GameLanguage";
 import { ItemUpgradeDialog } from "ui/dialog/ItemUpgradeDialog";
+import { ProductionDialog } from "ui/dialog/ProductionDialog";
 
 
 /**
@@ -58,6 +59,7 @@ export class StendhalPerceptionListener extends PerceptionListener {
 		(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 		stendhal.ui.equip.update();
         ItemUpgradeDialog.onInventoryChanged();
+        ProductionDialog.onZoneChanged();
 		if (marauroa.me) {
 			GameLanguage.synchronize(marauroa.me["language"]);
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)?.update("money");

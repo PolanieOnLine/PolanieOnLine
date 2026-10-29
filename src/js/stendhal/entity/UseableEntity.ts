@@ -15,6 +15,7 @@ import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";
 import { Paths } from "../data/Paths";
 import { ItemUpgradeDialog } from "../ui/dialog/ItemUpgradeDialog";
+import { ProductionDialog } from "../ui/dialog/ProductionDialog";
 
 
 export class UseableEntity extends Entity {
@@ -22,6 +23,7 @@ export class UseableEntity extends Entity {
 	action = "use";
 
     override getDefaultAction(): any {
+        if (this["_name"] === "charcoal_mound") return ProductionDialog.openAction(Number(this["id"]));
         return this["_name"] === "rune_workbench" ? ItemUpgradeDialog.glyphOpenAction(Number(this["id"])) : super.getDefaultAction();
     }
 
@@ -52,7 +54,7 @@ export class UseableEntity extends Entity {
 
 	override buildActions(list: MenuItem[]) {
 		super.buildActions(list);
-        if (this["_name"] === "rune_workbench") {
+        if (this["_name"] === "rune_workbench" || this["_name"] === "charcoal_mound") {
             for (const entry of list) if (entry.type === "use") entry.action = () => this.onclick(0, 0);
         }
 		// FIXME: Java client adds "look" to Entity super class. Should this do the same? If so, there

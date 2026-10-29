@@ -91,6 +91,7 @@ import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
+import games.stendhal.server.events.ProductionEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.ShowItemListEvent;
 import games.stendhal.server.events.ShowOutfitListEvent;
@@ -390,6 +391,9 @@ public class RPClassGenerator {
 			ItemUpgradeEvent.generateRPClass();
 		}
 		ItemUpgradeEventCompatibility.generateRPClasses();
+		if (!RPClass.hasRPClass(Events.PRODUCTION)) {
+			ProductionEvent.generateRPClass();
+		}
 
 		if (!RPClass.hasRPClass("action")) {
 			createActionRPClass();

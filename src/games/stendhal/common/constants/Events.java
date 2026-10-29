@@ -75,4 +75,5 @@ public final class Events {
 	 * registry on the desktop client.
 	 */
 	public static final String ITEM_UPGRADE = "item_upgrade_event";
+	public static final String PRODUCTION = "production_event";
 }

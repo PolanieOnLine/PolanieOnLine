@@ -223,6 +223,7 @@ public final class Actions {
 
 	/** Item-upgrade preview and execution requests. */
 	public static final String ITEM_UPGRADE = "item_upgrade_action";
+	public static final String PRODUCTION = "production_action";
 
 	private Actions() {
 		// hide constructor

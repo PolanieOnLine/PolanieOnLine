@@ -118,6 +118,7 @@ public class CommandCenter {
                 KnockAction.register();
                 GoldenCauldronAction.register();
 		ItemUpgradeAction.register();
+		ProductionAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();
 		LookAction.register();
