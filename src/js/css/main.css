@@ -302,7 +302,9 @@ div.itemSlot::before {
 	box-shadow: inset 1px 1px var(--border-top-color), 1px 1px var(--border-top-color);
 }
 .production-dialog legend { font-weight: bold; padding: 0 3px; }
-.production-dialog button {
+.production-dialog button,
+.glyph-workbench-dialog .glyph-catalog-heading,
+.glyph-workbench-dialog .dialogbutton {
 	box-sizing: border-box;
 	min-height: 24px;
 	padding: 2px 12px;
@@ -314,10 +316,10 @@ div.itemSlot::before {
 	border-radius: 0;
 	cursor: pointer;
 }
-.production-dialog button:hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.08); }
-.production-dialog button:active:not(:disabled) { border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color); }
-.production-dialog button:focus-visible { outline: 1px dotted var(--text-color); outline-offset: -5px; }
-.production-dialog button:disabled { color: var(--border-bottom-color); text-shadow: 1px 1px var(--border-top-color); cursor: default; }
+:is(.production-dialog button, .glyph-workbench-dialog .glyph-catalog-heading, .glyph-workbench-dialog .dialogbutton):hover:not(:disabled) { box-shadow: inset 0 0 0 999px rgba(255, 255, 255, 0.08); }
+:is(.production-dialog button, .glyph-workbench-dialog .glyph-catalog-heading, .glyph-workbench-dialog .dialogbutton):active:not(:disabled) { border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color); }
+:is(.production-dialog button, .glyph-workbench-dialog button):focus-visible { outline: 1px dotted var(--text-color); outline-offset: -5px; }
+:is(.production-dialog button, .glyph-workbench-dialog .dialogbutton):disabled { color: var(--border-bottom-color); text-shadow: 1px 1px var(--border-top-color); cursor: default; }
 .production-quantity { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-bottom: 4px; }
 .production-quantity label { display: flex; align-items: center; }
 .production-quantity input {
@@ -2385,40 +2387,65 @@ td.number {
 }
 
 /* The workbench adds a recipe catalogue beside the shared upgrade details. */
-.item-upgrade-dialog.glyph-workbench-dialog { width: 720px; max-width: calc(100vw - 32px); }
-.glyph-workbench-dialog .glyph-workbench-layout { height: 520px; }
-.glyph-workbench-dialog .item-upgrade-details { min-height: 0; overflow-y: auto; }
+.item-upgrade-dialog.glyph-workbench-dialog {
+	box-sizing: border-box;
+	width: 684px;
+	max-width: calc(100vw - 32px);
+	height: 544px;
+	max-height: calc(100dvh - 64px);
+	padding: 0;
+	font: bold 12px/15px Arial, sans-serif;
+}
+.glyph-workbench-dialog .glyph-workbench-layout { height: 100%; gap: 8px; }
+.glyph-workbench-dialog .item-upgrade-details { display: flex; flex-direction: column; min-height: 0; overflow-y: auto; padding: 8px; gap: 8px; }
 .glyph-workbench-layout { display: flex; align-items: stretch; gap: 12px; }
 .item-upgrade-details { flex: 1 1 auto; min-width: 0; }
-.glyph-recipe-catalog { flex: 0 0 240px; height: auto; max-height: 520px; contain: size; display: flex; flex-direction: column; overflow: hidden; padding: 3px; border: 1px solid #826a4b; }
+.glyph-recipe-catalog { box-sizing: border-box; flex: 0 0 236px; min-height: 0; contain: size; display: flex; flex-direction: column; overflow: hidden; padding: 8px 4px; border: 2px solid; border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color); }
 .glyph-recipe-catalog[hidden] { display: none; }
 .glyph-catalog-group { display: flex; flex-direction: column; min-height: 0; }
 .glyph-catalog-open { flex: 1; }
-.glyph-catalog-heading { flex: 0 0 auto; cursor: pointer; color: #ffbe40; text-align: left; font-weight: bold; padding: 7px 4px; }
-.glyph-catalog-rows { min-height: 0; overflow-y: auto; }
+.glyph-workbench-dialog .glyph-catalog-heading { flex: 0 0 auto; color: #ffbe40; text-align: left; padding: 3px 4px; min-height: 28px; }
+.glyph-catalog-rows { flex: 1; min-height: 0; overflow-y: auto; }
 .glyph-catalog-rows[hidden] { display: none; }
-.glyph-recipe-row { display: flex; align-items: center; gap: 6px; width: 100%; padding: 3px 5px; border: 1px solid transparent; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.glyph-recipe-row { box-sizing: border-box; display: flex; align-items: center; gap: 6px; width: 100%; min-height: 25px; padding: 1px 5px; font: 12px/15px Arial, sans-serif; border: 1px solid transparent; border-radius: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
 .glyph-recipe-row img { width: 20px; height: 20px; image-rendering: pixelated; }
 .glyph-recipe-missing { opacity: 0.45; }
 .glyph-recipe-row:hover { background: rgba(255,190,64,0.12); }
-.glyph-recipe-selected { opacity: 1; border-color: #c59b57; background: rgba(255,190,64,0.16); }
+.glyph-recipe-selected { opacity: 1; border-color: transparent; background: #684b26; color: #fff; font-weight: bold; }
 @media (max-width: 620px) {
- .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; height: min(700px, 75vh); }
- .glyph-recipe-catalog { flex: 0 0 auto; height: 180px; }
+ .glyph-workbench-dialog .glyph-workbench-layout { flex-direction: column; }
+ .glyph-recipe-catalog { flex: 0 0 180px; }
+ .glyph-workbench-dialog .item-upgrade-materials { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 }
 
 .workbench-item-icon { display: inline-block; flex: 0 0 auto; overflow: hidden; position: relative; pointer-events: none; }
 .workbench-item-frame { display: block; width: 32px; height: 32px; background-repeat: no-repeat; transform-origin: top left; image-rendering: pixelated; }
 
-.glyph-workbench-dialog .item-upgrade-materials { display: grid; gap: 8px 6px; padding: 8px 6px; border: 1px solid #826a4b; }
-.glyph-workbench-dialog .item-upgrade-material { min-width: 0; gap: 4px; font-size: 12px; }
+.glyph-workbench-dialog .item-upgrade-identity { flex-shrink: 0; gap: 10px; margin: 0 6px 4px; }
+.glyph-workbench-dialog .item-upgrade-identity > div:last-child { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.glyph-workbench-dialog .item-upgrade-slot { position: relative; flex: 0 0 48px; border: 0; box-shadow: none; }
+.glyph-workbench-dialog .item-upgrade-slot::before { content: ""; position: absolute; width: 40px; height: 40px; background: var(--item-slot-texture, url(/data/gui/slot.png)) center / 40px 40px no-repeat; }
+.glyph-workbench-dialog .item-upgrade-slot > * { position: relative; }
+.glyph-detail-section { flex-shrink: 0; min-width: 0; margin: 0; padding: 8px; border: 1px solid var(--border-bottom-color); box-shadow: inset 1px 1px var(--border-top-color), 1px 1px var(--border-top-color); }
+.glyph-detail-section legend { padding: 0 4px; }
+.glyph-workbench-dialog .item-upgrade-materials { display: grid; gap: 8px 6px; padding: 0; }
+.glyph-workbench-dialog .item-upgrade-material { min-width: 0; gap: 2px; font-size: 12px; }
 .glyph-workbench-dialog .item-upgrade-material > div:nth-child(2) { min-height: 30px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; }
-.glyph-workbench-dialog .item-upgrade-material > div:last-child { white-space: nowrap; font-size: 11px; font-variant-numeric: tabular-nums; }
-.glyph-workbench-dialog .item-upgrade-stats { padding: 6px 8px; border: 1px solid #826a4b; margin-bottom: 10px; }
+.glyph-workbench-dialog .item-upgrade-material > div:last-child { white-space: nowrap; font-size: 12px; font-variant-numeric: tabular-nums; }
+.glyph-workbench-dialog .item-upgrade-material > div:nth-child(2) { font-weight: normal; }
+.glyph-material-section > div:not(.item-upgrade-materials) { text-align: center; }
+.glyph-workbench-dialog .item-upgrade-stats { padding: 0; }
 .glyph-stat-row { display: grid; grid-template-columns: minmax(0,1fr) 65px; align-items: baseline; gap: 8px; margin: 6px 0; }
 .glyph-stat-upgrade { grid-template-columns: minmax(0,1fr) 65px 65px; }
 .glyph-stat-row > span:not(:first-child) { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .glyph-stat-note, .glyph-stat-caption { color: #d8bea1; }
-.glyph-stat-note { margin: -2px 0 8px; }
+.glyph-stat-note { margin: -2px 0 8px; font-weight: normal; }
 .glyph-fee { display: flex; justify-content: space-between; gap: 8px; margin-top: 10px; }
 .glyph-fee[hidden] { display: none; }
+.glyph-workbench-dialog .glyph-fee { flex-shrink: 0; margin-top: auto; }
+.glyph-workbench-dialog .item-upgrade-status { flex-shrink: 0; text-align: center; margin: 0; }
+.glyph-workbench-dialog .glyph-fee[hidden] + .item-upgrade-status { margin-top: auto; }
+.glyph-workbench-dialog .dialogbuttons { flex-shrink: 0; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 5px; margin: 0; background: none; }
+.glyph-workbench-dialog .glyph-fee[hidden] ~ .item-upgrade-status[hidden] + .dialogbuttons { margin-top: auto; }
+.glyph-workbench-dialog .dialogbutton + .dialogbutton { margin-left: 0; }
+.glyph-workbench-dialog .item-upgrade-status[data-status="select_item"] { color: #ffbe40; }

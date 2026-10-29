@@ -44,6 +44,9 @@ export class ItemUpgradeDialog extends DialogContentComponent {
     private selectedRecipe?: string;
     private readonly recipeCatalog = document.createElement("div");
     private readonly details = document.createElement("div");
+    private glyphStatsSection?: HTMLFieldSetElement;
+    private glyphStatsHeading?: HTMLLegendElement;
+    private glyphMaterialsSection?: HTMLFieldSetElement;
     private itemHeading!: HTMLHeadingElement;
     private readonly categoryOpen = new Map<string, boolean>();
     private recipeButtons: HTMLButtonElement[] = [];
@@ -249,6 +252,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
             if (this.inventoryRefresh !== undefined) clearTimeout(this.inventoryRefresh);
             this.frame?.setTitle(this.glyphMode ? "Stół runiczny" : "Ulepszanie przedmiotu");
             this.componentElement.classList.toggle("glyph-workbench-dialog", this.glyphMode);
+            this.setGlyphLayout(this.glyphMode);
             this.recipeCatalog.hidden = !this.glyphMode; this.selectedRecipe = undefined;
         }
         if (responseRecipe) this.selectedRecipe = responseRecipe;
@@ -326,10 +330,13 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 
 	private fillStats(data: UpgradeEventData): void {
 		this.stats.replaceChildren();
+		if (this.glyphMode) {
+            this.glyphStatsHeading!.textContent = GameLanguage.getText(this.creatingGlyph ? "Właściwości" : "Zmiana mocy");
+            this.fillGlyphStats(data); return;
+        }
 		const heading = document.createElement("h4");
-		heading.textContent = GameLanguage.getText(this.glyphMode ? (this.creatingGlyph ? "Właściwości" : "Zmiana mocy") : "Statystyki po ulepszeniu");
+		heading.textContent = GameLanguage.getText("Statystyki po ulepszeniu");
 		this.stats.appendChild(heading);
-        if (this.glyphMode) { this.fillGlyphStats(data); return; }
 		const names = this.list(data.stat_names);
 		const current = this.list(data.current_stat_values);
 		const upgraded = this.list(data.upgraded_stat_values);
@@ -354,6 +361,33 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			this.stats.appendChild(row);
 		}
 	}
+
+    private setGlyphLayout(enabled: boolean): void {
+        if (enabled && !this.glyphStatsSection) {
+            this.glyphStatsSection = document.createElement("fieldset");
+            this.glyphStatsSection.className = "glyph-detail-section";
+            this.glyphStatsHeading = document.createElement("legend");
+            this.details.insertBefore(this.glyphStatsSection, this.stats);
+            this.glyphStatsSection.append(this.glyphStatsHeading, this.stats);
+
+            this.glyphMaterialsSection = document.createElement("fieldset");
+            this.glyphMaterialsSection.className = "glyph-detail-section glyph-material-section";
+            const heading = document.createElement("legend");
+            heading.textContent = GameLanguage.getText("Składniki (masz / potrzeba)");
+            this.details.insertBefore(this.glyphMaterialsSection, this.materials);
+            this.glyphMaterialsSection.append(heading, this.materials);
+            this.details.appendChild(this.upgradeButton.parentElement!);
+            this.icon.style.setProperty("--item-slot-texture", `url(${Paths.gui}/slot.png)`);
+        } else if (!enabled && this.glyphStatsSection) {
+            this.details.insertBefore(this.stats, this.glyphStatsSection);
+            this.glyphStatsSection.remove(); this.glyphStatsSection = undefined;
+            this.glyphStatsHeading = undefined;
+            this.details.insertBefore(this.materials, this.glyphMaterialsSection!);
+            this.glyphMaterialsSection!.remove(); this.glyphMaterialsSection = undefined;
+            this.componentElement.appendChild(this.upgradeButton.parentElement!);
+        }
+        this.materialHeading.hidden = enabled;
+    }
 
     private fillGlyphStats(data: UpgradeEventData): void {
         const names = this.list(data.stat_short_names ?? data.stat_names), keys = this.list(data.stat_keys);
