@@ -2487,8 +2487,8 @@ td.number {
     border: 0; border-bottom: 1px solid #af825d55; padding: 2px 4px; text-align: left;
     background: transparent; color: var(--text-color); font: inherit;
 }
-.npc-shop-row:hover:not(:disabled) { background: #e0b06c22; }
-.npc-shop-row.selected { background: #b7834b66; }
+.npc-shop-row:hover:not(:disabled) { background: #ffffff0f; }
+.npc-shop-row.selected, .npc-shop-row.selected:hover { background: #ffffff1f; }
 .npc-shop-row:disabled { opacity: .65; }
 .npc-shop-row-icon, .npc-shop-icon { box-sizing: border-box; display: flex; justify-content: center; align-items: center;
     width: 42px; height: 42px; flex: 0 0 42px; background: var(--item-slot-texture, url(/data/gui/slot.png)) center / 42px 42px no-repeat;

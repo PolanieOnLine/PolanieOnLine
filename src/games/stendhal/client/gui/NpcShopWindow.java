@@ -237,18 +237,13 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 protected void paintComponent(final Graphics graphics) {
                     if (selected || hovered) {
                         graphics.setColor(selected
-                                ? new Color(105, 65, 31, 205)
-                                : new Color(65, 40, 21, 155));
+                                ? new Color(255, 255, 255, 31)
+                                : new Color(255, 255, 255, 15));
                         graphics.fillRect(0, 0, getWidth(), getHeight());
                     }
                     graphics.setColor(new Color(200, 145, 80, 55));
                     graphics.drawLine(10, getHeight() - 1, getWidth() - 10,
                             getHeight() - 1);
-                    if (selected) {
-                        graphics.setColor(GOLD);
-                        graphics.fillRect(0, 0, 3, getHeight());
-                        graphics.drawLine(5, 0, getWidth() - 5, 0);
-                    }
                 }
             };
             row.setOpaque(false);
