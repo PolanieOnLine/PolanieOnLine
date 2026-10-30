@@ -247,7 +247,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 }
             };
             row.setOpaque(false);
-            row.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 9));
+            row.setBorder(BorderFactory.createEmptyBorder(3, 10, 3, 9));
             final JLabel name = label(entry.name, 14, TEXT, true);
             name.setToolTipText(entry.name);
             final JLabel price = label(entry.price, 12, GOLD, true);
