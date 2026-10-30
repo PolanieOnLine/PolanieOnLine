@@ -1,6 +1,7 @@
 package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -152,6 +153,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
             final boolean hovered = ((ShopList) list).hovered == index;
             final JPanel row = new JPanel(new BorderLayout(10, 0)) {
                 private static final long serialVersionUID = 1L;
+
+                @Override
+                public void paint(final Graphics graphics) {
+                    final Graphics2D copy = (Graphics2D) graphics.create();
+                    if (entry.limit == 0) { copy.setComposite(AlphaComposite.SrcOver.derive(0.5f)); }
+                    super.paint(copy);
+                    copy.dispose();
+                }
 
                 @Override
                 protected void paintComponent(final Graphics graphics) {
@@ -784,7 +793,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         search.setEnabled(!waiting);
         sellList.setEnabled(!waiting);
         buyList.setEnabled(!waiting);
-        amount.setEnabled(!waiting && current != null);
+        amount.setEnabled(!waiting && current != null && maximum() > 0);
         minus.setEnabled(!waiting && current != null && quantity > 1);
         plus.setEnabled(!waiting && current != null
                 && quantity < maximum());

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.IdentityHashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 import org.json.simple.JSONValue;
 import games.stendhal.common.constants.ItemTooltip;
@@ -131,28 +133,59 @@ public final class NpcShopEvent extends RPEvent {
         final List<String> snapshots = new ArrayList<>();
         final List<Item> candidates = new ArrayList<>();
         final Map<Item, String> offerNames = new IdentityHashMap<>();
+        final Set<Item> unavailable = Collections.newSetFromMap(new IdentityHashMap<Item, Boolean>());
         if ("buy".equals(prefix)) {
+            final Set<String> carriedOffers = new HashSet<>();
             for (final RPObject object : player.getSlot("bag")) {
-                if (object instanceof Item && merchant.hasItem(((Item) object).getName())) { candidates.add((Item) object); }
+                if (object instanceof Item && names.contains(((Item) object).getName())) {
+                    final Item item = (Item) object;
+                    if (((BuyerBehaviour) merchant).getChargeForItem(item, 1, player) > 0) {
+                        candidates.add(item);
+                        carriedOffers.add(item.getName());
+                    }
+                }
+            }
+            // Keep the complete buying catalogue visible even with an empty bag.
+            // Only real, accepted bag instances receive a transaction key.
+            for (final String name : names) {
+                if (!carriedOffers.contains(name) && merchant.getUnitPrice(name) > 0) {
+                    final Item template = SingletonRepository.getEntityManager().getItem(name, ItemRarity.COMMON);
+                    if (template != null) {
+                        candidates.add(template);
+                        unavailable.add(template);
+                    }
+                }
             }
         } else {
             for (final String name : names) {
                 try { final Item item = ((SellerBehaviour) merchant).getAskedItem(name, player); if (item != null) { candidates.add(item); offerNames.put(item, name); } }
-                catch (final RuntimeException unavailable) { /* Special offers may not be ordinary items. */ }
+                catch (final RuntimeException unavailableOffer) { /* Special offers may not be ordinary items. */ }
             }
         }
+        final boolean buying = "buy".equals(prefix);
         for (final Item candidate : candidates) {
-            final String name = "buy".equals(prefix) ? candidate.getName() : offerNames.get(candidate);
-            final int price = "buy".equals(prefix) ? ((BuyerBehaviour) merchant).getChargeForItem(candidate, 1, player)
-                    : (int) Math.min(Integer.MAX_VALUE, (long) (merchant.getUnitPrice(name)
-                            * (player.isBadBoy() ? SellerBehaviour.BAD_BOY_BUYING_PENALTY : 1.0)));
+            final String name = buying ? candidate.getName() : offerNames.get(candidate);
+            final boolean missing = unavailable.contains(candidate);
+            final int price;
+            if (buying) {
+                price = missing ? merchant.getUnitPrice(name)
+                        : ((BuyerBehaviour) merchant).getChargeForItem(candidate, 1, player);
+            } else {
+                price = (int) Math.min(Integer.MAX_VALUE, (long) (merchant.getUnitPrice(name)
+                        * (player.isBadBoy() ? SellerBehaviour.BAD_BOY_BUYING_PENALTY : 1.0)));
+            }
             if (price <= 0) {
                 continue;
             }
             final Item template = candidate;
-            keys.add("buy".equals(prefix) ? saleKeys.apply(candidate) : "");
-            quantities.add(Integer.toString("buy".equals(prefix) ? saleLimit((BuyerBehaviour) merchant, candidate, player)
-                    : candidate instanceof StackableItem ? 1000 : 1));
+            if (buying) {
+                keys.add(missing ? "unavailable:" + name : saleKeys.apply(candidate));
+                quantities.add(Integer.toString(missing ? 0
+                        : saleLimit((BuyerBehaviour) merchant, candidate, player)));
+            } else {
+                keys.add("");
+                quantities.add(candidate instanceof StackableItem ? "1000" : "1");
+            }
             snapshots.add(snapshot(candidate));
             offeredNames.add(name);
             prices.add(MoneyUtils.formatPrice(price));
@@ -193,7 +226,10 @@ public final class NpcShopEvent extends RPEvent {
         return accepted;
     }
 
-    private static String snapshot(final Item item) {
+    private static String snapshot(final Item source) {
+        // Rebuilding tooltip maps on a bag item creates perception deletions.
+        // Catalogue presentation must never modify the live inventory instance.
+        final Item item = (Item) source.clone();
         ItemTooltipService.update(item);
         final Map<String, Object> snapshot = new LinkedHashMap<>();
         for (final String key : new String[] {"name", "class", "subclass", "rarity_id", "improve", "max_improves", "itemdata", "bound"}) {

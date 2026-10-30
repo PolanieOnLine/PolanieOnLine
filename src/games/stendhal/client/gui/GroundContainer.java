@@ -224,7 +224,9 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 		final RPAction action = new RPAction();
 
 		RPObject item = entity.getRPObject();
-		if (item == null) {
+		// A perception update can detach an item while the player is dragging it.
+		// It no longer has a valid source path or zone and must not be dropped.
+		if (item == null || !item.has("id") || !item.getBaseContainer().has("zoneid")) {
 			return;
 		}
 

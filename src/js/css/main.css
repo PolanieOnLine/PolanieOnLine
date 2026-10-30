@@ -2483,6 +2483,7 @@ td.number {
 .npc-shop-row:hover:not(:disabled) { background: #ffffff0f; }
 .npc-shop-row.selected, .npc-shop-row.selected:hover { background: #ffffff1f; }
 .npc-shop-row:disabled { opacity: .65; }
+.npc-shop-row.is-unavailable { opacity: .5; }
 .npc-shop-row-icon, .npc-shop-icon { display: flex; justify-content: center; align-items: center;
     width: 40px; height: 40px; flex: 0 0 40px; background: var(--item-slot-texture, url(/data/gui/slot.png)) center / 40px 40px no-repeat;
 }

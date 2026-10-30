@@ -353,6 +353,10 @@ export class NpcShopDialog extends DialogContentComponent {
             row.title = entry.name + ", " + entry.price;
             row.disabled = this.waiting;
             if (entry === this.selected) row.classList.add("selected");
+            if (entry.limit === 0) {
+                row.classList.add("is-unavailable");
+                row.title += " · Brak przedmiotu do sprzedaży";
+            }
 
             const iconSlot = document.createElement("span");
             iconSlot.className = "npc-shop-row-icon";
@@ -474,7 +478,7 @@ export class NpcShopDialog extends DialogContentComponent {
         this.buyTab.disabled = !this.selling.length || this.waiting;
         this.sellTab.disabled = !this.buying.length || this.waiting;
         this.search.disabled = this.waiting;
-        this.quantity.disabled = !this.selected || this.waiting;
+        this.quantity.disabled = !this.selected || this.waiting || max < 1;
         this.quantityMinus.disabled = !this.selected || this.waiting || amount <= 1;
         this.quantityPlus.disabled = !this.selected || this.waiting || amount >= max;
         this.listBox.setAttribute("aria-busy", String(this.waiting));

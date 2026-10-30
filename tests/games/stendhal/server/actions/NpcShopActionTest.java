@@ -28,6 +28,7 @@ import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
+import marauroa.common.game.RPObject;
 import utilities.PlayerTestHelper;
 
 /** Tests the single action shop checkout, without a client supplied quote. */
@@ -204,6 +205,54 @@ public class NpcShopActionTest {
         PlayerTestHelper.equipWithMoney(player,Integer.MAX_VALUE-unit*2);
         final RPAction open=action(npc,"1");open.put("command","open");new NpcShopAction().onAction(player,open);
         assertEquals("2",lastShopEvent(player).getList("buy_quantities").get(0));
+    }
+
+    @Test
+    public void emptyBagStillShowsTheCompleteBuyingCatalogue() {
+        final StendhalRPZone zone = new StendhalRPZone("shop_empty_bag");
+        final Player player = PlayerTestHelper.createPlayer("empty-bag-customer");
+        player.setPosition(5, 5); zone.add(player);
+        final SpeakerNPC npc = new SpeakerNPC("empty bag buyer");
+        npc.setPosition(6, 5); npc.addGreeting();
+        new BuyerAdder().addBuyer(npc, new BuyerBehaviour(Collections.singletonMap("sztylecik", 10)));
+        zone.add(npc);
+        final RPAction open = action(npc, "1"); open.put("command", "open");
+        final NpcShopAction shop = new NpcShopAction();
+        shop.onAction(player, open);
+        final RPEvent catalogue = lastShopEvent(player);
+        assertEquals(Collections.singletonList("sztylecik"), catalogue.getList("buy_names"));
+        assertEquals("0", catalogue.getList("buy_quantities").get(0));
+        assertEquals("10", catalogue.getList("buy_price_values").get(0));
+        final RPAction sale = action(npc, "1"); sale.put("mode", "sell");
+        sale.put("window_id", catalogue.get("window_id"));
+        sale.put("selection", catalogue.getList("buy_keys").get(0));
+        shop.onAction(player, sale);
+        assertEquals(0, player.getTotalNumberOf("money"));
+    }
+
+    @Test
+    public void openingAndRefreshingShopDoesNotChangeBagItemPerceptions() {
+        final StendhalRPZone zone = new StendhalRPZone("shop_read_only_catalogue");
+        final Player player = PlayerTestHelper.createPlayer("read-only-customer");
+        player.setPosition(5, 5); zone.add(player);
+        final SpeakerNPC npc = new SpeakerNPC("read only buyer");
+        npc.setPosition(6, 5); npc.addGreeting();
+        new BuyerAdder().addBuyer(npc, new BuyerBehaviour(Collections.singletonMap("sztylecik", 10)));
+        zone.add(npc);
+        final Item item = SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON);
+        player.getSlot("bag").add(item);
+        player.resetAddedAndDeleted();
+        final NpcShopAction shop = new NpcShopAction();
+        for (final String command : new String[] {"open", "refresh"}) {
+            final RPAction request = action(npc, "1"); request.put("command", command);
+            shop.onAction(player, request);
+            final RPObject added = new RPObject();
+            final RPObject removed = new RPObject();
+            item.getDifferences(added, removed);
+            assertTrue("Shop removed item maps: " + removed, removed.maps().isEmpty());
+            assertTrue("Shop changed item maps: " + added, added.maps().isEmpty());
+            assertTrue(item.getContainer() == player);
+        }
     }
 
 }

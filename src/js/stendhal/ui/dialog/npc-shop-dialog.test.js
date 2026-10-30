@@ -120,3 +120,16 @@ test("polling waits for its previous reply without blocking selection or checkou
     h.Dialog.show(catalogue({phase:"refresh",request_id:"1"}));
     for(const fn of h.timers.values())fn();assert.equal(h.actions.length,2);
 });
+
+
+test("empty-bag buying catalogue remains browsable but cannot sell missing items",()=>{
+    const h=harness();h.Dialog.show(catalogue({buy_names:["sztylecik"],buy_keys:["unavailable:sztylecik"],buy_quantities:["0"]}));
+    const d=h.frames[0].content;
+    assert.equal(d.sellTab.disabled,false);
+    d.sellTab.onclick();d.listBox.children[0].onclick();
+    assert.equal(d.detailName.textContent,"sztylecik");
+    assert.equal(d.maximum(),0);
+    assert.equal(d.requestButton.disabled,true);
+    d.requestButton.onclick();
+    assert.equal(h.actions.length,0);
+});
