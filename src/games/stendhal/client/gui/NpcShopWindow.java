@@ -392,13 +392,12 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final JPanel controls = new DialogPanel(new BorderLayout(0, 6));
         quantityControls = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         quantityControls.add(new JLabel(ClientLanguage.getText("Ilość:")));
-        amount.setPreferredSize(new Dimension(58, 25));
+        amount.setPreferredSize(new Dimension(42, 25));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
         amount.setToolTipText(ClientLanguage.getText("Ilość od 1 do 1000"));
         minus.addActionListener(event -> changeAmount(-1));
         plus.addActionListener(event -> changeAmount(1));
         quantityControls.add(minus); quantityControls.add(amount); quantityControls.add(plus);
-        controls.add(quantityControls, BorderLayout.NORTH);
         quantityPresets = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
@@ -406,15 +405,21 @@ public final class NpcShopWindow extends InternalManagedWindow {
                     ? maximum() : Math.min(maximum(), Integer.parseInt(caption)))));
             presets.add(preset); quantityPresets.add(preset);
         }
-        controls.add(quantityPresets, BorderLayout.CENTER);
         final JPanel checkout = new DialogPanel(new BorderLayout(8, 0));
         final JPanel prices = new DialogPanel(null);
         prices.setLayout(new BoxLayout(prices, BoxLayout.PAGE_AXIS));
         prices.add(unitPrice); prices.add(quote);
-        checkout.add(prices, BorderLayout.CENTER);
+        final JPanel priceArea = new DialogPanel(new BorderLayout());
+        priceArea.add(prices, BorderLayout.SOUTH);
+        checkout.add(priceArea, BorderLayout.CENTER);
         final JPanel tradeActions = new DialogPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        quantityControls.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
+        tradeActions.add(quantityControls);
         tradeActions.add(request);
-        checkout.add(tradeActions, BorderLayout.EAST);
+        final JPanel orderControls = new DialogPanel(new BorderLayout(0, 5));
+        orderControls.add(quantityPresets, BorderLayout.NORTH);
+        orderControls.add(tradeActions, BorderLayout.SOUTH);
+        checkout.add(orderControls, BorderLayout.EAST);
         controls.add(checkout, BorderLayout.SOUTH);
         final JPanel footerControls = new DialogPanel(new BorderLayout(0, 8));
         tradeRequirement.setForeground(new Color(255, 190, 85));
@@ -759,8 +764,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 && entry.entity.getRarity() != ItemRarity.COMMON ? Color.decode(entry.entity.getRarity().getColorHex()) : textColor());
         itemDescription.setText("<html><table width='360'><tr><td>" + escape(entry == null
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
-        unitPrice.setText(entry == null ? ""
-                : (entry.stackable ? "Cena za sztukę: " : "Cena: ") + entry.price);
+        unitPrice.setText(entry == null ? "" : entry.stackable
+                ? "<html>Cena za sztukę:<br>" + escape(entry.price) + "</html>"
+                : "Cena: " + entry.price);
         preview.setEntry(entry);
         if (entry != null && !entry.stackable && readAmount() != 1) {
             amount.setText("1");
@@ -826,7 +832,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantityControls.setVisible(current != null && current.stackable);
         quantityPresets.setVisible(current != null && current.stackable);
         quote.setVisible(current != null && current.stackable && quantity > 1);
-        quote.setText(current == null ? "" : "Łącznie: " + formatMoney(total, currencyReformed));
+        quote.setText(current == null ? "" : "<html>Łącznie:<br>"
+                + escape(formatMoney(total, currencyReformed)) + "</html>");
         updateTabs();
     }
 

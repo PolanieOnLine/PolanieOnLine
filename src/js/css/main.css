@@ -2502,13 +2502,16 @@ td.number {
 .npc-shop-detail-body .item-rarity-tooltip__primary { font-size: inherit; }
 .npc-shop-detail-body .item-rarity-tooltip__stat-row { gap: 5px; }
 .npc-shop-quantity, .npc-shop-presets { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
-.npc-shop-quantity input { box-sizing: border-box; width: 58px; min-width: 0; height: 25px; text-align: center;
+.npc-shop-quantity input { box-sizing: border-box; width: 42px; min-width: 0; height: 25px; text-align: center;
     color: var(--text-color); background: var(--textfield-background-color, rgb(60,30,0)); font: inherit; border: 2px solid;
     border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);
 }
-.npc-shop-checkout { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; }
+.npc-shop-checkout { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; flex-shrink: 0; }
 .npc-shop-prices { min-width: 0; }
-.npc-shop-trade-actions { display: flex; flex-shrink: 0; }
+.npc-shop-price-label { display: block; }
+.npc-shop-quote { margin-top: 4px; }
+.npc-shop-order-controls { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+.npc-shop-trade-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
 .npc-shop-requirement { flex-shrink: 0; color: #ffbe55; overflow-wrap: anywhere; }
 .npc-shop-status { line-height: 15px; flex-shrink: 0; }
 .npc-shop-status[data-state="error"] { color: #e15a4b; }
@@ -2520,6 +2523,9 @@ td.number {
     .npc-shop-layout { display: flex; flex-direction: column; flex: none; }
     .npc-shop-list { max-height: 170px; flex-basis: 170px; }
     .npc-shop-detail-body { min-height: 150px; max-height: 230px; flex-basis: 180px; }
+    .npc-shop-checkout { flex-wrap: wrap; }
+    .npc-shop-prices { flex: 1 0 100%; }
+    .npc-shop-order-controls { margin-left: auto; }
 }
 
 /* Administrator inspection uses the same themed controls as other client dialogs. */

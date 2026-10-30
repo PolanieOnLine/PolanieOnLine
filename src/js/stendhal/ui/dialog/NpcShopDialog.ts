@@ -174,7 +174,7 @@ export class NpcShopDialog extends DialogContentComponent {
         prices.append(this.detailPrice, this.quoteTotal); checkout.appendChild(prices);
         this.tradeRequirement.className = "npc-shop-requirement";
         this.tradeRequirement.hidden = true;
-        detail.append(identity, body, this.tradeRequirement, quantityRow, quick, checkout);
+        detail.append(identity, body, this.tradeRequirement, checkout);
         layout.appendChild(detailSection);
         this.componentElement.appendChild(layout);
 
@@ -187,8 +187,11 @@ export class NpcShopDialog extends DialogContentComponent {
         this.requestButton.classList.add("npc-shop-btn-primary", "npc-shop-btn-request");
         const tradeActions = document.createElement("div");
         tradeActions.className = "npc-shop-trade-actions";
-        tradeActions.append(this.requestButton);
-        checkout.appendChild(tradeActions);
+        tradeActions.append(quantityRow, this.requestButton);
+        const orderControls = document.createElement("div");
+        orderControls.className = "npc-shop-order-controls";
+        orderControls.append(quick, tradeActions);
+        checkout.appendChild(orderControls);
         this.updateButtons();
     }
 
@@ -426,9 +429,15 @@ export class NpcShopDialog extends DialogContentComponent {
         this.detailDescription.textContent = !entry
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły."
                 : entry.description || "Brak dodatkowego opisu.";
-        this.detailPrice.textContent = entry
-                ? (entry.stackable ? "Cena za sztukę: " : "Cena: ") + entry.price
-                : "";
+        this.detailPrice.replaceChildren();
+        if (entry) {
+            const priceLabel = document.createElement("span");
+            priceLabel.textContent = entry.stackable ? "Cena za sztukę:" : "Cena:";
+            if (entry.stackable) priceLabel.className = "npc-shop-price-label";
+            const price = document.createElement("span");
+            price.textContent = " " + entry.price;
+            this.detailPrice.append(priceLabel, price);
+        }
         if (entry?.itemClass && entry.subclass) {
             this.detailIcon.src = Paths.sprites + "/items/"
                     + entry.itemClass + "/" + entry.subclass + ".png";
@@ -505,7 +514,13 @@ export class NpcShopDialog extends DialogContentComponent {
         this.quantityControls.hidden = !this.selected?.stackable;
         this.quantityPresets.hidden = !this.selected?.stackable;
         this.quoteTotal.hidden = !this.selected?.stackable || amount <= 1;
-        this.quoteTotal.textContent = this.selected ? "Łącznie: " + this.formatMoney(total) : "";
+        this.quoteTotal.replaceChildren();
+        if (this.selected) {
+            const label = document.createElement("span"); label.className = "npc-shop-price-label";
+            label.textContent = "Łącznie:";
+            const price = document.createElement("span"); price.textContent = " " + this.formatMoney(total);
+            this.quoteTotal.append(label, price);
+        }
     }
 
     private changeAmount(delta: number): void {
