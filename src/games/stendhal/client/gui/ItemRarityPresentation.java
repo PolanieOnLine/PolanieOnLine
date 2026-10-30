@@ -77,7 +77,7 @@ final class ItemRarityPresentation {
         return buildItemToolTip(entity, width, true);
     }
 
-    /** Details below a dialog's separate item-name header. */
+    /** Details below a dialog's separate item-name and rarity header. */
     static String buildItemDetails(final IEntity entity, final int width) {
         return buildItemToolTip(entity, width, false);
     }
@@ -245,7 +245,7 @@ final class ItemRarityPresentation {
 							? " +" + upgradeLevel : "")).toUpperCase(Locale.ROOT)))
 					.append("</b></font>");
 		}
-		if (rarity != null) {
+		if (rarity != null && includeName) {
             if (title != null) { tooltip.append("<br>"); }
 			tooltip.append("<font size='-1' color='")
 					.append(getTextColor()).append("'>")

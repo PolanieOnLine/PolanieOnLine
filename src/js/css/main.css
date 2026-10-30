@@ -2494,9 +2494,10 @@ td.number {
 .npc-shop-dialog .npc-shop-section { display: flex; min-height: 0; flex-shrink: 1; }
 .npc-shop-detail { display: flex; flex: 1; min-width: 0; min-height: 0; flex-direction: column; gap: 8px; }
 .npc-shop-identity { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-.npc-shop-identity h4 { margin: 0; font: inherit; overflow-wrap: anywhere; }
+.npc-shop-identity h4 { flex: 1; min-width: 0; margin: 0; font: inherit; overflow-wrap: anywhere; }
+.npc-shop-rarity { flex-shrink: 0; margin-left: auto; white-space: nowrap; }
 .npc-shop-detail-body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; }
-.npc-shop-description { font-weight: normal; margin: 8px 0 0; overflow-wrap: anywhere; }
+.npc-shop-description { font-weight: normal; margin: 0 0 8px; overflow-wrap: anywhere; }
 .npc-shop-detail-body .item-rarity-tooltip__divider { text-align: center; }
 .npc-shop-detail-body .item-rarity-tooltip__primary { font-size: inherit; }
 .npc-shop-detail-body .item-rarity-tooltip__stat-row { gap: 5px; }

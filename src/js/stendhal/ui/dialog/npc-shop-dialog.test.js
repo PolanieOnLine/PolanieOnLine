@@ -133,3 +133,14 @@ test("empty-bag buying catalogue remains browsable but cannot sell missing items
     d.requestButton.onclick();
     assert.equal(h.actions.length,0);
 });
+
+
+test("item details show rarity beside the name and description before statistics",()=>{
+    const h=harness();h.Dialog.show(catalogue({sell_descriptions:["Opis przedmiotu"]}));
+    const d=h.frames[0].content;d.listBox.children[0].onclick();
+    assert.equal(d.detailRarity.textContent,"rare");
+    assert.equal(d.detailName.parentElement.children.at(-1),d.detailRarity);
+    assert.equal(d.detailDescription.parentElement.children[0],d.detailDescription);
+    assert.equal(d.detailDescription.parentElement.children[1],d.detailStats);
+    assert.ok(!d.detailStats.children.some(row=>row.textContent==="rare"));
+});

@@ -41,6 +41,19 @@ public class ItemRarityPresentationTest {
 	private static final String BETTER_COLOR_MARKER = "color='#62d26f'";
 	private static final String WORSE_COLOR_MARKER = "color='#ef6a62'";
 
+    @Test
+    public void shopDetailsLeaveRarityToTheSeparateHeader() {
+        final RPObject object = ItemTestHelper.createItem("test armour");
+        object.put("rarity_id", "rare");
+        putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
+        putStat(object, ItemTooltip.DEFENSE, "1");
+        final IEntity item = EntityFactory.createEntity(object);
+        final String details = ItemRarityPresentation.buildItemDetails(item, 360);
+        assertFalse(details.contains("Rzadki"));
+        assertTrue(details.contains("1 pkt. pancerza"));
+        assertTrue(ItemRarityPresentation.buildItemToolTip(item).contains("Rzadki"));
+    }
+
 	@Test
 	public void testGlyphTooltipsExplainProcConditionsAndPercentageUnits() {
 		final RPObject object = ItemTestHelper.createItem("test glyph");

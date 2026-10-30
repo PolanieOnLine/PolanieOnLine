@@ -255,6 +255,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JLabel wallet = new JLabel();
     private final JLabel itemCount = new JLabel();
     private final JLabel selectedName = new JLabel("Wybierz przedmiot");
+    private final JLabel selectedRarity = new JLabel();
     private final JLabel unitPrice = new JLabel();
     private final JLabel quote = new JLabel();
     private final JTextArea information = new JTextArea(2, 1);
@@ -368,14 +369,15 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final JPanel identity = new DialogPanel(new BorderLayout(8, 0));
         identity.add(preview, BorderLayout.WEST);
         identity.add(selectedName, BorderLayout.CENTER);
+        identity.add(selectedRarity, BorderLayout.EAST);
         detail.add(identity, BorderLayout.NORTH);
 
         final JPanel descriptionContent = new DialogPanel(null);
         descriptionContent.setLayout(new BoxLayout(descriptionContent, BoxLayout.PAGE_AXIS));
         stats.setAlignmentX(Component.LEFT_ALIGNMENT);
         itemDescription.setAlignmentX(Component.LEFT_ALIGNMENT);
-        descriptionContent.add(stats);
         descriptionContent.add(itemDescription);
+        descriptionContent.add(stats);
         final JScrollPane descriptionScroll = new JScrollPane(descriptionContent);
         descriptionScroll.setBorder(BorderFactory.createEmptyBorder());
         descriptionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -734,6 +736,10 @@ public final class NpcShopWindow extends InternalManagedWindow {
                         .replace("<", "&lt;").replace(">", "&gt;")
                         + "</html>");
         selectedName.setToolTipText(entry == null ? null : entry.name);
+        final ItemRarity rarity = entry == null || entry.entity == null ? null : entry.entity.getRarity();
+        selectedRarity.setText(rarity == null ? "" : ClientLanguage.getText(rarity.getPolishDisplayName()));
+        selectedRarity.setForeground(rarity == null || rarity == ItemRarity.COMMON
+                ? textColor() : Color.decode(rarity.getColorHex()));
         final String html = entry == null || entry.entity == null ? null : ItemRarityPresentation.buildItemDetails(entry.entity, 360);
         stats.setText(html == null ? "" : html);
         selectedName.setVisible(true);

@@ -44,6 +44,7 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly listBox = document.createElement("div");
     private readonly detailIcon = document.createElement("img");
     private readonly detailName = document.createElement("h4");
+    private readonly detailRarity = document.createElement("span");
     private readonly detailPrice = document.createElement("div");
     private readonly detailDescription = document.createElement("p");
     private readonly quantityMinus = document.createElement("button");
@@ -154,9 +155,10 @@ export class NpcShopDialog extends DialogContentComponent {
         this.quantityMinus.classList.add("dialogbutton"); this.quantityPlus.classList.add("dialogbutton");
         this.detailIcon.dataset.shopSprite = "true";
         const identity = document.createElement("div"); identity.className = "npc-shop-identity";
-        identity.append(imageHolder, this.detailName);
+        this.detailRarity.className = "npc-shop-rarity";
+        identity.append(imageHolder, this.detailName, this.detailRarity);
         const body = document.createElement("div"); body.className = "npc-shop-detail-body";
-        body.append(this.detailStats, this.detailDescription);
+        body.append(this.detailDescription, this.detailStats);
         const quick = this.quantityPresets; quick.className = "npc-shop-presets";
         for (const value of [1,10,100,"Maks"]) {
             const button = document.createElement("button"); button.type = "button"; button.className = "dialogbutton";
@@ -398,13 +400,16 @@ export class NpcShopDialog extends DialogContentComponent {
         this.detailName.textContent = entry?.name || "Wybierz przedmiot";
         const titleRarity = entry?.snapshot?.getRarity();
         this.detailName.style.color = titleRarity && titleRarity.id !== "common" ? titleRarity.colorHex : "";
+        this.detailRarity.textContent = titleRarity?.polishDisplayName || "";
+        this.detailRarity.style.color = titleRarity && titleRarity.id !== "common" ? titleRarity.colorHex : "";
         this.detailStats.replaceChildren();
         if (entry?.snapshot) {
             const structured = buildStructuredItemTooltip(entry.snapshot, singletons.getConfigManager().getBoolean("item-tooltip.comparison"));
-            const rarity = entry.snapshot.getRarity();
-            const header = document.createElement("div");
-            header.textContent = [rarity?.polishDisplayName, structured.upgradeText].filter(Boolean).join(" · ");
-            this.detailStats.appendChild(header);
+            if (structured.upgradeText) {
+                const header = document.createElement("div");
+                header.textContent = structured.upgradeText;
+                this.detailStats.appendChild(header);
+            }
             if (structured.comparisonName) {
                 const compare = document.createElement("div"); compare.className = "item-rarity-tooltip__comparison";
                 compare.textContent = "Porównanie z: " + structured.comparisonName; this.detailStats.appendChild(compare);
