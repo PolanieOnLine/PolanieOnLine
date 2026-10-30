@@ -391,8 +391,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
         final JPanel controls = new DialogPanel(new BorderLayout(0, 6));
         quantityControls = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        final JLabel quantityLabel = new JLabel(ClientLanguage.getText("Ilość:"));
-        quantityControls.add(quantityLabel);
         amount.setPreferredSize(new Dimension(42, 25));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
         amount.setToolTipText(ClientLanguage.getText("Ilość od 1 do 1000"));
@@ -400,8 +398,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
         plus.addActionListener(event -> changeAmount(1));
         quantityControls.add(minus); quantityControls.add(amount); quantityControls.add(plus);
         quantityPresets = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        quantityPresets.setBorder(BorderFactory.createEmptyBorder(0,
-                quantityLabel.getPreferredSize().width + 5, 0, 0));
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
             preset.addActionListener(event -> amount.setText(Integer.toString("Maks".equals(caption)
