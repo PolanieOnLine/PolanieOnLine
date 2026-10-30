@@ -391,7 +391,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
         final JPanel controls = new DialogPanel(new BorderLayout(0, 6));
         quantityControls = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        quantityControls.add(new JLabel(ClientLanguage.getText("Ilość:")));
+        final JLabel quantityLabel = new JLabel(ClientLanguage.getText("Ilość:"));
+        quantityControls.add(quantityLabel);
         amount.setPreferredSize(new Dimension(42, 25));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
         amount.setToolTipText(ClientLanguage.getText("Ilość od 1 do 1000"));
@@ -399,6 +400,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         plus.addActionListener(event -> changeAmount(1));
         quantityControls.add(minus); quantityControls.add(amount); quantityControls.add(plus);
         quantityPresets = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        quantityPresets.setBorder(BorderFactory.createEmptyBorder(0,
+                quantityLabel.getPreferredSize().width + 5, 0, 0));
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
             preset.addActionListener(event -> amount.setText(Integer.toString("Maks".equals(caption)
@@ -765,7 +768,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         itemDescription.setText("<html><table width='360'><tr><td>" + escape(entry == null
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
         unitPrice.setText(entry == null ? "" : entry.stackable
-                ? "<html>Cena za sztukę:<br>" + escape(entry.price) + "</html>"
+                ? "<html>Za sztukę: " + escape(entry.price) + "</html>"
                 : "Cena: " + entry.price);
         preview.setEntry(entry);
         if (entry != null && !entry.stackable && readAmount() != 1) {
@@ -832,7 +835,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantityControls.setVisible(current != null && current.stackable);
         quantityPresets.setVisible(current != null && current.stackable);
         quote.setVisible(current != null && current.stackable && quantity > 1);
-        quote.setText(current == null ? "" : "<html>Łącznie:<br>"
+        quote.setText(current == null ? "" : "<html>Łącznie: "
                 + escape(formatMoney(total, currencyReformed)) + "</html>");
         updateTabs();
     }

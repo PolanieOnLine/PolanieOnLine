@@ -47,6 +47,7 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly detailRarity = document.createElement("span");
     private readonly detailPrice = document.createElement("div");
     private readonly detailDescription = document.createElement("p");
+    private readonly quantityLabel = document.createElement("span");
     private readonly quantityMinus = document.createElement("button");
     private readonly quantityPlus = document.createElement("button");
     private readonly quoteTotal = document.createElement("div");
@@ -144,8 +145,8 @@ export class NpcShopDialog extends DialogContentComponent {
         this.quantity.addEventListener("input", () => this.updateButtons());
         const quantityRow = this.quantityControls;
         quantityRow.className = "npc-shop-quantity";
-        const qtyLabel = document.createElement("span");
-        qtyLabel.textContent = "Ilość";
+        const qtyLabel = this.quantityLabel;
+        qtyLabel.textContent = "Ilość:";
         this.quantityMinus.type = "button";
         this.quantityMinus.textContent = "−";
         this.quantityMinus.setAttribute("aria-label", "Zmniejsz ilość");
@@ -432,8 +433,7 @@ export class NpcShopDialog extends DialogContentComponent {
         this.detailPrice.replaceChildren();
         if (entry) {
             const priceLabel = document.createElement("span");
-            priceLabel.textContent = entry.stackable ? "Cena za sztukę:" : "Cena:";
-            if (entry.stackable) priceLabel.className = "npc-shop-price-label";
+            priceLabel.textContent = entry.stackable ? "Za sztukę:" : "Cena:";
             const price = document.createElement("span");
             price.textContent = " " + entry.price;
             this.detailPrice.append(priceLabel, price);
@@ -513,10 +513,12 @@ export class NpcShopDialog extends DialogContentComponent {
         for (const preset of this.presets) preset.disabled = this.waiting || !this.selected?.stackable || this.maximum() < 1;
         this.quantityControls.hidden = !this.selected?.stackable;
         this.quantityPresets.hidden = !this.selected?.stackable;
+        const labelWidth = this.quantityLabel.getBoundingClientRect?.().width || 0;
+        this.quantityPresets.style.paddingLeft = (labelWidth + 5) + "px";
         this.quoteTotal.hidden = !this.selected?.stackable || amount <= 1;
         this.quoteTotal.replaceChildren();
         if (this.selected) {
-            const label = document.createElement("span"); label.className = "npc-shop-price-label";
+            const label = document.createElement("span");
             label.textContent = "Łącznie:";
             const price = document.createElement("span"); price.textContent = " " + this.formatMoney(total);
             this.quoteTotal.append(label, price);

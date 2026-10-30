@@ -2507,8 +2507,7 @@ td.number {
     border-color: var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);
 }
 .npc-shop-checkout { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; flex-shrink: 0; }
-.npc-shop-prices { min-width: 0; }
-.npc-shop-price-label { display: block; }
+.npc-shop-prices { min-width: 0; overflow-wrap: anywhere; }
 .npc-shop-quote { margin-top: 4px; }
 .npc-shop-order-controls { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
 .npc-shop-trade-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
