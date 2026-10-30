@@ -90,7 +90,7 @@ test("refresh preserves same-name item identity and clears it when that item dis
 test("maximum and total match the server's final rounding of the merchant penalty",()=>{
     const h=harness();h.Dialog.show(catalogue({owned_money_value:"22",buying_penalty:"1.5"}));const d=h.frames[0].content;
     d.listBox.children[0].onclick();d.presets[3].onclick();
-    assert.equal(d.quantity.value,"3");assert.equal(d.quoteTotal.children.map(child=>child.textContent).join(""),"Łącznie: 22 monety");
+    assert.equal(d.quantity.value,"3");assert.equal(d.quoteTotal.textContent,"22 monety");
     assert.equal(d.requestButton.disabled,false);
     d.quantity.value="4";d.quantity.oninput();assert.equal(d.requestButton.disabled,true);
 });

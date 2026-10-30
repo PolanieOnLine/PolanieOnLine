@@ -55,6 +55,8 @@ export class NpcShopDialog extends DialogContentComponent {
     private saleRequirement = "";
     private readonly quantity = document.createElement("input");
     private readonly quantityControls = document.createElement("div");
+    private readonly quantitySection = document.createElement("div");
+    private readonly checkout = document.createElement("div");
     private readonly quantityPresets = document.createElement("div");
     private readonly status = document.createElement("div");
     private readonly requestButton: HTMLButtonElement;
@@ -167,9 +169,14 @@ export class NpcShopDialog extends DialogContentComponent {
             button.onclick = () => { this.quantity.value = String(value === "Maks" ? this.maximum() : Math.min(this.maximum(), Number(value))); this.updateButtons(); };
             this.presets.push(button); quick.appendChild(button);
         }
-        const checkout = document.createElement("div"); checkout.className = "npc-shop-checkout";
+        const checkout = this.checkout; checkout.className = "npc-shop-checkout";
+        this.quantitySection.className = "npc-shop-quantity-section";
+        const quantityCaption = document.createElement("div");
+        quantityCaption.textContent = "Ilość przedmiotów";
+        this.quantitySection.append(quantityCaption, quantityRow, quick);
+        checkout.appendChild(this.quantitySection);
         const prices = document.createElement("div"); prices.className = "npc-shop-prices";
-        prices.append(this.detailPrice, this.quoteTotal); checkout.appendChild(prices);
+        prices.append(this.detailPrice, this.quoteTotal);
         this.tradeRequirement.className = "npc-shop-requirement";
         this.tradeRequirement.hidden = true;
         detail.append(identity, body, this.tradeRequirement, checkout);
@@ -183,13 +190,10 @@ export class NpcShopDialog extends DialogContentComponent {
 
         this.requestButton = this.addButton("Kup teraz", () => this.purchase());
         this.requestButton.classList.add("npc-shop-btn-primary", "npc-shop-btn-request");
-        const tradeActions = document.createElement("div");
-        tradeActions.className = "npc-shop-trade-actions";
-        tradeActions.append(quantityRow, this.requestButton);
-        const orderControls = document.createElement("div");
-        orderControls.className = "npc-shop-order-controls";
-        orderControls.append(quick, tradeActions);
-        checkout.appendChild(orderControls);
+        const purchaseSection = document.createElement("div");
+        purchaseSection.className = "npc-shop-purchase-section";
+        purchaseSection.append(prices, this.requestButton);
+        checkout.appendChild(purchaseSection);
         this.updateButtons();
     }
 
@@ -430,9 +434,9 @@ export class NpcShopDialog extends DialogContentComponent {
         this.detailPrice.replaceChildren();
         if (entry) {
             const priceLabel = document.createElement("span");
-            priceLabel.textContent = entry.stackable ? "Za sztukę:" : "Cena:";
+            priceLabel.textContent = "Cena:";
             const price = document.createElement("span");
-            price.textContent = " " + entry.price;
+            price.textContent = " " + entry.price + (entry.stackable ? " / szt." : "");
             this.detailPrice.append(priceLabel, price);
         }
         if (entry?.itemClass && entry.subclass) {
@@ -510,14 +514,10 @@ export class NpcShopDialog extends DialogContentComponent {
         for (const preset of this.presets) preset.disabled = this.waiting || !this.selected?.stackable || this.maximum() < 1;
         this.quantityControls.hidden = !this.selected?.stackable;
         this.quantityPresets.hidden = !this.selected?.stackable;
-        this.quoteTotal.hidden = !this.selected?.stackable || amount <= 1;
-        this.quoteTotal.replaceChildren();
-        if (this.selected) {
-            const label = document.createElement("span");
-            label.textContent = "Łącznie:";
-            const price = document.createElement("span"); price.textContent = " " + this.formatMoney(total);
-            this.quoteTotal.append(label, price);
-        }
+        this.quantitySection.hidden = !this.selected?.stackable;
+        this.checkout.classList.toggle("is-single", !this.selected?.stackable);
+        this.quoteTotal.hidden = !this.selected?.stackable;
+        this.quoteTotal.textContent = this.selected ? this.formatMoney(total) : "";
     }
 
     private changeAmount(delta: number): void {

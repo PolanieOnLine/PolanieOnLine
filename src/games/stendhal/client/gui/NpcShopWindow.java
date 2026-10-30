@@ -6,6 +6,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -263,6 +267,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JTextField amount = new JTextField("1", 3);
     private JPanel quantityControls;
     private JPanel quantityPresets;
+    private JPanel quantitySection;
+    private JPanel purchaseControls;
+    private boolean stackableCheckout;
     private final JButton minus = new JButton("-");
     private final JButton plus = new JButton("+");
     private final JButton request = new JButton("Kup teraz");
@@ -390,35 +397,50 @@ public final class NpcShopWindow extends InternalManagedWindow {
         detail.add(descriptionScroll, BorderLayout.CENTER);
 
         final JPanel controls = new DialogPanel(new BorderLayout(0, 6));
-        quantityControls = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        quantityControls = new DialogPanel(new BorderLayout(5, 0));
         amount.setPreferredSize(new Dimension(42, 25));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
         amount.setToolTipText(ClientLanguage.getText("Ilość od 1 do 1000"));
         minus.addActionListener(event -> changeAmount(-1));
         plus.addActionListener(event -> changeAmount(1));
-        quantityControls.add(minus); quantityControls.add(amount); quantityControls.add(plus);
-        quantityPresets = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        quantityControls.add(minus, BorderLayout.WEST);
+        quantityControls.add(amount, BorderLayout.CENTER);
+        quantityControls.add(plus, BorderLayout.EAST);
+        quantityPresets = new DialogPanel(new GridBagLayout());
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
             preset.addActionListener(event -> amount.setText(Integer.toString("Maks".equals(caption)
                     ? maximum() : Math.min(maximum(), Integer.parseInt(caption)))));
-            presets.add(preset); quantityPresets.add(preset);
+            final GridBagConstraints cell = new GridBagConstraints();
+            cell.gridx = presets.size(); cell.weightx = 1;
+            cell.fill = GridBagConstraints.HORIZONTAL;
+            cell.insets = new Insets(0, cell.gridx == 0 ? 0 : 4, 0, 0);
+            presets.add(preset); quantityPresets.add(preset, cell);
         }
-        final JPanel checkout = new DialogPanel(new BorderLayout(8, 0));
+        quantitySection = new DialogPanel(new BorderLayout(0, 6));
+        quantitySection.add(new JLabel(ClientLanguage.getText("Ilość przedmiotów")), BorderLayout.NORTH);
+        quantitySection.add(quantityControls, BorderLayout.CENTER);
+        quantitySection.add(quantityPresets, BorderLayout.SOUTH);
         final JPanel prices = new DialogPanel(null);
         prices.setLayout(new BoxLayout(prices, BoxLayout.PAGE_AXIS));
+        quote.setFont(quote.getFont().deriveFont(Font.BOLD, quote.getFont().getSize2D() + 2));
+        quote.setForeground(new Color(255, 190, 85));
         prices.add(unitPrice); prices.add(quote);
         final JPanel priceArea = new DialogPanel(new BorderLayout());
-        priceArea.add(prices, BorderLayout.SOUTH);
-        checkout.add(priceArea, BorderLayout.CENTER);
-        final JPanel tradeActions = new DialogPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-        quantityControls.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
-        tradeActions.add(quantityControls);
-        tradeActions.add(request);
-        final JPanel orderControls = new DialogPanel(new BorderLayout(0, 5));
-        orderControls.add(quantityPresets, BorderLayout.NORTH);
-        orderControls.add(tradeActions, BorderLayout.SOUTH);
-        checkout.add(orderControls, BorderLayout.EAST);
+        priceArea.add(prices, BorderLayout.NORTH);
+        purchaseControls = new DialogPanel(new BorderLayout(8, 6));
+        purchaseControls.add(priceArea, BorderLayout.CENTER);
+        purchaseControls.add(request, BorderLayout.EAST);
+        final JPanel checkout = new DialogPanel(new GridBagLayout());
+        final GridBagConstraints leftColumn = new GridBagConstraints();
+        leftColumn.gridx = 0; leftColumn.weightx = 1;
+        leftColumn.fill = GridBagConstraints.BOTH;
+        leftColumn.insets = new Insets(0, 0, 0, 12);
+        checkout.add(quantitySection, leftColumn);
+        final GridBagConstraints rightColumn = new GridBagConstraints();
+        rightColumn.gridx = 1; rightColumn.weightx = 1;
+        rightColumn.fill = GridBagConstraints.BOTH;
+        checkout.add(purchaseControls, rightColumn);
         controls.add(checkout, BorderLayout.SOUTH);
         final JPanel footerControls = new DialogPanel(new BorderLayout(0, 8));
         tradeRequirement.setForeground(new Color(255, 190, 85));
@@ -764,7 +786,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         itemDescription.setText("<html><table width='360'><tr><td>" + escape(entry == null
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
         unitPrice.setText(entry == null ? "" : entry.stackable
-                ? "<html>Za sztukę: " + escape(entry.price) + "</html>"
+                ? "<html>Cena: " + escape(entry.price) + " / szt.</html>"
                 : "Cena: " + entry.price);
         preview.setEntry(entry);
         if (entry != null && !entry.stackable && readAmount() != 1) {
@@ -828,10 +850,18 @@ public final class NpcShopWindow extends InternalManagedWindow {
         plus.setEnabled(!waiting && current != null
                 && quantity < maximum());
         for (final JButton preset : presets) { preset.setEnabled(!waiting && current != null && current.stackable && maximum() > 0); }
-        quantityControls.setVisible(current != null && current.stackable);
-        quantityPresets.setVisible(current != null && current.stackable);
-        quote.setVisible(current != null && current.stackable && quantity > 1);
-        quote.setText(current == null ? "" : "<html>Łącznie: "
+        final boolean stackable = current != null && current.stackable;
+        quantitySection.setVisible(stackable);
+        quantityControls.setVisible(stackable);
+        quantityPresets.setVisible(stackable);
+        if (stackableCheckout != stackable) {
+            stackableCheckout = stackable;
+            purchaseControls.remove(request);
+            purchaseControls.add(request, stackable ? BorderLayout.SOUTH : BorderLayout.EAST);
+            purchaseControls.revalidate();
+        }
+        quote.setVisible(stackable);
+        quote.setText(current == null ? "" : "<html>"
                 + escape(formatMoney(total, currencyReformed)) + "</html>");
         updateTabs();
     }
