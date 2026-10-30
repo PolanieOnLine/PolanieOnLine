@@ -79,4 +79,5 @@ public final class Events {
 
 	/** Merchant catalogue and shop responses. */
 	public static final String NPC_SHOP = "npc_shop_event";
+	public static final String ADMIN_INSPECT = "admin_inspect_event";
 }

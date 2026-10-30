@@ -201,5 +201,6 @@ public class PlayerRPClass {
 
 		// Keep the new event last to preserve existing saved attribute codes.
 		player.addRPEvent(Events.NPC_SHOP, Definition.PRIVATE);
+		player.addRPEvent(Events.ADMIN_INSPECT, Definition.PRIVATE);
 	}
 }

@@ -15,6 +15,8 @@ import static games.stendhal.common.constants.Actions.INSPECT;
 import static games.stendhal.common.constants.Actions.TARGET;
 
 import games.stendhal.common.constants.Testing;
+import games.stendhal.server.events.AdminInspectEvent;
+import java.util.UUID;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
@@ -36,6 +38,11 @@ public class InspectAction extends AdministrationAction {
 	@Override
 	public void perform(final Player player, final RPAction action) {
 
+        if (player.getAdminLevel() < 6) { player.sendPrivateText("Brak uprawnień do inspect."); return; }
+        if(action.has("inspection_window") && action.has("inspection_zone")
+                && (player.getZone()==null || !action.get("inspection_zone").equals(player.getZone().getName()))) {
+            player.sendPrivateText("Zmieniono lokację. Wykonaj inspect obiektu ponownie."); return;
+        }
 		final Entity target = getTargetAnyZone(player, action);
 
 		if (target == null) {
@@ -44,6 +51,13 @@ public class InspectAction extends AdministrationAction {
 			return;
 		}
 
+        if (action.has("visual") && "1".equals(action.get("visual"))) {
+            final boolean refresh=action.has("inspection_window");
+            final String window=refresh?action.get("inspection_window"):UUID.randomUUID().toString();
+            player.addEvent(new AdminInspectEvent(AdminInspectionSnapshot.create(target),
+                    AdminInspectionSnapshot.request(action, target, player),window,refresh));
+            return;
+        }
 		final StringBuilder st = new StringBuilder();
 
 		if (target instanceof RPEntity) {

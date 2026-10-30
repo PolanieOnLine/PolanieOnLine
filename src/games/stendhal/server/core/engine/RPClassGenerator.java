@@ -87,6 +87,7 @@ import games.stendhal.server.events.ImageEffectEvent;
 import games.stendhal.server.events.ItemLogEvent;
 import games.stendhal.server.events.ItemUpgradeEvent;
 import games.stendhal.server.events.NpcShopEvent;
+import games.stendhal.server.events.AdminInspectEvent;
 import games.stendhal.server.events.ItemUpgradeEventCompatibility;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
@@ -394,6 +395,7 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass(Events.NPC_SHOP)) {
 			NpcShopEvent.generateRPClass();
 		}
+		if (!RPClass.hasRPClass(Events.ADMIN_INSPECT)) { AdminInspectEvent.generateRPClass(); }
 		ItemUpgradeEventCompatibility.generateRPClasses();
 		if (!RPClass.hasRPClass(Events.PRODUCTION)) {
 			ProductionEvent.generateRPClass();
