@@ -50,6 +50,9 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly quantityMinus = document.createElement("button");
     private readonly quantityPlus = document.createElement("button");
     private readonly quoteTotal = document.createElement("div");
+    private readonly tradeRequirement = document.createElement("div");
+    private purchaseRequirement = "";
+    private saleRequirement = "";
     private readonly quantity = document.createElement("input");
     private readonly quantityControls = document.createElement("div");
     private readonly quantityPresets = document.createElement("div");
@@ -169,7 +172,9 @@ export class NpcShopDialog extends DialogContentComponent {
         const checkout = document.createElement("div"); checkout.className = "npc-shop-checkout";
         const prices = document.createElement("div"); prices.className = "npc-shop-prices";
         prices.append(this.detailPrice, this.quoteTotal); checkout.appendChild(prices);
-        detail.append(identity, body, quantityRow, quick, checkout);
+        this.tradeRequirement.className = "npc-shop-requirement";
+        this.tradeRequirement.hidden = true;
+        detail.append(identity, body, this.tradeRequirement, quantityRow, quick, checkout);
         layout.appendChild(detailSection);
         this.componentElement.appendChild(layout);
 
@@ -226,6 +231,8 @@ export class NpcShopDialog extends DialogContentComponent {
         this.windowId = String(data.window_id || "");
         this.money = Number(data.owned_money_value || 0);
         this.priceFactor = Number(data.buying_penalty || 1);
+        this.purchaseRequirement = String(data.sell_requirement || "");
+        this.saleRequirement = String(data.buy_requirement || "");
         this.npcId = Number(data.npc_id || 0);
         this.frame?.setTitle("Sklep · " + String(data.npc_name || ""));
         this.wallet.textContent = "Posiadasz: " + String(data.owned_money_text || "0");
@@ -286,7 +293,7 @@ export class NpcShopDialog extends DialogContentComponent {
     }
 
     private maximum(): number {
-        if (!this.selected) return 0;
+        if (!this.selected || this.requirement()) return 0;
         const unit = this.selected.priceValue * (this.mode === "buy" ? this.priceFactor : 1);
         const budget = this.mode === "buy" ? Math.min(2147483647, this.money) : 2147483647;
         return Math.max(0, Math.min(1000, this.selected.limit,
@@ -470,7 +477,13 @@ export class NpcShopDialog extends DialogContentComponent {
                 : parts[0];
     }
 
+    private requirement(): string {
+        return this.mode === "buy" ? this.purchaseRequirement : this.saleRequirement;
+    }
+
     private updateButtons(): void {
+        this.tradeRequirement.textContent = this.requirement();
+        this.tradeRequirement.hidden = !this.requirement();
         const amount = Number(this.quantity.value);
         const max = this.maximum();
         const total = this.total(amount);

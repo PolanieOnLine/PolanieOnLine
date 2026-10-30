@@ -144,3 +144,19 @@ test("item details show rarity beside the name and description before statistics
     assert.equal(d.detailDescription.parentElement.children[1],d.detailStats);
     assert.ok(!d.detailStats.children.some(row=>row.textContent==="rare"));
 });
+
+
+test("merchant requirements keep offers browsable and prevent checkout until refreshed unlock",()=>{
+    const h=harness();const locked="Zakupy odblokujesz po ukończeniu zadania dla tego kupca.";
+    h.Dialog.show(catalogue({sell_requirement:locked,buy_requirement:""}));const d=h.frames[0].content;
+    assert.equal(d.tradeRequirement.textContent,locked);
+    assert.equal(d.tradeRequirement.hidden,false);
+    d.listBox.children[0].onclick();
+    assert.equal(d.requestButton.disabled,true);assert.equal(d.maximum(),0);
+    d.requestButton.onclick();assert.equal(h.actions.length,0);
+    d.sellTab.onclick();d.listBox.children[0].onclick();
+    assert.equal(d.tradeRequirement.hidden,true);assert.equal(d.requestButton.disabled,false);
+    d.buyTab.onclick();d.listBox.children[0].onclick();
+    h.Dialog.show(catalogue({phase:"refresh",sell_requirement:"",buy_requirement:""}));
+    assert.equal(d.tradeRequirement.hidden,true);assert.equal(d.requestButton.disabled,false);
+});

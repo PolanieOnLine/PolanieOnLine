@@ -42,6 +42,8 @@ public class NpcShopEventSerializationTest {
         shop.put("phase", "open");
         shop.put("npc_id", 1);
         shop.put("npc_name", "Test");
+        shop.put("sell_requirement", "Zakupy odblokujesz po ukończeniu zadania dla tego kupca.");
+        shop.put("buy_requirement", "");
         player.addEvent(shop);
 
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -52,5 +54,7 @@ public class NpcShopEventSerializationTest {
                 new ByteArrayInputStream(bytes.toByteArray())));
         assertEquals(1, restored.events().size());
         assertEquals(Events.NPC_SHOP, restored.events().get(0).getName());
+        assertEquals(shop.get("sell_requirement"), restored.events().get(0).get("sell_requirement"));
+        assertEquals("", restored.events().get(0).get("buy_requirement"));
     }
 }

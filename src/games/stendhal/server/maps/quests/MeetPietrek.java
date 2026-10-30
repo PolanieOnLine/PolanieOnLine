@@ -244,6 +244,11 @@ public class MeetPietrek extends AbstractQuest {
 				return questCompletedCondition;
 			}
 
+            @Override
+            protected String getTradeRequirementMessage() {
+                return "Zakupy odblokujesz po rozmowie z tym kupcem.";
+            }
+
 			@Override
 			public ChatAction getRejectedTransactionAction() {
 				return new ChatAction() {

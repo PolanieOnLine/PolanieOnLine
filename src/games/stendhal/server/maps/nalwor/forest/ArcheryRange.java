@@ -272,6 +272,11 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 				return new PlayerHasItemWithHimCondition("licencja na zabijanie");
 			}
 
+            @Override
+            protected String getTradeRequirementMessage() {
+                return "Aby tutaj kupować, musisz mieć przy sobie licencję na zabijanie.";
+            }
+
 			@Override
 			public ChatAction getRejectedTransactionAction() {
 				return new SayTextAction(rejectedMessage);

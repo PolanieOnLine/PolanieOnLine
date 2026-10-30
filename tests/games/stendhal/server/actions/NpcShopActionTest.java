@@ -14,6 +14,8 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -283,6 +285,64 @@ public class NpcShopActionTest {
         shop.onAction(player, action(npc, "1"));
         assertEquals(1, player.getTotalNumberOf("sztylecik"));
         assertEquals(2, greetings[0]);
+    }
+
+    @Test
+    public void questGatedMerchantsExposeTheirLockAndUnlockAfterQuestCompletion() {
+        for (final boolean buying : new boolean[] {true, false}) {
+            final StendhalRPZone zone = new StendhalRPZone("shop_quest_gate_" + buying);
+            final Player player = PlayerTestHelper.createPlayer("quest-shop-customer-" + buying);
+            player.setPosition(5, 5); zone.add(player);
+            final SpeakerNPC npc = new SpeakerNPC("quest shop merchant " + buying);
+            npc.setPosition(6, 5); npc.addGreeting(); zone.add(npc);
+            if (buying) {
+                new SellerAdder().addSeller(npc, new QuestCompletedSellerBehaviour("shop_unlock", "Najpierw ukończ zadanie.", Collections.singletonMap("sztylecik", 5)));
+                PlayerTestHelper.equipWithMoney(player, 10);
+            } else {
+                new BuyerAdder().addBuyer(npc, new QuestCompletedBuyerBehaviour("shop_unlock", "Najpierw ukończ zadanie.", Collections.singletonMap("sztylecik", 5)));
+                player.getSlot("bag").add(SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON));
+            }
+            final NpcShopAction shop = new NpcShopAction();
+            final RPAction open = action(npc, "1"); open.put("command", "open"); shop.onAction(player, open);
+            final String prefix = buying ? "sell" : "buy";
+            final RPEvent locked = lastShopEvent(player);
+            assertTrue(locked.get(prefix + "_requirement").contains("zadani"));
+            assertTrue(locked.getList(prefix + "_names").contains("sztylecik"));
+            final RPAction purchase = action(npc, "1"); purchase.put("mode", buying ? "buy" : "sell");
+            purchase.put("window_id", locked.get("window_id"));
+            if (!buying) { purchase.put("selection", locked.getList("buy_keys").get(0)); }
+            shop.onAction(player, purchase);
+            assertEquals(buying ? 10 : 0, player.getTotalNumberOf("money"));
+            assertEquals(buying ? 0 : 1, player.getTotalNumberOf("sztylecik"));
+            player.setQuest("shop_unlock", "done");
+            final RPAction refresh = action(npc, "1"); refresh.put("command", "refresh"); shop.onAction(player, refresh);
+            assertEquals("", lastShopEvent(player).get(prefix + "_requirement"));
+            shop.onAction(player, purchase);
+            assertEquals(5, player.getTotalNumberOf("money"));
+            assertEquals(buying ? 1 : 0, player.getTotalNumberOf("sztylecik"));
+        }
+    }
+
+    @Test
+    public void questGateIsCheckedAgainBeforeConfirmingAnEarlierQuote() {
+        final StendhalRPZone zone = new StendhalRPZone("shop_revoked_gate");
+        final Player player = PlayerTestHelper.createPlayer("revoked-shop-customer");
+        player.setPosition(5, 5); zone.add(player);
+        player.setQuest("shop_unlock", "done"); PlayerTestHelper.equipWithMoney(player, 10);
+        final SpeakerNPC npc = new SpeakerNPC("revoked shop seller");
+        npc.setPosition(6, 5); npc.addGreeting(); zone.add(npc);
+        new SellerAdder().addSeller(npc, new QuestCompletedSellerBehaviour("shop_unlock", "Najpierw ukończ zadanie.", Collections.singletonMap("sztylecik", 5)));
+        final NpcShopAction shop = new NpcShopAction();
+        final RPAction request = action(npc, "1"); request.put("command", "request"); shop.onAction(player, request);
+        final RPEvent quote = lastShopEvent(player);
+        assertEquals("offer", quote.get("phase"));
+        player.setQuest("shop_unlock", "start");
+        final RPAction confirm = action(npc, "1"); confirm.put("command", "confirm");
+        confirm.put("window_id", quote.get("window_id")); confirm.put("request_token", quote.get("request_token"));
+        shop.onAction(player, confirm);
+        assertEquals(10, player.getTotalNumberOf("money"));
+        assertEquals(0, player.getTotalNumberOf("sztylecik"));
+        assertTrue(lastShopEvent(player).get("sell_requirement").contains("zadani"));
     }
 
 }

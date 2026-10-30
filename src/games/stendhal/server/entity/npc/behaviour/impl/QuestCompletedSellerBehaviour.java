@@ -38,4 +38,9 @@ public class QuestCompletedSellerBehaviour extends SellerBehaviour {
 	public ChatAction getRejectedTransactionAction() {
 		return new SayTextAction(message);
 	}
+    @Override
+    protected String getTradeRequirementMessage() {
+        return "Zakupy odblokujesz po ukończeniu zadania dla tego kupca.";
+    }
+
 }

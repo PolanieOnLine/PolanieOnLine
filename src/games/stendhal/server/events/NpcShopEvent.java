@@ -79,6 +79,8 @@ public final class NpcShopEvent extends RPEvent {
         attribute(type, "request_id", Type.STRING);
         attribute(type, "owned_money_value", Type.STRING);
         attribute(type, "buying_penalty", Type.STRING);
+        attribute(type, "sell_requirement", Type.LONG_STRING);
+        attribute(type, "buy_requirement", Type.LONG_STRING);
     }
 
     private static void attribute(final RPClass type, final String name,
@@ -102,6 +104,8 @@ public final class NpcShopEvent extends RPEvent {
         put("currency_reformed", CurrencyReform.useReformedCurrency() ? 1 : 0);
         put("owned_money_value", Long.toString(money));
         put("buying_penalty", player.isBadBoy() ? Double.toString(SellerBehaviour.BAD_BOY_BUYING_PENALTY) : "1");
+        put("sell_requirement", seller == null ? "" : seller.getTradeRequirement(player, npc));
+        put("buy_requirement", buyer == null ? "" : buyer.getTradeRequirement(player, npc));
         addItems("sell", seller, player, saleKeys);
         addItems("buy", buyer, player, saleKeys);
         if (requestToken != null) {

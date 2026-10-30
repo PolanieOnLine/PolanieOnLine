@@ -268,6 +268,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JButton request = new JButton("Kup teraz");
     private final JLabel itemDescription = new JLabel();
     private final JLabel stats = new JLabel();
+    private final JLabel tradeRequirement = new JLabel();
+    private String purchaseRequirement = "";
+    private String saleRequirement = "";
     private final List<JButton> presets = new ArrayList<>();
     private String windowId = "";
     private long sequence;
@@ -405,12 +408,19 @@ public final class NpcShopWindow extends InternalManagedWindow {
         }
         controls.add(quantityPresets, BorderLayout.CENTER);
         final JPanel checkout = new DialogPanel(new BorderLayout(8, 0));
-        final JPanel prices = new DialogPanel(new GridLayout(0, 1, 0, 2));
+        final JPanel prices = new DialogPanel(null);
+        prices.setLayout(new BoxLayout(prices, BoxLayout.PAGE_AXIS));
         prices.add(unitPrice); prices.add(quote);
         checkout.add(prices, BorderLayout.CENTER);
-        checkout.add(request, BorderLayout.EAST);
+        final JPanel tradeActions = new DialogPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        tradeActions.add(request);
+        checkout.add(tradeActions, BorderLayout.EAST);
         controls.add(checkout, BorderLayout.SOUTH);
-        detail.add(controls, BorderLayout.SOUTH);
+        final JPanel footerControls = new DialogPanel(new BorderLayout(0, 8));
+        tradeRequirement.setForeground(new Color(255, 190, 85));
+        footerControls.add(tradeRequirement, BorderLayout.NORTH);
+        footerControls.add(controls, BorderLayout.CENTER);
+        detail.add(footerControls, BorderLayout.SOUTH);
 
         final JPanel body = new DialogPanel(new BorderLayout(8, 0));
         body.add(left, BorderLayout.WEST);
@@ -491,7 +501,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private int maximum() {
         final Entry entry = selected();
-        if (entry == null) { return 0; }
+        if (entry == null || !requirement().isEmpty()) { return 0; }
         final double unit = entry.priceValue * (sellingMode ? 1 : priceFactor);
         int maximum = Math.min(1000, entry.limit);
         if (unit > 0) {
@@ -607,6 +617,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         windowId = event.has("window_id") ? event.get("window_id") : "";
         money = event.has("owned_money_value") ? Long.parseLong(event.get("owned_money_value")) : 0;
         priceFactor = event.has("buying_penalty") ? Double.parseDouble(event.get("buying_penalty")) : 1;
+        purchaseRequirement = event.has("sell_requirement") ? event.get("sell_requirement") : "";
+        saleRequirement = event.has("buy_requirement") ? event.get("buy_requirement") : "";
         final String previous = selected() == null ? null : selected().key;
 
         selling.clear();
@@ -787,7 +799,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
         return parts.get(0) + ", " + parts.get(1) + " i " + parts.get(2);
     }
 
+    private String requirement() {
+        return sellingMode ? saleRequirement : purchaseRequirement;
+    }
+
     private void refreshButtons() {
+        final String requirement = requirement();
+        tradeRequirement.setText("<html><table width='360'><tr><td>" + escape(requirement) + "</td></tr></table></html>");
+        tradeRequirement.setVisible(!requirement.isEmpty());
         final Entry current = selected();
         final int quantity = readAmount();
         final long total = total(current, quantity);

@@ -104,6 +104,11 @@ public class DojoSellerNPC implements ZoneConfigurator {
 				return new PlayerHasItemWithHimCondition("licencja na zabijanie");
 			}
 
+            @Override
+            protected String getTradeRequirementMessage() {
+                return "Aby tutaj kupować, musisz mieć przy sobie licencję na zabijanie.";
+            }
+
 			@Override
 			public ChatAction getRejectedTransactionAction() {
 				return new SayTextAction(rejectedMessage);

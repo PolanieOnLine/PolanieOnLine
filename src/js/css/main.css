@@ -2509,6 +2509,7 @@ td.number {
 .npc-shop-checkout { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; }
 .npc-shop-prices { min-width: 0; }
 .npc-shop-trade-actions { display: flex; flex-shrink: 0; }
+.npc-shop-requirement { flex-shrink: 0; color: #ffbe55; overflow-wrap: anywhere; }
 .npc-shop-status { line-height: 15px; flex-shrink: 0; }
 .npc-shop-status[data-state="error"] { color: #e15a4b; }
 .npc-shop-status[data-state="success"] { color: #5cbe69; }

@@ -19,6 +19,7 @@ import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.MerchantBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.player.Player;
@@ -243,6 +244,13 @@ public final class NpcShopAction implements ActionListener {
             return;
         }
 
+        final MerchantBehaviour merchant = purchasing ? seller : buyer;
+        final String requirement = merchant.getTradeRequirement(player, npc);
+        if (!requirement.isEmpty()) {
+            publish(player, npc, NpcShopEvent.REFRESH, requirement, null);
+            return;
+        }
+
         if (purchasing) {
             Item template = null;
             try {
@@ -332,6 +340,15 @@ public final class NpcShopAction implements ActionListener {
             return;
         }
         final MerchantsRegister registry = SingletonRepository.getMerchantsRegister();
+        final MerchantBehaviour merchant = "buy".equals(pending.mode)
+                ? registry.getSellerFor(npc) : registry.getBuyerFor(npc);
+        final String requirement = merchant == null ? "Oferta nie jest już aktualna."
+                : merchant.getTradeRequirement(player, npc);
+        if (!requirement.isEmpty()) {
+            npc.listenTo(player, "no");
+            publish(player, npc, NpcShopEvent.REFRESH, requirement, null);
+            return;
+        }
         final int currentPrice = calculatePrice(player, pending.mode,
                 pending.item, pending.quantity, registry.getSellerFor(npc),
                 registry.getBuyerFor(npc));

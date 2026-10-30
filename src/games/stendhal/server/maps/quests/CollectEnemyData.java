@@ -390,6 +390,11 @@ public class CollectEnemyData extends AbstractQuest {
 				return questCompletedCondition;
 			}
 
+            @Override
+            protected String getTradeRequirementMessage() {
+                return "Zakup bestiariusza odblokujesz po ukończeniu zadania dla tego kupca.";
+            }
+
 			@Override
 			public ChatAction getRejectedTransactionAction() {
 				return new ChatAction() {

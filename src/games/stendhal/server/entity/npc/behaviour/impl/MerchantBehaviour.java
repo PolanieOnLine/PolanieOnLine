@@ -104,6 +104,15 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 		return items;
 	}
 
+    /** Read the same transaction gate used by dialogue, without running rejection actions. */
+    public String getTradeRequirement(final Player player, final SpeakerNPC npc) {
+        return getTransactionCondition().fire(player, null, npc) ? "" : getTradeRequirementMessage();
+    }
+
+    protected String getTradeRequirementMessage() {
+        return "Handel jest zablokowany. Najpierw spełnij wymagania tego kupca.";
+    }
+
 	/**
 	 * Checks whether the NPC deals with the specified item.
 	 *
