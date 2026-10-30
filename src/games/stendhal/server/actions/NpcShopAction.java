@@ -2,6 +2,10 @@ package games.stendhal.server.actions;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import marauroa.common.game.RPObject;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
@@ -11,6 +15,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
@@ -34,7 +39,35 @@ public final class NpcShopAction implements ActionListener {
     private static final Map<Player, Boolean> RESULTS =
             Collections.synchronizedMap(new WeakHashMap<Player, Boolean>());
 
+    private static final Map<Player, ShopSession> SESSIONS = new WeakHashMap<>();
+    private static final class ShopSession {
+        private final SpeakerNPC npc;
+        private final String id = UUID.randomUUID().toString();
+        private final Map<Item, String> keys = new IdentityHashMap<>();
+        private final Map<String, Item> items = new HashMap<>();
+        private long lastMutation;
+        private String requestId = "";
+        ShopSession(final SpeakerNPC npc) { this.npc = npc; }
+        String keyFor(final Item item) {
+            String key = keys.get(item);
+            if (key == null) { key = UUID.randomUUID().toString(); keys.put(item, key); items.put(key, item); }
+            return key;
+        }
+        void prune(final Player player) {
+            final Set<Item> carried = Collections.newSetFromMap(new IdentityHashMap<Item, Boolean>());
+            for (final RPObject object : player.getSlot("bag")) {
+                if (object instanceof Item) { carried.add((Item) object); }
+            }
+            keys.entrySet().removeIf(entry -> {
+                if (carried.contains(entry.getKey())) { return false; }
+                items.remove(entry.getValue()); return true;
+            });
+        }
+
+    }
+
     private static final class PendingOffer {
+        private Item selectedItem;
         private final int npcId;
         private final String mode;
         private final String item;
@@ -59,6 +92,14 @@ public final class NpcShopAction implements ActionListener {
         CommandCenter.register(Actions.NPC_SHOP, new NpcShopAction());
     }
 
+    /** Release item references even if the client disconnects without closing its shop. */
+    public static void onLogout(final Player player) {
+        SESSIONS.remove(player);
+        PENDING.remove(player);
+        CONFIRMING.remove(player);
+        RESULTS.remove(player);
+    }
+
     /** Uniewaznij oferte UI, jezeli gracz rozpoczal nowa wycene przez czat. */
     public static void invalidatePendingQuote(final Player player) {
         PENDING.remove(player);
@@ -76,15 +117,33 @@ public final class NpcShopAction implements ActionListener {
 
     @Override
     public void onAction(final Player player, final RPAction action) {
+        if (action.has("command") && "close".equals(action.get("command"))) {
+            final ShopSession existing = SESSIONS.get(player);
+            if (existing != null && action.has("window_id") && existing.id.equals(action.get("window_id"))) {
+                cancelOffer(player, existing.npc); SESSIONS.remove(player);
+            }
+            return;
+        }
         final SpeakerNPC npc = resolveMerchant(player, action);
         if (npc == null) {
             player.sendPrivateText("Nie ma tu tego handlarza.");
             return;
         }
         final String command = action.has("command") ? action.get("command") : "open";
-        if ("close".equals(command)) {
-            cancelOffer(player, npc);
-            return;
+        ShopSession session = SESSIONS.get(player);
+        if (session == null || session.npc != npc) {
+            if (!"open".equals(command) && action.has("window_id")) { return; }
+            session = new ShopSession(npc);
+            SESSIONS.put(player, session);
+        }
+        if (action.has("window_id") && !session.id.equals(action.get("window_id"))) { return; }
+        session.requestId = action.has("request_id") ? action.get("request_id") : "";
+        if ("purchase".equals(command) && action.has("request_id")) {
+            try {
+                final long sequence = Long.parseLong(action.get("request_id"));
+                if (sequence <= session.lastMutation) { return; }
+                session.lastMutation = sequence;
+            } catch (final NumberFormatException error) { return; }
         }
         if (!inRange(player, npc)) {
             PENDING.remove(player);
@@ -111,7 +170,7 @@ public final class NpcShopAction implements ActionListener {
             publish(player, npc, NpcShopEvent.OPEN, "", null);
         } else if ("refresh".equals(command)) {
             cancelOffer(player, npc);
-            publish(player, npc, NpcShopEvent.REFRESH, "Oferta odświeżona.", null);
+            publish(player, npc, NpcShopEvent.REFRESH, "", null);
         } else if ("request".equals(command)) {
             request(player, npc, action, false);
         } else if ("purchase".equals(command)) {
@@ -127,6 +186,21 @@ public final class NpcShopAction implements ActionListener {
 
     private void request(final Player player, final SpeakerNPC npc,
             final RPAction action, final boolean purchaseImmediately) {
+        final Item selected = action.has("mode") && "sell".equals(action.get("mode"))
+                && action.has("selection") ? SESSIONS.get(player).items.get(action.get("selection")) : null;
+        if (action.has("mode") && "sell".equals(action.get("mode")) && selected == null) {
+            publish(player, npc, NpcShopEvent.REFRESH, "Wybierz ponownie przedmiot z plecaka.", null);
+            return;
+        }
+        if (selected != null) {
+            BuyerBehaviour.withSelectedItem(player, selected, () -> { requestSelected(player, npc, action, purchaseImmediately, selected); return null; });
+        } else {
+            requestSelected(player, npc, action, purchaseImmediately, null);
+        }
+    }
+
+    private void requestSelected(final Player player, final SpeakerNPC npc, final RPAction action,
+            final boolean purchaseImmediately, final Item selected) {
         cancelOffer(player, npc);
         if (npc.getEngine().getCurrentState() != ConversationStates.ATTENDING
                 || !action.has("mode") || !action.has("item")
@@ -205,6 +279,7 @@ public final class NpcShopAction implements ActionListener {
         }
 
         final PendingOffer pending = new PendingOffer(npc, mode, item, quantity, price);
+        pending.selectedItem = selected;
         PENDING.put(player, pending);
         if (purchaseImmediately) {
             final RPAction confirmation = new RPAction();
@@ -219,6 +294,15 @@ public final class NpcShopAction implements ActionListener {
 
     private void finish(final Player player, final SpeakerNPC npc,
             final RPAction action, final boolean confirm) {
+        final PendingOffer selected = PENDING.get(player);
+        if (selected != null && selected.selectedItem != null) {
+            BuyerBehaviour.withSelectedItem(player, selected.selectedItem, () -> { finishSelected(player, npc, action, confirm); return null; });
+        } else {
+            finishSelected(player, npc, action, confirm);
+        }
+    }
+
+    private void finishSelected(final Player player, final SpeakerNPC npc, final RPAction action, final boolean confirm) {
         final PendingOffer pending = PENDING.get(player);
         if (pending == null || pending.npcId != npc.getID().getObjectID()
                 || !action.has("request_token")
@@ -268,8 +352,7 @@ public final class NpcShopAction implements ActionListener {
                                 ? ("buy".equals(pending.mode) ? "Zakup udany: "
                                         : "Sprzedaż udana: ")
                                         + pending.quantity + " x " + pending.item + " za "
-                                        + games.stendhal.server.entity.item.money.MoneyUtils
-                                                .formatPrice(pending.price)
+                                        + MoneyUtils.formatPrice(pending.price)
                                 : "Transakcja nie powiodła się.", null);
     }
 
@@ -309,13 +392,18 @@ public final class NpcShopAction implements ActionListener {
     private void publish(final Player player, final SpeakerNPC npc,
             final String phase, final String message, final PendingOffer offer) {
         final MerchantsRegister registry = SingletonRepository.getMerchantsRegister();
-        player.addEvent(new NpcShopEvent(npc, player,
+        final ShopSession session = SESSIONS.get(player);
+        session.prune(player);
+        final NpcShopEvent event = new NpcShopEvent(npc, player,
                 registry.getSellerFor(npc), registry.getBuyerFor(npc),
                 phase, message, offer == null ? null : offer.mode,
                 offer == null ? null : offer.item,
                 offer == null ? 0 : offer.quantity,
                 offer == null ? 0 : offer.price,
-                offer == null ? null : offer.token));
+                offer == null ? null : offer.token, session::keyFor);
+        event.put("window_id", session.id);
+        event.put("request_id", session.requestId);
+        player.addEvent(event);
     }
 
     private SpeakerNPC resolveMerchant(final Player player,

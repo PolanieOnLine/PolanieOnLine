@@ -252,4 +252,15 @@ public class ValueBuyerBehaviourTest {
 		assertEquals(0, buyer().getCharge(request(1), player));
 		assertTrue(player.isEquipped("miecz"));
 	}
+    @Test public void selectedQuoteKeepsArenaRestrictionsAndDoesNotUseAnotherInstance() {
+        final Player player=PlayerTestHelper.createPlayer("selected-arena-sale");
+        final Item bound=item(ItemRarity.COMMON); bound.setBoundTo(player.getName());
+        final Item allowed=item(ItemRarity.RARE);
+        player.getSlot("bag").add(bound); player.getSlot("bag").add(allowed);
+        final ValueBuyerBehaviour merchant=buyer();
+        assertEquals(allowed.getValue(),merchant.getChargeForItem(allowed,1,player));
+        assertEquals(0,merchant.getChargeForItem(bound,1,player));
+        assertEquals(0,merchant.getChargeForItem(allowed,2,player));
+    }
+
 }

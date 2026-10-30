@@ -135,7 +135,7 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 		}
 		int remaining = res.getAmount();
 		long total = 0;
-		for (final Item item : player.getAllEquipped(res.getChosenItemName())) {
+		for (final Item item : getSaleItems(res, player)) {
 			if (remaining == 0) { break; }
 			if (item.isBound() || item.has("autobind") || item instanceof OwnedItem
 					|| !item.canBeEquippedIn("trade")) {

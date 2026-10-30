@@ -14,6 +14,15 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.npc.behaviour.impl.SeedSellerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.ValueBuyerBehaviour;
+import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
@@ -92,6 +101,62 @@ public class NpcShopActionTest {
         return npc;
     }
 
+    @Test
+    public void sellsOnlyTheSelectedInstanceAndRejectsARepeatedCheckout() {
+        final StendhalRPZone zone = new StendhalRPZone("npc_shop_selected_sale");
+        final Player player = PlayerTestHelper.createPlayer("shop_selected_sale");
+        player.setPosition(5, 5); zone.add(player);
+        final SpeakerNPC npc = new SpeakerNPC("selected sale buyer");
+        npc.setPosition(6, 5); npc.addGreeting();
+        new BuyerAdder().addBuyer(npc, new BuyerBehaviour(Collections.singletonMap("sztylecik", 10)));
+        zone.add(npc);
+        final Item first = SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON);
+        final Item second = SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON);
+        first.put("improve", 1); second.put("improve", 2);
+        second.setRarityModifier(ItemRarityModifiers.VALUE, 2.0);
+        player.getSlot("bag").add(first); player.getSlot("bag").add(second);
+        final RPAction open = action(npc, "1"); open.put("command", "open");
+        final NpcShopAction service = new NpcShopAction(); service.onAction(player, open);
+        final RPEvent catalogue = lastShopEvent(player);
+        int index = catalogue.getList("buy_items").get(0).contains("\"improve\":\"2\"") ? 0 : 1;
+        final RPAction sale = action(npc, "1"); sale.put("mode", "sell");
+        sale.put("selection", catalogue.getList("buy_keys").get(index));
+        sale.put("window_id", catalogue.get("window_id")); sale.put("request_id", "1");
+        assertEquals("20", catalogue.getList("buy_price_values").get(index));
+        service.onAction(player, sale);
+        assertEquals(20, player.getTotalNumberOf("money"));
+        assertEquals(1, player.getTotalNumberOf("sztylecik"));
+        assertTrue(player.getAllEquipped("sztylecik").get(0) == first);
+        service.onAction(player, sale);
+        assertEquals(20, player.getTotalNumberOf("money"));
+        assertTrue(player.getAllEquipped("sztylecik").get(0) == first);
+    }
+
+    @Test
+    public void removingTheSelectedItemDoesNotSellAnotherMatchingItem() {
+        final StendhalRPZone zone = new StendhalRPZone("npc_shop_stale_sale");
+        final Player player = PlayerTestHelper.createPlayer("shop_stale_sale");
+        player.setPosition(5, 5); zone.add(player);
+        final SpeakerNPC npc = new SpeakerNPC("stale sale buyer");
+        npc.setPosition(6, 5); npc.addGreeting();
+        new BuyerAdder().addBuyer(npc, new BuyerBehaviour(Collections.singletonMap("sztylecik", 10)));
+        zone.add(npc);
+        final Item first = SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON);
+        final Item second = SingletonRepository.getEntityManager().getItem("sztylecik", ItemRarity.COMMON);
+        player.getSlot("bag").add(first); player.getSlot("bag").add(second);
+        final NpcShopAction service = new NpcShopAction();
+        final RPAction open = action(npc, "1"); open.put("command", "open"); service.onAction(player, open);
+        final RPEvent catalogue = lastShopEvent(player);
+        final RPAction sale = action(npc, "1"); sale.put("mode", "sell");
+        sale.put("selection", catalogue.getList("buy_keys").get(1));
+        sale.put("window_id", catalogue.get("window_id")); sale.put("request_id", "1");
+        player.drop(second);
+        service.onAction(player, sale);
+        assertEquals(0, player.getTotalNumberOf("money"));
+        assertEquals(1, player.getTotalNumberOf("sztylecik"));
+        assertTrue(player.getAllEquipped("sztylecik").get(0) == first);
+    }
+
     private static RPAction action(final SpeakerNPC npc, final String quantity) {
         final RPAction action = new RPAction();
         action.put(Actions.TYPE, Actions.NPC_SHOP);
@@ -115,4 +180,30 @@ public class NpcShopActionTest {
         }
         return result;
     }
+    @Test public void seedCatalogueKeepsTheCultivarOfferName() {
+        final StendhalRPZone zone=new StendhalRPZone("shop-seeds");
+        final Player player=PlayerTestHelper.createPlayer("seed-customer"); player.setPosition(5,5); zone.add(player);
+        final SpeakerNPC npc=new SpeakerNPC("seed-merchant"); npc.setPosition(6,5); npc.addGreeting();
+        new SellerAdder().addSeller(npc,new SeedSellerBehaviour());zone.add(npc);
+        final RPAction open=action(npc,"1");open.put("command","open");new NpcShopAction().onAction(player,open);
+        assertTrue(lastShopEvent(player).getList("sell_names").contains("nasiona stokrotki"));
+        PlayerTestHelper.equipWithMoney(player,40);
+        final RPAction buy=action(npc,"2");buy.put("item","nasiona stokrotki");new NpcShopAction().onAction(player,buy);
+        assertEquals(2,player.getTotalNumberOf("nasiona"));
+        assertEquals("stokrotki",player.getAllEquipped("nasiona").get(0).getItemData());
+    }
+
+    @Test public void sellLimitReflectsTheArenaWalletCap() {
+        final StendhalRPZone zone=new StendhalRPZone("shop-cap");
+        final Player player=PlayerTestHelper.createPlayer("cap-customer");player.setPosition(5,5);zone.add(player);
+        final SpeakerNPC npc=new SpeakerNPC("cap-merchant");npc.setPosition(6,5);npc.addGreeting();
+        new BuyerAdder().addBuyer(npc,new ValueBuyerBehaviour(SingletonRepository.getEntityManager().getDefaultItems()));zone.add(npc);
+        final StackableItem stack=(StackableItem)SingletonRepository.getEntityManager().getItem("ametyst",ItemRarity.COMMON);
+        stack.setQuantity(10);player.getSlot("bag").add(stack);
+        final int unit=new ValueBuyerBehaviour(SingletonRepository.getEntityManager().getDefaultItems()).getChargeForItem(stack,1,player);
+        PlayerTestHelper.equipWithMoney(player,Integer.MAX_VALUE-unit*2);
+        final RPAction open=action(npc,"1");open.put("command","open");new NpcShopAction().onAction(player,open);
+        assertEquals("2",lastShopEvent(player).getList("buy_quantities").get(0));
+    }
+
 }

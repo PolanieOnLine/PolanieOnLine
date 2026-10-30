@@ -3,6 +3,14 @@ package games.stendhal.server.events;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.IdentityHashMap;
+import java.util.function.Function;
+import org.json.simple.JSONValue;
+import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.entity.item.ItemTooltipService;
+import marauroa.common.game.RPObject;
 
 import games.stendhal.common.constants.Events;
 import games.stendhal.common.constants.CurrencyReform;
@@ -59,6 +67,16 @@ public final class NpcShopEvent extends RPEvent {
         attribute(type, "sell_price_values", Type.VERY_LONG_STRING);
         attribute(type, "buy_price_values", Type.VERY_LONG_STRING);
         attribute(type, "currency_reformed", Type.INT);
+        for (final String prefix : new String[] {"sell", "buy"}) {
+            for (final String suffix : new String[] {"keys", "quantities", "items"}) {
+                attribute(type, prefix + "_" + suffix, Type.VERY_LONG_STRING);
+            }
+        }
+        attribute(type, "buy_stackable", Type.VERY_LONG_STRING);
+        attribute(type, "window_id", Type.STRING);
+        attribute(type, "request_id", Type.STRING);
+        attribute(type, "owned_money_value", Type.STRING);
+        attribute(type, "buying_penalty", Type.STRING);
     }
 
     private static void attribute(final RPClass type, final String name,
@@ -70,7 +88,7 @@ public final class NpcShopEvent extends RPEvent {
             final SellerBehaviour seller, final BuyerBehaviour buyer,
             final String phase, final String message, final String mode,
             final String item, final int amount, final int price,
-            final String requestToken) {
+            final String requestToken, final Function<Item, String> saleKeys) {
         super(Events.NPC_SHOP);
         put("phase", phase);
         put("npc_id", npc.getID().getObjectID());
@@ -80,8 +98,10 @@ public final class NpcShopEvent extends RPEvent {
         put("owned_money", (int) Math.min(Integer.MAX_VALUE, money));
         put("owned_money_text", MoneyUtils.formatPrice(money));
         put("currency_reformed", CurrencyReform.useReformedCurrency() ? 1 : 0);
-        addItems("sell", seller);
-        addItems("buy", buyer);
+        put("owned_money_value", Long.toString(money));
+        put("buying_penalty", player.isBadBoy() ? Double.toString(SellerBehaviour.BAD_BOY_BUYING_PENALTY) : "1");
+        addItems("sell", seller, player, saleKeys);
+        addItems("buy", buyer, player, saleKeys);
         if (requestToken != null) {
             put("request_token", requestToken);
             put("pending_mode", mode);
@@ -92,7 +112,8 @@ public final class NpcShopEvent extends RPEvent {
         }
     }
 
-    private void addItems(final String prefix, final MerchantBehaviour merchant) {
+    private void addItems(final String prefix, final MerchantBehaviour merchant,
+            final Player player, final Function<Item, String> saleKeys) {
         if (merchant == null) {
             return;
         }
@@ -105,23 +126,37 @@ public final class NpcShopEvent extends RPEvent {
         final List<String> classes = new ArrayList<String>();
         final List<String> subclasses = new ArrayList<String>();
         final List<String> stackable = new ArrayList<String>();
-        for (final String name : names) {
-            final int price = merchant.getUnitPrice(name);
-            if (price < 0) {
+        final List<String> keys = new ArrayList<>();
+        final List<String> quantities = new ArrayList<>();
+        final List<String> snapshots = new ArrayList<>();
+        final List<Item> candidates = new ArrayList<>();
+        final Map<Item, String> offerNames = new IdentityHashMap<>();
+        if ("buy".equals(prefix)) {
+            for (final RPObject object : player.getSlot("bag")) {
+                if (object instanceof Item && merchant.hasItem(((Item) object).getName())) { candidates.add((Item) object); }
+            }
+        } else {
+            for (final String name : names) {
+                try { final Item item = ((SellerBehaviour) merchant).getAskedItem(name, player); if (item != null) { candidates.add(item); offerNames.put(item, name); } }
+                catch (final RuntimeException unavailable) { /* Special offers may not be ordinary items. */ }
+            }
+        }
+        for (final Item candidate : candidates) {
+            final String name = "buy".equals(prefix) ? candidate.getName() : offerNames.get(candidate);
+            final int price = "buy".equals(prefix) ? ((BuyerBehaviour) merchant).getChargeForItem(candidate, 1, player)
+                    : (int) Math.min(Integer.MAX_VALUE, (long) (merchant.getUnitPrice(name)
+                            * (player.isBadBoy() ? SellerBehaviour.BAD_BOY_BUYING_PENALTY : 1.0)));
+            if (price <= 0) {
                 continue;
             }
-            Item template = null;
-            try {
-                template = "sell".equals(prefix) && merchant instanceof SellerBehaviour
-                        ? ((SellerBehaviour) merchant).getAskedItem(name)
-                        : SingletonRepository.getEntityManager()
-                                .getItem(name, ItemRarity.COMMON);
-            } catch (final RuntimeException e) {
-                // Nietypowe oferty (np. zwierzeta) moga nie miec ikony przedmiotu.
-            }
+            final Item template = candidate;
+            keys.add("buy".equals(prefix) ? saleKeys.apply(candidate) : "");
+            quantities.add(Integer.toString("buy".equals(prefix) ? saleLimit((BuyerBehaviour) merchant, candidate, player)
+                    : candidate instanceof StackableItem ? 1000 : 1));
+            snapshots.add(snapshot(candidate));
             offeredNames.add(name);
             prices.add(MoneyUtils.formatPrice(price));
-            rawPrices.add(Integer.toString(price));
+            rawPrices.add(Integer.toString("sell".equals(prefix) ? merchant.getUnitPrice(name) : price));
             String description = template != null && template.hasDescription()
                     ? template.getDescription() : "";
             if (description == null) {
@@ -139,9 +174,32 @@ public final class NpcShopEvent extends RPEvent {
             put(prefix + "_descriptions", descriptions);
             put(prefix + "_classes", classes);
             put(prefix + "_subclasses", subclasses);
-            if ("sell".equals(prefix)) {
-                put("sell_stackable", stackable);
-            }
+            put(prefix + "_stackable", stackable);
+            put(prefix + "_keys", keys);
+            put(prefix + "_quantities", quantities);
+            put(prefix + "_items", snapshots);
         }
+    }
+
+    /** The merchant validates aggregate prices and any wallet limits, not just the unit quote. */
+    private static int saleLimit(final BuyerBehaviour merchant, final Item item, final Player player) {
+        int accepted = 1;
+        int upper = Math.min(1000, item.getQuantity());
+        while (accepted < upper) {
+            final int amount = (accepted + upper + 1) / 2;
+            if (merchant.getChargeForItem(item, amount, player) > 0) { accepted = amount; }
+            else { upper = amount - 1; }
+        }
+        return accepted;
+    }
+
+    private static String snapshot(final Item item) {
+        ItemTooltipService.update(item);
+        final Map<String, Object> snapshot = new LinkedHashMap<>();
+        for (final String key : new String[] {"name", "class", "subclass", "rarity_id", "improve", "max_improves", "itemdata", "bound"}) {
+            if (item.has(key)) { snapshot.put(key, item.get(key)); }
+        }
+        if (item.hasMap(ItemTooltip.ATTRIBUTE)) { snapshot.put(ItemTooltip.ATTRIBUTE, item.getMap(ItemTooltip.ATTRIBUTE)); }
+        return JSONValue.toJSONString(snapshot);
     }
 }

@@ -14,6 +14,7 @@ package games.stendhal.server.entity.player;
 import games.stendhal.common.Translation;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.server.core.rule.damage.CombatStatsService;
+import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
@@ -285,6 +286,7 @@ public class Player extends DressedEntity implements UseListener {
 		GlyphRecoveryService.reset(player);
 		GlyphCombatService.clearEffects(player);
 		ChallengeArenaObservation.onLogout(player);
+		NpcShopAction.onLogout(player);
 
 		if (name != null) {
 			WordList.getInstance().unregisterSubjectName(name);
