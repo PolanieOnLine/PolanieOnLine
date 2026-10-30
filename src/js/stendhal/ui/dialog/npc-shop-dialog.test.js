@@ -33,6 +33,7 @@ function harness() {
     class FloatingWindow {
         constructor(title, content) { this.content = content; frames.push(this); }
         setId() {}
+        setTitle(title) { this.title = title; }
         close() { this.content.onParentClose(); }
     }
     class Item {

@@ -1,19 +1,13 @@
 package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.GradientPaint;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
@@ -26,7 +20,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -42,6 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.BoxLayout;
 import javax.swing.Timer;
+import javax.swing.JTabbedPane;
 import org.json.simple.JSONValue;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.ClientLanguage;
@@ -70,38 +64,15 @@ import marauroa.common.game.RPEvent;
 public final class NpcShopWindow extends InternalManagedWindow {
     private static final long serialVersionUID = 1L;
 
-    private static final Color BACKGROUND = new Color(37, 22, 12);
-    private static final Color PANEL = new Color(59, 34, 18);
-    private static final Color LIST_BACKGROUND = new Color(43, 24, 13);
-    private static final Color ROW_SELECTED = new Color(83, 45, 20);
-    private static final Color BORDER = new Color(114, 66, 28);
-    private static final Color GOLD = new Color(242, 190, 96);
-    private static final Color TEXT = new Color(255, 239, 209);
-    private static final Color MUTED = new Color(215, 192, 158);
-    private static final Color SUCCESS = new Color(165, 227, 153);
-    private static final Color ERROR = new Color(242, 159, 147);
-
+    private static final Color SUCCESS = new Color(92, 190, 105);
+    private static final Color ERROR = new Color(225, 90, 75);
     private static final Map<String, Sprite> SPRITES = new HashMap<String, Sprite>();
 
-    private static void paintWood(final Graphics2D g, final int width,
-            final int height, final int shade) {
+    private static Color textColor() {
         final Style style = StyleUtil.getStyle();
-        final Sprite wood = style == null
-                ? SpriteStore.get().getSprite("data/gui/panel_wood.jpg")
-                : style.getBackground();
-        if (wood != null && wood.getWidth() > 0 && wood.getHeight() > 0) {
-            for (int x = 0; x < width; x += wood.getWidth()) {
-                for (int y = 0; y < height; y += wood.getHeight()) {
-                    wood.draw(g, x, y);
-                }
-            }
-        } else {
-            g.setColor(PANEL);
-            g.fillRect(0, 0, width, height);
-        }
-        g.setColor(new Color(20, 9, 3, shade));
-        g.fillRect(0, 0, width, height);
+        return style == null ? new JLabel().getForeground() : style.getForeground();
     }
+
     private static NpcShopWindow instance;
 
     private static final class Entry {
@@ -141,10 +112,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
         private ShopList(final DefaultListModel<Entry> model) {
             super(model);
-            setBackground(new Color(33, 19, 10));
-            setForeground(TEXT);
-            setSelectionBackground(ROW_SELECTED);
-            setSelectionForeground(TEXT);
             setOpaque(false);
             setFixedCellHeight(46);
             setVisibleRowCount(6);
@@ -172,53 +139,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
             });
         }
 
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            final Graphics2D g = (Graphics2D) graphics.create();
-            paintWood(g, getWidth(), getHeight(), 0);
-            g.dispose();
-            super.paintComponent(graphics);
-        }
-    }
-
-    /**
-     * Uses the same wood sprite as the current game skin. Cards have only a
-     * shallow engraved edge so that all the parts belong to the same window.
-     */
-    /** Uses the client's standard StyledPanelUI instead of custom textures. */
-    private static final class WoodPanel extends JPanel {
-        private static final long serialVersionUID = 1L;
-
-        private WoodPanel(final LayoutManager layout, final int shade,
-                final boolean framed) {
-            super(layout);
-            setOpaque(true);
-        }
-    }
-
-    private static Border nativeInsetBorder(
-            final int top, final int left, final int bottom, final int right) {
-        final Style style = StyleUtil.getStyle();
-        final Border frame = style == null
-                ? BorderFactory.createLineBorder(BORDER)
-                : style.getBorderDown();
-        return BorderFactory.createCompoundBorder(frame,
-                BorderFactory.createEmptyBorder(top, left, bottom, right));
-    }
-
-    private static final class PlainPanel extends JPanel {
-        private static final long serialVersionUID = 1L;
-
-        private PlainPanel(final LayoutManager layout) {
-            super(layout);
-            setOpaque(false);
-            setBorder(BorderFactory.createEmptyBorder());
-        }
-
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            // Transparent interior to keep the wood uninterrupted.
-        }
     }
 
     private static final class RowRenderer extends DefaultListCellRenderer {
@@ -241,22 +161,19 @@ public final class NpcShopWindow extends InternalManagedWindow {
                                 : new Color(255, 255, 255, 15));
                         graphics.fillRect(0, 0, getWidth(), getHeight());
                     }
-                    graphics.setColor(new Color(200, 145, 80, 55));
-                    graphics.drawLine(10, getHeight() - 1, getWidth() - 10,
-                            getHeight() - 1);
                 }
             };
             row.setOpaque(false);
             row.setBorder(BorderFactory.createEmptyBorder(3, 10, 3, 9));
-            final JLabel name = label(entry.name, 14, TEXT, true);
+            final JLabel name = new JLabel(entry.name);
             name.setToolTipText(entry.name);
-            final JLabel price = label(entry.price, 12, GOLD, true);
-            final PlainPanel priceRow = new PlainPanel(new FlowLayout(
+            final JLabel price = new JLabel(entry.price);
+            final DialogPanel priceRow = new DialogPanel(new FlowLayout(
                     FlowLayout.LEFT, 4, 0));
             priceRow.add(new SmallIcon(
                     SpriteStore.get().getSprite("data/gui/goldencoin.png"), 17));
             priceRow.add(price);
-            final PlainPanel description = new PlainPanel(
+            final DialogPanel description = new DialogPanel(
                     new GridLayout(2, 1, 0, 1));
             description.add(name);
             description.add(priceRow);
@@ -265,7 +182,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 if (rarity != null) {
                     name.setText(entry.name + " · " + ClientLanguage.getText(rarity.getPolishDisplayName())
                             + (entry.entity.getRPObject().has("improve") ? " +" + entry.entity.getRPObject().get("improve") : ""));
-                    name.setForeground(rarity == ItemRarity.COMMON ? TEXT : Color.decode(rarity.getColorHex()));
+                    name.setForeground(rarity == ItemRarity.COMMON ? textColor() : Color.decode(rarity.getColorHex()));
                 }
             }
             row.add(new ItemBadge(spriteFor(entry)), BorderLayout.WEST);
@@ -318,94 +235,27 @@ public final class NpcShopWindow extends InternalManagedWindow {
         }
     }
 
-    private static final class SearchField extends JTextField {
-        private static final long serialVersionUID = 1L;
-
-        private SearchField() {
-            setBackground(KTextEdit.getChatBackgroundColor());
-            setForeground(TEXT);
-            setCaretColor(GOLD);
-            setSelectionColor(ROW_SELECTED);
-            setSelectedTextColor(TEXT);
-            setFont(getFont().deriveFont(13f));
-            setBorder(nativeInsetBorder(3, 7, 3, 7));
-            setToolTipText("Filtruj nazwy przedmiotów");
-        }
-
-        @Override
-        protected void paintComponent(final Graphics graphics) {
-            super.paintComponent(graphics);
-            if (isFocusOwner()) {
-                final Graphics2D focus = (Graphics2D) graphics.create();
-                focus.setColor(GOLD);
-                focus.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-                focus.dispose();
-            }
-            if (!getText().isEmpty() || isFocusOwner()) {
-                return;
-            }
-            final Graphics2D g = (Graphics2D) graphics.create();
-            g.setColor(MUTED);
-            g.setFont(getFont());
-            final FontMetrics metrics = g.getFontMetrics();
-            g.drawString("Szukaj przedmiotu...", 12,
-                    (getHeight() + metrics.getAscent() - metrics.getDescent()) / 2);
-            g.dispose();
-        }
-    }
-
-    private static final class ShopButton extends JButton {
-        private static final long serialVersionUID = 1L;
-        private final boolean tab;
-
-        private ShopButton(final String text, final boolean primary) {
-            super(text);
-            tab = "Kup".equals(text) || "Sprzedaj".equals(text);
-            setFocusPainted(false);
-            setMargin(new Insets(3, 8, 3, 8));
-            if (primary) {
-                setFont(getFont().deriveFont(Font.BOLD));
-            }
-        }
-
-        private void setActive(final boolean active) {
-            if (!tab) {
-                return;
-            }
-            setFont(getFont().deriveFont(active ? Font.BOLD : Font.PLAIN));
-            setForeground(active ? GOLD : TEXT);
-            final Style style = StyleUtil.getStyle();
-            final Border base = style == null
-                    ? BorderFactory.createLineBorder(BORDER) : style.getBorder();
-            setBorder(base);
-        }
-    }
-
     private final List<Entry> selling = new ArrayList<Entry>();
     private final List<Entry> buying = new ArrayList<Entry>();
     private final DefaultListModel<Entry> sellModel = new DefaultListModel<Entry>();
     private final DefaultListModel<Entry> buyModel = new DefaultListModel<Entry>();
     private final ShopList sellList = new ShopList(sellModel);
     private final ShopList buyList = new ShopList(buyModel);
-    private final ShopButton buyTab = new ShopButton("Kup", false);
-    private final ShopButton sellTab = new ShopButton("Sprzedaj", false);
-    private final CardLayout cards = new CardLayout();
-    private final JPanel catalog = solid(cards, LIST_BACKGROUND);
-    private final SearchField search = new SearchField();
-    private final JLabel merchant = label("Sklep", 17, GOLD, true);
-    private final JLabel wallet = label("", 12, TEXT, true);
-    private final JLabel itemCount = label("", 11, MUTED, false);
-    private final JLabel selectedName = label("Wybierz przedmiot", 14, TEXT, true);
-    private final JLabel unitPrice = label("", 13, GOLD, true);
-    private final JLabel quote = label("", 13, SUCCESS, true);
+    private final JTabbedPane tabs = new JTabbedPane();
+    private final JTextField search = new JTextField();
+    private final JLabel wallet = new JLabel();
+    private final JLabel itemCount = new JLabel();
+    private final JLabel selectedName = new JLabel("Wybierz przedmiot");
+    private final JLabel unitPrice = new JLabel();
+    private final JLabel quote = new JLabel();
     private final JTextArea information = new JTextArea(2, 1);
     private final ItemIcon preview = new ItemIcon();
     private final JTextField amount = new JTextField("1", 3);
     private JPanel quantityControls;
     private JPanel quantityPresets;
-    private final ShopButton minus = new ShopButton("-", false);
-    private final ShopButton plus = new ShopButton("+", false);
-    private final ShopButton request = new ShopButton("Kup teraz", true);
+    private final JButton minus = new JButton("-");
+    private final JButton plus = new JButton("+");
+    private final JButton request = new JButton("Kup teraz");
     private final JLabel itemDescription = new JLabel();
     private final JLabel stats = new JLabel();
     private final List<JButton> presets = new ArrayList<>();
@@ -474,107 +324,47 @@ public final class NpcShopWindow extends InternalManagedWindow {
         SwingUtilities.invokeLater(() -> { if (instance != null) { instance.close(); } });
     }
 
-    private static JPanel solid(final LayoutManager layout, final Color color) {
-        return new PlainPanel(layout);
-    }
-
-    private static JLabel label(final String caption, final int size,
-            final Color color, final boolean bold) {
-        final JLabel result = new JLabel(caption);
-        result.setForeground(color);
-        result.setFont(result.getFont().deriveFont(bold ? Font.BOLD : Font.PLAIN,
-                (float) size));
-        return result;
-    }
-
     private static JScrollPane scroll(final ShopList list) {
         final JScrollPane pane = new JScrollPane(list);
-        pane.setBorder(StyleUtil.getStyle() == null
-                ? BorderFactory.createLineBorder(BORDER)
-                : StyleUtil.getStyle().getBorderDown());
-        pane.getViewport().setBackground(LIST_BACKGROUND);
+        pane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         pane.getViewport().setOpaque(false);
         pane.setOpaque(false);
-        pane.setBackground(LIST_BACKGROUND);
         pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        final JScrollBar bar = pane.getVerticalScrollBar();
-        bar.setUnitIncrement(28);
+        pane.getVerticalScrollBar().setUnitIncrement(24);
         return pane;
     }
 
     private JComponent createContent() {
-        final JPanel content = new JPanel(new BorderLayout(7, 7));
-        content.setBorder(BorderFactory.createEmptyBorder(9, 10, 9, 10));
-        content.setPreferredSize(new Dimension(740, 540));
+        final JPanel content = new DialogPanel(new BorderLayout(0, 8));
+        content.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
+        content.setPreferredSize(new Dimension(740, 480));
+        wallet.setHorizontalAlignment(SwingConstants.RIGHT);
+        content.add(wallet, BorderLayout.NORTH);
 
-        // One title bar, one search bar. The wood texture is shared by
-        // all parts of the window rather than alternating unrelated panels.
-        final PlainPanel north = new PlainPanel(new BorderLayout(0, 7));
-        final JPanel heading = new JPanel(new BorderLayout(8, 0));
-        heading.setBorder(BorderFactory.createEmptyBorder(2, 4, 2, 4));
-        merchant.setFont(merchant.getFont().deriveFont(Font.BOLD, 14f));
-        heading.add(merchant, BorderLayout.WEST);
-        wallet.setFont(wallet.getFont().deriveFont(12f));
-        heading.add(wallet, BorderLayout.EAST);
-        north.add(heading, BorderLayout.NORTH);
+        final JPanel left = new DialogPanel(new BorderLayout(0, 6));
+        left.setPreferredSize(new Dimension(270, 0));
+        final JPanel searchRow = new DialogPanel(new BorderLayout(6, 0));
+        searchRow.add(new JLabel(ClientLanguage.getText("Szukaj:")), BorderLayout.WEST);
+        search.setToolTipText(ClientLanguage.getText("Szukaj przedmiotu"));
+        search.setPreferredSize(new Dimension(10, 25));
+        searchRow.add(search, BorderLayout.CENTER);
+        left.add(searchRow, BorderLayout.NORTH);
+        tabs.addTab(ClientLanguage.getText("Kup"), scroll(sellList));
+        tabs.addTab(ClientLanguage.getText("Sprzedaj"), scroll(buyList));
+        tabs.addChangeListener(event -> switchMode(tabs.getSelectedIndex() == 1));
+        left.add(tabs, BorderLayout.CENTER);
+        left.add(itemCount, BorderLayout.SOUTH);
 
-        final JPanel searchBar = new JPanel(new BorderLayout(7, 0));
-        searchBar.setBorder(BorderFactory.createEmptyBorder(2, 3, 2, 3));
-        searchBar.add(new SmallIcon(
-                SpriteStore.get().getSprite("data/gui/loupe.png"), 26),
-                BorderLayout.WEST);
-        search.setPreferredSize(new Dimension(10, 28));
-        searchBar.add(search, BorderLayout.CENTER);
-        north.add(searchBar, BorderLayout.SOUTH);
-        content.add(north, BorderLayout.NORTH);
+        final JPanel detail = new DialogPanel(new BorderLayout(0, 8));
+        final JPanel identity = new DialogPanel(new BorderLayout(8, 0));
+        identity.add(preview, BorderLayout.WEST);
+        identity.add(selectedName, BorderLayout.CENTER);
+        detail.add(identity, BorderLayout.NORTH);
 
-        // The catalogue takes roughly 60 percent of the body, as in the
-        // supplied shop reference.
-        final WoodPanel left = new WoodPanel(
-                new BorderLayout(0, 5), 34, true);
-        left.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        final PlainPanel tabs = new PlainPanel(
-                new FlowLayout(FlowLayout.LEFT, 5, 0));
-        buyTab.setPreferredSize(new Dimension(94, 27));
-        sellTab.setPreferredSize(new Dimension(94, 27));
-        tabs.add(buyTab);
-        tabs.add(sellTab);
-        buyTab.addActionListener(event -> switchMode(false));
-        sellTab.addActionListener(event -> switchMode(true));
-        final PlainPanel listHeading = new PlainPanel(new BorderLayout(8, 0));
-        itemCount.setFont(itemCount.getFont().deriveFont(Font.BOLD, 12f));
-        listHeading.add(itemCount, BorderLayout.WEST);
-        final PlainPanel catalogueHeader = new PlainPanel(
-                new BorderLayout(0, 3));
-        catalogueHeader.add(tabs, BorderLayout.NORTH);
-        catalogueHeader.add(listHeading, BorderLayout.SOUTH);
-        left.add(catalogueHeader, BorderLayout.NORTH);
-        catalog.add(scroll(sellList), "buy");
-        catalog.add(scroll(buyList), "sell");
-        left.add(catalog, BorderLayout.CENTER);
-
-        // Single engraved panel, with a clear image, description and price.
-        final WoodPanel detail = new WoodPanel(
-                new BorderLayout(0, 5), 63, true);
-        detail.setPreferredSize(new Dimension(302, 0));
-        detail.setBorder(nativeInsetBorder(6, 7, 7, 7));
-        final JLabel section = label("Wybrany przedmiot", 13, TEXT, true);
-        section.setHorizontalAlignment(SwingConstants.CENTER);
-        section.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
-        final PlainPanel detailHeading = new PlainPanel(new BorderLayout(7, 0));
-        detailHeading.add(preview, BorderLayout.WEST);
-        detailHeading.add(section, BorderLayout.CENTER);
-        detail.add(detailHeading, BorderLayout.NORTH);
-
-        final PlainPanel identity = new PlainPanel(new BorderLayout(0, 5));
-
-        final JPanel descriptionContent = new PlainPanel(null);
+        final JPanel descriptionContent = new DialogPanel(null);
         descriptionContent.setLayout(new BoxLayout(descriptionContent, BoxLayout.PAGE_AXIS));
-        selectedName.setAlignmentX(Component.LEFT_ALIGNMENT);
         stats.setAlignmentX(Component.LEFT_ALIGNMENT);
         itemDescription.setAlignmentX(Component.LEFT_ALIGNMENT);
-        itemDescription.setForeground(MUTED);
-        descriptionContent.add(selectedName);
         descriptionContent.add(stats);
         descriptionContent.add(itemDescription);
         final JScrollPane descriptionScroll = new JScrollPane(descriptionContent);
@@ -582,75 +372,44 @@ public final class NpcShopWindow extends InternalManagedWindow {
         descriptionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         descriptionScroll.getViewport().setOpaque(false);
         descriptionScroll.setOpaque(false);
-        descriptionScroll.getVerticalScrollBar().setUnitIncrement(18);
-        identity.add(descriptionScroll, BorderLayout.CENTER);
+        descriptionScroll.getVerticalScrollBar().setUnitIncrement(16);
+        detail.add(descriptionScroll, BorderLayout.CENTER);
 
-        final PlainPanel priceFrame = new PlainPanel(new BorderLayout(0, 3));
-        priceFrame.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
-        unitPrice.setHorizontalAlignment(SwingConstants.CENTER);
-        unitPrice.setFont(unitPrice.getFont().deriveFont(Font.BOLD, 14f));
-        priceFrame.add(unitPrice, BorderLayout.NORTH);
-        quote.setHorizontalAlignment(SwingConstants.CENTER);
-        quote.setForeground(SUCCESS);
-        quote.setVisible(true);
-        priceFrame.add(quote, BorderLayout.SOUTH);
-        identity.add(priceFrame, BorderLayout.SOUTH);
-        detail.add(identity, BorderLayout.CENTER);
-
-        final PlainPanel controls = new PlainPanel(new BorderLayout(0, 5));
-        final PlainPanel quantity = new PlainPanel(new FlowLayout(
-                FlowLayout.CENTER, 7, 0));
-        quantityControls = quantity;
-        quantity.add(label("Ilość", 13, TEXT, true));
-        minus.setPreferredSize(new Dimension(32, 30));
-        plus.setPreferredSize(new Dimension(32, 30));
-        amount.setPreferredSize(new Dimension(64, 30));
+        final JPanel controls = new DialogPanel(new BorderLayout(0, 6));
+        quantityControls = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        quantityControls.add(new JLabel(ClientLanguage.getText("Ilość:")));
+        amount.setPreferredSize(new Dimension(58, 25));
         amount.setHorizontalAlignment(SwingConstants.CENTER);
-        amount.setBackground(KTextEdit.getChatBackgroundColor());
-        amount.setOpaque(true);
-        amount.setBorder(nativeInsetBorder(2, 4, 2, 4));
-        amount.setForeground(TEXT);
-        amount.setCaretColor(GOLD);
-        amount.setSelectionColor(ROW_SELECTED);
-        amount.setSelectedTextColor(TEXT);
-        amount.setFont(amount.getFont().deriveFont(Font.BOLD, 14f));
-        amount.setToolTipText("Ilość od 1 do 1000");
+        amount.setToolTipText(ClientLanguage.getText("Ilość od 1 do 1000"));
         minus.addActionListener(event -> changeAmount(-1));
         plus.addActionListener(event -> changeAmount(1));
-        quantity.add(minus);
-        quantity.add(amount);
-        quantity.add(plus);
-        controls.add(quantity, BorderLayout.NORTH);
-        final JPanel quick = new PlainPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
-        quantityPresets = quick;
+        quantityControls.add(minus); quantityControls.add(amount); quantityControls.add(plus);
+        controls.add(quantityControls, BorderLayout.NORTH);
+        quantityPresets = new DialogPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
-            preset.setMargin(new Insets(2, 5, 2, 5));
             preset.addActionListener(event -> amount.setText(Integer.toString("Maks".equals(caption)
                     ? maximum() : Math.min(maximum(), Integer.parseInt(caption)))));
-            presets.add(preset); quick.add(preset);
+            presets.add(preset); quantityPresets.add(preset);
         }
-        controls.add(quick, BorderLayout.CENTER);
-        request.setPreferredSize(new Dimension(10, 36));
-        controls.add(request, BorderLayout.SOUTH);
+        controls.add(quantityPresets, BorderLayout.CENTER);
+        final JPanel checkout = new DialogPanel(new BorderLayout(8, 0));
+        final JPanel prices = new DialogPanel(new GridLayout(0, 1, 0, 2));
+        prices.add(unitPrice); prices.add(quote);
+        checkout.add(prices, BorderLayout.CENTER);
+        checkout.add(request, BorderLayout.EAST);
+        controls.add(checkout, BorderLayout.SOUTH);
         detail.add(controls, BorderLayout.SOUTH);
 
-        final PlainPanel body = new PlainPanel(new BorderLayout(10, 0));
-        body.add(left, BorderLayout.CENTER);
-        body.add(detail, BorderLayout.EAST);
+        final JPanel body = new DialogPanel(new BorderLayout(8, 0));
+        body.add(left, BorderLayout.WEST);
+        body.add(DialogPanel.section(ClientLanguage.getText("Przedmiot"), detail), BorderLayout.CENTER);
         content.add(body, BorderLayout.CENTER);
-
-        final JPanel footer = new JPanel(new BorderLayout(10, 0));
-        footer.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 9));
-        information.setLineWrap(true);
-        information.setWrapStyleWord(true);
-        information.setEditable(false);
-        information.setFocusable(false);
-        information.setOpaque(false);
-        information.setForeground(MUTED);
-        information.setFont(information.getFont().deriveFont(12f));
+        final JPanel footer = new DialogPanel(new BorderLayout());
+        information.setLineWrap(true); information.setWrapStyleWord(true);
+        information.setEditable(false); information.setFocusable(false); information.setOpaque(false);
+        information.setFont(new JLabel().getFont()); information.setForeground(textColor());
         footer.add(information, BorderLayout.CENTER);
-
         content.add(footer, BorderLayout.SOUTH);
 
         search.getDocument().addDocumentListener(new DocumentListener() {
@@ -818,11 +577,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
     }
 
     private void updateTabs() {
-        buyTab.setActive(!sellingMode);
-        sellTab.setActive(sellingMode);
-        buyTab.setEnabled(!selling.isEmpty() && !waiting);
-        sellTab.setEnabled(!buying.isEmpty() && !waiting);
-        cards.show(catalog, sellingMode ? "sell" : "buy");
+        tabs.setEnabledAt(0, !selling.isEmpty() && !waiting);
+        tabs.setEnabledAt(1, !buying.isEmpty() && !waiting);
+        tabs.setSelectedIndex(sellingMode ? 1 : 0);
         final int count = sellingMode ? buying.size() : selling.size();
         final int visible = currentList().getModel().getSize();
         itemCount.setText(search.getText().trim().isEmpty()
@@ -834,7 +591,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         waiting = false;
         refreshPending = false;
         npcId = event.getInt("npc_id");
-        merchant.setText(event.get("npc_name"));
+        setTitle(ClientLanguage.getText("Sklep") + " · " + event.get("npc_name"));
         wallet.setText("Posiadasz: " + event.get("owned_money_text"));
         windowId = event.has("window_id") ? event.get("window_id") : "";
         money = event.has("owned_money_value") ? Long.parseLong(event.get("owned_money_value")) : 0;
@@ -874,7 +631,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 && (message.startsWith("Zakup udany:")
                         || message.startsWith("Sprzedaż udana:"));
         if (!"refresh".equals(event.get("phase")) || !message.isEmpty()) {
-            setStatus(message, error ? ERROR : success ? SUCCESS : MUTED);
+            setStatus(message, error ? ERROR : success ? SUCCESS : textColor());
         }
         applying = false;
         updateTabs();
@@ -964,14 +721,16 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private void refreshDetails() {
         final Entry entry = selected();
         selectedName.setText(entry == null ? "Wybierz przedmiot"
-                : "<html><center>" + entry.name.replace("&", "&amp;")
+                : "<html>" + entry.name.replace("&", "&amp;")
                         .replace("<", "&lt;").replace(">", "&gt;")
-                        + "</center></html>");
+                        + "</html>");
         selectedName.setToolTipText(entry == null ? null : entry.name);
-        final String html = entry == null || entry.entity == null ? null : ItemRarityPresentation.buildItemToolTip(entry.entity, 250);
+        final String html = entry == null || entry.entity == null ? null : ItemRarityPresentation.buildItemDetails(entry.entity, 360);
         stats.setText(html == null ? "" : html);
-        selectedName.setVisible(html == null);
-        itemDescription.setText("<html><table width='258'><tr><td>" + escape(entry == null
+        selectedName.setVisible(true);
+        selectedName.setForeground(entry != null && entry.entity != null && entry.entity.getRarity() != null
+                && entry.entity.getRarity() != ItemRarity.COMMON ? Color.decode(entry.entity.getRarity().getColorHex()) : textColor());
+        itemDescription.setText("<html><table width='360'><tr><td>" + escape(entry == null
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
         unitPrice.setText(entry == null ? ""
                 : (entry.stackable ? "Cena za sztukę: " : "Cena: ") + entry.price);
@@ -1051,7 +810,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         }
         waiting = true;
         refreshButtons();
-        setStatus("Oczekiwanie na odpowiedź handlarza...", MUTED);
+        setStatus("Oczekiwanie na odpowiedź handlarza...", textColor());
         send("purchase", sellingMode ? "sell" : "buy",
                 entry.name, quantity);
     }

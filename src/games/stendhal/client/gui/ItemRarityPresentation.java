@@ -74,6 +74,15 @@ final class ItemRarityPresentation {
 
     /** Use the same content in fixed-width item detail panels. */
     static String buildItemToolTip(final IEntity entity, final int width) {
+        return buildItemToolTip(entity, width, true);
+    }
+
+    /** Details below a dialog's separate item-name header. */
+    static String buildItemDetails(final IEntity entity, final int width) {
+        return buildItemToolTip(entity, width, false);
+    }
+
+    private static String buildItemToolTip(final IEntity entity, final int width, final boolean includeName) {
 		if (entity == null) {
 			return null;
 		}
@@ -85,7 +94,7 @@ final class ItemRarityPresentation {
 			equippedItem = EquipmentComparisonResolver.resolve(
 					entity.getRPObject());
 		}
-		return buildItemToolTip(entity, equippedItem, compareWithEquipment, width);
+		return buildItemToolTip(entity, equippedItem, compareWithEquipment, width, includeName);
 	}
 
 	static String buildItemToolTip(final IEntity entity,
@@ -100,6 +109,11 @@ final class ItemRarityPresentation {
 
     private static String buildItemToolTip(final IEntity entity,
             final RPObject equippedItem, final boolean compareWithEquipment, final int width) {
+        return buildItemToolTip(entity, equippedItem, compareWithEquipment, width, true);
+    }
+
+    private static String buildItemToolTip(final IEntity entity,
+            final RPObject equippedItem, final boolean compareWithEquipment, final int width, final boolean includeName) {
 		if (entity == null) {
 			return null;
 		}
@@ -137,7 +151,7 @@ final class ItemRarityPresentation {
 		tooltip.append("<table width='").append(width > 0 ? width : comparisonItem == null ? 190 : 240)
 				.append("' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
-		appendHeader(tooltip, entity, object, rarity);
+		appendHeader(tooltip, entity, object, rarity, includeName);
 		appendComparisonHeader(tooltip, comparisonItem);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance, comparisonItem);
@@ -215,8 +229,8 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendHeader(final StringBuilder tooltip,
-			final IEntity entity, final RPObject object, final ItemRarity rarity) {
-		final String title = entity.getTitle();
+			final IEntity entity, final RPObject object, final ItemRarity rarity, final boolean includeName) {
+		final String title = includeName ? entity.getTitle() : null;
 		if (title != null) {
 			final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.UPGRADE_LEVEL);
@@ -232,7 +246,8 @@ final class ItemRarityPresentation {
 					.append("</b></font>");
 		}
 		if (rarity != null) {
-			tooltip.append("<br><font size='-1' color='")
+            if (title != null) { tooltip.append("<br>"); }
+			tooltip.append("<font size='-1' color='")
 					.append(getTextColor()).append("'>")
 					.append(escapeHtml(ClientLanguage.getText(rarity.getPolishDisplayName())))
 					.append("</font>");
@@ -387,11 +402,11 @@ final class ItemRarityPresentation {
 	private static void appendTreeDetail(final StringBuilder tooltip,
 			final boolean branchContinues, final String details,
 			final String comparison) {
-		tooltip.append("<tr><td valign='top'><font size='-1' color='")
+		tooltip.append("<tr><td width='22' valign='top'><font size='-1' color='")
 				.append(getAccentColor()).append("'>")
 				.append(branchContinues
 						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
-				.append("</font></td><td><font size='-1' color='")
+				.append("</font></td><td width='100%'><font size='-1' color='")
 				.append(getTextColor()).append("'>")
 				.append(escapeHtml(details).replace("\n", "<br>"))
 				.append("</font></td>");

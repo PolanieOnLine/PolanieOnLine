@@ -36,7 +36,6 @@ export class NpcShopDialog extends DialogContentComponent {
     private readonly detailStats = document.createElement("div");
     private readonly zone = marauroa.currentZoneName;
 
-    private readonly heading = document.createElement("h3");
     private readonly wallet = document.createElement("div");
     private readonly search = document.createElement("input");
     private readonly buyTab = document.createElement("button");
@@ -69,16 +68,8 @@ export class NpcShopDialog extends DialogContentComponent {
         super("empty-div-template");
         this.componentElement.classList.add("npc-shop-dialog");
 
-        const header = document.createElement("div");
-        header.className = "npc-shop-header";
         this.wallet.className = "npc-shop-wallet";
-        const shopTitle = document.createElement("div");
-        shopTitle.className = "npc-shop-title";
-        const shopLabel = document.createElement("span");
-        shopLabel.textContent = "SKLEP";
-        shopTitle.append(shopLabel, this.heading);
-        header.append(shopTitle, this.wallet);
-        this.componentElement.appendChild(header);
+        this.componentElement.appendChild(this.wallet);
 
         this.search.type = "search";
         this.search.className = "npc-shop-search";
@@ -90,20 +81,19 @@ export class NpcShopDialog extends DialogContentComponent {
         });
         const searchFrame = document.createElement("div");
         searchFrame.className = "npc-shop-search-frame";
-        searchFrame.appendChild(this.search);
-        this.componentElement.appendChild(searchFrame);
+        const searchLabel = document.createElement("label");
+        searchLabel.textContent = "Szukaj:"; searchLabel.appendChild(this.search);
+        searchFrame.appendChild(searchLabel);
 
         const tabs = document.createElement("div");
-        tabs.className = "npc-shop-tabs";
+        tabs.className = "npc-shop-tabs tabpanel-tabs tabpanel-tabs-top";
         this.buyTab.textContent = "Kup";
         this.sellTab.textContent = "Sprzedaj";
-        this.buyTab.classList.add("dialogbutton"); this.sellTab.classList.add("dialogbutton");
         this.buyTab.type = "button";
         this.sellTab.type = "button";
         this.buyTab.onclick = () => this.changeMode("buy");
         this.sellTab.onclick = () => this.changeMode("sell");
         tabs.append(this.buyTab, this.sellTab);
-        this.componentElement.appendChild(tabs);
 
         const layout = document.createElement("div");
         layout.className = "npc-shop-layout";
@@ -114,15 +104,18 @@ export class NpcShopDialog extends DialogContentComponent {
         this.listBox.className = "npc-shop-list";
         this.listBox.setAttribute("role", "listbox");
         this.listBox.setAttribute("aria-label", "Przedmioty handlarza");
-        catalogue.append(this.listCount, this.listBox);
+        catalogue.append(searchFrame, tabs, this.listBox, this.listCount);
+        this.listBox.classList.add("tabpanel-content");
         layout.appendChild(catalogue);
 
         const detail = document.createElement("div");
         detail.className = "npc-shop-detail";
 
-        const caption = document.createElement("div");
-        caption.className = "npc-shop-detail-caption";
-        caption.textContent = "Wybrany przedmiot";
+        const detailSection = document.createElement("fieldset");
+        detailSection.className = "npc-shop-section";
+        const caption = document.createElement("legend");
+        caption.textContent = "Przedmiot";
+        detailSection.append(caption, detail);
 
         const imageHolder = document.createElement("div");
         imageHolder.className = "npc-shop-icon";
@@ -171,8 +164,11 @@ export class NpcShopDialog extends DialogContentComponent {
             button.onclick = () => { this.quantity.value = String(value === "Maks" ? this.maximum() : Math.min(this.maximum(), Number(value))); this.updateButtons(); };
             this.presets.push(button); quick.appendChild(button);
         }
-        detail.append(caption, identity, body, this.detailPrice, quantityRow, quick, this.quoteTotal);
-        layout.appendChild(detail);
+        const checkout = document.createElement("div"); checkout.className = "npc-shop-checkout";
+        const prices = document.createElement("div"); prices.className = "npc-shop-prices";
+        prices.append(this.detailPrice, this.quoteTotal); checkout.appendChild(prices);
+        detail.append(identity, body, quantityRow, quick, checkout);
+        layout.appendChild(detailSection);
         this.componentElement.appendChild(layout);
 
         this.status.className = "npc-shop-status";
@@ -185,7 +181,7 @@ export class NpcShopDialog extends DialogContentComponent {
         const tradeActions = document.createElement("div");
         tradeActions.className = "npc-shop-trade-actions";
         tradeActions.append(this.requestButton);
-        detail.appendChild(tradeActions);
+        checkout.appendChild(tradeActions);
         this.updateButtons();
     }
 
@@ -196,7 +192,7 @@ export class NpcShopDialog extends DialogContentComponent {
         if (!NpcShopDialog.active) {
             if (data.phase !== "open") return;
             const dialog = new NpcShopDialog();
-            const frame = new FloatingWindow("Sklep", dialog, 32, 32);
+            const frame = new FloatingWindow("Sklep · " + String(data.npc_name || ""), dialog, 32, 32);
             frame.setId("npc-shop");
             dialog.setFrame(frame);
             NpcShopDialog.active = dialog;
@@ -229,7 +225,7 @@ export class NpcShopDialog extends DialogContentComponent {
         this.money = Number(data.owned_money_value || 0);
         this.priceFactor = Number(data.buying_penalty || 1);
         this.npcId = Number(data.npc_id || 0);
-        this.heading.textContent = String(data.npc_name || "Sklep");
+        this.frame?.setTitle("Sklep · " + String(data.npc_name || ""));
         this.wallet.textContent = "Posiadasz: " + String(data.owned_money_text || "0");
         this.selling = this.entries(data, "sell");
         this.buying = this.entries(data, "buy");
@@ -396,6 +392,8 @@ export class NpcShopDialog extends DialogContentComponent {
     private drawDetails(): void {
         const entry = this.selected;
         this.detailName.textContent = entry?.name || "Wybierz przedmiot";
+        const titleRarity = entry?.snapshot?.getRarity();
+        this.detailName.style.color = titleRarity && titleRarity.id !== "common" ? titleRarity.colorHex : "";
         this.detailStats.replaceChildren();
         if (entry?.snapshot) {
             const structured = buildStructuredItemTooltip(entry.snapshot, singletons.getConfigManager().getBoolean("item-tooltip.comparison"));

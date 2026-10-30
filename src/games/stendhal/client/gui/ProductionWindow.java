@@ -32,13 +32,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.StendhalClient;
-import games.stendhal.client.gui.styled.Style;
-import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
@@ -249,26 +245,9 @@ public final class ProductionWindow extends InternalManagedWindow {
                 : seconds >= 60 ? seconds / 60 + " min " + seconds % 60 + " s" : seconds + " s";
     }
     private static String text(String value) { return ClientLanguage.getText(value); }
-    private static JPanel panel(LayoutManager layout) { return new LayoutPanel(layout); }
-
-    private static final class LayoutPanel extends JPanel {
-        private static final long serialVersionUID = 1L;
-        LayoutPanel(LayoutManager layout) {
-            super(layout); setOpaque(false); setBorder(BorderFactory.createEmptyBorder());
-        }
-        @Override protected void paintComponent(Graphics graphics) {
-            // The parent window supplies the themed background.
-        }
-    }
+    private static JPanel panel(LayoutManager layout) { return new DialogPanel(layout); }
     private static JPanel section(String title, JComponent body) {
-        JPanel panel = panel(new BorderLayout());
-        Style style = StyleUtil.getStyle();
-        Border frame = style == null ? BorderFactory.createEtchedBorder() : style.getBorderDown();
-        TitledBorder border = BorderFactory.createTitledBorder(frame, text(title));
-        border.setTitleFont(new JLabel().getFont().deriveFont(Font.BOLD));
-        if (style != null) border.setTitleColor(style.getForeground());
-        panel.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(5, 6, 5, 6)));
-        panel.add(body); return panel;
+        return DialogPanel.section(text(title), body);
     }
 
     /** Display-only slot: the normal texture, an animated sprite and a quantity index. */

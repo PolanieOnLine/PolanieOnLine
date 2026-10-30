@@ -825,23 +825,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
         if (border instanceof TitledBorder) ((TitledBorder)border).setTitle(ClientLanguage.getText(title));
     }
 
-	private static JPanel sectionPanel(final String title,
-			final JComponent body) {
-		final JPanel section = plainPanel(new BorderLayout());
-		final Style style = StyleUtil.getStyle();
-		final Border frame = style != null ? style.getBorderDown()
-				: BorderFactory.createEtchedBorder();
-		final TitledBorder border = BorderFactory.createTitledBorder(frame, title);
-		final Font font = style != null ? style.getFont() : new JLabel().getFont();
-		border.setTitleFont(font.deriveFont(Font.BOLD));
-		if (style != null) {
-			border.setTitleColor(style.getForeground());
-		}
-		section.setBorder(BorderFactory.createCompoundBorder(border,
-				BorderFactory.createEmptyBorder(4, 6, 6, 6)));
-		section.add(body, BorderLayout.CENTER);
-		return section;
-	}
+	private static JPanel sectionPanel(final String title, final JComponent body) {
+        return DialogPanel.section(title, body);
+    }
 
 	private static JPanel plainPanel(final LayoutManager layout) {
 		return new LayoutPanel(layout);
