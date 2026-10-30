@@ -17,6 +17,7 @@ async function harness() {
  class Element {
   constructor() {this.innerHTML="";this.children=[];this.style={setProperty(){}};}
   appendChild(child){this.children.push(child);}
+  dispatchEvent() {}
  }
  const list=new Element(),details=new Element();
  class DialogContentComponent {
@@ -35,7 +36,7 @@ async function harness() {
  };
  const exports={};
  vm.runInNewContext(compile("ui/dialog/TravelLogDialog.ts"),{exports,console,
-  document:{createElement:()=>new Element()},require:name=>{assert.ok(modules[name],name);return modules[name];}});
+  Event:class {},document:{createElement:()=>new Element()},require:name=>{assert.ok(modules[name],name);return modules[name];}});
  return {Dialog:exports.TravelLogDialog,language,list,details};
 }
 test("travel log translates loading and empty states without changing its option value",async()=>{
@@ -60,4 +61,19 @@ test("repeatable quest note is translated while canonical title and escaped serv
  language.synchronize("pl"); dialog.itemData("","Zamknij","Opis",[]);
  view=details.children.at(-1);
  assert.ok(view.innerHTML.includes("Mogę wykonać to zadanie jeszcze raz."));
+});
+
+
+test("main quests preserve the server's current-step order without mutating data",async()=>{
+ const {Dialog,list,details}=await harness();const dialog=new Dialog();dialog.currentProgressType="Zadania główne";
+ const names=["Spotkanie Pietrka","Kosa Fryderyka"];
+ dialog.progressTypeData("Zadania główne",names);
+ assert.ok(list.innerHTML.indexOf("Spotkanie Pietrka")<list.innerHTML.indexOf("Kosa Fryderyka"));
+ assert.deepEqual(names,["Spotkanie Pietrka","Kosa Fryderyka"]);
+ const history=["Aktualny cel: Porozmawiaj z Pietrkiem.","Historia zadania."];
+ dialog.itemData("Zadania główne","Spotkanie Pietrka","Opis zadania",history);
+ const view=details.children.at(-1);
+ assert.ok(view.innerHTML.indexOf("Aktualny cel:")<view.innerHTML.indexOf("Opis zadania"));
+ assert.equal(view.children[0].children.length,1);
+ assert.deepEqual(history,["Aktualny cel: Porozmawiaj z Pietrkiem.","Historia zadania."]);
 });

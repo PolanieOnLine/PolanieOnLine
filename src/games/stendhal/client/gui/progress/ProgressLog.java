@@ -354,11 +354,10 @@ class ProgressLog {
 		 */
 		void setIndex(List<String> subjects, ProgressStatusQuery onClick, Collection<String> repeatable) {
 			/*
-			 * Order the quests alphabetically. The server provides them ordered
-			 * by internal name (and does not really guarantee even that), not
-			 * by the human readable name.
+             * Main quests arrive in story order with the current task first.
+             * Other pages retain alphabetical ordering.
 			 */
-			Collections.sort(subjects);
+            if (!"Zadania główne".equals(indexQueryData)) { Collections.sort(subjects); }
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());
 			for (String elem : subjects) {
@@ -387,6 +386,9 @@ class ProgressLog {
 			contentQuery = onClick;
 
 			indexArea.setText(text.toString());
+            if ("Zadania główne".equals(indexQueryData) && onClick != null && !subjects.isEmpty()) {
+                onClick.fire(subjects.get(0));
+            }
 		}
 
 		/**
@@ -432,6 +434,12 @@ class ProgressLog {
 				text.append("</b></p>");
 			}
 
+            final boolean currentObjective = "Zadania główne".equals(indexQueryData)
+                    && !contents.isEmpty() && contents.get(0).startsWith("Aktualny cel:");
+            if (currentObjective) {
+                text.append("<p><b>").append(games.stendhal.client.ClientLanguage.getText(contents.get(0))).append("</b></p>");
+            }
+
 			// information
 			if ((information != null) && (!information.trim().equals(""))) {
 				text.append("<p style=\"font-family:arial; color: #FF0000\"><b>");
@@ -450,7 +458,8 @@ class ProgressLog {
 			HtmlPreprocessor preprocessor = new HtmlPreprocessor();
 			if (!contents.isEmpty()) {
 				text.append("<ul>");
-				for (String elem : contents) {
+                final List<String> history = currentObjective ? contents.subList(1, contents.size()) : contents;
+				for (String elem : history) {
 					text.append("<li>");
 					text.append(preprocessor.preprocess(games.stendhal.client.ClientLanguage.getText(elem)));
 					text.append("</li>");

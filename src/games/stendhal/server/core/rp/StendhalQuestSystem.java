@@ -15,12 +15,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Translation;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.entity.npc.fsm.TransitionContext;
@@ -587,6 +591,39 @@ public class StendhalQuestSystem {
 		return res;
 	}
 
+    /** Current main tasks, including the next unaccepted step in each chapter. Read-only. */
+    public List<String> getMainQuests(final Player player) {
+        final List<IQuest> main = new ArrayList<>();
+        for (final IQuest quest : quests) {
+            if (quest.getQuestInfo(player).isMainQuest() && quest.isVisibleOnQuestStatus(player)) {
+                main.add(quest);
+            }
+        }
+        main.sort(Comparator.comparing((IQuest quest) -> quest.getQuestInfo(player).getMainQuestChapter())
+                .thenComparingInt(quest -> quest.getQuestInfo(player).getMainQuestOrder())
+                .thenComparing(IQuest::getName));
+        final Set<String> currentChapters = new HashSet<>();
+        final List<String> result = new ArrayList<>();
+        for (final IQuest quest : main) {
+            if (quest.isCompleted(player)) { continue; }
+            final QuestInfo info = quest.getQuestInfo(player);
+            final boolean next = currentChapters.add(info.getMainQuestChapter());
+            if (next || quest.isStarted(player)) { result.add(info.getName()); }
+        }
+        return result;
+    }
+
+    public List<String> getSideQuests(final Player player) {
+        final List<String> result = new ArrayList<>();
+        for (final IQuest quest : quests) {
+            if (!quest.getQuestInfo(player).isMainQuest() && quest.isStarted(player)
+                    && !quest.isCompleted(player) && quest.isVisibleOnQuestStatus(player)) {
+                result.add(quest.getQuestInfo(player).getName());
+            }
+        }
+        return result;
+    }
+
 	/**
 	 * Gets a list of completed quests.
 	 *
@@ -715,6 +752,11 @@ public class StendhalQuestSystem {
 		for (final IQuest quest : quests) {
 			final QuestInfo questInfo = quest.getQuestInfo(player);
 			if (questInfo.getName().equals(questName)) {
+                if (questInfo.isMainQuest() && !quest.isCompleted(player)) {
+                    String objective = StarterQuestLine.objective(player, quest.getSlotName());
+                    if (objective == null && !quest.isStarted(player)) { objective = questInfo.getMainQuestStartHint(); }
+                    if (objective != null && !objective.isEmpty()) { res.add("Aktualny cel: " + objective); }
+                }
 				final List<String> history = quest.getFormattedHistory(player);
 				for (final String entry : history) {
 					res.add(entry);
@@ -739,6 +781,14 @@ public class StendhalQuestSystem {
 
 		return null;
 	}
+
+    /** Resolve the displayed journal title, which can differ from a manuscript's internal name. */
+    public IQuest getQuest(final Player player, final String title) {
+        for (final IQuest quest : quests) {
+            if (quest.getQuestInfo(player).getName().equals(title)) { return quest; }
+        }
+        return getQuest(title);
+    }
 
 	/**
 	 * gets the IQuest object for a quest.

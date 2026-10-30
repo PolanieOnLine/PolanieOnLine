@@ -33,6 +33,24 @@ public class QuestInfo {
 	private Map<String, String> hints = new HashMap<String, String>();
 
 	private int suggestedMinLevel;
+    private String mainQuestChapter = "";
+    private int mainQuestOrder;
+    private String mainQuestStartHint = "";
+
+    public void setMainQuest(final String chapter, final int order, final String startHint) {
+        if (chapter == null || chapter.trim().isEmpty() || order < 1 || startHint == null) {
+            throw new IllegalArgumentException("A main quest needs a chapter, positive order and start hint");
+        }
+        mainQuestChapter = chapter;
+        mainQuestOrder = order;
+        mainQuestStartHint = startHint;
+    }
+
+    public boolean isMainQuest() { return !mainQuestChapter.isEmpty(); }
+    public String getMainQuestChapter() { return mainQuestChapter; }
+    public int getMainQuestOrder() { return mainQuestOrder; }
+    public String getMainQuestStartHint() { return mainQuestStartHint; }
+
 
 	/** Quest slot indexes where completions count is stored. */
 	private final Pair<Integer, Integer> completionsIndexes;

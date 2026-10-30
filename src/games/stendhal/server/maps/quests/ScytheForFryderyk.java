@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
-			"Czy mógłbyś przynieść mi #kosę? Potrzebuję ją do żniw.",
+			"Zbliżają się chłody, a mieszkańcy potrzebują zapasów na zimę. Bez kosy nie zbiorę plonów. Czy przyniesiesz mi #kosę?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -131,7 +132,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("kosa"),
 			ConversationStates.ATTENDING,
-			"Niech Cię pobłogosławię mój dobry przyjacielu! Teraz będę wstanie zebrać moje plony.",
+			"Dziękuję! Teraz zdążę zebrać plony przed chłodami. Stasek zbiera opał na zimę i pytał o kogoś godnego zaufania. Odwiedź jego sklep obok mostu w centrum Zakopanego i zapytaj o zlecenie.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
@@ -146,8 +147,9 @@ public class ScytheForFryderyk extends AbstractQuest {
 	public void addToWorld() {
     	fillQuestInfo(
 			"Kosa Fryderyka",
-			"Fryderyk potrzebuje do żniw kosę, dostarcz mu ją.",
+			"Fryderyk potrzebuje kosy, aby zebrać plony i przygotować zapasy przed zimą.",
 			false);
+        questInfo.setMainQuest(StarterQuestLine.CHAPTER, 3, StarterQuestLine.FRYDERYK);
 		createRequestingStep();
 		createBringingStep();
 	}
@@ -169,6 +171,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
 			res.add(player.getGenderVerb("Dostarczyłem") + " kosę Fryderykowi.");
+            res.add("Fryderyk może przygotować zapasy. Wspomniał o Stasku, który potrzebuje opału na zimę.");
 		}
 		return res;
 	}

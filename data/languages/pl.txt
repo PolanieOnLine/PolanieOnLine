@@ -1783,3 +1783,6 @@ Rare=Rzadki
 Epic=Epicki
 Legendary=Legendarny
 Value=Wartość
+
+Zadania główne=Zadania główne
+Zadania poboczne=Zadania poboczne

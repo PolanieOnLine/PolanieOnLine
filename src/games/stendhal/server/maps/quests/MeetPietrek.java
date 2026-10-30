@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -144,7 +145,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_5,
-			"Gdy zarobisz wystarczającą ilość pieniędzy to powinieneś odwiedzić naszego uzdrowiciela w Zakopanem Gaździnę Jadźkę i kupić miksturę. Mikstury są bardzo praktyczne, gdy jesteś sam w górach lub w lesie Zakopanego. Czy chcesz wiedzieć gdzie jest Zakopane? #Tak?",
+			"Po walce możesz odwiedzić Gaździnę Jadźkę w szpitalu w centrum Zakopanego. Opatrzy twoje rany bez opłaty. Jedzenie przydaje się podczas wyprawy, bo stopniowo odnawia zdrowie. Czy chcesz wiedzieć, gdzie szukać pomocy? #Tak?",
 			null);
 
 		// The player has had enough info for now. Send them to semos. When they come back they can learn some more tips.
@@ -160,7 +161,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Wyjdź z domku, a znajdziesz się w centrum Zakopanego. Natomiast w lasku na północ stąd znajduje się portal do Semos. Na początek pozwiedzaj Zakopane oraz okolicę. Powodzenia!!",
+			"Wyjdź z domku, a znajdziesz się w centrum Zakopanego. W szpitalu spotkasz Jadźkę oraz Bogusia, u którego kupisz podstawowe wyposażenie. Gdy będziesz gotowy, wróć po ostatnie wskazówki. Mieszkańcy szykują zapasy na chłody i potrzebują pomocy.",
 			new MultipleActions(reward));
 
 		// incase player didn't finish learning everything when he came after killing the rat, he must have another chance. Here it is.
@@ -213,7 +214,7 @@ public class MeetPietrek extends AbstractQuest {
 		npc.add(ConversationStates.INFORMATION_8,
 			ConversationPhrases.YES_MESSAGES, new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
-			epilog + "Cóż, powodzenia w walkach! Ta tarcza powinna Ci pomóc. Tutaj znajdziesz sławę i chwałę. Uważaj na potwory!",
+			epilog + "Ta tarcza powinna ci pomóc. W domku bohaterów spotkasz Adasia. Szczury i węże zajęły jego piwnicę, a rodzina potrzebuje miejsca na zapasy przed zimą. Porozmawiaj z nim o zadaniu. Sabała w Zakopanem S potrafi opowiedzieć ci o napotkanych potworach.",
 			new MultipleActions(reward2));
 
 		npc.add(new ConversationStates[] { ConversationStates.ATTENDING,
@@ -316,6 +317,7 @@ public class MeetPietrek extends AbstractQuest {
 				"Spotkanie Pietrka",
 				"Pietrek pomaga nowym bohaterom w poznaniu świata PolanieOnLine.",
 				false);
+        questInfo.setMainQuest(StarterQuestLine.CHAPTER, 1, StarterQuestLine.PIETREK);
 		preparePietrek();
 		initShop();
 	}
@@ -326,10 +328,14 @@ public class MeetPietrek extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("FIRST_CHAT");
-		if (isCompleted(player)) {
-			res.add("DONE");
-		}
+        res.add("Pietrek postanowił sprawdzić, czy poradzę sobie jako nowy obrońca Zakopanego.");
+        if (isCompleted(player)) {
+            res.add("Pokonałem szczura i poznałem podstawy walki, przeszukiwania zwłok oraz odzyskiwania zdrowia.");
+            res.add("Pietrek podarował mi puklerz i opowiedział o przygotowaniach mieszkańców do zimy.");
+            res.add("Wskazał Adasia w domku bohaterów, którego piwnicę zajęły szkodniki.");
+        } else {
+            res.add("Mam pokonać szczura, a potem wrócić do Pietrka i dokończyć naukę.");
+        }
 		return res;
 	}
 

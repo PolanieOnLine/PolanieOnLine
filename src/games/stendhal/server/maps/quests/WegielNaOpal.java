@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +88,7 @@ public class WegielNaOpal extends AbstractQuest {
 						new QuestCompletedCondition(FRYDERYK_QUEST_SLOT)),
 				ConversationStates.ATTENDING,
 				null,
-				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, items, "Właśnie słyszałem od Fryderyka, że mu pomogłeś jak i Adasiowi, a więc mogę Tobie zafuać."
+				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, items, "Fryderyk opowiedział mi o twojej pomocy przy żniwach. Wiem też, że pomogłeś Adasiowi. Udowodniłeś, że można na tobie polegać."
 					+ " Proszę przynieś mi [item]. Potrzebuję opał na zimę. Straszne mrozy są ostatnio..."));
 	}
 
@@ -113,7 +114,7 @@ public class WegielNaOpal extends AbstractQuest {
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Dziękuję za węgiel! Teraz będę miał zapas na co najmniej kilka zim! Czas, być może złożyć #ofertę.",
+				"Dziękuję za węgiel! Mieszkańcy mają zapasy, a ja mam czym ogrzać sklep podczas mrozów. Zdobyłeś moje zaufanie. Od teraz możesz u mnie kupować uzbrojenie. Sprawdź moją #ofertę.",
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(5500),
@@ -148,9 +149,10 @@ public class WegielNaOpal extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Węgiel na Opał",
-				"Stasek, właściciel sklepu z uzbrojeniem w Zakopanem ma dla mnie zadanie.",
+				"Stasek zbiera opał na nadchodzące mrozy. Pomoc mieszkańcom pozwoli zdobyć jego zaufanie i odblokować sklep z uzbrojeniem.",
 				true);
 
+        questInfo.setMainQuest(StarterQuestLine.CHAPTER, 4, StarterQuestLine.STASEK);
 		startQuests();
 		requestItem();
 		collectItem();
@@ -174,7 +176,8 @@ public class WegielNaOpal extends AbstractQuest {
 			res.add("Stasek poprosił mnie, abym mu przyniósł " + player.getRequiredItemName(QUEST_SLOT,0) + ".");
 		}
 		if (isCompleted(player)) {
-			res.add("Super! Teraz mogę kupować uzbrojenie w sklepie u Staska.");
+			res.add("Stasek przyjął opał i podziękował za pomoc mieszkańcom w przygotowaniach do zimy.");
+            res.add("Zdobyłem zaufanie Zakopanego. Mogę kupować uzbrojenie w sklepie u Staska.");
 		}
 		return res;
 	}

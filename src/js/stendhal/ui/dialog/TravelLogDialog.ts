@@ -63,7 +63,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		for (var i = 0; i < dataItems.length; i++) {
 			buttons = buttons + "<button id=\"" + stendhal.ui.html.esc(dataItems[i])
 				+ "\" class=\"progressTypeButton\">"
-				+ stendhal.ui.html.esc(dataItems[i]) + "</button>";
+				+ stendhal.ui.html.esc(GameLanguage.getText(dataItems[i])) + "</button>";
 		}
 		this.child(".tavellogtabpanel")!.innerHTML = buttons;
 
@@ -143,7 +143,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			dataItems = [];
 		}
 		// sort items alphabetically
-		dataItems.sort();
+        dataItems = progressType === "Zadania główne" ? [...dataItems] : [...dataItems].sort();
 		var html = "";
 		for (var i = 0; i < dataItems.length; i++) {
 			const currentItem = dataItems[i];
@@ -184,13 +184,18 @@ export class TravelLogDialog extends DialogContentComponent {
 				+ stendhal.ui.html.esc(GameLanguage.getText("Mogę wykonać to zadanie jeszcze raz.")) + "</em></p>";
 		}
 
+        const currentObjective = progressType === "Zadania główne" && dataItems[0]?.startsWith("Aktualny cel:");
+        if (currentObjective) {
+            detailsSpan.innerHTML += "<p><strong>" + stendhal.ui.html.esc(dataItems[0]) + "</strong></p>";
+        }
+
 		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"
 				+ stendhal.ui.html.esc(description) + "</p>";
 
 		const ul = document.createElement("ul");
 		ul.className = "uniform";
 
-		for (var i = 0; i < dataItems.length; i++) {
+		for (var i = currentObjective ? 1 : 0; i < dataItems.length; i++) {
 			let content = []
 			let html = stendhal.ui.html.esc(dataItems[i], ["em", "tally"]);
 			if (html.includes("<tally>") && html.includes("</tally>")) {

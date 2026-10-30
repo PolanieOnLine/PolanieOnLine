@@ -3095,3 +3095,6 @@ My unnatural state should evoke fear in you ...=Mi estado no natural debería ev
 Who wakes me from my meditation?=¿Quien me ha despertado de mi meditación?
 You will regret this!=¡Lo lamentarás!
 Thou shall not pillage!=¡No saquearás!
+
+Zadania główne=Misiones principales
+Zadania poboczne=Misiones secundarias

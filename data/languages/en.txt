@@ -170,3 +170,6 @@ Wybierz gracza do obserwacji=Choose a player to watch
 Nikt teraz nie walczy na arenie.=Nobody is fighting in the arena right now.
 Nikt teraz nie walczy na arenie. Spróbuj ponownie za chwilę.=Nobody is fighting in the arena right now. Try again shortly.
 Podejdź bliżej, aby porozmawiać.=Move closer to talk.
+
+Zadania główne=Main quests
+Zadania poboczne=Side quests

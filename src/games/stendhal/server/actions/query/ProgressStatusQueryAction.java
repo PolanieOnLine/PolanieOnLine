@@ -22,6 +22,8 @@ import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.IQuest;
+import games.stendhal.server.maps.quests.QuestInfo;
 import games.stendhal.server.events.ProgressStatusEvent;
 import marauroa.common.game.RPAction;
 
@@ -65,7 +67,7 @@ public class ProgressStatusQueryAction implements ActionListener {
 	 * @param player Player to sent the event to
 	 */
 	private void sendProgressTypes(Player player) {
-		List<String> list = Arrays.asList("Otwarte zadania", "Ukończone zadania", "Produkcja");
+		List<String> list = Arrays.asList("Zadania główne", "Zadania poboczne", "Ukończone zadania", "Produkcja");
 		player.addEvent(new ProgressStatusEvent(list));
 		player.notifyWorldAboutChanges();
 	}
@@ -77,7 +79,13 @@ public class ProgressStatusQueryAction implements ActionListener {
 	 * @param progressType the type of progress the player is interested in
 	 */
 	private void sendItemList(Player player, String progressType) {
-		if (progressType.equals("Otwarte zadania")) {
+        if (progressType.equals("Zadania główne")) {
+            player.addEvent(new ProgressStatusEvent(progressType,
+                    SingletonRepository.getStendhalQuestSystem().getMainQuests(player)));
+        } else if (progressType.equals("Zadania poboczne")) {
+            player.addEvent(new ProgressStatusEvent(progressType,
+                    SingletonRepository.getStendhalQuestSystem().getSideQuests(player)));
+        } else if (progressType.equals("Otwarte zadania")) {
 			player.addEvent(new ProgressStatusEvent(progressType,
 					SingletonRepository.getStendhalQuestSystem().getOpenQuests(player)));
 		} else if (progressType.equals("Ukończone zadania")) {
@@ -102,10 +110,18 @@ public class ProgressStatusQueryAction implements ActionListener {
 	 */
 	private void sendDetails(Player player, String progressType, String item) {
 		StendhalQuestSystem questSystem = SingletonRepository.getStendhalQuestSystem();
-		if (progressType.equals("Otwarte zadania") || progressType.equals("Ukończone zadania")) {
+		if (progressType.equals("Otwarte zadania") || progressType.equals("Ukończone zadania")
+                || progressType.equals("Zadania główne") || progressType.equals("Zadania poboczne")) {
+            final IQuest quest = questSystem.getQuest(player, item);
+            final String information = questSystem.getQuestLevelWarning(player, item);
+            String description = questSystem.getQuestDescription(player, item);
+            if (quest != null && quest.getQuestInfo(player).isMainQuest()) {
+                final QuestInfo info = quest.getQuestInfo(player);
+                description = "Rozdział: " + info.getMainQuestChapter() + ". " + description;
+            }
 			player.addEvent(new ProgressStatusEvent(progressType, item,
-					questSystem.getQuestDescription(player, item),
-					questSystem.getQuestLevelWarning(player, item),
+                    description,
+                    information,
 					questSystem.getQuestProgressDetails(player, item)));
 		} else if (progressType.equals("Produkcja")) {
 			player.addEvent(new ProgressStatusEvent(progressType, item,

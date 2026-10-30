@@ -61,7 +61,7 @@ public class PietrekNPC implements ZoneConfigurator {
 						ConversationPhrases.GREETING_MESSAGES,
 						new QuestNotStartedCondition(QUEST_SLOT),
 						ConversationStates.ATTENDING,
-						"Witaj! Założę się, że przysłano Cię tutaj byś dowiedział się nieco o przygodach jakie Cię tu spotkają. Najpierw zobaczmy z jakiej gliny jesteś ulepiony. Idź i zabij szczura wałęsającego się gdzieś na zewnątrz. Czy chcesz się nauczyć jak atakować?",
+						"Witaj! Zakopane szykuje się do zimy, a szkodniki coraz śmielej zaglądają do domów. Przyda nam się ktoś, kto pomoże mieszkańcom. Najpierw sprawdźmy, jak sobie radzisz: pokonaj jednego szczura na zewnątrz i wróć do mnie. Czy chcesz się nauczyć, jak atakować?",
 						new MultipleActions(actions));
 
 				add(ConversationStates.IDLE,

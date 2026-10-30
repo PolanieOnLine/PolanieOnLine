@@ -17,6 +17,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
 
 public class PomocChlopcowi implements QuestManuscript {
 	public KillCreaturesQuestBuilder story() {
@@ -24,7 +25,8 @@ public class PomocChlopcowi implements QuestManuscript {
 
 		quest.info()
 			.name("Pomoc Adasiowi")
-			.description("W domku bohaterów w piwnicy zakorzeniły się potwory. Młody chłopiec Adaś, potrzebuje mojej pomocy w pozbyciu się ich.")
+            .mainQuest(StarterQuestLine.CHAPTER, 2, StarterQuestLine.ADAS)
+			.description("Adaś potrzebuje pomocy w oczyszczeniu piwnicy domku bohaterów, aby rodzina mogła przygotować miejsce na zimowe zapasy.")
 			.internalName("pomoc_adasiowi")
 			.notRepeatable()
 			.minLevel(0)
@@ -36,10 +38,10 @@ public class PomocChlopcowi implements QuestManuscript {
 			.whenQuestWasRejected("Nie zajmuję się sprzątaniem piwnic, mam lepsze zajęcia do roboty.")
 			.whenQuestWasAccepted("Nie mogę odmówić chłopcowi pomocy w pozbyciu się szczurów i węży z piwnicy.")
 			.whenTaskWasCompleted("Piwnica w domku bohaterów stała się wolna od groźnych szkodników.")
-			.whenQuestWasCompleted("Adaś podziękował mi i nazwał mnie swym wybawcą.");
+			.whenQuestWasCompleted("Adaś podziękował za oczyszczenie piwnicy na zimowe zapasy. Wspomniał o Fryderyku w Zakopanem S.");
 
 		quest.offer()
-			.respondToRequest("Mamcia kazała mi przynieść konfitury ale #piwnica jest pełna szczurów. Pomożesz mi?")
+			.respondToRequest("Mamcia chce zrobić miejsce na zimowe zapasy, ale nasza #piwnica jest pełna szczurów i węży. Boję się zejść po konfitury. Pomożesz mi?")
 			.respondToUnrepeatableRequest("Pięknie dziękuję! Myślę, że na dole jest nadal czysto.")
 			.respondToAccept("Poczekam tutaj, a jeżeli spróbują uciec to ciupagą walnę!")
 			.respondToReject("*chlip* Cóż, może ktoś inny będzie moim wybawcą...")
@@ -52,7 +54,7 @@ public class PomocChlopcowi implements QuestManuscript {
 			.requestKill(1, "wąż");
 
 		quest.complete()
-			.greet("Nasz wybawca! Nareszcie! Dziękuję!")
+			.greet("Nasz wybawca! Nareszcie możemy przygotować piwnicę na zapasy. Dziękuję! Fryderyk w południowej części Zakopanego też szykuje się do zimy. Może potrzebuje pomocy przy żniwach? Zapytaj go o zadanie.")
 			.rewardWith(new IncreaseXPAction(250))
 			.rewardWith(new IncreaseKarmaAction(5.0))
 			.rewardWith(new EquipItemAction("buty skórzane", 1, false));

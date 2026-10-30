@@ -24,6 +24,21 @@ public class QuestInfoBuilder {
 	private int minLevel = 0;
 	private String region = "somewhere";
 	private String questGiverNpc = null;
+    private String mainQuestChapter = "";
+    private int mainQuestOrder;
+    private String mainQuestStartHint = "";
+
+    public QuestInfoBuilder mainQuest(final String chapter, final int order, final String startHint) {
+        mainQuestChapter = chapter;
+        mainQuestOrder = order;
+        mainQuestStartHint = startHint;
+        return this;
+    }
+
+    String getMainQuestChapter() { return mainQuestChapter; }
+    int getMainQuestOrder() { return mainQuestOrder; }
+    String getMainQuestStartHint() { return mainQuestStartHint; }
+
 
 	// hide constructor
 	QuestInfoBuilder() {
