@@ -142,7 +142,9 @@ public enum ActionType {
 	ADMIN_INSPECT("inspect", "(*)Zbadaj (inspect)") {
 		@Override
 		public RPAction fillTargetInfo(final IEntity entity) {
-			return fillTargetPath(super.fillTargetInfo(entity), entity);
+			RPAction action = fillTargetPath(super.fillTargetInfo(entity), entity);
+            action.put("visual", "1");
+            return action;
 		}
 	},
 	ADMIN_GAG("gag", "(*)Ucisz (gag)"),

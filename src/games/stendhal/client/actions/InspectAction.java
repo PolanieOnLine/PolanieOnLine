@@ -39,6 +39,7 @@ class InspectAction implements SlashAction {
 		final RPAction action = new RPAction();
 
 		action.put(TYPE, INSPECT);
+        action.put("visual", "1");
 		action.put(TARGET, params[0]);
 
 		ClientSingletonRepository.getClientFramework().send(action);

@@ -1544,6 +1544,11 @@ export class SlashActionRepo {
 		}
 	};
 
+    "inspect": SlashActionImpl = {
+        execute: (_type:string,params:string[]):boolean=>{this.sendAction({type:"inspect",target:params[0],visual:"1"});return true;},
+        minParams:1,maxParams:1
+    };
+
 	/** Default action executed if a type is not registered. */
 	"_default": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {

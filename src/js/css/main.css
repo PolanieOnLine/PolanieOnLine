@@ -309,7 +309,8 @@ div.itemSlot::before {
 .production-dialog button,
 .glyph-workbench-dialog .glyph-catalog-heading,
 .glyph-workbench-dialog .dialogbutton,
-.npc-shop-dialog .dialogbutton {
+.npc-shop-dialog .dialogbutton,
+.admin-inspect-dialog .dialogbutton {
 	box-sizing: border-box;
 	min-height: 24px;
 	padding: 2px 12px;
@@ -2517,3 +2518,25 @@ td.number {
     .npc-shop-list { max-height: 170px; flex-basis: 170px; }
     .npc-shop-detail-body { min-height: 150px; max-height: 230px; flex-basis: 180px; }
 }
+
+/* Administrator inspection uses the same themed controls as other client dialogs. */
+.admin-inspect-dialog {box-sizing:border-box;width:min(840px,calc(100vw - 40px));height:540px;max-height:calc(100dvh - 64px);padding:10px;display:flex;flex-direction:column;gap:8px;font:bold 12px/15px Arial,sans-serif;color:var(--text-color);}
+.admin-inspect-layout {display:flex;gap:10px;flex:1;min-height:0;}
+.admin-inspect-navigation {display:flex;flex-direction:column;gap:5px;flex:0 0 150px;overflow-y:auto;}
+.admin-inspect-navigation button {text-align:left;}
+.admin-inspect-navigation button.active {border-color:var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);}
+.admin-inspect-body {display:flex;flex-direction:column;gap:7px;flex:1;min-width:0;min-height:0;}
+.admin-inspect-heading {flex-shrink:0;}
+.admin-inspect-table {flex:1;min-height:80px;overflow:auto;border:2px solid;border-color:var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);}
+.admin-inspect-table table {width:100%;border-collapse:collapse;font:inherit;}
+.admin-inspect-table th {position:sticky;top:0;background:var(--background-url);text-align:left;}
+.admin-inspect-table th button {font:inherit;color:inherit;background:transparent;border:0;padding:5px;cursor:pointer;text-align:left;}
+.admin-inspect-table td {padding:4px 5px;border-bottom:1px solid var(--border-bottom-color);white-space:nowrap;}
+.admin-inspect-table tbody tr {cursor:pointer;}
+.admin-inspect-table tr.selected {background:#ffffff1f;}
+.admin-inspect-details {box-sizing:border-box;width:100%;height:120px;flex:0 0 120px;resize:vertical;font:inherit;color:inherit;background:var(--background-url);border:2px solid;border-color:var(--border-bottom-color) var(--border-top-color) var(--border-top-color) var(--border-bottom-color);padding:5px;}
+.admin-inspect-filter {display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.admin-inspect-filter input {flex:1;min-width:0;height:25px;font:inherit;}
+.admin-inspect-dialog .dialogbuttons {display:flex;justify-content:flex-end;gap:5px;margin:0;background:none;flex-shrink:0;}
+.admin-inspect-dialog .dialogbutton + .dialogbutton {margin-left:0;}
+@media(max-width:600px){.admin-inspect-layout{flex-direction:column;}.admin-inspect-navigation{flex-direction:row;flex:0 0 auto;flex-wrap:wrap;}.admin-inspect-navigation button{flex:1;}.admin-inspect-details{height:90px;flex-basis:90px;}}

@@ -28,6 +28,7 @@ import { UIComponentEnum } from "./ui/UIComponentEnum";
 
 import { ZoneInfoComponent } from "./ui/component/ZoneInfoComponent";
 
+import { AdminInspectDialog } from "./ui/dialog/AdminInspectDialog";
 import { ChooseCharacterDialog } from "./ui/dialog/ChooseCharacterDialog";
 import { LoginDialog } from "./ui/dialog/LoginDialog";
 
@@ -269,6 +270,7 @@ export class Client {
 	 */
 	registerMarauroaEventHandlers() {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _code: number, _wasClean: boolean) {
+            AdminInspectDialog.closeOnLogout();
 			AdminDiagnostics.reset(true);
 			stendhal.playerInGame = false;
 			singletons.getQuickSlotsController().update();
@@ -318,6 +320,7 @@ export class Client {
 		}.bind(this);
 
 		marauroa.clientFramework.onAvailableCharacterDetails = (characters: { [key: string]: RPObject }) => {
+            AdminInspectDialog.closeOnLogout();
 			SingletonFloatingWindow.closeAll();
 			if (!Object.keys(characters).length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});

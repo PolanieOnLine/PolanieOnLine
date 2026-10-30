@@ -36,6 +36,7 @@ public final class CharacterSessionGuiReset {
 	 * @param frame main client frame
 	 */
 	public static void reset(final JFrame frame) {
+        AdminInspectWindow.closeOnLogout();
 		clearBindings(frame.getContentPane());
 
 		/*

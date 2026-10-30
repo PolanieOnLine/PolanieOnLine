@@ -103,7 +103,7 @@ export class ActionContextMenu extends Component {
 				title: "Zbadaj (inspect)",
 				admin: true,
 				action: function(entity: any) {
-					const action = { type: "inspect" } as { [k: string]: string };
+					const action = { type: "inspect", visual: "1", target_path: entity.getIdPath() } as { [k: string]: string };
 					if (entity.hasOwnProperty("id")) {
 						action["target"] = "#" + entity["id"];
 					}
