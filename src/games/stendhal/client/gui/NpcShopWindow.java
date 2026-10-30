@@ -406,6 +406,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final JTextArea information = new JTextArea(2, 1);
     private final ItemIcon preview = new ItemIcon();
     private final JTextField amount = new JTextField("1", 3);
+    private JPanel quantityControls;
+    private JPanel quantityPresets;
     private final ShopButton minus = new ShopButton("-", false);
     private final ShopButton plus = new ShopButton("+", false);
     private final ShopButton request = new ShopButton("Kup teraz", true);
@@ -603,6 +605,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final PlainPanel controls = new PlainPanel(new BorderLayout(0, 5));
         final PlainPanel quantity = new PlainPanel(new FlowLayout(
                 FlowLayout.CENTER, 7, 0));
+        quantityControls = quantity;
         quantity.add(label("Ilość", 13, TEXT, true));
         minus.setPreferredSize(new Dimension(32, 30));
         plus.setPreferredSize(new Dimension(32, 30));
@@ -624,6 +627,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantity.add(plus);
         controls.add(quantity, BorderLayout.NORTH);
         final JPanel quick = new PlainPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
+        quantityPresets = quick;
         for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
             final JButton preset = new JButton(ClientLanguage.getText(caption));
             preset.setMargin(new Insets(2, 5, 2, 5));
@@ -875,9 +879,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 && (message.startsWith("Zakup udany:")
                         || message.startsWith("Sprzedaż udana:"));
         if (!"refresh".equals(event.get("phase")) || !message.isEmpty()) {
-            setStatus(message.length() > 0 ? message
-                    : "Wybierz przedmiot, ustaw ilość i kup lub sprzedaj.",
-                    error ? ERROR : success ? SUCCESS : MUTED);
+            setStatus(message, error ? ERROR : success ? SUCCESS : MUTED);
         }
         applying = false;
         updateTabs();
@@ -888,6 +890,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private void setStatus(final String message, final Color color) {
         information.setText(message);
+        information.getParent().setVisible(!message.isEmpty());
         information.setForeground(color);
         information.setCaretPosition(0);
     }
@@ -975,9 +978,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         selectedName.setVisible(html == null);
         itemDescription.setText("<html><table width='258'><tr><td>" + escape(entry == null
                 ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
-        unitPrice.setText(entry == null ? "Brak wybranego przedmiotu"
-                : sellingMode ? "Cena za sztukę: " + entry.price
-                        : "Cena: " + entry.price);
+        unitPrice.setText(entry == null ? ""
+                : (entry.stackable ? "Cena za sztukę: " : "Cena: ") + entry.price);
         preview.setEntry(entry);
         if (entry != null && !entry.stackable && readAmount() != 1) {
             amount.setText("1");
@@ -1033,7 +1035,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         plus.setEnabled(!waiting && current != null
                 && quantity < maximum());
         for (final JButton preset : presets) { preset.setEnabled(!waiting && current != null && current.stackable && maximum() > 0); }
-        quote.setVisible(current != null);
+        quantityControls.setVisible(current != null && current.stackable);
+        quantityPresets.setVisible(current != null && current.stackable);
+        quote.setVisible(current != null && current.stackable && quantity > 1);
         quote.setText(current == null ? "" : "Łącznie: " + formatMoney(total, currencyReformed));
         updateTabs();
     }

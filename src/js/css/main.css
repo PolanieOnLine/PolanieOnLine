@@ -2461,6 +2461,7 @@ td.number {
     color: var(--text-color); background: var(--background-url) repeat;
     font-size: 12px; overflow: hidden;
 }
+.npc-shop-dialog [hidden] { display: none; }
 .npc-shop-header { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: center; }
 .npc-shop-title { min-width: 0; }
 .npc-shop-title > span { display: none; }
