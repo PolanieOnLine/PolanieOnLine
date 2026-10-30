@@ -156,6 +156,12 @@ public final class NpcShopAction implements ActionListener {
                     "Handlarz rozmawia teraz z innym graczem.", null);
             return;
         }
+        // Catalogue polling is read-only; it must not greet the NPC again
+        // after the normal conversation timeout, or cancel a chat quote.
+        if ("refresh".equals(command)) {
+            publish(player, npc, NpcShopEvent.REFRESH, "", null);
+            return;
+        }
         if (npc.getAttending() == null) {
             npc.listenTo(player, "hi");
         }
@@ -168,9 +174,6 @@ public final class NpcShopAction implements ActionListener {
         if ("open".equals(command)) {
             cancelOffer(player, npc);
             publish(player, npc, NpcShopEvent.OPEN, "", null);
-        } else if ("refresh".equals(command)) {
-            cancelOffer(player, npc);
-            publish(player, npc, NpcShopEvent.REFRESH, "", null);
         } else if ("request".equals(command)) {
             request(player, npc, action, false);
         } else if ("purchase".equals(command)) {

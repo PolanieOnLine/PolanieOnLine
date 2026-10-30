@@ -255,4 +255,34 @@ public class NpcShopActionTest {
         }
     }
 
+    @Test
+    public void backgroundRefreshDoesNotRestartTheNpcConversation() {
+        final StendhalRPZone zone = new StendhalRPZone("shop_quiet_refresh");
+        final Player player = PlayerTestHelper.createPlayer("quiet-shop-customer");
+        player.setPosition(5, 5); zone.add(player);
+        final int[] greetings = {0};
+        final SpeakerNPC npc = new SpeakerNPC("quiet shop seller") {
+            @Override public void listenTo(final Player customer, final String text) {
+                if ("hi".equals(text)) { greetings[0]++; }
+                super.listenTo(customer, text);
+            }
+        };
+        npc.setPosition(6, 5); npc.addGreeting(); npc.addGoodbye();
+        new SellerAdder().addSeller(npc, new SellerBehaviour(Collections.singletonMap("sztylecik", 5)));
+        zone.add(npc);
+        final NpcShopAction shop = new NpcShopAction();
+        final RPAction open = action(npc, "1"); open.put("command", "open"); shop.onAction(player, open);
+        npc.listenTo(player, "bye");
+        npc.setAttending(null);
+        final RPAction refresh = action(npc, "1"); refresh.put("command", "refresh");
+        for (int i = 0; i < 3; i++) { shop.onAction(player, refresh); }
+        assertEquals(1, greetings[0]);
+        assertTrue(npc.getAttending() == null);
+        assertTrue(lastShopEvent(player).getList("sell_names").contains("sztylecik"));
+        PlayerTestHelper.equipWithMoney(player, 10);
+        shop.onAction(player, action(npc, "1"));
+        assertEquals(1, player.getTotalNumberOf("sztylecik"));
+        assertEquals(2, greetings[0]);
+    }
+
 }
