@@ -18,15 +18,13 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.core.rp.achievement.condition.QuestWithPrefixCompletedCondition;
+import games.stendhal.server.core.rp.achievement.condition.ChildFriendQuestCondition;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AGrandfathersWish;
 
@@ -68,23 +66,17 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						// Help Tad, Semos Town Hall (Medicine for Tad)
 						new QuestCompletedCondition("introduce_players"),
 						// Plink, Semos Plains North
-						new QuestCompletedCondition("plinks_toy"),
+						new OrCondition(new QuestCompletedCondition("plink_toy"),
+								new QuestCompletedCondition("plinks_toy")),
 						// Anna, in Ados
 						new QuestCompletedCondition("toys_collector"),
-						// Sally, Orril River
-						new QuestCompletedCondition("campfire"),
-						// Annie, Kalavan city gardens
-						new QuestStateStartsWithCondition("icecream_for_annie","eating;"),
-						// Elisabeth, Kirdneh
-						new QuestStateStartsWithCondition("chocolate_for_elisabeth","eating;"),
+						// First completion remains credited when Sally, Annie, Elisabeth,
+						// Hughie or Marianne asks for help again.
+						new ChildFriendQuestCondition(),
 						// Jef, Kirdneh
 						new QuestCompletedCondition("find_jefs_mom"),
-						// Hughie, Ados farmhouse
-						new AndCondition(new QuestActiveCondition("fishsoup_for_hughie"), new QuestNotInStateCondition("fishsoup_for_hughie", "start")),
 						// Finn Farmer, George
-						new QuestCompletedCondition("coded_message"),
-						// Marianne, Deniran City S
-						new QuestCompletedCondition("eggs_for_marianne")
+						new QuestCompletedCondition("coded_message")
 						)
 				));
 

@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rp.achievement.condition.ChildFriendQuestCondition;
 import games.stendhal.server.util.QuestUtils;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -95,6 +96,7 @@ class PlayerQuests {
 	public void setQuest(final String name, final String status) {
 		final String oldStatus = player.getKeyedSlot("!quests", QuestUtils.evaluateQuestSlotName(name));
 		player.setKeyedSlot("!quests", QuestUtils.evaluateQuestSlotName(name), status);
+		ChildFriendQuestCondition.rememberCompletion(player, name, oldStatus, status);
 		if ((status == null) || !status.equals(oldStatus)) {
 			new GameEvent(player.getName(), "quest", QuestUtils.evaluateQuestSlotName(name), status).raise();
 		}
