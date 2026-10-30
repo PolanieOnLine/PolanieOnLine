@@ -69,6 +69,11 @@ final class ItemRarityPresentation {
 	}
 
 	static String buildItemToolTip(final IEntity entity) {
+        return buildItemToolTip(entity, 0);
+    }
+
+    /** Use the same content in fixed-width item detail panels. */
+    static String buildItemToolTip(final IEntity entity, final int width) {
 		if (entity == null) {
 			return null;
 		}
@@ -80,7 +85,7 @@ final class ItemRarityPresentation {
 			equippedItem = EquipmentComparisonResolver.resolve(
 					entity.getRPObject());
 		}
-		return buildItemToolTip(entity, equippedItem, compareWithEquipment);
+		return buildItemToolTip(entity, equippedItem, compareWithEquipment, width);
 	}
 
 	static String buildItemToolTip(final IEntity entity,
@@ -90,6 +95,11 @@ final class ItemRarityPresentation {
 
 	static String buildItemToolTip(final IEntity entity,
 			final RPObject equippedItem, final boolean compareWithEquipment) {
+        return buildItemToolTip(entity, equippedItem, compareWithEquipment, 0);
+    }
+
+    private static String buildItemToolTip(final IEntity entity,
+            final RPObject equippedItem, final boolean compareWithEquipment, final int width) {
 		if (entity == null) {
 			return null;
 		}
@@ -124,7 +134,7 @@ final class ItemRarityPresentation {
 		appendRarityGlowMarker(tooltip, rarity);
 		/* Do not paint a private card background here. StyledToolTipUI tiles the
 		 * currently selected client skin behind this transparent HTML content. */
-		tooltip.append("<table width='").append(comparisonItem == null ? 190 : 240)
+		tooltip.append("<table width='").append(width > 0 ? width : comparisonItem == null ? 190 : 240)
 				.append("' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, object, rarity);

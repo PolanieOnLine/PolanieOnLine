@@ -643,3 +643,76 @@ function formatNumber(value: number, precision: number): string {
 		maximumFractionDigits: precision
 	});
 }
+
+export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTooltipLine) {
+		if (line.kind === "divider") {
+			const divider = document.createElement("div");
+			divider.className = "item-rarity-tooltip__divider";
+			divider.textContent = "────◇◇────";
+			toolTip.appendChild(divider);
+			return;
+		}
+
+		const detail = document.createElement("div");
+		if (line.kind === "tree") {
+			detail.className = "item-rarity-tooltip__tree";
+			const prefix = document.createElement("span");
+			prefix.className = "item-rarity-tooltip__tree-prefix";
+			prefix.textContent = line.branchContinues ? "├─◆ " : "└─◆ ";
+			detail.appendChild(prefix);
+			const value = document.createElement("span");
+			value.className = "item-rarity-tooltip__tree-value";
+			value.appendChild(document.createTextNode(line.text));
+			detail.appendChild(value);
+			appendTooltipDeltas(detail, line.deltas);
+			toolTip.appendChild(detail);
+			return;
+		}
+
+		switch (line.kind) {
+		case "primary":
+			detail.className = "item-rarity-tooltip__primary";
+			break;
+		case "bonus":
+			detail.className = "item-rarity-tooltip__bonus";
+			break;
+		case "affix":
+			detail.className = "item-rarity-tooltip__affix";
+			break;
+		case "footer":
+			detail.className = "item-rarity-tooltip__footer";
+			break;
+		default:
+			detail.className = "item-rarity-tooltip__detail";
+			break;
+		}
+		const value = document.createElement("span");
+		value.className = "item-rarity-tooltip__value";
+		value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		detail.appendChild(value);
+		if (line.deltas?.length) {
+			detail.classList.add("item-rarity-tooltip__stat-row");
+		}
+		appendTooltipDeltas(detail, line.deltas);
+		toolTip.appendChild(detail);
+	}
+
+function appendTooltipDeltas(target: HTMLElement, deltas?: ItemTooltipDelta[]) {
+		if (!deltas?.length) {
+			return;
+		}
+		const comparison = document.createElement("span");
+		comparison.className = "item-tooltip-comparison";
+		comparison.appendChild(document.createTextNode(" ("));
+		deltas.forEach((delta, index) => {
+			if (index > 0) {
+				comparison.appendChild(document.createTextNode("–"));
+			}
+			const value = document.createElement("span");
+			value.className = "item-tooltip-delta item-tooltip-delta--" + delta.direction;
+			value.textContent = delta.text;
+			comparison.appendChild(value);
+		});
+		comparison.appendChild(document.createTextNode(")"));
+		target.appendChild(comparison);
+	}

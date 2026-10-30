@@ -49,6 +49,7 @@ import games.stendhal.client.gui.EffectLayer;
 import games.stendhal.client.gui.GroundContainer;
 import games.stendhal.client.gui.ItemUpgradeWindow;
 import games.stendhal.client.gui.ProductionWindow;
+import games.stendhal.client.gui.NpcShopWindow;
 import games.stendhal.client.gui.j2d.AchievementBoxFactory;
 import games.stendhal.client.gui.j2d.RemovableSprite;
 import games.stendhal.client.gui.j2d.entity.Entity2DView;
@@ -997,6 +998,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		removeAllObjects();
 		ItemUpgradeWindow.closeOnZoneChange();
 		ProductionWindow.closeOnZoneChange();
+        NpcShopWindow.closeOnZoneChange();
 		SwingUtilities.invokeLater(globalEffects::clear);
 	}
 

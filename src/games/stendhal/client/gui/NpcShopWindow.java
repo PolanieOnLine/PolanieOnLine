@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -24,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
+import javax.swing.border.Border;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -37,6 +40,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.BoxLayout;
+import javax.swing.Timer;
+import org.json.simple.JSONValue;
+import games.stendhal.client.entity.Item;
+import games.stendhal.client.ClientLanguage;
+import marauroa.common.game.RPObject;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -47,6 +56,9 @@ import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.common.constants.Actions;
+import games.stendhal.common.constants.ItemRarity;
+import java.util.Set;
+import java.util.LinkedHashSet;
 import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
@@ -93,6 +105,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private static NpcShopWindow instance;
 
     private static final class Entry {
+        private String key;
+        private int limit;
+        private Item entity;
         private final String name;
         private final String price;
         private final String itemClass;
@@ -105,7 +120,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 final String itemClass, final String subclass,
                 final boolean stackable, final String description,
                 final long priceValue) {
-            this.name = name;
+            this.name = name; this.key = name; this.limit = stackable ? 1000 : 1;
             this.price = price;
             this.itemClass = itemClass;
             this.subclass = subclass;
@@ -131,7 +146,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
             setSelectionBackground(ROW_SELECTED);
             setSelectionForeground(TEXT);
             setOpaque(false);
-            setFixedCellHeight(61);
+            setFixedCellHeight(46);
             setVisibleRowCount(6);
             setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             setCellRenderer(new RowRenderer());
@@ -181,10 +196,10 @@ public final class NpcShopWindow extends InternalManagedWindow {
         }
     }
 
-    private static javax.swing.border.Border nativeInsetBorder(
+    private static Border nativeInsetBorder(
             final int top, final int left, final int bottom, final int right) {
         final Style style = StyleUtil.getStyle();
-        final javax.swing.border.Border frame = style == null
+        final Border frame = style == null
                 ? BorderFactory.createLineBorder(BORDER)
                 : style.getBorderDown();
         return BorderFactory.createCompoundBorder(frame,
@@ -247,9 +262,17 @@ public final class NpcShopWindow extends InternalManagedWindow {
                     SpriteStore.get().getSprite("data/gui/goldencoin.png"), 17));
             priceRow.add(price);
             final PlainPanel description = new PlainPanel(
-                    new java.awt.GridLayout(2, 1, 0, 1));
+                    new GridLayout(2, 1, 0, 1));
             description.add(name);
             description.add(priceRow);
+            if (entry.entity != null) {
+                final ItemRarity rarity = entry.entity.getRarity();
+                if (rarity != null) {
+                    name.setText(entry.name + " · " + ClientLanguage.getText(rarity.getPolishDisplayName())
+                            + (entry.entity.getRPObject().has("improve") ? " +" + entry.entity.getRPObject().get("improve") : ""));
+                    name.setForeground(rarity == ItemRarity.COMMON ? TEXT : Color.decode(rarity.getColorHex()));
+                }
+            }
             row.add(new ItemBadge(spriteFor(entry)), BorderLayout.WEST);
             row.add(description, BorderLayout.CENTER);
             return row;
@@ -344,7 +367,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
             super(text);
             tab = "Kup".equals(text) || "Sprzedaj".equals(text);
             setFocusPainted(false);
-            setMargin(new java.awt.Insets(3, 8, 3, 8));
+            setMargin(new Insets(3, 8, 3, 8));
             if (primary) {
                 setFont(getFont().deriveFont(Font.BOLD));
             }
@@ -357,10 +380,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
             setFont(getFont().deriveFont(active ? Font.BOLD : Font.PLAIN));
             setForeground(active ? GOLD : TEXT);
             final Style style = StyleUtil.getStyle();
-            final javax.swing.border.Border base = style == null
+            final Border base = style == null
                     ? BorderFactory.createLineBorder(BORDER) : style.getBorder();
-            setBorder(active ? BorderFactory.createCompoundBorder(base,
-                    BorderFactory.createMatteBorder(0, 0, 2, 0, GOLD)) : base);
+            setBorder(base);
         }
     }
 
@@ -387,8 +409,18 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private final ShopButton minus = new ShopButton("-", false);
     private final ShopButton plus = new ShopButton("+", false);
     private final ShopButton request = new ShopButton("Kup teraz", true);
-    private final ShopButton refresh = new ShopButton("Odśwież", false);
-    private final JTextArea itemDescription = new JTextArea(3, 2);
+    private final JLabel itemDescription = new JLabel();
+    private final JLabel stats = new JLabel();
+    private final List<JButton> presets = new ArrayList<>();
+    private String windowId = "";
+    private long sequence;
+    private long lastRequest;
+    private long money;
+    private double priceFactor = 1;
+    private boolean refreshPending;
+    private final Timer polling = new Timer(2000, event -> { if (!this.waiting && !this.refreshPending) send("refresh", null, null, 0); });
+    private final Timer animation = new Timer(100, event -> { sellList.repaint(); buyList.repaint(); preview.repaint(); });
+    private static final Set<String> CLOSED = new LinkedHashSet<>();
     private boolean currencyReformed;
 
     private int npcId;
@@ -405,6 +437,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
             @Override
             public void windowClosed(final InternalWindow window) {
                 send("close", null, null, 0);
+                polling.stop(); animation.stop(); CLOSED.add(windowId);
+                while (CLOSED.size() > 64) { CLOSED.remove(CLOSED.iterator().next()); }
                 instance = null;
             }
         });
@@ -414,6 +448,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                if (event.has("window_id") && CLOSED.contains(event.get("window_id"))) { return; }
+                if (instance != null && event.has("window_id") && !instance.windowId.isEmpty()
+                        && !instance.windowId.equals(event.get("window_id")) && !"open".equals(event.get("phase"))) { return; }
                 if (instance == null) {
                     if (!event.has("phase") || !"open".equals(event.get("phase"))) {
                         return;
@@ -426,11 +463,18 @@ public final class NpcShopWindow extends InternalManagedWindow {
                         && !"open".equals(event.get("phase"))) {
                     return;
                 }
+                if (event.has("request_id") && !event.get("request_id").isEmpty()
+                        && Long.parseLong(event.get("request_id")) < instance.lastRequest) { return; }
                 instance.apply(event);
+                instance.polling.start(); instance.animation.start();
                 instance.setVisible(true);
-                instance.raise();
+                if ("open".equals(event.get("phase"))) { instance.raise(); }
             }
         });
+    }
+
+    public static void closeOnZoneChange() {
+        SwingUtilities.invokeLater(() -> { if (instance != null) { instance.close(); } });
     }
 
     private static JPanel solid(final LayoutManager layout, final Color color) {
@@ -464,7 +508,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private JComponent createContent() {
         final JPanel content = new JPanel(new BorderLayout(7, 7));
         content.setBorder(BorderFactory.createEmptyBorder(9, 10, 9, 10));
-        content.setPreferredSize(new Dimension(698, 448));
+        content.setPreferredSize(new Dimension(740, 540));
 
         // One title bar, one search bar. The wood texture is shared by
         // all parts of the window rather than alternating unrelated panels.
@@ -491,7 +535,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         // supplied shop reference.
         final WoodPanel left = new WoodPanel(
                 new BorderLayout(0, 5), 34, true);
-        left.setBorder(nativeInsetBorder(5, 6, 6, 6));
+        left.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         final PlainPanel tabs = new PlainPanel(
                 new FlowLayout(FlowLayout.LEFT, 5, 0));
         buyTab.setPreferredSize(new Dimension(94, 27));
@@ -515,35 +559,34 @@ public final class NpcShopWindow extends InternalManagedWindow {
         // Single engraved panel, with a clear image, description and price.
         final WoodPanel detail = new WoodPanel(
                 new BorderLayout(0, 5), 63, true);
-        detail.setPreferredSize(new Dimension(227, 0));
+        detail.setPreferredSize(new Dimension(302, 0));
         detail.setBorder(nativeInsetBorder(6, 7, 7, 7));
         final JLabel section = label("Wybrany przedmiot", 13, TEXT, true);
         section.setHorizontalAlignment(SwingConstants.CENTER);
-        section.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, GOLD));
-        detail.add(section, BorderLayout.NORTH);
+        section.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
+        final PlainPanel detailHeading = new PlainPanel(new BorderLayout(7, 0));
+        detailHeading.add(preview, BorderLayout.WEST);
+        detailHeading.add(section, BorderLayout.CENTER);
+        detail.add(detailHeading, BorderLayout.NORTH);
 
         final PlainPanel identity = new PlainPanel(new BorderLayout(0, 5));
-        final PlainPanel imageRow = new PlainPanel(
-                new FlowLayout(FlowLayout.CENTER, 0, 0));
-        imageRow.add(preview);
-        identity.add(imageRow, BorderLayout.NORTH);
 
-        final PlainPanel nameAndDescription = new PlainPanel(
-                new BorderLayout(0, 3));
-        selectedName.setFont(selectedName.getFont().deriveFont(Font.BOLD, 15f));
-        selectedName.setHorizontalAlignment(SwingConstants.CENTER);
-        nameAndDescription.add(selectedName, BorderLayout.NORTH);
-        itemDescription.setEditable(false);
-        itemDescription.setFocusable(false);
-        itemDescription.setOpaque(false);
-        itemDescription.setLineWrap(true);
-        itemDescription.setWrapStyleWord(true);
-        itemDescription.setFont(itemDescription.getFont().deriveFont(12f));
+        final JPanel descriptionContent = new PlainPanel(null);
+        descriptionContent.setLayout(new BoxLayout(descriptionContent, BoxLayout.PAGE_AXIS));
+        selectedName.setAlignmentX(Component.LEFT_ALIGNMENT);
+        stats.setAlignmentX(Component.LEFT_ALIGNMENT);
+        itemDescription.setAlignmentX(Component.LEFT_ALIGNMENT);
         itemDescription.setForeground(MUTED);
-        itemDescription.setText("Wybierz przedmiot, aby zobaczyć szczegóły.");
-        itemDescription.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 4));
-        nameAndDescription.add(itemDescription, BorderLayout.CENTER);
-        identity.add(nameAndDescription, BorderLayout.CENTER);
+        descriptionContent.add(selectedName);
+        descriptionContent.add(stats);
+        descriptionContent.add(itemDescription);
+        final JScrollPane descriptionScroll = new JScrollPane(descriptionContent);
+        descriptionScroll.setBorder(BorderFactory.createEmptyBorder());
+        descriptionScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        descriptionScroll.getViewport().setOpaque(false);
+        descriptionScroll.setOpaque(false);
+        descriptionScroll.getVerticalScrollBar().setUnitIncrement(18);
+        identity.add(descriptionScroll, BorderLayout.CENTER);
 
         final PlainPanel priceFrame = new PlainPanel(new BorderLayout(0, 3));
         priceFrame.setBorder(BorderFactory.createEmptyBorder(6, 8, 6, 8));
@@ -552,7 +595,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         priceFrame.add(unitPrice, BorderLayout.NORTH);
         quote.setHorizontalAlignment(SwingConstants.CENTER);
         quote.setForeground(SUCCESS);
-        quote.setVisible(false);
+        quote.setVisible(true);
         priceFrame.add(quote, BorderLayout.SOUTH);
         identity.add(priceFrame, BorderLayout.SOUTH);
         detail.add(identity, BorderLayout.CENTER);
@@ -580,6 +623,15 @@ public final class NpcShopWindow extends InternalManagedWindow {
         quantity.add(amount);
         quantity.add(plus);
         controls.add(quantity, BorderLayout.NORTH);
+        final JPanel quick = new PlainPanel(new FlowLayout(FlowLayout.CENTER, 4, 0));
+        for (final String caption : new String[] {"1", "10", "100", "Maks"}) {
+            final JButton preset = new JButton(ClientLanguage.getText(caption));
+            preset.setMargin(new Insets(2, 5, 2, 5));
+            preset.addActionListener(event -> amount.setText(Integer.toString("Maks".equals(caption)
+                    ? maximum() : Math.min(maximum(), Integer.parseInt(caption)))));
+            presets.add(preset); quick.add(preset);
+        }
+        controls.add(quick, BorderLayout.CENTER);
         request.setPreferredSize(new Dimension(10, 36));
         controls.add(request, BorderLayout.SOUTH);
         detail.add(controls, BorderLayout.SOUTH);
@@ -599,8 +651,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         information.setForeground(MUTED);
         information.setFont(information.getFont().deriveFont(12f));
         footer.add(information, BorderLayout.CENTER);
-        refresh.setPreferredSize(new Dimension(98, 32));
-        footer.add(refresh, BorderLayout.EAST);
+
         content.add(footer, BorderLayout.SOUTH);
 
         search.getDocument().addDocumentListener(new DocumentListener() {
@@ -630,7 +681,6 @@ public final class NpcShopWindow extends InternalManagedWindow {
             }
         });
         request.addActionListener(event -> purchase());
-        refresh.addActionListener(event -> send("refresh", null, null, 0));
         amount.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(final DocumentEvent event) {
@@ -650,13 +700,49 @@ public final class NpcShopWindow extends InternalManagedWindow {
         return content;
     }
 
+    private static String escape(final String value) {
+        return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    private static Item parseSnapshot(final String json) {
+        final Object parsed = JSONValue.parse(json);
+        if (!(parsed instanceof Map)) { return null; }
+        final RPObject object = new RPObject();
+        object.setRPClass("item");
+        for (final Map.Entry<?, ?> field : ((Map<?, ?>) parsed).entrySet()) {
+            if (field.getValue() instanceof Map) {
+                for (final Map.Entry<?, ?> value : ((Map<?, ?>) field.getValue()).entrySet()) {
+                    object.put(String.valueOf(field.getKey()), String.valueOf(value.getKey()), String.valueOf(value.getValue()));
+                }
+
+            } else { object.put(String.valueOf(field.getKey()), String.valueOf(field.getValue())); }
+        }
+        final Item item = new Item(); item.initialize(object); return item;
+    }
+
+    private int maximum() {
+        final Entry entry = selected();
+        if (entry == null) { return 0; }
+        final double unit = entry.priceValue * (sellingMode ? 1 : priceFactor);
+        int maximum = Math.min(1000, entry.limit);
+        if (unit > 0) {
+            final long budget = sellingMode ? Integer.MAX_VALUE : Math.min(Integer.MAX_VALUE, money);
+            maximum = Math.min(maximum, (int) Math.min(1000, Math.ceil((budget + 1.0) / unit) - 1));
+        }
+        return Math.max(0, maximum);
+    }
+
+    private long total(final Entry entry, final int count) {
+        return entry == null ? 0 : (long) (entry.priceValue * count * (sellingMode ? 1 : priceFactor));
+    }
+
     private void changeAmount(final int change) {
         final Entry entry = selected();
         if (entry == null || waiting) {
             return;
         }
         final int oldValue = readAmount();
-        final int maximum = entry.stackable ? 1000 : 1;
+        final int maximum = maximum();
         amount.setText(Integer.toString(
                 Math.max(1, Math.min(maximum, oldValue + change))));
     }
@@ -668,8 +754,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 SpriteStore.get().getSprite("data/gui/slot.png");
 
         private ItemIcon() {
-            setPreferredSize(new Dimension(83, 84));
-            setMinimumSize(new Dimension(83, 84));
+            setPreferredSize(new Dimension(42, 44));
+            setMinimumSize(new Dimension(42, 44));
         }
 
         private void setEntry(final Entry entry) {
@@ -680,7 +766,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         @Override
         protected void paintComponent(final Graphics graphics) {
             final Graphics2D g = (Graphics2D) graphics.create();
-            final double scale = 1.7;
+            final double scale = 1.0;
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
             g.translate((getWidth() - slot.getWidth() * scale) / 2,
@@ -704,7 +790,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
                 + "/" + entry.subclass + ".png";
         Sprite sprite = SPRITES.get(path);
         if (sprite == null) {
-            sprite = SpriteStore.get().getSprite(path);
+            final SpriteStore store = SpriteStore.get();
+            final Sprite sheet = store.getSprite(path);
+            sprite = sheet != null && sheet.getWidth() > 32 ? store.getAnimatedSprite(sheet, 0, 0, sheet.getWidth() / 32, 32, 32, 100) : sheet;
             if (sprite != null) {
                 SPRITES.put(path, sprite);
             }
@@ -745,10 +833,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private void apply(final RPEvent event) {
         applying = true;
         waiting = false;
+        refreshPending = false;
         npcId = event.getInt("npc_id");
         merchant.setText(event.get("npc_name"));
         wallet.setText("Posiadasz: " + event.get("owned_money_text"));
-        final String previous = selected() == null ? null : selected().name;
+        windowId = event.has("window_id") ? event.get("window_id") : "";
+        money = event.has("owned_money_value") ? Long.parseLong(event.get("owned_money_value")) : 0;
+        priceFactor = event.has("buying_penalty") ? Double.parseDouble(event.get("buying_penalty")) : 1;
+        final String previous = selected() == null ? null : selected().key;
 
         selling.clear();
         buying.clear();
@@ -756,8 +848,8 @@ public final class NpcShopWindow extends InternalManagedWindow {
         readEntries(event, "buy", buying);
         currencyReformed = event.has("currency_reformed")
                 && event.getInt("currency_reformed") == 1;
-        if ((sellingMode && buying.isEmpty())
-                || (!sellingMode && selling.isEmpty())) {
+        if ("open".equals(event.get("phase")) && ((sellingMode && buying.isEmpty())
+                || (!sellingMode && selling.isEmpty()))) {
             sellingMode = selling.isEmpty() && !buying.isEmpty();
         }
         filter();
@@ -765,9 +857,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
         if (selectedName != null) {
             final ShopList list = currentList();
             for (int i = 0; i < list.getModel().getSize(); i++) {
-                if (selectedName.equals(list.getModel().getElementAt(i).name)) {
+                if (selectedName.equals(list.getModel().getElementAt(i).key)) {
                     list.setSelectedIndex(i);
-                    list.ensureIndexIsVisible(i);
+
                     break;
                 }
             }
@@ -782,9 +874,11 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final boolean success = "result".equals(event.get("phase"))
                 && (message.startsWith("Zakup udany:")
                         || message.startsWith("Sprzedaż udana:"));
-        setStatus(message.length() > 0 ? message
-                : "Wybierz przedmiot, ustaw ilość i kup lub sprzedaj.",
-                error ? ERROR : success ? SUCCESS : MUTED);
+        if (!"refresh".equals(event.get("phase")) || !message.isEmpty()) {
+            setStatus(message.length() > 0 ? message
+                    : "Wybierz przedmiot, ustaw ilość i kup lub sprzedaj.",
+                    error ? ERROR : success ? SUCCESS : MUTED);
+        }
         applying = false;
         updateTabs();
         refreshDetails();
@@ -804,8 +898,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         final List<String> prices = values(event, prefix + "_prices");
         final List<String> classes = values(event, prefix + "_classes");
         final List<String> subclasses = values(event, prefix + "_subclasses");
-        final List<String> stackable = values(event, "sell_stackable");
-        final List<String> descriptions = values(event, prefix + "_descriptions");
+                final List<String> descriptions = values(event, prefix + "_descriptions");
         final List<String> rawPrices = values(event, prefix + "_price_values");
         for (int i = 0; i < names.size(); i++) {
             long rawPrice = 0L;
@@ -814,10 +907,14 @@ public final class NpcShopWindow extends InternalManagedWindow {
             } catch (final NumberFormatException ignored) {
                 // A legacy event may not provide numerical catalogue prices.
             }
-            target.add(new Entry(names.get(i),
-                    get(prices, i), get(classes, i), get(subclasses, i),
-                    !"sell".equals(prefix) || "1".equals(get(stackable, i)),
-                    get(descriptions, i), rawPrice));
+            final Entry entry = new Entry(names.get(i), get(prices, i), get(classes, i), get(subclasses, i),
+                    "1".equals(get(values(event, prefix + "_stackable"), i)), get(descriptions, i), rawPrice);
+            entry.key = get(values(event, prefix + "_keys"), i);
+            if (entry.key.isEmpty()) { entry.key = entry.name; }
+            try { entry.limit = Integer.parseInt(get(values(event, prefix + "_quantities"), i)); }
+            catch (final NumberFormatException ignored) { entry.limit = entry.stackable ? 1000 : 1; }
+            entry.entity = parseSnapshot(get(values(event, prefix + "_items"), i));
+            target.add(entry);
         }
     }
 
@@ -831,9 +928,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
     private void filter() {
         final String oldBuy = sellList.getSelectedValue() == null
-                ? null : sellList.getSelectedValue().name;
+                ? null : sellList.getSelectedValue().key;
         final String oldSell = buyList.getSelectedValue() == null
-                ? null : buyList.getSelectedValue().name;
+                ? null : buyList.getSelectedValue().key;
         final boolean wasApplying = applying;
         applying = true;
         fill(selling, sellModel, sellList, oldBuy);
@@ -851,7 +948,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
         for (final Entry entry : source) {
             if (entry.name.toLowerCase(Locale.ROOT).contains(term)) {
                 model.addElement(entry);
-                if (entry.name.equals(previous)) {
+                if (entry.key.equals(previous)) {
                     list.setSelectedIndex(model.size() - 1);
                 }
             }
@@ -873,13 +970,13 @@ public final class NpcShopWindow extends InternalManagedWindow {
                         .replace("<", "&lt;").replace(">", "&gt;")
                         + "</center></html>");
         selectedName.setToolTipText(entry == null ? null : entry.name);
-        itemDescription.setText(entry == null
-                ? "Wybierz przedmiot, aby zobaczyć szczegóły."
-                : entry.description.isEmpty() ? "Brak dodatkowego opisu."
-                        : entry.description);
-        itemDescription.setCaretPosition(0);
+        final String html = entry == null || entry.entity == null ? null : ItemRarityPresentation.buildItemToolTip(entry.entity, 250);
+        stats.setText(html == null ? "" : html);
+        selectedName.setVisible(html == null);
+        itemDescription.setText("<html><table width='258'><tr><td>" + escape(entry == null
+                ? "Wybierz przedmiot, aby zobaczyć szczegóły." : entry.description) + "</td></tr></table></html>");
         unitPrice.setText(entry == null ? "Brak wybranego przedmiotu"
-                : sellingMode ? "Cena bazowa: " + entry.price
+                : sellingMode ? "Cena za sztukę: " + entry.price
                         : "Cena: " + entry.price);
         preview.setEntry(entry);
         if (entry != null && !entry.stackable && readAmount() != 1) {
@@ -922,10 +1019,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
     private void refreshButtons() {
         final Entry current = selected();
         final int quantity = readAmount();
-        final long total = current == null ? 0
-                : current.priceValue * quantity;
+        final long total = total(current, quantity);
         final boolean valid = current != null && quantity >= 1
-                && quantity <= (current.stackable ? 1000 : 1)
+                && quantity <= maximum()
                 && (current.priceValue == 0 || total <= Integer.MAX_VALUE);
         request.setText(sellingMode ? "Sprzedaj teraz" : "Kup teraz");
         request.setEnabled(valid && !waiting);
@@ -935,16 +1031,10 @@ public final class NpcShopWindow extends InternalManagedWindow {
         amount.setEnabled(!waiting && current != null);
         minus.setEnabled(!waiting && current != null && quantity > 1);
         plus.setEnabled(!waiting && current != null
-                && quantity < (current.stackable ? 1000 : 1));
-        refresh.setEnabled(!waiting);
-        if (current != null && quantity > 1 && valid && current.priceValue > 0) {
-            quote.setText("<html><center>Razem orientacyjnie: "
-                    + formatMoney(total, currencyReformed) + "</center></html>");
-            quote.setVisible(true);
-        } else {
-            quote.setText("");
-            quote.setVisible(false);
-        }
+                && quantity < maximum());
+        for (final JButton preset : presets) { preset.setEnabled(!waiting && current != null && current.stackable && maximum() > 0); }
+        quote.setVisible(current != null);
+        quote.setText(current == null ? "" : "Łącznie: " + formatMoney(total, currencyReformed));
         updateTabs();
     }
 
@@ -954,9 +1044,9 @@ public final class NpcShopWindow extends InternalManagedWindow {
             return;
         }
         final int quantity = readAmount();
-        if (quantity < 1 || quantity > (entry.stackable ? 1000 : 1)
+        if (quantity < 1 || quantity > maximum()
                 || (entry.priceValue > 0
-                        && entry.priceValue * quantity > Integer.MAX_VALUE)) {
+                        && total(entry, quantity) > Integer.MAX_VALUE)) {
             setStatus("Podaj poprawną ilość.", ERROR);
             return;
         }
@@ -972,10 +1062,15 @@ public final class NpcShopWindow extends InternalManagedWindow {
         if (npcId == 0) {
             return;
         }
+        if ("refresh".equals(command)) { refreshPending = true; }
         final RPAction action = new RPAction();
         action.put("type", Actions.NPC_SHOP);
         action.put("command", command);
         action.put("npc_id", npcId);
+        action.put("window_id", windowId);
+        action.put("request_id", Long.toString(++sequence));
+        lastRequest = sequence;
+        if ("sell".equals(mode) && selected() != null) { action.put("selection", selected().key); }
         if (mode != null) {
             action.put("mode", mode);
         }
