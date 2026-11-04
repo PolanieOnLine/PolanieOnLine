@@ -18,6 +18,8 @@ import games.stendhal.common.Direction;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.quest.StarterQuestLine;
+import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -29,12 +31,59 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 
 public class MariuszekNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
+	}
+
+
+	private void addNewPlayerAdvice(final SpeakerNPC npc) {
+		final String help = "Początki bywają trudne, ale nie musisz błądzić. Zapytaj mnie o #broń, #jedzenie, #mikstury, "
+				+ "#leczenie, #bank, #potwory lub #pieniądze. Jeśli szukasz zadania, zapytaj #'co dalej'. "
+				+ "Swój aktualny cel znajdziesz też w dzienniku, w zakładce Zadania główne.";
+		final ChatAction next = (player, sentence, speaker) -> {
+			player.setQuest("meet_mariuszek", "done");
+			speaker.say(StarterQuestLine.nextObjective(player));
+		};
+		for (final ConversationStates state : new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.INFORMATION_1}) {
+			npc.add(state, ConversationPhrases.HELP_MESSAGES, null, ConversationStates.ATTENDING,
+					help, new SetQuestAction("meet_mariuszek", "done"));
+			npc.add(state, Arrays.asList("co dalej", "dalej", "zadanie", "zadania", "task", "quest"), null,
+					ConversationStates.ATTENDING, null, next);
+			npc.add(state, Arrays.asList("broń", "bron", "uzbrojenie", "sklep", "sklepy"), null,
+					ConversationStates.ATTENDING,
+					"Podstawową broń kupisz u Bogusia w szpitalu w Zakopanem S. Masz już broń na początek, "
+					+ "więc warto zachować trochę monet na #jedzenie. Sklep Staska jest obok mostu w Zakopanem C, "
+					+ "ale jego ofertę odblokujesz po wykonaniu zlecenia. Zapytaj #'co dalej', a wskażę Ci kolejny krok.", null);
+			npc.add(state, Arrays.asList("jedzenie", "żywność", "zywnosc", "głód", "glod"), null,
+					ConversationStates.ATTENDING,
+					"Jedzenie kupisz u Jagny w karczmie w Zakopanem NE. Odnawia zdrowie stopniowo. "
+					+ "Zabierz zapas na wyprawę, a jeśli masz mało monet, skorzystaj z bezpłatnego #leczenia.", null);
+			npc.add(state, Arrays.asList("leczenie", "ulecz", "rany", "zdrowie"), null,
+					ConversationStates.ATTENDING,
+					"Gaździna Jadźka w szpitalu w Zakopanem S leczy bezpłatnie. Przywitaj się z nią i powiedz #'ulecz'. "
+					+ "Nie musisz kupować eliksiru, żeby opatrzyć rany po powrocie do miasta.", null);
+			npc.add(state, Arrays.asList("mikstury", "mikstura", "eliksir", "eliksiry", "potion"), null,
+					ConversationStates.ATTENDING,
+					"Eliksiry kupisz u Carmen w mieście Semos. Przejście do Semos znajdziesz w północno-wschodniej "
+					+ "części Zakopanego C. Na początku możesz korzystać z #jedzenia i bezpłatnego #leczenia u Jadźki.", null);
+			npc.add(state, Arrays.asList("bank", "depozyt", "schowek"), null,
+					ConversationStates.ATTENDING,
+					"Bank znajdziesz w Zakopanem S. Na parterze są schowki, w których możesz zostawić swoje przedmioty. "
+					+ "Do zwykłego schowka nie musisz wchodzić na piętro.", null);
+			npc.add(state, Arrays.asList("potwory", "potwór", "potwor", "stworzenia"), null,
+					ConversationStates.ATTENDING,
+					"Sabała zna tutejsze potwory. Przywitaj się z nim, powiedz #'potwór', a gdy zapyta, podaj nazwę stworzenia. "
+					+ "Na początek Pietrek i Adaś wskażą Ci słabszych przeciwników. Zapytaj mnie #'co dalej'.", null);
+			npc.add(state, Arrays.asList("pieniądze", "pieniadze", "zarobek", "monety", "sprzedaż"), null,
+					ConversationStates.ATTENDING,
+					"Boguś w szpitalu w Zakopanem S skupuje skóry i futra. Sprawdź jego zakładkę Sprzedaj, "
+					+ "żeby zobaczyć, co przyjmuje. Nie kupuje każdego łupu. Część wyposażenia dostaniesz za pierwsze zadania, "
+					+ "więc nie musisz od razu wydawać wszystkich monet na zakupy.", null);
+		}
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
@@ -61,26 +110,29 @@ public class MariuszekNPC implements ZoneConfigurator {
 
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
-                        new AndCondition(new GreetingMatchesNameCondition(getName()),
-                        		new QuestNotCompletedCondition("meet_mariuszek")),
+						new AndCondition(new GreetingMatchesNameCondition(getName()),
+								new QuestNotStartedCondition("meet_mariuszek")),
 						ConversationStates.INFORMATION_1,
 						"Och, witaj nieznajomy! Wyglądasz na nieco zdezorientowanego... Mógłbym Ci jakoś #pomóc?",
 						new SetQuestAction("meet_mariuszek", "start"));
 
 				add(ConversationStates.IDLE,
 						ConversationPhrases.GREETING_MESSAGES,
-                        new AndCondition(new GreetingMatchesNameCondition(getName()),
-                        		new QuestInStateCondition("meet_mariuszek", "start")),
+						new AndCondition(new GreetingMatchesNameCondition(getName()),
+								new QuestInStateCondition("meet_mariuszek", "start")),
 						ConversationStates.INFORMATION_1,
-						"Och, witaj nieznajomy! Jeszcze się nie poznaliśmy, mogę Ci mówić po imieniu? Wyglądasz też na nieco zdezorientowanego... Może mogę Ci jakoś #pomóc?",
-						new SetQuestAction("meet_mariuszek", "done"));
+						"Witaj ponownie! Mogę pomóc Ci odnaleźć się w Zakopanem. Chcesz usłyszeć, od czego zacząć?",
+						null);
 
 				add(ConversationStates.INFORMATION_1,
 						ConversationPhrases.YES_MESSAGES,
 						new QuestActiveCondition("meet_mariuszek"),
 						ConversationStates.ATTENDING,
-						"Odwiedziłeś już #Pietrka? Jak jeszcze nie to zapytaj się jego co u niego słychać. Może będzie miał dla Ciebie jakąś #radę.",
-						new SetQuestAction("meet_mariuszek", "done"));
+						null,
+						(player, sentence, speaker) -> {
+							player.setQuest("meet_mariuszek", "done");
+							speaker.say(StarterQuestLine.nextObjective(player));
+						});
 
 				add(ConversationStates.INFORMATION_1,
 						ConversationPhrases.NO_MESSAGES,
@@ -120,7 +172,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 						null);
 
 				addJob("Lubię oglądać i wąchać *snif* *snif* aachhhh... Och, wybacz Ty tu jeszcze stoisz.");
-				addHelp("Popytaj się innych mieszkańców czy może też wędrówców takich jak Ty czy nie potrzebują pomocy.");
+				addNewPlayerAdvice(this);
 				addGoodbye("Czeeść! Życzę Tobie miłego dzionka! *snif* *snif* aachhhh...");
 			}
 

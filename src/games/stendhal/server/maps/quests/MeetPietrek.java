@@ -145,7 +145,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_5,
-			"Po walce możesz odwiedzić Gaździnę Jadźkę w szpitalu w centrum Zakopanego. Opatrzy twoje rany bez opłaty. Jedzenie przydaje się podczas wyprawy, bo stopniowo odnawia zdrowie. Czy chcesz wiedzieć, gdzie szukać pomocy? #Tak?",
+			"Po walce możesz odwiedzić Gaździnę Jadźkę w szpitalu w Zakopanem S. Opatrzy twoje rany bez opłaty. Jedzenie przydaje się podczas wyprawy, bo stopniowo odnawia zdrowie. Czy chcesz wiedzieć, gdzie szukać pomocy? #Tak?",
 			null);
 
 		// The player has had enough info for now. Send them to semos. When they come back they can learn some more tips.
@@ -154,14 +154,14 @@ public class MeetPietrek extends AbstractQuest {
 		reward.add(new EquipItemAction("money", 25));
 		reward.add(new IncreaseXPAction(150));
 		reward.add(new SetQuestAction(QUEST_SLOT, "taught"));
-		reward.add(new ExamineChatAction("npcgenowefa.png", "Gaździna Jadźka", "Centrum Zakopanego."));
+		reward.add(new ExamineChatAction("npcgenowefa.png", "Gaździna Jadźka", "Szpital w Zakopanem S."));
 
 		npc.add(
 			ConversationStates.INFORMATION_5,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.IDLE,
-			"Wyjdź z domku, a znajdziesz się w centrum Zakopanego. W szpitalu spotkasz Jadźkę oraz Bogusia, u którego kupisz podstawowe wyposażenie. Gdy będziesz gotowy, wróć po ostatnie wskazówki. Mieszkańcy szykują zapasy na chłody i potrzebują pomocy.",
+			"Wyjdź z domku, a znajdziesz się w centrum Zakopanego. Udaj się na południe do Zakopanego S. W szpitalu spotkasz Jadźkę oraz Bogusia, u którego kupisz podstawowe wyposażenie. Gdy będziesz gotowy, wróć po ostatnie wskazówki. Mieszkańcy szykują zapasy na chłody i potrzebują pomocy.",
 			new MultipleActions(reward));
 
 		// incase player didn't finish learning everything when he came after killing the rat, he must have another chance. Here it is.

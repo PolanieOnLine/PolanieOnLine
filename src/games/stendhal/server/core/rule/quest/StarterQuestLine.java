@@ -13,6 +13,17 @@ public final class StarterQuestLine {
 
     private StarterQuestLine() { }
 
+    /** The next unfinished step of the Zakopane introduction, without accepting a quest. */
+    public static String nextObjective(final Player player) {
+        for (final String slot : new String[] {"meet_pietrek", "pomoc_adasiowi", "scythe_fryderyk", "wegiel_na_opal"}) {
+            if (!player.isQuestCompleted(slot)) {
+                return objective(player, slot);
+            }
+        }
+        return "Zdobyłeś już zaufanie mieszkańców Zakopanego. Gościrad w ratuszu podpowie Ci, kto jeszcze potrzebuje pomocy. "
+                + "Możesz też zajrzeć do zadań pobocznych w dzienniku.";
+    }
+
     public static String objective(final Player player, final String slot) {
         final String state = player.getQuest(slot, 0);
         if ("meet_pietrek".equals(slot)) {
@@ -34,7 +45,7 @@ public final class StarterQuestLine {
             if (state == null || "rejected".equals(state)) { return FRYDERYK; }
             return player.isEquipped("kosa")
                     ? "Zanieś kosę Fryderykowi w Zakopanem S."
-                    : "Zdobądź kosę dla Fryderyka w Zakopanem S. Możesz sprawdzić ofertę Bogusia w szpitalu w Zakopanem C.";
+                    : "Zdobądź kosę dla Fryderyka w Zakopanem S. Możesz sprawdzić ofertę Bogusia w szpitalu w Zakopanem S.";
         }
         if ("wegiel_na_opal".equals(slot)) {
             if (!player.isQuestCompleted("pomoc_adasiowi")) { return ADAS; }
