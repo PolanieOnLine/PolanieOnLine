@@ -82,7 +82,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 			ConversationStates.ATTENDING,
-			"Gdy zajmowałem się poszukiwaniem przygód to używałem prawego przycisku na potworach i wybierałem ATAK. Możesz się mnie zapytać jaki jest powód ryzykowania swojego życia, aby coś zabić?",
+			"Podejdź ostrożnie i nie daj się otoczyć. Żeby rozpocząć walkę, kliknij szczura prawym przyciskiem i wybierz Atak. Gdy będzie po wszystkim, wróć do mnie.",
 			null);
 
 		//player doesn't want to learn how to attack
@@ -91,7 +91,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 			ConversationStates.ATTENDING,
-			"Dobrze, wyglądasz na inteligentną osobę. Sądzę, że sobie poradzisz!",
+			"Dobrze. Tylko nie szarżuj. Nawet szczur potrafi boleśnie ugryźć.",
 			null);
 
 		//player returns to Hayunn not having killed a rat
@@ -99,7 +99,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"), new NotCondition(new KilledForQuestCondition(QUEST_SLOT,1))),
 			ConversationStates.ATTENDING,
-			"Widzę, że jeszcze nie zabiłeś szczura. Czy chcesz, abym powiedział Tobie jak z nimi walczyć? #Tak?",
+			"Szczur jeszcze ci umyka? Mogę podpowiedzieć, jak się do niego zabrać. Chcesz? #Tak?",
 			null);
 
 		//player returns to Hayunn having killed a rat
@@ -112,7 +112,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"), new KilledForQuestCondition(QUEST_SLOT, 1)),
 			ConversationStates.INFORMATION_1,
-			"Pokonałeś szczura! Teraz możesz zapytać jaki jest powód ryzykowania swojego życia w celu ich zabicia? #Tak?",
+			"No, jest w tobie trochę odwagi! Zanim ruszysz dalej, mam dla ciebie parę rad. Posłuchasz? #Tak?",
 			new MultipleActions(actions));
 
 		// player wants to learn more from Hayunn
@@ -121,7 +121,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_2,
-			"Aha! Możesz wziąć przedmioty ze zwłok. W tym celu powinieneś na zwłokach nacisnąć prawy przycisk i wybrać PRZESZUKAJ. Oczywiście, gdy jesteś wystarczająco blisko zwłok tak, aby je dosięgnąć. Możesz przeciągnąć przedmioty do swojego plecaka. Czy chcesz wiedzieć jak zidentyfikować przedmioty? #Tak?",
+			"Po walce zawsze się rozejrzyj. Przy pokonanym przeciwniku można znaleźć coś przydatnego. Podejdź, kliknij jego zwłoki prawym przyciskiem i wybierz Przeszukaj. Znaleziska przenieś do plecaka. A wiesz, jak sprawdzić, co właściwie masz w ręku? Opowiedzieć? #Tak?",
 			null);
 
 		npc.add(
@@ -129,7 +129,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_3,
-			"Na przedmiocie możesz nacisnąć prawy przycisk i wybrać ZOBACZ, aby otrzymać opis. Wiem o czym myślisz. Jak przetrwać, aby nie zginąć? Chcesz wiedzieć? #Tak?",
+			"Nie każdy błyszczący miecz jest wart noszenia. Kliknij przedmiot prawym przyciskiem i wybierz Zobacz, a poznasz go lepiej. Sprzęt sprzętem, ale w drodze trzeba też dbać o siebie. Powiedzieć ci, co zabrać? #Tak?",
 			null);
 
 		npc.add(
@@ -137,7 +137,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_4,
-			"Musisz jeść regularnie! Używaj w tym celu prawego przycisku na jedzeniu, które znajduje się w plecaku, bądź na ziemi. Z każdym kęsem twoje życie powoli będzie się odnawiało. Zabiera to trochę czasu. Jest kilka sposobów na regenerację życia... chcesz posłuchać? #Tak?",
+			"Przede wszystkim jedzenie. Po walce odpocznij i zjedz coś z zapasów. Odzyskasz siły, choć nie od razu. Posiłek wybierzesz prawym przyciskiem. A jeśli wrócisz mocno poobijany, wiem, kto ci pomoże. Chcesz usłyszeć? #Tak?",
 			null);
 
 		npc.add(
@@ -170,7 +170,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "killed"),
 			ConversationStates.INFORMATION_1,
-			"Szybko się uwinąłeś od momentu, gdy przyszedłeś mi oznajmić, że zabiłeś szczura! Chciałbym Ci przekazać kilka wskazówek i podpowiedzi. Czy chcesz je usłyszeć? #Tak?",
+			"Jesteś z powrotem! Nie zdążyliśmy ostatnio dokończyć rozmowy. Opowiedzieć ci, co przydaje się po walce? #Tak?",
 			null);
 
 		// Player has returned to say hi again.
@@ -178,7 +178,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new QuestInStateCondition(QUEST_SLOT, "taught"),
 			ConversationStates.INFORMATION_6,
-			"Witaj ponownie. Przyszedłeś, aby się dowiedzieć więcej ode mnie? #Tak?",
+			"Witaj! Jak tam nogi, jeszcze chcą cię nosić? Mam parę rad na dalszą drogę. Posłuchasz? #Tak?",
 			null);
 
 		npc.add(
@@ -186,7 +186,7 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_7,
-			"Zapewne poruszałeś się już po lesie Zakopanego. Ścieżki są tam wąskie. Najlepiej poruszać się tam szybko i sprawnie. Czy chcesz posłuchać o tym? #Tak?",
+			"Za miastem trzymaj się ścieżek i patrz, gdzie stawiasz nogi. Lepiej obejść gromadę potworów, niż wpaść między nie bez sił. Znam też prosty sposób na wygodniejsze podróżowanie. Chcesz go poznać? #Tak?",
 			null);
 
 		npc.add(
@@ -194,16 +194,16 @@ public class MeetPietrek extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.INFORMATION_8,
-			"To naprawdę proste. Naciskaj dwukrotnie na miejsce do którego chcesz się udać. Tam jest więcej informacji, których nie mogę sobie przypomnieć. Wyleciały mi z głowy... chcesz wiedzieć gdzie można o nich poczytać? #Tak?",
+			"Kliknij dwa razy miejsce, do którego chcesz dojść, a twoja postać sama poszuka drogi. Tylko miej oko na to, co dzieje się wokół. Na koniec mam jeszcze coś, co może ci się przydać. Chcesz? #Tak?",
 			null);
 
-		final String epilog = "Na #https://polanieonline.eu/ możesz znaleźć wiele odpowiedzi, listy wszelkiego rodzaju zwierząt, potworów i innych wrogów\n Teraz najważniejsze. Na #'https://polanieonline.eu/regulamin/regulamin-gry-polanieonline' koniecznie przeczytaj regulamin PolanieOnLine. To ważne!\n ";
+		final String epilog = "Gdy zabraknie ci odpowiedzi, zajrzyj do poradników na #https://polanieonline.eu/. Pamiętaj też o zasadach naszej krainy: #'https://polanieonline.eu/regulamin/regulamin-gry-polanieonline'. ";
 
 			//This is used if the player returns, asks for #help and then say #yes
 			npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.YES_MESSAGES, new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			epilog + "Wiesz, przypominasz mi mnie, gdy",
+			epilog + "Przypominasz mi mnie z młodych lat. Też nie umiałem długo usiedzieć w jednym miejscu.",
 			null);
 
 		final List<ChatAction> reward2 = new LinkedList<ChatAction>();
@@ -214,7 +214,7 @@ public class MeetPietrek extends AbstractQuest {
 		npc.add(ConversationStates.INFORMATION_8,
 			ConversationPhrases.YES_MESSAGES, new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
-			epilog + "Ta tarcza powinna ci pomóc. W domku bohaterów spotkasz Adasia. Szczury i węże zajęły jego piwnicę, a rodzina potrzebuje miejsca na zapasy przed zimą. Porozmawiaj z nim o zadaniu. Sabała w Zakopanem S potrafi opowiedzieć ci o napotkanych potworach.",
+			epilog + "Weź ten puklerz. Mnie już tak często się nie przydaje, a tobie może oszczędzić paru siniaków. Zajrzyj też do Adasia w domku bohaterów. Szkodniki zajęły mu piwnicę i chłopak boi się zejść na dół. A o potwory popytaj Sabałę na południu Zakopanego. Wie o nich więcej niż niejeden wojak.",
 			new MultipleActions(reward2));
 
 		npc.add(new ConversationStates[] { ConversationStates.ATTENDING,
@@ -227,7 +227,7 @@ public class MeetPietrek extends AbstractQuest {
 					ConversationStates.INFORMATION_7,
 					ConversationStates.INFORMATION_8},
 				ConversationPhrases.NO_MESSAGES, new NotCondition(new QuestInStateCondition(QUEST_SLOT, "start")), ConversationStates.IDLE,
-				"Och mam nadzieję, że ktoś się zatrzyma i porozmawia ze mną.",
+				"Dobrze, nie zatrzymuję cię. Wróć, gdy zechcesz pogadać.",
 				null);
 
 		npc.setPlayerChatTimeout(TIME_OUT);
@@ -255,7 +255,7 @@ public class MeetPietrek extends AbstractQuest {
 				return new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						npc.say("Pierw musisz chwilę ze mną porozmawiać!");
+						npc.say("Najpierw dokończmy rozmowę. Chcę wiedzieć, czy poradzisz sobie w drodze.");
 					}
 				};
 			}
@@ -263,8 +263,8 @@ public class MeetPietrek extends AbstractQuest {
 			@Override
 			public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 				if (super.transactAgreedDeal(res, seller, player)) {
-					seller.say("Zapisałem w nim twoje imię wojażu, na wypadek gdybyś zgubił. Pamiętaj, że przedmioty, które odnajdziesz"
-							+ " spisał je do swojej księgi. Byś miał czym głosić swą przyszłą chwałę!");
+					seller.say("Wpisałem do środka twoje imię. Gdyby spis się zgubił, będzie wiadomo, do kogo należy."
+							+ " Zaglądaj do niego w drodze. Zobaczysz, ile już udało ci się znaleźć.");
 
 					return true;
 				}

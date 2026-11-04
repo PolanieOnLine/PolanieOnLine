@@ -111,10 +111,18 @@ public class TrailChapterTest {
     @Test public void prerequisiteAndOffersCannotSkipTheStory() {
         assertTrue(system.getMainQuests(player).isEmpty());
         visit("Stasek"); say("Stasek", "dostawa"); assertFalse(player.hasQuest("trail_delivery"));
+        visit("Gościrad");
+        String clerkReply = say("Gościrad", "zamówienie");
+        assertTrue(clerkReply, clerkReply.contains("Staska"));
+        visit("Stasek");
         ready(); assertEquals(1, system.getMainQuests(player).size());
         say("Stasek", "task"); say("Stasek", "nie"); assertFalse(player.hasQuest("trail_delivery"));
         say("Stasek", "dostawa"); say("Stasek", "tak");
         assertEquals("inspect", player.getQuest("trail_delivery"));
+        visit("Gościrad");
+        clerkReply = say("Gościrad", "zamówienie");
+        assertTrue(clerkReply, clerkReply.contains("Stasek"));
+        assertFalse(clerkReply, clerkReply.contains("u mnie w sklepie"));
         visit("Gościrad"); say("Gościrad", "woźnica"); assertFalse(player.hasQuest("trail_guest"));
         assertFalse(use(TrailEvidence.Kind.REGISTRY)); assertFalse(use(TrailEvidence.Kind.DOCUMENTS));
     }

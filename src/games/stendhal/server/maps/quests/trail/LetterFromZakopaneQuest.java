@@ -8,8 +8,8 @@ public final class LetterFromZakopaneQuest extends TrailQuest {
             + "Sprawdzisz to u niego?";
     public LetterFromZakopaneQuest() { super(TrailQuestLine.Step.SEMOS_LETTER); }
     @Override protected void addDialogs() {
-        offer("Idź do banku w Semos i pokaż Dagobertowi #'kwit'. Księga wpłat leży przy jego ladzie. "
-                + "Sprawdź, czy ktoś wpłacił pieniądze za transport z Zakopanego, a potem wróć do mnie z #'listem'.");
+        offer("Weź ten #'list' do banku. Dagobert sprawdzi #'kwit' za transport z Zakopanego. "
+                + "Jeśli wpłacono zaliczkę, będzie wiedział, kiedy i na czyje nazwisko. Wróć, gdy się czegoś dowiesz.");
         reply("Lieutenant Drilenun", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "checked")) complete(player, speaker, "checked");
             else request(player, speaker, OFFER);
@@ -17,8 +17,8 @@ public final class LetterFromZakopaneQuest extends TrailQuest {
         reply("Dagobert", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "bank")) {
                 speaker.say("Transport z Zakopanego? Ktoś rzeczywiście zostawił na niego zaliczkę. "
-                        + "Sprawdź księgę przy mojej ladzie. Nie mam tam nazwiska, tylko jakiś znak. "
-                        + "To zwykła księga wpłat, nie musisz wchodzić do prywatnego skarbca.");
+                        + "Księga leży przy mojej ladzie, możesz zajrzeć. Dziwna rzecz: zamiast nazwiska wpisano tam jakiś znak. "
+                        + "Może tobie coś powie.");
             } else remind(player, speaker);
         }, "kwit", "zaliczka");
     }

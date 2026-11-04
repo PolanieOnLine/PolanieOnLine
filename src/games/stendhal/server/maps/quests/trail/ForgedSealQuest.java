@@ -11,8 +11,8 @@ public final class ForgedSealQuest extends TrailQuest {
     @Override protected void addDialogs() {
         offer("Idź do północnej części tej polany. Pokonaj strażnika, "
                 + "a potem przejrzyj papiery przy workach. Zobacz, do kogo należą te zapasy. "
-                + "Samych worków nie ruszaj. Ktoś pewnie na nie czeka. "
-                + "Wróć potem do mnie. Musimy ustalić, co to za #'skład'.");
+                + "Worki zostaw, ich właściciele pewnie wciąż czekają na dostawę. "
+                + "Przynieś za to papiery. Musimy się dowiedzieć, kto urządził ten #'skład'.");
         reply("Brzezdom", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "recovered")) {
                 complete(player, speaker, "recovered");
@@ -21,7 +21,7 @@ public final class ForgedSealQuest extends TrailQuest {
     }
     @Override protected String completedText() {
         return "A więc to rzeczywiście nasze zapasy. Z tym spisem i listem "
-                + "idź do Gazdy Wojtka, do ratusza na południu Zakopanego, "
-                + "i pokaż mu #'dowody'. Ja zostanę tutaj i popilnuję, żeby nikt nie zabrał reszty worków.";
+                + "idź do Gazdy Wojtka, do ratusza na południu Zakopanego. "
+                + "Zanieś mu te #'dowody'. Ja zostanę i popilnuję worków. Dość już nam nakradli.";
     }
 }

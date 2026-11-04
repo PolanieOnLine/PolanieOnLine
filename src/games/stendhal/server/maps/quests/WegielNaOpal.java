@@ -55,7 +55,7 @@ public class WegielNaOpal extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj nieznajomy. Miałbym dla Ciebie pewne #'zlecenie'.",
+			"Witaj. Rozejrzyj się spokojnie. Gdyby interesował cię zarobek, mam też pewne #'zlecenie'.",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -63,7 +63,7 @@ public class WegielNaOpal extends AbstractQuest {
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
 					 new OrCondition(new QuestNotCompletedCondition(ADAS_QUEST_SLOT))),
 			ConversationStates.ATTENDING,
-			"Zanim zabierzesz się za moje zadanie udowodnij, że mogę Tobie ufać! Pomóż pierw małemu chłopcowi o imieniu Adaś.",
+			"Z opałem jeszcze chwilę poczekam. Adaś z domku bohaterów szuka pomocy, bo szkodniki zalęgły im się w piwnicy. Zajrzyj najpierw do niego.",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -71,7 +71,7 @@ public class WegielNaOpal extends AbstractQuest {
 			new AndCondition(new QuestNotStartedCondition(QUEST_SLOT),
 					 new OrCondition(new QuestNotCompletedCondition(FRYDERYK_QUEST_SLOT))),
 			ConversationStates.ATTENDING,
-			"Jeszcze nie tak prędko! Pomóż Fryderykowi, a wtedy będę mógł Tobie zaufać.",
+			"Fryderykowi pilno zebrać plony, a nie ma czym pracować. Pomóż mu najpierw z kosą. Mój opał może jeszcze poczekać.",
 			null);
 	}
 
@@ -88,8 +88,8 @@ public class WegielNaOpal extends AbstractQuest {
 						new QuestCompletedCondition(FRYDERYK_QUEST_SLOT)),
 				ConversationStates.ATTENDING,
 				null,
-				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, items, "Fryderyk opowiedział mi o twojej pomocy przy żniwach. Wiem też, że pomogłeś Adasiowi. Udowodniłeś, że można na tobie polegać."
-					+ " Proszę przynieś mi [item]. Potrzebuję opał na zimę. Straszne mrozy są ostatnio..."));
+				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, items, "Fryderyk chwalił twoją pomoc, a Adaś od rana o tobie opowiada. Dobrze mieć kogoś takiego w okolicy."
+					+ " Brakuje mi jeszcze opału na zimę. Przynieś [item], a odwdzięczę się i otworzę dla ciebie skład z uzbrojeniem."));
 	}
 
 	private void collectItem() {
@@ -107,14 +107,14 @@ public class WegielNaOpal extends AbstractQuest {
 								new NotCondition(new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT))),
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT, "Hm, nie masz [item], nie próbuj mnie oszukać!"));
+				new SayRequiredItemAction(QUEST_SLOT, "Chyba nie wszystko masz przy sobie. Potrzebuję [item]. Tyle wystarczy nam na zapas."));
 
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Dzięki za węgiel! Przynajmniej nie zmarzniemy tu zimą. Teraz wiem, że można na tobie polegać. Jeśli potrzebujesz uzbrojenia, sprawdź moją #ofertę. Jest też jedna dziwna #'dostawa', o której chcę z tobą porozmawiać.",
+				"Uff, będzie czym napalić! Dziękuję. Obiecane uzbrojenie jest do twojej dyspozycji, zerknij na #ofertę. Przy okazji... była tu ostatnio dziwna #'dostawa'. Coś mi w niej nie pasuje.",
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(5500),
@@ -125,7 +125,7 @@ public class WegielNaOpal extends AbstractQuest {
 				null,
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT, "Bardzo dobrze, wróć kiedy będziesz mieć [the item] ze sobą."));
+				new SayRequiredItemAction(QUEST_SLOT, "Dobrze, poczekam. Pamiętaj tylko, żeby przynieść [the item], zanim przyjdą mrozy."));
 	}
 
 	private void offerSteps() {
@@ -134,7 +134,7 @@ public class WegielNaOpal extends AbstractQuest {
 				ConversationPhrases.OFFER_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Spójrz na niebieską księgę! Oferuję to co na niej jest.",
+				"Obejrzyj spokojnie broń i pancerze. Może znajdziesz coś na dalszą drogę.",
 				null);
 
 		// player returns when the quest is in progress and says offer
@@ -142,7 +142,7 @@ public class WegielNaOpal extends AbstractQuest {
 				ConversationPhrases.OFFER_MESSAGES,
 				new QuestNotCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Powiem ci, że możesz u mnie kupić, jeżeli wykonasz dla mnie #'zlecenie'.", null);
+				"Najpierw potrzebuję pomocy przy opale. Jeśli wykonasz moje #'zlecenie', udostępnię ci uzbrojenie ze składu.", null);
 	}
 
 	@Override

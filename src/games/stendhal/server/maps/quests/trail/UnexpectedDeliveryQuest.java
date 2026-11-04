@@ -37,6 +37,6 @@ public final class UnexpectedDeliveryQuest extends TrailQuest {
     @Override protected String completedText() {
         return "No proszę. W księdze ani słowa, a pieczęć niby nasza. "
                 + "Ktoś się pod nas podszywa i wywozi ludziom zapasy. "
-                + "Trzeba znaleźć tego #'woźnicę'. Zapytaj mnie o niego, może uda się ustalić, dokąd pojechał.";
+                + "Trzeba odnaleźć tego #'woźnicę', zanim znów kogoś oszuka. Mam pomysł, gdzie zacząć.";
     }
 }

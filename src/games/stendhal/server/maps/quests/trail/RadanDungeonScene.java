@@ -112,26 +112,26 @@ final class RadanDungeonScene {
                         ? "Oddałem ci księgę. Poczekam na straż."
                         : "Czego tu szukasz? To prywatny skład. Ten #transport jest już opłacony.")
                         : (owner.isQuestCompleted(Step.RADAN_RESCUE.slot)
-                        ? "Dzięki za pomoc. Poczekam tu na straż. Pamiętaj: najpierw #hamulec, potem łańcuch."
-                        : "Pomóż mi. Związali mi ręce. Dopóki strażnicy tu stoją, nie próbuj przecinać moich #więzów."));
+                        ? "Nie mam już sił. Zaczekam tu na straż. Uważaj tylko na wózek, najpierw zaciągnij #hamulec."
+                        : "Cicho! Jeszcze cię usłyszą. Rozpraw się ze strażnikami, wtedy spróbujemy przeciąć te #więzy."));
             });
             add(ConversationStates.ATTENDING, Arrays.asList("więzy", "wiezy", "uwolnij", "transport", "hamulec", "wózek", "wozek", "łańcuch", "lancuch"),
                     null, ConversationStates.ATTENDING, null, (player, sentence, speaker) -> {
                 if (!present(player)) return;
                 if (radan) {
                     if (RadanDungeonProgress.confront(player)) {
-                        speaker.say("Dobrze, już dobrze. Zabierz księgę. Są w niej nazwiska i wszystkie dostawy. "
-                                + "Nie chcę kolejnej walki. Powiedz Drilenunowi, że poczekam na straż.");
+                        speaker.say("Już dobrze! Odłóż broń. Chcesz księgę? Bierz ją, wszystko w niej jest. "
+                                + "Tylko nie bij. Poczekam na tę waszą straż, nigdzie się nie ruszę.");
                     } else speaker.say(player.isQuestInState(Step.RADAN_FINALE.slot, "return")
                             ? "Masz księgę. Idź do Drilenuna. Nigdzie się stąd nie ruszam."
-                            : "Moi ludzie jeszcze tu są. Nie będę z tobą o niczym rozmawiał.");
+                            : "Myślisz, że tak po prostu oddam ci księgę? Moi ludzie wiedzą, co robić z takimi gośćmi.");
                 } else if (RadanDungeonProgress.free(player)) {
-                    speaker.say("Nareszcie! Miałem tylko naprawić tor, a potem nie pozwolili mi odejść. "
-                            + "Radan chce dziś wywieźć zapasy. Przy wózku jest #hamulec. Zaciągnij go, a potem odepnij #łańcuch. "
-                            + "Odsunę skrzynie, żebyś mógł przejść. Ja poczekam tu na straż."); refresh();
+                    speaker.say("Ach, nareszcie... Nie czuję dłoni. Miałem tylko naprawić tor, a oni mnie tu zatrzymali. "
+                            + "Radan chce dziś wywieźć zapasy. Zaciągnij #hamulec przy wózku, dopiero potem odczep #łańcuch. "
+                            + "Inaczej cały ładunek poleci w dół. Ja odsunę skrzynie z przejścia i zaczekam tutaj na straż."); refresh();
                 } else speaker.say(owner.isQuestCompleted(Step.RADAN_RESCUE.slot)
-                        ? "Najpierw hamulec przy północnej ścianie izby z wózkiem. Potem łańcuch po jego prawej stronie. Inaczej wózek ruszy."
-                        : "Najpierw rozpraw się z oboma strażnikami. Inaczej znowu mnie złapią.");
+                        ? "Widzisz korbę przy północnej ścianie, obok wózka? To hamulec. Zaciągnij go porządnie, zanim odczepisz łańcuch po prawej. Nie chcę słyszeć, jak to wszystko zjeżdża w dół."
+                        : "Oni wciąż tu są. Jeśli mnie teraz rozwiążesz, złapią nas oboje. Proszę, zajmij się najpierw strażnikami.");
             });
             addGoodbye("Uważaj na siebie.");
         }

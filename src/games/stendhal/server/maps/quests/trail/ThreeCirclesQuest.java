@@ -25,7 +25,7 @@ public final class ThreeCirclesQuest extends TrailQuest {
     }
     @Override protected String completedText() {
         return "Suchy ładunek... Tak, to pasuje do S. Ł. na kwicie. Tymi słowami przewoźnicy potwierdzali odbiór. "
-                + "Na twoim kwicie wpisano odbiór przy gospodzie w Semos. Idź do Margaret i zapytaj o #'odbiór'. "
-                + "Jeśli ten człowiek czeka tam na towar, może uda się z nim porozmawiać.";
+                + "O, tutaj jest też miejsce: gospoda w Semos. Margaret pewnie wie, kto umawiał tam #'odbiór'. "
+                + "Zajrzyj do niej, może ten człowiek jeszcze czeka na towar.";
     }
 }

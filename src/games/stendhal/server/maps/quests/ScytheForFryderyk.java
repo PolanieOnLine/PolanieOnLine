@@ -69,35 +69,35 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestNotCompletedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
-			"Zbliżają się chłody, a mieszkańcy potrzebują zapasów na zimę. Bez kosy nie zbiorę plonów. Czy przyniesiesz mi #kosę?",
+			"Spójrz na to pole. Wszystko do zebrania, a moja kosa już do niczego się nie nadaje. Nim przyjdą przymrozki, plony muszą być pod dachem. Zdobędziesz dla mnie #kosę?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
-			"Dziękuję za ofertę dobry człowieku, ale ta kosa wystarczy mi na pięć wiosen i nie potrzebuję ich więcej.",
+			"Twoja kosa dobrze mi służy. Na razie niczego więcej nie potrzebuję, dziękuję.",
 			null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!",
+			"Dziękuję. Będę na polu. Oby tylko pogoda się utrzymała.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj, a moje plony zmarnieją... *wącha*",
+			"Szkoda. Może sąsiad pożyczy mi swoją, gdy skończy żniwa.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			"kosa",
 			null,
 			ConversationStates.QUEST_OFFERED,
-			"Nie wiesz co to jest kosa?! Jedyne narzędzie, którym można skosić plony na polu. Składa się z metalowego ostrza i drewnianego kija, a wszystko przypomina literę L. Zrobisz to dla mnie?",
+			"Potrzebuję zwykłej kosy, z porządnym ostrzem. Nie musi być nowa, byle dało się nią pracować. Poszukasz takiej?",
 			null);
 	}
 
@@ -116,7 +116,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("kosa"))),
 			ConversationStates.ATTENDING,
-			"Hej mój przyjacielu. Pamiętasz o kosie, którą mi obiecałeś. Pytałem się o nią wcześniej? Moje plony czekają na mnie...",
+			"Dobrze cię widzieć. Udało ci się znaleźć kosę? Bez niej nie ruszę z robotą, a dni coraz krótsze.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -132,14 +132,14 @@ public class ScytheForFryderyk extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			new PlayerHasItemWithHimCondition("kosa"),
 			ConversationStates.ATTENDING,
-			"Dziękuję! Teraz zdążę zebrać plony przed chłodami. Stasek zbiera opał na zimę i pytał o kogoś godnego zaufania. Odwiedź jego sklep obok mostu w centrum Zakopanego i zapytaj o zlecenie.",
+			"No, taką to można pracować! Zdążę zebrać plony przed chłodami. Weź ten hełm, mnie na polu nie jest potrzebny. Stasek też szukał kogoś do pomocy przy opale. Ma sklep obok mostu w centrum Zakopanego. Powiem mu, że można na tobie polegać.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Ktoś miał dzisiaj dużo szczęścia... *kichnięcie*.",
+			"Rozumiem, zatrzymujesz ją dla siebie. Daj znać, jeśli znajdziesz drugą.",
 			null);
 	}
 

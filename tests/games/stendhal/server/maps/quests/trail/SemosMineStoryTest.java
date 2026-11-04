@@ -76,7 +76,7 @@ public class SemosMineStoryTest {
     private void move(StendhalRPZone zone) { if(player.getZone()!=zone){player.getZone().remove(player);zone.add(player);} }
     private MineTrailEvidence evidence(Kind kind) { for(Entity entity:mine.getEntitiesOfClass(MineTrailEvidence.class)){MineTrailEvidence prop=(MineTrailEvidence)entity;if(prop.kind==kind)return prop;}throw new AssertionError(kind); }
     private boolean use(Kind kind) { move(mine);MineTrailEvidence prop=evidence(kind);player.setPosition(prop.getX()+(kind==Kind.VOICES?1:-1),prop.getY());return prop.onUsed(player); }
-    private void ledger() { ready(30);accept("Lieutenant Drilenun","nocna zmiana");visit("Barbarus");say("Barbarus","nocna zmiana");assertTrue(use(Kind.ROSTER));say("Barbarus","nocna zmiana"); }
+    private void ledger() { ready(30);accept("Lieutenant Drilenun","nocnej zmianie");visit("Barbarus");say("Barbarus","nocnej zmianie");assertTrue(use(Kind.ROSTER));say("Barbarus","nocna zmiana"); }
     private void tracks() { ledger();accept("Barbarus","ślady nocnej zmiany");assertTrue(use(Kind.RATIONS));assertTrue(use(Kind.BOOTS));say("Barbarus","ślady nocnej zmiany"); }
     private void voices() { tracks();accept("Barbarus","głosach spod skały");assertTrue(use(Kind.VOICES));visit("Zynn Iwuhos");say("Zynn Iwuhos","rozkazy spod ziemi"); }
     private Creature courier(int x,int y) { Creature creature=SingletonRepository.getEntityManager().getCreature(MineTrailProgress.COURIER);creature.setPosition(x,y);mine.add(creature);return creature; }
@@ -84,11 +84,35 @@ public class SemosMineStoryTest {
         player.setXP(Level.getXP(30));player.setLevel(30);visit("Lieutenant Drilenun");say("Lieutenant Drilenun","nocna zmiana");assertFalse(player.hasQuest(Step.MINE_LEDGER.slot));
         ready(29);assertFalse(Step.MINE_LEDGER.available(player));assertTrue(system.getMainQuests(player).isEmpty());
         String objective=TrailQuestLine.objective(player,Step.MINE_LEDGER.slot);assertTrue(objective,objective.contains("30"));
-        visit("Lieutenant Drilenun");say("Lieutenant Drilenun","nocna zmiana");assertFalse(player.hasQuest(Step.MINE_LEDGER.slot));
+        visit("Lieutenant Drilenun");
+        String reply=say("Lieutenant Drilenun","nocna zmiana");
+        assertFalse(reply,reply.contains("30"));
+        assertFalse(reply,reply.contains("Powiedz:"));
+        assertNotEquals(objective,reply);
+        assertFalse(player.hasQuest(Step.MINE_LEDGER.slot));
         ready(30);visit("Lieutenant Drilenun");say("Lieutenant Drilenun","nocna zmiana");say("Lieutenant Drilenun","nie");assertFalse(player.hasQuest(Step.MINE_LEDGER.slot));
         say("Lieutenant Drilenun","nocna zmiana");say("Lieutenant Drilenun","tak");assertEquals("barbarus",player.getQuest(Step.MINE_LEDGER.slot));
         assertEquals(1,system.getMainQuests(player).size());
         IQuest quest=system.getQuest(player,Step.MINE_LEDGER.title);assertEquals(30,quest.getMinLevel());assertEquals(Region.SEMOS_MINES,quest.getRegion());
+    }
+    @Test public void remindersBelongToTheSpeakerAndDoNotAdvanceTheInvestigation() {
+        ready(30);accept("Lieutenant Drilenun","nocna zmiana");
+        visit("Barbarus");say("Barbarus","nocna zmiana");
+        String minerReply=say("Barbarus","nocna zmiana");
+        assertFalse(minerReply,minerReply.contains("Barbarusa"));
+        assertNotEquals(TrailQuestLine.objective(player,Step.MINE_LEDGER.slot),minerReply);
+        visit("Lieutenant Drilenun");
+        String officerReply=say("Lieutenant Drilenun","nocna zmiana");
+        assertNotEquals(minerReply,officerReply);
+        assertTrue(officerReply,officerReply.contains("Barbarus"));
+        assertEquals("register",player.getQuest(Step.MINE_LEDGER.slot));
+        assertEquals(0,player.getTotalNumberOf("money"));
+        player.setQuest(Step.MINE_LEDGER.slot,"done");
+        visit("Zynn Iwuhos");
+        String historianReply=say("Zynn Iwuhos","rozkazy spod ziemi");
+        assertTrue(historianReply,historianReply.contains("Barbarus"));
+        assertFalse(historianReply,historianReply.contains("słyszałem"));
+        assertFalse(player.hasQuest(Step.MINE_VOICES.slot));
     }
     @Test public void existingDrilenunOffersStillAcceptTheirOwnQuest() {
         player.setQuest(Step.DEBT.slot,"done");accept("Lieutenant Drilenun","list");assertEquals("bank",player.getQuest(Step.SEMOS_LETTER.slot));

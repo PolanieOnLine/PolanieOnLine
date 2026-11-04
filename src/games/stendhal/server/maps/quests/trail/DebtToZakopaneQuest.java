@@ -31,14 +31,14 @@ public final class DebtToZakopaneQuest extends TrailQuest {
             if (!"witnesses".equals(player.getQuest(step.slot, 0))) { remind(player, speaker); return; }
             final int witnesses = TrailQuestLine.witnesses(player) | bit;
             player.setQuest(step.slot, witnesses == 3 ? "report" : "witnesses;" + witnesses);
-            speaker.say(statement + (witnesses == 3 ? " Masz już wszystko, czego chciał Wojtek. Pokaż mu #'dowody'."
-                    : " Wojtek czeka jeszcze na drugie potwierdzenie."));
+            speaker.say(statement + (witnesses == 3 ? " Nie zwlekaj z tymi papierami. Dla Wojtka to ważne #'dowody'."
+                    : " Oby udało się odzyskać te zapasy, zanim je stamtąd wywiozą."));
         }, "dowody", "zeznania");
     }
     @Override protected String completedText() {
         return "Dobrze, że udało się to wyjaśnić. Poślę ludzi po zapasy i uprzedzę kupców, "
-                + "żeby uważali na takie zamówienia. Dziękuję ci. Najpierw pomoc przy opale, a teraz to. "
-                + "Naprawdę sporo nam oszczędzasz kłopotów. "
+                + "żeby uważali na takie zamówienia. Dziękuję ci. Najpierw pomoc sąsiadom, a teraz to. "
+                + "Gdyby nie ty, szukalibyśmy tych zapasów do wiosny. "
                 + "Następny transport miał trafić do #'Semos'. Pokaż #'list' porucznikowi Drilenunowi w tamtejszym ratuszu. Może pomoże znaleźć odbiorcę.";
     }
 }

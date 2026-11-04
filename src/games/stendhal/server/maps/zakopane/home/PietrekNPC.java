@@ -61,7 +61,7 @@ public class PietrekNPC implements ZoneConfigurator {
 						ConversationPhrases.GREETING_MESSAGES,
 						new QuestNotStartedCondition(QUEST_SLOT),
 						ConversationStates.ATTENDING,
-						"Witaj! Zakopane szykuje się do zimy, a szkodniki coraz śmielej zaglądają do domów. Przyda nam się ktoś, kto pomoże mieszkańcom. Najpierw sprawdźmy, jak sobie radzisz: pokonaj jednego szczura na zewnątrz i wróć do mnie. Czy chcesz się nauczyć, jak atakować?",
+						"Witaj! Z daleka idziesz? U nas teraz każdy szykuje zapasy na zimę, a szczury już pchają się do spiżarni. Przydałaby się pomoc. Na początek rozpraw się z jednym przed domem i wróć do mnie. Podpowiedzieć ci, jak zacząć walkę?",
 						new MultipleActions(actions));
 
 				add(ConversationStates.IDLE,
@@ -71,8 +71,8 @@ public class PietrekNPC implements ZoneConfigurator {
 						"Witaj ponownie. Jakiej #pomocy mogę Ci teraz udzielić?",
 						null);
 
-				addHelp("Jak już mówiłem, byłem kiedyś poszukiwaczem przygód, a teraz jestem nauczycielem. Chcesz bym nauczył Cię co sam potrafię?");
-				addJob("Moją pracą jest ochrona ludzi w Zakopanem przed potworami wałęsającymi się gdzieś w okolicy! Od kiedy młodzi wyruszyli w świat to potwory stały się zuchwalsze i zaczęły się niebezpiecznie zbliżać się do miasta. Zakopane oczekuje pomocy właśnie od ludzi takich jak ty. Idź do gazdy Wojtka i zapytaj o zadanie, z pewnością ma jakieś dla Ciebie.");
+				addHelp("Trochę świata przeszedłem, zanim osiadłem w Zakopanem. Jeśli chcesz, podzielę się tym, czego nauczyła mnie droga.");
+				addJob("Pilnuję, żeby potwory nie podchodziły za blisko domów. Kiedyś było nas więcej, ale młodzi porozchodzili się po świecie. Jeśli szukasz zajęcia, popytaj Gazdę Wojtka w ratuszu. Zawsze ktoś potrzebuje tam pomocy.");
 				addGoodbye();
 				// further behaviour is defined in quests.
 			}
@@ -86,7 +86,7 @@ public class PietrekNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Pietrek. Poniżej jego siwych włosów, a brudną zbroją widzisz świecące oczy i twarde mięśnie.");
+		npc.setDescription("Oto Pietrek. Spod siwej czupryny spoglądają czujne oczy. Choć zbroję ma wysłużoną, wciąż trzyma się prosto.");
 		npc.setEntityClass("oldheronpc");
 		npc.setGender("M");
 		npc.setPosition(22, 3);

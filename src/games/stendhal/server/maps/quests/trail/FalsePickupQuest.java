@@ -9,18 +9,18 @@ public final class FalsePickupQuest extends TrailQuest {
     public FalsePickupQuest() { super(TrailQuestLine.Step.SEMOS_PICKUP); }
     @Override protected void addDialogs() {
         offer("Przynieś mi dwa #'polana'. Włożę je do skrzyni i przykryję płótnem. "
-                + "Gdy będziesz je mieć, powiedz #'przygotuj skrzynię'. Olek czeka na zewnątrz, po prawej stronie wejścia.");
+                + "Powinny starczyć, żeby tragarz poczuł ciężar. Olek czeka na zewnątrz, po prawej stronie wejścia.");
         reply("Margaret", (player, sentence, speaker) -> request(player, speaker, OFFER), "odbiór", "odbior");
         reply("Margaret", (player, sentence, speaker) -> {
             if (!player.isQuestInState(step.slot, "wood")) { remind(player, speaker); return; }
             if (!player.dropSubmittable("polano", 2)) {
-                speaker.say("Potrzebuję dwóch polan. Sprawdź, czy masz je przy sobie. "
-                        + "Drewna możesz poszukać na polanach poza miastem. Potem powiedz #'przygotuj skrzynię'.");
+                speaker.say("Do pustej skrzyni zajrzy od razu. Przynieś dwa #polana, żeby było co dźwigać. "
+                        + "Poszukaj na polanach za miastem, tam powinno być drewno.");
                 return;
             }
             player.setQuest(step.slot, "crate");
             speaker.say("Gotowe. Skrzynia stoi na zewnątrz, po prawej stronie wejścia do gospody. "
-                    + "Sprawdź ją, a potem podejdź do Olka. Wiesz już, jak potwierdzić #'suchy ładunek'.");
+                    + "Zajrzyj pod płótno, nim podejdziesz do Olka. Dla niego to po prostu kolejny #'suchy ładunek'.");
         }, "przygotuj skrzynię", "przygotuj skrzynie", "polana");
         reply("Tragarz Olek", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "contact")) {
@@ -30,7 +30,7 @@ public final class FalsePickupQuest extends TrailQuest {
             } else if (player.isQuestInState(step.slot, "question")) {
                 speaker.say("Tak, hasło się zgadza. Chcesz obejrzeć #'kwit'?");
             } else if (player.isQuestInState(step.slot, "return")) {
-                speaker.say("Masz już zapisane, kto zamówił odbiór. Pokaż to porucznikowi w ratuszu.");
+                speaker.say("Porucznik powinien zobaczyć ten podpis. Tylko powiedz mu, że ja nie wiedziałem o żadnej kradzieży.");
             } else if (player.isQuestCompleted(step.slot)) {
                 speaker.say("Nie odbieram już tych przesyłek. Wystarczy mi kłopotów.");
             } else {
@@ -39,7 +39,7 @@ public final class FalsePickupQuest extends TrailQuest {
         }, "suchy ładunek", "suchy ladunek");
         reply("Tragarz Olek", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "return") || player.isQuestCompleted(step.slot)) {
-                speaker.say("Na kwicie jest podpis Radana. Wszystko masz już zapisane."); return;
+                speaker.say("Radan, tak jest podpisane. Nic więcej o nim nie wiem. Miałem tylko odebrać skrzynię."); return;
             }
             if (!player.isQuestInState(step.slot, "question")) {
                 speaker.say("Najpierw muszę wiedzieć, czy to ty masz mi wydać przesyłkę."); return;
@@ -58,6 +58,7 @@ public final class FalsePickupQuest extends TrailQuest {
         return "Radan. Wreszcie mamy nazwisko i podpis. Dagobert zatrzyma pieniądze, "
                 + "a ja poślę ludzi, żeby sprawdzili zleceniodawcę Olka. "
                 + "Dobrze, że udało się to załatwić bez kolejnej kradzieży. "
-                + "Sam napiszę do Wojtka, że dostawa do Semos została wstrzymana. Olek nie zabierze tej skrzyni. Jeśli chcesz pomóc straży znaleźć Radana, zapytaj mnie o #chodnik.";
+                + "Napiszę do Wojtka, żeby nie martwił się o tę dostawę. "
+                + "A co do Radana, chyba wiem, gdzie go szukać. Pod miastem jest pewien stary #chodnik...";
     }
 }

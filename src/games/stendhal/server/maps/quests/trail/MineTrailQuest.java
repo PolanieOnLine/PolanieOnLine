@@ -13,53 +13,55 @@ public final class MineTrailQuest extends TrailQuest {
     @Override protected void addDialogs() {
         switch (step) {
         case MINE_LEDGER:
-            offer("Pokaż Barbarusowi ten wpis. Pracuje w zachodniej odnodze kopalni Semos, w górach na północ od miasta. "
-                    + "Zapytaj go o #'nocną zmianę'. Nie wiemy jeszcze, kto odbierał zapasy.");
+            offer("Barbarus pracuje w zachodniej odnodze kopalni, w górach na północ od Semos. "
+                    + "Pokaż mu ten wpis o #'nocnej zmianie'. Jeśli ktoś pracował po zmroku, on powinien o tym wiedzieć.");
             reply(step.npc, (player, sentence, speaker) -> request(player, speaker,
-                    "W księdze Radana został jeszcze jeden wpis. Ktoś zamawiał jedzenie i drewno dla nocnej zmiany w kopalni. "
-                    + "Bez nazwiska, bez ilości wydobytego węgla. Sprawdzisz u Barbarusa, czy rzeczywiście pracowali tam nocą?"), "nocna zmiana", "nocną zmianę");
+                    "Od rana przeglądam księgę Radana. Znalazłem dostawy jedzenia i drewna dla nocnej zmiany w kopalni. "
+                    + "Tylko żadnego górnika nie wymieniono z nazwiska. Barbarus mógłby mi to wyjaśnić. Pójdziesz z nim porozmawiać?"), "nocna zmiana", "nocną zmianę", "nocnej zmianie");
             reply("Barbarus", (player, sentence, speaker) -> {
                 if (!MineTrailProgress.active(player, step)) { remind(player, speaker); return; }
                 if (player.isQuestInState(step.slot, "barbarus")) {
                     player.setQuest(step.slot, "register");
-                    speaker.say("Nocna zmiana? Ja zamykam robotę przed nocą. Ale nie musisz wierzyć mi na słowo. "
-                            + "Sprawdź rejestr wydobycia po zachodniej stronie mojego stanowiska. Zapisuję każdy wózek.");
+                    speaker.say("Nocna zmiana? U mnie? Jak robi się późno, odkładamy kilofy i wracamy do domów. "
+                            + "Zresztą zajrzyj do rejestru obok, po zachodniej stronie. Zapisuję każdy wózek. Widzisz tam coś z nocy?");
                 } else if (player.isQuestInState(step.slot, "report")) complete(player, speaker, "report");
                 else remind(player, speaker);
-            }, "nocna zmiana", "nocną zmianę");
+            }, "nocna zmiana", "nocną zmianę", "nocnej zmianie");
             break;
         case MINE_TRACKS:
-            offer("Idź od mojego stanowiska na północny wschód. Na pierwszym dużym zakręcie leży skrzynka po racjach. "
-                    + "Dalej na wschód poszukaj śladów butów. Sprawdź oba miejsca i wróć.");
+            offer("Na północny wschód stąd jest duży zakręt. Leży przy nim skrzynka po racjach, a dalej na wschód "
+                    + "widać odciski butów. Przyjrzyj się obu miejscom. Ja muszę zostać przy robocie.");
             reply(step.npc, (player, sentence, speaker) -> {
                 if (MineTrailProgress.active(player, step) && player.isQuestInState(step.slot, "report")) complete(player, speaker, "report");
-                else request(player, speaker, "Przy zakręcie znalazłem resztki jedzenia. Moi ludzie jedzą tutaj, przy narzędziach. "
-                        + "A dalej widziałem obce ślady. Sprawdzisz, kto mógł tędy chodzić? Niczego stamtąd nie zabieraj, tylko dobrze się przyjrzyj.");
+                else request(player, speaker, "Jest coś jeszcze. Przy zakręcie leżą resztki racji, choć moi ludzie jedzą tutaj, przy narzędziach. "
+                        + "Dalej ktoś zostawił ślady ciężkich butów. Obejrzysz to? Wolę wiedzieć, kto mi się kręci po kopalni.");
             }, "ślady nocnej zmiany", "slady nocnej zmiany");
             break;
         case MINE_VOICES:
-            offer("Szukaj starej obudowy szybu na północnym wschodzie, niedaleko Phalka. Nie przechodź przez jego blokadę. "
-                    + "Przyłóż ucho do belek. Jeśli usłyszysz słowa, zapamiętaj je. Zynn w bibliotece zna stare dzieje Semos.");
+            offer("Najwyraźniej słychać je przy starej obudowie szybu, na północnym wschodzie, niedaleko Phalka. "
+                    + "Przyłóż ucho do belek, ale nie idź za blokadę. Jeśli rozróżnisz jakieś słowa, powtórz je Zynnowi w bibliotece. "
+                    + "On zna stare dzieje Semos, może coś mu się przypomni.");
             reply(step.npc, (player, sentence, speaker) -> request(player, speaker,
-                    "Teraz te głosy martwią mnie jeszcze bardziej. Czasem słyszę krzyk, czasem równe kroki, a potem zapada cisza. "
-                    + "Sprawdzisz, co dzieje się za starą obudową szybu?"), "głosy spod skały", "glosy spod skaly", "głosach spod skały", "glosach spod skaly");
+                    "Myślałem, że mi się przesłyszało. A tu najpierw krzyk, potem kroki, równo jak na komendę. "
+                    + "I nagle cisza. Nie podoba mi się to. Posłuchasz przy starej obudowie szybu? Może tobie uda się coś zrozumieć."), "głosy spod skały", "glosy spod skaly", "głosach spod skały", "glosach spod skaly");
             reply("Zynn Iwuhos", (player, sentence, speaker) -> {
                 if (MineTrailProgress.active(player, step) && player.isQuestInState(step.slot, "history")) complete(player, speaker, "history");
                 else remind(player, speaker);
             }, "rozkazy spod ziemi");
             break;
         case MINE_DISPATCH:
-            offer("Łącznik jest przy zakręcie na południe ode mnie. Poznasz duergara po uzbrojeniu i pakietach. "
-                    + "Pokonaj go, sprawdź pakiet przy zakręcie i pokaż mi rozkaz. Powiedz wtedy #'rozkaz dla straży'. "
-                    + "Nie wchodź przez blokadę. Tam jest znacznie niebezpieczniej.");
+            offer("Przechodzi przy zakręcie na południe stąd. Ma przy sobie pakiety. Jeśli go pokonasz, przeszukaj je. "
+                    + "Może znajdziesz #'rozkaz dla straży'. Przynieś mi go, obejrzę pieczęć. "
+                    + "I trzymaj się tej strony blokady. Dalej sam nie pójdziesz bezpiecznie.");
             reply(step.npc, (player, sentence, speaker) -> request(player, speaker,
-                    "Zynn dobrze cię przysłał. To nie nasi górnicy. Widziałem duergara, który nosi pakiety między korytarzami. "
-                    + "Jeśli zdobędziemy jeden rozkaz, straż w Semos nam uwierzy. Podejmiesz się tego?"), "łącznik", "lacznik", "łącznika", "lacznika");
+                    "Zynn cię przysyła? Więc też usłyszał o tych komendach. Widziałem duergara z pakietami, chodzi między korytarzami. "
+                    + "Sam nie mogę ruszyć się z przejścia. Zdobędziesz to, co niesie? Muszę wiedzieć, co się tu szykuje."), "łącznik", "lacznik", "łącznika", "lacznika");
             reply(step.npc, (player, sentence, speaker) -> {
                 if (!MineTrailProgress.active(player, step) || !player.isQuestInState(step.slot, "identified")) { remind(player, speaker); return; }
                 player.setQuest(step.slot, "return");
-                speaker.say("Znam ten znak. Duergarowie. Rozkaz mówi o zapasach i warcie przy starej bramie. "
-                        + "Są bliżej naszych wyrobisk, niż sądziłem. Zanieś to Drilenunowi w ratuszu Semos. Powiedz #'druga zmiana'. Ja zostanę przy przejściu.");
+                speaker.say("Ta pieczęć... Tak, duergarowie. Zapasy, zmiana warty przy starej bramie. "
+                        + "A więc to ich #'druga zmiana'. Zanieś rozkaz Drilenunowi do ratusza. "
+                        + "Musi uprzedzić miasto. Ja zostanę przy przejściu.");
             }, "rozkaz dla straży", "rozkaz dla strazy");
             reply("Lieutenant Drilenun", (player, sentence, speaker) -> {
                 if (!MineTrailProgress.active(player, step) || !player.isQuestInState(step.slot, "return")) { remind(player, speaker); return; }
@@ -72,16 +74,18 @@ public final class MineTrailQuest extends TrailQuest {
     }
     @Override protected String completedText() {
         switch (step) {
-        case MINE_LEDGER: return "Zgadza się, żadnych nocnych wózków. Ktoś nas karmi bajką o drugiej zmianie. "
-                + "Skoro nie kopali węgla, to po co schodzili pod ziemię? Zapytaj mnie o #'ślady nocnej zmiany'.";
-        case MINE_TRACKS: return "Racje odliczone na porcje, a buty podkute jak do marszu. To nie moi ludzie. "
-                + "Od dawna słyszę coś z tamtej strony, tylko brałem to za echo. Porozmawiajmy o #'głosach spod skały'.";
-        case MINE_VOICES: return "Druga zmiana do bramy... To komenda przy zmianie warty. Górnicy tak do siebie nie mówią. "
-                + "Jeszcze te równe kroki i sygnał na koniec. Ktoś tam pilnuje przejścia. Zapytaj Phalka o #łącznika. "
-                + "Stoi przy zablokowanym wejściu w północno-wschodniej części kopalni. Nie musisz wchodzić za blokadę.";
-        case MINE_DISPATCH: return "A więc zapasy Radana szły do duergarów. Dobrze, że mamy ich rozkaz, a nie same pogłoski. "
-                + "Ostrzegę kupców i Barbarusa. Phalk niech pilnuje przejścia. Nie wiemy jeszcze, ilu ich tam jest. "
-                + "Dziękuję za pomoc. Weź 200 monet i pięć dużych eliksirów. Przydadzą ci się po tej wyprawie.";
+        case MINE_LEDGER: return "No widzisz. Żadnych nocnych wózków, ani jednego. Ktoś zapłacił za zapasy dla ludzi, których tu nie zatrudniam. "
+                + "Chyba jednak wiem, gdzie znaleźć #'ślady nocnej zmiany'.";
+        case MINE_TRACKS: return "Takich butów nie nosi żaden z moich ludzi. A te racje... ktoś szykował prowiant na dłuższy pobyt. "
+                + "Powinienem był od razu powiedzieć o #'głosach spod skały'. Brałem je za echo, ale teraz sam już nie wiem.";
+        case MINE_VOICES: return "Druga zmiana do bramy... Tak woła się przy zmianie warty. "
+                + "Kroki i sygnał na koniec też by pasowały. Obawiam się, że za skałą stoją żołnierze. "
+                + "Phalk strzeże przejścia w północno-wschodniej części kopalni. Może zauważył #łącznika, "
+                + "który przenosi te rozkazy. Porozmawiaj z nim, zanim pójdziesz dalej.";
+        case MINE_DISPATCH: return "Więc Radan dostarczał zapasy duergarom... A my mieliśmy to za zwykłą kradzież. "
+                + "Dobrze, że Phalk został przy przejściu. Wyślę ostrzeżenie do Barbarusa i kupców. "
+                + "Najpierw musimy ustalić, ilu ich jest. Na dziś wystarczy. Weź 200 monet i te eliksiry, "
+                + "należy ci się porządny odpoczynek.";
         default: throw new IllegalStateException("Not a mine quest");
         }
     }

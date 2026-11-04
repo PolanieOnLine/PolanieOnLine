@@ -18,7 +18,6 @@ import games.stendhal.common.Direction;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -32,8 +31,46 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 
 public class MariuszekNPC implements ZoneConfigurator {
+	private String nextStoryAdvice(final Player player) {
+		if (!player.isQuestCompleted("meet_pietrek")) {
+			return "Porozmawiaj z Pietrkiem w domku bohaterów. Ma swoje lata, ale wciąż potrafi nauczyć czegoś młodych. Dokończ z nim naukę, nim ruszysz dalej.";
+		}
+		if (!player.isQuestCompleted("pomoc_adasiowi")) {
+			return "Pogadasz z Adasiem w domku bohaterów? Biedak boi się zejść do piwnicy, odkąd zalęgły się tam szczury i węże. Jego rodzina potrzebuje miejsca na zimowe zapasy.";
+		}
+		if (!player.isQuestCompleted("scythe_fryderyk")) {
+			return "Zajrzyj do Fryderyka w Zakopanem S. Próbuje zdążyć ze żniwami przed mrozami, a nie ma czym kosić. Przydałoby się zdobyć dla niego kosę.";
+		}
+		if (!player.isQuestCompleted("wegiel_na_opal")) {
+			return "U Staska w sklepie obok mostu brakuje opału. Pomóż mu z węglem, zanim śnieg zasypie drogi. Wieści o twojej pomocy sąsiadom już do niego dotarły.";
+		}
+		for (Step step : Step.values()) {
+			if (player.isQuestCompleted(step.slot)) continue;
+			switch (step) {
+			case DELIVERY: return "Zajrzyj do Staska. Opał już ma, ale ostatnio zamartwia się jakąś dostawą. Może tobie powie więcej.";
+			case GUEST: return "Gościrad szuka woźnicy od tego fałszywego zamówienia. Znajdziesz go w ratuszu na południu Zakopanego.";
+			case SEAL: return "Brzezdom wypatrzył skład na polanie we wschodnim Kościelisku. Porozmawiaj z nim, zanim zaczniesz się tam rozglądać.";
+			case DEBT: return "Gazda Wojtek w ratuszu chce ustalić, do kogo należą znalezione zapasy. Zanieś mu wieści od Staska i Jagny.";
+			case SEMOS_LETTER: return "Ten list warto pokazać porucznikowi Drilenunowi w ratuszu Semos. Wojtek nie dopadnie sam ludzi, którzy odbierają tam transporty.";
+			case SEMOS_SIGN: return "Dagobert w banku Semos może coś wiedzieć o znaku trzech kółek. Pokaż mu kwit.";
+			case SEMOS_PICKUP: return "Przy gospodzie Margaret w Semos umawiano odbiór skrzyń. Ona zna swoich gości, może pomoże ci odnaleźć tragarza.";
+			case RADAN_PASSAGE: return "Drilenun w Semos trafił chyba na kryjówkę Radana. Jeśli chcesz pomóc, porozmawiaj z nim o chodniku pod miastem.";
+			case RADAN_RESCUE: case RADAN_TRANSPORT: case RADAN_FINALE:
+				return "Drilenun czeka w ratuszu Semos na wieści z kryjówki. Uważaj na siebie pod ziemią. Ci ludzie nie oddadzą zapasów po dobroci.";
+			case MINE_LEDGER:
+				return "Drilenuna niepokoi jeszcze dostawa do kopalni Semos. Zajrzyj do niego w ratuszu, ale nie spiesz się z wyprawą pod ziemię. Tam łatwo wpaść w kłopoty.";
+			case MINE_TRACKS: case MINE_VOICES: return "Barbarus z kopalni Semos widział ślady obcych ludzi w tunelach. Lepiej porozmawiać z nim, zanim wejdziesz głębiej.";
+			case MINE_DISPATCH: return "Phalk pilnuje przejścia w kopalni Semos. Jeśli szukasz tych, którzy kręcą się tam po nocy, on powinien wiedzieć najwięcej.";
+			default: throw new IllegalStateException("Unknown story step");
+			}
+		}
+		return "Gościrad w ratuszu wie, komu jeszcze potrzeba pomocy. Zajrzyj do niego albo popytaj sąsiadów. W Zakopanem zawsze jest coś do zrobienia.";
+	}
+
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -46,7 +83,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 				+ "Zajrzyj też do dziennika, do zadań głównych.";
 		final ChatAction next = (player, sentence, speaker) -> {
 			player.setQuest("meet_mariuszek", "done");
-			speaker.say(StarterQuestLine.nextObjective(player));
+			speaker.say(nextStoryAdvice(player));
 		};
 		for (final ConversationStates state : new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.INFORMATION_1}) {
 			npc.add(state, ConversationPhrases.HELP_MESSAGES, null, ConversationStates.ATTENDING,
@@ -131,7 +168,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 						null,
 						(player, sentence, speaker) -> {
 							player.setQuest("meet_mariuszek", "done");
-							speaker.say(StarterQuestLine.nextObjective(player));
+							speaker.say(nextStoryAdvice(player));
 						});
 
 				add(ConversationStates.INFORMATION_1,

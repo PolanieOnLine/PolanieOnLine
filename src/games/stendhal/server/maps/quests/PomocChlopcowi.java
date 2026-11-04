@@ -42,11 +42,11 @@ public class PomocChlopcowi implements QuestManuscript {
 
 		quest.offer()
 			.respondToRequest("Mamcia chce zrobić miejsce na zimowe zapasy, ale nasza #piwnica jest pełna szczurów i węży. Boję się zejść po konfitury. Pomożesz mi?")
-			.respondToUnrepeatableRequest("Pięknie dziękuję! Myślę, że na dole jest nadal czysto.")
-			.respondToAccept("Poczekam tutaj, a jeżeli spróbują uciec to ciupagą walnę!")
-			.respondToReject("*chlip* Cóż, może ktoś inny będzie moim wybawcą...")
-			.respondTo("basement", "storage space", "piwnica", "piwnicy").saying("Tak, *chlip* idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałem tam też węża. Powinieneś uważać... Pomożesz mi?")
-			.remind("Obiecałeś oczyścić tę piwnice ze szczurów! *chlip*");
+			.respondToUnrepeatableRequest("W piwnicy już nic nie piszczy. Mamcia zniosła tam słoiki. Dziękuję!")
+			.respondToAccept("Tylko uważaj na schodach! Ja zostanę tutaj i przypilnuję drzwi.")
+			.respondToReject("To ja jeszcze poczekam... Może ktoś mi pomoże.")
+			.respondTo("basement", "storage space", "piwnica", "piwnicy").saying("Wejście jest tam, po schodach w dół. Słyszałem szczury, a między beczkami widziałem węża! Sam tam nie pójdę. Pomożesz mi?")
+			.remind("Jeszcze coś słychać na dole... Nie wejdę tam, dopóki te szczury i węże sobie nie pójdą.");
 
 		quest.task()
 			.requestKill(1, "szczur")
@@ -54,7 +54,7 @@ public class PomocChlopcowi implements QuestManuscript {
 			.requestKill(1, "wąż");
 
 		quest.complete()
-			.greet("Nasz wybawca! Nareszcie możemy przygotować piwnicę na zapasy. Dziękuję! Fryderyk w południowej części Zakopanego też szykuje się do zimy. Może potrzebuje pomocy przy żniwach? Zapytaj go o zadanie.")
+			.greet("Już po wszystkim? Mogę zejść po konfitury? Dziękuję! Weź te buty, mamcia mówiła, że przydadzą się komuś w drodze. A jak pójdziesz na południe Zakopanego, zajrzyj do Fryderyka. Narzekał, że nie ma czym skosić pola.")
 			.rewardWith(new IncreaseXPAction(250))
 			.rewardWith(new IncreaseKarmaAction(5.0))
 			.rewardWith(new EquipItemAction("buty skórzane", 1, false));

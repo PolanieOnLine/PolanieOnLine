@@ -60,8 +60,7 @@ abstract class TrailQuest extends AbstractQuest {
     }
 
     protected void remind(final Player player, final EventRaiser speaker) {
-        speaker.say(player.isQuestCompleted(step.slot) ? "Ta sprawa jest już załatwiona. Dziękuję za pomoc."
-                : TrailQuestLine.objective(player, step.slot));
+        speaker.say(TrailDialogue.reminder(player, step, speaker.getName()));
     }
     protected abstract String completedText();
 

@@ -22,9 +22,16 @@ public final class RadanDungeonQuest extends TrailQuest {
                     ConversationStates.QUEST_2_OFFERED);
             reply(step.npc, (player, sentence, speaker) -> {
                 if (player.isQuestCompleted(step.slot)) {
-                    speaker.say(player.isQuestCompleted(Step.RADAN_FINALE.slot)
-                            ? "Straż zajęła już ten chodnik. Bartek jest bezpieczny, a towary wrócą do kupców."
-                            : TrailQuestLine.nextObjective(player));
+                    if (player.isQuestCompleted(Step.RADAN_FINALE.slot)) {
+                        speaker.say("Bartek jest bezpieczny. Teraz straż zajmie się Radanem i zwrotem zapasów kupcom.");
+                    } else {
+                        for (Step current : new Step[] {Step.RADAN_RESCUE, Step.RADAN_TRANSPORT, Step.RADAN_FINALE}) {
+                            if (!player.isQuestCompleted(current.slot)) {
+                                speaker.say(TrailDialogue.reminder(player, current, speaker.getName()));
+                                break;
+                            }
+                        }
+                    }
                 } else request(player, speaker,
                         "Znaleźliśmy kryjówkę Radana pod miastem. Ma tam ludzi i skradzione zapasy. "
                         + "Nie chcę, żeby uciekli, zanim zbierzemy strażników. Zajrzysz do bocznego chodnika?", ConversationStates.QUEST_2_OFFERED);
@@ -37,15 +44,16 @@ public final class RadanDungeonQuest extends TrailQuest {
                                 .withQuestRarity(ItemRarity.RARE).generateAffixes(true).build());
                 reward.setBoundTo(player.getName());
                 if (!player.equip("bag", reward)) {
-                    speaker.say("Mam dla ciebie buty żelazne. Zrób miejsce w plecaku i wróć po nagrodę."); return;
+                    speaker.say("Chcę ci podarować te żelazne buty, ale nie zmieszczą się w twoim plecaku. Zostaw gdzieś część rzeczy, a przechowam je dla ciebie."); return;
                 }
                 complete(player, speaker, "return");
             }, "Radan", "radan");
         }
     }
     @Override protected String completedText() {
-        return "Dobrze. Księga i zeznanie Bartka wystarczą. Poślę strażników po Radana, "
-                + "a kupcy dostaną swoje zapasy. Dziękuję, że pomogłeś to zakończyć. "
-                + "Weź te buty i 150 monet. Przydadzą ci się w drodze. W księdze zostało jeszcze zamówienie do kopalni. Gdy osiągniesz 30. poziom, zapytaj mnie o nocną zmianę.";
+        return "Mamy księgę, a Bartek może potwierdzić, co działo się pod miastem. Poślę strażników po Radana. "
+                + "Dopilnuję też, żeby zapasy wróciły do kupców. Dobra robota. Te buty i 150 monet należą się tobie. "
+                + "Nie podoba mi się jeszcze jedno: Radan zapisał dostawę dla kopalni, na #'nocną zmianę'. "
+                + "Przyjrzę się temu. Gdy odpoczniesz, zajrzyj do mnie.";
     }
 }
