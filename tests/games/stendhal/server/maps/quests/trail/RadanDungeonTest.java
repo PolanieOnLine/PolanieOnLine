@@ -63,6 +63,7 @@ public class RadanDungeonTest {
         townhall = new StendhalRPZone("int_semos_townhall", 40, 40);
         template = new StendhalRPZone(RadanDungeonFactory.TEMPLATE, 40, 28);
         StendhalMapStructure map = TMXLoader.load("data/maps/interiors/semos/radan_hideout.tmx");
+        map.build();
         template.addTilesets(template.getName() + ".tilesets", map.getTilesets());
         for (String name : new String[]{"0_floor", "1_terrain", "2_object", "3_roof"}) template.addLayer(template.getName() + "." + name, map.getLayer(name));
         template.addCollisionLayer(template.getName() + ".collision", map.getLayer("collision"));
@@ -266,10 +267,12 @@ public class RadanDungeonTest {
     }
     @Test public void actualMapAndPublicEntranceHaveReachableApproaches() throws Exception {
         LayerDefinition collision = TMXLoader.load("data/maps/interiors/semos/radan_hideout.tmx").getLayer("collision");
+        collision.build();
         Set<Integer> reached = flood(collision, 40, 28, 6, 23);
         for (int[] point : new int[][]{{6,24},{4,6},{6,10},{11,8},{23,8},{26,8},{33,21},{35,23}})
             assertTrue("Unreachable cell " + point[0] + "," + point[1], reached.contains(point[1]*40+point[0]));
         LayerDefinition publicMap = TMXLoader.load("data/maps/Level -1/semos/dungeon.tmx").getLayer("collision");
+        publicMap.build();
         reached = flood(publicMap, 64, 64, 28, 38);
         assertTrue(reached.contains(37*64+27)); assertTrue(reached.contains(38*64+25));
     }

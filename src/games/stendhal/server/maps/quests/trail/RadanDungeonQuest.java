@@ -46,6 +46,6 @@ public final class RadanDungeonQuest extends TrailQuest {
     @Override protected String completedText() {
         return "Dobrze. Księga i zeznanie Bartka wystarczą. Poślę strażników po Radana, "
                 + "a kupcy dostaną swoje zapasy. Dziękuję, że pomogłeś to zakończyć. "
-                + "Weź te buty i 150 monet. Przydadzą ci się w drodze.";
+                + "Weź te buty i 150 monet. Przydadzą ci się w drodze. W księdze zostało jeszcze zamówienie do kopalni. Gdy osiągniesz 30. poziom, zapytaj mnie o nocną zmianę.";
     }
 }

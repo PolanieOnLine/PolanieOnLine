@@ -738,4 +738,30 @@
 
 	<!-- END: mountain dwarf -->
 
+    <!-- Courier encountered before Phalk's deep-mine blockade, in the level-30 main story. -->
+    <creature name="łącznik duergarów">
+        <type class="dwarf" subclass="duergar" tileid="dwarf_duergar.png:6"/>
+        <description>Oto łącznik duergarów. Pilnuje pakietów z rozkazami przy bocznym zakręcie kopalni.</description>
+        <attributes>
+            <atk value="260"/>
+            <def value="35"/>
+            <armor_type value="light"/>
+            <hp value="240"/>
+            <armor_hp value="60"/>
+            <speed value="0.5"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="30"/>
+        <experience value="250"/>
+        <respawn value="240"/>
+        <corpse name="humanoid"/>
+        <drops><item value="money" quantity="[3,6]" probability="100.0"/></drops>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
 </creatures>

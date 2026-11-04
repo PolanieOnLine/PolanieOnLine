@@ -15,6 +15,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 /** Persistent, personal objectives of the Zakopane delivery investigation. */
 public final class TrailQuestLine {
     public static final String CHAPTER = "Niepokój na trakcie";
+    public static final String MINE_CHAPTER = "Druga zmiana";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -55,18 +56,36 @@ public final class TrailQuestLine {
                 "Porozmawiaj z uwolnionym Bartkiem o wózku.", DUNGEON_CHAPTER, 3, Region.SEMOS_CITY),
         RADAN_FINALE("radan_finale", "Rachunek Radana", "Lieutenant Drilenun", "guard", 5000, 150,
                 "Transport jest zatrzymany. Pozostało pokonać zbrojnego i porozmawiać z Radanem.",
-                "Odszukaj Radana w ostatnim pomieszczeniu kryjówki.", DUNGEON_CHAPTER, 4, Region.SEMOS_CITY);
+                "Odszukaj Radana w ostatnim pomieszczeniu kryjówki.", DUNGEON_CHAPTER, 4, Region.SEMOS_CITY),
+        MINE_LEDGER("trail_mine_ledger", "Dopisek w księdze", "Lieutenant Drilenun", "barbarus", 3500, 60,
+                "W księdze Radana jest zamówienie na zapasy dla nocnej zmiany w kopalni Semos. Drilenun chce sprawdzić, kto je odbierał.",
+                "Zapytaj porucznika Drilenuna w ratuszu Semos o nocną zmianę.", MINE_CHAPTER, 1, Region.SEMOS_MINES, 30),
+        MINE_TRACKS("trail_mine_tracks", "Kto schodzi po zmroku", "Barbarus", "clues;0", 4500, 80,
+                "Barbarus nie zatrudnia nikogo na noc. W tunelach zostały jednak opakowania po racjach i ślady ciężkich butów.",
+                "Zapytaj Barbarusa w kopalni Semos o ślady nocnej zmiany.", MINE_CHAPTER, 2, Region.SEMOS_MINES, 30),
+        MINE_VOICES("trail_mine_voices", "Głosy spod skały", "Barbarus", "listen", 5500, 100,
+                "Ślady prowadzą w głąb kopalni. Barbarus słyszał tam rozkazy. Trzeba sprawdzić, skąd dochodzą.",
+                "Porozmawiaj z Barbarusem o głosach z głębi kopalni. Powiedz: głosy spod skały.", MINE_CHAPTER, 3, Region.SEMOS_MINES, 30),
+        MINE_DISPATCH("trail_mine_dispatch", "Rozkaz na pergaminie", "Phalk", "guard", 10000, 200,
+                "Zynn rozpoznał dawne komendy wojskowe. Phalk może wiedzieć, kto przenosi rozkazy między tunelami.",
+                "Odszukaj Phalka przy zablokowanym przejściu w kopalni Semos. Zapytaj o łącznika.", MINE_CHAPTER, 4, Region.SEMOS_MINES, 30);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
-        public final int xp, coins, order;
+        public final int xp, coins, order, minimumLevel;
         Step(String slot, String title, String npc, String initial, int xp, int coins, String description, String hint, String chapter, int order, String region) {
+            this(slot, title, npc, initial, xp, coins, description, hint, chapter, order, region, 0);
+        }
+        Step(String slot, String title, String npc, String initial, int xp, int coins, String description, String hint, String chapter, int order, String region, int minimumLevel) {
+            this.minimumLevel = minimumLevel;
             this.slot = slot; this.title = title; this.npc = npc; this.initial = initial;
             this.xp = xp; this.coins = coins; this.description = description; this.hint = hint;
             this.chapter = chapter; this.order = order; this.region = region;
         }
         public boolean available(final Player player) {
-            final String previous = ordinal() == 0 ? "wegiel_na_opal" : values()[ordinal() - 1].slot;
-            return player.isQuestCompleted(previous);
+            return player.isQuestCompleted(previousSlot()) && player.getLevel() >= minimumLevel;
+        }
+        String previousSlot() {
+            return ordinal() == 0 ? "wegiel_na_opal" : values()[ordinal() - 1].slot;
         }
     }
 
@@ -83,9 +102,12 @@ public final class TrailQuestLine {
         final String stage = player.getQuest(slot, 0);
         for (final Step step : Step.values()) {
             if (!step.slot.equals(slot)) continue;
-            if (!step.available(player)) {
+            if (!player.isQuestCompleted(step.previousSlot())) {
                 return step.ordinal() == 0 ? "Najpierw pomóż Staskowi z węglem."
                         : objective(player, Step.values()[step.ordinal() - 1].slot);
+            }
+            if (player.getLevel() < step.minimumLevel && stage == null) {
+                return "Zdobądź " + step.minimumLevel + ". poziom. Potem " + step.hint.substring(0, 1).toLowerCase() + step.hint.substring(1);
             }
             if (stage == null || "rejected".equals(stage)) return step.hint;
             switch (step) {
@@ -124,6 +146,8 @@ public final class TrailQuestLine {
                 return "Zanieś wiadomość porucznikowi Drilenunowi w ratuszu Semos. Zapytaj o tragarza.";
             case RADAN_PASSAGE: case RADAN_RESCUE: case RADAN_TRANSPORT: case RADAN_FINALE:
                 return RadanDungeonProgress.objective(player, step);
+            case MINE_LEDGER: case MINE_TRACKS: case MINE_VOICES: case MINE_DISPATCH:
+                return MineTrailProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -183,6 +207,8 @@ public final class TrailQuestLine {
             break;
         case RADAN_PASSAGE: case RADAN_RESCUE: case RADAN_TRANSPORT: case RADAN_FINALE:
             return RadanDungeonProgress.history(player, step);
+        case MINE_LEDGER: case MINE_TRACKS: case MINE_VOICES: case MINE_DISPATCH:
+            return MineTrailProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -195,8 +221,9 @@ public final class TrailQuestLine {
         return "3".equals(value) ? 3 : 0;
     }
 
-    /** Count a real nearby kill only while this player's stockpile investigation is active. */
+    /** Record nearby story kills only from the expected world respawn points. */
     public static void recordGuardKill(final Player player, final RPEntity victim) {
+        MineTrailProgress.recordCourierKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

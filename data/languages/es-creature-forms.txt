@@ -1487,3 +1487,6 @@ zombiy=zombis
 {number:0} człowiek radana={0} secuaces de Radan
 1 zbrojny radana=1 soldado de Radan
 {number:0} zbrojny radana={0} soldados de Radan
+
+1 łącznik duergarów=1 mensajero duergar
+{number:0} łącznik duergarów={0} mensajeros duergar

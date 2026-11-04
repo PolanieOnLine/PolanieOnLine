@@ -1385,3 +1385,5 @@ zbrojny Radana=soldado de Radan
 
 człowiek radana=secuaz de Radan
 zbrojny radana=soldado de Radan
+
+łącznik duergarów=mensajero duergar

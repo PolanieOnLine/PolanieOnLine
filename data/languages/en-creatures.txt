@@ -1385,3 +1385,5 @@ zbrojny Radana=Radan's armsman
 
 człowiek radana=Radan's henchman
 zbrojny radana=Radan's armsman
+
+łącznik duergarów=duergar courier

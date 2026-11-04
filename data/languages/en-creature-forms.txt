@@ -1485,3 +1485,6 @@ krwiożercz szczur=razorrat
 {number:0} człowiek radana={0} Radan's henchmen
 1 zbrojny radana=1 Radan's armsman
 {number:0} zbrojny radana={0} Radan's armsmen
+
+1 łącznik duergarów=1 duergar courier
+{number:0} łącznik duergarów={0} duergar couriers

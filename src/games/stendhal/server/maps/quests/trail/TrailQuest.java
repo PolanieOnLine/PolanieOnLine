@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -37,13 +38,14 @@ abstract class TrailQuest extends AbstractQuest {
     protected void offer(final String accepted, final ConversationStates state) {
         final SpeakerNPC npc = npcs.get(step.npc);
         // The ordinary QUEST_OFFERED state already belongs to Brzezdom's riddles.
-        npc.add(state, ConversationPhrases.YES_MESSAGES, null,
+        final ChatCondition awaitingOffer = (player, sentence, speaker) -> step.available(player) && !player.hasQuest(step.slot);
+        npc.add(state, ConversationPhrases.YES_MESSAGES, awaitingOffer,
                 ConversationStates.ATTENDING, null, (player, sentence, speaker) -> {
             if (!step.available(player) || player.hasQuest(step.slot)) { remind(player, speaker); return; }
             player.setQuest(step.slot, step.initial);
             speaker.say(accepted);
         });
-        npc.add(state, ConversationPhrases.NO_MESSAGES, null,
+        npc.add(state, ConversationPhrases.NO_MESSAGES, awaitingOffer,
                 ConversationStates.ATTENDING, "Dobrze. Jeśli zmienisz zdanie, wiesz, gdzie mnie szukać.", null);
     }
 
@@ -75,6 +77,7 @@ abstract class TrailQuest extends AbstractQuest {
     @Override public final String getSlotName() { return step.slot; }
     @Override public final String getName() { return step.title; }
     @Override public final String getNPCName() { return step.npc; }
+    @Override public final int getMinLevel() { return step.minimumLevel; }
     @Override public final String getRegion() { return step.region; }
     @Override public final boolean isVisibleOnQuestStatus(final Player player) {
         return step.available(player) || player.hasQuest(step.slot);
