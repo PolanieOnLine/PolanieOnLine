@@ -35,6 +35,7 @@ import games.stendhal.server.maps.quests.challenges.*;
 import games.stendhal.server.maps.quests.socialstatusrings.*;
 import games.stendhal.server.maps.quests.trail.DebtToZakopaneQuest;
 import games.stendhal.server.maps.quests.trail.FalsePickupQuest;
+import games.stendhal.server.maps.quests.trail.RadanDungeonQuest;
 import games.stendhal.server.maps.quests.trail.LetterFromZakopaneQuest;
 import games.stendhal.server.maps.quests.trail.ThreeCirclesQuest;
 import games.stendhal.server.maps.quests.trail.ForgedSealQuest;
@@ -249,6 +250,9 @@ public class StendhalQuestSystem {
         loadQuest(new LetterFromZakopaneQuest());
         loadQuest(new ThreeCirclesQuest());
         loadQuest(new FalsePickupQuest());
+        for (TrailQuestLine.Step step : TrailQuestLine.Step.values()) {
+            if (step.chapter.equals(TrailQuestLine.DUNGEON_CHAPTER)) loadQuest(new RadanDungeonQuest(step));
+        }
 		loadQuest(new ZakopaneBank());
 		loadQuest(new ZakopaneClouds());
 		loadQuest(new ZlotaCiupaga());

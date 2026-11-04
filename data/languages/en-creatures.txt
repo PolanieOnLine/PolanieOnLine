@@ -1378,3 +1378,10 @@ bluuergghhhoooorrghhhhh=bluuergghhhoooorrghhhhh
 
 strażnik składu=stockpile guard
 Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.=A guard of the hidden stockpile. He watches the supplies and the documents for the forged deliveries.
+
+człowiek Radana=Radan's henchman
+strażnik więźnia=prison guard
+zbrojny Radana=Radan's armsman
+
+człowiek radana=Radan's henchman
+zbrojny radana=Radan's armsman

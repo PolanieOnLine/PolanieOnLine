@@ -4209,6 +4209,7 @@ Południowy-zachód: Miasto Fado
 
 	<zone name="-1_semos_dungeon" level="-1" x="500064" y="500000"
 		file="Level -1/semos/dungeon.tmx">
+        <configurator class-name="games.stendhal.server.maps.quests.trail.RadanDungeonSite"/>
 
 		<entity x="1" y="1">
 			<implementation
@@ -4218,6 +4219,83 @@ Południowy-zachód: Miasto Fado
 			</implementation>
 		</entity>
 	</zone>
+
+    <zone name="int_semos_radan_hideout" file="interiors/semos/radan_hideout.tmx" accessible="false">
+        <attributes>
+            <parameter name="color_method">dark</parameter>
+        </attributes>
+        <configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+        <entity x="2" y="23">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="10" y="23">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="10" y="17">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="2" y="17">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="2" y="11">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="2" y="4">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="14" y="4">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="14" y="11">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="28" y="4">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+        <entity x="31" y="23">
+            <implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+                <parameter name="sound">pol-ognisko</parameter>
+                <parameter name="radius">5</parameter>
+                <parameter name="volume">12</parameter>
+            </implementation>
+        </entity>
+    </zone>
 
 	<zone name="-1_semos_jail" level="-1" x="499872" y="500000"
 		file="Level -1/semos/jail.tmx">

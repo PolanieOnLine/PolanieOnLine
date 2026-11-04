@@ -22,6 +22,8 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.EquipListener;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.PassiveEntity;
 import games.stendhal.server.entity.RPEntity;
@@ -225,6 +227,35 @@ public class Corpse extends PassiveEntity implements EquipListener {
 		final RPSlot slot = new LootableSlot(this);
 		addSlot(slot);
 	}
+
+    /**
+     * Moves a corpse out of a closing private map without losing its contents,
+     * loot protection or remaining decay time. Ordinary zone removal cancels
+     * these timers, so a plain placeat() would leave an immortal corpse.
+     */
+    public boolean relocateTo(final StendhalRPZone destination, final int x, final int y) {
+        final StendhalRPZone previous = getZone();
+        final TurnNotifier notifier = SingletonRepository.getTurnNotifier();
+        final int decay = notifier.getRemainingTurns(corpseDegradator);
+        final int protection = notifier.getRemainingTurns(itemForRewardsReleaser);
+        if (destination == null || x < 0 || y < 0 || x + getWidth() > destination.getWidth()
+                || y + getHeight() > destination.getHeight()) return false;
+        if (!StendhalRPAction.placeat(destination, this, x, y)) {
+            // A corpse is passive. At a crowded evacuation point it may share a
+            // tile; losing its loot when the old map closes is never acceptable.
+            if (previous != null) previous.remove(this);
+            setPosition(x, y);
+            destination.add(this);
+        }
+        if (previous != destination) {
+            // onMoved may also have reset protection; restore the original deadlines.
+            notifier.dontNotify(corpseDegradator);
+            notifier.dontNotify(itemForRewardsReleaser);
+            if (decay >= 0) notifier.notifyInTurns(Math.max(0, decay - 1), corpseDegradator);
+            if (protection >= 0) notifier.notifyInTurns(Math.max(0, protection - 1), itemForRewardsReleaser);
+        }
+        return true;
+    }
 
 	/**
 	 * sets the owner of the corpse, while set only this person may loot.

@@ -1473,3 +1473,15 @@ krwiożercz szczur=razorrat
 
 1 strażnik składu=1 stockpile guard
 {number:0} strażnik składu={0} stockpile guards
+
+1 człowiek Radana=1 Radan's henchman
+{number:0} człowiek Radana={0} Radan's henchmen
+1 strażnik więźnia=1 prison guard
+{number:0} strażnik więźnia={0} prison guards
+1 zbrojny Radana=1 Radan's armsman
+{number:0} zbrojny Radana={0} Radan's armsmen
+
+1 człowiek radana=1 Radan's henchman
+{number:0} człowiek radana={0} Radan's henchmen
+1 zbrojny radana=1 Radan's armsman
+{number:0} zbrojny radana={0} Radan's armsmen

@@ -58,6 +58,6 @@ public final class FalsePickupQuest extends TrailQuest {
         return "Radan. Wreszcie mamy nazwisko i podpis. Dagobert zatrzyma pieniądze, "
                 + "a ja poślę ludzi, żeby sprawdzili zleceniodawcę Olka. "
                 + "Dobrze, że udało się to załatwić bez kolejnej kradzieży. "
-                + "Sam napiszę do Wojtka, że dostawa do Semos została wstrzymana. Olek nie zabierze tej skrzyni.";
+                + "Sam napiszę do Wojtka, że dostawa do Semos została wstrzymana. Olek nie zabierze tej skrzyni. Jeśli chcesz pomóc straży znaleźć Radana, zapytaj mnie o #chodnik.";
     }
 }

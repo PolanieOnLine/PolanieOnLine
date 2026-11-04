@@ -537,4 +537,80 @@
         </ai>
     </creature>
 
+    <creature name="człowiek Radana">
+        <type class="human" subclass="bandit" tileid="human_evil.png:1"/>
+        <description>Oto człowiek Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
+        <attributes>
+            <atk value="125"/>
+            <def value="15"/>
+            <armor_type value="light"/>
+            <hp value="150"/>
+            <speed value="0.5"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="11"/>
+        <experience value="0"/>
+        <respawn value="200"/>
+        <corpse name="humanoid"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
+
+    <creature name="strażnik więźnia">
+        <type class="human" subclass="bandit" tileid="human_evil.png:1"/>
+        <description>Oto strażnik więźnia. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
+        <attributes>
+            <atk value="135"/>
+            <def value="16"/>
+            <armor_type value="light"/>
+            <hp value="170"/>
+            <speed value="0.5"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="12"/>
+        <experience value="0"/>
+        <respawn value="200"/>
+        <corpse name="humanoid"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
+
+    <creature name="zbrojny Radana">
+        <type class="human" subclass="bandit" tileid="human_evil.png:2"/>
+        <description>Oto zbrojny Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
+        <attributes>
+            <atk value="160"/>
+            <def value="22"/>
+            <armor_type value="light"/>
+            <hp value="300"/>
+            <armor_hp value="75"/>
+            <speed value="0.5"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="15"/>
+        <experience value="0"/>
+        <respawn value="200"/>
+        <corpse name="humanoid"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
+
 </creatures>

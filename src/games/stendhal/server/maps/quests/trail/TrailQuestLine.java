@@ -15,6 +15,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 /** Persistent, personal objectives of the Zakopane delivery investigation. */
 public final class TrailQuestLine {
     public static final String CHAPTER = "Niepokój na trakcie";
+    public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
     public static final String GUARD = "strażnik składu";
@@ -42,7 +43,19 @@ public final class TrailQuestLine {
                 "Zapytaj Dagoberta w banku Semos o trzy kółka.", SEMOS_CHAPTER, 2, Region.SEMOS_CITY),
         SEMOS_PICKUP("trail_semos_pickup", "Odbiór przy gospodzie", "Margaret", "wood", 3200, 80,
                 "Odbiorca ma przyjść pod gospodę. Margaret chce podstawić mu skrzynię z polanami i sprawdzić, dla kogo pracuje.",
-                "Porozmawiaj z Margaret w gospodzie w Semos. Zapytaj o odbiór.", SEMOS_CHAPTER, 3, Region.SEMOS_CITY);
+                "Porozmawiaj z Margaret w gospodzie w Semos. Zapytaj o odbiór.", SEMOS_CHAPTER, 3, Region.SEMOS_CITY),
+        RADAN_PASSAGE("radan_passage", "Zamknięty chodnik", "Lieutenant Drilenun", "search", 1200, 0,
+                "Radan ukrywa skradzione zapasy pod Semos. Drilenun wskazał boczny chodnik w podziemiach.",
+                "Zapytaj porucznika Drilenuna w ratuszu Semos o chodnik.", DUNGEON_CHAPTER, 1, Region.SEMOS_CITY),
+        RADAN_RESCUE("radan_rescue", "Nie wszyscy z własnej woli", "Bartek", "guards;0", 1800, 0,
+                "W kryjówce jest związany robotnik. Najpierw trzeba rozprawić się z pilnującymi go ludźmi.",
+                "Wejdź do bocznego chodnika pod Semos i odszukaj więźnia.", DUNGEON_CHAPTER, 2, Region.SEMOS_CITY),
+        RADAN_TRANSPORT("radan_transport", "Ostatni transport", "Bartek", "brake", 1800, 0,
+                "Radan przygotował wózek ze skradzionym towarem. Bartek wie, jak go zatrzymać.",
+                "Porozmawiaj z uwolnionym Bartkiem o wózku.", DUNGEON_CHAPTER, 3, Region.SEMOS_CITY),
+        RADAN_FINALE("radan_finale", "Rachunek Radana", "Lieutenant Drilenun", "guard", 5000, 150,
+                "Transport jest zatrzymany. Pozostało pokonać zbrojnego i porozmawiać z Radanem.",
+                "Odszukaj Radana w ostatnim pomieszczeniu kryjówki.", DUNGEON_CHAPTER, 4, Region.SEMOS_CITY);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order;
@@ -109,6 +122,8 @@ public final class TrailQuestLine {
                 if ("contact".equals(stage)) return "Porozmawiaj z tragarzem Olkiem obok skrzyni pod gospodą. Użyj hasła z księgi: suchy ładunek.";
                 if ("question".equals(stage)) return "Poproś tragarza Olka o kwit na odbiór. Powiedz: kwit.";
                 return "Zanieś wiadomość porucznikowi Drilenunowi w ratuszu Semos. Zapytaj o tragarza.";
+            case RADAN_PASSAGE: case RADAN_RESCUE: case RADAN_TRANSPORT: case RADAN_FINALE:
+                return RadanDungeonProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -166,6 +181,8 @@ public final class TrailQuestLine {
             if ("return".equals(stage) || done) entries.add("Na kwicie jest nazwisko Radan. Olek twierdzi, że dostał pieniądze i instrukcję odbioru, ale nie znał zawartości skrzyni.");
             if (done) entries.add("Drilenun dostał odpis kwitu. Bank wstrzyma wypłatę, a straż sprawdzi człowieka podpisanego jako Radan. Olek nie będzie już odbierał tych przesyłek.");
             break;
+        case RADAN_PASSAGE: case RADAN_RESCUE: case RADAN_TRANSPORT: case RADAN_FINALE:
+            return RadanDungeonProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;

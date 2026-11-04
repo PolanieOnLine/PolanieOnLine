@@ -1378,3 +1378,10 @@ Oto cuchnący i gnijący zombi. Robi ci się niedobrze na sam widok jego gnijąc
 
 strażnik składu=guardia del almacén
 Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.=Un guardia del almacén oculto. Vigila los sacos de provisiones y los documentos de las entregas falsas.
+
+człowiek Radana=secuaz de Radan
+strażnik więźnia=guardia del prisionero
+zbrojny Radana=soldado de Radan
+
+człowiek radana=secuaz de Radan
+zbrojny radana=soldado de Radan

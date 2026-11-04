@@ -1475,3 +1475,15 @@ zombiy=zombis
 
 1 strażnik składu=1 guardia del almacén
 {number:0} strażnik składu={0} guardias del almacén
+
+1 człowiek Radana=1 secuaz de Radan
+{number:0} człowiek Radana={0} secuaces de Radan
+1 strażnik więźnia=1 guardia del prisionero
+{number:0} strażnik więźnia={0} guardias del prisionero
+1 zbrojny Radana=1 soldado de Radan
+{number:0} zbrojny Radana={0} soldados de Radan
+
+1 człowiek radana=1 secuaz de Radan
+{number:0} człowiek radana={0} secuaces de Radan
+1 zbrojny radana=1 soldado de Radan
+{number:0} zbrojny radana={0} soldados de Radan

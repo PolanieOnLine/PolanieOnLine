@@ -31,22 +31,30 @@ abstract class TrailQuest extends AbstractQuest {
     }
 
     protected void offer(final String accepted) {
+        offer(accepted, ConversationStates.QUEST_3_OFFERED);
+    }
+
+    protected void offer(final String accepted, final ConversationStates state) {
         final SpeakerNPC npc = npcs.get(step.npc);
         // The ordinary QUEST_OFFERED state already belongs to Brzezdom's riddles.
-        npc.add(ConversationStates.QUEST_3_OFFERED, ConversationPhrases.YES_MESSAGES, null,
+        npc.add(state, ConversationPhrases.YES_MESSAGES, null,
                 ConversationStates.ATTENDING, null, (player, sentence, speaker) -> {
             if (!step.available(player) || player.hasQuest(step.slot)) { remind(player, speaker); return; }
             player.setQuest(step.slot, step.initial);
             speaker.say(accepted);
         });
-        npc.add(ConversationStates.QUEST_3_OFFERED, ConversationPhrases.NO_MESSAGES, null,
+        npc.add(state, ConversationPhrases.NO_MESSAGES, null,
                 ConversationStates.ATTENDING, "Dobrze. Jeśli zmienisz zdanie, wiesz, gdzie mnie szukać.", null);
     }
 
     protected void request(final Player player, final EventRaiser speaker, final String question) {
+        request(player, speaker, question, ConversationStates.QUEST_3_OFFERED);
+    }
+
+    protected void request(final Player player, final EventRaiser speaker, final String question, final ConversationStates state) {
         if (!step.available(player) || player.hasQuest(step.slot)) { remind(player, speaker); return; }
         speaker.say(question);
-        speaker.setCurrentState(ConversationStates.QUEST_3_OFFERED);
+        speaker.setCurrentState(state);
     }
 
     protected void remind(final Player player, final EventRaiser speaker) {
