@@ -1375,3 +1375,6 @@ Moje zdolności budzą strach!=My abilities inspire fear!
 Powiadam ci, nie ograbisz mnie!=I tell you, you will not loot me!
 móóóóóżdżeeeeek!=braaaaaains!
 bluuergghhhoooorrghhhhh=bluuergghhhoooorrghhhhh
+
+strażnik składu=stockpile guard
+Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.=A guard of the hidden stockpile. He watches the supplies and the documents for the forged deliveries.

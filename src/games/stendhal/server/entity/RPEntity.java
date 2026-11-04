@@ -42,6 +42,7 @@ import games.stendhal.server.core.rule.damage.ArmorPoolService;
 import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.maps.quests.FirstGlyph;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
@@ -1751,6 +1752,7 @@ public abstract class RPEntity extends CombatEntity {
 				HuntingKillCredit.excludeArenaKill(
 						killer, this, damageDone == totalDamageReceived);
 				FirstGlyph.recordKill(killer, this);
+				TrailQuestLine.recordGuardKill(killer, this);
 			}
 
 			SingletonRepository.getAchievementNotifier().onKill(killer);

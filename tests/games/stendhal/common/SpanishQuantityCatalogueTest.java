@@ -68,7 +68,7 @@ public class SpanishQuantityCatalogueTest {
   }
  }
  @Test public void everyCurrentCreatureHasAllActualQuantityForms()throws Exception {
-  Set<String> names=definitions("creatures","creature");assertEquals(641,names.size());
+  Set<String> names=definitions("creatures","creature");assertEquals(642,names.size());
   for(String name:names)for(int count:COUNTS)quantityExists(name,count,Grammar.quantityplnounCreature(count,name));
  }
  @Test public void oneDoesNotAcquireAnIncorrectPlural() {

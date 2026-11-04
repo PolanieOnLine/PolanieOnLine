@@ -33,6 +33,11 @@ import games.stendhal.server.maps.quests.*;
 import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
 import games.stendhal.server.maps.quests.challenges.*;
 import games.stendhal.server.maps.quests.socialstatusrings.*;
+import games.stendhal.server.maps.quests.trail.DebtToZakopaneQuest;
+import games.stendhal.server.maps.quests.trail.ForgedSealQuest;
+import games.stendhal.server.maps.quests.trail.LastGuestQuest;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine;
+import games.stendhal.server.maps.quests.trail.UnexpectedDeliveryQuest;
 
 /**
  * Loads and manages all quests.
@@ -234,6 +239,10 @@ public class StendhalQuestSystem {
 		loadQuest(new Ratownik());
 		loadQuest(new ScytheForFryderyk());
 		loadQuest(new WegielNaOpal());
+        loadQuest(new UnexpectedDeliveryQuest());
+        loadQuest(new LastGuestQuest());
+        loadQuest(new ForgedSealQuest());
+        loadQuest(new DebtToZakopaneQuest());
 		loadQuest(new ZakopaneBank());
 		loadQuest(new ZakopaneClouds());
 		loadQuest(new ZlotaCiupaga());
@@ -754,6 +763,7 @@ public class StendhalQuestSystem {
 			if (questInfo.getName().equals(questName)) {
                 if (questInfo.isMainQuest() && !quest.isCompleted(player)) {
                     String objective = StarterQuestLine.objective(player, quest.getSlotName());
+                    if (objective == null) { objective = TrailQuestLine.objective(player, quest.getSlotName()); }
                     if (objective == null && !quest.isStarted(player)) { objective = questInfo.getMainQuestStartHint(); }
                     if (objective != null && !objective.isEmpty()) { res.add("Aktualny cel: " + objective); }
                 }

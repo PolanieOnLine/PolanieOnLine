@@ -1470,3 +1470,6 @@ mnicha ciemności=darkmonk
 krwiożercz szczur=razorrat
 1 necrosophia=1 necrosophia
 1 gashadokuro=1 gashadokuro
+
+1 strażnik składu=1 stockpile guard
+{number:0} strażnik składu={0} stockpile guards

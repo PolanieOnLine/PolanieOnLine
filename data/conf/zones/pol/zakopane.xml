@@ -2256,6 +2256,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Shop -->
 	<zone name="int_zakopane_shop" file="interiors/zakopane/shop.tmx">
+        <configurator class-name="games.stendhal.server.maps.quests.trail.TrailSites"/>
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.shop.StasekNPC"/>
 
@@ -2478,6 +2479,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 
 	<!-- Townhall -->
 	<zone name="int_zakopane_townhall" file="interiors/zakopane/townhall.tmx">
+        <configurator class-name="games.stendhal.server.maps.quests.trail.TrailSites"/>
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/townhall_xmas.tmx</parameter>
 			<parameter name="music">pol-goralskie</parameter>

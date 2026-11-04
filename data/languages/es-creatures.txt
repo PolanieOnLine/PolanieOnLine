@@ -1375,3 +1375,6 @@ Oto krwawy zombi. Czy zauważyłeś, że z jego ciała leje się krew?=Ves un zo
 Oto zombi. Budzi się tylko, aby dokonać zemsty. Poruszaj się cicho.=Ves un zombi. Solo despierta para vengarse. Muévete en silencio.
 Oto bezgłowy potwór. Jak może usłyszeć, że się zbliżacie?=Ves un monstruo sin cabeza. ¿Cómo puede oír que os acercáis?
 Oto cuchnący i gnijący zombi. Robi ci się niedobrze na sam widok jego gnijącej skóry zwisającej płatami z pogniłych resztek wystających kości.=Ves un zombi apestoso y podrido. Te da náuseas ver su piel putrefacta colgando en tiras de los restos descompuestos de huesos expuestos.
+
+strażnik składu=guardia del almacén
+Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.=Un guardia del almacén oculto. Vigila los sacos de provisiones y los documentos de las entregas falsas.

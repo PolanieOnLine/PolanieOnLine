@@ -114,7 +114,7 @@ public class WegielNaOpal extends AbstractQuest {
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Dziękuję za węgiel! Mieszkańcy mają zapasy, a ja mam czym ogrzać sklep podczas mrozów. Zdobyłeś moje zaufanie. Od teraz możesz u mnie kupować uzbrojenie. Sprawdź moją #ofertę.",
+				"Dziękuję za węgiel! Mieszkańcy mają zapasy, a ja mam czym ogrzać sklep podczas mrozów. Zdobyłeś moje zaufanie. Od teraz możesz u mnie kupować uzbrojenie. Sprawdź moją #ofertę. Mam też podejrzaną #'dostawę'. Zapytaj o nią, kiedy zechcesz zająć się kolejną sprawą.",
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(5500),
@@ -177,7 +177,7 @@ public class WegielNaOpal extends AbstractQuest {
 		}
 		if (isCompleted(player)) {
 			res.add("Stasek przyjął opał i podziękował za pomoc mieszkańcom w przygotowaniach do zimy.");
-            res.add("Zdobyłem zaufanie Zakopanego. Mogę kupować uzbrojenie w sklepie u Staska.");
+            res.add("Zdobyłem zaufanie Zakopanego. Mogę kupować uzbrojenie w sklepie u Staska. Wspomniał o podejrzanej dostawie; mogę zapytać go o dostawę.");
 		}
 		return res;
 	}

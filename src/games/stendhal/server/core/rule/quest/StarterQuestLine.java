@@ -2,6 +2,7 @@ package games.stendhal.server.core.rule.quest;
 
 import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine;
 
 /** Read-only journal objectives for the existing Zakopane starter quest states. */
 public final class StarterQuestLine {
@@ -20,6 +21,8 @@ public final class StarterQuestLine {
                 return objective(player, slot);
             }
         }
+        final String continuation = TrailQuestLine.nextObjective(player);
+        if (continuation != null) return continuation;
         return "Zdobyłeś już zaufanie mieszkańców Zakopanego. Gościrad w ratuszu podpowie Ci, kto jeszcze potrzebuje pomocy. "
                 + "Możesz też zajrzeć do zadań pobocznych w dzienniku.";
     }

@@ -1472,3 +1472,6 @@ zombiy=zombis
 1 żółwik=1 tortuguita
 żółwicy=tortuguitas
 {number:0} żółwicy={0} tortuguitas
+
+1 strażnik składu=1 guardia del almacén
+{number:0} strażnik składu={0} guardias del almacén
