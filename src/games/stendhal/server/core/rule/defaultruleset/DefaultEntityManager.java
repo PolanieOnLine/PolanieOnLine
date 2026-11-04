@@ -235,7 +235,9 @@ public class DefaultEntityManager implements EntityManager {
 			}
 
 			classToCreature.put(clazz, creature);
-			idToClass.put(id, clazz);
+			if (!DefaultCreature.NO_TILE_ID.equals(id)) {
+				idToClass.put(id, clazz);
+			}
 
 			WordList.getInstance().registerName(creature.getCreatureName(), ExpressionType.SUBJECT);
 		}
@@ -268,7 +270,11 @@ public class DefaultEntityManager implements EntityManager {
 			LOGGER.warn("Items dropped by creature name: " + clazz + " doesn't exists");
 		}
 		classToCreature.put(clazz, creature);
-		idToClass.put(id, clazz);
+		if (DefaultCreature.NO_TILE_ID.equals(id)) {
+			idToClass.values().removeIf(clazz::equalsIgnoreCase);
+		} else {
+			idToClass.put(id, clazz);
+		}
 
 		return true;
 	}

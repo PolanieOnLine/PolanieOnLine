@@ -510,7 +510,7 @@
 
     <!-- Low level opponent guarding the main storyline stockpile in Kościelisko. -->
     <creature name="strażnik składu">
-        <type class="human" subclass="bandit" tileid="human_evil.png:1"/>
+        <type class="human" subclass="bandit" tileid="-1"/>
         <description>Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.</description>
         <attributes>
             <atk value="105"/>
@@ -538,7 +538,7 @@
     </creature>
 
     <creature name="człowiek Radana">
-        <type class="human" subclass="bandit" tileid="human_evil.png:1"/>
+        <type class="human" subclass="bandit" tileid="-1"/>
         <description>Oto człowiek Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
         <attributes>
             <atk value="125"/>
@@ -563,7 +563,7 @@
     </creature>
 
     <creature name="strażnik więźnia">
-        <type class="human" subclass="bandit" tileid="human_evil.png:1"/>
+        <type class="human" subclass="bandit" tileid="-1"/>
         <description>Oto strażnik więźnia. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
         <attributes>
             <atk value="135"/>
@@ -588,7 +588,7 @@
     </creature>
 
     <creature name="zbrojny Radana">
-        <type class="human" subclass="bandit" tileid="human_evil.png:2"/>
+        <type class="human" subclass="bandit" tileid="-1"/>
         <description>Oto zbrojny Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.</description>
         <attributes>
             <atk value="160"/>

@@ -35,6 +35,9 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
 public class DefaultCreature {
+	/** Created explicitly by name, without a spawn marker in a Tiled map. */
+	public static final String NO_TILE_ID = "-1";
+
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DefaultCreature.class);
 
@@ -408,7 +411,7 @@ public class DefaultCreature {
 		return creature;
 	}
 
-	/** @return the tileid. */
+	/** @return the Tiled marker, or {@link #NO_TILE_ID} for explicit spawns only. */
 	public String getTileId() {
 		return tileid;
 	}

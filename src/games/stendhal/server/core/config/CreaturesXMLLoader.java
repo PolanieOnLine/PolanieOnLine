@@ -172,7 +172,9 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			subclass = attrs.getValue("subclass");
 			shadow_style = attrs.getValue("shadow");
 
-			tileid = "../../tileset/logic/creature/" + attrs.getValue("tileid");
+			final String marker = attrs.getValue("tileid");
+			tileid = DefaultCreature.NO_TILE_ID.equals(marker) ? DefaultCreature.NO_TILE_ID
+					: "../../tileset/logic/creature/" + marker;
 		} else if (qName.equals("level")) {
 			level = Integer.parseInt(attrs.getValue("value"));
 		} else if (qName.equals("experience")) {
@@ -350,7 +352,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 				return;
 			}
 
-			if (!tileid.contains(":")) {
+			if (!DefaultCreature.NO_TILE_ID.equals(tileid) && !tileid.contains(":")) {
 				logger.error("Corrupt XML file: Bad tileid for creature(" + name + ")");
 				return;
 			}

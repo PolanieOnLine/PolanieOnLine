@@ -740,7 +740,7 @@
 
     <!-- Courier encountered before Phalk's deep-mine blockade, in the level-30 main story. -->
     <creature name="łącznik duergarów">
-        <type class="dwarf" subclass="duergar" tileid="dwarf_duergar.png:6"/>
+        <type class="dwarf" subclass="duergar" tileid="-1"/>
         <description>Oto łącznik duergarów. Pilnuje pakietów z rozkazami przy bocznym zakręcie kopalni.</description>
         <attributes>
             <atk value="260"/>
