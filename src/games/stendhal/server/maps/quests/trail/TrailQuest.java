@@ -41,7 +41,7 @@ abstract class TrailQuest extends AbstractQuest {
             speaker.say(accepted);
         });
         npc.add(ConversationStates.QUEST_3_OFFERED, ConversationPhrases.NO_MESSAGES, null,
-                ConversationStates.ATTENDING, "Rozumiem. Wróć, kiedy zechcesz zająć się tą sprawą.", null);
+                ConversationStates.ATTENDING, "Dobrze. Jeśli zmienisz zdanie, wiesz, gdzie mnie szukać.", null);
     }
 
     protected void request(final Player player, final EventRaiser speaker, final String question) {

@@ -10,13 +10,13 @@ import games.stendhal.server.entity.player.Player;
 public final class TrailEvidence extends AreaEntity implements UseListener {
     public enum Kind {
         SHIPMENT("skrzynia z dostawą", "item/pot/crate_small", 1, TrailQuestLine.Step.DELIVERY, "inspect", "archive",
-                "Pod wiekiem skrzyni znajduje się zamówienie z pieczęcią Zakopanego. Zamiast podpisu urzędnika widnieją trzy małe kółka. Sprawdź rejestr zamówień na stole we wschodniej części sali Gościrada w ratuszu Zakopanego S."),
+                "Pod wiekiem skrzyni leży zamówienie z pieczęcią Zakopanego. W miejscu podpisu są trzy małe kółka. Sprawdź rejestr zamówień w ratuszu w Zakopanem S. Księga leży na stole po wschodniej stronie sali Gościrada."),
         REGISTRY("rejestr zamówień", "item/documents/book", 3, TrailQuestLine.Step.DELIVERY, "archive", "discrepancy",
-                "W księdze nie ma tej dostawy. Numery są ciągłe, nie wyrwano żadnej strony. Prawdziwe zamówienia podpisuje Gościrad, a pieczęć na twoim dokumencie ma odwrócony znak. Porozmawiaj z Gościradem o zamówieniu."),
+                "Przeglądasz wpisy, ale takiego zamówienia tu nie ma. Strony są całe, a numery idą po kolei. Pod innymi zamówieniami podpisuje się Gościrad. Odcisk pieczęci też wygląda inaczej. Porozmawiaj z nim o zamówieniu."),
         TRACKS("rozbita skrzynka", "item/pot/crate_small", 0, TrailQuestLine.Step.GUEST, "tracks", "found",
-                "Na deskach widnieją trzy kółka. To ten sam znak co na zamówieniu. W szczelinie tkwi sznurek pobrudzony woskiem, a ślady ciężkiego ładunku prowadzą w głąb polany. Wróć do Brzezdoma i powiedz: woźnica."),
+                "Na deskach są trzy kółka, takie same jak na zamówieniu. Między nimi tkwi kawałek sznurka ubrudzonego woskiem. Ślady wozu prowadzą dalej, w głąb polany. Wróć do Brzezdoma i porozmawiaj o woźnicy."),
         DOCUMENTS("dokumenty ze składu", "item/documents/book", 2, TrailQuestLine.Step.SEAL, "documents", "recovered",
-                "Przy workach leży spis towarów: opał Staska, mąka dla karczmy i kilka nieodebranych dostaw. Jest też list z poleceniem wysłania następnego transportu do Semos. Zapisujesz treść i znaki opakowań. Wróć do Brzezdoma i powiedz: skład.");
+                "Przy workach leży spis: węgiel Staska, mąka do karczmy i inne zamówienia z Zakopanego. W liście ktoś każe wysłać następny transport do Semos. Zapisujesz najważniejsze informacje. Wróć do Brzezdoma i opowiedz mu o składzie.");
         final String title, tileset, before, after, text;
         final int tile;
         final TrailQuestLine.Step step;
@@ -40,7 +40,7 @@ public final class TrailEvidence extends AreaEntity implements UseListener {
         final Player player = (Player) user;
         if (!player.nextTo(this)) { player.sendPrivateText("Musisz podejść bliżej."); return false; }
         if (!player.isQuestInState(kind.step.slot, kind.before)) {
-            player.sendPrivateText("Na razie nie znajdujesz tu nowych wskazówek. Zajrzyj do aktualnego celu zadania w dzienniku.");
+            player.sendPrivateText("Nie znajdujesz tu nic nowego. Jeśli nie wiesz, gdzie szukać dalej, zajrzyj do dziennika.");
             return false;
         }
         player.setQuest(kind.step.slot, kind.after);

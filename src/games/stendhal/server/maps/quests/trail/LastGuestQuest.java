@@ -3,39 +3,39 @@ package games.stendhal.server.maps.quests.trail;
 
 /** Witnesses and a physical trail reveal where the false delivery was taken. */
 public final class LastGuestQuest extends TrailQuest {
-    private static final String OFFER = "Woźnica musiał gdzieś odpocząć i napoić konie. Jagna w karczmie "
-            + "w Zakopanem NE słyszy więcej niż urzędnicy zza biurek. Nie pytaj jej o złodzieja, "
-            + "tylko o człowieka, który wiózł zapasy dla ratusza. Ustalisz jego drogę?";
+    private static final String OFFER = "Woźnica mógł zatrzymać się u Jagny, w karczmie "
+            + "na północnym wschodzie Zakopanego. Zagląda tam wielu podróżnych. "
+            + "Może go pamięta. Popytasz ją o niego?";
 
     public LastGuestQuest() { super(TrailQuestLine.Step.GUEST); }
     @Override protected void addDialogs() {
-        offer("Porozmawiaj z Jagną w karczmie w Zakopanem NE. Zapytaj o #'woźnicę'. "
-                + "Zapamiętaj, co mówił o trasie, i sprawdź, czy ktoś rzeczywiście widział tam jego wóz.");
+        offer("Idź do Jagny i zapytaj o #'woźnicę'. Karczma jest na północnym wschodzie Zakopanego. "
+                + "Dowiedz się, dokąd się wybierał. Może ktoś widział go po drodze.");
         reply("Gościrad", (player, sentence, speaker) -> request(player, speaker, OFFER), "woźnica", "woznica", "woźnicę");
         reply("Jagna", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "jagna")) {
                 player.setQuest(step.slot, "brzezdom");
-                speaker.say("Pamiętam go. Zapłacił od razu, ale co chwilę wyglądał przez okno. "
-                        + "Mówił, że jedzie do kopalni, a pytał o drogę przez polanę we wschodnim Kościelisku. "
-                        + "Gdy wspomniałam o Brzezdomie, nagle przestał się spieszyć i zaczął wypytywać, "
-                        + "kiedy tamten wraca do domu. Odnajdź Brzezdoma na tamtejszej polanie i zapytaj o #'woźnicę'.");
+                speaker.say("Pamiętam go. Ledwo usiadł, a już zerkał przez okno na swój wóz. "
+                        + "Podobno jechał do kopalni, ale pytał mnie o polanę we wschodnim Kościelisku. "
+                        + "Kiedy wspomniałam o Brzezdomie, od razu chciał wiedzieć, "
+                        + "o której tamten wraca do domu. Brzezdom chodzi po tej polanie. Zapytaj go o #'woźnicę'.");
             } else { remind(player, speaker); }
         }, "woźnica", "woznica", "woźnicę");
         reply("Brzezdom", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "brzezdom")) {
                 player.setQuest(step.slot, "tracks");
-                speaker.say("Do kopalni? Tamtędy nie jechał. Wóz skręcił przy lesie i zniknął między drzewami. "
-                        + "Słyszałem trzask desek, a potem ktoś długo przeklinał. "
-                        + "Sprawdź rozbitą skrzynkę na północno-wschodnim skraju tej polany, na północ stąd. "
-                        + "Jeśli znajdziesz znak podobny do tego z zamówienia, wróć i opowiedz mi o #'woźnicy'.");
+                speaker.say("Do kopalni? Nie, skręcił przy lesie i wjechał między drzewa. "
+                        + "Potem usłyszałem trzask desek i ktoś zaczął strasznie kląć. "
+                        + "Na północ od nas, przy wschodnim skraju polany, leży rozbita skrzynka. "
+                        + "Sprawdź, czy ma ten sam znak co zamówienie. Potem wróć, pogadamy jeszcze o #'woźnicy'.");
             } else if (player.isQuestInState(step.slot, "found")) {
                 complete(player, speaker, "found");
             } else { remind(player, speaker); }
         }, "woźnica", "woznica", "woźnicy");
     }
     @Override protected String completedText() {
-        return "Trzy kółka, sznurek i ślady ciężkiego wozu. To już więcej niż plotka. "
-                + "Ten człowiek nie zgubił drogi, tylko chciał ukryć ładunek. "
-                + "W północnej części polany ktoś urządził #'skład'. Zapytaj mnie o niego, zanim ruszysz dalej.";
+        return "Ten sam znak? Czyli to jego skrzynka. "
+                + "Wygląda na to, że specjalnie zjechał z drogi. "
+                + "Na północy polany widziałem też jakiś #'skład'. Zapytaj mnie o niego, zanim tam pójdziesz.";
     }
 }

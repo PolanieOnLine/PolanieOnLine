@@ -42,7 +42,7 @@ public final class TrailSites implements ZoneConfigurator {
         prop.setRPClass("block"); prop.put("type", "block"); prop.put("class", "questprop");
         prop.put("name", "zapasy mieszkańców"); prop.put("z", 8000);
         prop.put("tileset", "item/sacks"); prop.put("tile_index", tile); prop.put("tileset_columns", 2);
-        prop.setDescription("Oto worki z zapasami. Na sznurach przywiązano tabliczki z nazwiskami mieszkańców Zakopanego.");
+        prop.setDescription("Worki z zapasami. Na każdym wisi karteczka z nazwiskiem kogoś z Zakopanego.");
         prop.setPosition(x, y); zone.add(prop);
     }
 }

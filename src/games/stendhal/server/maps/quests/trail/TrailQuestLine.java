@@ -21,16 +21,16 @@ public final class TrailQuestLine {
 
     public enum Step {
         DELIVERY("trail_delivery", "Dostawa, której nikt nie zamawiał", "Stasek", "inspect", 1200, 25,
-                "Stasek odkrył dokument ratusza w dostawie opału. Ktoś mógł wykorzystać zaufanie mieszkańców.",
+                "W skrzyni Staska znalazł się kwit z pieczęcią ratusza. Trzeba sprawdzić, kto zamówił tę dostawę.",
                 "Odwiedź Staska w sklepie w Zakopanem C i zapytaj o dostawę."),
         GUEST("trail_guest", "Ostatni gość Jagny", "Gościrad", "jagna", 1800, 40,
-                "Woźnica powoływał się na ratusz, ale jego zamówienia nie ma w księgach. Jagna może pamiętać jego pobyt.",
+                "Zamówienie okazało się fałszywe. Jagna może pamiętać woźnicę, który odebrał zapasy.",
                 "Zapytaj Gościrada w ratuszu Zakopanego S o woźnicę."),
         SEAL("trail_seal", "Za cudzą pieczęcią", "Brzezdom", "guard", 3000, 60,
-                "Porzucona skrzynka zdradziła drogę do ukrytego składu. Trzeba odzyskać dokumenty i ustalić, do kogo należą zapasy.",
+                "Ślady wozu prowadzą do ukrytego składu. Pilnuje go strażnik. Warto sprawdzić leżące tam papiery.",
                 "Odnajdź Brzezdoma na polanie we wschodnim Kościelisku i zapytaj o skład."),
         DEBT("trail_debt", "Dług wobec Zakopanego", "Gazda Wojtek", "witnesses;0", 2000, 100,
-                "W składzie znaleziono dokumenty i towary mieszkańców Zakopanego. Wojtek potrzebuje dowodów oraz potwierdzenia świadków.",
+                "Wszystko wskazuje na to, że zapasy pochodzą z Zakopanego. Wojtek chce jeszcze usłyszeć, co powiedzą Stasek i Jagna.",
                 "Przedstaw dowody Gazdzie Wojtkowi w ratuszu Zakopanego S. Powiedz: dowody.");
 
         public final String slot, title, npc, initial, description, hint;
@@ -59,7 +59,7 @@ public final class TrailQuestLine {
         for (final Step step : Step.values()) {
             if (!step.slot.equals(slot)) continue;
             if (!step.available(player)) {
-                return step.ordinal() == 0 ? "Dokończ zlecenie Staska z węglem, aby zdobyć jego zaufanie."
+                return step.ordinal() == 0 ? "Najpierw pomóż Staskowi z węglem."
                         : objective(player, Step.values()[step.ordinal() - 1].slot);
             }
             if (stage == null || "rejected".equals(stage)) return step.hint;
@@ -80,10 +80,10 @@ public final class TrailQuestLine {
             case DEBT:
                 if ("report".equals(stage)) return "Wróć do Gazdy Wojtka w ratuszu Zakopanego S i przedstaw dowody. Powiedz: dowody.";
                 final int witnesses = witnesses(player);
-                return "Poproś o potwierdzenie dowodów: "
-                        + ((witnesses & 1) == 0 ? "Staska w sklepie w Zakopanem C" : "")
+                return "Pokaż zapiski "
+                        + ((witnesses & 1) == 0 ? "Staskowi w sklepie w Zakopanem C" : "")
                         + (witnesses == 0 ? " oraz " : "")
-                        + ((witnesses & 2) == 0 ? "Jagnę w karczmie w Zakopanem NE" : "") + ". Powiedz: dowody.";
+                        + ((witnesses & 2) == 0 ? "Jagnie w karczmie w Zakopanem NE" : "") + ". Zapytaj o dowody.";
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -97,30 +97,30 @@ public final class TrailQuestLine {
         final boolean done = player.isQuestCompleted(step.slot);
         switch (step) {
         case DELIVERY:
-            entries.add("Stasek znalazł podejrzane zamówienie w dostawie opału. Poprosił o dyskretne sprawdzenie dokumentu.");
-            if (!"inspect".equals(stage)) entries.add("Na dokumencie widniały pieczęć ratusza i znak trzech kółek zamiast podpisu urzędnika.");
-            if ("discrepancy".equals(stage) || done) entries.add("W rejestrze nie ma tej dostawy. Numeracja jest ciągła, a prawdziwe zamówienia mają inny podpis i znak pieczęci.");
-            if (done) entries.add("Gościrad potwierdził fałszerstwo. Następnym krokiem jest ustalenie drogi woźnicy, który odebrał zapasy.");
+            entries.add("Stasek znalazł dziwne zamówienie w skrzyni z opałem. Chce wiedzieć, czy naprawdę pochodzi z ratusza.");
+            if (!"inspect".equals(stage)) entries.add("Na dokumencie są pieczęć ratusza i trzy kółka w miejscu podpisu.");
+            if ("discrepancy".equals(stage) || done) entries.add("W księdze nie ma tego zamówienia. Nie brakuje żadnych stron, a na pozostałych dokumentach są inny podpis i pieczęć.");
+            if (done) entries.add("Gościrad nie wystawił tego zamówienia. Trzeba znaleźć woźnicę, który odebrał zapasy.");
             break;
         case GUEST:
-            entries.add("Gościrad poprosił o odszukanie woźnicy przez świadków jego podróży.");
+            entries.add("Gościrad radzi zapytać Jagnę o woźnicę. Mógł zatrzymać się w jej karczmie.");
             if (!"jagna".equals(stage)) entries.add("Jagna zapamiętała, że woźnica mówił o kopalni, ale pytał o boczną drogę i Brzezdoma.");
             if (!"jagna".equals(stage) && !"brzezdom".equals(stage)) entries.add("Brzezdom widział wóz skręcający przy lesie. Wskazał rozbitą skrzynkę na północno-wschodnim skraju polany.");
-            if ("found".equals(stage) || done) entries.add("Na skrzynce znaleziono trzy kółka, woskowany sznurek i ślady ładunku prowadzące w głąb polany.");
+            if ("found".equals(stage) || done) entries.add("Skrzynka ma taki sam znak jak zamówienie. Między deskami został sznurek ubrudzony woskiem. Ślady wozu prowadzą w głąb polany.");
             if (done) entries.add("Brzezdom wskazał ukryty skład w północnej części polany. Zapasy są pilnowane.");
             break;
         case SEAL:
-            entries.add("Brzezdom poprosił o pokonanie strażnika składu i odzyskanie dowodów bez zabierania cudzych zapasów.");
-            if (!"guard".equals(stage)) entries.add("Strażnik składu został pokonany podczas śledztwa.");
-            if ("recovered".equals(stage) || done) entries.add("Dokumenty wymieniają opał Staska, mąkę dla karczmy i kolejne dostawy. List wskazuje następny odbiór w Semos.");
-            if (done) entries.add("Brzezdom potwierdził wagę znaleziska. Dowody trzeba przedstawić Gazdzie Wojtkowi w Zakopanem S.");
+            entries.add("Brzezdom prosi o sprawdzenie składu. Najpierw trzeba pokonać strażnika. Samych zapasów nie należy zabierać.");
+            if (!"guard".equals(stage)) entries.add("Walka ze strażnikiem za mną. Można sprawdzić papiery przy workach.");
+            if ("recovered".equals(stage) || done) entries.add("W spisie są węgiel Staska i mąka dla karczmy. Jest też list o następnym transporcie do Semos.");
+            if (done) entries.add("Brzezdom radzi pokazać znalezisko Gazdzie Wojtkowi w ratuszu w Zakopanem S.");
             break;
         case DEBT:
-            entries.add("Wojtek poprosił o potwierdzenie dokumentów przez Staska i Jagnę, zanim ostrzeże mieszkańców przed fałszywymi zamówieniami.");
+            entries.add("Wojtek chce wiedzieć, czy Stasek i Jagna poznają swoje towary. Trzeba pokazać im zapiski.");
             final int confirmed = done || "report".equals(stage) ? 3 : witnesses(player);
-            if ((confirmed & 1) != 0) entries.add("Stasek rozpoznał znaki na workach z opałem i potwierdził, że nie zlecał odbioru w Kościelisku.");
-            if ((confirmed & 2) != 0) entries.add("Jagna rozpoznała zamówioną mąkę i powiązała dostawę z wizytą woźnicy.");
-            if (done) entries.add("Wojtek zarządził odzyskanie zapasów i ostrzegł kupców. Sprawa fałszywej pieczęci w Zakopanem została wyjaśniona, lecz list ze znakiem trzech kółek pozostaje tropem prowadzącym do Semos.");
+            if ((confirmed & 1) != 0) entries.add("Stasek poznaje swoje worki z węglem. Nie wysyłał ich do Kościeliska.");
+            if ((confirmed & 2) != 0) entries.add("Jagna poznaje zamówioną mąkę. To ten sam woźnica miał ją przywieźć do karczmy.");
+            if (done) entries.add("Wojtek pośle ludzi po zapasy i uprzedzi kupców o fałszywych zamówieniach. Został jeszcze list ze znakiem trzech kółek. Następny transport miał trafić do Semos.");
             break;
         default: throw new IllegalStateException("Unknown chapter step");
         }
@@ -145,6 +145,6 @@ public final class TrailQuestLine {
         if (origin == null || origin.getZone() != victim.getZone()
                 || origin.getX() != STOCK_X || origin.getY() != STOCK_Y) return;
         player.setQuest(Step.SEAL.slot, "documents");
-        player.sendPrivateText("Strażnik składu został pokonany. Przeszukaj dokumenty pozostawione przy workach.");
+        player.sendPrivateText("Strażnik już ci nie przeszkodzi. Sprawdź papiery przy workach.");
     }
 }

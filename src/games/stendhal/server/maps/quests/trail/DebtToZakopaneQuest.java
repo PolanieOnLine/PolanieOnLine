@@ -3,26 +3,26 @@ package games.stendhal.server.maps.quests.trail;
 
 /** Close the Zakopane investigation with witnesses and leave an explicit lead to Semos. */
 public final class DebtToZakopaneQuest extends TrailQuest {
-    private static final String OFFER = "Brzezdom przekazał mi już wieść o składzie. Opał i mąka wrócą do mieszkańców, "
-            + "ale zanim ogłoszę, co się stało, potrzebuję potwierdzenia. Stasek rozpozna dostawę, "
-            + "a Jagna może połączyć ją z woźnicą. Zbierzesz ich zeznania?";
+    private static final String OFFER = "Więc w tym składzie są nasze zapasy? Dobrze, że masz te papiery. "
+            + "Zanim poślę tam ludzi, chcę jeszcze mieć pewność, czyje to towary. Stasek powinien rozpoznać swoje worki, "
+            + "a Jagna pewnie pamięta, co zamawiała do karczmy. Popytasz ich o to?";
 
     public DebtToZakopaneQuest() { super(TrailQuestLine.Step.DEBT); }
     @Override protected void addDialogs() {
-        offer("Zapytaj Staska w Zakopanem C oraz Jagnę w karczmie w Zakopanem NE o #'dowody'. "
-                + "Pokaż im zapisane znaki i treść dokumentów. Potem wróć do mnie z potwierdzeniem obojga.");
+        offer("Pokaż #'dowody' Staskowi w sklepie w centrum Zakopanego i Jagnie w karczmie na północnym wschodzie miasta. "
+                + "Niech obejrzą zapiski i powiedzą, co poznają. Potem wróć do mnie.");
         reply("Gazda Wojtek", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "report")) complete(player, speaker, "report");
             else request(player, speaker, OFFER);
         }, "dowody", "zeznania");
-        addWitness("Stasek", 1, "To mój znak na workach z opałem. Żadnego odbioru w Kościelisku nie zlecałem. "
-                + "Człowiek pokazał mi pieczęć ratusza i kazał szykować następny transport. Potwierdzam twoje ustalenia.");
-        addWitness("Jagna", 2, "Spis się zgadza. Ta mąka miała trafić do karczmy. Woźnica mówił, że zawiezie ją "
-                + "do miejskiego magazynu, a mnie zostawi potwierdzenie później. Teraz wiem, po co pytał o Brzezdoma. Potwierdzam twoje ustalenia.");
+        addWitness("Stasek", 1, "Tak, to moje worki z węglem. Tylko co one robią w Kościelisku? "
+                + "Woźnica pokazał pieczęć ratusza i mówił, że wszystko jest uzgodnione. Kazał nawet szykować następną dostawę. Powiedz Wojtkowi, że poznaję te worki.");
+        addWitness("Jagna", 2, "Tak, tę mąkę zamawiałam do karczmy. Woźnica mówił, że musi ją najpierw zawieźć "
+                + "do miejskiego magazynu, a potem przywiezie do mnie. No to już wiem, dlaczego tak wypytywał o Brzezdoma. Powiedz Wojtkowi, że wszystko się zgadza.");
         reply("Gazda Wojtek", (player, sentence, speaker) -> {
-            if (player.isQuestCompleted(step.slot)) speaker.say("List ze składu mówi o kolejnym odbiorze w Semos. "
-                    + "Nie ma nazwiska odbiorcy, tylko znak trzech kółek. To trop do dalszego śledztwa, "
-                    + "a nie powód, by oskarżać wszystkich tamtejszych kupców.");
+            if (player.isQuestCompleted(step.slot)) speaker.say("W liście piszą o następnym odbiorze towaru w Semos. "
+                    + "Podpisu nie ma, są tylko te trzy kółka. "
+                    + "Może tam uda się znaleźć człowieka, który za tym stoi.");
             else remind(player, speaker);
         }, "list", "Semos", "trzy kółka");
     }
@@ -31,14 +31,14 @@ public final class DebtToZakopaneQuest extends TrailQuest {
             if (!"witnesses".equals(player.getQuest(step.slot, 0))) { remind(player, speaker); return; }
             final int witnesses = TrailQuestLine.witnesses(player) | bit;
             player.setQuest(step.slot, witnesses == 3 ? "report" : "witnesses;" + witnesses);
-            speaker.say(statement + (witnesses == 3 ? " Wróć do Wojtka i powiedz: dowody."
-                    : " Potrzebujesz jeszcze potwierdzenia drugiego świadka."));
+            speaker.say(statement + (witnesses == 3 ? " Masz już wszystko, czego chciał Wojtek. Pokaż mu #'dowody'."
+                    : " Wojtek czeka jeszcze na drugie potwierdzenie."));
         }, "dowody", "zeznania");
     }
     @Override protected String completedText() {
-        return "Mamy dokumenty i potwierdzenie świadków. Poślę ludzi po zapasy, a kupcy dostaną ostrzeżenie "
-                + "o fałszywej pieczęci. Dziękuję. Pomoc przy zbieraniu opału pokazała, że można ci zaufać, "
-                + "ale tym razem udało ci się ochronić całe miasto przed kolejnymi stratami. "
-                + "Został #'list' o następnym odbiorze w #'Semos'. Zachowamy go jako trop do dalszego śledztwa.";
+        return "Dobrze, że udało się to wyjaśnić. Poślę ludzi po zapasy i uprzedzę kupców, "
+                + "żeby uważali na takie zamówienia. Dziękuję ci. Najpierw pomoc przy opale, a teraz to. "
+                + "Naprawdę sporo nam oszczędzasz kłopotów. "
+                + "Został jeszcze ten #'list'. Wygląda na to, że następny transport miał trafić do #'Semos'.";
     }
 }

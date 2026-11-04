@@ -41,9 +41,9 @@ public class MariuszekNPC implements ZoneConfigurator {
 
 
 	private void addNewPlayerAdvice(final SpeakerNPC npc) {
-		final String help = "Początki bywają trudne, ale nie musisz błądzić. Zapytaj mnie o #broń, #jedzenie, #mikstury, "
-				+ "#leczenie, #bank, #potwory lub #pieniądze. Jeśli szukasz zadania, zapytaj #'co dalej'. "
-				+ "Swój aktualny cel znajdziesz też w dzienniku, w zakładce Zadania główne.";
+		final String help = "Chcesz wiedzieć, gdzie kupić #broń, #jedzenie albo #mikstury? Mogę też powiedzieć coś o tym, "
+				+ "jak działa #leczenie, gdzie jest #bank, jakie są tu #potwory i skąd brać #pieniądze. Nie wiesz, za co się zabrać? Zapytaj #'co dalej'. "
+				+ "Zajrzyj też do dziennika, do zadań głównych.";
 		final ChatAction next = (player, sentence, speaker) -> {
 			player.setQuest("meet_mariuszek", "done");
 			speaker.say(StarterQuestLine.nextObjective(player));
@@ -55,34 +55,34 @@ public class MariuszekNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING, null, next);
 			npc.add(state, Arrays.asList("broń", "bron", "uzbrojenie", "sklep", "sklepy"), null,
 					ConversationStates.ATTENDING,
-					"Podstawową broń kupisz u Bogusia w szpitalu w Zakopanem S. Masz już broń na początek, "
-					+ "więc warto zachować trochę monet na #jedzenie. Sklep Staska jest obok mostu w Zakopanem C, "
-					+ "ale jego ofertę odblokujesz po wykonaniu zlecenia. Zapytaj #'co dalej', a wskażę Ci kolejny krok.", null);
+					"Po broń zajrzyj do Bogusia, do szpitala na południu Zakopanego. Na razie masz czym walczyć, "
+					+ "więc zostaw sobie trochę monet na #jedzenie. Do Staska też możesz zajrzeć. Ma sklep obok mostu w centrum Zakopanego, "
+					+ "ale zanim coś ci sprzeda, trzeba mu pomóc. Zapytaj #'co dalej', to powiem ci, od czego zacząć.", null);
 			npc.add(state, Arrays.asList("jedzenie", "żywność", "zywnosc", "głód", "glod"), null,
 					ConversationStates.ATTENDING,
-					"Jedzenie kupisz u Jagny w karczmie w Zakopanem NE. Odnawia zdrowie stopniowo. "
-					+ "Zabierz zapas na wyprawę, a jeśli masz mało monet, skorzystaj z bezpłatnego #leczenia.", null);
+					"Po jedzenie idź do Jagny. Jej karczma jest na północnym wschodzie Zakopanego. Jedzenie pomaga odzyskać zdrowie, ale trzeba trochę poczekać. "
+					+ "Weź coś na drogę. A jeśli nie masz monet, zapytaj mnie o #leczenie.", null);
 			npc.add(state, Arrays.asList("leczenie", "ulecz", "rany", "zdrowie"), null,
 					ConversationStates.ATTENDING,
-					"Gaździna Jadźka w szpitalu w Zakopanem S leczy bezpłatnie. Przywitaj się z nią i powiedz #'ulecz'. "
-					+ "Nie musisz kupować eliksiru, żeby opatrzyć rany po powrocie do miasta.", null);
+					"Gaździna Jadźka leczy za darmo. Znajdziesz ją w szpitalu na południu Zakopanego. Przywitaj się i powiedz #'ulecz'. "
+					+ "Po walce warto do niej zajrzeć, zanim znów ruszysz w drogę.", null);
 			npc.add(state, Arrays.asList("mikstury", "mikstura", "eliksir", "eliksiry", "potion"), null,
 					ConversationStates.ATTENDING,
-					"Eliksiry kupisz u Carmen w mieście Semos. Przejście do Semos znajdziesz w północno-wschodniej "
-					+ "części Zakopanego C. Na początku możesz korzystać z #jedzenia i bezpłatnego #leczenia u Jadźki.", null);
+					"Eliksiry sprzedaje Carmen w Semos. Przejście do tego miasta jest na północnym wschodzie "
+					+ "centrum Zakopanego. Korzystaj też z #jedzenia i #leczenia u Jadźki.", null);
 			npc.add(state, Arrays.asList("bank", "depozyt", "schowek"), null,
 					ConversationStates.ATTENDING,
-					"Bank znajdziesz w Zakopanem S. Na parterze są schowki, w których możesz zostawić swoje przedmioty. "
-					+ "Do zwykłego schowka nie musisz wchodzić na piętro.", null);
+					"Bank jest na południu miasta. Na parterze znajdziesz schowki. Zostaw tam rzeczy, których nie chcesz nosić ze sobą. "
+					+ "Nie musisz iść na piętro, żeby z nich korzystać.", null);
 			npc.add(state, Arrays.asList("potwory", "potwór", "potwor", "stworzenia"), null,
 					ConversationStates.ATTENDING,
-					"Sabała zna tutejsze potwory. Przywitaj się z nim, powiedz #'potwór', a gdy zapyta, podaj nazwę stworzenia. "
-					+ "Na początek Pietrek i Adaś wskażą Ci słabszych przeciwników. Zapytaj mnie #'co dalej'.", null);
+					"O potworach pogadaj z Sabałą. Przywitaj się, powiedz #'potwór', a potem podaj nazwę tego, o którego chcesz zapytać. "
+					+ "A jeśli dopiero zaczynasz, zajrzyj najpierw do Pietrka i Adasia. Zapytaj mnie #'co dalej', to podpowiem.", null);
 			npc.add(state, Arrays.asList("pieniądze", "pieniadze", "zarobek", "monety", "sprzedaż"), null,
 					ConversationStates.ATTENDING,
-					"Boguś w szpitalu w Zakopanem S skupuje skóry i futra. Sprawdź jego zakładkę Sprzedaj, "
-					+ "żeby zobaczyć, co przyjmuje. Nie kupuje każdego łupu. Część wyposażenia dostaniesz za pierwsze zadania, "
-					+ "więc nie musisz od razu wydawać wszystkich monet na zakupy.", null);
+					"Boguś w szpitalu kupuje skóry i futra. Zajrzyj do niego i wybierz Sprzedaj, "
+					+ "to zobaczysz, co możesz mu oddać. Nie bierze wszystkiego. Trochę wyposażenia dostaniesz za pierwsze zadania, "
+					+ "więc nie wydawaj od razu wszystkich monet.", null);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
 								new QuestNotStartedCondition("meet_mariuszek")),
 						ConversationStates.INFORMATION_1,
-						"Och, witaj nieznajomy! Wyglądasz na nieco zdezorientowanego... Mógłbym Ci jakoś #pomóc?",
+						"Witaj! Pierwszy raz w Zakopanem? Mogę ci jakoś #pomóc?",
 						new SetQuestAction("meet_mariuszek", "start"));
 
 				add(ConversationStates.IDLE,
@@ -121,7 +121,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 						new AndCondition(new GreetingMatchesNameCondition(getName()),
 								new QuestInStateCondition("meet_mariuszek", "start")),
 						ConversationStates.INFORMATION_1,
-						"Witaj ponownie! Mogę pomóc Ci odnaleźć się w Zakopanem. Chcesz usłyszeć, od czego zacząć?",
+						"O, znowu jesteś! Chcesz, żebym podpowiedział ci, od czego zacząć?",
 						null);
 
 				add(ConversationStates.INFORMATION_1,
@@ -138,37 +138,37 @@ public class MariuszekNPC implements ZoneConfigurator {
 						ConversationPhrases.NO_MESSAGES,
 						new QuestActiveCondition("meet_mariuszek"),
 						ConversationStates.ATTENDING,
-						"Jeśli nie potrzebujesz ode mnie pomocy to ja Ci przekażę dość ciekawą wiadomość. #Burmistrz Zakopane ponoć poszukuje zapasów, by uzupełnić magazyny."
-						+ " Miasto potrzebuje również Twojej pomocy w jego chronieniu przed różnymi hordami stworów!",
+						"W porządku. Gdyby coś, znajdziesz mnie tutaj. A jeśli szukasz zajęcia, #burmistrz zawsze potrzebuje pomocy."
+						+ " Zapytaj o niego, to powiem ci, gdzie go szukać.",
 						new NPCEmoteAction("spogląda na świerk.", false));
 
 				add(ConversationStates.ATTENDING,
-                		Arrays.asList("radę", "rada"),
-                		null,
-                		ConversationStates.ATTENDING,
-                		"Ja Tobie mogę dać radę taką iż musisz nabrać większego doświadczenia w starciach z innymi!",
+						Arrays.asList("radę", "rada"),
+						null,
+						ConversationStates.ATTENDING,
+						"Na początek nie rzucaj się na silne potwory. Zajrzyj do Pietrka i Adasia. Zapytaj mnie #'co dalej', jeśli nie wiesz, za co się zabrać.",
 						null);
 
 				add(ConversationStates.ATTENDING,
-                		"burmistrz",
-                		null,
-                		ConversationStates.ATTENDING,
-                		"Aktualnie nim jest #'gazda Wojtek'.",
+						"burmistrz",
+						null,
+						ConversationStates.ATTENDING,
+						"Naszym burmistrzem jest #'gazda Wojtek'.",
 						null);
 
 				add(ConversationStates.ATTENDING,
-                		Arrays.asList("gazda", "wojtek"),
-                		null,
-                		ConversationStates.ATTENDING,
-                		"Znajdziesz go niedaleko... Na północ stąd, po prawej stronie od mostu stoi taki jeden ogroooomny budynek, "
-                		+ "jest to ratusz miasta, a w nim się właśnie znajduje #burmistrz. Wojtkowi ponoć pomaga również #Gościrad.",
+						Arrays.asList("gazda", "wojtek"),
+						null,
+						ConversationStates.ATTENDING,
+						"Idź na północ. Po prawej stronie mostu stoi duży budynek. "
+						+ "To ratusz. Tam znajdziesz Wojtka i jego pomocnika, #Gościrada.",
 						null);
 
 				add(ConversationStates.ATTENDING,
-                		"gościrad",
-                		null,
-                		ConversationStates.ATTENDING,
-                		"Gościrad opowie Tobie kto aktualnie w tych rejonach potrzebuje pomocy.",
+						"gościrad",
+						null,
+						ConversationStates.ATTENDING,
+						"Gościrad wie, kto w okolicy szuka pomocy. Znajdziesz go w ratuszu.",
 						null);
 
 				addJob("Lubię oglądać i wąchać *snif* *snif* aachhhh... Och, wybacz Ty tu jeszcze stoisz.");

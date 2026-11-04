@@ -3,16 +3,16 @@ package games.stendhal.server.maps.quests.trail;
 
 /** Recover documentary proof from the guarded stockpile rather than collecting random loot. */
 public final class ForgedSealQuest extends TrailQuest {
-    private static final String OFFER = "Za drzewami, w północnej części tej polany, widziałem worki i skrzynie. "
-            + "Pilnuje ich uzbrojony człowiek. Nie wygląda na kogoś, kto czeka na uczciwego kupca. "
-            + "Jeżeli to zapasy Zakopanego, potrzebujemy dowodu. Pokonasz strażnika i sprawdzisz dokumenty przy workach?";
+    private static final String OFFER = "Za drzewami, w północnej części polany, stoją worki i skrzynie. "
+            + "Pilnuje ich uzbrojony człowiek. Nie dał mi nawet podejść bliżej. "
+            + "Może tam właśnie trzymają nasze zapasy. Pokonasz strażnika i sprawdzisz, co tam leży?";
 
     public ForgedSealQuest() { super(TrailQuestLine.Step.SEAL); }
     @Override protected void addDialogs() {
-        offer("Idź do północnej części polany we wschodnim Kościelisku. Pokonaj strażnika składu, "
-                + "a potem sprawdź dokumenty przy workach. Zachowaj spis i znaki opakowań. "
-                + "Nie zabieraj samych zapasów, bo najpierw trzeba ustalić, do kogo należą. "
-                + "Wróć do mnie i powiedz #'skład'.");
+        offer("Idź do północnej części tej polany. Pokonaj strażnika, "
+                + "a potem przejrzyj papiery przy workach. Zobacz, do kogo należą te zapasy. "
+                + "Samych worków nie ruszaj. Ktoś pewnie na nie czeka. "
+                + "Wróć potem do mnie. Musimy ustalić, co to za #'skład'.");
         reply("Brzezdom", (player, sentence, speaker) -> {
             if (player.isQuestInState(step.slot, "recovered")) {
                 complete(player, speaker, "recovered");
@@ -20,8 +20,8 @@ public final class ForgedSealQuest extends TrailQuest {
         }, "skład", "sklad", "ukryty skład");
     }
     @Override protected String completedText() {
-        return "Nazwiska mieszkańców, ilości towarów i list do Semos. Teraz Wojtek nie będzie musiał "
-                + "wierzyć nam na słowo. Zanieś tę wiadomość do Gazdy Wojtka w ratuszu Zakopanego S "
-                + "i powiedz #'dowody'. Ja przypilnuję drogi do składu, żeby można było odzyskać zapasy.";
+        return "A więc to rzeczywiście nasze zapasy. Z tym spisem i listem "
+                + "idź do Gazdy Wojtka, do ratusza na południu Zakopanego, "
+                + "i pokaż mu #'dowody'. Ja zostanę tutaj i popilnuję, żeby nikt nie zabrał reszty worków.";
     }
 }

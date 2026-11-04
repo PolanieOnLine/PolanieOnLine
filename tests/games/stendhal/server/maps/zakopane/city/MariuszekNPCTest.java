@@ -53,14 +53,14 @@ public class MariuszekNPCTest extends ZonePlayerAndNPCTestImpl {
         player.setQuest("meet_mariuszek", "done");
         ask("hi");
         String text = ask("broń");
-        assertTrue(text, text.contains("Bogusia") && text.contains("Zakopanem S") && text.contains("Staska"));
-        text = ask("jedzenie"); assertTrue(text, text.contains("Jagny") && text.contains("Zakopanem NE"));
-        text = ask("leczenie"); assertTrue(text, text.contains("Jadźka") && text.contains("bezpłatnie") && text.contains("ulecz"));
-        text = ask("mikstury"); assertTrue(text, text.contains("Carmen") && text.contains("Semos") && text.contains("Zakopanego C"));
+        assertTrue(text, text.contains("Bogusia") && text.contains("południu") && text.contains("Staska"));
+        text = ask("jedzenie"); assertTrue(text, text.contains("Jagny") && text.contains("północnym wschodzie"));
+        text = ask("leczenie"); assertTrue(text, text.contains("Jadźka") && text.contains("za darmo") && text.contains("ulecz"));
+        text = ask("mikstury"); assertTrue(text, text.contains("Carmen") && text.contains("Semos") && text.contains("centrum Zakopanego"));
         assertTrue(ask("jedzenia").contains("Jagny"));
         assertTrue(ask("leczenia").contains("Jadźka"));
-        text = ask("bank"); assertTrue(text, text.contains("Zakopanem S") && text.contains("parterze"));
-        text = ask("potwory"); assertTrue(text, text.contains("Sabała") && text.contains("potwór"));
+        text = ask("bank"); assertTrue(text, text.contains("południu") && text.contains("parterze"));
+        text = ask("potwory"); assertTrue(text, text.contains("Sabałą") && text.contains("potwór"));
         assertTrue(ask("pieniądze").contains("skóry"));
     }
 

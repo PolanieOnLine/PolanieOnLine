@@ -114,7 +114,7 @@ public class WegielNaOpal extends AbstractQuest {
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Dziękuję za węgiel! Mieszkańcy mają zapasy, a ja mam czym ogrzać sklep podczas mrozów. Zdobyłeś moje zaufanie. Od teraz możesz u mnie kupować uzbrojenie. Sprawdź moją #ofertę. Mam też podejrzaną #'dostawę'. Zapytaj o nią, kiedy zechcesz zająć się kolejną sprawą.",
+				"Dzięki za węgiel! Przynajmniej nie zmarzniemy tu zimą. Teraz wiem, że można na tobie polegać. Jeśli potrzebujesz uzbrojenia, sprawdź moją #ofertę. Jest też jedna dziwna #'dostawa', o której chcę z tobą porozmawiać.",
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(5500),

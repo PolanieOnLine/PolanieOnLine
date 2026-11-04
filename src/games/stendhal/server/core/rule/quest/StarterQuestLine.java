@@ -23,8 +23,8 @@ public final class StarterQuestLine {
         }
         final String continuation = TrailQuestLine.nextObjective(player);
         if (continuation != null) return continuation;
-        return "Zdobyłeś już zaufanie mieszkańców Zakopanego. Gościrad w ratuszu podpowie Ci, kto jeszcze potrzebuje pomocy. "
-                + "Możesz też zajrzeć do zadań pobocznych w dzienniku.";
+        return "Zajrzyj do Gościrada w ratuszu. Wie, kto jeszcze potrzebuje pomocy w okolicy. "
+                + "Możesz też sprawdzić zadania poboczne w dzienniku.";
     }
 
     public static String objective(final Player player, final String slot) {
@@ -57,7 +57,7 @@ public final class StarterQuestLine {
             final int required = player.getRequiredItemQuantity(slot, 0);
             final int owned = player.getNumberOfSubmittableEquipped("węgiel");
             return owned >= required
-                    ? "Zanieś węgiel Staskowi w sklepie obok mostu w Zakopanem C, aby odblokować handel."
+                    ? "Zanieś węgiel Staskowi w sklepie obok mostu w Zakopanem C, żeby mógł przygotować sklep na zimę."
                     : "Zbierz węgiel dla Staska: " + Math.min(owned, required) + "/" + required
                             + ". Następnie wróć do jego sklepu w Zakopanem C.";
         }
