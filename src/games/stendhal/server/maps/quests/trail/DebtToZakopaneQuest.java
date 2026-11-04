@@ -22,7 +22,7 @@ public final class DebtToZakopaneQuest extends TrailQuest {
         reply("Gazda Wojtek", (player, sentence, speaker) -> {
             if (player.isQuestCompleted(step.slot)) speaker.say("W liście piszą o następnym odbiorze towaru w Semos. "
                     + "Podpisu nie ma, są tylko te trzy kółka. "
-                    + "Może tam uda się znaleźć człowieka, który za tym stoi.");
+                    + "Pokaż ten list porucznikowi Drilenunowi w ratuszu Semos. Przejście do Semos znajdziesz na północnym wschodzie centrum Zakopanego.");
             else remind(player, speaker);
         }, "list", "Semos", "trzy kółka");
     }
@@ -39,6 +39,6 @@ public final class DebtToZakopaneQuest extends TrailQuest {
         return "Dobrze, że udało się to wyjaśnić. Poślę ludzi po zapasy i uprzedzę kupców, "
                 + "żeby uważali na takie zamówienia. Dziękuję ci. Najpierw pomoc przy opale, a teraz to. "
                 + "Naprawdę sporo nam oszczędzasz kłopotów. "
-                + "Został jeszcze ten #'list'. Wygląda na to, że następny transport miał trafić do #'Semos'.";
+                + "Następny transport miał trafić do #'Semos'. Pokaż #'list' porucznikowi Drilenunowi w tamtejszym ratuszu. Może pomoże znaleźć odbiorcę.";
     }
 }

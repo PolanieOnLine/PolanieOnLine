@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.maps.Region;
 import games.stendhal.server.entity.creature.ArenaCreature;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.DeathMatchCreature;
@@ -14,6 +15,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 /** Persistent, personal objectives of the Zakopane delivery investigation. */
 public final class TrailQuestLine {
     public static final String CHAPTER = "Niepokój na trakcie";
+    public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
     public static final String GUARD = "strażnik składu";
     public static final int STOCK_X = 62;
@@ -22,22 +24,32 @@ public final class TrailQuestLine {
     public enum Step {
         DELIVERY("trail_delivery", "Dostawa, której nikt nie zamawiał", "Stasek", "inspect", 1200, 25,
                 "W skrzyni Staska znalazł się kwit z pieczęcią ratusza. Trzeba sprawdzić, kto zamówił tę dostawę.",
-                "Odwiedź Staska w sklepie w Zakopanem C i zapytaj o dostawę."),
+                "Odwiedź Staska w sklepie w Zakopanem C i zapytaj o dostawę.", CHAPTER, 1, Region.ZAKOPANE_CITY),
         GUEST("trail_guest", "Ostatni gość Jagny", "Gościrad", "jagna", 1800, 40,
                 "Zamówienie okazało się fałszywe. Jagna może pamiętać woźnicę, który odebrał zapasy.",
-                "Zapytaj Gościrada w ratuszu Zakopanego S o woźnicę."),
+                "Zapytaj Gościrada w ratuszu Zakopanego S o woźnicę.", CHAPTER, 2, Region.ZAKOPANE_CITY),
         SEAL("trail_seal", "Za cudzą pieczęcią", "Brzezdom", "guard", 3000, 60,
                 "Ślady wozu prowadzą do ukrytego składu. Pilnuje go strażnik. Warto sprawdzić leżące tam papiery.",
-                "Odnajdź Brzezdoma na polanie we wschodnim Kościelisku i zapytaj o skład."),
+                "Odnajdź Brzezdoma na polanie we wschodnim Kościelisku i zapytaj o skład.", CHAPTER, 3, Region.ZAKOPANE_CITY),
         DEBT("trail_debt", "Dług wobec Zakopanego", "Gazda Wojtek", "witnesses;0", 2000, 100,
                 "Wszystko wskazuje na to, że zapasy pochodzą z Zakopanego. Wojtek chce jeszcze usłyszeć, co powiedzą Stasek i Jagna.",
-                "Przedstaw dowody Gazdzie Wojtkowi w ratuszu Zakopanego S. Powiedz: dowody.");
+                "Przedstaw dowody Gazdzie Wojtkowi w ratuszu Zakopanego S. Powiedz: dowody.", CHAPTER, 4, Region.ZAKOPANE_CITY),
+        SEMOS_LETTER("trail_semos_letter", "List z Zakopanego", "Lieutenant Drilenun", "bank", 1800, 40,
+                "List znaleziony w składzie prowadzi do Semos. Porucznik Drilenun powinien wiedzieć, gdzie szukać odbiorcy.",
+                "Idź do ratusza w Semos i pokaż list porucznikowi Drilenunowi. Powiedz: list.", SEMOS_CHAPTER, 1, Region.SEMOS_CITY),
+        SEMOS_SIGN("trail_semos_sign", "Skąd ten znak", "Dagobert", "library", 2200, 50,
+                "W księdze wpłat jest taki sam znak jak na zamówieniu Staska. Ceryl może znaleźć coś o nim w starych księgach.",
+                "Zapytaj Dagoberta w banku Semos o trzy kółka.", SEMOS_CHAPTER, 2, Region.SEMOS_CITY),
+        SEMOS_PICKUP("trail_semos_pickup", "Odbiór przy gospodzie", "Margaret", "wood", 3200, 80,
+                "Odbiorca ma przyjść pod gospodę. Margaret chce podstawić mu skrzynię z polanami i sprawdzić, dla kogo pracuje.",
+                "Porozmawiaj z Margaret w gospodzie w Semos. Zapytaj o odbiór.", SEMOS_CHAPTER, 3, Region.SEMOS_CITY);
 
-        public final String slot, title, npc, initial, description, hint;
-        public final int xp, coins;
-        Step(String slot, String title, String npc, String initial, int xp, int coins, String description, String hint) {
+        public final String slot, title, npc, initial, description, hint, chapter, region;
+        public final int xp, coins, order;
+        Step(String slot, String title, String npc, String initial, int xp, int coins, String description, String hint, String chapter, int order, String region) {
             this.slot = slot; this.title = title; this.npc = npc; this.initial = initial;
             this.xp = xp; this.coins = coins; this.description = description; this.hint = hint;
+            this.chapter = chapter; this.order = order; this.region = region;
         }
         public boolean available(final Player player) {
             final String previous = ordinal() == 0 ? "wegiel_na_opal" : values()[ordinal() - 1].slot;
@@ -84,6 +96,19 @@ public final class TrailQuestLine {
                         + ((witnesses & 1) == 0 ? "Staskowi w sklepie w Zakopanem C" : "")
                         + (witnesses == 0 ? " oraz " : "")
                         + ((witnesses & 2) == 0 ? "Jagnie w karczmie w Zakopanem NE" : "") + ". Zapytaj o dowody.";
+            case SEMOS_LETTER:
+                if ("bank".equals(stage)) return "Pokaż kwit Dagobertowi w banku Semos i sprawdź księgę wpłat przy jego ladzie. Zapytaj: kwit.";
+                return "Wróć do porucznika Drilenuna w ratuszu Semos i porozmawiaj o liście.";
+            case SEMOS_SIGN:
+                if ("library".equals(stage)) return "Zapytaj Ceryla w bibliotece Semos o trzy kółka.";
+                if ("shelf".equals(stage)) return "Przejrzyj starą księgę przewoźników na stole przy południowo-zachodnim rogu biblioteki Semos.";
+                return "Porozmawiaj z Cerylem o słowach znalezionych w księdze. Powiedz: suchy ładunek.";
+            case SEMOS_PICKUP:
+                if ("wood".equals(stage)) return "Przynieś Margaret w gospodzie Semos 2 polana. Powiedz: przygotuj skrzynię.";
+                if ("crate".equals(stage)) return "Sprawdź skrzynię obok gospody w Semos. Stoi na zewnątrz, po prawej stronie wejścia.";
+                if ("contact".equals(stage)) return "Porozmawiaj z tragarzem Olkiem obok skrzyni pod gospodą. Użyj hasła z księgi: suchy ładunek.";
+                if ("question".equals(stage)) return "Poproś tragarza Olka o kwit na odbiór. Powiedz: kwit.";
+                return "Zanieś wiadomość porucznikowi Drilenunowi w ratuszu Semos. Zapytaj o tragarza.";
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -121,6 +146,25 @@ public final class TrailQuestLine {
             if ((confirmed & 1) != 0) entries.add("Stasek poznaje swoje worki z węglem. Nie wysyłał ich do Kościeliska.");
             if ((confirmed & 2) != 0) entries.add("Jagna poznaje zamówioną mąkę. To ten sam woźnica miał ją przywieźć do karczmy.");
             if (done) entries.add("Wojtek pośle ludzi po zapasy i uprzedzi kupców o fałszywych zamówieniach. Został jeszcze list ze znakiem trzech kółek. Następny transport miał trafić do Semos.");
+            break;
+        case SEMOS_LETTER:
+            entries.add("Drilenun chce sprawdzić, kto zapłacił za transport z Zakopanego. Dagobert prowadzi księgę wpłat w banku Semos.");
+            if (!"bank".equals(stage)) entries.add("W księdze jest zaliczka na dostawę, ale zamiast nazwiska ktoś narysował trzy kółka. Kwit ma numer 17. Odbiór ma się odbyć przy gospodzie w Semos.");
+            if (done) entries.add("Drilenun poprosił Dagoberta, żeby wstrzymał wypłatę. Trzeba jeszcze ustalić, kto posługuje się tym znakiem.");
+            break;
+        case SEMOS_SIGN:
+            entries.add("Dagobert radzi zapytać Ceryla o znak trzech kółek.");
+            if (!"library".equals(stage)) entries.add("Ceryl pamięta taki znak ze starej księgi przewoźników. Wskazał ją na stole przy wejściu do biblioteki.");
+            if ("phrase".equals(stage) || done) entries.add("W księdze zapisano znak przewoźnika i dopisek: suchy ładunek. Ten sam zwrot jest na kwicie numer 17.");
+            if (done) entries.add("Ceryl odczytał miejsce odbioru: obok gospody w Semos. Margaret powinna wiedzieć, kto tam przychodzi.");
+            break;
+        case SEMOS_PICKUP:
+            entries.add("Margaret zgodziła się przygotować skrzynię z polanami zamiast prawdziwego towaru.");
+            if (!"wood".equals(stage)) entries.add("Margaret dostała dwa polana. Skrzynia czeka obok wejścia do gospody.");
+            if ("contact".equals(stage) || "question".equals(stage) || "return".equals(stage) || done) entries.add("Skrzynia jest gotowa do odbioru. Olek czeka obok niej na umówione hasło.");
+            if ("question".equals(stage) || "return".equals(stage) || done) entries.add("Olek rozpoznał hasło: suchy ładunek. Można poprosić go o kwit.");
+            if ("return".equals(stage) || done) entries.add("Na kwicie jest nazwisko Radan. Olek twierdzi, że dostał pieniądze i instrukcję odbioru, ale nie znał zawartości skrzyni.");
+            if (done) entries.add("Drilenun dostał odpis kwitu. Bank wstrzyma wypłatę, a straż sprawdzi człowieka podpisanego jako Radan. Olek nie będzie już odbierał tych przesyłek.");
             break;
         default: throw new IllegalStateException("Unknown chapter step");
         }
