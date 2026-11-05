@@ -70,6 +70,9 @@ public class MariuszekNPC implements ZoneConfigurator {
 			case MOUNTAIN_MEETING: case MOUNTAIN_BATTLE: return "Brzezdom widział obcych we wschodnim Kościelisku. Zna polanę jak własną kieszeń, powinien wiedzieć, gdzie ich znaleźć.";
 			case MOUNTAIN_CARGO: return "Stasek zna się na broni i kupcach, którzy ją tu wożą. Pokaż mu, co znaleźliście przy woźnicy.";
 			case MOUNTAIN_RETURN: return "Wojtek czeka w ratuszu w centrum Zakopanego na wieści z lasu. Nie zapomnij też o Drilenunie i Barbarusie, martwili się razem z nim.";
+			case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_RETURN: return "Julius pilnuje głównego wejścia do Ados. Słyszałem, że niepokoją go wieści ze starej warowni w górach. Może przyda mu się twoja pomoc.";
+			case KEEP_INSCRIPTIONS: return "Wikipedian w bibliotece Ados zna dawne dzieje. Pokaż mu znaki z kamiennych płyt, może zdoła je odczytać.";
+			case KEEP_GUARDIAN: return "Zogfang przebywa w południowo-zachodniej części pierwszego piętra warowni pod górami Ados. On wie, gdzie szukać kamiennego strażnika.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

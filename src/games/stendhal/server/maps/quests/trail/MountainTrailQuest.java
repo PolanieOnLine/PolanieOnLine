@@ -189,7 +189,8 @@ public final class MountainTrailQuest extends TrailQuest {
         case MOUNTAIN_BATTLE: return "Słyszałem walkę. Dobrze, że wracasz o własnych siłach. Zostanę przy polanie do przybycia straży. "
                 + "Zanieś Wojtkowi #'wieści z lasu'. Drilenun też musi je usłyszeć, a Barbarus wiedzieć, co z jego górnikami.";
         case MOUNTAIN_RETURN: return "Teraz wszystko jasne. Radan siedzi, jego wspólnicy stracili broń i dowódcę, a górnicy wrócą do domów. "
-                + "Dziękuję ci w imieniu mieszkańców. Weź tę cuhę i 300 monet. Zasługujesz na coś porządnego na dalszą drogę.";
+                + "Dziękuję ci w imieniu mieszkańców. Weź tę cuhę i 300 monet. Zasługujesz na coś porządnego na dalszą drogę. "
+                + "Jeśli ruszysz kiedyś do Ados, zajrzyj do Juliusa przy głównym wejściu. Drilenun polecił cię tamtejszej straży.";
         default: throw new IllegalArgumentException("Not a mountain quest");
         }
     }

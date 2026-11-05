@@ -1391,3 +1391,4 @@ wspólnik Radana=cómplice de Radan
 wspólnik radana=cómplice de Radan
 wysłannik duergarów=emisario duergar
 dowódca duergarów=comandante duergar
+strażnik warowni=guardián de la fortaleza

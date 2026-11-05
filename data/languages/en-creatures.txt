@@ -1391,3 +1391,4 @@ wspólnik Radana=Radan's accomplice
 wspólnik radana=Radan's accomplice
 wysłannik duergarów=duergar emissary
 dowódca duergarów=duergar commander
+strażnik warowni=keep guardian

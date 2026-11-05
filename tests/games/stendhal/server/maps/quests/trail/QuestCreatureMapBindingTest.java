@@ -16,10 +16,11 @@ public class QuestCreatureMapBindingTest {
         assertEquals("duergar", manager.getCreature("../../tileset/logic/creature/dwarf_duergar.png", 6).getName());
         assertEquals("bandyta", manager.getCreature("../../tileset/logic/creature/human_evil.png", 1).getName());
         assertEquals("łowca", manager.getCreature("../../tileset/logic/creature/human_evil.png", 2).getName());
+        assertEquals("kamienny golem", manager.getCreature("../../tileset/logic/creature/golem.png", 0).getName());
     }
     @Test public void questMonstersRemainCreatableByNameWithoutMapMarkers() {
         EntityManager manager = SingletonRepository.getEntityManager();
-        for (String name : new String[]{"strażnik składu", "człowiek Radana", "strażnik więźnia", "zbrojny Radana", "łącznik duergarów", "wspólnik Radana", "wysłannik duergarów", "dowódca duergarów"}) {
+        for (String name : new String[]{"strażnik składu", "człowiek Radana", "strażnik więźnia", "zbrojny Radana", "łącznik duergarów", "wspólnik Radana", "wysłannik duergarów", "dowódca duergarów", "strażnik warowni"}) {
             DefaultCreature definition = manager.getDefaultCreature(name);
             assertNotNull(name, definition);
             assertEquals(name, "-1", definition.getTileId());

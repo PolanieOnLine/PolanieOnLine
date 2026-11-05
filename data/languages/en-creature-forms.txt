@@ -1500,3 +1500,6 @@ wysłannik duergarów=duergar emissary
 dowódców duergarów=duergar commanders
 {number:0} dowódców duergarów={0} duergar commanders
 dowódca duergarów=duergar commander
+1 strażnik warowni=1 keep guardian
+strażników warowni=keep guardians
+{number:0} strażników warowni={0} keep guardians

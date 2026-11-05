@@ -17,6 +17,7 @@ public final class TrailQuestLine {
     public static final String CHAPTER = "Niepokój na trakcie";
     public static final String MINE_CHAPTER = "Druga zmiana";
     public static final String MOUNTAIN_CHAPTER = "Ludzie Radana";
+    public static final String KEEP_CHAPTER = "Stara warownia";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -87,7 +88,22 @@ public final class TrailQuestLine {
                 "Zapytaj Brzezdoma we wschodnim Kościelisku o zbiórkę oddziału.", MOUNTAIN_CHAPTER, 5, Region.ZAKOPANE_CITY, 50),
         MOUNTAIN_RETURN("trail_news_for_towns", "Wieści dla obu miast", "Gazda Wojtek", "reports;0", 6000, 300,
                 "Oddział został rozbity. Wojtek i Drilenun muszą poznać wynik wyprawy, a Barbarus los swoich górników.",
-                "Wróć do Gazdy Wojtka w ratuszu Zakopanego C z wieściami z lasu.", MOUNTAIN_CHAPTER, 6, Region.ZAKOPANE_CITY, 50);
+                "Wróć do Gazdy Wojtka w ratuszu Zakopanego C z wieściami z lasu.", MOUNTAIN_CHAPTER, 6, Region.ZAKOPANE_CITY, 50),
+        KEEP_TRAIL("trail_keep_tracks", "Co wyszło z warowni", "Julius", "clues;0", 8500, 150,
+                "Julius słyszał o orkach schodzących z gór. Trzeba sprawdzić, czy szykują napad, czy opuszczają warownię z innego powodu.",
+                "Porozmawiaj z Juliusem przy głównym wejściu do Ados o starej warowni.", KEEP_CHAPTER, 1, Region.ADOS_CITY, 75),
+        KEEP_WITNESSES("trail_keep_witnesses", "Po drugiej stronie sporu", "Julius", "witnesses;0", 10000, 200,
+                "Ślady wskazują na pośpieszną ucieczkę. Hagnurk i Zogfang mogą wiedzieć, co dzieje się na pierwszym piętrze warowni.",
+                "Zapytaj Juliusa przy wejściu do Ados o uciekinierów.", KEEP_CHAPTER, 2, Region.ADOS_SURROUNDS, 75),
+        KEEP_INSCRIPTIONS("trail_keep_inscriptions", "Rozkaz wyryty w kamieniu", "Wikipedian", "inscriptions;0", 14000, 200,
+                "W warowni ożył kamienny strażnik. Stare napisy mogą wyjaśnić, dlaczego atakuje jej mieszkańców.",
+                "Pokaż Wikipedianowi w bibliotece Ados odrysowane znaki. Powiedz: stare napisy.", KEEP_CHAPTER, 3, Region.ADOS_SURROUNDS, 75),
+        KEEP_GUARDIAN("trail_keep_guardian", "Strażnik bez pana", "Zogfang", "fight", 22000, 500,
+                "Dawny strażnik nie rozpoznaje już nikogo z załogi. Zogfang chce go zatrzymać, zanim znów uderzy na mieszkańców.",
+                "Porozmawiaj z Zogfangiem w południowo-zachodniej części pierwszego piętra warowni o kamiennym strażniku.", KEEP_CHAPTER, 4, Region.ADOS_SURROUNDS, 75),
+        KEEP_RETURN("trail_keep_road", "Droga do Ados", "Julius", "merchant", 8000, 650,
+                "Strażnik został pokonany. Trzeba sprawdzić u Hagnurka, czy mieszkańcy znów mogą podróżować, i zdać sprawę Juliusowi.",
+                "Wróć do Juliusa przy wejściu do Ados. Powiedz: droga do Ados.", KEEP_CHAPTER, 5, Region.ADOS_CITY, 75);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -170,6 +186,8 @@ public final class TrailQuestLine {
             case MOUNTAIN_MINERS: case MOUNTAIN_THREATS: case MOUNTAIN_MEETING:
             case MOUNTAIN_CARGO: case MOUNTAIN_BATTLE: case MOUNTAIN_RETURN:
                 return MountainTrailProgress.objective(player, step);
+            case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_INSCRIPTIONS: case KEEP_GUARDIAN: case KEEP_RETURN:
+                return AdosKeepProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -234,6 +252,8 @@ public final class TrailQuestLine {
         case MOUNTAIN_MINERS: case MOUNTAIN_THREATS: case MOUNTAIN_MEETING:
         case MOUNTAIN_CARGO: case MOUNTAIN_BATTLE: case MOUNTAIN_RETURN:
             return MountainTrailProgress.history(player, step);
+        case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_INSCRIPTIONS: case KEEP_GUARDIAN: case KEEP_RETURN:
+            return AdosKeepProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -250,6 +270,7 @@ public final class TrailQuestLine {
     public static void recordGuardKill(final Player player, final RPEntity victim) {
         MineTrailProgress.recordCourierKill(player, victim);
         MountainTrailProgress.recordKill(player, victim);
+        AdosKeepProgress.recordGuardianKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

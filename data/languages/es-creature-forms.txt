@@ -1502,3 +1502,6 @@ wysłannik duergarów=emisario duergar
 dowódców duergarów=comandantes duergar
 {number:0} dowódców duergarów={0} comandantes duergar
 dowódca duergarów=comandante duergar
+1 strażnik warowni=1 guardián de la fortaleza
+strażników warowni=guardianes de la fortaleza
+{number:0} strażników warowni={0} guardianes de la fortaleza

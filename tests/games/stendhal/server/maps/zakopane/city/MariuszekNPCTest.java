@@ -90,6 +90,8 @@ public class MariuszekNPCTest extends ZonePlayerAndNPCTestImpl {
         for (String slot : new String[] {"trail_mine_ledger", "trail_mine_tracks", "trail_mine_voices", "trail_mine_dispatch"}) player.setQuest(slot, "done");
         assertTrue(ask("co dalej").contains("Barbarus"));
         for (String slot : new String[] {"trail_missing_miners", "trail_threatened_witnesses", "trail_forest_meeting", "trail_hidden_weapons", "trail_before_departure", "trail_news_for_towns"}) player.setQuest(slot, "done");
+        assertTrue(ask("co dalej").contains("Julius"));
+        for (String slot : new String[] {"trail_keep_tracks", "trail_keep_witnesses", "trail_keep_inscriptions", "trail_keep_guardian", "trail_keep_road"}) player.setQuest(slot, "done");
         assertTrue(ask("co dalej").contains("Gościrad"));
         assertEquals("done", player.getQuest("meet_pietrek"));
         assertEquals(0, player.getTotalNumberOf("puklerz"));

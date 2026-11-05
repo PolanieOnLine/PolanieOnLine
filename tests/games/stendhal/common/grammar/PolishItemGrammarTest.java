@@ -9,6 +9,7 @@ public class PolishItemGrammarTest {
 		assertEquals("2 wspólników Radana", Grammar.quantityplnounCreature(2,"wspólnik Radana"));
 		assertEquals("5 wysłanników duergarów", Grammar.quantityplnounCreature(5,"wysłannik duergarów"));
 		assertEquals("12 dowódców duergarów", Grammar.quantityplnounCreature(12,"dowódca duergarów"));
+		assertEquals("2 strażników warowni", Grammar.quantityplnounCreature(2,"strażnik warowni"));
 	}
 	@Test public void coalRequestsUsePiecesInsteadOfAnInventedPlural() {
 		assertEquals("kawałek węgla", Grammar.quantityplnoun(1, "węgiel"));

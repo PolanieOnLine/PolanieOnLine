@@ -146,4 +146,30 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+    <creature name="strażnik warowni">
+        <type class="golem" subclass="stone_golem" tileid="-1"/>
+        <description>Oto dawny strażnik warowni. Popękany kamień wciąż wykonuje rozkazy nieżyjącej załogi.</description>
+        <attributes>
+            <atk value="480"/>
+            <def value="82"/>
+            <armor_type value="heavy"/>
+            <hp value="1050"/>
+            <armor_hp value="262"/>
+            <speed value="0.35"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="80"/>
+        <experience value="0"/>
+        <respawn value="180"/>
+        <corpse name="rock" harmless="rock"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="animal"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
 </creatures>
