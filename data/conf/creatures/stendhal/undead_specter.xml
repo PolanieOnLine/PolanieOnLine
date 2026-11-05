@@ -238,4 +238,30 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+    <creature name="poległy wartownik">
+        <type class="undead" subclass="ghost" shadow="none" tileid="-1"/>
+        <description>Oto poległy wartownik. Wciąż wykonuje rozkaz, który wydano mu za życia.</description>
+        <attributes>
+            <atk value="470"/><def value="80"/><armor_type value="none"/>
+            <hp value="1200"/><speed value="0.45"/><size value="1,1"/>
+            <visibility value="55"/>
+        </attributes>
+        <level value="100"/><experience value="0"/><respawn value="180"/>
+        <corpse name="cloaked_white" harmless="cloaked_white"/>
+        <drops/><equips/>
+        <ai><profile name="brave"/><profile name="offensive"/><profile name="animal"/><profile name="no_elite"/><profile name="abnormal"/></ai>
+    </creature>
+    <creature name="strażnik dawnej chorągwi">
+        <type class="undead" subclass="ghost" shadow="none" tileid="-1"/>
+        <description>Oto strażnik dawnej chorągwi. Wciąż wykonuje rozkaz, który wydano mu za życia.</description>
+        <attributes>
+            <atk value="580"/><def value="95"/><armor_type value="none"/>
+            <hp value="1800"/><speed value="0.45"/><size value="1,1"/>
+            <visibility value="55"/>
+        </attributes>
+        <level value="105"/><experience value="0"/><respawn value="180"/>
+        <corpse name="cloaked_white" harmless="cloaked_white"/>
+        <drops/><equips/>
+        <ai><profile name="brave"/><profile name="offensive"/><profile name="animal"/><profile name="no_elite"/><profile name="abnormal"/></ai>
+    </creature>
 </creatures>

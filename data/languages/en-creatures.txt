@@ -1392,3 +1392,5 @@ wspólnik radana=Radan's accomplice
 wysłannik duergarów=duergar emissary
 dowódca duergarów=duergar commander
 strażnik warowni=keep guardian
+poległy wartownik=fallen sentry
+strażnik dawnej chorągwi=keeper of the old banner

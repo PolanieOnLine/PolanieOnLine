@@ -137,7 +137,8 @@ public final class AdosKeepQuest extends TrailQuest {
         case KEEP_GUARDIAN: return "Słyszałem, jak runął. Nasi ludzie mogą odetchnąć. "
                 + "Powiedz Juliusowi, że nie szykowaliśmy najazdu. To kamienny strażnik wypędzał nas z domu. Chcemy znów korzystać z #'drogi do Ados'.";
         case KEEP_RETURN: return "Dziękuję. Gdybyśmy zaufali samym pogłoskom, moglibyśmy zacząć zupełnie niepotrzebną walkę. "
-                + "Przekażę straży, czego się dowiedzieliśmy. Weź ten hełm i 650 monet. Dobrze mieć przy sobie kogoś, kto najpierw sprawdza, a dopiero potem sięga po broń.";
+                + "Przekażę straży, czego się dowiedzieliśmy. Weź ten hełm i 650 monet. Dobrze mieć przy sobie kogoś, kto najpierw sprawdza, a dopiero potem sięga po broń. "
+                + "Jeśli wrócisz pod Kraków, zajrzyj do Wagabundusa na południowym trakcie. Podróżni mówią o poległych wartownikach, którzy znów stanęli przy drodze.";
         default: throw new IllegalArgumentException("Not a keep quest");
         }
     }

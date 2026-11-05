@@ -9,6 +9,7 @@
 
 	<!-- krakow_nw2 -->
 	<zone name="0_krakow_n_w2" level="0" x="513184" y="17664" file="Level 0/krakow/n_w2.tmx">
+        <configurator class-name="games.stendhal.server.maps.quests.trail.OathTrailSites"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -88,6 +89,7 @@ Południowy-Wschód: Kraków
 
 	<!-- krakow_w2 -->
 	<zone name="0_krakow_w2" level="0" x="513184" y="17792" file="Level 0/krakow/w2.tmx">
+        <configurator class-name="games.stendhal.server.maps.quests.trail.OathTrailSites"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>

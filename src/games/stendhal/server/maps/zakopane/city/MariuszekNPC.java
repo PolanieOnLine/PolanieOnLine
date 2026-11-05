@@ -73,6 +73,9 @@ public class MariuszekNPC implements ZoneConfigurator {
 			case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_RETURN: return "Julius pilnuje głównego wejścia do Ados. Słyszałem, że niepokoją go wieści ze starej warowni w górach. Może przyda mu się twoja pomoc.";
 			case KEEP_INSCRIPTIONS: return "Wikipedian w bibliotece Ados zna dawne dzieje. Pokaż mu znaki z kamiennych płyt, może zdoła je odczytać.";
 			case KEEP_GUARDIAN: return "Zogfang przebywa w południowo-zachodniej części pierwszego piętra warowni pod górami Ados. On wie, gdzie szukać kamiennego strażnika.";
+			case OATH_WATCH: case OATH_GRAVE: case OATH_BURIAL: return "Wagabundus wędruje traktem na południe od Krakowa. Niepokoją go dawne mogiły i wartownicy, którzy nie schodzą z posterunku.";
+			case OATH_NAMES: case OATH_TRUTH: return "Amileusz, archeolog w Krakowie, pomoże ci rozpoznać dawne wojskowe znaki i zapiski.";
+			case OATH_BANNER: return "Wszebor czeka na polach na północny zachód od Krakowa. Chce odzyskać chorągiew swoich towarzyszy.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

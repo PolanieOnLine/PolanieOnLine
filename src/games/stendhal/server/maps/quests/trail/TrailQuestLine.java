@@ -18,6 +18,7 @@ public final class TrailQuestLine {
     public static final String MINE_CHAPTER = "Druga zmiana";
     public static final String MOUNTAIN_CHAPTER = "Ludzie Radana";
     public static final String KEEP_CHAPTER = "Stara warownia";
+    public static final String OATH_CHAPTER = "Dług wobec zmarłych";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -103,7 +104,25 @@ public final class TrailQuestLine {
                 "Porozmawiaj z Zogfangiem w południowo-zachodniej części pierwszego piętra warowni o kamiennym strażniku.", KEEP_CHAPTER, 4, Region.ADOS_SURROUNDS, 75),
         KEEP_RETURN("trail_keep_road", "Droga do Ados", "Julius", "merchant", 8000, 650,
                 "Strażnik został pokonany. Trzeba sprawdzić u Hagnurka, czy mieszkańcy znów mogą podróżować, i zdać sprawę Juliusowi.",
-                "Wróć do Juliusa przy wejściu do Ados. Powiedz: droga do Ados.", KEEP_CHAPTER, 5, Region.ADOS_CITY, 75);
+                "Wróć do Juliusa przy wejściu do Ados. Powiedz: droga do Ados.", KEEP_CHAPTER, 5, Region.ADOS_CITY, 75),
+        OATH_WATCH("trail_oath_watch", "Wartownicy na trakcie", "Wagabundus", "fight", 10000, 150,
+                "Na dawnym trakcie pod Krakowem stoją polegli wojownicy. Wagabundus chce wiedzieć, kogo wypatrują.",
+                "Zapytaj Wagabundusa na południe od Krakowa o poległych wartowników.", OATH_CHAPTER, 1, Region.KRAKOW_CITY, 100),
+        OATH_NAMES("trail_oath_names", "Imiona pod rdzą", "Amileusz", "clues;0", 13000, 200,
+                "Wszebor nie zna losu swojego dowódcy. Amileusz może rozpoznać znaki na uzbrojeniu oddziału.",
+                "Pokaż Amileuszowi w Krakowie znak oddziału. Powiedz: znak oddziału.", OATH_CHAPTER, 2, Region.KRAKOW_CITY, 100),
+        OATH_GRAVE("trail_oath_grave", "Pochowany jako zdrajca", "Wagabundus", "grave", 15000, 250,
+                "Dowódcę oddziału pochowano osobno i oskarżono o ucieczkę. Wagabundus pamięta samotny grób przy trakcie.",
+                "Zapytaj Wagabundusa o samotny grób.", OATH_CHAPTER, 3, Region.KRAKOW_CITY, 100),
+        OATH_TRUTH("trail_oath_truth", "Ostatni rozkaz", "Amileusz", "proof", 16000, 300,
+                "Ślady przy grobie nie pasują do opowieści o zdradzie. Trzeba odnaleźć rozkaz pozostawiony przy dawnej strażnicy.",
+                "Porozmawiaj z Amileuszem o ostatnim rozkazie.", OATH_CHAPTER, 4, Region.KRAKOW_CITY, 100),
+        OATH_BANNER("trail_oath_banner", "Chorągiew oddziału", "Wszebor", "fight", 26000, 500,
+                "Wszebor rozpoznał dowódcę. Do pochówku potrzebna jest chorągiew, której wciąż broni dawny towarzysz.",
+                "Zanieś Wszeborowi rozkaz i zapytaj o chorągiew oddziału.", OATH_CHAPTER, 5, Region.KRAKOW_CITY, 100),
+        OATH_BURIAL("trail_oath_burial", "Dotrzymane słowo", "Wagabundus", "remains", 12000, 600,
+                "Poległym obiecano wspólny pochówek. Znamy już prawdę i mamy chorągiew. Pora dotrzymać danego im słowa.",
+                "Wróć do Wagabundusa. Powiedz: wspólny pochówek.", OATH_CHAPTER, 6, Region.KRAKOW_CITY, 100);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -188,6 +207,8 @@ public final class TrailQuestLine {
                 return MountainTrailProgress.objective(player, step);
             case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_INSCRIPTIONS: case KEEP_GUARDIAN: case KEEP_RETURN:
                 return AdosKeepProgress.objective(player, step);
+            case OATH_WATCH: case OATH_NAMES: case OATH_GRAVE: case OATH_TRUTH: case OATH_BANNER: case OATH_BURIAL:
+                return OathTrailProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -254,6 +275,8 @@ public final class TrailQuestLine {
             return MountainTrailProgress.history(player, step);
         case KEEP_TRAIL: case KEEP_WITNESSES: case KEEP_INSCRIPTIONS: case KEEP_GUARDIAN: case KEEP_RETURN:
             return AdosKeepProgress.history(player, step);
+        case OATH_WATCH: case OATH_NAMES: case OATH_GRAVE: case OATH_TRUTH: case OATH_BANNER: case OATH_BURIAL:
+            return OathTrailProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -271,6 +294,7 @@ public final class TrailQuestLine {
         MineTrailProgress.recordCourierKill(player, victim);
         MountainTrailProgress.recordKill(player, victim);
         AdosKeepProgress.recordGuardianKill(player, victim);
+        OathTrailProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null
