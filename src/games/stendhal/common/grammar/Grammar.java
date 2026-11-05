@@ -881,6 +881,9 @@ public class Grammar {
 	 * @return Either "[noun]" or plural("[noun]") as appropriate
 	 */
 	public static String plnounCreature(final int quantity, final String noun) {
+		if ("wspólnik Radana".equalsIgnoreCase(noun)) return quantity == 1 ? "wspólnik Radana" : "wspólników Radana";
+		if ("wysłannik duergarów".equalsIgnoreCase(noun)) return quantity == 1 ? "wysłannik duergarów" : "wysłanników duergarów";
+		if ("dowódca duergarów".equalsIgnoreCase(noun)) return quantity == 1 ? "dowódca duergarów" : "dowódców duergarów";
 		if (noun.equals("chicken")) {
 			if (quantity == 1) {
 				return "chicken";
@@ -932,7 +935,8 @@ public class Grammar {
 			return Integer.toString(quantity) + " " + end;
 		}
 
-		return quantityplnoun(quantity, noun);
+		final String end = plnounCreature(quantity, noun);
+		return quantity == 1 ? end : quantity + " " + end;
 	}
 
 	/**

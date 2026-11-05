@@ -3715,6 +3715,7 @@ Południowy-zachód: Miasto Fado
 			class-name="games.stendhal.server.maps.semos.mines.DwarfGuardianNPC"/>
 		<configurator class-name="games.stendhal.server.maps.semos.mines.MinerNPC"/>
         <configurator class-name="games.stendhal.server.maps.quests.trail.MineTrailSites"/>
+        <configurator class-name="games.stendhal.server.maps.quests.trail.MountainTrailSites"/>
 
 		<entity x="62" y="79">
 			<implementation

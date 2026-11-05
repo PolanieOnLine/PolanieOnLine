@@ -764,4 +764,55 @@
             <profile name="no_elite"/>
         </ai>
     </creature>
+
+    <creature name="wysłannik duergarów">
+        <type class="dwarf" subclass="duergar_elite" tileid="-1"/>
+        <description>Oto wysłannik duergarów. Pilnuje przygotowań do napadów na transporty między Zakopanem a Semos.</description>
+        <attributes>
+            <atk value="365"/>
+            <def value="58"/>
+            <armor_type value="light"/>
+            <hp value="430"/>
+            <armor_hp value="107"/>
+            <speed value="0.4"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="46"/>
+        <experience value="0"/>
+        <respawn value="180"/>
+        <corpse name="humanoid"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
+    <creature name="dowódca duergarów">
+        <type class="dwarf" subclass="duergar_hero" tileid="-1"/>
+        <description>Oto dowódca duergarów. Pilnuje przygotowań do napadów na transporty między Zakopanem a Semos.</description>
+        <attributes>
+            <atk value="405"/>
+            <def value="68"/>
+            <armor_type value="heavy"/>
+            <hp value="650"/>
+            <armor_hp value="162"/>
+            <speed value="0.4"/>
+            <size value="1,1"/>
+        </attributes>
+        <level value="55"/>
+        <experience value="0"/>
+        <respawn value="180"/>
+        <corpse name="humanoid"/>
+        <drops/>
+        <equips/>
+        <ai>
+            <profile name="brave"/>
+            <profile name="offensive"/>
+            <profile name="human"/>
+            <profile name="no_elite"/>
+        </ai>
+    </creature>
 </creatures>

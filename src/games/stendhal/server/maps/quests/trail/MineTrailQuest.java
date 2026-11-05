@@ -85,7 +85,7 @@ public final class MineTrailQuest extends TrailQuest {
         case MINE_DISPATCH: return "Więc Radan dostarczał zapasy duergarom... A my mieliśmy to za zwykłą kradzież. "
                 + "Dobrze, że Phalk został przy przejściu. Wyślę ostrzeżenie do Barbarusa i kupców. "
                 + "Najpierw musimy ustalić, ilu ich jest. Na dziś wystarczy. Weź 200 monet i te eliksiry, "
-                + "należy ci się porządny odpoczynek.";
+                + "należy ci się porządny odpoczynek. Potem zajrzyj do Barbarusa. Niepokoją go #'zaginieni górnicy'.";
         default: throw new IllegalStateException("Not a mine quest");
         }
     }

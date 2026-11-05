@@ -4,6 +4,12 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class PolishItemGrammarTest {
+	@Test public void mountainStoryOpponentsHaveReadableKillQuantities() {
+		assertEquals("wspólnik Radana", Grammar.quantityplnounCreature(1,"wspólnik Radana"));
+		assertEquals("2 wspólników Radana", Grammar.quantityplnounCreature(2,"wspólnik Radana"));
+		assertEquals("5 wysłanników duergarów", Grammar.quantityplnounCreature(5,"wysłannik duergarów"));
+		assertEquals("12 dowódców duergarów", Grammar.quantityplnounCreature(12,"dowódca duergarów"));
+	}
 	@Test public void coalRequestsUsePiecesInsteadOfAnInventedPlural() {
 		assertEquals("kawałek węgla", Grammar.quantityplnoun(1, "węgiel"));
 		assertEquals("2 kawałki węgla", Grammar.quantityplnoun(2, "węgiel"));

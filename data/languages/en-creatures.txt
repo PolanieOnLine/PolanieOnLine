@@ -1387,3 +1387,7 @@ człowiek radana=Radan's henchman
 zbrojny radana=Radan's armsman
 
 łącznik duergarów=duergar courier
+wspólnik Radana=Radan's accomplice
+wspólnik radana=Radan's accomplice
+wysłannik duergarów=duergar emissary
+dowódca duergarów=duergar commander

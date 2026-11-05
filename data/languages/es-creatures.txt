@@ -1387,3 +1387,7 @@ człowiek radana=secuaz de Radan
 zbrojny radana=soldado de Radan
 
 łącznik duergarów=mensajero duergar
+wspólnik Radana=cómplice de Radan
+wspólnik radana=cómplice de Radan
+wysłannik duergarów=emisario duergar
+dowódca duergarów=comandante duergar

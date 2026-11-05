@@ -16,6 +16,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 public final class TrailQuestLine {
     public static final String CHAPTER = "Niepokój na trakcie";
     public static final String MINE_CHAPTER = "Druga zmiana";
+    public static final String MOUNTAIN_CHAPTER = "Ludzie Radana";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -68,7 +69,25 @@ public final class TrailQuestLine {
                 "Porozmawiaj z Barbarusem o głosach z głębi kopalni. Powiedz: głosy spod skały.", MINE_CHAPTER, 3, Region.SEMOS_MINES, 30),
         MINE_DISPATCH("trail_mine_dispatch", "Rozkaz na pergaminie", "Phalk", "guard", 10000, 200,
                 "Zynn rozpoznał dawne komendy wojskowe. Phalk może wiedzieć, kto przenosi rozkazy między tunelami.",
-                "Odszukaj Phalka przy zablokowanym przejściu w kopalni Semos. Zapytaj o łącznika.", MINE_CHAPTER, 4, Region.SEMOS_MINES, 30);
+                "Odszukaj Phalka przy zablokowanym przejściu w kopalni Semos. Zapytaj o łącznika.", MINE_CHAPTER, 4, Region.SEMOS_MINES, 30),
+        MOUNTAIN_MINERS("trail_missing_miners", "Nie wrócili ze zmiany", "Barbarus", "search", 6000, 100,
+                "Dwaj górnicy nie wrócili z bocznego tunelu. Barbarus obawia się, że spotkali ludzi zaopatrujących duergarów.",
+                "Porozmawiaj z Barbarusem w kopalni Semos o zaginionych górnikach.", MOUNTAIN_CHAPTER, 1, Region.SEMOS_MINES, 50),
+        MOUNTAIN_THREATS("trail_threatened_witnesses", "Za długi język", "Gazda Wojtek", "witnesses;0", 3500, 80,
+                "Staskowi grożono za rozpoznanie skradzionych zapasów. Ktoś wypytuje także o Jagnę.",
+                "Zapytaj Gazdę Wojtka w ratuszu Zakopanego C o pogróżki.", MOUNTAIN_CHAPTER, 2, Region.ZAKOPANE_CITY, 50),
+        MOUNTAIN_MEETING("trail_forest_meeting", "Obcy na polanie", "Brzezdom", "guards;0", 8000, 150,
+                "Brzezdom widział spotkanie duergara z człowiekiem Radana. Przetrzymują woźnicę we wschodnim Kościelisku.",
+                "Zapytaj Brzezdoma we wschodnim Kościelisku o obcych na polanie.", MOUNTAIN_CHAPTER, 3, Region.ZAKOPANE_CITY, 50),
+        MOUNTAIN_CARGO("trail_hidden_weapons", "Pod przykryciem dostawy", "Stasek", "cargo", 4500, 120,
+                "Woźnica miał przewieźć broń ukrytą w zwykłym ładunku. Trzeba ustalić, dla kogo ją przygotowano.",
+                "Porozmawiaj ze Staskiem w sklepie w Zakopanem C o ukrytej broni.", MOUNTAIN_CHAPTER, 4, Region.ZAKOPANE_CITY, 50),
+        MOUNTAIN_BATTLE("trail_before_departure", "Przed wymarszem", "Brzezdom", "battle;0", 14000, 250,
+                "Oddział zbiera się w północnej części polany w Kościelisku. Jego dowódca szykuje napad na transporty do obu miast.",
+                "Zapytaj Brzezdoma we wschodnim Kościelisku o zbiórkę oddziału.", MOUNTAIN_CHAPTER, 5, Region.ZAKOPANE_CITY, 50),
+        MOUNTAIN_RETURN("trail_news_for_towns", "Wieści dla obu miast", "Gazda Wojtek", "reports;0", 6000, 300,
+                "Oddział został rozbity. Wojtek i Drilenun muszą poznać wynik wyprawy, a Barbarus los swoich górników.",
+                "Wróć do Gazdy Wojtka w ratuszu Zakopanego C z wieściami z lasu.", MOUNTAIN_CHAPTER, 6, Region.ZAKOPANE_CITY, 50);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -148,6 +167,9 @@ public final class TrailQuestLine {
                 return RadanDungeonProgress.objective(player, step);
             case MINE_LEDGER: case MINE_TRACKS: case MINE_VOICES: case MINE_DISPATCH:
                 return MineTrailProgress.objective(player, step);
+            case MOUNTAIN_MINERS: case MOUNTAIN_THREATS: case MOUNTAIN_MEETING:
+            case MOUNTAIN_CARGO: case MOUNTAIN_BATTLE: case MOUNTAIN_RETURN:
+                return MountainTrailProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -209,6 +231,9 @@ public final class TrailQuestLine {
             return RadanDungeonProgress.history(player, step);
         case MINE_LEDGER: case MINE_TRACKS: case MINE_VOICES: case MINE_DISPATCH:
             return MineTrailProgress.history(player, step);
+        case MOUNTAIN_MINERS: case MOUNTAIN_THREATS: case MOUNTAIN_MEETING:
+        case MOUNTAIN_CARGO: case MOUNTAIN_BATTLE: case MOUNTAIN_RETURN:
+            return MountainTrailProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -224,6 +249,7 @@ public final class TrailQuestLine {
     /** Record nearby story kills only from the expected world respawn points. */
     public static void recordGuardKill(final Player player, final RPEntity victim) {
         MineTrailProgress.recordCourierKill(player, victim);
+        MountainTrailProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

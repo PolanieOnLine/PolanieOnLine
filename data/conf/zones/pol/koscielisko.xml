@@ -89,6 +89,7 @@
 	<!-- koscielisko_e -->
 	<zone name="0_koscielisko_e" level="0" x="513056" y="18560" file="Level 0/koscielisko/e.tmx">
         <configurator class-name="games.stendhal.server.maps.quests.trail.TrailSites"/>
+        <configurator class-name="games.stendhal.server.maps.quests.trail.MountainTrailSites"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-1)</parameter>

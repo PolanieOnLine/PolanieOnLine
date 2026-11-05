@@ -1490,3 +1490,15 @@ zombiy=zombis
 
 1 łącznik duergarów=1 mensajero duergar
 {number:0} łącznik duergarów={0} mensajeros duergar
+1 wspólnik Radana=1 cómplice de Radan
+1 wysłannik duergarów=1 emisario duergar
+1 dowódca duergarów=1 comandante duergar
+wspólników Radana=cómplices de Radan
+{number:0} wspólników Radana={0} cómplices de Radan
+wspólnik Radana=cómplice de Radan
+wysłanników duergarów=emisarios duergar
+{number:0} wysłanników duergarów={0} emisarios duergar
+wysłannik duergarów=emisario duergar
+dowódców duergarów=comandantes duergar
+{number:0} dowódców duergarów={0} comandantes duergar
+dowódca duergarów=comandante duergar

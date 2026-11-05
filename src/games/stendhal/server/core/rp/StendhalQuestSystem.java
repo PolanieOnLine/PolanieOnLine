@@ -37,6 +37,7 @@ import games.stendhal.server.maps.quests.trail.DebtToZakopaneQuest;
 import games.stendhal.server.maps.quests.trail.FalsePickupQuest;
 import games.stendhal.server.maps.quests.trail.RadanDungeonQuest;
 import games.stendhal.server.maps.quests.trail.MineTrailQuest;
+import games.stendhal.server.maps.quests.trail.MountainTrailQuest;
 import games.stendhal.server.maps.quests.trail.LetterFromZakopaneQuest;
 import games.stendhal.server.maps.quests.trail.ThreeCirclesQuest;
 import games.stendhal.server.maps.quests.trail.ForgedSealQuest;
@@ -254,6 +255,7 @@ public class StendhalQuestSystem {
         for (TrailQuestLine.Step step : TrailQuestLine.Step.values()) {
             if (step.chapter.equals(TrailQuestLine.DUNGEON_CHAPTER)) loadQuest(new RadanDungeonQuest(step));
             else if (step.chapter.equals(TrailQuestLine.MINE_CHAPTER)) loadQuest(new MineTrailQuest(step));
+            else if (step.chapter.equals(TrailQuestLine.MOUNTAIN_CHAPTER)) loadQuest(new MountainTrailQuest(step));
         }
 		loadQuest(new ZakopaneBank());
 		loadQuest(new ZakopaneClouds());

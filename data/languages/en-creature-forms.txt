@@ -1488,3 +1488,15 @@ krwiożercz szczur=razorrat
 
 1 łącznik duergarów=1 duergar courier
 {number:0} łącznik duergarów={0} duergar couriers
+1 wspólnik Radana=1 Radan's accomplice
+1 wysłannik duergarów=1 duergar emissary
+1 dowódca duergarów=1 duergar commander
+wspólników Radana=Radan's accomplices
+{number:0} wspólników Radana={0} Radan's accomplices
+wspólnik Radana=Radan's accomplice
+wysłanników duergarów=duergar emissaries
+{number:0} wysłanników duergarów={0} duergar emissaries
+wysłannik duergarów=duergar emissary
+dowódców duergarów=duergar commanders
+{number:0} dowódców duergarów={0} duergar commanders
+dowódca duergarów=duergar commander

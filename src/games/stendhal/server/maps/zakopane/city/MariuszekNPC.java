@@ -65,6 +65,11 @@ public class MariuszekNPC implements ZoneConfigurator {
 				return "Drilenuna niepokoi jeszcze dostawa do kopalni Semos. Zajrzyj do niego w ratuszu, ale nie spiesz się z wyprawą pod ziemię. Tam łatwo wpaść w kłopoty.";
 			case MINE_TRACKS: case MINE_VOICES: return "Barbarus z kopalni Semos widział ślady obcych ludzi w tunelach. Lepiej porozmawiać z nim, zanim wejdziesz głębiej.";
 			case MINE_DISPATCH: return "Phalk pilnuje przejścia w kopalni Semos. Jeśli szukasz tych, którzy kręcą się tam po nocy, on powinien wiedzieć najwięcej.";
+			case MOUNTAIN_MINERS: return "Barbarus z kopalni Semos martwi się o dwóch górników. Warto do niego zajrzeć, jeśli masz już za sobą sprawę nocnej zmiany.";
+			case MOUNTAIN_THREATS: return "Wojtek w ratuszu w centrum Zakopanego słyszał o pogróżkach wobec kupców. Porozmawiaj z nim, zanim znowu ruszysz w las.";
+			case MOUNTAIN_MEETING: case MOUNTAIN_BATTLE: return "Brzezdom widział obcych we wschodnim Kościelisku. Zna polanę jak własną kieszeń, powinien wiedzieć, gdzie ich znaleźć.";
+			case MOUNTAIN_CARGO: return "Stasek zna się na broni i kupcach, którzy ją tu wożą. Pokaż mu, co znaleźliście przy woźnicy.";
+			case MOUNTAIN_RETURN: return "Wojtek czeka w ratuszu w centrum Zakopanego na wieści z lasu. Nie zapomnij też o Drilenunie i Barbarusie, martwili się razem z nim.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}
