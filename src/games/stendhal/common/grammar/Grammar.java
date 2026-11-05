@@ -855,6 +855,13 @@ public class Grammar {
 	 */
 	public static String plnoun(final int quantity, final String noun) {
 		final String enoun = fullForm(noun);
+		if ("węgiel".equals(enoun) || "węgiel drzewny".equals(enoun)) {
+			final String material = "węgiel".equals(enoun) ? "węgla" : "węgla drzewnego";
+			if (quantity == 1) return "kawałek " + material;
+			final int lastDigit = quantity % 10, lastTwo = quantity % 100;
+			final boolean few = lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 12 || lastTwo > 14);
+			return (few ? "kawałki " : "kawałków ") + material;
+		}
 
 		if (quantity == 1) {
 			return singular(enoun);

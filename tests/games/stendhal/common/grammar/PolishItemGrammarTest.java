@@ -4,6 +4,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class PolishItemGrammarTest {
+	@Test public void coalRequestsUsePiecesInsteadOfAnInventedPlural() {
+		assertEquals("kawałek węgla", Grammar.quantityplnoun(1, "węgiel"));
+		assertEquals("2 kawałki węgla", Grammar.quantityplnoun(2, "węgiel"));
+		assertEquals("50 kawałków węgla", Grammar.quantityplnoun(50, "węgiel"));
+		assertEquals("12 kawałków węgla drzewnego", Grammar.quantityplnoun(12, "węgiel drzewny"));
+		assertEquals("22 kawałki węgla drzewnego", Grammar.quantityplnoun(22, "węgiel drzewny"));
+	}
 	@Test public void mineralsUsePiecesWithTheGenitiveSingular() {
 		assertEquals("ametyst", Grammar.itemQuantityAccusative(1, "ametyst"));
 		for (int n : new int[] {0, 2, 4, 5, 8, 11, 12, 13, 14, 21, 22, 24, 25, 112, 114, 122}) {

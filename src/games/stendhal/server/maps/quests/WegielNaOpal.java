@@ -125,7 +125,7 @@ public class WegielNaOpal extends AbstractQuest {
 				null,
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT, "Dobrze, poczekam. Pamiętaj tylko, żeby przynieść [the item], zanim przyjdą mrozy."));
+				new SayRequiredItemAction(QUEST_SLOT, "Dobrze, poczekam. Pamiętaj tylko, żeby przynieść [item], zanim przyjdą mrozy."));
 	}
 
 	private void offerSteps() {
