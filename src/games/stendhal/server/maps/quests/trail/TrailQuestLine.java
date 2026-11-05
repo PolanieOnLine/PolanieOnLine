@@ -29,13 +29,13 @@ public final class TrailQuestLine {
                 "Odwiedź Staska w sklepie w Zakopanem C i zapytaj o dostawę.", CHAPTER, 1, Region.ZAKOPANE_CITY),
         GUEST("trail_guest", "Ostatni gość Jagny", "Gościrad", "jagna", 1800, 40,
                 "Zamówienie okazało się fałszywe. Jagna może pamiętać woźnicę, który odebrał zapasy.",
-                "Zapytaj Gościrada w ratuszu Zakopanego S o woźnicę.", CHAPTER, 2, Region.ZAKOPANE_CITY),
+                "Zapytaj Gościrada w ratuszu Zakopanego C o woźnicę.", CHAPTER, 2, Region.ZAKOPANE_CITY),
         SEAL("trail_seal", "Za cudzą pieczęcią", "Brzezdom", "guard", 3000, 60,
                 "Ślady wozu prowadzą do ukrytego składu. Pilnuje go strażnik. Warto sprawdzić leżące tam papiery.",
                 "Odnajdź Brzezdoma na polanie we wschodnim Kościelisku i zapytaj o skład.", CHAPTER, 3, Region.ZAKOPANE_CITY),
         DEBT("trail_debt", "Dług wobec Zakopanego", "Gazda Wojtek", "witnesses;0", 2000, 100,
                 "Wszystko wskazuje na to, że zapasy pochodzą z Zakopanego. Wojtek chce jeszcze usłyszeć, co powiedzą Stasek i Jagna.",
-                "Przedstaw dowody Gazdzie Wojtkowi w ratuszu Zakopanego S. Powiedz: dowody.", CHAPTER, 4, Region.ZAKOPANE_CITY),
+                "Przedstaw dowody Gazdzie Wojtkowi w ratuszu Zakopanego C. Powiedz: dowody.", CHAPTER, 4, Region.ZAKOPANE_CITY),
         SEMOS_LETTER("trail_semos_letter", "List z Zakopanego", "Lieutenant Drilenun", "bank", 1800, 40,
                 "List znaleziony w składzie prowadzi do Semos. Porucznik Drilenun powinien wiedzieć, gdzie szukać odbiorcy.",
                 "Idź do ratusza w Semos i pokaż list porucznikowi Drilenunowi. Powiedz: list.", SEMOS_CHAPTER, 1, Region.SEMOS_CITY),
@@ -113,7 +113,7 @@ public final class TrailQuestLine {
             switch (step) {
             case DELIVERY:
                 if ("inspect".equals(stage)) return "Sprawdź skrzynię z dostawą w sklepie Staska w Zakopanem C.";
-                if ("archive".equals(stage)) return "Przejrzyj rejestr zamówień na stole we wschodniej części sali Gościrada w ratuszu Zakopanego S.";
+                if ("archive".equals(stage)) return "Przejrzyj rejestr zamówień na małym stoliku obok Gościrada w ratuszu w centrum Zakopanego (Zakopane C).";
                 return "Porozmawiaj z Gościradem o zamówieniu. Powiedz: zamówienie.";
             case GUEST:
                 if ("jagna".equals(stage)) return "Zapytaj Jagnę w karczmie w Zakopanem NE o woźnicę.";
@@ -125,7 +125,7 @@ public final class TrailQuestLine {
                 if ("documents".equals(stage)) return "Przeszukaj dokumenty przy workach w ukrytym składzie we wschodnim Kościelisku.";
                 return "Wróć do Brzezdoma z dokumentami ze składu. Powiedz: skład.";
             case DEBT:
-                if ("report".equals(stage)) return "Wróć do Gazdy Wojtka w ratuszu Zakopanego S i przedstaw dowody. Powiedz: dowody.";
+                if ("report".equals(stage)) return "Wróć do Gazdy Wojtka w ratuszu Zakopanego C i przedstaw dowody. Powiedz: dowody.";
                 final int witnesses = witnesses(player);
                 return "Pokaż zapiski "
                         + ((witnesses & 1) == 0 ? "Staskowi w sklepie w Zakopanem C" : "")
@@ -177,7 +177,7 @@ public final class TrailQuestLine {
             entries.add("Brzezdom prosi o sprawdzenie składu. Najpierw trzeba pokonać strażnika. Samych zapasów nie należy zabierać.");
             if (!"guard".equals(stage)) entries.add("Walka ze strażnikiem za mną. Można sprawdzić papiery przy workach.");
             if ("recovered".equals(stage) || done) entries.add("W spisie są węgiel Staska i mąka dla karczmy. Jest też list o następnym transporcie do Semos.");
-            if (done) entries.add("Brzezdom radzi pokazać znalezisko Gazdzie Wojtkowi w ratuszu w Zakopanem S.");
+            if (done) entries.add("Brzezdom radzi pokazać znalezisko Gazdzie Wojtkowi w ratuszu w Zakopanem C.");
             break;
         case DEBT:
             entries.add("Wojtek chce wiedzieć, czy Stasek i Jagna poznają swoje towary. Trzeba pokazać im zapiski.");

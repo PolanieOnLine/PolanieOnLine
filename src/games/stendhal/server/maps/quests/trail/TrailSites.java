@@ -18,7 +18,14 @@ public final class TrailSites implements ZoneConfigurator {
             evidence(zone, TrailEvidence.Kind.SHIPMENT, 7, 10);
             break;
         case "int_zakopane_townhall":
-            evidence(zone, TrailEvidence.Kind.REGISTRY, 25, 34);
+            final AreaEntity table = new AreaEntity(1, 1);
+            table.setRPClass("block"); table.put("type", "block"); table.put("class", "questprop");
+            table.put("name", "stół Gościrada"); table.put("z", 2000);
+            table.put("tileset", "furniture/table/square"); table.put("tile_index", 0); table.put("tileset_columns", 1);
+            table.setDescription("Oto stół Gościrada. Leży na nim rejestr zamówień.");
+            table.setResistance(100);
+            table.setPosition(17, 33); zone.add(table);
+            evidence(zone, TrailEvidence.Kind.REGISTRY, 17, 33);
             break;
         case TrailQuestLine.FOREST:
             evidence(zone, TrailEvidence.Kind.TRACKS, 82, 62);

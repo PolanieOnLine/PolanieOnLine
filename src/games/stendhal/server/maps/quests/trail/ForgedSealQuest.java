@@ -21,7 +21,7 @@ public final class ForgedSealQuest extends TrailQuest {
     }
     @Override protected String completedText() {
         return "A więc to rzeczywiście nasze zapasy. Z tym spisem i listem "
-                + "idź do Gazdy Wojtka, do ratusza na południu Zakopanego. "
+                + "idź do Gazdy Wojtka, do ratusza w centrum Zakopanego. "
                 + "Zanieś mu te #'dowody'. Ja zostanę i popilnuję worków. Dość już nam nakradli.";
     }
 }

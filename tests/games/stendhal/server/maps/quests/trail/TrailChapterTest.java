@@ -15,6 +15,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.common.tiled.LayerDefinition;
+import games.stendhal.server.core.config.zone.TMXLoader;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.creature.Creature;
@@ -187,6 +190,33 @@ public class TrailChapterTest {
         assertTrue(point.getPrototypeCreature().getAIProfiles().containsKey("no_elite"));
         point.onTurnReached(0);
         assertEquals(1, point.size());
+    }
+
+    @Test public void registryIsOnAVisibleTableAndCanBeReadInTheActualHall() throws Exception {
+        new TrailSites().configureZone(townhall, null);
+        TrailEvidence registry = null;
+        Entity table = null;
+        for (Entity entity : townhall.getEntitiesOfClass(Entity.class)) {
+            if ("rejestr zamówień".equals(entity.getName())) registry = (TrailEvidence) entity;
+            if ("stół Gościrada".equals(entity.getName())) table = entity;
+        }
+        assertNotNull("The journal promises a table beside Gościrad", table);
+        assertNotNull(registry);
+        assertEquals(table.getX(), registry.getX());
+        assertEquals(table.getY(), registry.getY());
+        assertTrue(table.getInt("z") < registry.getInt("z"));
+        for (String file : new String[] {"townhall.tmx", "townhall_xmas.tmx"}) {
+            for (String layer : new String[] {"3_roof", "collision"}) {
+                LayerDefinition tiles = TMXLoader.load("data/maps/interiors/zakopane/" + file).getLayer(layer); tiles.build();
+                assertEquals(file + ": registry must not hide beneath scenery", 0, tiles.getTileAt(registry.getX(), registry.getY()));
+                assertEquals(file + ": clear approach", 0, tiles.getTileAt(registry.getX(), registry.getY() + 1));
+            }
+        }
+        player.setQuest("trail_delivery", "archive");
+        shop.remove(player); townhall.add(player);
+        player.setPosition(registry.getX(), registry.getY() + 1);
+        assertTrue(registry.onUsed(player));
+        assertEquals("discrepancy", player.getQuest("trail_delivery"));
     }
 
     @Test public void journalShowsCurrentClueAndRetainsProgressAfterReload() {

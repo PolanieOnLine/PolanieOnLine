@@ -52,7 +52,7 @@ public class MariuszekNPC implements ZoneConfigurator {
 			if (player.isQuestCompleted(step.slot)) continue;
 			switch (step) {
 			case DELIVERY: return "Zajrzyj do Staska. Opał już ma, ale ostatnio zamartwia się jakąś dostawą. Może tobie powie więcej.";
-			case GUEST: return "Gościrad szuka woźnicy od tego fałszywego zamówienia. Znajdziesz go w ratuszu na południu Zakopanego.";
+			case GUEST: return "Gościrad szuka woźnicy od tego fałszywego zamówienia. Znajdziesz go w ratuszu w centrum Zakopanego.";
 			case SEAL: return "Brzezdom wypatrzył skład na polanie we wschodnim Kościelisku. Porozmawiaj z nim, zanim zaczniesz się tam rozglądać.";
 			case DEBT: return "Gazda Wojtek w ratuszu chce ustalić, do kogo należą znalezione zapasy. Zanieś mu wieści od Staska i Jagny.";
 			case SEMOS_LETTER: return "Ten list warto pokazać porucznikowi Drilenunowi w ratuszu Semos. Wojtek nie dopadnie sam ludzi, którzy odbierają tam transporty.";

@@ -10,7 +10,7 @@ import games.stendhal.server.entity.player.Player;
 public final class TrailEvidence extends AreaEntity implements UseListener {
     public enum Kind {
         SHIPMENT("skrzynia z dostawą", "item/pot/crate_small", 1, TrailQuestLine.Step.DELIVERY, "inspect", "archive",
-                "Pod wiekiem skrzyni leży zamówienie z pieczęcią Zakopanego. W miejscu podpisu są trzy małe kółka. Sprawdź rejestr zamówień w ratuszu w Zakopanem S. Księga leży na stole po wschodniej stronie sali Gościrada."),
+                "Pod wiekiem skrzyni leży zamówienie z pieczęcią Zakopanego. W miejscu podpisu są trzy małe kółka. Sprawdź rejestr zamówień w ratuszu w Zakopanem C. Księga leży na małym stoliku obok Gościrada."),
         REGISTRY("rejestr zamówień", "item/documents/book", 3, TrailQuestLine.Step.DELIVERY, "archive", "discrepancy",
                 "Przeglądasz wpisy, ale takiego zamówienia tu nie ma. Strony są całe, a numery idą po kolei. Pod innymi zamówieniami podpisuje się Gościrad. Odcisk pieczęci też wygląda inaczej. Porozmawiaj z nim o zamówieniu."),
         TRACKS("rozbita skrzynka", "item/pot/crate_small", 0, TrailQuestLine.Step.GUEST, "tracks", "found",

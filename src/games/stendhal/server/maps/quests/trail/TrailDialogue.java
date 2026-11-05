@@ -28,8 +28,8 @@ final class TrailDialogue {
             if ("inspect".equals(stage)) return "Stasek".equals(npc)
                     ? "Kwit został w skrzyni u mnie w sklepie. Obejrzyj go, może zauważysz coś, co mi umknęło."
                     : "Stasek zostawił kwit w skrzyni w swoim sklepie. Przynieś go, muszę obejrzeć pieczęć.";
-            if ("Gościrad".equals(npc)) return "Moja księga leży na stole po wschodniej stronie sali. Jeśli to nasze zamówienie, musi być tam zapisane.";
-            return "Gościrad powinien poznać własną pieczęć. Znajdziesz go w ratuszu na południu Zakopanego.";
+            if ("Gościrad".equals(npc)) return "Moja księga leży na małym stoliku obok mnie. Jeśli to nasze zamówienie, musi być tam zapisane.";
+            return "Gościrad powinien poznać własną pieczęć. Znajdziesz go w ratuszu w centrum Zakopanego.";
         case GUEST:
             if ("jagna".equals(stage)) return "Jagna przyjmuje podróżnych w karczmie na północnym wschodzie Zakopanego. Może pamięta tego woźnicę.";
             if ("brzezdom".equals(stage)) return "Brzezdom chodzi po polanie we wschodnim Kościelisku. Jeśli wóz tamtędy przejeżdżał, pewnie go widział.";

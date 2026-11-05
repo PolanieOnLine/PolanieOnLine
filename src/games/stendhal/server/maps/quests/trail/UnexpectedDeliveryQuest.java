@@ -14,7 +14,7 @@ public final class UnexpectedDeliveryQuest extends TrailQuest {
     public UnexpectedDeliveryQuest() { super(TrailQuestLine.Step.DELIVERY); }
     @Override protected void addDialogs() {
         offer("Zajrzyj do skrzyni w moim sklepie. Potem idź z tym do Gościrada, "
-                + "do ratusza na południu Zakopanego. On zapisuje wszystkie zamówienia w księdze. "
+                + "do ratusza w centrum Zakopanego. On zapisuje wszystkie zamówienia w księdze. "
                 + "Powinien wiedzieć, skąd wzięła się ta kartka.");
         final ChatAction requestDelivery = (player, sentence, speaker) -> request(player, speaker, OFFER);
         reply("Stasek", requestDelivery, "dostawa", "podejrzana dostawa");
@@ -27,7 +27,7 @@ public final class UnexpectedDeliveryQuest extends TrailQuest {
                 complete(player, speaker, "discrepancy");
             } else if (player.isQuestInState(step.slot, "archive")) {
                 speaker.say("Porównaj ten dokument z wpisami w mojej księdze. "
-                        + "Leży na stole po wschodniej stronie sali. Sprawdź numer zamówienia i podpis. "
+                        + "Leży na małym stoliku obok mnie. Sprawdź numer zamówienia i podpis. "
                         + "Pieczęć można podrobić, ale zamówienie powinno być zapisane w księdze.");
             } else {
                 remind(player, speaker);
