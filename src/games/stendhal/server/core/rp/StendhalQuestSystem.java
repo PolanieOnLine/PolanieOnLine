@@ -42,6 +42,7 @@ import games.stendhal.server.maps.quests.trail.AdosKeepQuest;
 import games.stendhal.server.maps.quests.trail.OathTrailQuest;
 import games.stendhal.server.maps.quests.trail.WarsawFortressQuest;
 import games.stendhal.server.maps.quests.trail.CoastTrailQuest;
+import games.stendhal.server.maps.quests.trail.SaltMineQuest;
 import games.stendhal.server.maps.quests.trail.LetterFromZakopaneQuest;
 import games.stendhal.server.maps.quests.trail.ThreeCirclesQuest;
 import games.stendhal.server.maps.quests.trail.ForgedSealQuest;
@@ -264,6 +265,7 @@ public class StendhalQuestSystem {
             else if (TrailQuestLine.OATH_CHAPTER.equals(step.chapter)) loadQuest(new OathTrailQuest(step));
             else if (TrailQuestLine.WARSAW_CHAPTER.equals(step.chapter)) loadQuest(new WarsawFortressQuest(step));
             else if (TrailQuestLine.COAST_CHAPTER.equals(step.chapter)) loadQuest(new CoastTrailQuest(step));
+            else if (TrailQuestLine.SALT_CHAPTER.equals(step.chapter)) loadQuest(new SaltMineQuest(step));
         }
 		loadQuest(new ZakopaneBank());
 		loadQuest(new ZakopaneClouds());

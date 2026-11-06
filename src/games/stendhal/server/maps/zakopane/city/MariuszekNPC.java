@@ -88,6 +88,12 @@ public class MariuszekNPC implements ZoneConfigurator {
 				return "Rozbitek Lubor odpoczywa na plaży na wschód od przystani promu w Gdańsku. Zna ten brzeg i może wyjaśnić, dlaczego statki trafiają na mieliznę.";
 			case COAST_CARGO: case COAST_WRECKERS:
 				return "Malteis pilnuje Gdańska. Znajdziesz go w siedzibie rycerzy, w północno-wschodniej części miasta. Zanieś mu wieści o rabusiach wybrzeża.";
+			case SALT_SHIFT:
+				return "Zbigniew w ratuszu Wieliczki szuka pomocy dla górników. Po wstrząsie dwaj nie wrócili ze zmiany. Zajrzyj do niego, jeśli masz już za sobą sprawę gdańskiego wybrzeża.";
+			case SALT_RESCUE: case SALT_SAMPLE: case SALT_CREATURE: case SALT_RETURN:
+				return "Radost pilnuje szybu w centralnej części kopalni Wieliczki. Czeka na wieści o górnikach i wodzie, która zalewa chodniki.";
+			case SALT_SOURCE:
+				return "Agrypin w swoim domu w Wieliczce bada próbkę wody z kopalni. Może już wie, co otworzył pod ziemią ostatni wstrząs.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

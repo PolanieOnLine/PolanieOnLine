@@ -21,6 +21,7 @@ public final class TrailQuestLine {
     public static final String OATH_CHAPTER = "Dług wobec zmarłych";
     public static final String WARSAW_CHAPTER = "Pod murami Warszawy";
     public static final String COAST_CHAPTER = "Światła na mieliźnie";
+    public static final String SALT_CHAPTER = "Zalane chodniki";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -160,7 +161,25 @@ public final class TrailQuestLine {
                 "Pokaż Luborowi plan rabusiów. Zapytaj o bezpieczny brzeg.", COAST_CHAPTER, 5, Region.GDANSK_CITY, 200),
         COAST_RETURN("trail_coast_return", "Jaskółka wraca do portu", "Staszek", "fight", 55000, 2500,
                 "Lampy są gotowe, lecz ostatni z rabusiów chce zniszczyć sygnał. Jaskółka nie może podzielić losu Mewy.",
-                "Zawiadom Staszka o przygotowanych lampach. Powiedz: ratunek dla Jaskółki.", COAST_CHAPTER, 6, Region.GDANSK_CITY, 200);
+                "Zawiadom Staszka o przygotowanych lampach. Powiedz: ratunek dla Jaskółki.", COAST_CHAPTER, 6, Region.GDANSK_CITY, 200),
+        SALT_SHIFT("trail_salt_shift", "Zmiana, która nie wróciła", "Zbigniew", "foreman", 45000, 800,
+                "Po wstrząsie z kopalni nie wrócili dwaj górnicy. Zbigniew chce poznać ich los, zanim zamknie wejście.",
+                "Porozmawiaj ze Zbigniewem w ratuszu Wieliczki o zaginionej zmianie.", SALT_CHAPTER, 1, Region.WIELICZKA, 250),
+        SALT_RESCUE("trail_salt_rescue", "Po drugiej stronie zawału", "Radost", "brace", 70000, 1200,
+                "Radost odnalazł ślady zaginionych. Najpierw trzeba podeprzeć naruszony strop i usunąć stworzenie z drogi do górników.",
+                "Zapytaj sztygara Radosta przy wejściu do kopalni o odciętych górników.", SALT_CHAPTER, 2, Region.WIELICZKA, 250),
+        SALT_SAMPLE("trail_salt_sample", "Woda spod soli", "Radost", "sample", 55000, 1000,
+                "Górnicy są bezpieczni, ale pod stropem nadal zbiera się solanka. Agrypin może rozpoznać to, co przyniosła ze sobą.",
+                "Porozmawiaj z Radostem o próbce solanki.", SALT_CHAPTER, 3, Region.WIELICZKA, 250),
+        SALT_SOURCE("trail_salt_source", "Dokąd płynie solanka", "Agrypin", "channels;0", 65000, 1500,
+                "W próbce coś się porusza. Agrypin podejrzewa naruszenie starego zbiornika. Trzeba ustalić, którędy wypływa z niego woda.",
+                "Zapytaj Agrypina w jego domu w Wieliczce o stary zbiornik.", SALT_CHAPTER, 4, Region.WIELICZKA, 250),
+        SALT_CREATURE("trail_salt_creature", "To, co wyszło ze zbiornika", "Radost", "fight", 145000, 2500,
+                "Wypływu pilnuje żywiołak solanki. Dopóki pozostaje przy szczelinie, nie da się zamknąć dopływu do chodników.",
+                "Opowiedz Radostowi o źródle wypływu. Powiedz: żywiołak solanki.", SALT_CHAPTER, 5, Region.WIELICZKA, 250),
+        SALT_RETURN("trail_salt_return", "Droga na powierzchnię", "Radost", "drain", 70000, 3000,
+                "Źródło wypływu zostało zamknięte. Pozostało odprowadzić nagromadzoną wodę i sprawdzić drogę do szybu.",
+                "Zapytaj Radosta o bezpieczny szyb.", SALT_CHAPTER, 6, Region.WIELICZKA, 250);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -251,6 +270,8 @@ public final class TrailQuestLine {
                 return WarsawFortressProgress.objective(player, step);
             case COAST_WRECK: case COAST_LIGHTS: case COAST_CARGO: case COAST_WRECKERS: case COAST_LAMPS: case COAST_RETURN:
                 return CoastTrailProgress.objective(player, step);
+            case SALT_SHIFT: case SALT_RESCUE: case SALT_SAMPLE: case SALT_SOURCE: case SALT_CREATURE: case SALT_RETURN:
+                return SaltMineProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -323,6 +344,8 @@ public final class TrailQuestLine {
             return WarsawFortressProgress.history(player, step);
         case COAST_WRECK: case COAST_LIGHTS: case COAST_CARGO: case COAST_WRECKERS: case COAST_LAMPS: case COAST_RETURN:
             return CoastTrailProgress.history(player, step);
+        case SALT_SHIFT: case SALT_RESCUE: case SALT_SAMPLE: case SALT_SOURCE: case SALT_CREATURE: case SALT_RETURN:
+            return SaltMineProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -343,6 +366,7 @@ public final class TrailQuestLine {
         OathTrailProgress.recordKill(player, victim);
         WarsawFortressProgress.recordKill(player, victim);
         CoastTrailProgress.recordKill(player, victim);
+        SaltMineProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

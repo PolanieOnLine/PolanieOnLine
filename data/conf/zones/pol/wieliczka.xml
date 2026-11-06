@@ -391,6 +391,7 @@ Aktualne ceny u Zbigniewa:
 	</zone>
 
 	<zone name="-1_wieliczka_salt_mines_c" level="-1" x="514080" y="18560" file="Level -1/wieliczka/salt_mines_c.tmx">
+		<configurator class-name="games.stendhal.server.maps.quests.trail.SaltMineSites"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 			<parameter name="music">pol-dj_zai-darkbells</parameter>

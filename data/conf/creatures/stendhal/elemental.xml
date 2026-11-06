@@ -477,4 +477,30 @@
 
 	<!-- END: wood -->
 
+	<!-- Appears only at the breached reservoir during the main story. -->
+	<creature name="żywiołak solanki">
+		<type class="elemental" subclass="water_elemental" tileid="-1"/>
+		<description>Oto żywiołak solanki. Z dna starego zbiornika podnosi się postać z gęstej, słonej wody.</description>
+		<attributes>
+			<atk value="1450"/>
+			<def value="170"/>
+			<armor_type value="none"/>
+			<hp value="7800"/>
+			<speed value="0.45"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="260"/>
+		<experience value="0"/>
+		<respawn value="180"/>
+		<corpse name="humanoid"/>
+		<drops/>
+		<equips/>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="no_elite"/>
+			<profile name="abnormal"/>
+		</ai>
+	</creature>
 </creatures>
