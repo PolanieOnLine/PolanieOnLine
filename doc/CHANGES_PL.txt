@@ -1,5 +1,34 @@
 ## Changelog
 ---------
+1.44
+*rozwój glifów*
+---
+* Wprowadzono trzy poziomy rozwoju 21 glifów: I, II i III. Dotychczasowe glify bez zapisanego poziomu zaczynają od poziomu I i można je dalej ulepszać
+* Dodano glify świętego dębu, żywej wody, Rodzanic, wichru, wytrwałości, ogniska, korzeni, zmory, Świętowita i przodków
+* Nowe moce obejmują ochronę przed dodatkowymi obrażeniami krytycznymi, regenerację poza walką, mocniejsze leczenie z jedzenia i mikstur, uniki, odporności na żywioły oraz osłabienie ataku przeciwnika
+* Dopasowano moc glifów do kolejnych poziomów. Glif daru Mokoszy daje odpowiednio 100, 250 i 500 PZ, glif siły 2, 3 i 5 ATK, a glif tarczy 8, 14 i 20 DEF
+* Ulepszenie z I na II poziom wymaga 24 fragmentów glifu i 200 000 monet, a z II na III poziom 60 fragmentów i 500 000 monet
+* Każdy glif ma własny zestaw dodatkowych składników zależny od jego mocy, m.in. polana, sztabki, magię, kamienie i inne surowce. Na III poziomie potrzeba trzykrotnie więcej tych składników niż na II
+* Ulepszanie jest gwarantowane. Można rozwijać również założone glify, zachowując przedmiot i jego przypisanie do właściciela
+* Ikony glifów różnią się nasyceniem kolorów zależnie od poziomu, zachowując swoje animacje
+* Poprawiono naliczanie bonusów do ataku i obrony, ułamkowe przyspieszenie ataku oraz aktualizację zdrowia przy zmianie mocy założonego glifu
+
+*stół runiczny u Zoryka*
+---
+* Obok Zoryka Runicznego w Tarnowie dodano stół runiczny z własną grafiką o szerokości dwóch kratek. Kliknięcie stołu z sąsiedniego pola otwiera okno pracy z glifami
+* W klientach Java i WWW można wybierać receptury z rozwijanych kategorii Tworzenie glifów oraz Ulepszanie
+* Okno pokazuje właściwości wybranego glifu, porównanie mocy przed ulepszeniem i po nim, koszt oraz składniki z liczbą posiadanych i potrzebnych przedmiotów
+* Receptury bez wymaganych składników są przygaszone, a aktualnie wybrany glif pozostaje czytelny. Przy składnikach widać brakującą ilość
+* Uporządkowano układ okna, animowane podglądy przedmiotów i prezentację składników. Wysokość okna pozostaje stała także dla dłuższych receptur
+* Poprawiono wybieranie glifów z listy oraz obsługę odpowiedzi serwera, aby zaznaczenie nie przeskakiwało i zamknięte okno nie otwierało się ponownie
+
+*glif wiedzy i Pamięć kamienia*
+---
+* Dodano zadanie Pamięć kamienia, dostępne od 20 poziomu u Starkada. Opowieść o zatartym glifie prowadzi przez bibliotekę Ceryla i świątynię Ilisy w Semos
+* Zadanie łączy odczytanie zagadki, przygotowanie naparu z trzech arandul i poznanie symboli goblina, wilka oraz dzika podczas walk poza arenami. Spotkania mogą być zaliczane także podczas wspólnej walki
+* Nagrodą jest przypisany do właściciela glif wiedzy, który daje o 10% więcej doświadczenia z potworów po założeniu w miejscu użytkowym
+* Glif wiedzy działa na stałe, pozostaje z graczem po śmierci i nie wymaga ulepszania. Doświadczenie z zadań oraz trening umiejętności zachowują dotychczasowe zasady
+
 1.43.4
 *halloween i duszek*
 ---
