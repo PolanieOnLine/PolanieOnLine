@@ -1093,7 +1093,7 @@ div.logresponse { color: rgb(128, 255, 128) }
 div.logscene_setting { color: rgb(128, 128, 128) }
 div.logserver { color: rgb(210, 170, 120) }
 div.logsignificant_negative { color: rgb(255, 175, 175) }
-div.logsignificant_positive { color: rgb(65, 105, 225) }
+div.logsignificant_positive, div.logquest_invitation { color: rgb(65, 105, 225) }
 div.logtutorial { color: rgb(255, 220, 255) }
 div.logsupport { color: rgb(255, 220, 200) }
 div.logtellall { color: rgb(255, 255, 180) }
@@ -1106,7 +1106,7 @@ span.logtimestamp {
 	margin-right: 3px;
 }
 
-span.logh { color: rgb(65, 105, 225) }
+span.logh { color: rgb(90, 170, 255) }
 span.logi { text-decoration: underline }
 span.logu {
 	text-decoration: underline;

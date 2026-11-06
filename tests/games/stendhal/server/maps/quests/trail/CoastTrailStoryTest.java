@@ -10,6 +10,8 @@ import org.junit.After;
 import org.junit.Test;
 import games.stendhal.common.Level;
 import games.stendhal.common.QuestRewardPreview;
+import games.stendhal.common.NotificationType;
+import games.stendhal.common.constants.Events;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.server.core.config.zone.TMXLoader;
@@ -23,6 +25,7 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.*;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.MainQuestInvitationService;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
@@ -37,6 +40,7 @@ import games.stendhal.server.maps.quests.trail.CoastTrailSites.Kind;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.RPEvent;
 
 public class CoastTrailStoryTest {
 	private static final String[] NAMES = { "Staszek", "Lubor", "Malteis",
@@ -392,6 +396,106 @@ public class CoastTrailStoryTest {
 		assertEquals(1, player.getTotalNumberOf("płaszcz chaosu"));
 		for (Object e : player.getZone().getEntitiesOfClass(Item.class))
 			assertNotEquals("money", ((Item) e).getName());
+	}
+
+	@Test
+	public void invitationWaitsForTheLevelAndSurvivesCharacterReload() {
+		player.clearEvents();
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		ready(199);
+		player.setLastPrivateChatter("Mroczny");
+		player.clearEvents();
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		player.setLevel(200);
+		MainQuestInvitationService.update(player);
+		assertEquals(1, invitations(player).size());
+		RPEvent invitation = invitations(player).get(0);
+		assertTrue(invitation.get("text").startsWith("Wieści od Staszka:"));
+		assertFalse(player.hasQuest(Step.COAST_WRECK.slot));
+		assertEquals("Mroczny", player.getLastPrivateChatter());
+		player.clearEvents();
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		StendhalRPZone zone = player.getZone();
+		Player restored = new Player((RPObject) player.clone());
+		zone.remove(player);
+		zone.add(restored);
+		restored.clearEvents();
+		MainQuestInvitationService.update(restored);
+		assertTrue(invitations(restored).isEmpty());
+	}
+
+	@Test
+	public void invitationsSkipActiveQuestsAndTheNpcsCurrentConversation() {
+		ready(200);
+		SpeakerNPC npc = NPCList.get().get("Staszek");
+		npc.setAttending(player);
+		npc.getEngine().setCurrentState(ConversationStates.ATTENDING);
+		player.clearEvents();
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		npc.setAttending(null);
+		npc.getEngine().setCurrentState(ConversationStates.IDLE);
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		player.setQuest(Step.COAST_WRECK.slot, Step.COAST_WRECK.initial);
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		player.setQuest(Step.COAST_WRECK.slot, "done");
+		MainQuestInvitationService.update(player);
+		assertEquals(1, invitations(player).size());
+		assertTrue(invitations(player).get(0).get("text").startsWith(
+				"Wieści od Lubora:"));
+		assertFalse(player.hasQuest(Step.COAST_LIGHTS.slot));
+	}
+
+	@Test
+	public void anAlreadyAcceptedQuestDoesNotTriggerAnInvitation() {
+		ready(200);
+		player.setQuest(Step.COAST_WRECK.slot, Step.COAST_WRECK.initial);
+		player.clearEvents();
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		player.setQuest(Step.COAST_WRECK.slot, "rejected");
+		MainQuestInvitationService.update(player);
+		assertTrue(invitations(player).isEmpty());
+		player.setQuest(Step.COAST_WRECK.slot, "done");
+		MainQuestInvitationService.update(player);
+		assertEquals(1, invitations(player).size());
+		assertTrue(invitations(player).get(0).get("text").startsWith(
+				"Wieści od Lubora:"));
+	}
+
+	@Test
+	public void invitationTextsAreBriefAndTheirTypeUsesTheExperienceColour() {
+		for (Step step : Step.values()) {
+			String text = TrailQuestInvitations.forStep(step);
+			if (step == Step.RADAN_RESCUE || step == Step.RADAN_TRANSPORT
+					|| step == Step.RADAN_FINALE) {
+				assertNull(text);
+			} else {
+				assertTrue(step.name(), text.startsWith("Wieści od "));
+				assertTrue(step.name(), text.length() < 260);
+				assertFalse(text.contains("#"));
+			}
+		}
+		assertEquals(NotificationType.SIGNIFICANT_POSITIVE.getColor(),
+				NotificationType.QUEST_INVITATION.getColor());
+		assertNotEquals(NotificationType.PRIVMSG.getColor(),
+				NotificationType.QUEST_INVITATION.getColor());
+	}
+
+	private List<RPEvent> invitations(Player target) {
+		List<RPEvent> result = new ArrayList<>();
+		for (RPEvent event : target.events()) {
+			if (Events.PRIVATE_TEXT.equals(event.getName())
+					&& "QUEST_INVITATION".equals(event.get("texttype"))) {
+				result.add(event);
+			}
+		}
+		return result;
 	}
 
 	@Test

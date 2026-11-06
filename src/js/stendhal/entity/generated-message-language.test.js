@@ -35,6 +35,29 @@ test("experience and level notices translate without changing names, amounts or 
  entity.onLevelChanged("level",9,10);
  assert.equal(logs.at(-1).text,"Zamknij dropped to level 9");
 });
+
+test("NPC invitations keep a separate message type and share the experience colour",async()=>{
+ const {deps,logs,stendhal,marauroa}=await harness();
+ stendhal.config={get:()=>false};
+ marauroa.clientFramework.lastPrivateChatter="Mroczny";
+ const chat=deps["../util/Chat"];
+ deps["util/Chat"]=chat;
+ const PrivateTextEvent=load("../event/PrivateTextEvent.ts",deps).PrivateTextEvent;
+ const event=new PrivateTextEvent();
+ event.texttype="QUEST_INVITATION";
+ event.text="Wieści od Drilenuna: Zajrzyj do ratusza w Semos.";
+ event.execute();
+ assert.equal(logs.at(-1).type,"quest_invitation");
+ assert.equal(logs.at(-1).text,event.text);
+ assert.equal(marauroa.clientFramework.lastPrivateChatter,"Mroczny");
+ const {Color}=load("../data/color/Color.ts");
+ const {NotificationType}=load("../util/NotificationType.ts",{"../data/color/Color":{Color}});
+ assert.equal(NotificationType.quest_invitation,NotificationType.significant_positive);
+ assert.notEqual(NotificationType.quest_invitation,NotificationType.privmsg);
+ const css=readFileSync(path.join(root,"src/js/css/main.css"),"utf8");
+ assert.match(css,/div\.logsignificant_positive,\s*div\.logquest_invitation\s*\{[^}]*color:\s*rgb\(65,\s*105,\s*225\)/);
+ assert.match(css,/span\.logh\s*\{[^}]*color:\s*rgb\(90,\s*170,\s*255\)/);
+});
 test("death translates its wrapper but never the attacker names or their internal conjunctions",async()=>{
  const {entity,logs}=await harness();
  entity.attackers.set("1",{getTitle:()=>"Witaj."});entity.attackers.set("2",{getTitle:()=>"Zamknij i Plecak"});

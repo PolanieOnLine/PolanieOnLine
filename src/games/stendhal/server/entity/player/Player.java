@@ -1114,7 +1114,8 @@ public class Player extends DressedEntity implements UseListener {
 		boolean system = type == NotificationType.SERVER || type == NotificationType.ERROR
 				|| type == NotificationType.INFORMATION || type == NotificationType.DETAILED
 				|| type == NotificationType.POSITIVE || type == NotificationType.NEGATIVE
-				|| type == NotificationType.TUTORIAL || type == NotificationType.SCENE_SETTING;
+				|| type == NotificationType.TUTORIAL || type == NotificationType.SCENE_SETTING
+				|| type == NotificationType.QUEST_INVITATION;
 		RPEvent event = new PrivateTextEvent(type, system
 				? Translation.getText(getLanguage(), text) : text);
 		this.addEvent(event);
@@ -2267,6 +2268,7 @@ public class Player extends DressedEntity implements UseListener {
 		final String currentZone = getZone() == null ? null : getZone().getID().getID();
 		if (turn >= nextQuestMarkerTurn || !Objects.equals(questMarkerZone, currentZone)) {
 			QuestMarkerService.update(this);
+			MainQuestInvitationService.update(this);
 			nextQuestMarkerTurn = turn + 4;
 			questMarkerZone = currentZone;
 		}

@@ -28,6 +28,7 @@ export const NotificationType = {
 	"poison": Color.CHAT_POISON,
 	"positive": Color.CHAT_POSITIVE,
 	"privmsg": Color.CHAT_PRIVATE,
+	"quest_invitation": Color.CHAT_SIG_POSITIVE,
 	"response": Color.CHAT_RESPONSE,
 	"scene_setting": Color.CHAT_SCENE,
 	"server": Color.CHAT_SERVER,

@@ -102,8 +102,6 @@ class KTextEdit extends JComponent {
 	private static final Color TIMESTP_COLOR = new Color(220, 220, 220);
 	// kolor nicku
 	private static final Color HEAD_COLOR = new Color(255, 255, 220);
-	// kolor kursywy
-	private static final Color ITALIC_COLOR = new Color(65, 105, 225);
 	// kolor podkreslenia na &
 	private static final Color UNDERLINE_COLOR = new Color(254, 76, 76);
 	// kolor tekstu admina przy ¡
@@ -298,7 +296,7 @@ class KTextEdit extends JComponent {
 
 		StyleSet attributes = defaultAttributes.copy();
 		attributes.setAttribute(StyleConstants.Italic, Boolean.TRUE);
-		attributes.setAttribute(StyleConstants.Foreground, ITALIC_COLOR);
+		attributes.setAttribute(StyleConstants.Foreground, BOLD_COLOR);
 		attributes.setAttribute("linkact", new LinkListener());
 		formatter.addStyle('#', attributes);
 

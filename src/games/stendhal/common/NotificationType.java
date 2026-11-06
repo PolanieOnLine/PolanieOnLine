@@ -186,6 +186,16 @@ public enum NotificationType {
 		@Override
 		public String getStyleDescription() { return REGULAR; }
 	},
+	QUEST_INVITATION("quest_invitation") {
+		@Override
+		public Color getColor() {
+			return COLOR_SIGNIFICANT_POSITIVE;
+		}
+		@Override
+		public String getStyleDescription() {
+			return REGULAR;
+		}
+	},
 	EMOJI("emoji") {
 		@Override
 		public String getStyleDescription() {
