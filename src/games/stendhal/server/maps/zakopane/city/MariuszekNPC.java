@@ -94,6 +94,12 @@ public class MariuszekNPC implements ZoneConfigurator {
 				return "Radost pilnuje szybu w centralnej części kopalni Wieliczki. Czeka na wieści o górnikach i wodzie, która zalewa chodniki.";
 			case SALT_SOURCE:
 				return "Agrypin w swoim domu w Wieliczce bada próbkę wody z kopalni. Może już wie, co otworzył pod ziemią ostatni wstrząs.";
+			case EMBER_CAMP: case EMBER_TRANSPORT: case EMBER_GUIDE:
+				return "Racirad przy południowym wejściu na Smocze Ziemie szuka przyczyny ataku na obóz. Zanieś mu wieści, zanim jego ludzie ruszą z pochodniami na gniazda.";
+			case EMBER_SCENT:
+				return "Wizariusz mieszka na szczycie wieży w północno-zachodniej części Smoczych Ziem. Pokaż mu płótno z porzuconego transportu.";
+			case EMBER_EGGS: case EMBER_RETURN:
+				return "Ostrobor czeka przy obozowisku handlarzy w północno-wschodniej części Smoczych Ziem N. Zna drogę do skradzionych jaj.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

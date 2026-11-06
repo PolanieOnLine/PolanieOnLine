@@ -327,4 +327,27 @@
 		</ai>
 	</creature>
 	<!-- END: wizard -->
+	<!-- Main-story encounters only; no ordinary map marker or daily hunt target. -->
+	<creature name="strażnik łowców jaj">
+		<type class="human" subclass="bandit" tileid="-1"/>
+		<description>Oto strażnik łowców jaj. Pilnuje przewodnika, który odmówił dalszej pomocy jego bandzie.</description>
+		<attributes>
+			<atk value="2000"/><def value="180"/><armor_type value="light"/>
+			<hp value="6500"/><armor_hp value="1625"/><speed value="0.45"/><size value="1,1"/>
+		</attributes>
+		<level value="400"/><experience value="0"/><respawn value="180"/>
+		<corpse name="human"/><drops/><equips/>
+		<ai><profile name="brave"/><profile name="offensive"/><profile name="human"/><profile name="no_elite"/><profile name="abnormal"/></ai>
+	</creature>
+	<creature name="herszt łowców jaj">
+		<type class="human" subclass="barbarian_leader" tileid="-1"/>
+		<description>Oto herszt łowców jaj. Podrzuca lęg przy ludzkich osadach, by odciągać smoki od następnych gniazd.</description>
+		<attributes>
+			<atk value="2600"/><def value="205"/><armor_type value="medium"/>
+			<hp value="12000"/><armor_hp value="3000"/><speed value="0.45"/><size value="1,1"/>
+		</attributes>
+		<level value="410"/><experience value="0"/><respawn value="180"/>
+		<corpse name="human"/><drops/><equips/>
+		<ai><profile name="brave"/><profile name="offensive"/><profile name="human"/><profile name="no_elite"/><profile name="abnormal"/></ai>
+	</creature>
 </creatures>

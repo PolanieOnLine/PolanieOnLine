@@ -22,6 +22,7 @@ public final class TrailQuestLine {
     public static final String WARSAW_CHAPTER = "Pod murami Warszawy";
     public static final String COAST_CHAPTER = "Światła na mieliźnie";
     public static final String SALT_CHAPTER = "Zalane chodniki";
+    public static final String DRAGON_CHAPTER = "Popiół pod łuskami";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -179,7 +180,25 @@ public final class TrailQuestLine {
                 "Opowiedz Radostowi o źródle wypływu. Powiedz: żywiołak solanki.", SALT_CHAPTER, 5, Region.WIELICZKA, 250),
         SALT_RETURN("trail_salt_return", "Droga na powierzchnię", "Radost", "drain", 70000, 3000,
                 "Źródło wypływu zostało zamknięte. Pozostało odprowadzić nagromadzoną wodę i sprawdzić drogę do szybu.",
-                "Zapytaj Radosta o bezpieczny szyb.", SALT_CHAPTER, 6, Region.WIELICZKA, 250);
+                "Zapytaj Radosta o bezpieczny szyb.", SALT_CHAPTER, 6, Region.WIELICZKA, 250),
+        EMBER_CAMP("trail_ember_camp", "Obóz w popiele", "Racirad", "traces;0", 140000, 2500,
+                "Smoki zaatakowały obóz przy wejściu na Smocze Ziemie. Racirad zbiera ludzi do odwetu, lecz nie wszystko pasuje do zwykłego napadu.",
+                "Zapytaj Racirada przy południowym wejściu na Smocze Ziemie o spalony obóz.", DRAGON_CHAPTER, 1, Region.DRAGON_LANDS, 400),
+        EMBER_TRANSPORT("trail_ember_transport", "Ładunek pod płótnem", "Racirad", "cargo", 160000, 3000,
+                "W obozie znaleziono fragment smoczej skorupy. Racirad chce ustalić, kto przywiózł jaja między ludzi.",
+                "Porozmawiaj z Raciradem o porzuconym transporcie.", DRAGON_CHAPTER, 2, Region.DRAGON_LANDS, 400),
+        EMBER_SCENT("trail_ember_scent", "Trop, którego nie widać", "Wizariusz", "mixture", 170000, 3500,
+                "Robercik widział, jak woźnica smarował płótno ciemną mazią. Wizariusz może rozpoznać substancję, która zwabia smoki.",
+                "Odwiedź Wizariusza na szczycie wieży w północno-zachodniej części Smoczych Ziem. Zapytaj o zapach jaj.", DRAGON_CHAPTER, 3, Region.DRAGON_LANDS, 400),
+        EMBER_GUIDE("trail_ember_guide", "Człowiek, który znał drogę", "Racirad", "fight", 210000, 4000,
+                "Ślady prowadzą do obozowiska handlarzy. Więziony przewodnik może wiedzieć, skąd zabrano jaja.",
+                "Pokaż Raciradowi ustalenia Wizariusza. Powiedz: pojmany przewodnik.", DRAGON_CHAPTER, 4, Region.DRAGON_LANDS, 400),
+        EMBER_EGGS("trail_ember_eggs", "Cena cudzego lęgu", "Ostrobor", "fight", 340000, 5000,
+                "Ostrobor wskazał kryjówkę herszta. Pozostałe jaja wciąż tam są, gotowe do następnej prowokacji.",
+                "Zapytaj Ostrobora w obozowisku handlarzy o skradziony lęg.", DRAGON_CHAPTER, 5, Region.DRAGON_LANDS, 400),
+        EMBER_RETURN("trail_ember_return", "Zanim zapłoną gniazda", "Ostrobor", "wash", 180000, 7000,
+                "Jaja są odzyskane. Trzeba usunąć z nich przynętę, rozbroić pułapki i oddać lęg, zanim ludzie Racirada ruszą z pochodniami.",
+                "Porozmawiaj z Ostroborem o powrocie do gniazda.", DRAGON_CHAPTER, 6, Region.DRAGON_LANDS, 400);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -201,6 +220,12 @@ public final class TrailQuestLine {
     }
 
     private TrailQuestLine() { }
+
+    /** The old magic-bag greeting must not close a conversation needed by the main story. */
+    public static boolean dragonScholarNeeded(Player player) {
+        return player.isQuestCompleted(Step.EMBER_TRANSPORT.slot) && !player.isQuestCompleted(Step.EMBER_SCENT.slot)
+                && (player.getLevel() >= 400 || player.hasQuest(Step.EMBER_SCENT.slot));
+    }
 
     public static String nextObjective(final Player player) {
         for (final Step step : Step.values()) {
@@ -272,6 +297,8 @@ public final class TrailQuestLine {
                 return CoastTrailProgress.objective(player, step);
             case SALT_SHIFT: case SALT_RESCUE: case SALT_SAMPLE: case SALT_SOURCE: case SALT_CREATURE: case SALT_RETURN:
                 return SaltMineProgress.objective(player, step);
+            case EMBER_CAMP: case EMBER_TRANSPORT: case EMBER_SCENT: case EMBER_GUIDE: case EMBER_EGGS: case EMBER_RETURN:
+                return DragonTrailProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -346,6 +373,8 @@ public final class TrailQuestLine {
             return CoastTrailProgress.history(player, step);
         case SALT_SHIFT: case SALT_RESCUE: case SALT_SAMPLE: case SALT_SOURCE: case SALT_CREATURE: case SALT_RETURN:
             return SaltMineProgress.history(player, step);
+        case EMBER_CAMP: case EMBER_TRANSPORT: case EMBER_SCENT: case EMBER_GUIDE: case EMBER_EGGS: case EMBER_RETURN:
+            return DragonTrailProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -367,6 +396,7 @@ public final class TrailQuestLine {
         WarsawFortressProgress.recordKill(player, victim);
         CoastTrailProgress.recordKill(player, victim);
         SaltMineProgress.recordKill(player, victim);
+        DragonTrailProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

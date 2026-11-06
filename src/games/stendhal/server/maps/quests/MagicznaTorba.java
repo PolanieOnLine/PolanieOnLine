@@ -40,6 +40,7 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine;
 
 public class MagicznaTorba extends AbstractQuest {
 	public static final String QUEST_SLOT = "magic_bag";
@@ -56,6 +57,7 @@ public class MagicznaTorba extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new NotCondition((player, sentence, speaker) -> TrailQuestLine.dragonScholarNeeded(player)),
 					new QuestCompletedCondition(QUEST_SLOT)),
 			ConversationStates.IDLE, 
 			"Już pomogłeś mi wystarczająco, nie zawracaj mi teraz... jak wy to mówicie? a... gitary!",
@@ -95,6 +97,7 @@ public class MagicznaTorba extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new NotCondition((player, sentence, speaker) -> TrailQuestLine.dragonScholarNeeded(player)),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new PlayerHasItemWithHimCondition("lodowy zwój")),
 			ConversationStates.QUEST_ITEM_BROUGHT, 
@@ -104,6 +107,7 @@ public class MagicznaTorba extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new NotCondition((player, sentence, speaker) -> TrailQuestLine.dragonScholarNeeded(player)),
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("lodowy zwój"))),
 			ConversationStates.ATTENDING, 
