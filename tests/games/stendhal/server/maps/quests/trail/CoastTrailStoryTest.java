@@ -531,6 +531,7 @@ public class CoastTrailStoryTest {
 		assertEquals("płaszcz chaosu", finale.items.get(0).name);
 		assertEquals("rare", finale.items.get(0).rarity);
 		assertTrue(finale.items.get(0).bound);
+		assertEquals("22", finale.items.get(0).stats.get("def"));
 		ProgressStatusEvent event = new ProgressStatusEvent("Zadania główne",
 				Step.COAST_RETURN.title, "opis", Collections.emptyList());
 		event.setRewards(early, false);
@@ -540,6 +541,9 @@ public class CoastTrailStoryTest {
 		assertTrue(withoutItems.items.isEmpty());
 		assertTrue(withoutItems.notes.isEmpty());
 		event.setRewards(finale, true);
+		assertTrue("Journal rewards must publish inventory tooltip statistics",
+				event.has("reward_stats"));
+		assertTrue(event.getList("reward_stats").get(0).contains("def"));
 		QuestRewardPreview received = QuestRewardPreview.read(event);
 		assertTrue(received.completed);
 		assertEquals(finale.items.get(0).subclass,
@@ -570,6 +574,10 @@ public class CoastTrailStoryTest {
 		assertEquals("", received.items.get(1).description);
 		assertEquals(5, received.items.get(1).amount);
 		assertEquals(original.notes, received.notes);
+		event.remove("reward_stats");
+		QuestRewardPreview legacy = QuestRewardPreview.read(event);
+		assertEquals(2, legacy.items.size());
+		assertTrue(legacy.items.get(0).stats.isEmpty());
 	}
 
 	@Test

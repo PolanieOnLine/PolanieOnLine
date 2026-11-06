@@ -27,6 +27,8 @@ import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 
 import games.stendhal.client.ClientLanguage;
+import games.stendhal.client.entity.Item;
+import games.stendhal.client.gui.ItemRarityPresentation;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
@@ -103,9 +105,18 @@ final class QuestRewardsPanel extends JPanel {
 						+ escape(text(rarity.getPolishDisplayName()))
 						+ "</font>";
 			}
-			JLabel name = label("<html><div style='width:110px'>" + caption
-					+ "</div></html>");
-			name.setToolTipText(tooltip(item));
+			JLabel name = new JLabel("<html><div style='width:110px'>" + caption
+					+ "</div></html>") {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getToolTipText() {
+					return tooltip(item);
+				}
+			};
+			name.setForeground(Color.BLACK);
+			name.setFont(name.getFont().deriveFont(Font.PLAIN));
+			name.setToolTipText("");
 			row.add(name, BorderLayout.CENTER);
 			add(row);
 		}
@@ -147,36 +158,25 @@ final class QuestRewardsPanel extends JPanel {
 				"&gt;").replace("\"", "&quot;");
 	}
 
-	private static String tooltip(QuestRewardPreview.Item item) {
-		StringBuilder result = new StringBuilder(
-				"<html><div style='width:230px'><b>");
-		result.append(escape(text(item.name))).append("</b>");
-		ItemRarity rarity = ItemRarity.fromId(item.rarity);
-		if (rarity != null) {
-			result.append("<br>").append(
-					escape(text(rarity.getPolishDisplayName())));
-		}
-		if (!item.description.isEmpty()) {
-			result.append("<p>").append(escape(text(item.description))).append(
-					"</p>");
-		}
-		if (item.bound) {
-			result.append("<br>").append(escape(text("Przypisany do postaci")));
-		}
-		return result.append("</div></html>").toString();
+	private static String tooltip(QuestRewardPreview.Item reward) {
+		Item item = new Item();
+		item.initialize(reward.toRPObject());
+		return ItemRarityPresentation.buildItemToolTip(item);
 	}
 
 	private static final class RewardSlot extends JComponent {
 		private static final long serialVersionUID = 1L;
 		private final Sprite background = SpriteStore.get().getSprite(
 				"data/gui/slot.png");
+		private final QuestRewardPreview.Item item;
 		private final Sprite sprite;
 		private final Sprite quantity;
 		private final Timer animation = new Timer(100, event -> repaint());
 
 		RewardSlot(QuestRewardPreview.Item item) {
+			this.item = item;
 			setPreferredSize(new Dimension(42, 42));
-			setToolTipText(tooltip(item));
+			setToolTipText("");
 			SpriteStore store = SpriteStore.get();
 			Sprite sheet = store.getSprite("data/sprites/items/"
 					+ item.itemClass + "/" + item.subclass + ".png");
@@ -188,6 +188,11 @@ final class QuestRewardsPanel extends JPanel {
 					? TextSprite.createTextSprite(Integer.toString(item.amount),
 							Color.WHITE)
 					: null;
+		}
+
+		@Override
+		public String getToolTipText() {
+			return tooltip(item);
 		}
 
 		@Override

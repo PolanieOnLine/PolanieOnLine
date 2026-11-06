@@ -1,4 +1,6 @@
 /* Copyright (C) 2026 - PolanieOnLine; AGPL version 3 or later. */
+import { Item } from "../../entity/Item";
+import { ItemContainerImplementation } from "./ItemContainerImplementation";
 import { Paths } from "../../data/Paths";
 import { singletons } from "../../SingletonRepo";
 import { GameLanguage } from "../../util/GameLanguage";
@@ -17,6 +19,7 @@ export interface QuestRewardData {
 	reward_descriptions?: string[] | string;
 	reward_bindings?: string[] | string;
 	reward_notes?: string[] | string;
+	reward_stats?: string[] | string;
 }
 
 const rarities: {[id: string]: [string, string]} = {
@@ -60,11 +63,11 @@ export function createQuestRewards(data?: QuestRewardData): {
 	const subclasses = list(data.reward_subclasses);
 	const quantities = list(data.reward_amounts);
 	const tiers = list(data.reward_rarities);
-	const descriptions = list(data.reward_descriptions);
-	const bindings = list(data.reward_bindings);
+	const stats = list(data.reward_stats);
 	const items = document.createElement("div");
 	items.className = "quest-reward-items";
 	const sprites = new Map<HTMLElement, string>();
+	const tooltips: Array<() => void> = [];
 	names.forEach((name, index) => {
 		const row = document.createElement("div");
 		row.className = "quest-reward-item";
@@ -86,11 +89,20 @@ export function createQuestRewards(data?: QuestRewardData): {
 			label.style.color = rarity[1];
 			caption.appendChild(label);
 		}
-		const tooltip = [text(name)];
-		if (rarity) tooltip.push(text(rarity[0]));
-		if (descriptions[index]) tooltip.push(text(descriptions[index]));
-		if (bindings[index] === "1") tooltip.push(text("Przypisany do postaci"));
-		row.title = tooltip.join("\n");
+		const item = new Item();
+		Object.assign(item, {
+			name, class: classes[index], subclass: subclasses[index],
+			quantity: quantities[index], rarity_id: tiers[index]
+		});
+		try {
+			const parsed = JSON.parse(stats[index] || "{}");
+			if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+				item["tooltip_stats"] = parsed;
+			}
+		} catch {
+			// Older servers may omit the optional tooltip data.
+		}
+		tooltips.push(ItemContainerImplementation.bindToolTip(row, item));
 		row.tabIndex = 0;
 		row.append(slot, caption);
 		items.appendChild(row);
@@ -115,6 +127,7 @@ export function createQuestRewards(data?: QuestRewardData): {
 		dispose: () => {
 			if (timer !== undefined) clearInterval(timer);
 			sprites.clear();
+			tooltips.forEach(dispose => dispose());
 		}
 	};
 }

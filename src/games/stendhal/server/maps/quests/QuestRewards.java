@@ -6,8 +6,10 @@ import java.util.List;
 
 import games.stendhal.common.QuestRewardPreview;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext.Source;
 import games.stendhal.server.entity.item.Item;
 
 /** Builds display metadata only; opening the journal never rolls a reward. */
@@ -24,12 +26,20 @@ public final class QuestRewards {
 
 	public QuestRewards item(String name, int amount, ItemRarity rarity,
 			boolean bound) {
+		ItemCreationContext context = ItemCreationContext.restore();
+		if (rarity != null) {
+			context = ItemCreationContext.builder(Source.QUEST)
+					.withQuestRarity(rarity)
+					.randomizeModifiers(false)
+					.generateAffixes(false)
+					.build();
+		}
 		Item item = SingletonRepository.getEntityManager().getItem(name,
-				ItemCreationContext.restore());
+				context);
 		items.add(new QuestRewardPreview.Item(name, item.getItemClass(),
 				item.getItemSubclass(), amount,
 				rarity == null ? "" : rarity.getId(), item.getDescription(),
-				bound));
+				bound, item.getMap(ItemTooltip.ATTRIBUTE)));
 		return this;
 	}
 

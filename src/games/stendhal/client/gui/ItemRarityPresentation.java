@@ -35,7 +35,7 @@ import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 /** Builds compact structured desktop item tooltips. */
-final class ItemRarityPresentation {
+public final class ItemRarityPresentation {
 	private static final String FALLBACK_TEXT_COLOR = "#f3efe7";
 	private static final String FALLBACK_ACCENT_COLOR = "#a37861";
 	private static final String BETTER_COLOR = "#62d26f";
@@ -68,7 +68,7 @@ final class ItemRarityPresentation {
 		// utility class
 	}
 
-	static String buildItemToolTip(final IEntity entity) {
+	public static String buildItemToolTip(final IEntity entity) {
         return buildItemToolTip(entity, 0);
     }
 

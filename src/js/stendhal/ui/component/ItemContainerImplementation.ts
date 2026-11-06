@@ -724,6 +724,34 @@ export class ItemContainerImplementation {
 		}
 	}
 
+	/** Shared item tooltip for detached previews, with no inventory actions. */
+	public static bindToolTip(target: HTMLElement, item: Item): () => void {
+		(target as any).dataItem = item;
+		ItemContainerImplementation.updateToolTipFor(target, item);
+		const enter = (event: MouseEvent) => {
+			ItemContainerImplementation.showRarityToolTip(target, item, event.clientX, event.clientY);
+		};
+		const focus = () => {
+			const bounds = target.getBoundingClientRect();
+			ItemContainerImplementation.showRarityToolTip(target, item, bounds.left, bounds.bottom);
+		};
+		const leave = () => ItemContainerImplementation.hideRarityToolTip(target);
+		target.addEventListener("mouseenter", enter);
+		target.addEventListener("mouseleave", leave);
+		target.addEventListener("focus", focus);
+		target.addEventListener("blur", leave);
+		return () => {
+			ItemContainerImplementation.hideRarityToolTip(target, false);
+			target.removeEventListener("mouseenter", enter);
+			target.removeEventListener("mouseleave", leave);
+			target.removeEventListener("focus", focus);
+			target.removeEventListener("blur", leave);
+			target.removeAttribute("title");
+			target.removeAttribute("aria-label");
+			delete (target as any).dataItem;
+		};
+	}
+
 	private static showRarityToolTip(target: HTMLElement, item: Item, x: number, y: number) {
 		const rarity = item.getRarity();
 		const hasStructured = hasStructuredItemTooltip(item);

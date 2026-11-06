@@ -96,6 +96,10 @@ function createHarness() {
 			listeners.push(listener);
 			this.listeners.set(type, listeners);
 		}
+		removeEventListener(type, listener) {
+			this.listeners.set(type, (this.listeners.get(type) || []).filter(value => value !== listener));
+		}
+		getBoundingClientRect() { return {left: 10, bottom: 20}; }
 		closest() {
 			for (let element = this; element; element = element.parentElement) {
 				if (element.hidden || element.attributes?.get("aria-hidden") === "true") { return element; }
@@ -274,6 +278,30 @@ function createHarness() {
 }
 
 function iconOf(slot) { return slot.children.find(child => child.className === "item-slot-icon"); }
+
+test("detached reward previews share the inventory hover tooltip and dispose all handlers", () => {
+	const h = createHarness(), item = h.makeItem(1);
+	item.set("name", "płaszcz chaosu");
+	item.set("tooltip_stats", {category: "armour", def: "22", min_level: "110"});
+	const target = h.document.createElement("div");
+	const dispose = h.Container.bindToolTip(target, item);
+	for (const handler of target.listeners.get("mouseenter")) {
+		handler({clientX: 10, clientY: 10});
+	}
+	assert.equal(h.document.body.children.length, 1);
+	assert.match(h.document.body.children[0].textContent, /22 pkt\. pancerza/);
+	assert.match(h.document.body.children[0].textContent, /110/);
+	for (const handler of target.listeners.get("mouseleave")) handler();
+	assert.equal(h.document.body.children.length, 0);
+	for (const handler of target.listeners.get("focus")) handler();
+	assert.equal(h.document.body.children.length, 1);
+	dispose();
+	assert.equal(h.document.body.children.length, 0);
+	assert.equal(target.dataItem, undefined);
+	assert.equal(target.title, "");
+	assert.ok([...target.listeners.values()].every(list => list.length === 0));
+	assert.equal(h.sentActions.length, 0);
+});
 
 test("ordinary items retain a name tooltip without rarity or published statistics", () => {
 	const h = createHarness(), item = h.makeItem(1);
