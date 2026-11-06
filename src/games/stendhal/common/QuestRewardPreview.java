@@ -2,6 +2,7 @@
 package games.stendhal.common;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -80,22 +81,37 @@ public final class QuestRewardPreview {
 		if (!event.has("reward_xp")) {
 			return null;
 		}
-		List<String> names = event.getList("reward_names");
-		List<String> classes = event.getList("reward_classes");
-		List<String> subclasses = event.getList("reward_subclasses");
-		List<String> amounts = event.getList("reward_amounts");
-		List<String> rarities = event.getList("reward_rarities");
-		List<String> descriptions = event.getList("reward_descriptions");
-		List<String> bindings = event.getList("reward_bindings");
+		List<String> names = readList(event, "reward_names");
+		List<String> classes = readList(event, "reward_classes");
+		List<String> subclasses = readList(event, "reward_subclasses");
+		List<String> amounts = readList(event, "reward_amounts");
+		List<String> rarities = readList(event, "reward_rarities");
+		List<String> descriptions = readList(event, "reward_descriptions");
+		List<String> bindings = readList(event, "reward_bindings");
 		List<Item> items = new ArrayList<>();
 		for (int i = 0; i < names.size(); i++) {
+			// Marauroa decodes an empty list as one empty string.
+			if (names.get(i).isEmpty()) {
+				continue;
+			}
 			items.add(new Item(names.get(i), classes.get(i), subclasses.get(i),
 					Integer.parseInt(amounts.get(i)), rarities.get(i),
 					descriptions.get(i), "1".equals(bindings.get(i))));
 		}
+		List<String> notes = new ArrayList<>(readList(event, "reward_notes"));
+		notes.removeIf(String::isEmpty);
 		return new QuestRewardPreview(event.getInt("reward_xp"),
 				event.getInt("reward_coins"),
-				event.getInt("reward_completed") != 0, items,
-				event.getList("reward_notes"));
+				event.getInt("reward_completed") != 0, items, notes);
+	}
+
+	private static List<String> readList(RPEvent event, String key) {
+		String value = event.get(key);
+		if (value == null || value.length() < 2) {
+			return Collections.emptyList();
+		}
+		// Keep trailing empty descriptions/rarities aligned with their item.
+		return Arrays.asList(
+				value.substring(1, value.length() - 1).split("\t", -1));
 	}
 }

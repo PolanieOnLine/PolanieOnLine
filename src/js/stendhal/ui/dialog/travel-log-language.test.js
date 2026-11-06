@@ -127,3 +127,19 @@ test("quest rewards precede history, preserve quantity and guaranteed rarity, an
  dialog.onParentClose();
  assert.equal(timers.size,0);
 });
+
+test("a quest with only XP and coins does not create an empty item slot",async()=>{
+ const {Dialog,language,details,timers}=await harness();
+ language.synchronize("pl");
+ const dialog=new Dialog();dialog.currentProgressType="Zadania główne";
+ dialog.itemData("Zadania główne","Dostawa, której nikt nie zamawiał","Opis",[],{
+  reward_xp:"1200",reward_coins:"25",reward_completed:"0",reward_names:"[]",
+  reward_classes:"[]",reward_subclasses:"[]",reward_amounts:"[]",reward_rarities:"[]",
+  reward_descriptions:"[]",reward_bindings:"[]",reward_notes:"[]"
+ });
+ const section=details.children.at(-1).children[0];
+ assert.equal(section.children[0].textContent,"Nagrody");
+ assert.equal(section.children[1].children.length,2);
+ assert.equal(section.children.length,2);
+ assert.equal(timers.size,0);
+});

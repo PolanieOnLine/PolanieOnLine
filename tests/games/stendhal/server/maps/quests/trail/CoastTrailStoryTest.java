@@ -409,6 +409,12 @@ public class CoastTrailStoryTest {
 		assertTrue(finale.items.get(0).bound);
 		ProgressStatusEvent event = new ProgressStatusEvent("Zadania główne",
 				Step.COAST_RETURN.title, "opis", Collections.emptyList());
+		event.setRewards(early, false);
+		QuestRewardPreview withoutItems = QuestRewardPreview.read(event);
+		assertEquals(early.xp, withoutItems.xp);
+		assertEquals(early.coins, withoutItems.coins);
+		assertTrue(withoutItems.items.isEmpty());
+		assertTrue(withoutItems.notes.isEmpty());
 		event.setRewards(finale, true);
 		QuestRewardPreview received = QuestRewardPreview.read(event);
 		assertTrue(received.completed);
@@ -418,6 +424,28 @@ public class CoastTrailStoryTest {
 		assertFalse(player.hasQuest(Step.COAST_RETURN.slot));
 		assertNull(QuestRewardPreview.read(
 				new ProgressStatusEvent("Produkcja", Collections.emptyList())));
+	}
+
+	@Test
+	public void rewardListsPreserveAnItemsEmptyOptionalFields() {
+		QuestRewardPreview original = new QuestRewardPreview(1200, 25, false,
+				Arrays.asList(
+						new QuestRewardPreview.Item("płaszcz chaosu", "cloak",
+								"chaos_cloak", 1, "rare", "Opis płaszcza.",
+								true),
+						new QuestRewardPreview.Item("duży eliksir", "drink",
+								"greater_potion", 5, "", "", false)),
+				Collections.singletonList("Dostęp do sklepu."));
+		ProgressStatusEvent event = new ProgressStatusEvent("Zadania główne",
+				"Nagrody", "opis", Collections.emptyList());
+		event.setRewards(original, false);
+		QuestRewardPreview received = QuestRewardPreview.read(event);
+		assertEquals(2, received.items.size());
+		assertEquals("rare", received.items.get(0).rarity);
+		assertEquals("", received.items.get(1).rarity);
+		assertEquals("", received.items.get(1).description);
+		assertEquals(5, received.items.get(1).amount);
+		assertEquals(original.notes, received.notes);
 	}
 
 	@Test
