@@ -20,6 +20,7 @@ public final class TrailQuestLine {
     public static final String KEEP_CHAPTER = "Stara warownia";
     public static final String OATH_CHAPTER = "Dług wobec zmarłych";
     public static final String WARSAW_CHAPTER = "Pod murami Warszawy";
+    public static final String COAST_CHAPTER = "Światła na mieliźnie";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -141,7 +142,25 @@ public final class TrailQuestLine {
                 "Zanieś księciu wieści o przygotowanym podpaleniu. Powiedz: zarządca Radomir.", WARSAW_CHAPTER, 5, Region.WARSZAWA, 150),
         WARSAW_TRUCE("trail_warsaw_truce", "Brama dla ocalałych", "rycerz Mark", "truce", 28000, 1700,
                 "Radomir nie zagrozi już załodze. Pozostało uzgodnić wyjście rannych i przekonać księcia, żeby oszczędził zwykłych żołnierzy.",
-                "Wróć do Marka i porozmawiaj o ocaleniu załogi.", WARSAW_CHAPTER, 6, Region.WARSZAWA, 150);
+                "Wróć do Marka i porozmawiaj o ocaleniu załogi.", WARSAW_CHAPTER, 6, Region.WARSZAWA, 150),
+        COAST_WRECK("trail_coast_wreck", "Mewa nie weszła do portu", "Staszek", "traces;0", 35000, 700,
+                "Statek Mewa nie dotarł do Gdańska. Staszek boi się o jego załogę. Na brzegu na wschód od przystani znaleziono szczątki ładunku.",
+                "Zapytaj Staszka na przystani promu w północno-zachodnim Gdańsku o zaginioną Mewę.", COAST_CHAPTER, 1, Region.GDANSK_CITY, 200),
+        COAST_LIGHTS("trail_coast_lights", "Światło po złej stronie", "Lubor", "lookout", 45000, 900,
+                "Lubor przeżył rozbicie Mewy. Twierdzi, że załoga płynęła w stronę światła, którego nie powinno tam być.",
+                "Porozmawiaj z Luborem na plaży na wschód od przystani promu. Powiedz: fałszywe światło.", COAST_CHAPTER, 2, Region.GDANSK_CITY, 200),
+        COAST_CARGO("trail_coast_cargo", "Łup przyniesiony za dnia", "Malteis", "cargo", 40000, 1000,
+                "Przy fałszywym palenisku znaleziono znak gdańskiego składu. Malteis chce odnaleźć towary z rozbitego statku.",
+                "Odwiedź Malteisa w siedzibie rycerzy w północno-wschodnim Gdańsku. Zapytaj o ładunek z Mewy.", COAST_CHAPTER, 3, Region.GDANSK_CITY, 200),
+        COAST_WRECKERS("trail_coast_wreckers", "Ci, którzy czekają na wraki", "Malteis", "fight", 85000, 1800,
+                "Rosa rozpoznała ludzi sprzedających rzeczy rozbitków. Ich herszt ukrywa się w głębi piwnicy składu.",
+                "Wróć do Malteisa z wieściami od Rosy. Powiedz: rabusie wybrzeża.", COAST_CHAPTER, 4, Region.GDANSK_CITY, 200),
+        COAST_LAMPS("trail_coast_lamps", "Znaki bezpiecznego brzegu", "Lubor", "rigging", 40000, 1100,
+                "Kolejny statek ma wejść do portu. Lubor zna sygnał, który przeprowadzi go obok mielizny. Najpierw trzeba naprawić lampy.",
+                "Pokaż Luborowi plan rabusiów. Zapytaj o bezpieczny brzeg.", COAST_CHAPTER, 5, Region.GDANSK_CITY, 200),
+        COAST_RETURN("trail_coast_return", "Jaskółka wraca do portu", "Staszek", "fight", 55000, 2500,
+                "Lampy są gotowe, lecz ostatni z rabusiów chce zniszczyć sygnał. Jaskółka nie może podzielić losu Mewy.",
+                "Zawiadom Staszka o przygotowanych lampach. Powiedz: ratunek dla Jaskółki.", COAST_CHAPTER, 6, Region.GDANSK_CITY, 200);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -230,6 +249,8 @@ public final class TrailQuestLine {
                 return OathTrailProgress.objective(player, step);
             case WARSAW_GATE: case WARSAW_PAY: case WARSAW_WITNESSES: case WARSAW_FIRE: case WARSAW_STEWARD: case WARSAW_TRUCE:
                 return WarsawFortressProgress.objective(player, step);
+            case COAST_WRECK: case COAST_LIGHTS: case COAST_CARGO: case COAST_WRECKERS: case COAST_LAMPS: case COAST_RETURN:
+                return CoastTrailProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -300,6 +321,8 @@ public final class TrailQuestLine {
             return OathTrailProgress.history(player, step);
         case WARSAW_GATE: case WARSAW_PAY: case WARSAW_WITNESSES: case WARSAW_FIRE: case WARSAW_STEWARD: case WARSAW_TRUCE:
             return WarsawFortressProgress.history(player, step);
+        case COAST_WRECK: case COAST_LIGHTS: case COAST_CARGO: case COAST_WRECKERS: case COAST_LAMPS: case COAST_RETURN:
+            return CoastTrailProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -319,6 +342,7 @@ public final class TrailQuestLine {
         AdosKeepProgress.recordGuardianKill(player, victim);
         OathTrailProgress.recordKill(player, victim);
         WarsawFortressProgress.recordKill(player, victim);
+        CoastTrailProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

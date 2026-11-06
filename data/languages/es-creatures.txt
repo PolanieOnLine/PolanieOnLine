@@ -1396,3 +1396,6 @@ poległy wartownik=centinela caído
 strażnik dawnej chorągwi=guardián del antiguo estandarte
 wartownik buntowników=centinela rebelde
 zarządca Radomir=administrador Radomir
+rabuś wybrzeża=saqueador costero
+herszt nadbrzeżnych rabusiów=jefe de los saqueadores costeros
+niszczyciel sygnałów=saboteador de señales

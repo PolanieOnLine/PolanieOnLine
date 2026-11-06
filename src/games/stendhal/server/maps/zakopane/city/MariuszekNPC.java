@@ -82,6 +82,12 @@ public class MariuszekNPC implements ZoneConfigurator {
 				return "Zajrzyj do księcia przy obozie pod warszawskim zamkiem. Nie wszystkie wieści z warowni do niego dochodzą. Warto, żeby usłyszał je także od ciebie.";
 			case WARSAW_FIRE:
 				return "Dobrosława opatruje rannych w lazarecie warszawskiej warowni. Słyszała coś niepokojącego. Nie zostawiaj jej samej z tą sprawą.";
+			case COAST_WRECK: case COAST_RETURN:
+				return "Staszek na przystani promu w północno-zachodnim Gdańsku martwi się o statki, które nie wracają do portu. Zajrzyj do niego, jeśli masz już za sobą sprawę warszawskiej warowni.";
+			case COAST_LIGHTS: case COAST_LAMPS:
+				return "Rozbitek Lubor odpoczywa na plaży na wschód od przystani promu w Gdańsku. Zna ten brzeg i może wyjaśnić, dlaczego statki trafiają na mieliznę.";
+			case COAST_CARGO: case COAST_WRECKERS:
+				return "Malteis pilnuje Gdańska. Znajdziesz go w siedzibie rycerzy, w północno-wschodniej części miasta. Zanieś mu wieści o rabusiach wybrzeża.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

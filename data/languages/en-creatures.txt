@@ -1396,3 +1396,6 @@ poległy wartownik=fallen sentry
 strażnik dawnej chorągwi=keeper of the old banner
 wartownik buntowników=rebel sentry
 zarządca Radomir=steward Radomir
+rabuś wybrzeża=coastal wrecker
+herszt nadbrzeżnych rabusiów=wrecker chief
+niszczyciel sygnałów=signal saboteur

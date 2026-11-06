@@ -19,6 +19,7 @@
 
 	<!-- gdansk_nw -->
 	<zone name="0_gdansk_city_nw" level="0" x="513056" y="17024" file="Level 0/gdansk/city_nw.tmx">
+		<configurator class-name="games.stendhal.server.maps.quests.trail.CoastTrailSites"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -199,6 +200,7 @@
 
 	<!-- gdansk_city_ne -->
 	<zone name="0_gdansk_city_ne" level="0" x="513312" y="17024" file="Level 0/gdansk/city_ne.tmx">
+		<configurator class-name="games.stendhal.server.maps.quests.trail.CoastTrailSites"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -1369,6 +1371,7 @@
 	</zone>
 	<!-- Storage -1 -->
 	<zone name="int_gdansk_storage_-1" file="interiors/gdansk/storage_-1.tmx">
+		<configurator class-name="games.stendhal.server.maps.quests.trail.CoastTrailSites"/>
 		<portal x="26" y="10" ref="up">
 			<destination zone="int_gdansk_storage_0" ref="down"/>
 		</portal>
