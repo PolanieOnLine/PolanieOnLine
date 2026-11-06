@@ -112,14 +112,14 @@ public class RosaBasementRats extends AbstractQuest {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
-				ConversationStates.QUEST_STARTED,
-				"Nie pamiętasz, obiecałeś oczyścić tą #piwnice ze szczurów?",
+				ConversationStates.ATTENDING,
+				"Pamiętasz o szczurach w mojej #piwnicy? Wciąż czekam na twoją pomoc.",
 				null);
 
 		npc.add(
-				ConversationStates.QUEST_STARTED,
+				ConversationStates.ATTENDING,
 				Arrays.asList("basement", "piwnicy", "piwnica"),
-				null,
+				new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 				ConversationStates.ATTENDING,
 				"Tak jak powiedziałam, schodami w dół. Proszę wyczyść ze wszystkich szczurów i zobacz czy czasem nie ma tam węża!",
 				null);

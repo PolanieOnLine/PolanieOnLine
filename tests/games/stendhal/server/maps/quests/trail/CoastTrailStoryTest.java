@@ -25,6 +25,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
+import games.stendhal.server.maps.quests.RosaBasementRats;
 import games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC;
 import games.stendhal.server.maps.gdansk.knighthouse.MalteisNPC;
 import games.stendhal.server.maps.gdansk.tavern.RosaNPC;
@@ -389,6 +390,33 @@ public class CoastTrailStoryTest {
 		assertEquals(1, player.getTotalNumberOf("płaszcz chaosu"));
 		for (Object e : player.getZone().getEntitiesOfClass(Item.class))
 			assertNotEquals("money", ((Item) e).getName());
+	}
+
+	@Test
+	public void unfinishedBasementQuestDoesNotBlockRosasStoryDialogue() {
+		system.loadQuest(new RosaBasementRats());
+		ready(200);
+		player.setQuest(Step.COAST_WRECK.slot, "done");
+		player.setQuest(Step.COAST_LIGHTS.slot, "done");
+		player.setQuest(Step.COAST_CARGO.slot, "rosa");
+		visit("Rosa");
+		say("Rosa", "task");
+		say("Rosa", "tak");
+		String basementQuest = player.getQuest("pomoc_w_tawernie_rosa");
+		visit("Rosa");
+		say("Rosa", "ładunek z Mewy");
+		assertEquals("report", player.getQuest(Step.COAST_CARGO.slot));
+		assertEquals(basementQuest, player.getQuest("pomoc_w_tawernie_rosa"));
+		say("Rosa", "piwnica");
+		assertEquals(basementQuest, player.getQuest("pomoc_w_tawernie_rosa"));
+		assertEquals(ConversationStates.ATTENDING,
+				NPCList.get().get("Rosa").getEngine().getCurrentState());
+		player.setSoloKillCount("szczur", 8);
+		player.setSoloKillCount("szczur jaskiniowy", 5);
+		player.setSoloKillCount("wąż", 1);
+		visit("Rosa");
+		assertTrue(player.isQuestCompleted("pomoc_w_tawernie_rosa"));
+		assertEquals("report", player.getQuest(Step.COAST_CARGO.slot));
 	}
 
 	@Test
