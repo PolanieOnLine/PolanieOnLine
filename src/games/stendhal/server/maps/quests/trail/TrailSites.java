@@ -12,44 +12,69 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 
 /** Permanent, passable investigation sites built from existing map graphics. */
 public final class TrailSites implements ZoneConfigurator {
-    @Override public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-        switch (zone.getName()) {
-        case "int_zakopane_shop":
-            evidence(zone, TrailEvidence.Kind.SHIPMENT, 7, 10);
-            break;
-        case "int_zakopane_townhall":
-            final AreaEntity table = new AreaEntity(1, 1);
-            table.setRPClass("block"); table.put("type", "block"); table.put("class", "questprop");
-            table.put("name", "stół Gościrada"); table.put("z", 2000);
-            table.put("tileset", "furniture/table/square"); table.put("tile_index", 0); table.put("tileset_columns", 1);
-            table.setDescription("Oto stół Gościrada. Leży na nim rejestr zamówień.");
-            table.setResistance(100);
-            table.setPosition(17, 33); zone.add(table);
-            evidence(zone, TrailEvidence.Kind.REGISTRY, 17, 33);
-            break;
-        case TrailQuestLine.FOREST:
-            evidence(zone, TrailEvidence.Kind.TRACKS, 82, 62);
-            evidence(zone, TrailEvidence.Kind.DOCUMENTS, 60, 61);
-            supplies(zone, 60, 60, 0);
-            supplies(zone, 61, 60, 1);
-            final Creature guard = SingletonRepository.getEntityManager().getCreature(TrailQuestLine.GUARD);
-            if (guard == null) throw new IllegalStateException("Missing stockpile guard definition");
-            zone.add(new CreatureRespawnPoint(zone, TrailQuestLine.STOCK_X, TrailQuestLine.STOCK_Y, guard, 1));
-            break;
-        default:
-            throw new IllegalArgumentException("No trail investigation site in " + zone.getName());
-        }
-    }
-    private void evidence(StendhalRPZone zone, TrailEvidence.Kind kind, int x, int y) {
-        final TrailEvidence evidence = new TrailEvidence(kind);
-        evidence.setPosition(x, y); zone.add(evidence);
-    }
-    private void supplies(StendhalRPZone zone, int x, int y, int tile) {
-        final AreaEntity prop = new AreaEntity(1, 1);
-        prop.setRPClass("block"); prop.put("type", "block"); prop.put("class", "questprop");
-        prop.put("name", "zapasy mieszkańców"); prop.put("z", 8000);
-        prop.put("tileset", "item/sacks"); prop.put("tile_index", tile); prop.put("tileset_columns", 2);
-        prop.setDescription("Worki z zapasami. Na każdym wisi karteczka z nazwiskiem kogoś z Zakopanego.");
-        prop.setPosition(x, y); zone.add(prop);
-    }
+	@Override
+	public void configureZone(final StendhalRPZone zone,
+			final Map<String, String> attributes) {
+		switch (zone.getName()) {
+		case "int_zakopane_shop":
+			evidence(zone, TrailEvidence.Kind.SHIPMENT, 7, 10);
+			break;
+		case "int_zakopane_townhall":
+			final AreaEntity table = new AreaEntity(1, 1);
+			table.setRPClass("block");
+			table.put("type", "block");
+			table.put("class", "questprop");
+			table.put("name", "stół Gościrada");
+			table.put("z", 2000);
+			table.put("tileset", "furniture/table/square");
+			table.put("tile_index", 0);
+			table.put("tileset_columns", 1);
+			table.setDescription(
+					"Oto stół Gościrada. Leży na nim rejestr zamówień.");
+			table.setResistance(100);
+			table.setPosition(17, 33);
+			zone.add(table);
+			evidence(zone, TrailEvidence.Kind.REGISTRY, 17, 33);
+			break;
+		case TrailQuestLine.FOREST:
+			evidence(zone, TrailEvidence.Kind.TRACKS, 82, 62);
+			evidence(zone, TrailEvidence.Kind.DOCUMENTS, 60, 61);
+			supplies(zone, 60, 60, 0);
+			supplies(zone, 61, 60, 1);
+			final Creature guard = SingletonRepository.getEntityManager().getCreature(
+					TrailQuestLine.GUARD);
+			if (guard == null)
+				throw new IllegalStateException(
+						"Missing stockpile guard definition");
+			zone.add(new CreatureRespawnPoint(zone, TrailQuestLine.STOCK_X,
+					TrailQuestLine.STOCK_Y, guard, 1));
+			break;
+		default:
+			throw new IllegalArgumentException(
+					"No trail investigation site in " + zone.getName());
+		}
+	}
+
+	private void evidence(StendhalRPZone zone, TrailEvidence.Kind kind, int x,
+			int y) {
+		final TrailEvidence evidence = new TrailEvidence(kind);
+		evidence.setPosition(x, y);
+		zone.add(evidence);
+	}
+
+	private void supplies(StendhalRPZone zone, int x, int y, int tile) {
+		final AreaEntity prop = new AreaEntity(1, 1);
+		prop.setRPClass("block");
+		prop.put("type", "block");
+		prop.put("class", "questprop");
+		prop.put("name", "zapasy mieszkańców");
+		prop.put("z", 8000);
+		prop.put("tileset", "item/sacks");
+		prop.put("tile_index", tile);
+		prop.put("tileset_columns", 2);
+		prop.setDescription(
+				"Worki z zapasami. Na każdym wisi karteczka z nazwiskiem kogoś z Zakopanego.");
+		prop.setPosition(x, y);
+		zone.add(prop);
+	}
 }

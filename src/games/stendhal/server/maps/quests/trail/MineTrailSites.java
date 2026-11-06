@@ -10,10 +10,16 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 
 /** Passable investigation objects on the existing first Semos mine map. */
 public final class MineTrailSites implements ZoneConfigurator {
-    @Override public void configureZone(StendhalRPZone zone,Map<String,String> attributes) {
-        for (MineTrailEvidence.Kind kind : MineTrailEvidence.Kind.values()) zone.add(new MineTrailEvidence(kind));
-        Creature courier=SingletonRepository.getEntityManager().getCreature(MineTrailProgress.COURIER);
-        if(courier==null)throw new IllegalStateException("Missing duergar courier");
-        zone.add(new CreatureRespawnPoint(zone,MineTrailProgress.COURIER_X,MineTrailProgress.COURIER_Y,courier,1));
-    }
+	@Override
+	public void configureZone(StendhalRPZone zone,
+			Map<String, String> attributes) {
+		for (MineTrailEvidence.Kind kind : MineTrailEvidence.Kind.values())
+			zone.add(new MineTrailEvidence(kind));
+		Creature courier = SingletonRepository.getEntityManager().getCreature(
+				MineTrailProgress.COURIER);
+		if (courier == null)
+			throw new IllegalStateException("Missing duergar courier");
+		zone.add(new CreatureRespawnPoint(zone, MineTrailProgress.COURIER_X,
+				MineTrailProgress.COURIER_Y, courier, 1));
+	}
 }

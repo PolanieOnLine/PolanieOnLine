@@ -16,72 +16,120 @@ import games.stendhal.server.maps.quests.AbstractQuest;
 
 /** Common journal metadata, consent and one-time rewards for the chapter. */
 abstract class TrailQuest extends AbstractQuest {
-    protected final TrailQuestLine.Step step;
-    TrailQuest(final TrailQuestLine.Step step) { this.step = step; }
+	protected final TrailQuestLine.Step step;
 
-    @Override public final void addToWorld() {
-        fillQuestInfo(step.title, step.description, false);
-        questInfo.setMainQuest(step.chapter, step.order, step.hint);
-        addDialogs();
-    }
-    protected abstract void addDialogs();
+	TrailQuest(final TrailQuestLine.Step step) {
+		this.step = step;
+	}
 
-    protected void reply(String npc, ChatAction action, String... triggers) {
-        npcs.get(npc).add(ConversationStates.ATTENDING, Arrays.asList(triggers), null,
-                ConversationStates.ATTENDING, null, action);
-    }
+	@Override
+	public final void addToWorld() {
+		fillQuestInfo(step.title, step.description, false);
+		questInfo.setMainQuest(step.chapter, step.order, step.hint);
+		addDialogs();
+	}
 
-    protected void offer(final String accepted) {
-        offer(accepted, ConversationStates.QUEST_3_OFFERED);
-    }
+	protected abstract void addDialogs();
 
-    protected void offer(final String accepted, final ConversationStates state) {
-        final SpeakerNPC npc = npcs.get(step.npc);
-        // The ordinary QUEST_OFFERED state already belongs to Brzezdom's riddles.
-        final ChatCondition awaitingOffer = (player, sentence, speaker) -> step.available(player) && !player.hasQuest(step.slot);
-        npc.add(state, ConversationPhrases.YES_MESSAGES, awaitingOffer,
-                ConversationStates.ATTENDING, null, (player, sentence, speaker) -> {
-            if (!step.available(player) || player.hasQuest(step.slot)) { remind(player, speaker); return; }
-            player.setQuest(step.slot, step.initial);
-            speaker.say(accepted);
-        });
-        npc.add(state, ConversationPhrases.NO_MESSAGES, awaitingOffer,
-                ConversationStates.ATTENDING, "Dobrze. Jeśli zmienisz zdanie, wiesz, gdzie mnie szukać.", null);
-    }
+	protected void reply(String npc, ChatAction action, String... triggers) {
+		npcs.get(npc).add(ConversationStates.ATTENDING, Arrays.asList(triggers),
+				null, ConversationStates.ATTENDING, null, action);
+	}
 
-    protected void request(final Player player, final EventRaiser speaker, final String question) {
-        request(player, speaker, question, ConversationStates.QUEST_3_OFFERED);
-    }
+	protected void offer(final String accepted) {
+		offer(accepted, ConversationStates.QUEST_3_OFFERED);
+	}
 
-    protected void request(final Player player, final EventRaiser speaker, final String question, final ConversationStates state) {
-        if (!step.available(player) || player.hasQuest(step.slot)) { remind(player, speaker); return; }
-        speaker.say(question);
-        speaker.setCurrentState(state);
-    }
+	protected void offer(final String accepted,
+			final ConversationStates state) {
+		final SpeakerNPC npc = npcs.get(step.npc);
+		// The ordinary QUEST_OFFERED state already belongs to Brzezdom's
+		// riddles.
+		final ChatCondition awaitingOffer = (player, sentence,
+				speaker) -> step.available(player)
+						&& !player.hasQuest(step.slot);
+		npc.add(state, ConversationPhrases.YES_MESSAGES, awaitingOffer,
+				ConversationStates.ATTENDING, null,
+				(player, sentence, speaker) -> {
+					if (!step.available(player) || player.hasQuest(step.slot)) {
+						remind(player, speaker);
+						return;
+					}
+					player.setQuest(step.slot, step.initial);
+					speaker.say(accepted);
+				});
+		npc.add(state, ConversationPhrases.NO_MESSAGES, awaitingOffer,
+				ConversationStates.ATTENDING,
+				"Dobrze. Jeśli zmienisz zdanie, wiesz, gdzie mnie szukać.",
+				null);
+	}
 
-    protected void remind(final Player player, final EventRaiser speaker) {
-        speaker.say(TrailDialogue.reminder(player, step, speaker.getName()));
-    }
-    protected abstract String completedText();
+	protected void request(final Player player, final EventRaiser speaker,
+			final String question) {
+		request(player, speaker, question, ConversationStates.QUEST_3_OFFERED);
+	}
 
-    protected void complete(final Player player, final EventRaiser speaker, final String requiredState) {
-        if (!player.isQuestInState(step.slot, requiredState)) { remind(player, speaker); return; }
-        player.setQuest(step.slot, "done");
-        player.addXP(step.xp);
-        player.addKarma(5);
-        new EquipItemAction("money", step.coins).fire(player, null, speaker);
-        speaker.say(completedText());
-    }
+	protected void request(final Player player, final EventRaiser speaker,
+			final String question, final ConversationStates state) {
+		if (!step.available(player) || player.hasQuest(step.slot)) {
+			remind(player, speaker);
+			return;
+		}
+		speaker.say(question);
+		speaker.setCurrentState(state);
+	}
 
-    @Override public final String getSlotName() { return step.slot; }
-    @Override public final String getName() { return step.title; }
-    @Override public final String getNPCName() { return step.npc; }
-    @Override public final int getMinLevel() { return step.minimumLevel; }
-    @Override public final String getRegion() { return step.region; }
-    @Override public final boolean isVisibleOnQuestStatus(final Player player) {
-        return step.available(player) || player.hasQuest(step.slot);
-    }
-    @Override public List<String> getHistory(final Player player) {
-        return TrailQuestLine.history(player, step);
-    }
+	protected void remind(final Player player, final EventRaiser speaker) {
+		speaker.say(TrailDialogue.reminder(player, step, speaker.getName()));
+	}
+
+	protected abstract String completedText();
+
+	protected void complete(final Player player, final EventRaiser speaker,
+			final String requiredState) {
+		if (!player.isQuestInState(step.slot, requiredState)) {
+			remind(player, speaker);
+			return;
+		}
+		player.setQuest(step.slot, "done");
+		player.addXP(step.xp);
+		player.addKarma(5);
+		new EquipItemAction("money", step.coins).fire(player, null, speaker);
+		speaker.say(completedText());
+	}
+
+	@Override
+	public final String getSlotName() {
+		return step.slot;
+	}
+
+	@Override
+	public final String getName() {
+		return step.title;
+	}
+
+	@Override
+	public final String getNPCName() {
+		return step.npc;
+	}
+
+	@Override
+	public final int getMinLevel() {
+		return step.minimumLevel;
+	}
+
+	@Override
+	public final String getRegion() {
+		return step.region;
+	}
+
+	@Override
+	public final boolean isVisibleOnQuestStatus(final Player player) {
+		return step.available(player) || player.hasQuest(step.slot);
+	}
+
+	@Override
+	public List<String> getHistory(final Player player) {
+		return TrailQuestLine.history(player, step);
+	}
 }
