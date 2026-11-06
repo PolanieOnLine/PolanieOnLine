@@ -76,6 +76,12 @@ public class MariuszekNPC implements ZoneConfigurator {
 			case OATH_WATCH: case OATH_GRAVE: case OATH_BURIAL: return "Wagabundus wędruje traktem na południe od Krakowa. Niepokoją go dawne mogiły i wartownicy, którzy nie schodzą z posterunku.";
 			case OATH_NAMES: case OATH_TRUTH: return "Amileusz, archeolog w Krakowie, pomoże ci rozpoznać dawne wojskowe znaki i zapiski.";
 			case OATH_BANNER: return "Wszebor czeka na polach na północny zachód od Krakowa. Chce odzyskać chorągiew swoich towarzyszy.";
+			case WARSAW_GATE: case WARSAW_WITNESSES: case WARSAW_TRUCE:
+				return "Rycerz Mark stoi przy obozie pod zamkiem we wschodniej Warszawie. Próbuje pomóc ludziom, którzy zostali w warowni. Porozmawiaj z nim, zanim wmieszasz się w ten spór.";
+			case WARSAW_PAY: case WARSAW_STEWARD:
+				return "Zajrzyj do księcia przy obozie pod warszawskim zamkiem. Nie wszystkie wieści z warowni do niego dochodzą. Warto, żeby usłyszał je także od ciebie.";
+			case WARSAW_FIRE:
+				return "Dobrosława opatruje rannych w lazarecie warszawskiej warowni. Słyszała coś niepokojącego. Nie zostawiaj jej samej z tą sprawą.";
 			default: throw new IllegalStateException("Unknown story step");
 			}
 		}

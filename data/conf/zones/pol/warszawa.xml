@@ -126,6 +126,11 @@
 		<configurator class-name="games.stendhal.server.maps.warszawa.castle.PrinceNPC"/>
 		<configurator class-name="games.stendhal.server.maps.warszawa.castle.WarsawArmy"/>
 
+		<portal x="75" y="54" ref="fortress_entrance">
+			<destination zone="int_warszawa_fortress" ref="exit"/>
+			<attribute name="move.continuous" />
+		</portal>
+
 		<portal x="42" y="66" ref="smith_entrance">
 			<destination zone="int_warszawa_blacksmith" ref="smith_exit"/>
 			<attribute name="move.continuous" />
@@ -222,6 +227,14 @@
 	</zone>
 
 	<!-- interiors -->
+
+	<zone name="int_warszawa_fortress" file="interiors/warszawa/fortress.tmx">
+		<configurator class-name="games.stendhal.server.maps.quests.trail.WarsawFortressSites"/>
+		<portal x="27" y="45" ref="exit">
+			<destination zone="0_warszawa_e" ref="fortress_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
 
 	<!-- Eltefia House -->
 	<zone name="int_warszawa_eltefia_house" file="interiors/warszawa/collector_house.tmx">

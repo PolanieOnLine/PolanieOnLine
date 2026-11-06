@@ -19,6 +19,7 @@ public final class TrailQuestLine {
     public static final String MOUNTAIN_CHAPTER = "Ludzie Radana";
     public static final String KEEP_CHAPTER = "Stara warownia";
     public static final String OATH_CHAPTER = "Dług wobec zmarłych";
+    public static final String WARSAW_CHAPTER = "Pod murami Warszawy";
     public static final String DUNGEON_CHAPTER = "Pod miastem";
     public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
     public static final String FOREST = "0_koscielisko_e";
@@ -122,7 +123,25 @@ public final class TrailQuestLine {
                 "Zanieś Wszeborowi rozkaz i zapytaj o chorągiew oddziału.", OATH_CHAPTER, 5, Region.KRAKOW_CITY, 100),
         OATH_BURIAL("trail_oath_burial", "Dotrzymane słowo", "Wagabundus", "remains", 12000, 600,
                 "Poległym obiecano wspólny pochówek. Znamy już prawdę i mamy chorągiew. Pora dotrzymać danego im słowa.",
-                "Wróć do Wagabundusa. Powiedz: wspólny pochówek.", OATH_CHAPTER, 6, Region.KRAKOW_CITY, 100);
+                "Wróć do Wagabundusa. Powiedz: wspólny pochówek.", OATH_CHAPTER, 6, Region.KRAKOW_CITY, 100),
+        WARSAW_GATE("trail_warsaw_gate", "Zanim ruszy szturm", "rycerz Mark", "fight", 20000, 500,
+                "Mark obawia się o ludzi pozostających w warszawskiej warowni. Zanim książę wyda rozkaz szturmu, chce poznać ich los.",
+                "Porozmawiaj z rycerzem Markiem przy obozie pod zamkiem we wschodniej Warszawie. Powiedz: zanim ruszy szturm.", WARSAW_CHAPTER, 1, Region.WARSZAWA, 150),
+        WARSAW_PAY("trail_warsaw_pay", "Żołd, którego nie wypłacono", "Książę", "clues;0", 25000, 500,
+                "Załoga twierdzi, że od miesięcy nie dostaje żołdu. Książę utrzymuje, że wysłał pieniądze. Odpowiedź może być w kancelarii.",
+                "Zapytaj księcia w obozie pod warszawskim zamkiem o niewypłacony żołd.", WARSAW_CHAPTER, 2, Region.WARSZAWA, 150),
+        WARSAW_WITNESSES("trail_warsaw_witnesses", "Ci, którzy zostali w środku", "rycerz Mark", "witnesses;0", 22000, 400,
+                "Zapiski obciążają zarządcę Radomira. Mark chce poznać relacje załogi i rannych, zanim oskarży dawnego towarzysza.",
+                "Porozmawiaj z Markiem o ludziach w warowni. Powiedz: ludzie w środku.", WARSAW_CHAPTER, 3, Region.WARSZAWA, 150),
+        WARSAW_FIRE("trail_warsaw_fire", "Rozkaz podpalenia", "Dobrosława", "orders", 30000, 700,
+                "Dobrosława usłyszała o beczkach z olejem wniesionych do magazynu. Radomir może chcieć spalić warownię razem z dowodami.",
+                "Odwiedź Dobrosławę w lazarecie warowni. Zapytaj o beczki z olejem.", WARSAW_CHAPTER, 4, Region.WARSZAWA, 150),
+        WARSAW_STEWARD("trail_warsaw_steward", "Rachunek zarządcy", "Książę", "fight", 55000, 1200,
+                "Olej został usunięty. Radomir zabarykadował się w sali dowodzenia. Trzeba go pokonać i odzyskać jego zapiski.",
+                "Zanieś księciu wieści o przygotowanym podpaleniu. Powiedz: zarządca Radomir.", WARSAW_CHAPTER, 5, Region.WARSZAWA, 150),
+        WARSAW_TRUCE("trail_warsaw_truce", "Brama dla ocalałych", "rycerz Mark", "truce", 28000, 1700,
+                "Radomir nie zagrozi już załodze. Pozostało uzgodnić wyjście rannych i przekonać księcia, żeby oszczędził zwykłych żołnierzy.",
+                "Wróć do Marka i porozmawiaj o ocaleniu załogi.", WARSAW_CHAPTER, 6, Region.WARSZAWA, 150);
 
         public final String slot, title, npc, initial, description, hint, chapter, region;
         public final int xp, coins, order, minimumLevel;
@@ -209,6 +228,8 @@ public final class TrailQuestLine {
                 return AdosKeepProgress.objective(player, step);
             case OATH_WATCH: case OATH_NAMES: case OATH_GRAVE: case OATH_TRUTH: case OATH_BANNER: case OATH_BURIAL:
                 return OathTrailProgress.objective(player, step);
+            case WARSAW_GATE: case WARSAW_PAY: case WARSAW_WITNESSES: case WARSAW_FIRE: case WARSAW_STEWARD: case WARSAW_TRUCE:
+                return WarsawFortressProgress.objective(player, step);
             default: throw new IllegalStateException("Unknown chapter step");
             }
         }
@@ -277,6 +298,8 @@ public final class TrailQuestLine {
             return AdosKeepProgress.history(player, step);
         case OATH_WATCH: case OATH_NAMES: case OATH_GRAVE: case OATH_TRUTH: case OATH_BANNER: case OATH_BURIAL:
             return OathTrailProgress.history(player, step);
+        case WARSAW_GATE: case WARSAW_PAY: case WARSAW_WITNESSES: case WARSAW_FIRE: case WARSAW_STEWARD: case WARSAW_TRUCE:
+            return WarsawFortressProgress.history(player, step);
         default: throw new IllegalStateException("Unknown chapter step");
         }
         return entries;
@@ -295,6 +318,7 @@ public final class TrailQuestLine {
         MountainTrailProgress.recordKill(player, victim);
         AdosKeepProgress.recordGuardianKill(player, victim);
         OathTrailProgress.recordKill(player, victim);
+        WarsawFortressProgress.recordKill(player, victim);
         if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
                 || !(victim instanceof Creature) || victim instanceof ArenaCreature || victim instanceof DeathMatchCreature
                 || !GUARD.equals(victim.getName()) || victim.getZone() == null

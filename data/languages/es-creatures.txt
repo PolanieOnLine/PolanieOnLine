@@ -1394,3 +1394,5 @@ dowódca duergarów=comandante duergar
 strażnik warowni=guardián de la fortaleza
 poległy wartownik=centinela caído
 strażnik dawnej chorągwi=guardián del antiguo estandarte
+wartownik buntowników=centinela rebelde
+zarządca Radomir=administrador Radomir

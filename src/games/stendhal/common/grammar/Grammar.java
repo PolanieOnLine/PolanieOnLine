@@ -881,6 +881,8 @@ public class Grammar {
 	 * @return Either "[noun]" or plural("[noun]") as appropriate
 	 */
 	public static String plnounCreature(final int quantity, final String noun) {
+		if ("wartownik buntowników".equalsIgnoreCase(noun)) return quantity == 1 ? "wartownik buntowników" : "wartowników buntowników";
+		if ("zarządca Radomir".equalsIgnoreCase(noun)) return quantity == 1 ? "zarządca Radomir" : "zarządców Radomirów";
 		if ("poległy wartownik".equalsIgnoreCase(noun)) return quantity == 1 ? "poległy wartownik" : "poległych wartowników";
 		if ("strażnik dawnej chorągwi".equalsIgnoreCase(noun)) return quantity == 1 ? "strażnik dawnej chorągwi" : "strażników dawnej chorągwi";
 		if ("strażnik warowni".equalsIgnoreCase(noun)) return quantity == 1 ? "strażnik warowni" : "strażników warowni";

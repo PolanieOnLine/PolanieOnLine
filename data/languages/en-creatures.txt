@@ -1394,3 +1394,5 @@ dowódca duergarów=duergar commander
 strażnik warowni=keep guardian
 poległy wartownik=fallen sentry
 strażnik dawnej chorągwi=keeper of the old banner
+wartownik buntowników=rebel sentry
+zarządca Radomir=steward Radomir
