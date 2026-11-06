@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
+
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -26,6 +28,9 @@ public class PomocChlopcowi implements QuestManuscript {
 		quest.info()
 			.name("Pomoc Adasiowi")
             .mainQuest(StarterQuestLine.CHAPTER, 2, StarterQuestLine.ADAS)
+			.rewards(new QuestRewards(250, 0)
+					.item("buty skórzane", 1, ItemRarity.COMMON, false)
+					.build())
 			.description("Adaś potrzebuje pomocy w oczyszczeniu piwnicy domku bohaterów, aby rodzina mogła przygotować miejsce na zimowe zapasy.")
 			.internalName("pomoc_adasiowi")
 			.notRepeatable()

@@ -14,6 +14,7 @@ import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
 import { GameLanguage } from "../../util/GameLanguage";
+import { createQuestRewards, QuestRewardData } from "../component/QuestRewardsView";
 
 import { marauroa } from "marauroa"
 import { stendhal } from "../../stendhal";
@@ -25,6 +26,7 @@ import { stendhal } from "../../stendhal";
 export class TravelLogDialog extends DialogContentComponent {
 	private currentProgressType = "";
 	private repeatable: {[key: string]: boolean;} = {};
+	private rewards?: ReturnType<typeof createQuestRewards>;
 
 	constructor(dataItems?: string[]) {
 		super("travellogdialog-template");
@@ -170,7 +172,7 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 
-	public itemData(progressType: string, selectedItem: string, description: string, dataItems: string[]) {
+	public itemData(progressType: string, selectedItem: string, description: string, dataItems: string[], rewards?: QuestRewardData) {
 		if (progressType !== this.currentProgressType) {
 			return;
 		}
@@ -188,9 +190,14 @@ export class TravelLogDialog extends DialogContentComponent {
         if (currentObjective) {
             detailsSpan.innerHTML += "<p><strong>" + stendhal.ui.html.esc(dataItems[0]) + "</strong></p>";
         }
+		this.rewards?.dispose();
+		this.rewards = createQuestRewards(rewards);
+		if (this.rewards) detailsSpan.appendChild(this.rewards.element);
 
-		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"
-				+ stendhal.ui.html.esc(description) + "</p>";
+		const descriptionElement = document.createElement("p");
+		descriptionElement.id = "travellogdescription";
+		descriptionElement.textContent = description;
+		detailsSpan.appendChild(descriptionElement);
 
 		const ul = document.createElement("ul");
 		ul.className = "uniform";
@@ -223,6 +230,10 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 	private refreshDetails(html: string="", newDetails?: HTMLElement) {
+		if (!newDetails) {
+			this.rewards?.dispose();
+			this.rewards = undefined;
+		}
 		const details = this.child(".travellogdetails")!;
 		details.innerHTML = html;
 
@@ -232,6 +243,8 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 	public override onParentClose() {
+		this.rewards?.dispose();
+		this.rewards = undefined;
 		ui.unregisterComponent(this);
 	}
 

@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
+import games.stendhal.common.QuestRewardPreview;
+
 /**
  * defines general information about this quest
  *
@@ -24,6 +26,16 @@ public class QuestInfoBuilder {
 	private int minLevel = 0;
 	private String region = "somewhere";
 	private String questGiverNpc = null;
+	private QuestRewardPreview rewards;
+
+	public QuestInfoBuilder rewards(QuestRewardPreview rewards) {
+		this.rewards = rewards;
+		return this;
+	}
+
+	QuestRewardPreview getRewards() {
+		return rewards;
+	}
     private String mainQuestChapter = "";
     private int mainQuestOrder;
     private String mainQuestStartHint = "";

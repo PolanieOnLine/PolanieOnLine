@@ -50,6 +50,7 @@ import games.stendhal.client.gui.textformat.HtmlPreprocessor;
 import games.stendhal.client.gui.wt.core.SettingChangeAdapter;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.common.QuestRewardPreview;
 
 /**
  * Progress status window. For displaying quest information.
@@ -158,13 +159,14 @@ class ProgressLog {
 	 * @param information information
 	 * @param contents content paragraphs
 	 */
-	void setPageContent(String page, String header, String description, String information, List<String> contents) {
+	void setPageContent(String page, String header, String description, String information, List<String> contents,
+			QuestRewardPreview rewards) {
 		int index = pageIndex(page);
 		if (index != -1) {
 			Component comp = tabs.getComponent(index);
 			if (comp instanceof Page) {
 				boolean rep = repeatable.contains(header);
-				((Page) comp).setContent(header, description, information, contents, rep);
+				((Page) comp).setContent(header, description, information, contents, rep, rewards);
 			}
 		}
 	}
@@ -260,6 +262,7 @@ class ProgressLog {
 			panels.add(indexScrollPane, SLayout.EXPAND_Y);
 
 			contentArea = new PrettyEditorPane();
+			QuestRewardsPanel.install(contentArea);
 			// Does not need a listener. There should be no links
 
 			contentScrollPane = new JScrollPane(contentArea);
@@ -416,7 +419,8 @@ class ProgressLog {
 		 * 	repeatable, otherwise <code>false</code>
 		 */
 		void setContent(String header, String description, String information,
-				List<String> contents, boolean repeatable) {
+				List<String> contents, boolean repeatable, QuestRewardPreview rewards) {
+			contentArea.putClientProperty(QuestRewardsPanel.PROPERTY, rewards);
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());
 
@@ -439,6 +443,9 @@ class ProgressLog {
             if (currentObjective) {
                 text.append("<p><b>").append(games.stendhal.client.ClientLanguage.getText(contents.get(0))).append("</b></p>");
             }
+			if (rewards != null) {
+				text.append(QuestRewardsPanel.MARKUP);
+			}
 
 			// information
 			if ((information != null) && (!information.trim().equals(""))) {

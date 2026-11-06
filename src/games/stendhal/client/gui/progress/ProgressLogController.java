@@ -21,6 +21,7 @@ import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.common.constants.Actions;
+import games.stendhal.common.QuestRewardPreview;
 import marauroa.common.game.RPAction;
 
 public class ProgressLogController {
@@ -113,11 +114,12 @@ public class ProgressLogController {
 	 * @param information information
 	 * @param details paragraphs
 	 */
-	public void showDescription(final String category, final String item, final String description, final String information, final List<String> details) {
+	public void showDescription(final String category, final String item, final String description, final String information,
+			final List<String> details, final QuestRewardPreview rewards) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				getProgressLog().setPageContent(category, item, description, information, details);
+				getProgressLog().setPageContent(category, item, description, information, details, rewards);
 				showWindow();
 			}
 		});

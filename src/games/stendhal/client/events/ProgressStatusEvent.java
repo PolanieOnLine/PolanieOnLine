@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.gui.progress.ProgressLogController;
+import games.stendhal.common.QuestRewardPreview;
 
 /**
  * adjust the quest progress view
@@ -40,7 +41,8 @@ class ProgressStatusEvent extends Event<RPEntity> {
 					ProgressLogController.get().showCategorySummary(event.get("progress_type"), event.getList("data"));
 				}
 			} else {
-				ProgressLogController.get().showDescription(event.get("progress_type"), event.get("item"), event.get("description"), event.get("information"), event.getList("data"));
+				ProgressLogController.get().showDescription(event.get("progress_type"), event.get("item"),
+						event.get("description"), event.get("information"), event.getList("data"), QuestRewardPreview.read(event));
 			}
 		} catch (RuntimeException e) {
 			logger.error("Failed to process progress status. Event: " + event, e);

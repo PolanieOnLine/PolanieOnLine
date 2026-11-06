@@ -153,6 +153,8 @@ public class WegielNaOpal extends AbstractQuest {
 				true);
 
         questInfo.setMainQuest(StarterQuestLine.CHAPTER, 4, StarterQuestLine.STASEK);
+		questInfo.setRewards(new QuestRewards(5500, 0)
+				.note("Dostęp do sklepu Staska z uzbrojeniem.").build());
 		startQuests();
 		requestItem();
 		collectItem();

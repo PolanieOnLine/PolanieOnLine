@@ -1886,6 +1886,40 @@ body.mobile-floating-ui #left-panel-toggle,
 	font-style: italic;
 }
 
+.quest-rewards {
+	margin: 0.7em 0 1em;
+}
+
+.quest-reward-amounts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.2em 12px;
+	margin: 4px 0;
+}
+
+.quest-reward-items {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 16px;
+	margin-top: 6px;
+}
+
+.quest-reward-item {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	max-width: 230px;
+}
+
+.quest-reward-item .itemSlot {
+	flex: 0 0 auto;
+}
+
+.quest-reward-item small {
+	display: block;
+	margin-top: 3px;
+}
+
 #travellogdescription {
 	overflow-wrap: anywhere;
 	word-break: break-word;

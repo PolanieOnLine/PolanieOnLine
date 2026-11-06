@@ -17,6 +17,7 @@ async function harness() {
  class Element {
   constructor() {this.innerHTML="";this.children=[];this.style={setProperty(){}};}
   appendChild(child){this.children.push(child);}
+  append(...children){this.children.push(...children);}
   dispatchEvent() {}
  }
  const list=new Element(),details=new Element();
@@ -34,10 +35,27 @@ async function harness() {
   marauroa:{marauroa:{clientFramework:{sendAction(){}}}},
   "../../stendhal":{stendhal:{config:{get:()=>"sans-serif"},session:{touchOnly:()=>true},ui:{html:{esc:escape}}}}
  };
+ const timers = new Set();
+ const rewardModules = {
+  "../../util/GameLanguage":modules["../../util/GameLanguage"],
+  "../../data/Paths":{Paths:{gui:"/gui",sprites:"/sprites"}},
+  "../../SingletonRepo":{singletons:{getSpriteStore:()=>({checkPath:path=>path,get:()=>({width:64})})}},
+  "./ItemSlotPresentation":{getItemSlotLayers:slot=>{
+   const layers={icon:new Element(),quantityLabel:new Element()};
+   slot.append(layers.icon,layers.quantityLabel);return layers;
+  }}
+ };
+ const rewardExports={};
+ vm.runInNewContext(compile("ui/component/QuestRewardsView.ts"),{
+  exports:rewardExports,document:{createElement:()=>new Element()},
+  setInterval:fn=>{timers.add(fn);return fn;},clearInterval:fn=>timers.delete(fn),
+  require:name=>{assert.ok(rewardModules[name],name);return rewardModules[name];}
+ });
+ modules["../component/QuestRewardsView"]=rewardExports;
  const exports={};
  vm.runInNewContext(compile("ui/dialog/TravelLogDialog.ts"),{exports,console,
   Event:class {},document:{createElement:()=>new Element()},require:name=>{assert.ok(modules[name],name);return modules[name];}});
- return {Dialog:exports.TravelLogDialog,language,list,details};
+ return {Dialog:exports.TravelLogDialog,language,list,details,timers};
 }
 test("travel log translates loading and empty states without changing its option value",async()=>{
  const {Dialog,language,list}=await harness(); const dialog=new Dialog();
@@ -55,8 +73,8 @@ test("repeatable quest note is translated while canonical title and escaped serv
  let view=details.children.at(-1);
  assert.ok(view.innerHTML.includes("I can do this quest again."));
  assert.ok(view.innerHTML.includes("<h3>Zamknij</h3>"));
- assert.ok(view.innerHTML.includes("Opis &lt;script&gt;"));
- assert.equal(view.children[0].children[0].innerHTML,"&lt;script&gt;Witaj.&lt;/script&gt;");
+ assert.equal(view.children[0].textContent,"Opis <script>");
+ assert.equal(view.children[1].children[0].innerHTML,"&lt;script&gt;Witaj.&lt;/script&gt;");
  assert.deepEqual(history,["<script>Witaj.</script>"]);
  language.synchronize("pl"); dialog.itemData("","Zamknij","Opis",[]);
  view=details.children.at(-1);
@@ -73,7 +91,39 @@ test("main quests preserve the server's current-step order without mutating data
  const history=["Aktualny cel: Porozmawiaj z Pietrkiem.","Historia zadania."];
  dialog.itemData("Zadania główne","Spotkanie Pietrka","Opis zadania",history);
  const view=details.children.at(-1);
- assert.ok(view.innerHTML.indexOf("Aktualny cel:")<view.innerHTML.indexOf("Opis zadania"));
- assert.equal(view.children[0].children.length,1);
+ assert.ok(view.innerHTML.includes("Aktualny cel:"));
+ assert.equal(view.children[0].textContent,"Opis zadania");
+ assert.equal(view.children[1].children.length,1);
  assert.deepEqual(history,["Aktualny cel: Porozmawiaj z Pietrkiem.","Historia zadania."]);
+});
+
+test("quest rewards precede history, preserve quantity and guaranteed rarity, and stop animation on change",async()=>{
+ const {Dialog,language,details,timers}=await harness();
+ language.synchronize("pl");
+ const dialog=new Dialog();dialog.currentProgressType="Zadania główne";
+ const rewards={reward_xp:10000,reward_coins:200,reward_completed:0,
+  reward_names:["duży eliksir"],reward_classes:["drink"],reward_subclasses:["greater_potion"],
+  reward_amounts:["5"],reward_rarities:["rare"],reward_descriptions:["Opis <script>"],
+  reward_bindings:["1"],reward_notes:[]};
+ dialog.itemData("Zadania główne","Tytuł","Historia",["Aktualny cel: Wróć."],rewards);
+ let view=details.children.at(-1);
+ const section=view.children[0];
+ assert.equal(section.className,"quest-rewards");
+ assert.equal(section.children[0].textContent,"Nagrody");
+ const card=section.children[2].children[0];
+ assert.equal(card.children[0].children[1].textContent,"5");
+ assert.equal(card.children[1].children[1].textContent,"Rzadki");
+ assert.ok(card.title.includes("Opis <script>"));
+ assert.ok(card.title.includes("Przypisany do postaci"));
+ assert.equal(timers.size,1);
+ dialog.itemData("Zadania główne","Inne zadanie","Historia",[]);
+ assert.equal(timers.size,0);
+ assert.notEqual(details.children.at(-1).children[0].className,"quest-rewards");
+ const wire=Object.fromEntries(Object.entries(rewards).map(([key,value])=>
+  [key,Array.isArray(value)?"["+value.join("\t")+"]":String(value)]));
+ dialog.itemData("Zadania główne","Ukończone","Historia",[],{...wire,reward_completed:"1"});
+ assert.equal(details.children.at(-1).children[0].children[0].textContent,"Otrzymane nagrody");
+ assert.equal(details.children.at(-1).children[0].children[2].children[0].children[0].children[1].textContent,"5");
+ dialog.onParentClose();
+ assert.equal(timers.size,0);
 });

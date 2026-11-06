@@ -119,10 +119,15 @@ public class ProgressStatusQueryAction implements ActionListener {
                 final QuestInfo info = quest.getQuestInfo(player);
                 description = "Rozdział: " + info.getMainQuestChapter() + ". " + description;
             }
-			player.addEvent(new ProgressStatusEvent(progressType, item,
+			ProgressStatusEvent event = new ProgressStatusEvent(progressType, item,
                     description,
                     information,
-					questSystem.getQuestProgressDetails(player, item)));
+					questSystem.getQuestProgressDetails(player, item));
+			if (quest != null && quest.getQuestInfo(player).isMainQuest()) {
+				event.setRewards(quest.getQuestInfo(player).getRewards(),
+						quest.isCompleted(player));
+			}
+			player.addEvent(event);
 		} else if (progressType.equals("Produkcja")) {
 			player.addEvent(new ProgressStatusEvent(progressType, item,
 					SingletonRepository.getProducerRegister().getProductionDescription(player, item),

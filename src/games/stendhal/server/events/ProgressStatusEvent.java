@@ -15,6 +15,7 @@ package games.stendhal.server.events;
 import java.util.List;
 
 import games.stendhal.common.constants.Events;
+import games.stendhal.common.QuestRewardPreview;
 import marauroa.common.game.Definition.DefinitionClass;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -37,6 +38,21 @@ public class ProgressStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "description", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "information", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "data", Type.VERY_LONG_STRING);
+		for (String key : new String[] { "reward_xp", "reward_coins",
+				"reward_completed" }) {
+			rpclass.add(DefinitionClass.ATTRIBUTE, key, Type.INT);
+		}
+		for (String key : new String[] { "reward_names", "reward_classes",
+				"reward_subclasses", "reward_amounts", "reward_rarities",
+				"reward_descriptions", "reward_bindings", "reward_notes" }) {
+			rpclass.add(DefinitionClass.ATTRIBUTE, key, Type.VERY_LONG_STRING);
+		}
+	}
+
+	public void setRewards(QuestRewardPreview rewards, boolean completed) {
+		if (rewards != null) {
+			rewards.write(this, completed);
+		}
 	}
 
 	/**

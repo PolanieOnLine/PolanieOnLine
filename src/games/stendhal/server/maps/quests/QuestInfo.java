@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import marauroa.common.Pair;
+import games.stendhal.common.QuestRewardPreview;
 
 /**
  * Static info about quests, filled with fillQuestInfo in each quest
@@ -33,6 +34,15 @@ public class QuestInfo {
 	private Map<String, String> hints = new HashMap<String, String>();
 
 	private int suggestedMinLevel;
+	private QuestRewardPreview rewards;
+
+	public void setRewards(QuestRewardPreview rewards) {
+		this.rewards = rewards;
+	}
+
+	public QuestRewardPreview getRewards() {
+		return rewards;
+	}
     private String mainQuestChapter = "";
     private int mainQuestOrder;
     private String mainQuestStartHint = "";

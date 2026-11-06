@@ -120,6 +120,7 @@ public class BuiltQuest extends AbstractQuest {
             questInfo.setMainQuest(questBuilder.info().getMainQuestChapter(),
                     questBuilder.info().getMainQuestOrder(), questBuilder.info().getMainQuestStartHint());
         }
+		questInfo.setRewards(questBuilder.info().getRewards());
 
 		ChatCondition questCompletedCondition = questBuilder.task().buildQuestCompletedCondition(questSlot);
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);

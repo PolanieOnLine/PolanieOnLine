@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.After;
 import org.junit.Test;
 import games.stendhal.common.Level;
+import games.stendhal.common.QuestRewardPreview;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.server.core.config.zone.TMXLoader;
@@ -26,6 +27,7 @@ import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
 import games.stendhal.server.maps.quests.RosaBasementRats;
+import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.maps.gdansk.ship.FerryConveyerNPC;
 import games.stendhal.server.maps.gdansk.knighthouse.MalteisNPC;
 import games.stendhal.server.maps.gdansk.tavern.RosaNPC;
@@ -390,6 +392,32 @@ public class CoastTrailStoryTest {
 		assertEquals(1, player.getTotalNumberOf("płaszcz chaosu"));
 		for (Object e : player.getZone().getEntitiesOfClass(Item.class))
 			assertNotEquals("money", ((Item) e).getName());
+	}
+
+	@Test
+	public void journalPreviewShowsOnlyThisStepsGuaranteedRewards() {
+		QuestRewardPreview early = system.getQuest(
+				Step.COAST_WRECK.title).getQuestInfo(player).getRewards();
+		assertEquals(Step.COAST_WRECK.xp, early.xp);
+		assertEquals(Step.COAST_WRECK.coins, early.coins);
+		assertTrue(early.items.isEmpty());
+		QuestRewardPreview finale = system.getQuest(
+				Step.COAST_RETURN.title).getQuestInfo(player).getRewards();
+		assertEquals(1, finale.items.size());
+		assertEquals("płaszcz chaosu", finale.items.get(0).name);
+		assertEquals("rare", finale.items.get(0).rarity);
+		assertTrue(finale.items.get(0).bound);
+		ProgressStatusEvent event = new ProgressStatusEvent("Zadania główne",
+				Step.COAST_RETURN.title, "opis", Collections.emptyList());
+		event.setRewards(finale, true);
+		QuestRewardPreview received = QuestRewardPreview.read(event);
+		assertTrue(received.completed);
+		assertEquals(finale.items.get(0).subclass,
+				received.items.get(0).subclass);
+		assertEquals(0, player.getTotalNumberOf("płaszcz chaosu"));
+		assertFalse(player.hasQuest(Step.COAST_RETURN.slot));
+		assertNull(QuestRewardPreview.read(
+				new ProgressStatusEvent("Produkcja", Collections.emptyList())));
 	}
 
 	@Test

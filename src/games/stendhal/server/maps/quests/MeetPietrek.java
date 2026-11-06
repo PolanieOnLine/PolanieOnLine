@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
+
 import java.util.ArrayList;
 import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import java.util.Arrays;
@@ -318,6 +320,9 @@ public class MeetPietrek extends AbstractQuest {
 				"Pietrek pomaga nowym bohaterom w poznaniu świata PolanieOnLine.",
 				false);
         questInfo.setMainQuest(StarterQuestLine.CHAPTER, 1, StarterQuestLine.PIETREK);
+		questInfo.setRewards(new QuestRewards(550, 25)
+				.item("puklerz", 1, ItemRarity.COMMON, false)
+				.build());
 		preparePietrek();
 		initShop();
 	}

@@ -895,3 +895,10 @@ Wybierz poprawną ilość.=Choose a valid quantity.
 Najpierw ukończ zadanie dla tego rzemieślnika.=Complete this artisan's quest first.
 Rzemieślnik potrzebuje przerwy przed kolejnym zamówieniem.=The artisan needs a break before the next order.
 Podejdź do rzemieślnika lub jego stanowiska, aby obsłużyć zamówienie.=Approach the artisan or their workstation to manage your order.
+
+Nagrody=Rewards
+Otrzymane nagrody=Rewards received
+PD=XP
+monet=coins
+Przypisany do postaci=Bound to character
+Dostęp do sklepu Staska z uzbrojeniem.=Access to Stasek's equipment shop.

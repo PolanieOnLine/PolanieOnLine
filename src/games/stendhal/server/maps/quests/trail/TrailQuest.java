@@ -13,6 +13,8 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AbstractQuest;
+import games.stendhal.server.maps.quests.QuestRewards;
+import games.stendhal.common.constants.ItemRarity;
 
 /** Common journal metadata, consent and one-time rewards for the chapter. */
 abstract class TrailQuest extends AbstractQuest {
@@ -26,6 +28,39 @@ abstract class TrailQuest extends AbstractQuest {
 	public final void addToWorld() {
 		fillQuestInfo(step.title, step.description, false);
 		questInfo.setMainQuest(step.chapter, step.order, step.hint);
+		QuestRewards rewards = new QuestRewards(step.xp, step.coins);
+		switch (step) {
+		case RADAN_FINALE:
+			rewards.item("buty żelazne", 1, ItemRarity.RARE, true);
+			break;
+		case MINE_DISPATCH:
+			rewards.item("duży eliksir", 5, null, false);
+			break;
+		case MOUNTAIN_RETURN:
+			rewards.item("cuha góralska", 1, ItemRarity.RARE, true);
+			break;
+		case KEEP_RETURN:
+			rewards.item("hełm chaosu", 1, ItemRarity.RARE, true);
+			break;
+		case OATH_BURIAL:
+			rewards.item("magiczna tarcza płytowa", 1, ItemRarity.RARE, true);
+			break;
+		case WARSAW_TRUCE:
+			rewards.item("magiczna zbroja płytowa", 1, ItemRarity.RARE, true);
+			break;
+		case COAST_RETURN:
+			rewards.item("płaszcz chaosu", 1, ItemRarity.RARE, true);
+			break;
+		case SALT_RETURN:
+			rewards.item("hełm wampirzy", 1, ItemRarity.RARE, true);
+			break;
+		case EMBER_RETURN:
+			rewards.item("złota skrzynia", 1, null, true);
+			break;
+		default:
+			break;
+		}
+		questInfo.setRewards(rewards.build());
 		addDialogs();
 	}
 

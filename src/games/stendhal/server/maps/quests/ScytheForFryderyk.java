@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.common.constants.ItemRarity;
+
 import java.util.ArrayList;
 import games.stendhal.server.core.rule.quest.StarterQuestLine;
 import java.util.LinkedList;
@@ -150,6 +152,9 @@ public class ScytheForFryderyk extends AbstractQuest {
 			"Fryderyk potrzebuje kosy, aby zebrać plony i przygotować zapasy przed zimą.",
 			false);
         questInfo.setMainQuest(StarterQuestLine.CHAPTER, 3, StarterQuestLine.FRYDERYK);
+		questInfo.setRewards(new QuestRewards(2200, 0)
+				.item("skórzany hełm", 1, ItemRarity.COMMON, false)
+				.build());
 		createRequestingStep();
 		createBringingStep();
 	}

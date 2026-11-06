@@ -25,6 +25,7 @@ export class ProgressStatusEvent extends RPEvent {
 	public data!: string;
 	public item!: string;
 	public description!: string;
+	public reward_xp?: number | string;
 
 	public execute(_entity: any): void {
 		let progressType = this["progress_type"];
@@ -55,7 +56,7 @@ export class ProgressStatusEvent extends RPEvent {
 				travelLogDialog.progressTypeData(progressType, dataItems);
 			}
 		} else {
-			travelLogDialog.itemData(progressType, this["item"], this["description"], dataItems);
+			travelLogDialog.itemData(progressType, this["item"], this["description"], dataItems, this);
 		}
 	}
 
