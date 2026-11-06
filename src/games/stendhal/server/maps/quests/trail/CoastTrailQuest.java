@@ -92,14 +92,14 @@ public final class CoastTrailQuest extends TrailQuest {
         complete(player,speaker,"report");return true;
     }
     private void reward(Player player,EventRaiser speaker) {
-        Item cloak=SingletonRepository.getEntityManager().getItem("czarny płaszcz",
+        Item belt=SingletonRepository.getEntityManager().getItem("pas z mithrilu",
                 ItemCreationContext.builder(ItemCreationContext.Source.QUEST).withQuestRarity(ItemRarity.RARE).generateAffixes(true).build());
-        cloak.setBoundTo(player.getName());
-        cloak.setDescription("Oto czarny płaszcz podarowany za ocalenie Jaskółki. Pod kołnierzem wyszyto niewielką mewę, ku pamięci ludzi uratowanych na gdańskim wybrzeżu.");
-        if (!player.equip("bag",cloak)) {speaker.say("Mam dla ciebie płaszcz, ale twój plecak jest pełny. Zostaw trochę miejsca i wróć.");return;}
+        belt.setBoundTo(player.getName());
+        belt.setDescription("Oto pas z mithrilu podarowany za ocalenie Jaskółki. Na sprzączce wyryto niewielką mewę, ku pamięci ludzi uratowanych na gdańskim wybrzeżu.");
+        if (!player.equip("bag",belt)) {speaker.say("Mam dla ciebie pas, ale twój plecak jest pełny. Zostaw trochę miejsca i wróć.");return;}
         StackableItem coins=(StackableItem)SingletonRepository.getEntityManager().getItem("money",ItemCreationContext.quest());coins.setQuantity(step.coins);
         if (player.getSlotToEquip(coins)==null) {
-            player.getSlot("bag").remove(cloak.getID());speaker.say("Zostaw miejsce także na monety. Płaszcz i zapłata poczekają tutaj na ciebie.");return;
+            player.getSlot("bag").remove(belt.getID());speaker.say("Zostaw miejsce także na monety. Pas i zapłata poczekają tutaj na ciebie.");return;
         }
         complete(player,speaker,"ready");
     }
@@ -140,7 +140,7 @@ public final class CoastTrailQuest extends TrailQuest {
         case COAST_LAMPS: return "Tak, o to chodziło. Pilot rozpozna obie lampy. Został ostatni sygnał, ale najpierw brzeg musi być spokojny. "
                 + "Porozmawiaj ze Staszkiem o #'ratunku dla Jaskółki'. Z przystani łatwiej wypatrzyć, czy ktoś znowu idzie do lamp.";
         case COAST_RETURN: return "Jaskółka zacumowała. Widziałem, jak pasażerowie schodzili na pomost, i dopiero wtedy odetchnąłem. "
-                + "Weź ten płaszcz i 2500 monet od uratowanych kupców. Niech dobrze ci służy. "
+                + "Weź ten pas z mithrilu i 2500 monet od uratowanych kupców. Niech dobrze ci służy. "
                 + "A o Mewie będziemy pamiętać. Nie wszyscy doczekali pomocy.";
         default: throw new IllegalArgumentException("Not a coast quest");
         }

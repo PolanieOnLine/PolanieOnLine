@@ -100,8 +100,9 @@ public class CoastTrailStoryTest {
         visit("Staszek");say("Staszek","ratunek dla Jaskółki");assertFalse(player.isQuestCompleted(Step.COAST_RETURN.slot));
         visit("Lubor");say("Lubor","bezpiecznym kursie");visit("Staszek");say("Staszek","ratunek dla Jaskółki");
         assertTrue(player.isQuestCompleted(Step.COAST_RETURN.slot));assertEquals(300003,player.getXP()-xp);assertEquals(8000,player.getTotalNumberOf("money"));
-        Item cloak=player.getFirstEquipped("czarny płaszcz");assertNotNull(cloak);assertEquals(ItemRarity.RARE,cloak.getRarity());assertTrue(ItemAffixState.hasAny(cloak));assertEquals(player.getName(),cloak.getBoundTo());
-        xp=player.getXP();say("Staszek","ratunek dla Jaskółki");assertEquals(xp,player.getXP());assertEquals(1,player.getTotalNumberOf("czarny płaszcz"));assertTrue(system.getMainQuests(player).isEmpty());
+        Item belt=player.getFirstEquipped("pas z mithrilu");assertNotNull(belt);assertEquals(ItemRarity.RARE,belt.getRarity());assertTrue(ItemAffixState.hasAny(belt));assertEquals(player.getName(),belt.getBoundTo());
+        assertEquals(0,player.getTotalNumberOf("czarny płaszcz"));assertTrue(belt.getDescription().contains("mewę"));
+        xp=player.getXP();say("Staszek","ratunek dla Jaskółki");assertEquals(xp,player.getXP());assertEquals(1,player.getTotalNumberOf("pas z mithrilu"));assertTrue(system.getMainQuests(player).isEmpty());
     }
     @Test public void wreckCluesArePersonalRangeCheckedAndPersistent(){
         assertFalse(use(Kind.ROPE));ready(200);accept("Staszek","zaginiona Mewa");assertTrue(use(Kind.CRATE));assertFalse(use(Kind.CRATE));
@@ -129,15 +130,15 @@ public class CoastTrailStoryTest {
         player.setPosition(107,64);g.onDamaged(player,g.getHP()+g.getArmorHP());g.onDead(player);assertEquals("report",player.getQuest(Step.COAST_LIGHTS.slot));
         CoastTrailGuard next=guard(Encounter.BEACH);next.setTarget(player);next.logic();assertFalse(next.isAttacking());assertTrue(next.getNewInstance().isAbnormal());
     }
-    @Test public void finalCloakAndCoinsWaitUntilBothCanBeCarried(){
+    @Test public void finalBeltAndCoinsWaitUntilBothCanBeCarried(){
         ready(200);for(Step step:Step.values())if(step.chapter.equals(TrailQuestLine.COAST_CHAPTER))player.setQuest(step.slot,"done");player.setQuest(Step.COAST_RETURN.slot,"ready");
         StackableItem coins=(StackableItem)SingletonRepository.getEntityManager().getItem("money");coins.setQuantity(2500);
         while(player.getSlotToEquip(coins)!=null){String slot=player.getSlotToEquip(coins).getName();assertTrue(player.equip(slot,SingletonRepository.getEntityManager().getItem("miecz")));}
         int xp=player.getXP();visit("Staszek");say("Staszek","ratunek dla Jaskółki");assertEquals("ready",player.getQuest(Step.COAST_RETURN.slot));assertEquals(xp,player.getXP());
         RPObject first=player.getSlot("bag").iterator().next();player.getSlot("bag").remove(first.getID());say("Staszek","ratunek dla Jaskółki");
-        assertEquals("ready",player.getQuest(Step.COAST_RETURN.slot));assertEquals(0,player.getTotalNumberOf("czarny płaszcz"));
+        assertEquals("ready",player.getQuest(Step.COAST_RETURN.slot));assertEquals(0,player.getTotalNumberOf("pas z mithrilu"));
         first=player.getSlot("bag").iterator().next();player.getSlot("bag").remove(first.getID());player.setLevel(0);player.setXP(0);say("Staszek","ratunek dla Jaskółki");
-        assertTrue(player.isQuestCompleted(Step.COAST_RETURN.slot));assertEquals(2500,player.getTotalNumberOf("money"));assertEquals(1,player.getTotalNumberOf("czarny płaszcz"));
+        assertTrue(player.isQuestCompleted(Step.COAST_RETURN.slot));assertEquals(2500,player.getTotalNumberOf("money"));assertEquals(1,player.getTotalNumberOf("pas z mithrilu"));
         for(Object e:player.getZone().getEntitiesOfClass(Item.class))assertNotEquals("money",((Item)e).getName());
     }
     @Test public void ferryConsentCannotAcceptTheMainQuest(){

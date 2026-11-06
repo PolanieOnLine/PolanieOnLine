@@ -88,7 +88,7 @@ final class CoastTrailProgress {
             if ("fight".equals(state)) return "Pokonaj niszczyciela sygnałów na plaży Gdańska NE (56,63).";
             if ("signal".equals(state)) return "Nadaj sygnał latarnią pilota w Gdańsku NE (56,57).";
             return "lookout".equals(state)?"Zapytaj Lubora w Gdańsku NW, czy statek obrał bezpieczny kurs. Powiedz: bezpieczny kurs."
-                    :"Wróć do Staszka na przystani promu w Gdańsku NW. Zostaw miejsce na płaszcz i monety. Powiedz: ratunek dla Jaskółki.";
+                    :"Wróć do Staszka na przystani promu w Gdańsku NW. Zostaw miejsce na pas i monety. Powiedz: ratunek dla Jaskółki.";
         default: throw new IllegalArgumentException("Not a coast quest");
         }
     }
