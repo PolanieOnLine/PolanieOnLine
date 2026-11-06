@@ -403,6 +403,20 @@ public class SaltMineStoryTest {
 	}
 
 	@Test
+	public void clickableReservoirTopicCanFinishTheInvestigation() {
+		before(Step.SALT_SOURCE);
+		player.setQuest(Step.SALT_SOURCE.slot, "report");
+		visit("Radost");
+		say("Radost", "starego zbiornika");
+		assertTrue(player.isQuestCompleted(Step.SALT_SOURCE.slot));
+		int xp = player.getXP();
+		int coins = player.getTotalNumberOf("money");
+		say("Radost", "starego zbiornika");
+		assertEquals(xp, player.getXP());
+		assertEquals(coins, player.getTotalNumberOf("money"));
+	}
+
+	@Test
 	public void ordinaryServiceConsentDoesNotAcceptStoryAndDecliningIsSafe() {
 		ready(250);
 		visit("Zbigniew");

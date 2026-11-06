@@ -80,11 +80,11 @@ public final class SaltMineQuest extends TrailQuest {
 			reply(step.npc, (p, s, n) -> request(p, n,
 					"Te drobiny próbują zebrać się w jedną całość. Wstrząs musiał otworzyć #'stary zbiornik', "
 							+ "do którego górnicy dawno nie zaglądali. Ustalisz, którędy woda dostaje się do chodników? Radost zna odpływy, będzie wiedział, co z tym zrobić."),
-					"stary zbiornik", "starym zbiorniku");
+					"stary zbiornik", "starym zbiorniku", "starego zbiornika");
 			reply(SaltMineProgress.FOREMAN, (p, s, n) -> {
 				if (!report(p, n, "report"))
 					remind(p, n);
-			}, "stary zbiornik", "starym zbiorniku");
+			}, "stary zbiornik", "starym zbiorniku", "starego zbiornika");
 			break;
 		case SALT_CREATURE:
 			offer("Szukaj go przy dawnym zbiorniku, dalej na wschód od szybu. Gdy go pokonasz, podejdź do szczeliny obok. "
