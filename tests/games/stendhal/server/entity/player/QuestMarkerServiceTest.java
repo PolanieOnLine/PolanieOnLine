@@ -87,6 +87,45 @@ public class QuestMarkerServiceTest {
 	}
 
 	@Test
+	public void mainOfferOutranksSideOfferButNeverAReadyReward() {
+		final TestQuest main = load("marker_main", false);
+		main.getQuestInfo(player).setMainQuest("Chapter", 1, "Hint");
+		final TestQuest side = load("marker_side", false);
+		prerequisites();
+		assertEquals("main_available", QuestMarkerService.getMarker(player, npc).getCode());
+		player.setQuest(side.slot, "start");
+		cheese();
+		assertEquals(QuestMarker.READY, QuestMarkerService.getMarker(player, npc));
+		player.setQuest(main.slot, "done");
+		player.drop("ser", 2);
+		assertEquals(QuestMarker.IN_PROGRESS, QuestMarkerService.getMarker(player, npc));
+	}
+
+	@Test
+	public void mainQuestWithRepeatableMetadataStillUsesMainOffer() {
+		final TestQuest main = load("marker_repeatable_main", true);
+		main.getQuestInfo(player).setMainQuest("Chapter", 1, "Hint");
+		prerequisites();
+		assertEquals("main_available", QuestMarkerService.getMarker(player, npc).getCode());
+	}
+
+	@Test
+	public void explicitOfferIsClassifiedAsMainWithoutChangingOtherMarkers() {
+		final TestQuest main = new TestQuest("marker_explicit_main", false) {
+			@Override
+			public QuestMarker getNPCQuestMarker(final Player p, final SpeakerNPC speaker) {
+				return p.hasQuest(getSlotName()) ? QuestMarker.READY : QuestMarker.AVAILABLE;
+			}
+		};
+		SingletonRepository.getStendhalQuestSystem().loadQuest(main);
+		loaded.add(main);
+		main.getQuestInfo(player).setMainQuest("Chapter", 1, "Hint");
+		assertEquals("main_available", QuestMarkerService.getMarker(player, npc).getCode());
+		player.setQuest(main.getSlotName(), "start");
+		assertEquals(QuestMarker.READY, QuestMarkerService.getMarker(player, npc));
+	}
+
+	@Test
 	public void availabilityUsesPrerequisitesLevelAndAcceptanceConditions() {
 		load("marker_offer", false);
 		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, npc));

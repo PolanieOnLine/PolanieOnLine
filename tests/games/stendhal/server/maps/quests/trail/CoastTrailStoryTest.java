@@ -9,6 +9,8 @@ import org.junit.BeforeClass;
 import org.junit.After;
 import org.junit.Test;
 import games.stendhal.common.Level;
+import games.stendhal.common.QuestMarker;
+import games.stendhal.server.entity.player.QuestMarkerService;
 import games.stendhal.common.QuestRewardPreview;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.constants.Events;
@@ -101,6 +103,24 @@ public class CoastTrailStoryTest {
 		}
 		for (StendhalRPZone z : zones.values())
 			MockStendlRPWorld.get().removeZone(z);
+	}
+
+	@Test
+	public void mainMarkerRespectsLevelPreviousQuestAndOfferingNpcWithoutStartingStory() {
+		ready(199);
+		SpeakerNPC staszek = NPCList.get().get("Staszek");
+		SpeakerNPC lubor = NPCList.get().get("Lubor");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, staszek));
+		ready(200);
+		assertEquals("main_available", QuestMarkerService.getMarker(player, staszek).getCode());
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, lubor));
+		assertFalse(player.hasQuest(Step.COAST_WRECK.slot));
+		assertEquals(ConversationStates.IDLE, staszek.getEngine().getCurrentState());
+		player.setQuest(Step.COAST_WRECK.slot, "done");
+		assertEquals("main_available", QuestMarkerService.getMarker(player, lubor).getCode());
+		assertFalse(player.hasQuest(Step.COAST_LIGHTS.slot));
+		player.setQuest(Step.COAST_LIGHTS.slot, "rejected");
+		assertNotEquals("main_available", QuestMarkerService.getMarker(player, lubor).getCode());
 	}
 
 	private void move(StendhalRPZone zone) {

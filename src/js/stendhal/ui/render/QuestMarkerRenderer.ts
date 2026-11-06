@@ -4,13 +4,13 @@
  */
 import { RenderingContext2D } from "util/Types";
 
-export type QuestMarker = "available" | "repeatable" | "ready" | "progress";
+export type QuestMarker = "main_available" | "available" | "repeatable" | "ready" | "progress";
 export const QUEST_MARKER_WIDTH = 12;
 export const QUEST_MARKER_HEIGHT = 16;
 const EXCLAMATION = ["00100", "01110", "01110", "00100", "00100", "00000", "00100"];
 const QUESTION = ["01110", "10001", "00001", "00110", "00100", "00000", "00100"];
 const COLORS: Record<QuestMarker, string> = {
-	available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
+	main_available: "#f27766", available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
 };
 const IMAGES = new Map<QuestMarker, HTMLCanvasElement>();
 
@@ -41,7 +41,8 @@ export function drawQuestMarker(ctx: RenderingContext2D, marker: QuestMarker,
 		if (!graphics) {
 			return;
 		}
-		const rows = marker === "available" || marker === "repeatable" ? EXCLAMATION : QUESTION;
+		const rows = marker === "main_available" || marker === "available" || marker === "repeatable"
+			? EXCLAMATION : QUESTION;
 		graphics.fillStyle = "#211b16";
 		for (let row = 0; row < rows.length; row++) {
 			for (let column = 0; column < rows[row].length; column++) {

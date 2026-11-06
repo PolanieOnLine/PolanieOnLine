@@ -42,8 +42,9 @@ function renderer() {
 
 test("markers are private snapshots tied to the current zone and NPC", () => {
 	const {exports: {readQuestMarker}} = renderer();
-	const markers = {_zone: "zone", 7: "ready", 8: "unknown", 9: "__proto__"};
+	const markers = {_zone: "zone", 7: "ready", 11: "main_available", 8: "unknown", 9: "__proto__"};
 	assert.equal(readQuestMarker(markers, "zone", 7), "ready");
+	assert.equal(readQuestMarker(markers, "zone", 11), "main_available");
 	assert.equal(readQuestMarker(markers, "other_zone", 7), undefined);
 	assert.equal(readQuestMarker(markers, "zone", 8), undefined);
 	assert.equal(readQuestMarker(markers, "zone", 9), undefined);
@@ -54,12 +55,12 @@ test("markers are private snapshots tied to the current zone and NPC", () => {
 	assert.equal(readQuestMarker(markers, "zone", undefined), undefined);
 });
 
-test("four static 12x16 glyphs are cached rather than regenerated each frame", () => {
+test("five static 12x16 glyphs are cached rather than regenerated each frame", () => {
 	const {exports: {drawQuestMarker}, canvases} = renderer();
 	const draws = [];
 	const context = {drawImage: (...args) => draws.push(args)};
 	const colors = {
-		available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
+		main_available: "#f27766", available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
 	};
 	for (const marker of Object.keys(colors)) {
 		for (let frame = 0; frame < 60; frame++) {
@@ -73,8 +74,10 @@ test("four static 12x16 glyphs are cached rather than regenerated each frame", (
 		assert.ok(canvas.operations.every(op => op.x >= 0 && op.y >= 0
 			&& op.x + op.width <= 12 && op.y + op.height <= 16));
 	}
-	assert.equal(canvases.length, 4);
-	assert.equal(draws.length, 240);
+	assert.equal(canvases.length, 5);
+	assert.equal(draws.length, 300);
+	assert.deepEqual(canvases[0].operations.map(({color, ...rect}) => rect),
+		canvases[1].operations.map(({color, ...rect}) => rect));
 	assert.equal(draws[0][1], 10);
 	assert.equal(draws[0][2], 21);
 	assert.equal(draws[0][0], draws[59][0]);

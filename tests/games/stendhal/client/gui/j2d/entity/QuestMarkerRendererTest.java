@@ -31,15 +31,17 @@ public class QuestMarkerRendererTest {
 		assertEquals(QuestMarker.NONE, QuestMarkerRenderer.readMarker(user, "other_zone", "7"));
 		assertEquals(QuestMarker.NONE, QuestMarkerRenderer.readMarker(user, "zone", "8"));
 		assertEquals(QuestMarker.NONE, QuestMarkerRenderer.readMarker(user, null, "7"));
+		user.put(QuestMarker.ATTRIBUTE, "7", "main_available");
+		assertEquals(QuestMarker.MAIN_AVAILABLE, QuestMarkerRenderer.readMarker(user, "zone", "7"));
 		user.put(QuestMarker.ATTRIBUTE, "7", "unknown");
 		assertEquals(QuestMarker.NONE, QuestMarkerRenderer.readMarker(user, "zone", "7"));
 	}
 
 	@Test
-	public void allFourGlyphsHaveSmallStablePixelGeometryAndCorrectColors() {
-		final QuestMarker[] markers = {QuestMarker.AVAILABLE, QuestMarker.REPEATABLE,
+	public void allGlyphsHaveSmallStablePixelGeometryAndCorrectColors() {
+		final QuestMarker[] markers = {QuestMarker.MAIN_AVAILABLE, QuestMarker.AVAILABLE, QuestMarker.REPEATABLE,
 				QuestMarker.READY, QuestMarker.IN_PROGRESS};
-		final int[] colors = {0xfff4d06f, 0xff79b9eb, 0xff82d878, 0xffa4a49b};
+		final int[] colors = {0xfff27766, 0xfff4d06f, 0xff79b9eb, 0xff82d878, 0xffa4a49b};
 		for (int i = 0; i < markers.length; i++) {
 			final BufferedImage image = render(markers[i]);
 			assertEquals(colors[i], image.getRGB(7, 4));

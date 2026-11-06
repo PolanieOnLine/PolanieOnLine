@@ -101,7 +101,7 @@ public final class QuestMarkerService {
 		}
 		final QuestMarker explicit = quest.getNPCQuestMarker(player, npc);
 		if (explicit != null) {
-			return explicit;
+			return classifyOffer(player, quest, explicit);
 		}
 		final boolean completed = quest.isCompleted(player);
 		final boolean rejected = "rejected".equals(player.getQuest(quest.getSlotName(), 0));
@@ -132,11 +132,21 @@ public final class QuestMarkerService {
 					&& transition.getAction().startsQuest(quest.getSlotName());
 			if (isEntryState(transition.getState()) && (offer || direct)
 					&& isFulfilled(player, npc, transition)) {
-				return quest.getQuestInfo(player).getRepeatable() || completed
+				final QuestMarker offerMarker = quest.getQuestInfo(player).getRepeatable() || completed
 						? QuestMarker.REPEATABLE : QuestMarker.AVAILABLE;
+				return classifyOffer(player, quest, offerMarker);
 			}
 		}
 		return QuestMarker.NONE;
+	}
+
+	private static QuestMarker classifyOffer(final Player player, final IQuest quest,
+			final QuestMarker marker) {
+		if ((marker == QuestMarker.AVAILABLE || marker == QuestMarker.REPEATABLE)
+				&& quest.getQuestInfo(player).isMainQuest()) {
+			return QuestMarker.MAIN_AVAILABLE;
+		}
+		return marker;
 	}
 
 	private static boolean isEntryState(final ConversationStates state) {

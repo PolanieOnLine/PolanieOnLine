@@ -17,6 +17,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.common.tiled.StendhalMapStructure;
@@ -104,6 +105,17 @@ public class RadanDungeonTest {
 		player = PlayerTestHelper.createPlayer("radan-story");
 		outside.add(player);
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
+	}
+
+	@Test
+	public void automaticFinaleDoesNotAdvertiseASeparateQuestOffer() {
+		player.setLevel(30);
+		player.setQuest(Step.RADAN_TRANSPORT.slot, "done");
+		assertTrue(Step.RADAN_FINALE.available(player));
+		assertEquals(QuestMarker.NONE,
+				new RadanDungeonQuest(Step.RADAN_FINALE).getNPCQuestMarker(player,
+						NPCList.get().get("Lieutenant Drilenun")));
+		assertFalse(player.hasQuest(Step.RADAN_FINALE.slot));
 	}
 
 	@After

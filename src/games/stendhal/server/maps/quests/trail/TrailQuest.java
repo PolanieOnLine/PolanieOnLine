@@ -4,6 +4,7 @@ package games.stendhal.server.maps.quests.trail;
 import java.util.Arrays;
 import java.util.List;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -161,6 +162,21 @@ abstract class TrailQuest extends AbstractQuest {
 	@Override
 	public final boolean isVisibleOnQuestStatus(final Player player) {
 		return step.available(player) || player.hasQuest(step.slot);
+	}
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC npc) {
+		if (player.hasQuest(step.slot)) {
+			return null;
+		}
+		// These checkpoints start automatically during the Radan expedition.
+		if (step == TrailQuestLine.Step.RADAN_RESCUE
+				|| step == TrailQuestLine.Step.RADAN_TRANSPORT
+				|| step == TrailQuestLine.Step.RADAN_FINALE) {
+			return QuestMarker.NONE;
+		}
+		return step.available(player) && step.npc.equals(npc.getName())
+				? QuestMarker.AVAILABLE : QuestMarker.NONE;
 	}
 
 	@Override

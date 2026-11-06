@@ -30,6 +30,7 @@ final class QuestMarkerRenderer {
 	private static final Map<QuestMarker, BufferedImage> IMAGES = new EnumMap<>(QuestMarker.class);
 
 	static {
+		IMAGES.put(QuestMarker.MAIN_AVAILABLE, create(EXCLAMATION, new Color(0xf27766)));
 		IMAGES.put(QuestMarker.AVAILABLE, create(EXCLAMATION, new Color(0xf4d06f)));
 		IMAGES.put(QuestMarker.REPEATABLE, create(EXCLAMATION, new Color(0x79b9eb)));
 		IMAGES.put(QuestMarker.READY, create(QUESTION, new Color(0x82d878)));
