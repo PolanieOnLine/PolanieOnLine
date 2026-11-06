@@ -1403,3 +1403,8 @@ solny szlam=salt slime
 rabuś wybrzeża=coastal wrecker
 herszt nadbrzeżnych rabusiów=wrecker chief
 niszczyciel sygnałów=signal saboteur
+
+strażnik milczącego dzwonu=warden of the silent bell
+echo strażnika=echo of the warden
+Oto strażnik milczącego dzwonu. W szczelinach jego pancerza drżą głosy ludzi, których zwabił na wyspy.=You see the warden of the silent bell. Voices of people he lured to the islands tremble in the cracks of his armour.
+Oto echo strażnika. Ostatni głos dzwonu przybrał skrzydlatą postać i zagrodził drogę ocalałym.=You see an echo of the warden. The bell's last voice took winged form and blocked the survivors' escape.

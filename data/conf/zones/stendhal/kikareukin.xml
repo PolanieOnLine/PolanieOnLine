@@ -57,6 +57,7 @@
 		</attributes>
 		<configurator
 			class-name="games.stendhal.server.maps.kikareukin.islands.AddBalloonListener" />
+		<configurator class-name="games.stendhal.server.maps.quests.trail.BellTrailSites" />
 		<entity x="1" y="1">
 			<implementation
 			class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -117,6 +118,7 @@
 		</attributes>
 		<!-- NPC -->
 		<configurator class-name="games.stendhal.server.maps.kikareukin.cave.Skille350NPC"/>
+		<configurator class-name="games.stendhal.server.maps.quests.trail.BellTrailSites" />
 	</zone>
 
 

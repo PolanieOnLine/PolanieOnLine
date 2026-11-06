@@ -125,6 +125,16 @@ public final class TrailQuestInvitations {
 			return "Wieści od Ostrobora: Herszt trzyma resztę jaj w głębi obozu. Przyjdź do mnie do obozowiska handlarzy na Smoczych Ziemiach, zanim znów je gdzieś wywiozą.";
 		case EMBER_RETURN:
 			return "Wieści od Ostrobora: Jaja wciąż pachną przynętą, a przy gnieździe leżą pułapki. Wróć do mnie w obozowisku na Smoczych Ziemiach. Jeszcze nie możemy ich oddać.";
+		case BELL_RETURNED:
+			return "Wieści od Festris: Z wyprawy na wyspy wrócił tylko jeden chłopak. Twierdzi, że pozostali nie chcą odejść od starego dzwonu. Odwiedź mnie w Kikareukin, na czwartym piętrze.";
+		case BELL_WOUNDED:
+			return "Wieści od Witosława: Moi ludzie ledwo stoją, ale nie zostawię brata we mgle. Przyjdź do obozu na północno-wschodniej wyspie Kikareukin. Może ciebie wysłuchają.";
+		case BELL_VOICE:
+			return "Wieści od Borzęty: Witosław słyszy brata. Ja słyszę kogoś zupełnie innego. Przyjdź do naszego obozu na wyspach Kikareukin. Coś tu jest bardzo nie w porządku.";
+		case BELL_GUARD:
+			return "Wieści od Witosława: Wiem już, czyj głos słyszałem. Nie pójdę za nim drugi raz. Wróć do obozu na wyspach Kikareukin. Musimy uciszyć dzwon.";
+		case BELL_ESCAPE:
+			return "Wieści od Witosława: Ranni są gotowi do drogi. Czekamy na ciebie w obozie na wyspach Kikareukin. Bez osłony nie przejdziemy przez kładkę.";
 		default:
 			throw new IllegalArgumentException(
 					"Missing invitation for " + step);

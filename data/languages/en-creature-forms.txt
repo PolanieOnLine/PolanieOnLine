@@ -1536,3 +1536,12 @@ hersztów nadbrzeżnych rabusiów=wrecker chiefs
 1 niszczyciel sygnałów=1 signal saboteur
 niszczycieli sygnałów=signal saboteurs
 {number:0} niszczycieli sygnałów={0} signal saboteurs
+
+1 strażnik milczącego dzwonu=1 warden of the silent bell
+strażników milczącego dzwonu=wardens of the silent bell
+{number:0} strażników milczącego dzwonu={0} wardens of the silent bell
+1 echo strażnika=1 echo of the warden
+echa strażnika=echoes of the warden
+{number:0} echa strażnika={0} echoes of the warden
+ech strażnika=echoes of the warden
+{number:0} ech strażnika={0} echoes of the warden

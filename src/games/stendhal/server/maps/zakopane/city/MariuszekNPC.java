@@ -143,6 +143,13 @@ public class MariuszekNPC implements ZoneConfigurator {
 			case EMBER_EGGS:
 			case EMBER_RETURN:
 				return "Ostrobor czeka przy obozowisku handlarzy w północno-wschodniej części Smoczych Ziem N. Zna drogę do skradzionych jaj.";
+			case BELL_RETURNED:
+				return "Festris w Kikareukin martwi się o wyprawę na wyspy. Znajdziesz ją na czwartym piętrze. Zapytaj o zaginioną wyprawę.";
+			case BELL_WOUNDED:
+			case BELL_VOICE:
+			case BELL_GUARD:
+			case BELL_ESCAPE:
+				return "Wyprawa czeka na pomoc na północno-wschodniej wyspie Kikareukin. Witosław i Borzęta powiedzą ci, czego potrzeba rannym.";
 			default:
 				throw new IllegalStateException("Unknown story step");
 			}

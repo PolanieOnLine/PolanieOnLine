@@ -23,6 +23,7 @@ public final class TrailQuestLine {
 	public static final String COAST_CHAPTER = "Światła na mieliźnie";
 	public static final String SALT_CHAPTER = "Zalane chodniki";
 	public static final String DRAGON_CHAPTER = "Popiół pod łuskami";
+	public static final String BELL_CHAPTER = "Milczący dzwon";
 	public static final String DUNGEON_CHAPTER = "Pod miastem";
 	public static final String SEMOS_CHAPTER = "Ślad trzech kółek";
 	public static final String FOREST = "0_koscielisko_e";
@@ -747,7 +748,73 @@ public final class TrailQuestLine {
 				DRAGON_CHAPTER,
 				6,
 				Region.DRAGON_LANDS,
-				400);
+				400),
+
+		BELL_RETURNED(
+				"trail_bell_returned",
+				"Jedyny, który wrócił",
+				"Festris",
+				"witness",
+				180000,
+				3000,
+				"Z wyprawy na wyspy wrócił tylko Niemir. Pozostali zostali przy starym dzwonie.",
+				"Porozmawiaj z Festris w Kikareukin na piętrze 4 o zaginionej wyprawie.",
+				BELL_CHAPTER,
+				1,
+				Region.KIKAREUKIN,
+				550),
+		BELL_WOUNDED(
+				"trail_bell_wounded",
+				"Ci, którzy zostali",
+				"Witosław",
+				"wounded;0",
+				200000,
+				3500,
+				"Witosław nie chce opuścić obozu. Jego ludzie są ranni, a z mgły dobiega głos zaginionego brata.",
+				"Zapytaj Witosława w północno-wschodniej części wysp Kikareukin o rannych.",
+				BELL_CHAPTER,
+				2,
+				Region.KIKAREUKIN,
+				550),
+		BELL_VOICE(
+				"trail_bell_voice",
+				"Głos, który kłamie",
+				"Borzęta",
+				"clues;0",
+				200000,
+				3500,
+				"Borzęta rozpoznaje głos swojego zmarłego nauczyciela. Trzeba poznać prawdę o dzwonie.",
+				"Porozmawiaj z Borzętą w obozie wyprawy na wyspach Kikareukin o głosie z mgły.",
+				BELL_CHAPTER,
+				3,
+				Region.KIKAREUKIN,
+				550),
+		BELL_GUARD(
+				"trail_bell_guard",
+				"Zanim uderzy po raz ostatni",
+				"Witosław",
+				"wards;0",
+				350000,
+				6000,
+				"Dzwon zwabia ludzi głosami ich bliskich. Jego strażnik nie pozwoli wyprawie odejść.",
+				"Wróć do Witosława i porozmawiaj o milczącym dzwonie.",
+				BELL_CHAPTER,
+				4,
+				Region.KIKAREUKIN,
+				550),
+		BELL_ESCAPE(
+				"trail_bell_escape",
+				"Wszyscy, których można ocalić",
+				"Witosław",
+				"escort;0",
+				650000,
+				12500,
+				"Dzwon ucichł. Rannych trzeba przeprowadzić do zachodniego obozowiska i wrócić do Festris.",
+				"Zapytaj Witosława o powrót wyprawy.",
+				BELL_CHAPTER,
+				5,
+				Region.KIKAREUKIN,
+				550);
 
 		public final String slot, title, npc, initial, description, hint,
 				chapter, region;
@@ -939,6 +1006,12 @@ public final class TrailQuestLine {
 			case EMBER_EGGS:
 			case EMBER_RETURN:
 				return DragonTrailProgress.objective(player, step);
+			case BELL_RETURNED:
+			case BELL_WOUNDED:
+			case BELL_VOICE:
+			case BELL_GUARD:
+			case BELL_ESCAPE:
+				return BellTrailProgress.objective(player, step);
 			default:
 				throw new IllegalStateException("Unknown chapter step");
 			}
@@ -1110,6 +1183,12 @@ public final class TrailQuestLine {
 		case EMBER_EGGS:
 		case EMBER_RETURN:
 			return DragonTrailProgress.history(player, step);
+		case BELL_RETURNED:
+		case BELL_WOUNDED:
+		case BELL_VOICE:
+		case BELL_GUARD:
+		case BELL_ESCAPE:
+			return BellTrailProgress.history(player, step);
 		default:
 			throw new IllegalStateException("Unknown chapter step");
 		}
@@ -1138,6 +1217,7 @@ public final class TrailQuestLine {
 		CoastTrailProgress.recordKill(player, victim);
 		SaltMineProgress.recordKill(player, victim);
 		DragonTrailProgress.recordKill(player, victim);
+		BellTrailProgress.recordKill(player, victim);
 		if (player == null || !player.isQuestInState(Step.SEAL.slot, "guard")
 				|| !(victim instanceof Creature)
 				|| victim instanceof ArenaCreature

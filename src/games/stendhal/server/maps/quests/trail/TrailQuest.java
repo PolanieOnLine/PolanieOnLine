@@ -55,11 +55,15 @@ abstract class TrailQuest extends AbstractQuest {
 		case SALT_RETURN:
 			rewards.item("hełm wampirzy", 1, ItemRarity.RARE, true);
 			break;
+		case BELL_ESCAPE:
 		case EMBER_RETURN:
 			rewards.item("złota skrzynia", 1, null, true);
 			break;
 		default:
 			break;
+		}
+		if (step == TrailQuestLine.Step.BELL_ESCAPE) {
+			rewards.note("Osiągnięcie: Milczący dzwon.");
 		}
 		questInfo.setRewards(rewards.build());
 		addDialogs();

@@ -152,6 +152,12 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 			Achievement.EASY_BASE_SCORE, true,
 			new QuestStateGreaterThanCondition("pizza_delivery", 3, 24)));
 
+		achievements.add(createAchievement(
+				"quest.main.silent_bell", "Milczący dzwon",
+				"Ukończono główną opowieść i ocalono wyprawę z Kikareukin",
+				Achievement.EXTREME_BASE_SCORE, true,
+				new QuestCompletedCondition("trail_bell_escape")));
+
 		return achievements;
 	}
 }

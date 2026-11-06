@@ -15,6 +15,7 @@ package games.stendhal.server.maps;
  * Contains region names.
  */
 public final class Region {
+	public static final String KIKAREUKIN = "Kikareukin";
 	public static final String ADOS_CITY = "Miasto Ados";
 	public static final String ADOS_SURROUNDS = "Okolice Ados";
 	public static final String AMAZON_ISLAND = "Wyspa Amazon";

@@ -1538,3 +1538,12 @@ hersztów nadbrzeżnych rabusiów=jefes de los saqueadores costeros
 1 niszczyciel sygnałów=1 saboteador de señales
 niszczycieli sygnałów=saboteadores de señales
 {number:0} niszczycieli sygnałów={0} saboteadores de señales
+
+1 strażnik milczącego dzwonu=1 guardián de la campana silenciosa
+strażników milczącego dzwonu=guardianes de la campana silenciosa
+{number:0} strażników milczącego dzwonu={0} guardianes de la campana silenciosa
+1 echo strażnika=1 eco del guardián
+echa strażnika=ecos del guardián
+{number:0} echa strażnika={0} ecos del guardián
+ech strażnika=ecos del guardián
+{number:0} ech strażnika={0} ecos del guardián

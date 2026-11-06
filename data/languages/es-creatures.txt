@@ -1403,3 +1403,6 @@ solny szlam=limo salino
 rabuś wybrzeża=saqueador costero
 herszt nadbrzeżnych rabusiów=jefe de los saqueadores costeros
 niszczyciel sygnałów=saboteador de señales
+
+strażnik milczącego dzwonu=guardián de la campana silenciosa
+echo strażnika=eco del guardián

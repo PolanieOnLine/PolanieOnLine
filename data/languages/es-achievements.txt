@@ -553,3 +553,7 @@ Zdobyłeś {0} sprawność. W celu poznania szczegółów sprawdź #'https://pol
 Zdobyłeś {0} sprawności. W celu poznania szczegółów sprawdź #'https://polanieonline.eu'.=Has conseguido {0} logros. Consulta #'https://polanieonline.eu' para más información.
 Zdobyłeś {0} sprawnośći. W celu poznania szczegółów sprawdź #'https://polanieonline.eu'.=Has conseguido {0} logros. Consulta #'https://polanieonline.eu' para más información.
 patronat=patrocinio
+
+Milczący dzwon=La campana silenciosa
+Ukończono główną opowieść i ocalono wyprawę z Kikareukin=Has completado la historia principal y rescatado a la expedición de Kikareukin
+Osiągnięcie: Milczący dzwon.=Logro: La campana silenciosa.
