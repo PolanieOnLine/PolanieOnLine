@@ -8,6 +8,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.mapstuff.quest.PlayerPrivateQuestProp;
 import games.stendhal.server.entity.mapstuff.quest.PlayerPrivateQuestUseableProp;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -106,6 +107,11 @@ final class RadanDungeonScene {
 			// re-entering.
 			setXP(0);
 			clearDropItemList();
+		}
+
+		@Override
+		protected void dropItemsOn(Corpse corpse) {
+			// Re-entering the private scene must not generate seasonal loot.
 		}
 
 		@Override

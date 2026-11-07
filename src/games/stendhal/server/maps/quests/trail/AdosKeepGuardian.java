@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -21,6 +22,11 @@ final class AdosKeepGuardian extends Creature {
 	@Override
 	public Creature getNewInstance() {
 		return new AdosKeepGuardian(this);
+	}
+
+	@Override
+	protected void dropItemsOn(Corpse corpse) {
+		// Quest rewards replace all combat loot, including seasonal drops.
 	}
 
 	private boolean eligible(RPEntity target) {
