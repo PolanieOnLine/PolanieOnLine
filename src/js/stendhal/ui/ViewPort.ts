@@ -966,7 +966,7 @@ export class ViewPort {
 			var y = pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY;
 
 			// override ground/entity action if there is a text bubble
-			if (stendhal.ui.gamewindow.textBubbleAt(x, y + 15)) {
+			if (stendhal.ui.gamewindow.textBubbleAt(x, y)) {
 				return;
 			}
 

@@ -64,6 +64,11 @@ export abstract class TextBubble {
 		return this.height;
 	}
 
+	/** Notifications store their text baseline; hit testing needs the visible top edge. */
+	protected getBoundsY(): number {
+		return this.getY() - TextBubble.adjustY;
+	}
+
 	/**
 	 * Checks if a point or area clips the boundries of this sprite.
 	 *
@@ -80,7 +85,7 @@ export abstract class TextBubble {
 	 *     sprite.
 	 */
 	clips(x1: number, x2: number, y1: number, y2: number): boolean {
-		const x = this.getX(), y = this.getY();
+		const x = this.getX(), y = this.getBoundsY();
 		const r = x + this.getWidth();
 		const b = y + this.getHeight();
 
@@ -112,8 +117,8 @@ export abstract class TextBubble {
 	onClick(evt: MouseEvent | TouchEvent) {
 		const pos = stendhal.ui.html.extractPosition(evt);
 		const screenRect = document.getElementById("viewport")!.getBoundingClientRect();
-		const pointX = pos.clientX - screenRect.x + stendhal.ui.gamewindow.offsetX;
-		const pointY = pos.clientY - screenRect.y + stendhal.ui.gamewindow.offsetY + TextBubble.adjustY;
+		const pointX = (pos.canvasRelativeX ?? pos.clientX - screenRect.x) + stendhal.ui.gamewindow.offsetX;
+		const pointY = (pos.canvasRelativeY ?? pos.clientY - screenRect.y) + stendhal.ui.gamewindow.offsetY;
 		if (this.clipsPoint(pointX, pointY)) {
 			evt.stopPropagation();
 			// remove when clicked or tapped

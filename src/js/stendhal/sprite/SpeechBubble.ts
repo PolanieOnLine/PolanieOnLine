@@ -26,6 +26,8 @@ export class SpeechBubble extends TextBubble {
 
 	private entity: RPEntity;
 	private offsetY: number;
+	private laidOut = false;
+	private static readonly TAIL_WIDTH = 8;
 
 	/** Formatted sections. */
 	private parts: Pair<string, string>[];
@@ -40,13 +42,6 @@ export class SpeechBubble extends TextBubble {
 		this.segregate(this.parts, Color.CHAT_NORMALBLACK);
 
 		this.offsetY = 0;
-		// find free text bubble position
-		const x = this.getX(), y = this.getY();
-		for (const bubble of stendhal.ui.gamewindow.textSprites) {
-			if (x == bubble.getX() && y + this.offsetY == bubble.getY()) {
-				this.offsetY += stendhal.ui.gamewindow.targetTileHeight / 2;
-			}
-		}
 
 		this.duration = Math.max(
 			TextBubble.STANDARD_DUR,
@@ -63,6 +58,10 @@ export class SpeechBubble extends TextBubble {
 			// get width of text
 			this.width = ctx.measureText(this.text).width + 8;
 			this.height = 20;
+		}
+		if (!this.laidOut) {
+			this.findFreePosition();
+			this.laidOut = true;
 		}
 
 		let x = this.getX(), y = this.getY();
@@ -81,22 +80,53 @@ export class SpeechBubble extends TextBubble {
 	}
 
 	override getX(): number {
-		let x = this.entity["_x"] * 32 + (32 * this.entity["width"]);
+		// Java anchors the bubble's tail, rather than its body, to the entity's right edge.
+		let x = (this.entity["_x"] + this.entity["width"]) * 32 + SpeechBubble.TAIL_WIDTH;
 		if (this.entity.inView()) {
-			// keep on screen while entity is visible (border is 1 pixel)
-			const overdraw = x + this.width - (stendhal.ui.gamewindow.offsetX + stendhal.ui.gamewindow.width) + 1;
-			x = overdraw > 0 ? x - overdraw : x;
+			const view = stendhal.ui.gamewindow;
+			const size = view.getWorldViewportSize();
+			x = Math.max(view.offsetX + SpeechBubble.TAIL_WIDTH + 1,
+				Math.min(x, view.offsetX + size.width - this.width - 1));
 		}
 		return x;
 	}
 
 	override getY(): number {
-		let y = this.entity["_y"] * 32 - 16 - (32 * (this.entity["height"] - 1)) + this.offsetY - TextBubble.adjustY;
+		// Match Java's left/bottom anchor; the text baseline is not a positioning offset.
+		let y = this.entity["_y"] * 32 - this.height + this.offsetY;
 		if (this.entity.inView()) {
-			// keep on screen while entity is visible (border is 1 pixel)
-			y = y < stendhal.ui.gamewindow.offsetY + 1 ? stendhal.ui.gamewindow.offsetY + 1 : y;
+			const view = stendhal.ui.gamewindow;
+			const size = view.getWorldViewportSize();
+			y = Math.max(view.offsetY + 1, Math.min(y, view.offsetY + size.height - this.height - 1));
 		}
 		return y;
+	}
+
+	protected override getBoundsY(): number {
+		return this.getY();
+	}
+
+	/** Measure first, then reserve the nearest free row, including the bubble's tail. */
+	private findFreePosition() {
+		const x = this.getX();
+		const gap = 2;
+		const bubbles = stendhal.ui.gamewindow.textSprites as SpeechBubble[];
+		for (let row = 0; row <= 20; row++) {
+			for (const direction of row === 0 ? [1] : [1, -1]) {
+				this.offsetY = direction * row * (this.height + gap);
+				const y = this.getY();
+				const overlaps = bubbles.some(bubble => bubble !== this && !bubble.expired()
+					&& bubble.getWidth() >= 0 && bubble.getHeight() >= 0
+					&& x - SpeechBubble.TAIL_WIDTH < bubble.getX() + bubble.getWidth() + gap
+					&& x + this.width + gap > bubble.getX() - SpeechBubble.TAIL_WIDTH
+					&& y < bubble.getY() + bubble.getHeight() + gap
+					&& y + this.height + gap > bubble.getY());
+				if (!overlaps) {
+					return;
+				}
+			}
+		}
+		this.offsetY = 0;
 	}
 }
 
