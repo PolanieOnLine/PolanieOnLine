@@ -20,7 +20,7 @@ public final class EquipmentAffixCombatService {
 	/** Marks expire quickly so switching attackers matters during group fights. */
 	public static final long HUNTER_MARK_DURATION_MILLISECONDS = 6000L;
 	/** Several spiked pieces may help, but a full set cannot reflect without bound. */
-	public static final double MAX_SPIKED_REFLECTION = 0.10;
+	public static final double MAX_SPIKED_REFLECTION = 0.50;
 	public static final int GIANT_SLAYER_LEVEL_STEP = 50;
 	public static final double GIANT_SLAYER_PENETRATION_PER_STEP = 0.01;
 	public static final double MAX_GIANT_SLAYER_PENETRATION = 0.10;

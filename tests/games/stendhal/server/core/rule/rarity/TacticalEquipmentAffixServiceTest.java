@@ -37,7 +37,7 @@ public class TacticalEquipmentAffixServiceTest {
 	}
 
 	@Test
-	public void spikedPlatingRollsTwoToFourPercentOnlyOnBodyArmorAndShields() {
+	public void spikedPlatingRollsTwentyToThirtyPercentOnlyOnBodyArmorAndShields() {
 		final Item armour = item("armor", 100);
 		final Item shield = item("shield", 100);
 		final Item helmet = item("helmet", 100);
@@ -47,9 +47,9 @@ public class TacticalEquipmentAffixServiceTest {
 		assertTrue(EquipmentAffixService.applySpikedPlating(shield,
 				new Random(11L)));
 		assertBetween(armour.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE),
-				0.02, 0.04);
+				0.20, 0.30);
 		assertBetween(shield.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE),
-				0.02, 0.04);
+				0.20, 0.30);
 		assertFalse(EquipmentAffixService.applySpikedPlating(helmet,
 				new Random(13L)));
 	}

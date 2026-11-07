@@ -409,7 +409,7 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	const spiked = numberValue(current, "spiked_plating");
 	if (spiked > 0) {
 		affixes.push({kind: "affix", text: "Kolczaste okucie: odbija "
-				+ formatNumber(spiked * 100, 1) + "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 10%."});
+				+ formatNumber(spiked * 100, 1) + "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%."});
 	}
 	if (hasValue(current, "hunter_mark")) {
 		affixes.push({kind: "affix", text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});

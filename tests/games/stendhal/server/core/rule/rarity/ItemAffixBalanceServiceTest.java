@@ -57,7 +57,31 @@ public class ItemAffixBalanceServiceTest {
 		final Item shield = new Item("shield", "shield", "test", null);
 		record(shield, "spiked_plating", 0.04);
 		ItemAffixBalanceService.enforce(shield);
-		assertEquals(0.04, shield.getDouble("spiked_plating"), 0);
+		assertEquals(0.30, shield.getDouble("spiked_plating"), 0);
+	}
+
+	@Test
+	public void oldSpikedRollsKeepTheirRelativeStrengthAcrossRepeatedRestores() {
+		for (final String itemClass : new String[] {"armor", "shield"}) {
+			for (int percent = 2; percent <= 4; percent++) {
+				final Item item = new Item("old spiked gear", itemClass, "test", null);
+				item.setRarity(ItemRarity.RARE);
+				record(item, "spiked_plating", percent / 100.0);
+				ItemAffixState.setSeed(item, 123456);
+				final String oldSnapshot = ItemRaritySnapshot.encode(item);
+				final double expected = (20 + (percent - 2) * 5) / 100.0;
+				for (int repeat = 0; repeat < 3; repeat++) {
+					ItemAffixBalanceService.enforce(item);
+					assertEquals(expected, item.getDouble("spiked_plating"), 0.000001);
+					assertEquals(item.get("spiked_plating"),
+							ItemAffixState.getValues(item).get("spiked_plating"));
+					assertEquals(Long.valueOf(123456), ItemAffixState.getSeed(item));
+					final Item restored = new Item("restored spiked gear", itemClass, "test", null);
+					ItemRaritySnapshot.restore(restored, oldSnapshot);
+					assertEquals(expected, restored.getDouble("spiked_plating"), 0.000001);
+				}
+			}
+		}
 	}
 
 	@Test

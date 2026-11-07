@@ -53,10 +53,10 @@ public class EquipmentAffixCombatServiceTest {
 	}
 
 	@Test
-	public void spikedPlatingReflectionUsesActualDamageAndTenPercentCap() {
-		assertEquals(20, EquipmentAffixCombatService.reflectedDamage(1000, 0.02));
-		assertEquals(80, EquipmentAffixCombatService.reflectedDamage(1000, 0.08));
-		assertEquals(100, EquipmentAffixCombatService.reflectedDamage(1000, 0.15));
+	public void spikedPlatingReflectionUsesActualDamageAndFiftyPercentCap() {
+		assertEquals(40, EquipmentAffixCombatService.reflectedDamage(200, 0.20));
+		assertEquals(60, EquipmentAffixCombatService.reflectedDamage(200, 0.30));
+		assertEquals(100, EquipmentAffixCombatService.reflectedDamage(200, 0.60));
 		assertEquals(0, EquipmentAffixCombatService.reflectedDamage(0, 0.10));
 		assertEquals(0, EquipmentAffixCombatService.reflectedDamage(1000, -0.10));
 	}

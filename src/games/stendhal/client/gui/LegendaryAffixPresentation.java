@@ -239,7 +239,7 @@ final class LegendaryAffixPresentation {
 		}
 		appendRegularText(result, "Kolczaste okucie",
 				"odbija " + ONE_DECIMAL.format(value.doubleValue() * 100.0)
-						+ "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 10%.");
+						+ "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%.");
 	}
 
 	private static void appendRegularText(final StringBuilder result,

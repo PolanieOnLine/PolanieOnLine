@@ -150,7 +150,7 @@ public class EquipmentAffixServiceTest {
 					EquipmentStatusResistanceService.getResistanceAttribute(StatusType.STUNNED)), 0.0);
 			final Item reflection = item("shield", 20);
 			assertTrue(EquipmentAffixService.applySpikedPlating(reflection, random));
-			assertEquals(maximum ? 0.04 : 0.02,
+			assertEquals(maximum ? 0.30 : 0.20,
 					reflection.getDouble(EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE), 0.0);
 		}
 	}

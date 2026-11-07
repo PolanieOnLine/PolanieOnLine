@@ -51,6 +51,7 @@ public final class ItemAffixBalanceService {
 					WeaponAffixService.MAX_ARMOR_PENETRATION_PERCENT / 100.0);
 		}
 		if (EquipmentAffixService.isEquipment(item)) {
+			upgradeSpikedPlating(item);
 			for (final StatusType status : StatusType.values()) {
 				cap(item, EquipmentStatusResistanceService.getResistanceAttribute(status),
 						EquipmentAffixService.MAX_STATUS_RESISTANCE_PERCENT / 100.0);
@@ -81,6 +82,24 @@ public final class ItemAffixBalanceService {
 		// Preserve lower rolls and deliberate negative drawbacks exactly.
 		if (value > maximum) {
 			item.put(attribute, maximum);
+			updateRecordedValue(item, attribute);
+		}
+	}
+
+	/** Keeps the relative strength of recorded 2-4% rolls in the new 20-30% range. */
+	private static void upgradeSpikedPlating(final Item item) {
+		final String attribute = EquipmentAffixService.SPIKED_PLATING_ATTRIBUTE;
+		if (!item.has(attribute) || !ItemAffixState.has(item, attribute)
+				|| !("armor".equals(item.getItemClass()) || "shield".equals(item.getItemClass()))) {
+			return;
+		}
+		final double value = item.getDouble(attribute);
+		if (value >= 0.02 && value <= 0.04) {
+			final double rollPosition = (value - 0.02) / 0.02;
+			final double percent = EquipmentAffixService.MIN_SPIKED_PLATING_PERCENT
+					+ rollPosition * (EquipmentAffixService.MAX_SPIKED_PLATING_PERCENT
+							- EquipmentAffixService.MIN_SPIKED_PLATING_PERCENT);
+			item.put(attribute, ItemRollPrecision.round(percent / 100.0));
 			updateRecordedValue(item, attribute);
 		}
 	}

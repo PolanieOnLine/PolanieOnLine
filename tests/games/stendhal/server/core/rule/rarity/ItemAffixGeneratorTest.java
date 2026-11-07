@@ -38,7 +38,7 @@ public class ItemAffixGeneratorTest {
 		maximums.put("distance_damage", 0.12);
 		maximums.put("armor_penetration", 0.15);
 		maximums.put("flat_attack_bonus", 2.0);
-		maximums.put("spiked_plating", 0.04);
+		maximums.put("spiked_plating", 0.30);
 		maximums.put("hunter_mark", 1.0);
 		maximums.put("giant_slayer", 1.0);
 		maximums.put("armor_crushing", 0.15);

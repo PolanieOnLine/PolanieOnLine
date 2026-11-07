@@ -36,8 +36,8 @@ public final class EquipmentAffixService {
 	public static final int MAX_ACCESSORY_CRITICAL_CHANCE_PERCENT = 4;
 	public static final int MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 4;
 	public static final int MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT = 10;
-	public static final int MIN_SPIKED_PLATING_PERCENT = 2;
-	public static final int MAX_SPIKED_PLATING_PERCENT = 4;
+	public static final int MIN_SPIKED_PLATING_PERCENT = 20;
+	public static final int MAX_SPIKED_PLATING_PERCENT = 30;
 
 	private static final Set<String> ARMOUR_CLASSES = classes("armor", "shield",
 			"helmet", "cloak", "boots", "glove", "gloves", "legs", "belt", "belts");
@@ -147,7 +147,7 @@ public final class EquipmentAffixService {
 		return true;
 	}
 
-	/** Rolls 2-4% melee damage reflection for body armour and shields. */
+	/** Rolls 20-30% melee damage reflection for body armour and shields. */
 	public static boolean applySpikedPlating(final Item item, final Random random) {
 		if (!isSpikedPlatingEligible(item)) {
 			return false;

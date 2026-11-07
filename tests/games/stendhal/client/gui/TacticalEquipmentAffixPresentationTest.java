@@ -19,7 +19,7 @@ public class TacticalEquipmentAffixPresentationTest {
 		object.put("class", "armor");
 		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ARMOUR);
 		put(object, ItemTooltip.DEFENSE, "45");
-		put(object, ItemTooltip.SPIKED_PLATING, "0.03");
+		put(object, ItemTooltip.SPIKED_PLATING, "0.25");
 		put(object, ItemTooltip.HUNTER_MARK, "1.0");
 		put(object, ItemTooltip.GIANT_SLAYER, "1.0");
 		put(object, ItemTooltip.ARMOR_CRUSHING, "0.15");
@@ -33,7 +33,8 @@ public class TacticalEquipmentAffixPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("Kolczaste okucie"));
-		assertTrue(tooltip.contains("3,0%"));
+		assertTrue(tooltip.contains("25,0%"));
+		assertTrue(tooltip.contains("ciosów wręcz; łącznie maksymalnie 50%"));
 		assertTrue(tooltip.contains("Znak łowcy"));
 		assertTrue(tooltip.contains("6 s"));
 		assertTrue(tooltip.contains("Łowca olbrzymów"));
