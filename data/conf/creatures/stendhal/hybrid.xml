@@ -65,6 +65,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="mutant-frog-1"/>
@@ -100,6 +103,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="mutant-frog-1"/>
@@ -136,6 +142,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="mutant-frog-1"/>
@@ -251,6 +260,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="scream-fem-2"/>
@@ -289,6 +301,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="scream-fem-2"/>
@@ -329,6 +344,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="scream-fem-2"/>

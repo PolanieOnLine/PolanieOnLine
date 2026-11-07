@@ -336,6 +336,7 @@
 		<equips>
 		</equips>
 		<abilities>
+			<damage type="water"/>
 			<susceptibility type="fire" value="1.2"/>
 			<susceptibility type="water" value="0.7"/>
 		</abilities>

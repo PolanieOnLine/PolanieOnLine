@@ -25,6 +25,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<sound value="mermaid_song-01"/>
@@ -63,6 +66,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Opuść to miejsce."/>
@@ -105,6 +111,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Opuść nasz dom."/>
@@ -146,6 +155,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Opuść to miejsce."/>
@@ -188,6 +200,9 @@
 		</drops>
 		<equips>
 		</equips>
+		<abilities>
+			<damage type="water"/>
+		</abilities>
 		<ai>
 			<says>
 				<noise state="idle follow fight" value="Jesteś skazany na ZAGŁADĘ."/>

@@ -302,6 +302,7 @@
 		<equips>
 		</equips>
 		<abilities>
+			<damage type="water"/>
 			<susceptibility type="water" value="1.3"/>
 		</abilities>
 		<ai>
