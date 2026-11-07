@@ -93,16 +93,16 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 
 		assertTrue(en.step(player, "buy dog"));
-		assertEquals("Nie sprzedaję dogi.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy house"));
-		assertEquals("Nie sprzedaję housa.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy someunknownthing"));
-		assertEquals("Nie sprzedaję someunknownthingi.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy a bunch of socks"));
-		assertEquals("Nie sprzedaję bunch of socks.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy 0 lody"));
 		assertEquals("Ile lodów chcesz kupić?!", getReply(npc));

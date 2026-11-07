@@ -188,6 +188,9 @@ public class ItemParser {
 		} else if (mayBeItems!=null && !mayBeItems.isEmpty()) {
 			return "Powiedz mi jaki rodzaj "
 					+ chosenItemName + " chcesz użyć.";
+		} else if (npcAction.equals("skupuję") || npcAction.equals("sprzedaję")) {
+			// Unmatched input may contain a typo or an already inflected item name.
+			return "Nie " + npcAction + " takich przedmiotów.";
 		} else {
 			return "Nie " + npcAction + " "
 					+ Grammar.plural(chosenItemName) + ".";

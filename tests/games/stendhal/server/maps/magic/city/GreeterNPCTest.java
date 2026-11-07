@@ -135,13 +135,13 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Powiedz mi co chcesz zrobić.", getReply(npc));
 
 		assertTrue(en.step(player, "buy cat"));
-		assertEquals("Nie sprzedaję caty.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy someunknownthing"));
-		assertEquals("Nie sprzedaję someunknownthingi.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy butelka wina"));
-		assertEquals("Nie sprzedaję butelka wine.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 		assertTrue(en.step(player, "buy zwój"));
 		assertEquals("Jest więcej niż jeden zwój. Powiedz mi jaki rodzaj zwój chcesz użyć.", getReply(npc));

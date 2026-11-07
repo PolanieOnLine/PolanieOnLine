@@ -84,10 +84,10 @@ public class SellerBehaviourTest {
 
 	    npc.getEngine().step(player, "hi");
 	    npc.getEngine().step(player, "buy 1 eliksir");
-		assertEquals("Nie sprzedaję eliksiry.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy napój z winogron");
-		assertEquals("Nie sprzedaję napojów z winogron.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy sztylecik");
 		assertEquals("Za sztylecik zapłacisz 200 monet. Kupujesz?", getReply(npc));
@@ -144,7 +144,7 @@ public class SellerBehaviourTest {
 		assertEquals("Jest więcej niż jeden zwój. Powiedz mi jaki rodzaj zwój chcesz użyć.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy anything-else");
-		assertEquals("Nie sprzedaję anything-elsa.", getReply(npc));
+		assertEquals("Nie sprzedaję takich przedmiotów.", getReply(npc));
 	}
 
 }
