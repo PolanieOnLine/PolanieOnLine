@@ -623,25 +623,26 @@ export class RPEntity extends ActiveEntity {
 			}
 			var drawY = (this["height"] * 32) - this["drawHeight"];
 
-			let opacity = parseInt(this["visibility"], 10);
-			opacity = isNaN(opacity) ? 100 : opacity;
-			if (this.hasOwnProperty("ghostmode") && this === marauroa.me && opacity > 50) {
-				opacity = 50;
+			const visibility = Number(this["visibility"] ?? 100);
+			let opacity = Number.isFinite(visibility) ? Math.max(0, Math.min(100, visibility)) / 100 : 1;
+			if (typeof this["ghostmode"] !== "undefined") {
+				// Java halves normal visibility for every ghost an administrator can see.
+				opacity *= 0.5;
 			}
 			const opacity_orig = ctx.globalAlpha;
-			if (opacity < 100) {
-				ctx.globalAlpha = opacity * 0.01;
-			}
+			ctx.globalAlpha *= opacity;
 
 			// store offset for use by other drawing methods
 			this["drawOffsetX"] = localX + drawX;
 			this["drawOffsetY"] = localY + drawY;
 
-			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
-				this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
-				this["drawHeight"]);
-			// restore opacity
-			ctx.globalAlpha = opacity_orig;
+			try {
+				ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
+					this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
+					this["drawHeight"]);
+			} finally {
+				ctx.globalAlpha = opacity_orig;
+			}
 		}
 	}
 
