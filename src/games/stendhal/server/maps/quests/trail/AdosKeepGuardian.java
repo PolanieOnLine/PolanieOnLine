@@ -33,20 +33,17 @@ final class AdosKeepGuardian extends Creature {
 	@Override
 	public void logic() {
 		if (getAttackTarget() != null && !eligible(getAttackTarget())) {
-			stopAttack();
-			setPath(null);
-			stop();
+			setIdle();
 		}
 		super.logic();
+		if (getAttackTarget() == null) {
+			setIdle();
+		}
 	}
 
 	@Override
 	public void setIdle() {
-		// Stay in the chamber instead of retreating from unrelated ranged
-		// attackers.
-		clearPath();
-		stopAttack();
-		stop();
+		TrailGuardReturn.idle(this);
 	}
 
 	@Override

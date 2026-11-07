@@ -34,11 +34,17 @@ final class MountainTrailGuard extends Creature {
 	@Override
 	public void logic() {
 		if (getAttackTarget() != null && !eligible(getAttackTarget())) {
-			stopAttack();
-			setPath(null);
-			stop();
+			setIdle();
 		}
 		super.logic();
+		if (getAttackTarget() == null) {
+			setIdle();
+		}
+	}
+
+	@Override
+	public void setIdle() {
+		TrailGuardReturn.idle(this);
 	}
 
 	@Override
