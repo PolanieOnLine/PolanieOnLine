@@ -163,7 +163,16 @@ export class BuddyListComponent extends Component {
 					marauroa.clientFramework.sendAction(action);
 				}
 			});
-			// Invite
+			actions.push({
+				title: "Zaproś",
+				action: function(buddyListComponent: BuddyListComponent) {
+					marauroa.clientFramework.sendAction({
+						"type": "group_management",
+						"action": "invite",
+						"params": buddyListComponent.current!.textContent!.trim()
+					});
+				}
+			});
 			if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 8) {
 				actions.push({
 					title: "(*) Teleportuj do",
