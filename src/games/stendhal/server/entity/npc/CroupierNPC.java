@@ -16,6 +16,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Ball;
 import games.stendhal.server.entity.item.Dice;
 import games.stendhal.server.entity.item.Item;
@@ -82,7 +83,8 @@ public abstract class CroupierNPC extends SpeakerNPC {
 			final String prizeName = prizeAndText.first();
 			final String text = prizeAndText.second();
 			final Item prize = SingletonRepository.getEntityManager().getItem(
-					prizeName);
+					prizeName, ItemCreationContext.builder(ItemCreationContext.Source.DEFAULT)
+							.generateAffixes(true).build());
 			if (prizeName.equals("złote spodnie")) {
 				prize.setBoundTo(player.getName());
 			}
@@ -125,7 +127,8 @@ public abstract class CroupierNPC extends SpeakerNPC {
 			final String prizeName = prizeAndText.first();
 			final String text = prizeAndText.second();
 			final Item prize = SingletonRepository.getEntityManager().getItem(
-					prizeName);
+					prizeName, ItemCreationContext.builder(ItemCreationContext.Source.DEFAULT)
+							.generateAffixes(true).build());
 			if (prizeName.equals("spodnie mainiocyjskie")) {
 				prize.setBoundTo(player.getName());
 			}
