@@ -36,7 +36,7 @@ test("experience and level notices translate without changing names, amounts or 
  assert.equal(logs.at(-1).text,"Zamknij dropped to level 9");
 });
 
-test("NPC invitations keep a separate message type and share the experience colour",async()=>{
+test("NPC invitations keep a separate message type and colour from experience",async()=>{
  const {deps,logs,stendhal,marauroa}=await harness();
  stendhal.config={get:()=>false};
  marauroa.clientFramework.lastPrivateChatter="Mroczny";
@@ -52,10 +52,10 @@ test("NPC invitations keep a separate message type and share the experience colo
  assert.equal(marauroa.clientFramework.lastPrivateChatter,"Mroczny");
  const {Color}=load("../data/color/Color.ts");
  const {NotificationType}=load("../util/NotificationType.ts",{"../data/color/Color":{Color}});
- assert.equal(NotificationType.quest_invitation,NotificationType.significant_positive);
+ assert.notEqual(NotificationType.quest_invitation,NotificationType.significant_positive);
  assert.notEqual(NotificationType.quest_invitation,NotificationType.privmsg);
  const css=readFileSync(path.join(root,"src/js/css/main.css"),"utf8");
- assert.match(css,/div\.logsignificant_positive,\s*div\.logquest_invitation\s*\{[^}]*color:\s*rgb\(65,\s*105,\s*225\)/);
+ assert.match(css,/div\.logquest_invitation\s*\{[^}]*color:\s*rgb\(112,\s*217,\s*232\)/);
  assert.match(css,/span\.logh\s*\{[^}]*color:\s*rgb\(90,\s*170,\s*255\)/);
 });
 test("death translates its wrapper but never the attacker names or their internal conjunctions",async()=>{

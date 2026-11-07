@@ -11,6 +11,9 @@
 
 import { ui } from "../UI";
 import { Component } from "../toolkit/Component";
+import { Panel } from "../toolkit/Panel";
+import { TabPanelComponent } from "../toolkit/TabPanelComponent";
+import { Layout } from "../../data/enum/Layout";
 import { MenuItem } from "../../action/MenuItem";
 import { UIComponentEnum } from "../UIComponentEnum";
 import { singletons } from "../../SingletonRepo";
@@ -23,35 +26,66 @@ import { stendhal } from "../../stendhal";
  * Chat Log
  */
 export class ChatLogComponent extends Component {
-	/** Most recent state of chat log scrolling. */
-	private scrollStateBottom: boolean;
+	private readonly tabs: TabPanelComponent;
+	private readonly tabButtons: HTMLElement;
+	private readonly logs: HTMLElement[] = [];
+	private readonly scrollStateBottom = [true, true];
+	private readonly scrollPositions = [0, 0];
+	private readonly unreadChannels = new Set<number>();
 	/** Event listener for managing scroll position when component properties change such as changes to visibility. */
 	private scrollListener: EventListenerOrEventListenerObject;
 
 	constructor() {
 		super("chat");
+		this.tabs = new TabPanelComponent(Layout.BOTTOM);
+		this.tabs.componentElement.classList.add("chat-tabs-panel");
+		for (const [index, label] of ["Główny", "Prywatny"].entries()) {
+			const log = document.createElement("div");
+			log.className = "chat-log-pane";
+			log.id = "chat-channel-" + index;
+			log.setAttribute("role", "tabpanel");
+			log.setAttribute("data-no-translate", "");
+			this.logs.push(log);
+			this.tabs.addTab(label, new Panel(log));
+		}
+		this.tabs.onTabChanged = () => this.onChannelChanged();
+		const buttons = this.tabs.componentElement.querySelector<HTMLElement>(".tabpanel-tabs")!;
+		this.tabButtons = buttons;
+		buttons.setAttribute("role", "tablist");
+		for (let index = 0; index < buttons.children.length; index++) {
+			const button = buttons.children[index];
+			button.setAttribute("role", "tab");
+			button.setAttribute("aria-controls", this.logs[index].id);
+		}
+		this.updateTabMarkers();
+		this.componentElement.appendChild(this.tabs.componentElement);
+		GameLanguage.registerUI(buttons as HTMLElement);
 		this.refresh();
-		this.scrollStateBottom = this.isAtBottom();
 
-		this.componentElement.addEventListener("mouseup", (evt: MouseEvent) => {
-			this.onContextMenu(evt)
-		});
-		this.componentElement.addEventListener("touchstart", (evt: TouchEvent) => {
-			const pos = stendhal.ui.html.extractPosition(evt);
-			stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
-		}, {passive: true});
-		this.componentElement.addEventListener("touchend", (evt: TouchEvent) => {
-			stendhal.ui.touch.onTouchEnd();
-			this.onContextMenu(evt)
-			// clean up
-			stendhal.ui.touch.unsetOrigin();
-		});
+		for (const log of this.logs) {
+			log.addEventListener("mouseup", (evt: MouseEvent) => {
+				this.onContextMenu(evt);
+			});
+			log.addEventListener("touchstart", (evt: TouchEvent) => {
+				const pos = stendhal.ui.html.extractPosition(evt);
+				stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
+			}, {passive: true});
+			log.addEventListener("touchend", (evt: TouchEvent) => {
+				stendhal.ui.touch.onTouchEnd();
+				this.onContextMenu(evt);
+				stendhal.ui.touch.unsetOrigin();
+			});
+		}
 
 		this.scrollListener = (evt: Event) => {
-			this.onScroll();
+			if (evt.currentTarget === this.currentLog()) {
+				this.onScroll();
+			}
 		};
 		if (this.isVisible()) {
-			this.componentElement.addEventListener("scroll", this.scrollListener);
+			for (const log of this.logs) {
+				log.addEventListener("scroll", this.scrollListener);
+			}
 		}
 	}
 
@@ -60,6 +94,7 @@ export class ChatLogComponent extends Component {
 	 */
 	public override refresh() {
 		this.componentElement.style.setProperty("font-family", stendhal.config.get("font.chat"));
+		GameLanguage.translateUI(this.tabButtons);
 	}
 
 	/**
@@ -90,13 +125,43 @@ export class ChatLogComponent extends Component {
 	 * @param row {HTMLDivElement}
 	 *   Div containing text to be added.
 	 */
-	private add(row: HTMLDivElement) {
-		// check state before adding row
-		const wasAtBottom = this.isAtBottom();
-		this.componentElement.appendChild(row);
+	private add(row: HTMLDivElement, type: string) {
+		const selected = this.tabs.getCurrentIndex();
+		// Java sends local client responses only to the channel being read.
+		const destinations = type === "client" ? [selected]
+			: ["privmsg", "group", "support", "tutorial"].includes(type) ? [0, 1] : [0];
+		for (const [position, index] of destinations.entries()) {
+			const wasAtBottom = index === selected ? this.isAtBottom() : this.scrollStateBottom[index];
+			this.logs[index].appendChild(position === 0 ? row : row.cloneNode(true));
+			if (index === selected && wasAtBottom) {
+				this.scrollToBottom();
+			} else if (index !== selected) {
+				this.unreadChannels.add(index);
+			}
+		}
+		this.updateTabMarkers();
+	}
 
-		if (wasAtBottom) {
+	private currentLog(): HTMLElement {
+		return this.logs[this.tabs.getCurrentIndex()];
+	}
+
+	private onChannelChanged() {
+		const index = this.tabs.getCurrentIndex();
+		this.unreadChannels.delete(index);
+		if (this.scrollStateBottom[index]) {
 			this.scrollToBottom();
+		} else {
+			this.setScroll(this.scrollPositions[index]);
+		}
+		this.updateTabMarkers();
+	}
+
+	private updateTabMarkers() {
+		const buttons = this.tabButtons.children;
+		for (let index = 0; index < buttons.length; index++) {
+			buttons[index].classList.toggle("chat-unread", this.unreadChannels.has(index));
+			buttons[index].setAttribute("aria-selected", String(index === this.tabs.getCurrentIndex()));
 		}
 	}
 
@@ -134,7 +199,7 @@ export class ChatLogComponent extends Component {
 		row.appendChild(lcol);
 		row.appendChild(rcol);
 
-		this.add(row);
+		this.add(row, type);
 	}
 
 	/**
@@ -187,7 +252,7 @@ export class ChatLogComponent extends Component {
 		row.appendChild(lcol);
 		row.appendChild(rcol);
 
-		this.add(row);
+		this.add(row, "normal");
 	}
 
 	private makeSpan(className: string, text: string): HTMLSpanElement {
@@ -201,7 +266,10 @@ export class ChatLogComponent extends Component {
 	 * Removes all text from log.
 	 */
 	public clear() {
-		this.componentElement.innerHTML = "";
+		this.currentLog().innerHTML = "";
+		const index = this.tabs.getCurrentIndex();
+		this.scrollPositions[index] = 0;
+		this.scrollStateBottom[index] = true;
 	}
 
 	/**
@@ -211,14 +279,15 @@ export class ChatLogComponent extends Component {
 	 *   New scrolled position.
 	 */
 	private setScroll(scroll: number) {
-		this.componentElement.scrollTop = scroll;
+		this.currentLog().scrollTop = scroll;
+		this.onScroll();
 	}
 
 	/**
 	 * Sets scrolled position to end of log.
 	 */
 	private scrollToBottom() {
-		this.setScroll(this.componentElement.scrollHeight);
+		this.setScroll(this.currentLog().scrollHeight);
 	}
 
 	/**
@@ -228,8 +297,8 @@ export class ChatLogComponent extends Component {
 	 *   `true` if recent state is less than 0 or scroll position is same as element height.
 	 */
 	private isAtBottom(): boolean {
-		return this.componentElement.scrollHeight - this.componentElement.clientHeight
-				<= this.componentElement.scrollTop + 5;
+		const log = this.currentLog();
+		return log.scrollHeight - log.clientHeight <= log.scrollTop + 5;
 	}
 
 	/**
@@ -237,7 +306,9 @@ export class ChatLogComponent extends Component {
 	 */
 	private onScroll() {
 		// remember scrolled state
-		this.scrollStateBottom = this.isAtBottom();
+		const index = this.tabs.getCurrentIndex();
+		this.scrollStateBottom[index] = this.isAtBottom();
+		this.scrollPositions[index] = this.currentLog().scrollTop;
 	}
 
 	/**
@@ -245,18 +316,22 @@ export class ChatLogComponent extends Component {
 	 */
 	public onHide() {
 		// stop listening for scroll events when chat panel is hidden
-		this.componentElement.removeEventListener("scroll", this.scrollListener);
+		for (const log of this.logs) {
+			log.removeEventListener("scroll", this.scrollListener);
+		}
 	}
 
 	/**
 	 * Re-activates scroll event listener when chat panel/log visibility is restored.
 	 */
 	public onUnhide() {
-		if (this.scrollStateBottom) {
+		if (this.scrollStateBottom[this.tabs.getCurrentIndex()]) {
 			this.scrollToBottom();
 		}
 		// don't listen for scroll events until AFTER scroll state has been updated
-		this.componentElement.addEventListener("scroll", this.scrollListener);
+		for (const log of this.logs) {
+			log.addEventListener("scroll", this.scrollListener);
+		}
 	}
 
 	/**
@@ -292,7 +367,7 @@ export class ChatLogComponent extends Component {
 		}
 		// if no highlighted text, copy the entire log
 		if (lines.length == 0) {
-			const children = this.componentElement.children;
+			const children = this.currentLog().children;
 			for (let idx = 0; idx < children.length; idx++) {
 				const row = children[idx];
 				let text = row.children[0].innerHTML.trim() + " ";

@@ -924,10 +924,12 @@ div.quickPickup div.itemSlot {
 
 #chat {
 	height: 100%;
-	padding: 0.5em;
-	overflow-y: auto;
+	padding: 0;
+	min-height: 0;
+	overflow: hidden;
 	word-wrap: break-word;
-	display: block;
+	display: flex;
+	flex-direction: column;
 	color: rgb(200, 255, 200);
 	background-color: rgb(60, 30, 0);
 	border-top: 2px solid var(--border-top-color);
@@ -938,6 +940,35 @@ div.quickPickup div.itemSlot {
 		inset -2px -2px var(--border-top-color);
 	flex: 1;
 	box-sizing: border-box;
+}
+
+#chat .chat-tabs-panel {
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+}
+
+#chat .chat-tabs-panel > .tabpanel-content {
+	min-height: 0;
+	overflow: hidden;
+	border: 0;
+}
+
+#chat .chat-log-pane {
+	flex: 1;
+	min-height: 0;
+	padding: 0.5em;
+	overflow-y: auto;
+	box-sizing: border-box;
+}
+
+#chat .tabpanel-tabs {
+	flex-shrink: 0;
+}
+
+#chat .tabpanel-tabs button.chat-unread:not(.active) {
+	color: #ffd76a;
+	font-weight: bold;
 }
 
 ::-webkit-scrollbar {
