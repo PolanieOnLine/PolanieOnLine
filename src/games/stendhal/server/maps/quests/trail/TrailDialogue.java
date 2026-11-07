@@ -42,8 +42,12 @@ final class TrailDialogue {
 				return "Jagna przyjmuje podróżnych w karczmie na północnym wschodzie Zakopanego. Może pamięta tego woźnicę.";
 			if ("brzezdom".equals(stage))
 				return "Brzezdom chodzi po polanie we wschodnim Kościelisku. Jeśli wóz tamtędy przejeżdżał, pewnie go widział.";
+			if ("found".equals(stage))
+				return "Brzezdom".equals(npc)
+						? "Udało ci się obejrzeć skrzynkę? Opowiedz mi o tym #woźnicy, może połączymy te ślady."
+						: "Ślad ze skrzynki trzeba pokazać Brzezdomowi. Zapytaj go o #woźnicę.";
 			if ("Brzezdom".equals(npc))
-				return "Rozbita skrzynka leży na północ od nas, przy wschodnim skraju polany. Ciekaw jestem, czy poznasz na niej ten znak.";
+				return "Szukaj samotnej skrzynki na północny wschód stąd, na południe od obozowiska obcych ludzi. Ciekaw jestem, czy poznasz na niej ten znak.";
 			return "Brzezdom widział więcej ode mnie. Warto sprawdzić ślady przy polanie, o której mówił.";
 		case SEAL:
 			if ("guard".equals(stage))

@@ -116,8 +116,11 @@ public final class TrailEvidence extends AreaEntity implements UseListener {
 			return false;
 		}
 		if (!player.isQuestInState(kind.step.slot, kind.before)) {
-			player.sendPrivateText(
-					"Nie znajdujesz tu nic nowego. Jeśli nie wiesz, gdzie szukać dalej, zajrzyj do dziennika.");
+			String hint = player.hasQuest(kind.step.slot)
+					&& !player.isQuestCompleted(kind.step.slot)
+							? TrailQuestLine.objective(player, kind.step.slot) : null;
+			player.sendPrivateText(hint != null ? hint
+					: "Nie znajdujesz tu nic nowego. Jeśli nie wiesz, gdzie szukać dalej, zajrzyj do dziennika.");
 			return false;
 		}
 		player.setQuest(kind.step.slot, kind.after);

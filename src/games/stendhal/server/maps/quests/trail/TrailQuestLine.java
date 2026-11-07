@@ -907,7 +907,7 @@ public final class TrailQuestLine {
 				if ("brzezdom".equals(stage))
 					return "Zapytaj Brzezdoma na polanie we wschodnim Kościelisku o woźnicę.";
 				if ("tracks".equals(stage))
-					return "Sprawdź rozbitą skrzynkę na północno-wschodnim skraju polany we wschodnim Kościelisku, na północ od Brzezdoma.";
+					return "Podejdź do rozbitej skrzynki w Kościelisku E (82,62), na północny wschód od Brzezdoma. Stoi osobno, na południe od skrzyń obozu. Wybierz: Sprawdź.";
 				return "Wróć do Brzezdoma i opowiedz o znalezionej skrzynce. Powiedz: woźnica.";
 			case SEAL:
 				if ("guard".equals(stage))
@@ -1031,10 +1031,10 @@ public final class TrailQuestLine {
 					"Stasek znalazł dziwne zamówienie w skrzyni z opałem. Chce wiedzieć, czy naprawdę pochodzi z ratusza.");
 			if (!"inspect".equals(stage))
 				entries.add(
-						"Na dokumencie są pieczęć ratusza i trzy kółka w miejscu podpisu.");
+						"Na zamówieniu widnieje pieczęć ratusza, a zamiast podpisu narysowano trzy kółka.");
 			if ("discrepancy".equals(stage) || done)
 				entries.add(
-						"W księdze nie ma tego zamówienia. Nie brakuje żadnych stron, a na pozostałych dokumentach są inny podpis i pieczęć.");
+						"W księdze nie ma takiego zamówienia. Wszystkie strony są na miejscu. Podpis i odcisk pieczęci na pozostałych dokumentach różnią się od tych na kwicie Staska.");
 			if (done)
 				entries.add(
 						"Gościrad nie wystawił tego zamówienia. Trzeba znaleźć woźnicę, który odebrał zapasy.");
@@ -1047,10 +1047,10 @@ public final class TrailQuestLine {
 						"Jagna zapamiętała, że woźnica mówił o kopalni, ale pytał o boczną drogę i Brzezdoma.");
 			if (!"jagna".equals(stage) && !"brzezdom".equals(stage))
 				entries.add(
-						"Brzezdom widział wóz skręcający przy lesie. Wskazał rozbitą skrzynkę na północno-wschodnim skraju polany.");
+						"Brzezdom widział, jak wóz skręcił między drzewa. Wskazał samotną, rozbitą skrzynkę na północny wschód od siebie, na południe od obozowiska obcych ludzi.");
 			if ("found".equals(stage) || done)
 				entries.add(
-						"Skrzynka ma taki sam znak jak zamówienie. Między deskami został sznurek ubrudzony woskiem. Ślady wozu prowadzą w głąb polany.");
+						"Na skrzynce widnieją trzy kółka, takie same jak na zamówieniu. Między deskami tkwi kawałek sznurka ubrudzonego woskiem. Ślady kół prowadzą w głąb polany.");
 			if (done)
 				entries.add(
 						"Brzezdom wskazał ukryty skład w północnej części polany. Zapasy są pilnowane.");
@@ -1063,7 +1063,7 @@ public final class TrailQuestLine {
 						"Walka ze strażnikiem za mną. Można sprawdzić papiery przy workach.");
 			if ("recovered".equals(stage) || done)
 				entries.add(
-						"W spisie są węgiel Staska i mąka dla karczmy. Jest też list o następnym transporcie do Semos.");
+						"Spis wymienia węgiel Staska i mąkę dla karczmy. Obok leży list z poleceniem wysłania następnego transportu do Semos.");
 			if (done)
 				entries.add(
 						"Brzezdom radzi pokazać znalezisko Gazdzie Wojtkowi w ratuszu w Zakopanem C.");

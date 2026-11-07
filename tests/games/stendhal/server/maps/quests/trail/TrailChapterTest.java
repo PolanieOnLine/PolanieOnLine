@@ -167,6 +167,18 @@ public class TrailChapterTest {
 	}
 
 	@Test
+	public void reexaminingTheCrateExplainsWhoNeedsTheDiscoveredClue() {
+		player.setQuest("trail_delivery", "done");
+		player.setQuest("trail_guest", "found");
+		player.clearEvents();
+		assertFalse(use(TrailEvidence.Kind.TRACKS));
+		assertEquals("found", player.getQuest("trail_guest"));
+		String hint = player.events().get(player.events().size() - 1).get("text");
+		assertTrue(hint, hint.contains("Brzezdoma"));
+		assertTrue(hint, hint.contains("woźnica"));
+	}
+
+	@Test
 	public void prerequisiteAndOffersCannotSkipTheStory() {
 		assertTrue(system.getMainQuests(player).isEmpty());
 		visit("Stasek");

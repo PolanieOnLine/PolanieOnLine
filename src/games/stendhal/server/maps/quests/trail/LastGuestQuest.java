@@ -36,7 +36,7 @@ public final class LastGuestQuest extends TrailQuest {
 				speaker.say(
 						"Do kopalni? Nie, skręcił przy lesie i wjechał między drzewa. "
 								+ "Potem usłyszałem trzask desek i ktoś zaczął strasznie kląć. "
-								+ "Na północ od nas, przy wschodnim skraju polany, leży rozbita skrzynka. "
+								+ "Na północny wschód stąd leży rozbita skrzynka. Jest sama na polanie, na południe od obozowiska tych ludzi. "
 								+ "Obejrzyj ją. Jeśli znajdziesz ten sam znak, będziemy wiedzieli, że idziemy śladem naszego #'woźnicy'.");
 			} else if (player.isQuestInState(step.slot, "found")) {
 				complete(player, speaker, "found");
