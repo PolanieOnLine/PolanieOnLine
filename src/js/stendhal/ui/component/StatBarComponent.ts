@@ -38,6 +38,7 @@ export class StatBarComponent extends Component {
 	}
 
 	draw(ratio: number) {
+		ratio = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
 		this.ctx.beginPath();
 		this.ctx.fillStyle = Color.BLACK;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

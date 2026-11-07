@@ -160,6 +160,11 @@ final class LegendaryAffixPresentation {
 	}
 
 	private static void appendCombatExpansion(final StringBuilder result, final RPObject object) {
+		if (has(object, ItemTooltip.LEGENDARY_LIFE_TIDE)) {
+			appendFixed(result, "Przypływ życia", new String[] {
+					"Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."
+			});
+		}
 		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
 				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
 		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",

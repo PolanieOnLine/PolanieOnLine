@@ -31,7 +31,7 @@ import { stendhal } from "../../stendhal";
  */
 export class PlayerStatsComponent extends Component {
 
-	private readonly keys = ["hp", "base_hp", "atk", "atk_item", "atk_xp", "def", "def_item", "def_xp", "xp", "level"];
+	private readonly keys = ["hp", "modified_hp", "base_hp", "atk", "atk_item", "atk_xp", "def", "def_item", "def_xp", "xp", "level"];
 	private readonly LEVELS = 598;
 	private MONEY_SLOTS = ["pouch", "bag", "lhand", "rhand"];
 	private xp;
@@ -86,7 +86,7 @@ export class PlayerStatsComponent extends Component {
 			return;
 		}
 		this.updateKarma(object["karma"]);
-		this.updateHp(object["hp"], object["base_hp"]);
+		this.updateHp(object["modified_hp"] ?? object["hp"], object["base_hp"]);
 		this.updateOther(object);
 
 		if (!this.isBarEnabled("karma") && object) {

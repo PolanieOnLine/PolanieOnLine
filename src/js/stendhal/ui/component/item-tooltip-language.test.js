@@ -211,6 +211,7 @@ test("flat attack and defense affixes stay out of core stats and retain one comp
 test("all legendary affix descriptions and regular item bonuses have readable English display text", async () => {
 	const h = await harness(); h.language.synchronize("en");
 	const stats = {category: "armour", def: "85", resistance_fire: "107", spiked_plating: "0.25",
+		legendary_life_tide: "1",
 		hunter_mark: "1", giant_slayer: "1", affix_flat_attack_bonus: "3", accuracy_bonus: "7"};
 	for (const key of ["deep_wounds", "armor_breaker", "longshot", "executioner", "duel_master", "crushing_blow",
 		"stunning_force", "binding_strike", "merciless_reach", "falcon_eye", "first_salvo", "power_overload",
@@ -219,6 +220,7 @@ test("all legendary affix descriptions and regular item bonuses have readable En
 	const text = h.build(new h.Item(stats)).lines.map(line => line.text).join("\n");
 	assert.match(text, /85 armour points/);
 	assert.match(text, /Spiked Plating: reflect 25\.0%.*up to 50% in total/);
+	assert.match(text, /Life Surge:.*20%.*20 HP every 2 seconds/);
 	assert.match(text, /Stunning Force: 15% chance to stun/);
 	assert.match(text, /Falcon Eye:/);
 	assert.match(text, /critical hit chance/);

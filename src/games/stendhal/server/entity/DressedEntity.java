@@ -24,8 +24,10 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
+import games.stendhal.server.core.rule.damage.LifeTideService;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.SyntaxException;
 
@@ -47,8 +49,7 @@ public abstract class DressedEntity extends RPEntity {
 	}
 
 	/**
-	 * Keep player/dressed-entity hit points representable by the SHORT RPClass
-	 * attributes before RPEntity stores the same value in its internal fields.
+	 * Keep maximum health representable by its SHORT RPClass attribute.
 	 */
 	@Override
 	public void setBaseHP(final int newhp) {
@@ -68,7 +69,13 @@ public abstract class DressedEntity extends RPEntity {
 
 	@Override
 	public void setHP(final int hp) {
-		super.setHP(clampHitPoints("hp", hp));
+		// A volatile override carries temporary surplus beyond the legacy storage limit.
+		if (hp > Short.MAX_VALUE && this instanceof Player
+				&& LifeTideService.isActive((Player) this)) {
+			super.setHP(hp);
+		} else {
+			super.setHP(clampHitPoints("hp", hp));
+		}
 	}
 
 	private int clampHitPoints(final String attribute, final int value) {

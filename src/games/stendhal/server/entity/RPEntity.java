@@ -288,7 +288,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	public int heal() {
 		final int baseHP = getBaseHP();
-		final int given = baseHP - getHP();
+		final int given = Math.max(0, baseHP - getHP());
 
 		if (given != 0) {
 			put("heal", given);
@@ -323,7 +323,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		// Avoid creating zombies out of dead creatures
 		if (tempHp > 0) {
-			given = Math.min(amount, getBaseHP() - tempHp);
+			given = Math.min(amount, Math.max(0, getBaseHP() - tempHp));
 
 			if (given != 0) {
 				tempHp += given;
@@ -404,6 +404,9 @@ public abstract class RPEntity extends CombatEntity {
 		}
 		if (has("hp")) {
 			hp = getInt("hp");
+		}
+		if (has("modified_hp")) {
+			hp = getInt("modified_hp");
 		}
 
 		if (has("gender")) {
@@ -1020,7 +1023,14 @@ public abstract class RPEntity extends CombatEntity {
 	private void setHpInternal(final int hp, final boolean notify) {
 		this.hp = hp;
 		try {
-			put("hp", hp);
+			// Keep the persisted SHORT field compatible with existing characters.
+			// Once needed, the volatile override follows every HP change this session.
+			if (this instanceof Player && (hp > Short.MAX_VALUE || has("modified_hp"))) {
+				put("modified_hp", hp);
+				put("hp", Math.min(Short.MAX_VALUE, hp));
+			} else {
+				put("hp", hp);
+			}
 		} catch (IllegalArgumentException e) {
 			logger.error("Failed to set HP to " + hp + ". Entity was: " + this, e);
 		}
@@ -1605,6 +1615,9 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	public void onHealed(final Entity attacker, final int damage) {
+		if (damage >= 0 && getHP() >= getBaseHP()) {
+			return;
+		}
 		logger.debug("Healed " + damage + " points by " + attacker.getID());
 
 		if (attacker instanceof RPEntity) {

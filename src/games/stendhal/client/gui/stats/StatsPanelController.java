@@ -55,6 +55,7 @@ public final class StatsPanelController {
 	private int level;
 	private int xp;
 	private int hp;
+	private Integer modifiedHP;
 	private int maxhp;
 	private int maxhpModified;
 
@@ -115,6 +116,7 @@ public final class StatsPanelController {
 	 * @param pcs property change support of the user
 	 */
 	public void registerListeners(PropertyChangeSupport pcs) {
+		modifiedHP = null;
 		PropertyChangeListener listener = new HPChangeListener();
 		addPropertyChangeListenerWithModifiedSupport(pcs, "base_hp", listener);
 		addPropertyChangeListenerWithModifiedSupport(pcs, "hp", listener);
@@ -242,14 +244,15 @@ public final class StatsPanelController {
 			maxhpvalue = maxhp;
 		}
 
-		final String text = "PZ:" + SPC + hp + "/" + maxhpvalue;
+		final int currentHP = modifiedHP == null ? hp : modifiedHP.intValue();
+		final String text = "PZ:" + SPC + currentHP + "/" + maxhpvalue;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// FIXME: this seems to be run twice at level up
 				panel.setHP(text);
 				if (maxhpvalue > 0) {
-					panel.setHPBar(maxhpvalue, hp);
+					panel.setHPBar(maxhpvalue, currentHP);
 				}
 			}
 		});
@@ -353,6 +356,8 @@ public final class StatsPanelController {
 				}
 			} else if (event.getPropertyName().equals("hp")) {
 				hp = Integer.parseInt(newValue);
+			} else if (event.getPropertyName().equals("modified_hp")) {
+				modifiedHP = newValue == null ? null : Integer.valueOf(newValue);
 			}
 			updateHP();
 		}

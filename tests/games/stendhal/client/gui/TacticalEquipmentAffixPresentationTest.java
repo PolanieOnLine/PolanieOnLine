@@ -28,6 +28,7 @@ public class TacticalEquipmentAffixPresentationTest {
 		put(object, ItemTooltip.LEGENDARY_TENACITY, "1.0");
 		put(object, ItemTooltip.LEGENDARY_BREACH, "1.0");
 		put(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY, "1.0");
+		put(object, "legendary_life_tide", "1.0");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
@@ -35,6 +36,8 @@ public class TacticalEquipmentAffixPresentationTest {
 		assertTrue(tooltip.contains("Kolczaste okucie"));
 		assertTrue(tooltip.contains("25,0%"));
 		assertTrue(tooltip.contains("ciosów wręcz; łącznie maksymalnie 50%"));
+		assertTrue(tooltip.contains("Przypływ życia"));
+		assertTrue(tooltip.contains("20 PZ co 2 s"));
 		assertTrue(tooltip.contains("Znak łowcy"));
 		assertTrue(tooltip.contains("6 s"));
 		assertTrue(tooltip.contains("Łowca olbrzymów"));

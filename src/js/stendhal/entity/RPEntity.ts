@@ -61,6 +61,7 @@ export class RPEntity extends ActiveEntity {
 
 	private attackers = new Map<string, Entity>();
 	private deathAnnounced = false;
+	private hpChangePending = false;
 
 	/**
 	 * Animation drawn over entity sprite.
@@ -74,6 +75,7 @@ export class RPEntity extends ActiveEntity {
 		// Ugly hack to detect changes. The old value is no
 		// longer available after super.set()
 		let oldValue = this[key];
+		const oldHP = this.getCurrentHP();
 
 		super.set(key, value);
 		if (key == "text") {
@@ -87,14 +89,14 @@ export class RPEntity extends ActiveEntity {
 					stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, "pol-armor-break", 1);
 				}
 			}
-		} else if (["hp", "base_hp"].indexOf(key) !== -1) {
+		} else if (["hp", "modified_hp", "base_hp"].indexOf(key) !== -1) {
 			this[key] = parseInt(value, 10);
-			if (key === "hp" && oldValue != undefined) {
-				const newHp = this[key];
-				this.onHPChanged(newHp - oldValue);
+			if (key === "modified_hp" || key === "hp" && this["modified_hp"] === undefined) {
+				const newHp = this.getCurrentHP();
+				this.notifyHPAfterChanges(oldHP);
 				if (newHp > 0) {
 					this.deathAnnounced = false;
-				} else if (!this.deathAnnounced && oldValue > 0) {
+				} else if (!this.deathAnnounced && oldHP !== undefined && oldHP > 0) {
 					this.onDeath();
 					this.deathAnnounced = true;
 				}
@@ -654,6 +656,24 @@ export class RPEntity extends ActiveEntity {
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
 	}
 
+	getCurrentHP(): number {
+		return this["modified_hp"] ?? this["hp"];
+	}
+
+	/** Notify once after all fields of the current perception have been applied. */
+	private notifyHPAfterChanges(previousHP: number | undefined) {
+		if (this.hpChangePending) {
+			return;
+		}
+		this.hpChangePending = true;
+		queueMicrotask(() => {
+			this.hpChangePending = false;
+			if (previousHP !== undefined) {
+				this.onHPChanged(this.getCurrentHP() - previousHP);
+			}
+		});
+	}
+
 	drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
 		var drawX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 		var drawY = y + (this["height"] * 32) - this["drawHeight"]
@@ -669,7 +689,8 @@ export class RPEntity extends ActiveEntity {
 		ctx.fillRect(drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2);
 
 		// Bar color
-		var hpRatio = this["hp"] / this["base_hp"];
+		const hpRatio = this["base_hp"] > 0
+			? Math.max(0, Math.min(1, this.getCurrentHP() / this["base_hp"])) : 0;
 		ctx.fillStyle = Color.getStatBarColor(hpRatio);
 		ctx.fillRect(drawX, drawY, this["drawWidth"] * hpRatio, HEALTH_BAR_HEIGHT - 2);
 		const maximumArmor = Number(this["base_armor_hp"]) || 0;

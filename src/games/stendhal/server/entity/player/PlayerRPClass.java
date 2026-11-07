@@ -202,5 +202,7 @@ public class PlayerRPClass {
 		// Keep the new event last to preserve existing saved attribute codes.
 		player.addRPEvent(Events.NPC_SHOP, Definition.PRIVATE);
 		player.addRPEvent(Events.ADMIN_INSPECT, Definition.PRIVATE);
+		// Temporary HP must not change the codes or binary types of saved fields.
+		player.addAttribute("modified_hp", Type.INT, Definition.VOLATILE);
 	}
 }

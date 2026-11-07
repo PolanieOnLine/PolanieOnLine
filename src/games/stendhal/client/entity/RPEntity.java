@@ -1156,6 +1156,9 @@ public abstract class RPEntity extends AudibleEntity {
 		} else {
 			hp = 0;
 		}
+		if (object.has("modified_hp")) {
+			hp = object.getInt("modified_hp");
+		}
 		baseArmorHP = object.has("base_armor_hp") ? object.getInt("base_armor_hp") : 0;
 		armorHP = object.has("armor_hp") ? object.getInt("armor_hp") : 0;
 
@@ -1426,22 +1429,9 @@ public abstract class RPEntity extends AudibleEntity {
 			/*
 			 * HP
 			 */
-			if (changes.has("hp")) {
-				final int newHP = changes.getInt("hp");
-				final int change = newHP - hp;
-
-				final boolean isCritical = changes.has("crit");
-
-				hp = newHP;
-
-				if (object.has("hp") && (change != 0)) {
-					onHPChange(change, isCritical);
-				}
-
-				hpRatioChange = true;
-			}
-			if (changes.has("modified_hp")) {
-				final int newHP = changes.getInt("modified_hp");
+			if (changes.has("hp") || changes.has("modified_hp")) {
+				final int newHP = changes.has("modified_hp")
+						? changes.getInt("modified_hp") : changes.getInt("hp");
 				final int change = newHP - hp;
 
 				final boolean isCritical = changes.has("crit");

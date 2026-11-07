@@ -98,6 +98,7 @@ const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
 	["legendary_tenacity", "Zaciętość", "Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."],
 	["legendary_breach", "Przełamanie", "Po rozbiciu opancerzenia celu zadajesz mu o 15% więcej obrażeń zdrowiu przez 6 s."],
 	["legendary_quick_recovery", "Szybkie otrząśnięcie", "Skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Efekt nie kumuluje się."],
+	["legendary_life_tide", "Przypływ życia", "Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."],
 	["legendary_deep_wounds", "Głębokie Rany", "15% szansy na krwawienie; rana zadaje 35% obrażeń trafienia."],
 	["legendary_armor_breaker", "Łamacz Pancerzy", "Redukuje 40% niekorzystnej kary wynikającej z pancerza celu."],
 	["legendary_longshot", "Dalekosiężność", "Ataki wykonane z dystansu zadają +25% obrażeń."],

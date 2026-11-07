@@ -68,7 +68,7 @@ class HealthBar implements ChangeListener {
 	 * @param hpRatio new HP ratio
 	 */
 	void setHPRatio(double hpRatio) {
-		model.setValue(hpRatio);
+		model.setValue(Double.isFinite(hpRatio) ? Math.max(0.0, Math.min(1.0, hpRatio)) : 0.0);
 	}
 
 	void setArmorRatio(final double ratio) {

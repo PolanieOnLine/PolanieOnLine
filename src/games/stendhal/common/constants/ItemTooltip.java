@@ -79,6 +79,7 @@ public final class ItemTooltip {
 	public static final String LEGENDARY_TENACITY = "legendary_tenacity";
 	public static final String LEGENDARY_BREACH = "legendary_breach";
 	public static final String LEGENDARY_QUICK_RECOVERY = "legendary_quick_recovery";
+	public static final String LEGENDARY_LIFE_TIDE = "legendary_life_tide";
 	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
 	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
 	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";

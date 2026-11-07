@@ -33,6 +33,7 @@ import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.LifeTideService;
 import games.stendhal.server.core.events.EquipListener;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.UseListener;
@@ -1470,6 +1471,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return needs documenting
 	 */
 	public boolean onUnequipped() {
+		if (getContainer() instanceof Player) {
+			LifeTideService.onUnequipped((Player) getContainer(), this);
+		}
 		if (getContainer() instanceof Player && WeaponAffixService.isWeapon(this)
 				&& ("rhand".equals(getContainerSlot().getName())
 						|| "lhand".equals(getContainerSlot().getName()))) {

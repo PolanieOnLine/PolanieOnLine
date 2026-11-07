@@ -16,6 +16,7 @@ import games.stendhal.common.constants.GameTiming;
 import games.stendhal.server.core.rule.damage.CombatStatsService;
 import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
+import games.stendhal.server.core.rule.damage.LifeTideService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
 import static games.stendhal.common.constants.Actions.ADMINLEVEL;
@@ -284,6 +285,7 @@ public class Player extends DressedEntity implements UseListener {
 
 		player.disconnected = true;
 		GlyphRecoveryService.reset(player);
+		LifeTideService.reset(player);
 		GlyphCombatService.clearEffects(player);
 		ChallengeArenaObservation.onLogout(player);
 		NpcShopAction.onLogout(player);
@@ -326,6 +328,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		unlockedPortals = new LinkedList<Integer>();
+		LifeTideService.reset(this);
 
 		updateModifiedAttributes();
 	}
@@ -1218,6 +1221,7 @@ public class Player extends DressedEntity implements UseListener {
 			return;
 		}
 		GlyphRecoveryService.reset(this);
+		LifeTideService.reset(this);
 		GlyphCombatService.clearEffects(this);
 		// Always use remove=false for players, as documented
 		// in RPEntity.onDead()
@@ -2202,12 +2206,14 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public void updateItemAtkDef() {
 		super.updateItemAtkDef();
+		LifeTideService.reconcileEquipment(this);
 		CombatStatsService.update(this);
 	}
 
 	/** Perform cycle logic, including state-dependent combat summary changes. */
 	@Override
 	public void logic() {
+		LifeTideService.tick(this);
 		GlyphRecoveryService.tick(this);
 		CombatStatsService.update(this);
 		/*

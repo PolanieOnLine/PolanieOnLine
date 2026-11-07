@@ -185,6 +185,7 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.LEGENDARY_TENACITY, ItemTooltip.LEGENDARY_TENACITY);
 		copyDouble(item, ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_BREACH);
 		copyDouble(item, ItemTooltip.LEGENDARY_QUICK_RECOVERY, ItemTooltip.LEGENDARY_QUICK_RECOVERY);
+		copyDouble(item, ItemTooltip.LEGENDARY_LIFE_TIDE, ItemTooltip.LEGENDARY_LIFE_TIDE);
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);
