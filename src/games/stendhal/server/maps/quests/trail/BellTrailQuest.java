@@ -121,6 +121,15 @@ public final class BellTrailQuest extends TrailQuest {
 			return false;
 		}
 		if (step == Step.BELL_ESCAPE) {
+			StackableItem coins = (StackableItem) SingletonRepository.getEntityManager().getItem(
+					"money", ItemCreationContext.quest());
+			coins.setQuantity(step.coins);
+			// A chest may merge into an existing stack without receiving an ID.
+			// Reject a full inventory before changing that stack.
+			if (player.getSlotToEquip(coins) == null) {
+				speaker.say("Zostaw miejsce także na zapłatę. Nagroda nie przepadnie.");
+				return true;
+			}
 			Item chest = SingletonRepository.getEntityManager().getItem(
 					"złota skrzynia", ItemCreationContext.quest());
 			chest.setBoundTo(player.getName());
@@ -131,9 +140,6 @@ public final class BellTrailQuest extends TrailQuest {
 						"Ta skrzynia jest dla ciebie. Zostaw na nią trochę miejsca w plecaku, zaczekam.");
 				return true;
 			}
-			StackableItem coins = (StackableItem) SingletonRepository.getEntityManager().getItem(
-					"money", ItemCreationContext.quest());
-			coins.setQuantity(step.coins);
 			if (player.getSlotToEquip(coins) == null) {
 				player.getSlot("bag").remove(chest.getID());
 				speaker.say(

@@ -403,6 +403,41 @@ public class BellTrailStoryTest {
 	}
 
 	@Test
+	public void fullInventoryCannotDuplicateARewardIntoAnExistingChestStack() {
+		before(Step.BELL_ESCAPE);
+		player.setQuest(Step.BELL_ESCAPE.slot, "return");
+		Item chest = SingletonRepository.getEntityManager().getItem("złota skrzynia");
+		chest.setBoundTo(player.getName());
+		assertTrue(player.equip("bag", chest));
+		StackableItem coins = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
+		coins.setQuantity(12500);
+		while (player.getSlotToEquip(coins) != null) {
+			String slot = player.getSlotToEquip(coins).getName();
+			assertTrue(player.equip(slot, SingletonRepository.getEntityManager().getItem("miecz")));
+		}
+		int xp = player.getXP();
+		visit("Festris");
+		for (int i = 0; i < 2; i++) {
+			say("Festris", "powrót wyprawy");
+			assertEquals(1, player.getTotalNumberOf("złota skrzynia"));
+			assertEquals("return", player.getQuest(Step.BELL_ESCAPE.slot));
+			assertEquals(xp, player.getXP());
+		}
+		for (RPObject item : player.getSlot("bag")) {
+			if (item != chest) {
+				player.getSlot("bag").remove(item.getID());
+				break;
+			}
+		}
+		say("Festris", "powrót wyprawy");
+		assertTrue(player.isQuestCompleted(Step.BELL_ESCAPE.slot));
+		assertEquals(2, player.getTotalNumberOf("złota skrzynia"));
+		assertEquals(12500, player.getTotalNumberOf("money"));
+		say("Festris", "powrót wyprawy");
+		assertEquals(2, player.getTotalNumberOf("złota skrzynia"));
+	}
+
+	@Test
 	public void logoutRemovesConvoyEvenThoughThePlayerRemembersTheirLastZone() {
 		before(Step.BELL_ESCAPE);
 		player.setQuest(Step.BELL_ESCAPE.slot, "escort;0");
