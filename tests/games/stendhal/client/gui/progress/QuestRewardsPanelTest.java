@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import org.junit.Test;
 import games.stendhal.common.QuestRewardPreview;
 import games.stendhal.server.events.ProgressStatusEvent;
@@ -45,6 +47,9 @@ public class QuestRewardsPanelTest {
 					if (component instanceof JComponent) {
 						String tooltip = ((JComponent) component).getToolTipText();
 						if (tooltip != null) {
+							assertTrue("Reward must handle actual mouse hover",
+									Arrays.asList(component.getMouseListeners()).contains(
+											ToolTipManager.sharedInstance()));
 							assertTrue(tooltip, tooltip.contains("42 pkt."));
 							assertTrue(tooltip, tooltip.contains("100"));
 							assertFalse(

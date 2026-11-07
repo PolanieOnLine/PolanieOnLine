@@ -19,6 +19,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import javax.swing.ToolTipManager;
 import javax.swing.plaf.basic.BasicPanelUI;
 import javax.swing.text.ComponentView;
 import javax.swing.text.StyleConstants;
@@ -117,6 +118,7 @@ final class QuestRewardsPanel extends JPanel {
 			name.setForeground(Color.BLACK);
 			name.setFont(name.getFont().deriveFont(Font.PLAIN));
 			name.setToolTipText("");
+			ToolTipManager.sharedInstance().registerComponent(name);
 			row.add(name, BorderLayout.CENTER);
 			add(row);
 		}
@@ -177,6 +179,9 @@ final class QuestRewardsPanel extends JPanel {
 			this.item = item;
 			setPreferredSize(new Dimension(42, 42));
 			setToolTipText("");
+			// The dynamic getter is already non-null, so setToolTipText alone
+			// does not register this component with Swing's tooltip manager.
+			ToolTipManager.sharedInstance().registerComponent(this);
 			SpriteStore store = SpriteStore.get();
 			Sprite sheet = store.getSprite("data/sprites/items/"
 					+ item.itemClass + "/" + item.subclass + ".png");
