@@ -1,5 +1,100 @@
 ## Changelog
 ---------
+1.44
+*zadania główne i nowe przygody*
+---
+* Dodano główną historię prowadzącą od pierwszych zadań w Zakopanem aż do wypraw dla postaci na 550 poziomie
+* Po pomocy Pietrkowi, Adasiowi, Fryderykowi i Staskowi można rozpocząć śledztwo w sprawie fałszywych zamówień. Dalsze tropy prowadzą przez Kościelisko i Semos do kryjówki Radana
+* Kryjówka Radana jest osobną wyprawą dla każdego gracza. Pokonani strażnicy, uwolniony więzień i zabezpieczony transport pozostają zaliczone po wyjściu lub wylogowaniu
+* Od 30 poziomu można zbadać tajemnicę nocnej zmiany w kopalni Semos. Od 50 poziomu historia wraca do Zakopanego i Kościeliska, gdzie nadal działają wspólnicy Radana
+* Od 75 poziomu można wyjaśnić niepokojące wydarzenia w starej warowni pod Ados, a od 100 poziomu poznać historię poległych wartowników na trakcie pod Krakowem
+* Dodano wnętrze warszawskiej warowni, jej mieszkańców i rozdział dostępny od 150 poziomu. Gracz próbuje wyjaśnić konflikt między księciem a załogą
+* Od 200 poziomu czeka ratowanie rozbitków i śledztwo w sprawie fałszywych świateł na wybrzeżu Gdańska. Od 250 poziomu można pomóc górnikom w zalanych chodnikach Wieliczki
+* Od 400 poziomu można ruszyć na Smocze Ziemie i zbadać sprawę skradzionych jaj. Historię zamyka Milczący dzwon, wyprawa na Kikareukin dostępna od 550 poziomu
+* Dodano osiągnięcie Milczący dzwon za ukończenie ostatniego rozdziału
+* Pietrek i pozostali mieszkańcy pomagający początkującym podpowiadają, gdzie znaleźć kupców, leczenie i kolejne zadania
+
+*dziennik i wskazówki do zadań*
+---
+* W dzienniku rozdzielono zadania główne i poboczne. Główne zadania mają nazwy rozdziałów oraz opis bieżącego celu
+* Dodano podgląd gwarantowanych nagród: doświadczenia, monet i przedmiotów. Po ukończeniu zadania dziennik pokazuje otrzymane nagrody
+* Nagrody przedmiotowe mają własne sloty i podpowiedzi ze statystykami, takie jak przedmioty w ekwipunku. Można też porównać je z założonym wyposażeniem
+* Dostępne zadania główne wyróżnia czerwony znacznik nad NPC. Zwykłe zadania zachowują żółty znacznik
+* Gdy odblokuje się kolejne zadanie główne, prowadzący je NPC może wysłać krótkie zaproszenie. Wiadomości te mają osobny, turkusowy kolor i są wysyłane tylko raz dla danego zadania
+* Poprawiono język opisów i rozmów w głównej historii. Ponowne sprawdzanie znalezionych wskazówek podpowiada następny krok
+
+*glify i ich ulepszanie*
+---
+* Glify, poza glifem wiedzy, otrzymały trzy poziomy rozwoju: I, II i III
+* Dotychczasowe glify stają się glifami I poziomu. Ich początkowa moc została obniżona, a silniejsze bonusy odblokowuje się przez ulepszanie
+* Glif daru Mokoszy daje teraz 100, 250 lub 500 punktów zdrowia, zależnie od poziomu
+* Dodano dziesięć nowych glifów: świętego dębu, żywej wody, Rodzanic, wichru, wytrwałości, ogniska, korzeni, zmory, Świętowita i przodków
+* Nowe moce pozwalają m.in. odnawiać zdrowie poza walką, wzmacniać leczenie z jedzenia i eliksirów, unikać zwykłych fizycznych trafień, osłabiać przeciwnika oraz ograniczać obrażenia przy niskim zdrowiu
+* Dodano glif wiedzy jako nagrodę za zadanie Pamięć kamienia u Starkada w Semos, dostępne od 20 poziomu
+* Założony glif wiedzy daje na stałe 10% więcej doświadczenia z potworów. Nie zwiększa nagród za zadania, nie wymaga ulepszania i nie wypada po śmierci
+* Obok Zoryka Runicznego w Tarnowie stanął stół runiczny. Kliknięcie otwiera okno tworzenia i ulepszania glifów w obu klientach
+* W oknie stołu można przejrzeć wzory glifów, ich właściwości, zmianę mocy po ulepszeniu oraz potrzebne i posiadane składniki
+* Ulepszenia wymagają fragmentów glifów, monet i surowców zależnych od wybranego znaku. Ulepszanie zawsze się udaje
+* Odświeżono grafiki glifów. Poszczególne poziomy różnią się nasyceniem kolorów, a podglądy przedmiotów zachowują animację
+* Poprawiono przeliczanie bonusów ataku, obrony i zdrowia z glifów oraz zapamiętywanie ich poziomu
+
+*opancerzenie potworów i walka*
+---
+* Dodano wybranym potworom osobną pulę opancerzenia. Zwykłe trafienia najpierw rozbijają tę ochronę, a dopiero pozostałe obrażenia odbierają zdrowie
+* Opancerzenie jest dodatkową ochroną, a nie zamiennikiem części zdrowia. Otrzymali je m.in. wybrani bossowie, smoki, anioły i archanioły
+* W obu klientach opancerzenie widać jako szary pasek nałożony na pasek zdrowia. Jego rozbiciu towarzyszy osobny dźwięk
+* Rozbicie opancerzenia nie usuwa rodzaju pancerza przeciwnika. Zalety i ograniczenia poszczególnych rodzajów broni nadal obowiązują
+* Kradzież życia jest naliczana od obrażeń zadanych zdrowiu, a nie od samego rozbijania opancerzenia
+
+*Arena Wyzwań*
+---
+* Rozbudowano wybór przeciwników dla postaci od 400 poziomu. Fale mogą składać się z różnych smoków, nieumarłych lub szaraków
+* Każda grupa obejmuje teraz wiele gatunków przeciwników. Ich zdrowie, opancerzenie, atak i obrona są dopasowywane do siły fali
+
+*sklepy NPC*
+---
+* Dodano okna sklepów w kliencie Java i grze przez przeglądarkę. Można kupować i sprzedawać przedmioty bez wpisywania całego zamówienia na czacie
+* Oferta ma wyszukiwarkę, osobne zakładki Kup i Sprzedaj oraz podgląd wybranego przedmiotu z opisem, rzadkością i statystykami
+* Dodano wybór ilości, przyciski szybkich ilości i Maks oraz podgląd ceny za sztukę i całego zamówienia
+* Zakładka Sprzedaj pokazuje również przedmioty skupowane przez kupca, których gracz nie ma przy sobie. Niedostępnych pozycji nie można sprzedać
+* Sklepy pokazują wymagania do odblokowania handlu, w tym potrzebę ukończenia zadania dla danego NPC
+* Sprzedaż uwzględnia konkretny wybrany przedmiot. Poprawiono jego podgląd, aby otwarcie sklepu nie zmieniało grafiki przedmiotów w ekwipunku
+* Odświeżanie oferty nie rozpoczyna ponownie rozmowy z NPC i nie powoduje powtarzania powitań
+
+*produkcja i rzemieślnicy*
+---
+* Dodano klikalne stanowiska przy producentach i rzemieślnikach. Okna produkcji są dostępne w obu klientach
+* W oknie można wybrać produkt i ilość, sprawdzić składniki, koszt oraz czas wykonania, a następnie zlecić pracę lub odebrać gotowe zamówienie
+* Okno pokazuje bieżące zlecenie i pozostały czas pracy. Produkcja trwa również po odejściu od NPC i wylogowaniu
+* Stanowiska mają grafiki dopasowane do wykonywanej pracy i są ustawiane po stronie dostępnej dla klientów
+* Na polanie przy drwalu pod Krakowem pojawił się Smolisław, u którego można hurtowo wypalać węgiel drzewny
+* Jedna sztuka węgla drzewnego wymaga 2 polan i 5 monet, a jej wypalenie trwa 30 sekund. Jedno zlecenie może obejmować do 1000 sztuk. Wypalanie u Smolisława nie daje karmy
+
+*klient gry i aktualizator*
+---
+* Przebudowano okno automatycznej aktualizacji. Pokazuje wersje gry, postęp pobierania, ilość danych, prędkość i przewidywany pozostały czas
+* Aktualizator korzysta z przycisków i wyglądu klienta. Po przygotowaniu plików można uruchomić grę przyciskiem lub wybrać automatyczne uruchomienie
+* Ograniczono zbędne obciążenie procesora przy wysokich limitach FPS w kliencie Java
+* Poprawiono wyszukiwanie znajomych, aby pole wyszukiwania nie rozszerzało bocznego panelu
+* Przywrócono dostęp do głównego przycisku Menu w webkliencie na komputerze
+* Ujednolicono podpowiedzi przedmiotów w webkliencie z opisami w Javie. Zwoje pokazują zapisane miejsce docelowe
+* Dopracowano wygląd sklepów, produkcji i stołu runicznego, aby korzystały ze wspólnej stylistyki klienta
+
+*pozostałe poprawki*
+---
+* Ujednolicono kolejność słów w nazwach lazurowego i szmaragdowego wyposażenia. Nazwa rodzaju przedmiotu znajduje się na początku
+* Naprawiono osiągnięcie Przyjaciel Dzieci. Uwzględnia właściwe zadanie Plinka i zapamiętuje ukończenie powtarzalnych zadań dzieci
+* Zwierzęta mogą dotrzeć z opiekunem do schodów na piętro banku w Krakowie
+* Przeciwnicy fabularni wracają do swoich stanowisk po przerwaniu walki. Usunięto możliwość pozostawiania ich bezbronnych poza obszarem starcia
+* Zablokowano łupy z wydarzeń u przeciwników fabularnych, którzy nie powinni zostawiać przedmiotów
+* Naprawiono odbieranie nagrody od Festris przy pełnym ekwipunku i istniejącym stosie złotych skrzyń
+
+*narzędzia administracyjne*
+---
+* Dodano wizualne okno inspect w kliencie Java i webkliencie, otwierane po sprawdzeniu gracza lub obiektu przez administratora
+* Okno porządkuje statystyki, wyposażenie, zadania i pozostałe dane. Dodano wyszukiwanie, odświeżanie oraz podgląd opisów przedmiotów
+
+
 1.43.4
 *halloween i duszek*
 ---
