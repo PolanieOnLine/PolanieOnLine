@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.server.entity.Entity;
@@ -202,7 +201,7 @@ public class TrailChapterTest {
 		accept("Brzezdom", "skład");
 		assertEquals("guard", player.getQuest("trail_seal"));
 		assertFalse(use(TrailEvidence.Kind.DOCUMENTS));
-		Creature guard = SingletonRepository.getEntityManager().getCreature(
+		Creature guard = TrailCreatureVariants.create(
 				"strażnik składu");
 		guard.setPosition(62, 61);
 		forest.add(guard);
@@ -268,7 +267,7 @@ public class TrailChapterTest {
 
 	@Test
 	public void guardCreditRequiresAnActiveInvestigationAtTheStockpile() {
-		Creature guard = SingletonRepository.getEntityManager().getCreature(
+		Creature guard = TrailCreatureVariants.create(
 				"strażnik składu");
 		forest.add(guard);
 		guard.setPosition(62, 61);

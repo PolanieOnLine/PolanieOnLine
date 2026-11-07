@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import games.stendhal.common.Direction;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.creature.Creature;
@@ -60,7 +59,7 @@ final class RadanDungeonScene {
 
 	private void fighter(String name, int role, int x, int y) {
 		Fighter fighter = new Fighter(
-				SingletonRepository.getEntityManager().getCreature(name), role);
+				TrailCreatureVariants.create(name), role);
 		fighter.setPosition(x, y);
 		zone.add(fighter);
 	}

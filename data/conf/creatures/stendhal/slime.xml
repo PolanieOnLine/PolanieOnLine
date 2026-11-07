@@ -124,31 +124,5 @@
 			<profile name="abnormal"/>
 		</ai>
 	</creature>
-	<!-- Appears only at the rescue site; never placed through a map tile. -->
-	<creature name="solny szlam">
-		<type class="slime" subclass="green_slime" tileid="-1"/>
-		<description>Oto solny szlam. Wypełzł z zalanego chodnika i wciska się między kamienie.</description>
-		<attributes>
-			<atk value="1200"/>
-			<def value="140"/>
-			<armor_type value="none"/>
-			<hp value="4300"/>
-			<speed value="0.35"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="250"/>
-		<experience value="0"/>
-		<respawn value="180"/>
-		<corpse name="puddle_green" harmless="puddle_green"/>
-		<drops/>
-		<equips/>
-		<ai>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="no_elite"/>
-			<profile name="abnormal"/>
-		</ai>
-	</creature>
 	<!-- END: slime -->
 </creatures>

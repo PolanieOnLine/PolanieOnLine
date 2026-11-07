@@ -348,13 +348,13 @@ public class CoastTrailStoryTest {
 		CoastTrailGuard g = guard(Encounter.BEACH);
 		assertTrue(g.getEnemyList().isEmpty());
 		for (Encounter role : Encounter.values())
-			assertTrue(SingletonRepository.getEntityManager().getCreature(
+			assertTrue(TrailCreatureVariants.create(
 					role.name).isAbnormal());
 		ready(200);
 		player.setQuest(Step.COAST_WRECK.slot, "done");
 		player.setQuest(Step.COAST_LIGHTS.slot, "fight");
 		assertTrue(g.getEnemyList().contains(player));
-		Creature ordinary = SingletonRepository.getEntityManager().getCreature(
+		Creature ordinary = TrailCreatureVariants.create(
 				Encounter.BEACH.name);
 		g.getZone().add(ordinary);
 		CoastTrailProgress.recordKill(player, ordinary);

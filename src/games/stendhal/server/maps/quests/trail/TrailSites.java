@@ -4,7 +4,6 @@ package games.stendhal.server.maps.quests.trail;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
@@ -41,7 +40,7 @@ public final class TrailSites implements ZoneConfigurator {
 			evidence(zone, TrailEvidence.Kind.DOCUMENTS, 60, 61);
 			supplies(zone, 60, 60, 0);
 			supplies(zone, 61, 60, 1);
-			final Creature guard = SingletonRepository.getEntityManager().getCreature(
+			final Creature guard = TrailCreatureVariants.create(
 					TrailQuestLine.GUARD);
 			if (guard == null)
 				throw new IllegalStateException(

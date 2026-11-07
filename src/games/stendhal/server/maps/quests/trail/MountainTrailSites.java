@@ -4,7 +4,6 @@ package games.stendhal.server.maps.quests.trail;
 import java.util.Map;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
@@ -44,7 +43,7 @@ public final class MountainTrailSites implements ZoneConfigurator {
 			supplies.setPosition(86, 53);
 			zone.add(supplies);
 			for (Encounter role : Encounter.values()) {
-				Creature template = SingletonRepository.getEntityManager().getCreature(
+				Creature template = TrailCreatureVariants.create(
 						role.creature);
 				if (template == null)
 					throw new IllegalStateException(

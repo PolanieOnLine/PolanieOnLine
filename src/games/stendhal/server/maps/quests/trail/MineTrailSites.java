@@ -3,7 +3,6 @@ package games.stendhal.server.maps.quests.trail;
 
 import java.util.Map;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
@@ -15,7 +14,7 @@ public final class MineTrailSites implements ZoneConfigurator {
 			Map<String, String> attributes) {
 		for (MineTrailEvidence.Kind kind : MineTrailEvidence.Kind.values())
 			zone.add(new MineTrailEvidence(kind));
-		Creature courier = SingletonRepository.getEntityManager().getCreature(
+		Creature courier = TrailCreatureVariants.create(
 				MineTrailProgress.COURIER);
 		if (courier == null)
 			throw new IllegalStateException("Missing duergar courier");

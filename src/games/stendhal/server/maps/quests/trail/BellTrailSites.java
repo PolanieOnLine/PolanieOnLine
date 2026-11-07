@@ -5,7 +5,6 @@ import java.util.Map;
 import games.stendhal.common.Direction;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
@@ -91,7 +90,7 @@ public final class BellTrailSites implements ZoneConfigurator {
 				zone.add(new Evidence(kind));
 			}
 			for (Encounter role : Encounter.values()) {
-				Creature template = SingletonRepository.getEntityManager().getCreature(
+				Creature template = TrailCreatureVariants.create(
 						role.name);
 				CreatureRespawnPoint point = new CreatureRespawnPoint(zone,
 						role.x, role.y, new BellTrailGuard(template, role), 1) {

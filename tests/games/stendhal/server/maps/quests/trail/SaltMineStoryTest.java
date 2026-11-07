@@ -338,12 +338,12 @@ public class SaltMineStoryTest {
 		SaltMineGuard g = guard(Encounter.SEEP);
 		assertTrue(g.getEnemyList().isEmpty());
 		for (Encounter role : Encounter.values())
-			assertTrue(SingletonRepository.getEntityManager().getCreature(
+			assertTrue(TrailCreatureVariants.create(
 					role.name).isAbnormal());
 		before(Step.SALT_RESCUE);
 		player.setQuest(Step.SALT_RESCUE.slot, "fight");
 		assertTrue(g.getEnemyList().contains(player));
-		Creature ordinary = SingletonRepository.getEntityManager().getCreature(
+		Creature ordinary = TrailCreatureVariants.create(
 				Encounter.SEEP.name);
 		g.getZone().add(ordinary);
 		SaltMineProgress.recordKill(player, ordinary);

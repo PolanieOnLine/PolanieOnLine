@@ -347,7 +347,7 @@ public class OathTrailStoryTest {
 		accept("Wagabundus", "polegli wartownicy");
 		move(north);
 		player.setPosition(72, 38);
-		Creature copy = SingletonRepository.getEntityManager().getCreature(
+		Creature copy = TrailCreatureVariants.create(
 				Encounter.WATCH.name);
 		copy.setPosition(73, 38);
 		north.add(copy);
@@ -379,7 +379,7 @@ public class OathTrailStoryTest {
 		assertTrue(g.getEnemyList().isEmpty());
 		for (Encounter role : Encounter.values()) {
 			assertTrue(role.name + " must not be a random daily target",
-					SingletonRepository.getEntityManager().getCreature(
+					TrailCreatureVariants.create(
 							role.name).isAbnormal());
 		}
 		assertTrue(g.isAbnormal());

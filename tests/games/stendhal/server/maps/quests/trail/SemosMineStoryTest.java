@@ -18,7 +18,6 @@ import org.junit.Test;
 import games.stendhal.common.Level;
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.server.core.config.zone.TMXLoader;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.Entity;
@@ -186,7 +185,7 @@ public class SemosMineStoryTest {
 	}
 
 	private Creature courier(int x, int y) {
-		Creature creature = SingletonRepository.getEntityManager().getCreature(
+		Creature creature = TrailCreatureVariants.create(
 				MineTrailProgress.COURIER);
 		creature.setPosition(x, y);
 		mine.add(creature);
@@ -425,7 +424,7 @@ public class SemosMineStoryTest {
 				collision.getTileAt(Kind.VOICES.x - 1, Kind.VOICES.y) > 0);
 		assertTrue(reachable.contains(26 * 128 + 118));
 		assertTrue(reachable.contains(32 * 128 + 112));
-		Creature courier = SingletonRepository.getEntityManager().getCreature(
+		Creature courier = TrailCreatureVariants.create(
 				MineTrailProgress.COURIER);
 		assertEquals(30, courier.getLevel());
 		assertEquals(240, courier.getBaseHP());

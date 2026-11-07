@@ -319,7 +319,7 @@ public class AdosKeepStoryTest {
 		accept("Zogfang", "kamienny strażnik");
 		move(keep);
 		player.setPosition(44, 108);
-		Creature copy = SingletonRepository.getEntityManager().getCreature(
+		Creature copy = TrailCreatureVariants.create(
 				AdosKeepProgress.GUARDIAN);
 		copy.setPosition(45, 108);
 		keep.add(copy);

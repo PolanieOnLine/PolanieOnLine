@@ -328,12 +328,12 @@ public class DragonTrailStoryTest {
 		DragonTrailGuard g = guard(Encounter.CAPTOR);
 		assertTrue(g.getEnemyList().isEmpty());
 		for (Encounter role : Encounter.values())
-			assertTrue(SingletonRepository.getEntityManager().getCreature(
+			assertTrue(TrailCreatureVariants.create(
 					role.name).isAbnormal());
 		before(Step.EMBER_GUIDE);
 		player.setQuest(Step.EMBER_GUIDE.slot, "fight");
 		assertTrue(g.getEnemyList().contains(player));
-		Creature ordinary = SingletonRepository.getEntityManager().getCreature(
+		Creature ordinary = TrailCreatureVariants.create(
 				Encounter.CAPTOR.name);
 		g.getZone().add(ordinary);
 		DragonTrailProgress.recordKill(player, ordinary);

@@ -292,12 +292,12 @@ public class WarsawFortressStoryTest {
 		WarsawFortressGuard guard = guard(Encounter.GATE);
 		assertTrue(guard.getEnemyList().isEmpty());
 		for (Encounter role : Encounter.values())
-			assertTrue(SingletonRepository.getEntityManager().getCreature(
+			assertTrue(TrailCreatureVariants.create(
 					role.name).isAbnormal());
 		ready(150);
 		player.setQuest(Step.WARSAW_GATE.slot, "fight");
 		assertTrue(guard.getEnemyList().contains(player));
-		Creature copy = SingletonRepository.getEntityManager().getCreature(
+		Creature copy = TrailCreatureVariants.create(
 				Encounter.GATE.name);
 		inside.add(copy);
 		WarsawFortressProgress.recordKill(player, copy);

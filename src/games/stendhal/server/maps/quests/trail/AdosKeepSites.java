@@ -3,7 +3,6 @@ package games.stendhal.server.maps.quests.trail;
 
 import java.util.Map;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
@@ -98,7 +97,7 @@ public final class AdosKeepSites implements ZoneConfigurator {
 			if (kind.zone.equals(zone.getName()))
 				zone.add(new Evidence(kind));
 		if (AdosKeepProgress.KEEP.equals(zone.getName())) {
-			Creature template = SingletonRepository.getEntityManager().getCreature(
+			Creature template = TrailCreatureVariants.create(
 					AdosKeepProgress.GUARDIAN);
 			if (template == null)
 				throw new IllegalStateException("Missing keep guardian");

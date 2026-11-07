@@ -633,6 +633,11 @@ public class Creature extends NPC {
 		return respawnTime;
 	}
 
+	/** Overrides the respawn delay of a detached scripted creature instance. */
+	public void setRespawnTime(final int turns) {
+		respawnTime = Math.max(1, turns);
+	}
+
 	public final void setCorpse(final String name, final String harmless, final int width, final int height) {
 		corpseName = name;
 		harmlessCorpseName = harmless;
