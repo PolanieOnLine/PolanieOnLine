@@ -88,6 +88,8 @@ public class ItemInformation extends Item {
 				Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentAffixService.GIANT_SLAYER_ATTRIBUTE,
 				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(ItemTooltip.ARMOR_CRUSHING, Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(ItemTooltip.CRITICAL_HARDENING, Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
 				StatusType.POISONED), Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(

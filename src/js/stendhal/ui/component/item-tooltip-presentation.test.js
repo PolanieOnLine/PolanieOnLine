@@ -21,6 +21,18 @@ vm.runInNewContext(source, {exports: exportsObject,
 		return {};
 	}});
 
+test("new combat affixes explain armor damage, critical protection and legendary triggers", () => {
+	const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "weapon", armor_crushing: "0.15", critical_hardening: "0.08",
+		legendary_cleave: "1", legendary_tenacity: "1", legendary_breach: "1",
+		legendary_quick_recovery: "1"
+	}}, false).lines.map(line => line.text).join("\n");
+	for (const expected of ["Kruszenie", "15%", "Hartowanie", "8%", "Rozmach",
+		"Zaciętość", "Przełamanie", "Szybkie otrząśnięcie", "6 s", "5 s", "30%"]) {
+		assert.ok(text.includes(expected), expected);
+	}
+});
+
 test("glyph percentages retain units and explain thresholds and cooldowns", () => {
 	const item = {tooltip_stats: {
 		category: "other", critical_bonus_reduction: "25", out_of_combat_regen: "1",

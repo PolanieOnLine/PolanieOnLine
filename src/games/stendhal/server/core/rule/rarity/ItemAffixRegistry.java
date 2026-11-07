@@ -23,6 +23,8 @@ import games.stendhal.server.entity.status.StatusType;
 public final class ItemAffixRegistry {
 	private static final ItemAffixRegistry INSTANCE = new ItemAffixRegistry(
 			Arrays.<ItemAffixDefinition>asList(
+					CombatAffixDefinition.CRUSHING,
+					CombatAffixDefinition.HARDENING,
 					new FlatAttackAffixDefinition(),
 					new SpikedPlatingAffixDefinition(),
 					new HunterMarkAffixDefinition(),

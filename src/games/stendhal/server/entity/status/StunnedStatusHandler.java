@@ -8,6 +8,7 @@ import java.util.WeakHashMap;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
@@ -51,7 +52,8 @@ public class StunnedStatusHandler implements StatusHandler<StunnedStatus> {
 
 		statusList.addInternal(status);
 		statusList.activateStatusAttribute("status_" + status.getName());
-		TurnNotifier.get().notifyInSeconds(status.getDurationSeconds(entity),
+		TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(
+				entity, status.getDurationSeconds(entity)),
 				new StatusRemover(statusList, status));
 	}
 

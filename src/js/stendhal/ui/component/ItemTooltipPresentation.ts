@@ -94,6 +94,10 @@ const STATUS_RESISTANCES: Array<[string, string]> = [
 ];
 
 const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
+	["legendary_cleave", "Rozmach", "Co 4 celne trafienia wręcz zadaje 30% obrażeń trafienia maksymalnie 2 pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."],
+	["legendary_tenacity", "Zaciętość", "Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."],
+	["legendary_breach", "Przełamanie", "Po rozbiciu opancerzenia celu zadajesz mu o 15% więcej obrażeń zdrowiu przez 6 s."],
+	["legendary_quick_recovery", "Szybkie otrząśnięcie", "Skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Efekt nie kumuluje się."],
 	["legendary_deep_wounds", "Głębokie Rany", "15% szansy na krwawienie; rana zadaje 35% obrażeń trafienia."],
 	["legendary_armor_breaker", "Łamacz Pancerzy", "Redukuje 40% niekorzystnej kary wynikającej z pancerza celu."],
 	["legendary_longshot", "Dalekosiężność", "Ataki wykonane z dystansu zadają +25% obrażeń."],
@@ -390,6 +394,18 @@ function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<strin
 
 function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>) {
 	const affixes: ItemTooltipLine[] = [];
+	const crushing = numberValue(current, "armor_crushing");
+	if (crushing > 0) {
+		affixes.push({kind: "affix", text: GameLanguage.getText("Kruszenie") + ": "
+				+ GameLanguage.getText(formatCompact(crushing * 100)
+						+ "% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.")});
+	}
+	const hardening = numberValue(current, "critical_hardening");
+	if (hardening > 0) {
+		affixes.push({kind: "affix", text: GameLanguage.getText("Hartowanie") + ": "
+				+ GameLanguage.getText(formatCompact(hardening * 100)
+						+ "% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.")});
+	}
 	const spiked = numberValue(current, "spiked_plating");
 	if (spiked > 0) {
 		affixes.push({kind: "affix", text: "Kolczaste okucie: odbija "

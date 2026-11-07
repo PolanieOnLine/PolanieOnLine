@@ -41,6 +41,8 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
+import games.stendhal.server.core.rule.rarity.WeaponAffixService;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.util.TimeUtil;
@@ -1448,9 +1450,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return unknown, see the note above
 	 */
 	public boolean onEquipped(RPEntity equipper, String slot) {
-
-		// this.prevEntity = equipper;
-		// this.prevSlot   = slot;
+		if (equipper instanceof Player && WeaponAffixService.isWeapon(this)
+				&& ("rhand".equals(slot) || "lhand".equals(slot))) {
+			TacticalAffixCombatService.equipmentChanged((Player) equipper);
+		}
 
 		return false;
 	}
@@ -1467,6 +1470,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return needs documenting
 	 */
 	public boolean onUnequipped() {
+		if (getContainer() instanceof Player && WeaponAffixService.isWeapon(this)
+				&& ("rhand".equals(getContainerSlot().getName())
+						|| "lhand".equals(getContainerSlot().getName()))) {
+			TacticalAffixCombatService.equipmentChanged((Player) getContainer());
+		}
 		return false;
 	}
 

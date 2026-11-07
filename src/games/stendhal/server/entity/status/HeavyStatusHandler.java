@@ -14,6 +14,7 @@ package games.stendhal.server.entity.status;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 
@@ -67,7 +68,8 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 
 				statusList.addInternal(status);
 				statusList.activateStatusAttribute("status_" + status.getName());
-				TurnNotifier.get().notifyInSeconds(duration, new StatusRemover(statusList, status));
+				TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, duration),
+						new StatusRemover(statusList, status));
 			}
 		}
 	}
@@ -96,7 +98,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 			final Integer fixedDuration = ((HeavyStatus) nextStatus).getDurationSeconds();
 			final int nextDuration = fixedDuration == null
 					? duration : fixedDuration.intValue();
-			TurnNotifier.get().notifyInSeconds(nextDuration,
+			TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, nextDuration),
 					new StatusRemover(statusList, nextStatus));
 		} else {
 			entity.remove("status_" + status.getName());

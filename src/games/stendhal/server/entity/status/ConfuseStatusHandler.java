@@ -13,6 +13,7 @@ package games.stendhal.server.entity.status;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 
@@ -46,7 +47,8 @@ public class ConfuseStatusHandler implements StatusHandler<ConfuseStatus> {
 
 		statusList.activateStatusAttribute("status_" + status.getName());
 		statusList.addInternal(status);
-		TurnNotifier.get().notifyInSeconds(60, new StatusRemover(statusList, status));
+		TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, 60),
+				new StatusRemover(statusList, status));
 	}
 
 	/**

@@ -39,6 +39,7 @@ import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.damage.ArmorPoolService;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.core.rule.damage.ArmorPoolService.DamageResult;
 import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.maps.quests.FirstGlyph;
@@ -1256,6 +1257,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param target
 	 */
 	public void setTarget(final RPEntity target) {
+		if (this instanceof Player && attackTarget != target) {
+			TacticalAffixCombatService.targetChanged((Player) this);
+		}
 		put("target", target.getID().getObjectID());
 		if (attackTarget != null) {
 			attackTarget.attackSources.remove(this);
@@ -3564,6 +3568,7 @@ public abstract class RPEntity extends CombatEntity {
 			// Calculate the total damage for a critical hit
 			if (critical) {
 				damage *= 2;
+				damage = TacticalAffixCombatService.reduceCriticalBonus(defender, baseDamage, damage);
 			}
 
 			damage = GlyphCombatService.resolveDirectHit(defender, nature, critical, baseDamage, damage);

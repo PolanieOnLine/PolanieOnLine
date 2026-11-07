@@ -22,6 +22,12 @@ public class TacticalEquipmentAffixPresentationTest {
 		put(object, ItemTooltip.SPIKED_PLATING, "0.03");
 		put(object, ItemTooltip.HUNTER_MARK, "1.0");
 		put(object, ItemTooltip.GIANT_SLAYER, "1.0");
+		put(object, ItemTooltip.ARMOR_CRUSHING, "0.15");
+		put(object, ItemTooltip.CRITICAL_HARDENING, "0.08");
+		put(object, ItemTooltip.LEGENDARY_CLEAVE, "1.0");
+		put(object, ItemTooltip.LEGENDARY_TENACITY, "1.0");
+		put(object, ItemTooltip.LEGENDARY_BREACH, "1.0");
+		put(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY, "1.0");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
@@ -33,6 +39,10 @@ public class TacticalEquipmentAffixPresentationTest {
 		assertTrue(tooltip.contains("Łowca olbrzymów"));
 		assertTrue(tooltip.contains("50 poziomów"));
 		assertTrue(tooltip.contains("10%"));
+		for (String title : new String[] {"Kruszenie", "Hartowanie", "Rozmach", "Zaciętość",
+				"Przełamanie", "Szybkie otrząśnięcie"}) {
+			assertTrue(title, tooltip.contains(title));
+		}
 	}
 
 	private void put(final RPObject object, final String key,

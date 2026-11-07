@@ -41,6 +41,8 @@ public class ItemAffixGeneratorTest {
 		maximums.put("spiked_plating", 0.04);
 		maximums.put("hunter_mark", 1.0);
 		maximums.put("giant_slayer", 1.0);
+		maximums.put("armor_crushing", 0.15);
+		maximums.put("critical_hardening", 0.08);
 		maximums.put("legendary_relic_power", 7.0);
 		for (StatusType status : StatusType.values()) {
 			maximums.put(EquipmentStatusResistanceService.getResistanceAttribute(status), 0.12);

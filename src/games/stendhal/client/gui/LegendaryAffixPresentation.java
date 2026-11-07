@@ -16,6 +16,7 @@ final class LegendaryAffixPresentation {
 	private static final String LEGENDARY_TEXT_COLOR = "#f28c28";
 	private static final String LEGENDARY_NUMBER_COLOR = "#f3e2b8";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
+	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.#");
 
 	private LegendaryAffixPresentation() {
 		// utility class
@@ -29,6 +30,7 @@ final class LegendaryAffixPresentation {
 		final StringBuilder result = new StringBuilder();
 		appendAttackRateReduction(result, object);
 		appendSpikedPlating(result, object);
+		appendCombatExpansion(result, object);
 		if (has(object, ItemTooltip.HUNTER_MARK)) {
 			appendRegularText(result, "Znak łowcy",
 					"trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza.");
@@ -155,6 +157,51 @@ final class LegendaryAffixPresentation {
 			});
 		}
 		return result.toString();
+	}
+
+	private static void appendCombatExpansion(final StringBuilder result, final RPObject object) {
+		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
+				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
+		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",
+				"% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.");
+		if (has(object, ItemTooltip.LEGENDARY_CLEAVE)) {
+			appendFixed(result, "Rozmach", new String[] {
+					"Co ", "4", " celne trafienia wręcz zadaje ", "30%",
+					" obrażeń trafienia maksymalnie ", "2",
+					" pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_TENACITY)) {
+			appendFixed(result, "Zaciętość", new String[] {
+					"Każde celne trafienie tego samego celu zwiększa obrażenia następnych o ", "3%",
+					", maksymalnie ", "15%", ". Zmiana celu lub ", "5 s",
+					" bez trafienia zeruje bonus."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_BREACH)) {
+			appendFixed(result, "Przełamanie", new String[] {
+					"Po rozbiciu opancerzenia celu zadajesz mu o ", "15%",
+					" więcej obrażeń zdrowiu przez ", "6 s", "."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY)) {
+			appendFixed(result, "Szybkie otrząśnięcie", new String[] {
+					"Skraca czas ogłuszenia, ociężałości i dezorientacji o ", "30%",
+					". Efekt nie kumuluje się."
+			});
+		}
+	}
+
+	private static void appendRegularPercentage(final StringBuilder result, final RPObject object,
+			final String key, final String title, final String suffix) {
+		String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
+		if (raw == null) {
+			return;
+		}
+		Double value = parseDouble(raw);
+		if (value != null && value.doubleValue() > 0) {
+			appendRegularText(result, title, COMPACT_DECIMAL.format(value.doubleValue() * 100) + suffix);
+		}
 	}
 
 	private static boolean has(final RPObject object, final String key) {

@@ -24,6 +24,8 @@ public final class ItemAffixBalanceService {
 		final boolean weapon = WeaponAffixService.isWeapon(item);
 		final boolean accessory = EquipmentAffixService.isAccessory(item);
 		if (!weapon && !EquipmentAffixService.isEquipment(item)) return;
+		cap(item, CombatAffixDefinition.CRUSHING.getAttribute(), 0.15);
+		cap(item, CombatAffixDefinition.HARDENING.getAttribute(), 0.08);
 
 		if (weapon || accessory) {
 			cap(item, WeaponAffixService.ACCURACY_ATTRIBUTE, weapon

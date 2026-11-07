@@ -37,6 +37,10 @@ public final class LegendaryItemAffixRegistry {
 
 	private static final LegendaryItemAffixRegistry INSTANCE =
 			new LegendaryItemAffixRegistry(Arrays.<ItemAffixDefinition>asList(
+					CombatAffixDefinition.CLEAVE,
+					CombatAffixDefinition.TENACITY,
+					CombatAffixDefinition.BREACH,
+					CombatAffixDefinition.QUICK_RECOVERY,
 					new MarkerAffixDefinition(
 							WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE,
 							DEEP_WOUNDS_WEAPON_CLASSES),

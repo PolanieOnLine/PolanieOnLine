@@ -17,6 +17,10 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ExpandedLegendaryTooltipStateTest {
 	private static final String[] MARKERS = {
+		ItemTooltip.LEGENDARY_CLEAVE,
+		ItemTooltip.LEGENDARY_TENACITY,
+		ItemTooltip.LEGENDARY_BREACH,
+		ItemTooltip.LEGENDARY_QUICK_RECOVERY,
 		ItemTooltip.LEGENDARY_DUEL_MASTER,
 		ItemTooltip.LEGENDARY_CRUSHING_BLOW,
 		ItemTooltip.LEGENDARY_STUNNING_FORCE,

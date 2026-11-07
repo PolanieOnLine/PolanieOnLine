@@ -179,6 +179,12 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.SPIKED_PLATING, ItemTooltip.SPIKED_PLATING);
 		copyDouble(item, ItemTooltip.HUNTER_MARK, ItemTooltip.HUNTER_MARK);
 		copyDouble(item, ItemTooltip.GIANT_SLAYER, ItemTooltip.GIANT_SLAYER);
+		copyDouble(item, ItemTooltip.ARMOR_CRUSHING, ItemTooltip.ARMOR_CRUSHING);
+		copyDouble(item, ItemTooltip.CRITICAL_HARDENING, ItemTooltip.CRITICAL_HARDENING);
+		copyDouble(item, ItemTooltip.LEGENDARY_CLEAVE, ItemTooltip.LEGENDARY_CLEAVE);
+		copyDouble(item, ItemTooltip.LEGENDARY_TENACITY, ItemTooltip.LEGENDARY_TENACITY);
+		copyDouble(item, ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_BREACH);
+		copyDouble(item, ItemTooltip.LEGENDARY_QUICK_RECOVERY, ItemTooltip.LEGENDARY_QUICK_RECOVERY);
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);

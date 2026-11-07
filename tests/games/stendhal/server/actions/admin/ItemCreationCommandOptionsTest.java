@@ -61,8 +61,11 @@ public class ItemCreationCommandOptionsTest {
 		maximums.put("bleed_on_hit", 0.08);
 		maximums.put("execute_damage", 0.15);
 		maximums.put("armor_penetration", 0.15);
+		maximums.put("armor_crushing", 0.15);
 		final Set<String> selected = new HashSet<String>();
-		for (long seed = 0; seed < 32; seed++) {
+		final Random seeds = new Random(7L);
+		for (int roll = 0; roll < 64; roll++) {
+			final long seed = seeds.nextLong();
 			final RPAction action = new RPAction();
 			action.put("rarity", "legendary");
 			action.put("affixes", "MAX");

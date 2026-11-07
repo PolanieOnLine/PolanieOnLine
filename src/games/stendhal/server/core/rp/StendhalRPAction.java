@@ -28,6 +28,7 @@ import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
@@ -402,17 +403,23 @@ public class StendhalRPAction {
 			damage = WeaponArmorInteractionService.applyDamageMultiplier(damage, weapons, defender);
 			final boolean layeredArmor = defender.getBaseArmorHP() > 0;
 			final double armorMultiplier = layeredArmor
-					? WeaponAffixCombatService.getArmorBreakingMultiplier(weapons, defender) : 1.0;
+					? WeaponAffixCombatService.getArmorBreakingMultiplier(weapons, defender)
+							* TacticalAffixCombatService.getArmorMultiplier(player) : 1.0;
 			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 					damage, weapons, defender, isRanged);
+			if (!usesTrainingDummy) {
+				damage = TacticalAffixCombatService.prepareHit(player, defender, damage);
+			}
 
 			// Handle critical hit logic
 			final int baseDamage = damage;
 			Object[] criticalResult = handleCritical(player, damage);
 			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
+			final int criticalDamage = critical ? TacticalAffixCombatService.reduceCriticalBonus(
+					defender, baseDamage, (int) criticalResult[0]) : (int) criticalResult[0];
 			damage = GlyphCombatService.resolveDirectHit(defender, player.getDamageType(),
-					critical, baseDamage, (int) criticalResult[0]);
+					critical, baseDamage, criticalDamage);
 			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
@@ -427,6 +434,7 @@ public class StendhalRPAction {
 					player.onDamaged(player, damage);
 				}
 
+				final int armorBefore = defender.getArmorHP();
 				final DamageResult dealt = defender.receiveCombatDamage(player, damage, armorMultiplier);
 				damage = dealt.getHealthDamage();
 				armorDamage = dealt.getArmorDamage();
@@ -434,6 +442,7 @@ public class StendhalRPAction {
 				GlyphCombatService.onHit(player, defender, dealt.getTotalDamage());
 				WeaponAffixCombatService.applyOnHitProcs(player, defender,
 						weapons, damage, dealt.getTotalDamage());
+				TacticalAffixCombatService.onHit(player, defender, armorBefore, dealt, !isRanged);
 				logger.debug("attack from " + player.getID() + " to "
 						+ defender.getID() + ": Damage: " + damage);
 

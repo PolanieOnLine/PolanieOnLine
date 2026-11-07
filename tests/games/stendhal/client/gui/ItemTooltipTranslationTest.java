@@ -89,6 +89,22 @@ public class ItemTooltipTranslationTest {
 		assertTrue(html, html.contains("-2 weapon weight"));
 	}
 
+	@Test
+	public void translatesNewCombatAffixesAndTheirConditions() {
+		RPObject item = ItemTestHelper.createItem("expanded affix weapon");
+		stat(item, ItemTooltip.ARMOR_CRUSHING, "0.15");
+		stat(item, ItemTooltip.CRITICAL_HARDENING, "0.08");
+		for (String marker : new String[] {ItemTooltip.LEGENDARY_CLEAVE, ItemTooltip.LEGENDARY_TENACITY,
+				ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_QUICK_RECOVERY}) {
+			stat(item, marker, "1.0");
+		}
+		String html = LegendaryAffixPresentation.build(item);
+		for (String expected : new String[] {"Crushing", "Hardening", "Cleave", "Tenacity", "Breach",
+				"Quick Recovery", "enemy armor durability", "stun, slow and confusion duration"}) {
+			assertTrue(expected, html.contains(expected));
+		}
+	}
+
 	private void stat(RPObject item, String key, String value) {
 		item.put(ItemTooltip.ATTRIBUTE, key, value);
 	}

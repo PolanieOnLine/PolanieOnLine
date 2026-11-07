@@ -73,6 +73,12 @@ public final class ItemTooltip {
 	public static final String SPIKED_PLATING = "spiked_plating";
 	public static final String HUNTER_MARK = "hunter_mark";
 	public static final String GIANT_SLAYER = "giant_slayer";
+	public static final String ARMOR_CRUSHING = "armor_crushing";
+	public static final String CRITICAL_HARDENING = "critical_hardening";
+	public static final String LEGENDARY_CLEAVE = "legendary_cleave";
+	public static final String LEGENDARY_TENACITY = "legendary_tenacity";
+	public static final String LEGENDARY_BREACH = "legendary_breach";
+	public static final String LEGENDARY_QUICK_RECOVERY = "legendary_quick_recovery";
 	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
 	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
 	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";
