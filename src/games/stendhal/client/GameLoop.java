@@ -11,12 +11,10 @@
  ***************************************************************************/
 package games.stendhal.client;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.locks.LockSupport;
 
 import org.apache.log4j.Logger;
 
@@ -58,11 +56,6 @@ public class GameLoop {
 	private volatile long logicStepNanos;
 	private static final long MAX_FRAME_DELTA_NANOS = 250_000_000L;
 	private static final int MAX_CATCH_UP_STEPS = 5;
-	private static final long SPIN_THRESHOLD_NANOS = 200_000L;
-	private static final long PARK_MARGIN_NANOS = 100_000L;
-	private static final long PARK_SKIP_THRESHOLD_NANOS = 5_000_000L;
-	private static final long PARK_FRAME_LENGTH_THRESHOLD_NANOS = 8_000_000L;
-	private static final Method ON_SPIN_WAIT_METHOD = resolveOnSpinWait();
 
 	private volatile int currentFps;
 
@@ -198,7 +191,7 @@ public class GameLoop {
 		long accumulator = 0L;
 		long lastFrameTime = System.nanoTime();
 
-		while (running) {
+		while (running && !Thread.currentThread().isInterrupted()) {
 			final long frameStart = System.nanoTime();
 			try {
 				long now = frameStart;
@@ -248,7 +241,7 @@ public class GameLoop {
 	private void renderLoop() {
 		int fps = 0;
 		long lastFpsTime = System.nanoTime();
-		while (renderRunning) {
+		while (renderRunning && !Thread.currentThread().isInterrupted()) {
 			final long frameStart = System.nanoTime();
 			try {
 				Runnable task = renderTask;
@@ -290,46 +283,7 @@ public class GameLoop {
 	}
 
 	private long sleepNanos(long nanos) {
-		long start = System.nanoTime();
-		long target = start + nanos;
-		long remaining = nanos;
-		// Prefer spinning for high FPS limits (>120 FPS) to avoid low-resolution timers
-		// that cap around ~130 FPS when parking for short sleeps.
-		boolean shouldPark = remaining >= PARK_SKIP_THRESHOLD_NANOS
-				&& frameLengthNanos >= PARK_FRAME_LENGTH_THRESHOLD_NANOS;
-		if (shouldPark && remaining > SPIN_THRESHOLD_NANOS + PARK_MARGIN_NANOS) {
-			long parkNanos = remaining - SPIN_THRESHOLD_NANOS;
-			if (parkNanos > 0L) {
-				LockSupport.parkNanos(parkNanos);
-			}
-		}
-		while ((remaining = target - System.nanoTime()) > 0L) {
-			if (remaining > 1_000L) {
-				spinWait();
-			}
-		}
-		long actual = System.nanoTime() - start;
-		return nanos - actual;
-	}
-
-	private static Method resolveOnSpinWait() {
-		try {
-			return Thread.class.getMethod("onSpinWait");
-		} catch (NoSuchMethodException e) {
-			return null;
-		}
-	}
-
-	private static void spinWait() {
-		if (ON_SPIN_WAIT_METHOD != null) {
-			try {
-				ON_SPIN_WAIT_METHOD.invoke(null);
-				return;
-			} catch (Exception e) {
-				// fall back to Thread.yield()
-			}
-		}
-		Thread.yield();
+		return FramePacer.await(nanos);
 	}
 
 	/**
