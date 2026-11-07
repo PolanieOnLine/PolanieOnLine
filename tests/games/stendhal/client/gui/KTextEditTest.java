@@ -13,7 +13,6 @@ package games.stendhal.client.gui;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.awt.Color;
@@ -30,7 +29,7 @@ import org.junit.Test;
 /** Tests for KTextEdit. */
 public class KTextEditTest {
 	@Test
-	public void questInvitationsMatchExperienceButNotHighlightedKeywords()
+	public void questInvitationsDifferFromExperienceAndHighlightedKeywords()
 			throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			KTextEdit editor = new KTextEdit();
@@ -44,7 +43,7 @@ public class KTextEditTest {
 					document.getCharacterElement(2).getAttributes());
 			Color keyword = StyleConstants.getForeground(
 					document.getCharacterElement(5).getAttributes());
-			assertEquals(experience, invitation);
+			assertNotEquals(experience, invitation);
 			assertNotEquals(keyword, invitation);
 		});
 	}

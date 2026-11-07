@@ -189,7 +189,7 @@ public enum NotificationType {
 	QUEST_INVITATION("quest_invitation") {
 		@Override
 		public Color getColor() {
-			return COLOR_SIGNIFICANT_POSITIVE;
+			return COLOR_QUEST_INVITATION;
 		}
 		@Override
 		public String getStyleDescription() {
@@ -235,6 +235,8 @@ public enum NotificationType {
 
 	/** bright turquoise blue */
 	public static final Color COLOR_SIGNIFICANT_POSITIVE = new Color(65, 105, 225);
+
+	public static final Color COLOR_QUEST_INVITATION = new Color(112, 217, 232);
 
 	/** purple */
 	public static final Color COLOR_TUTORIAL = new Color(255, 220, 255);

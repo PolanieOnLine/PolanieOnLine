@@ -199,6 +199,7 @@ export class Color {
 	public static readonly CHAT_POISON = "rgb(255, 80, 80)"; // #FF5050 (light red)
 	public static readonly CHAT_POSITIVE = Color.GREEN;
 	public static readonly CHAT_PRIVATE = "rgb(200, 255, 200)"; // #C8FFC8 (mint)
+	public static readonly CHAT_QUEST_INVITATION = "rgb(112, 217, 232)"; // #70D9E8 (turquoise)
 	public static readonly CHAT_RESPONSE = Color.GREEN;
 	public static readonly CHAT_SCENE = Color.GRAY;
 	public static readonly CHAT_SERVER = "rgb(210, 170, 120)";

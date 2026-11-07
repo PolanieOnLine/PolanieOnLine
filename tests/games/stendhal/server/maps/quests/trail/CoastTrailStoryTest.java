@@ -489,7 +489,7 @@ public class CoastTrailStoryTest {
 	}
 
 	@Test
-	public void invitationTextsAreBriefAndTheirTypeUsesTheExperienceColour() {
+	public void invitationTextsAreBriefAndUseASeparateColour() {
 		for (Step step : Step.values()) {
 			String text = TrailQuestInvitations.forStep(step);
 			if (step == Step.RADAN_RESCUE || step == Step.RADAN_TRANSPORT
@@ -501,7 +501,7 @@ public class CoastTrailStoryTest {
 				assertFalse(text.contains("#"));
 			}
 		}
-		assertEquals(NotificationType.SIGNIFICANT_POSITIVE.getColor(),
+		assertNotEquals(NotificationType.SIGNIFICANT_POSITIVE.getColor(),
 				NotificationType.QUEST_INVITATION.getColor());
 		assertNotEquals(NotificationType.PRIVMSG.getColor(),
 				NotificationType.QUEST_INVITATION.getColor());
