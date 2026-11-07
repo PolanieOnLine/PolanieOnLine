@@ -907,7 +907,7 @@ public final class TrailQuestLine {
 				if ("brzezdom".equals(stage))
 					return "Zapytaj Brzezdoma na polanie we wschodnim Kościelisku o woźnicę.";
 				if ("tracks".equals(stage))
-					return "Podejdź do rozbitej skrzynki w Kościelisku E (82,62), na północny wschód od Brzezdoma. Stoi osobno, na południe od skrzyń obozu. Wybierz: Sprawdź.";
+					return "Obejrzyj rozbitą skrzynkę porzuconą na polanie we wschodnim Kościelisku, niedaleko obozowiska obcych ludzi. Może znajdziesz w niej ślad po woźnicy.";
 				return "Wróć do Brzezdoma i opowiedz o znalezionej skrzynce. Powiedz: woźnica.";
 			case SEAL:
 				if ("guard".equals(stage))
