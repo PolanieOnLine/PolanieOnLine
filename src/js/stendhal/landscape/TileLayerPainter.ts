@@ -1,6 +1,7 @@
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
 
 import { stendhal } from "../stendhal";
+import { TileStore } from "../data/TileStore";
 
 export interface TileLayerOptions {
 	composite?: GlobalCompositeOperation;
@@ -84,7 +85,7 @@ export default class TileLayerPainter {
 					continue;
 				}
 				const base = map.firstgids[tilesetIndex];
-				const idx = gid - base;
+				const idx = TileStore.get().getLandscapeFrame(map.tilesetFilenames[tilesetIndex], gid - base);
 				TileLayerPainter.drawTile(
 					ctx,
 					tileset,

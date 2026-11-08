@@ -17,6 +17,7 @@ import { Chat } from "../util/Chat";
 import { TileMap } from "../data/TileMap";
 import { Canvas, RenderingContext2D } from "util/Types";
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
+import { TileStore } from "../data/TileStore";
 
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
@@ -28,6 +29,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private tileOverlap = 0;
 	private overlapOffset = 0;
 	private effectiveScale = 1;
+	private started = 0;
 
 	constructor() {
 		super();
@@ -39,6 +41,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	public onMapLoaded(map: TileMap): void {
 		console.log("Using IndividualTilesetRenderingStrategy.");
 		this.map = map;
+		this.started = Date.now();
 		this.imageCache.close();
 		this.imageCache = new ImageCache();
 		this.imageCache.load(map.tilesetFilenames);
@@ -100,6 +103,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 		ctx.imageSmoothingEnabled = false;
 		ctx.imageSmoothingQuality = "low";
+		const store = TileStore.get();
+		const elapsed = Date.now() - this.started;
 
 		for (let y = yStart; y < yMax; y++) {
 			for (let x = xStart; x < xMax; x++) {
@@ -110,7 +115,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 				if (gid > 0) {
 					const tileset = this.map.getTilesetForGid(gid);
 					const base = this.map.firstgids[tileset];
-					const idx = gid - base;
+					const idx = store.getLandscapeFrame(this.map.tilesetFilenames[tileset], gid - base, elapsed);
 
 					try {
 						let image = this.imageCache.images[this.map.tilesetFilenames[tileset]];

@@ -14,13 +14,14 @@ import { TileMap } from "../data/TileMap";
 import { MapOfSets } from "../util/MapOfSets";
 import { CombinedTileset } from "./CombinedTileset";
 import { Debug } from "../util/Debug";
+import { AnimationMap, TileStore } from "../data/TileStore";
 
 import { stendhal } from "../stendhal";
 
 export class CombinedTilesetImageLoader {
 
 	private tileUsedAtIndex!: MapOfSets<number, number>
-	private tilesetImages: ImageBitmap[] = [];
+	private tilesetImages: Array<ImageBitmap | undefined> = [];
 	private drawCanvas: Canvas;
 	private drawCtx: RenderingContext2D;
 	private blendCanvas: Canvas;
@@ -29,6 +30,11 @@ export class CombinedTilesetImageLoader {
 	private blendFixCtx: RenderingContext2D;
 	private loadedTilesetCount = 0;
 	private usedTilesetCount = 0;
+	private closed = false;
+	private readonly started = Date.now();
+	private animationMap?: AnimationMap;
+	private animatedGids: number[] = [];
+	private readonly animationFrames = new Map<number, number>();
 
 	constructor(
 		private map: TileMap,
@@ -58,7 +64,9 @@ export class CombinedTilesetImageLoader {
 	private calculateUsedTilesets(gids: IterableIterator<number>): Set<number> {
 		let usedTilesets = new Set<number>();
 		for (let gid of gids) {
-			usedTilesets.add(this.map.getTilesetForGid(gid));
+			if (gid > 0) {
+				usedTilesets.add(this.map.getTilesetForGid(gid));
+			}
 		}
 		return usedTilesets;
 	}
@@ -77,6 +85,10 @@ export class CombinedTilesetImageLoader {
 		}
 		let blob = await response.blob();
 		let bitmap = await createImageBitmap(blob);
+		if (this.closed) {
+			bitmap.close();
+			return;
+		}
 		this.tilesetImages[tileset] = bitmap;
 		this.loadedTilesetCount++;
 		this.drawTileset(tileset);
@@ -86,19 +98,86 @@ export class CombinedTilesetImageLoader {
 	}
 
 	private finish() {
+		this.updateAnimations(Date.now());
+		this.releaseStaticImages();
+	}
+
+	/** Release source bitmaps when leaving the map, including late asynchronous loads. */
+	close(): void {
+		this.closed = true;
 		for (let bitmap of this.tilesetImages) {
-			bitmap.close();
+			bitmap?.close();
+		}
+		this.tilesetImages = [];
+	}
+
+	/** Recompose only atlas cells whose animated source frame has actually changed. */
+	updateAnimations(now: number): void {
+		if (this.closed) {
+			return;
+		}
+		const store = TileStore.get();
+		const animations = store.getLandscapeMap();
+		if (this.animationMap !== animations) {
+			this.animationMap = animations;
+			this.animatedGids = Array.from(this.tileUsedAtIndex.keys()).filter(gid => {
+				const tileset = this.map.getTilesetForGid(gid);
+				return !!animations[this.map.tilesetFilenames[tileset]]?.[gid - this.map.firstgids[tileset]];
+			});
+			this.releaseStaticImages();
+		}
+		if (this.animatedGids.length === 0) {
+			return;
+		}
+		const changed = new Set<number>();
+		for (const gid of this.animatedGids) {
+			const tileset = this.map.getTilesetForGid(gid);
+			const initial = gid - this.map.firstgids[tileset];
+			const frame = store.getLandscapeFrame(this.map.tilesetFilenames[tileset], initial, now - this.started);
+			if (frame !== (this.animationFrames.get(gid) ?? initial)) {
+				for (const index of this.tileUsedAtIndex.get(gid)!) {
+					changed.add(index);
+				}
+			}
+			this.animationFrames.set(gid, frame);
+		}
+		for (const index of changed) {
+			this.drawCombinedTileAtIndex(index);
+		}
+	}
+
+	private releaseStaticImages(): void {
+		// Wait for definitions and every image: animated cells may also contain static lower layers.
+		if (!this.animationMap || Object.keys(this.animationMap).length === 0
+				|| this.loadedTilesetCount < this.usedTilesetCount) {
+			return;
+		}
+		const retained = new Set<number>();
+		for (const gid of this.animatedGids) {
+			for (const index of this.tileUsedAtIndex.get(gid)!) {
+				for (const tile of this.indexToCombinedTiles.get(index)!) {
+					if ((tile & 0x1FFFFFFF) > 0) {
+						retained.add(this.map.getTilesetForGid(tile & 0x1FFFFFFF));
+					}
+				}
+			}
+		}
+		for (let tileset = 0; tileset < this.tilesetImages.length; tileset++) {
+			if (!retained.has(tileset)) {
+				this.tilesetImages[tileset]?.close();
+				this.tilesetImages[tileset] = undefined;
+			}
 		}
 	}
 
 
 	private drawTileset(tileset: number): void {
 		let firstGid = this.map.firstgids[tileset];
-		let image = this.tilesetImages[tileset];
+		let image = this.tilesetImages[tileset]!;
 		let numberOfTiles = image.width / this.map.tileWidth * image.height / this.map.tileHeight;
 
 		let lastGid = firstGid + numberOfTiles;
-		for (let gid = firstGid; gid <= lastGid; gid++) {
+		for (let gid = firstGid; gid < lastGid; gid++) {
 			let indexes = this.tileUsedAtIndex.get(gid);
 			if (indexes === undefined) {
 				continue;
@@ -182,7 +261,7 @@ export class CombinedTilesetImageLoader {
 		}
 
 		let base = this.map.firstgids[tileset];
-		let tileIndexInTileset = gid - base;
+		let tileIndexInTileset = this.animationFrames.get(gid) ?? gid - base;
 		this.drawImageTile(ctx, pixelX, pixelY, image, tileIndexInTileset, flip);
 	}
 

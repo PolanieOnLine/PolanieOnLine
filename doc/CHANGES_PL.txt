@@ -67,6 +67,7 @@
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java
+* Poprawiono animacje kafelków w webkliencie, m.in. ognia, pochodni i wody
 * Poprawiono położenie dymków rozmów i wyświetlanie przezroczystości administratorów w trybie ducha w webkliencie
 * Poprawiono kolejność akcji na liście znajomych w webkliencie i dodano zapraszanie do grupy
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze

@@ -19,11 +19,13 @@ import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "./
 export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 	private combinedTileset?: CombinedTileset;
 	private map!: TileMap;
+	private factory?: CombinedTilesetFactory;
 
 	public onMapLoaded(map: TileMap): void {
+		this.factory?.close();
 		this.map = map;
-		let combinedTilesetFactory = new CombinedTilesetFactory(map);
-		this.combinedTileset = combinedTilesetFactory.combine();
+		this.factory = new CombinedTilesetFactory(map);
+		this.combinedTileset = this.factory.combine();
 	}
 
 	public onTilesetLoaded(): void {
@@ -34,6 +36,7 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 	public render(
 		canvas: Canvas, gamewindow: any,
 		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+		this.factory?.updateAnimations(Date.now());
 
 		this.drawLayer(
 			canvas,

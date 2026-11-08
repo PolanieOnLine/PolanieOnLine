@@ -14,8 +14,17 @@ import { CombinedTileset } from "./CombinedTileset";
 import { CombinedTilesetImageLoader } from "./CombinedTilesetImageLoader";
 
 export class CombinedTilesetFactory {
+	private imageLoader?: CombinedTilesetImageLoader;
 
 	constructor(private map: TileMap) {}
+
+	updateAnimations(now: number): void {
+		this.imageLoader?.updateAnimations(now);
+	}
+
+	close(): void {
+		this.imageLoader?.close();
+	}
 
 	combine(): CombinedTileset {
 		let combinedTilesToIndex: Map<string, number> = new Map();
@@ -77,6 +86,7 @@ export class CombinedTilesetFactory {
 		// document.getElementsByTagName("body")[0].append(combinedTileset.canvas);
 
 		let ctImageLoader = new CombinedTilesetImageLoader(this.map, indexToCombinedTiles, combinedTileset);
+		this.imageLoader = ctImageLoader;
 		ctImageLoader.load();
 		return combinedTileset;
 	}
