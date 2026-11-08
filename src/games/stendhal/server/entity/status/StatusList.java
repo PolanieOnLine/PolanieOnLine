@@ -14,6 +14,7 @@ package games.stendhal.server.entity.status;
 import static games.stendhal.common.constants.Actions.AUTOWALK;
 
 import java.lang.ref.WeakReference;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -126,6 +127,32 @@ public class StatusList {
 				remove(status);
 			}
 		}
+	}
+
+	/** Neutralizes a shared damage budget, starting with the fastest poisons. */
+	public int neutralizePoison(final int capacity) {
+		if (capacity <= 0) {
+			return 0;
+		}
+		final List<PoisonStatus> poisons = getAllStatusByClass(PoisonStatus.class);
+		poisons.sort(Comparator.comparingDouble((PoisonStatus poison) ->
+				-Math.abs((double) poison.getRegen()) / Math.max(1, poison.getFrecuency())));
+		int remaining = capacity;
+		for (final PoisonStatus poison : poisons) {
+			remaining -= poison.reduceRemaining(remaining);
+			if (poison.consumed()) {
+				remove(poison);
+			}
+			if (remaining == 0) {
+				break;
+			}
+		}
+		final RPEntity entity = getEntity();
+		if (!hasStatus(StatusType.POISONED) && entity != null && entity.has("poisoned")) {
+			entity.remove("poisoned");
+			entity.notifyWorldAboutChanges();
+		}
+		return capacity - remaining;
 	}
 
 	/**

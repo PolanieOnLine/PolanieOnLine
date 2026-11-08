@@ -97,6 +97,13 @@ abstract class ConsumableStatus extends Status implements Comparable<ConsumableS
 		return left == 0;
 	}
 
+	/** Reduces the remaining effect without applying it to the entity. */
+	int reduceRemaining(final int amount) {
+		final int removed = (int) Math.min(Math.max(0L, amount), Math.abs((long) left));
+		left += left < 0 ? removed : -removed;
+		return removed;
+	}
+
 	/**
 	 * compares to ComsumableStatus objects to sorts the status with the largest effect first
 	 *

@@ -47,6 +47,7 @@
 * Dodano legendarny afiks Szybkie otrząśnięcie na hełmach i płaszczach. Skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Bonus z kilku przedmiotów nie sumuje się
 * Dodano legendarny afiks Przypływ życia na pasach, zbrojach i hełmach. Eliksiry pozwalają uzyskać do 20% PZ ponad maksymalne zdrowie. Po 10 sekundach nadwyżka zaczyna zanikać po 20 PZ co 2 sekundy
 * Zmieniono Kolczaste okucie: odbija teraz 20-30% obrażeń z ciosów wręcz, łącznie maksymalnie 50%. Wcześniej zdobyte afiksy otrzymują odpowiednio większe wartości
+* Zmieniono antidotum i mocne antidotum: usuwają odpowiednio do 400 i 800 PZ pozostałych obrażeń od trucizny, zamiast zapewniać czasową niewrażliwość. Nie zużywają się, gdy postać nie jest zatruta
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości

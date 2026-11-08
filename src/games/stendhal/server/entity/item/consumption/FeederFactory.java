@@ -21,8 +21,14 @@ public final class FeederFactory {
 	private static Immunizer immunizer = new Immunizer();
 	private static Poisoner poisoner = new Poisoner();
 	private static Eater eater = new Eater();
+	private static final AntidoteConsumer antidote = new AntidoteConsumer();
 
 	public static Feeder get(final ConsumableItem item) {
+		final String subclass = item.getItemSubclass();
+		if ("drink".equals(item.getItemClass()) && ("antidote".equals(subclass)
+				|| "greater_antidote".equals(subclass))) {
+			return antidote;
+		}
 		if (item instanceof StatusHealer) {
 			return immunizer;
 		}
