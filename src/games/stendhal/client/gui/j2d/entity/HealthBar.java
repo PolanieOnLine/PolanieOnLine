@@ -112,8 +112,10 @@ class HealthBar implements ChangeListener {
 			gr.dispose();
 		}
 		g.drawImage(image, x, y, null);
-		LifeTideOverlay.draw(g, x + 1, y + 1, width - 2, height - 2,
-				surplusRatio, System.currentTimeMillis());
+		if (surplusRatio > 0) {
+			LifeTideOverlay.draw(g, x + 1, y + 1, width - 2, height - 2,
+					surplusRatio, System.currentTimeMillis());
+		}
 	}
 
 	/**

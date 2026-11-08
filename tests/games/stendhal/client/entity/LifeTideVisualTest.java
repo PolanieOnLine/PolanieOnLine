@@ -8,6 +8,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingUtilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,6 +62,8 @@ public class LifeTideVisualTest {
 		assertEquals(Color.GREEN.getRGB(), low.getRGB(20, 1));
 		assertEquals(Color.GREEN.getRGB(), high.getRGB(99, 1));
 		assertNotEquals(low.getRGB(0, 1), high.getRGB(0, 1));
+		assertTrue("Breathing must be visible on the thin health bar",
+				new Color(high.getRGB(0, 1)).getRed() - new Color(low.getRGB(0, 1)).getRed() >= 50);
 		assertEquals(Color.GREEN.getRGB(), renderOverlay(0, 0).getRGB(0, 1));
 	}
 
@@ -78,6 +84,43 @@ public class LifeTideVisualTest {
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(19, 2));
 		} finally {
 			graphics.dispose();
+		}
+	}
+
+	@Test
+	public void idleHudPulseRepaintsWithoutHPUpdatesAndStopsAtNormalHP() throws Exception {
+		final RecordingIndicator indicator = new RecordingIndicator();
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+				indicator.setHP(10000, 11915);
+				indicator.repaints = new CountDownLatch(2);
+			});
+			assertTrue("Idle surplus must keep requesting repaints",
+					indicator.repaints.await(1, TimeUnit.SECONDS));
+			SwingUtilities.invokeAndWait(() -> {
+				indicator.setHP(10000, 10000);
+				indicator.repaints = new CountDownLatch(1);
+			});
+			assertFalse("Normal HP must not keep the animation timer alive",
+					indicator.repaints.await(200, TimeUnit.MILLISECONDS));
+		} finally {
+			SwingUtilities.invokeAndWait(indicator::removeNotify);
+		}
+	}
+
+	private static class RecordingIndicator extends HPIndicator {
+		volatile CountDownLatch repaints;
+
+		@Override
+		public boolean isShowing() {
+			return true;
+		}
+
+		@Override
+		public void repaint() {
+			if (repaints != null) {
+				repaints.countDown();
+			}
 		}
 	}
 

@@ -46,9 +46,20 @@ test("breathing changes only opacity and no surplus leaves the bar untouched", (
 	});
 	assert.equal(phases[0][0].width, phases[1][0].width);
 	assert.ok(phases[0][0].alpha < phases[1][0].alpha);
+	assert.ok(phases[1][0].alpha - phases[0][0].alpha >= 0.15,
+		"breathing must remain visible even when the parent canvas is half transparent");
 	assert.equal(phases[0][0].alpha, phases[2][0].alpha);
 	for (const ratio of [0, -1, NaN, Infinity]) visuals.drawLifeTideOverlay(ctx, 0, 0, 100, 4, ratio, 0);
 	assert.equal(ctx.calls.length, 0);
+});
+
+test("normal HP does not read the animation clock", () => {
+	let clockReads = 0;
+	const {drawLifeTideOverlay} = load("LifeTideVisuals.ts", {}, {
+		Date: {now() {clockReads++; return 0;}}
+	});
+	drawLifeTideOverlay(context(), 0, 0, 100, 4, 0);
+	assert.equal(clockReads, 0);
 });
 
 test("diagonal gaps reveal the underlying HP bar", () => {
@@ -86,4 +97,50 @@ test("the HUD animates only surplus and cancels its pending frame at normal HP",
 	canvas.isConnected = false;
 	bar.draw(1.2, 0.2);
 	assert.equal(pending.size, 0);
+});
+
+test("a surplus HUD drawn in a background tab retains its next animation frame", () => {
+	const ctx = context();
+	const pending = [];
+	const canvas = {width: 100, height: 4, isConnected: true,
+		getContext: () => ctx, getClientRects: () => [1]};
+	const document = {hidden: true};
+	const {StatBarComponent} = load("../ui/component/StatBarComponent.ts", {
+		"../toolkit/Component": {Component: class {constructor() {this.componentElement = canvas;}}},
+		"../../data/color/Color": {Color: {BLACK: "black", getStatBarColor: () => "green"}},
+		"../../util/LifeTideVisuals": visuals
+	}, {document, requestAnimationFrame: callback => {pending.push(callback); return pending.length;},
+		cancelAnimationFrame() {}});
+	const bar = new StatBarComponent();
+	bar.draw(1.2, 0.2);
+	assert.equal(pending.length, 1, "the browser must have a frame to resume when the tab becomes visible");
+	document.hidden = false;
+	ctx.calls.length = 0;
+	pending.shift()();
+	assert.ok(ctx.calls.some(call => call.color === "#b67cf0"));
+	assert.equal(pending.length, 1);
+});
+
+test("hiding and enabling the HP bar resumes surplus breathing without an HP change", () => {
+	const ctx = context();
+	const pending = new Map();
+	let visible = true;
+	let next = 0;
+	const canvas = {width: 100, height: 4, isConnected: true,
+		getContext: () => ctx, getClientRects: () => visible ? [1] : []};
+	const {StatBarComponent} = load("../ui/component/StatBarComponent.ts", {
+		"../toolkit/Component": {Component: class {
+			constructor() {this.componentElement = canvas;}
+			setVisible(value = true) {visible = value;}
+		}},
+		"../../data/color/Color": {Color: {BLACK: "black", getStatBarColor: () => "green"}},
+		"../../util/LifeTideVisuals": visuals
+	}, {document: {hidden: false}, requestAnimationFrame: callback => {pending.set(++next, callback); return next;},
+		cancelAnimationFrame: id => pending.delete(id)});
+	const bar = new StatBarComponent();
+	bar.draw(1.2, 0.2);
+	bar.setVisible(false);
+	assert.equal(pending.size, 0, "hidden HP bars must stop their pulse");
+	bar.setVisible(true);
+	assert.equal(pending.size, 1, "showing unchanged HP must restart breathing");
 });

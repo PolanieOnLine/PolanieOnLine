@@ -4,18 +4,18 @@ import { RenderingContext2D } from "./Types";
 export const LIFE_TIDE_COLOR = "#b67cf0";
 
 export function lifeTideOpacity(now: number): number {
-	return 0.82 - 0.06 * Math.cos(2 * Math.PI * (now % 2400) / 2400);
+	return 0.65 - 0.18 * Math.cos(2 * Math.PI * (now % 2400) / 2400);
 }
 
 /** Surplus is measured against normal maximum HP, not the capacity of the affix. */
 export function drawLifeTideOverlay(ctx: RenderingContext2D, x: number, y: number,
-		width: number, height: number, surplusRatio: number, now = Date.now()): void {
+		width: number, height: number, surplusRatio: number, now?: number): void {
 	if (!Number.isFinite(surplusRatio) || surplusRatio <= 0 || width <= 0 || height <= 0) {
 		return;
 	}
 	ctx.save();
 	try {
-		ctx.globalAlpha *= lifeTideOpacity(now);
+		ctx.globalAlpha *= lifeTideOpacity(now ?? Date.now());
 		ctx.fillStyle = LIFE_TIDE_COLOR;
 		const coveredWidth = Math.round(width * Math.min(1, surplusRatio));
 		// Keep diagonal gaps untouched, revealing the original green health bar.

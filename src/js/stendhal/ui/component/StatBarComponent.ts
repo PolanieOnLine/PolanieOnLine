@@ -35,6 +35,17 @@ export class StatBarComponent extends Component {
 		this.ctx = this.canvas.getContext("2d")!;
 	}
 
+	override setVisible(visible = true) {
+		super.setVisible(visible);
+		if (this.pulseFrame !== undefined) {
+			cancelAnimationFrame(this.pulseFrame);
+			this.pulseFrame = undefined;
+		}
+		if (visible && this.surplusRatio > 0) {
+			this.paint();
+		}
+	}
+
 	drawBase() {
 		this.ctx.beginPath();
 		this.ctx.fillStyle = Color.GRAY;
@@ -58,8 +69,10 @@ export class StatBarComponent extends Component {
 		this.ctx.fillStyle = Color.getStatBarColor(this.ratio);
 		this.ctx.fillRect(0, 0, this.canvas.width * this.ratio, this.canvas.height);
 		drawLifeTideOverlay(this.ctx, 0, 0, this.canvas.width, this.canvas.height, this.surplusRatio);
+		// The browser pauses these callbacks in background tabs and resumes them
+		// when visible. Keep a pending frame so unchanged HP can breathe again.
 		if (this.surplusRatio > 0 && this.canvas.isConnected
-				&& !document.hidden && this.canvas.getClientRects().length > 0) {
+				&& this.canvas.getClientRects().length > 0) {
 			this.pulseFrame = requestAnimationFrame(() => {
 				this.pulseFrame = undefined;
 				this.paint();

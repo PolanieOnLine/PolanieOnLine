@@ -79,6 +79,9 @@ public class HPIndicator extends StatusDisplayBar {
 	@Override
 	public void paintComponent(final Graphics graphics) {
 		super.paintComponent(graphics);
+		if (surplusRatio <= 0) {
+			return;
+		}
 		final Insets insets = getInsets();
 		LifeTideOverlay.draw(graphics, insets.left + 1, insets.top + 1,
 				getWidth() - insets.left - insets.right - 2,

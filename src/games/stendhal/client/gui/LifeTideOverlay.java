@@ -12,7 +12,7 @@ public final class LifeTideOverlay {
 	private LifeTideOverlay() { }
 
 	public static double opacity(final long now) {
-		return 0.82 - 0.06 * Math.cos(2.0 * Math.PI * (now % PERIOD_MILLISECONDS) / PERIOD_MILLISECONDS);
+		return 0.65 - 0.18 * Math.cos(2.0 * Math.PI * (now % PERIOD_MILLISECONDS) / PERIOD_MILLISECONDS);
 	}
 
 	public static void draw(final Graphics graphics, final int x, final int y,
