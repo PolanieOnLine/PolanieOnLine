@@ -15,6 +15,12 @@ function harness() {
 		"../util/GameLanguage": { GameLanguage: { getText: text => text } },
 		"../stendhal": { stendhal: { sound: { playLocalizedEffect: (...args) => sounds.push(args) } } }
 	};
+	const visuals = {exports: {}};
+	vm.runInNewContext(ts.transpileModule(readFileSync(path.join(__dirname,
+		"../util/LifeTideVisuals.ts"), "utf8"), {
+		compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
+	}).outputText, visuals);
+	dependencies["../util/LifeTideVisuals"] = visuals.exports;
 	const exports = {};
 	const code = ts.transpileModule(readFileSync(path.join(__dirname, "RPEntity.ts"), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
