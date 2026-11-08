@@ -12,6 +12,7 @@
 package games.stendhal.server.util;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import games.stendhal.common.grammar.Grammar;
 
@@ -19,6 +20,9 @@ import games.stendhal.common.grammar.Grammar;
  * Utility functions for time in the game.
  */
 public class TimeUtil {
+	/** Time zone used for dates and clocks shown to players. */
+	public static final ZoneId SERVER_TIME_ZONE = ZoneId.of("Europe/Warsaw");
+
 	public static final long MILLISECONDS_IN_MINUTE = 60 * 1000;
 	public static final long MILLISECONDS_IN_HOUR = 60 * MILLISECONDS_IN_MINUTE;
 	public static final long MILLISECONDS_IN_DAY = 24 * MILLISECONDS_IN_HOUR;

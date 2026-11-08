@@ -14,6 +14,12 @@ package games.stendhal.server.actions.query;
 
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -21,6 +27,23 @@ import games.stendhal.server.entity.player.Player;
 import utilities.PlayerTestHelper;
 
 public class InfoActionTest {
+	@Test
+	public void reportsWarsawTimeWhenServerRunsInUtc() throws Exception {
+		final TimeZone previous = TimeZone.getDefault();
+		try {
+			TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+			final SimpleDateFormat expected = new SimpleDateFormat("dd-MMMM-yyyy HH:mm:ss");
+			expected.setTimeZone(TimeZone.getTimeZone("Europe/Warsaw"));
+			final String before = expected.format(new Date());
+			final Method method = InfoAction.class.getDeclaredMethod("getGametime");
+			method.setAccessible(true);
+			final String actual = (String) method.invoke(new InfoAction());
+			final String after = expected.format(new Date());
+			assertTrue(actual, actual.equals(before) || actual.equals(after));
+		} finally {
+			TimeZone.setDefault(previous);
+		}
+	}
 
 	/**
 	 * Tests for execute.

@@ -13,10 +13,12 @@ package games.stendhal.server.actions.query;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import games.stendhal.common.Debug;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.RPAction;
 
 /**
@@ -38,6 +40,7 @@ public class InfoAction implements ActionListener {
 
 	private String getGametime() {
 		final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		sdf.setTimeZone(TimeZone.getTimeZone(TimeUtil.SERVER_TIME_ZONE));
 		return sdf.format(new Date(System.currentTimeMillis()));
 	}
 

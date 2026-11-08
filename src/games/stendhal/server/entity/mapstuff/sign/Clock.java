@@ -12,10 +12,12 @@
 package games.stendhal.server.entity.mapstuff.sign;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Actions;
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * A map object that when looked at shows the server time.
@@ -41,7 +43,7 @@ public class Clock extends Sign {
 
 	@Override
 	public String describe() {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(TimeUtil.SERVER_TIME_ZONE));
 		cal.add(Calendar.SECOND, imprecisionSeconds);
 
 		// Add 6 seconds so that the rounding is what humans expect
