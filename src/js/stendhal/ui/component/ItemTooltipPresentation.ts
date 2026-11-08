@@ -404,32 +404,32 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	]) {
 		const value = numberValue(current, key);
 		if (value > 0) {
-			affixes.push({kind: "affix", text: GameLanguage.getText(title) + ": "
+			affixes.push({kind: "bonus", text: GameLanguage.getText(title) + ": "
 				+ GameLanguage.getText(template).replace("{0}", formatCompact(value * 100))});
 		}
 	}
 	const crushing = numberValue(current, "armor_crushing");
 	if (crushing > 0) {
-		affixes.push({kind: "affix", text: GameLanguage.getText("Kruszenie") + ": "
+		affixes.push({kind: "bonus", text: GameLanguage.getText("Kruszenie") + ": "
 				+ GameLanguage.getText(formatCompact(crushing * 100)
 						+ "% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.")});
 	}
 	const hardening = numberValue(current, "critical_hardening");
 	if (hardening > 0) {
-		affixes.push({kind: "affix", text: GameLanguage.getText("Hartowanie") + ": "
+		affixes.push({kind: "bonus", text: GameLanguage.getText("Hartowanie") + ": "
 				+ GameLanguage.getText(formatCompact(hardening * 100)
 						+ "% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.")});
 	}
 	const spiked = numberValue(current, "spiked_plating");
 	if (spiked > 0) {
-		affixes.push({kind: "affix", text: "Kolczaste okucie: odbija "
+		affixes.push({kind: "bonus", text: "Kolczaste okucie: odbija "
 				+ formatNumber(spiked * 100, 1) + "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%."});
 	}
 	if (hasValue(current, "hunter_mark")) {
-		affixes.push({kind: "affix", text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});
+		affixes.push({kind: "bonus", text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});
 	}
 	if (hasValue(current, "giant_slayer")) {
-		affixes.push({kind: "affix", text: "Łowca olbrzymów: za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%."});
+		affixes.push({kind: "bonus", text: "Łowca olbrzymów: za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%."});
 	}
 	for (const [key, title, description] of LEGENDARY_AFFIXES) {
 		if (hasValue(current, key)) {
@@ -718,7 +718,11 @@ export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTool
 		}
 		const value = document.createElement("span");
 		value.className = "item-rarity-tooltip__value";
-		value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		if (line.kind === "affix") {
+			appendLegendaryFragments(value, line.text);
+		} else {
+			value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		}
 		detail.appendChild(value);
 		if (line.deltas?.length) {
 			detail.classList.add("item-rarity-tooltip__stat-row");
@@ -726,6 +730,20 @@ export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTool
 		appendTooltipDeltas(detail, line.deltas);
 		toolTip.appendChild(detail);
 	}
+
+function appendLegendaryFragments(target: HTMLElement, text: string) {
+	const numbers = /[+-]?\d+(?:[.,]\d+)?(?:%|[ \u00a0]+(?:pkt\.?(?:[ \u00a0]+proc\.)?|percentage[ \u00a0]+points?|puntos?[ \u00a0]+porcentual(?:es)?|pole|pól|tiles?|casillas?|seconds?|segundos?|s|PZ|PW|HP|PV)(?!\p{L}))?/gu;
+	let start = 0;
+	for (const match of text.matchAll(numbers)) {
+		target.appendChild(document.createTextNode(text.slice(start, match.index)));
+		const number = document.createElement("span");
+		number.style.color = "#f3e2b8";
+		number.textContent = match[0];
+		target.appendChild(number);
+		start = match.index + match[0].length;
+	}
+	target.appendChild(document.createTextNode(text.slice(start)));
+}
 
 function appendTooltipDeltas(target: HTMLElement, deltas?: ItemTooltipDelta[]) {
 		if (!deltas?.length) {

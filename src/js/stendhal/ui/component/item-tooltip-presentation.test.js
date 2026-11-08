@@ -7,12 +7,33 @@ const { test } = require("node:test");
 const vm = require("node:vm");
 const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 
+class TooltipNode {
+	constructor() {
+		this.children = [];
+		this.style = {};
+		this.classList = {add: () => {}};
+	}
+	appendChild(child) {
+		this.children.push(child);
+	}
+	set textContent(text) {
+		this.children = [];
+		this.text = text;
+	}
+	get textContent() {
+		return (this.text || "") + this.children.map(child => child.textContent).join("");
+	}
+}
+const document = {
+	createElement: () => new TooltipNode(),
+	createTextNode: text => Object.assign(new TooltipNode(), {text})
+};
 const exportsObject = {};
 const source = ts.transpileModule(readFileSync(path.join(__dirname,
 		"ItemTooltipPresentation.ts"), "utf8"), {
 	compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
 }).outputText;
-vm.runInNewContext(source, {exports: exportsObject,
+vm.runInNewContext(source, {exports: exportsObject, document,
 	require: name => {
 		if (name === "marauroa") return {marauroa: {}};
 		if (name === "../../util/GameLanguage") {
@@ -81,4 +102,44 @@ test("knowledge shows creature experience separately from affixes", () => {
 	assert.ok(tooltip.lines.some(line => line.kind === "bonus"
 			&& line.text === "+10% doświadczenia z potworów"));
 	assert.ok(!tooltip.lines.some(line => line.kind === "affix"));
+});
+
+
+test("ordinary descriptive affixes use the standard diamond bonus rows", () => {
+	const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "accessory", def: "10", steady_hand: "0.1", poison_potency: "0.25",
+		armor_crushing: "0.15", critical_hardening: "0.08"
+	}}, false).lines;
+	for (const title of ["Pewna ręka", "Zjadliwość", "Kruszenie", "Hartowanie"]) {
+		const line = lines.find(line => line.text.startsWith(title + ":"));
+		assert.equal(line.kind, "bonus", title);
+		const target = new TooltipNode();
+		exportsObject.appendStructuredTooltipLine(target, line);
+		assert.equal(target.children[0].className, "item-rarity-tooltip__bonus");
+		assert.ok(target.textContent.startsWith("◆ " + title + ":"));
+	}
+});
+
+test("every new legendary uses orange words and cream numeric fragments without diamonds", () => {
+	const values = {
+		legendary_defense_circle: ["3%", "12%"], legendary_hunters_pace: ["10%", "4 s"],
+		legendary_last_stand: ["30%", "20%"], legendary_life_tide: ["20%", "10 s", "20 PZ", "2 s"],
+		legendary_cleave: ["4", "30%", "2"], legendary_tenacity: ["3%", "15%", "5 s"],
+		legendary_breach: ["15%", "6 s"], legendary_quick_recovery: ["30%"],
+		legendary_iron_will: ["+20 pkt proc."]
+	};
+	for (const [key, expected] of Object.entries(values)) {
+		const line = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+			category: "accessory", [key]: "1"
+		}}, false).lines.find(line => line.kind === "affix");
+		const target = new TooltipNode();
+		exportsObject.appendStructuredTooltipLine(target, line);
+		const row = target.children[0];
+		assert.equal(row.className, "item-rarity-tooltip__affix");
+		assert.equal(row.textContent, line.text);
+		assert.ok(!row.textContent.includes("◆"));
+		const numbers = row.children[0].children.filter(node => node.style.color === "#f3e2b8")
+			.map(node => node.textContent);
+		assert.deepEqual(numbers, expected, key);
+	}
 });

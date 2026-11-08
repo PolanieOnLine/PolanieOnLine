@@ -34,6 +34,29 @@ public class ItemTooltipTranslationTest {
 		preferences.set(WtWindowManager.getInstance(), previousPreferences);
 	}
 
+	@Test
+	public void fullLegendaryDescriptionsStayTranslatedAroundCreamNumbers() {
+		final RPObject item = ItemTestHelper.createItem("translated legendary descriptions");
+		stat(item, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "1");
+		stat(item, ItemTooltip.LEGENDARY_HUNTERS_PACE, "1");
+		stat(item, ItemTooltip.LEGENDARY_LAST_STAND, "1");
+		stat(item, ItemTooltip.LEGENDARY_LIFE_TIDE, "1");
+		for (final String language : new String[] {"en", "es"}) {
+			WtWindowManager.getInstance().setProperty(ClientLanguage.PROPERTY, language);
+			final String html = LegendaryAffixPresentation.build(item);
+			final String text = html.replaceAll("<[^>]*>", "");
+			if ("en".equals(language)) {
+				assertTrue(text, text.contains("Potions can heal you up to 20% above maximum HP. After 10 seconds, the surplus decays by 20 HP every 2 seconds."));
+				assertTrue(html, html.contains("color='#f3e2b8'>20 HP</font>"));
+				assertTrue(html, html.contains("color='#f3e2b8'>10 seconds</font>"));
+			} else {
+				assertTrue(text, text.contains("Las pociones pueden curarte hasta un 20% por encima de tus PV máximos. Tras 10 segundos, el exceso disminuye en 20 PV cada 2 segundos."));
+				assertTrue(html, html.contains("color='#f3e2b8'>20 PV</font>"));
+				assertTrue(html, html.contains("color='#f3e2b8'>10 segundos</font>"));
+			}
+		}
+	}
+
 	@Test public void translatesNestedWeaponLabelsAndKeepsUpgradeValues() {
 		RPObject item = ItemTestHelper.createItem("test sword");
 		item.put("class", "sword");

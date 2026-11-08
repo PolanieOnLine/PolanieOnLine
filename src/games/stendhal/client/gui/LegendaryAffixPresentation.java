@@ -6,6 +6,8 @@ package games.stendhal.client.gui;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.common.constants.ItemTooltip;
@@ -15,6 +17,8 @@ import marauroa.common.game.RPObject;
 final class LegendaryAffixPresentation {
 	private static final String LEGENDARY_TEXT_COLOR = "#f28c28";
 	private static final String LEGENDARY_NUMBER_COLOR = "#f3e2b8";
+	private static final Pattern NUMERIC_FRAGMENT = Pattern.compile(
+			"[+-]?\\d+(?:[.,]\\d+)?(?:%|[ \\u00a0]+(?:pkt\\.?(?:[ \\u00a0]+proc\\.)?|seconds?|segundos?|s|PZ|PW|HP|PV)(?![A-Za-z]))?");
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat COMPACT_DECIMAL = createDecimalFormat("0.#");
 
@@ -156,7 +160,8 @@ final class LegendaryAffixPresentation {
 					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
 			});
 		}
-		return result.toString();
+		return result.length() == 0 ? ""
+				: "<table width='100%' cellpadding='0' cellspacing='0'>" + result + "</table>";
 	}
 
 	private static void appendCombatExpansion(final StringBuilder result, final RPObject object) {
@@ -254,10 +259,10 @@ final class LegendaryAffixPresentation {
 		if (value == null || value.intValue() == 0) {
 			return;
 		}
-		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; -")
+		result.append("<tr><td valign='top'><font size='-1'>&#9670; -")
 				.append(Math.abs(value.intValue()))
 				.append(ClientLanguage.getText(" do wagi broni"))
-				.append("</font></div>");
+				.append("</font></td></tr>");
 	}
 
 	private static void appendSpikedPlating(final StringBuilder result,
@@ -278,10 +283,10 @@ final class LegendaryAffixPresentation {
 
 	private static void appendRegularText(final StringBuilder result,
 			final String title, final String text) {
-		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; <b>")
+		result.append("<tr><td valign='top'><font size='-1'>&#9670; <b>")
 				.append(ClientLanguage.getText(title)).append(":</b> ")
 				.append(ClientLanguage.getText(text))
-				.append("</font></div>");
+				.append("</font></td></tr>");
 	}
 
 	/**
@@ -337,7 +342,7 @@ final class LegendaryAffixPresentation {
 	}
 
 	private static void beginLine(final StringBuilder result, final String title) {
-		result.append("<div style='margin-top:4px'><b><font size='-1' color='")
+		result.append("<tr><td valign='top' style='padding-top:4px'><b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
 				.append(ClientLanguage.getText(title)).append(": </font>");
 	}
@@ -347,11 +352,30 @@ final class LegendaryAffixPresentation {
 		if (text == null || text.length() == 0) {
 			return;
 		}
-		result.append("<font size='-1' color='").append(color).append("'>")
-				.append(ClientLanguage.getText(text)).append("</font>");
+		final String translated = ClientLanguage.getText(text);
+		if (LEGENDARY_TEXT_COLOR.equals(color)) {
+			final Matcher numbers = NUMERIC_FRAGMENT.matcher(translated);
+			int start = 0;
+			while (numbers.find()) {
+				appendFont(result, translated.substring(start, numbers.start()), color);
+				appendFont(result, numbers.group(), LEGENDARY_NUMBER_COLOR);
+				start = numbers.end();
+			}
+			appendFont(result, translated.substring(start), color);
+		} else {
+			appendFont(result, translated, color);
+		}
+	}
+
+	private static void appendFont(final StringBuilder result,
+			final String text, final String color) {
+		if (!text.isEmpty()) {
+			result.append("<font size='-1' color='").append(color).append("'>")
+					.append(text).append("</font>");
+		}
 	}
 
 	private static void endLine(final StringBuilder result) {
-		result.append("</b></div>");
+		result.append("</b></td></tr>");
 	}
 }

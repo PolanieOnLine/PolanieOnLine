@@ -30,6 +30,29 @@ public class LegendaryAffixPresentationTest {
 		assertTrue(text.contains("12%"));
 	}
 
+	@Test
+	public void completeLegendaryDescriptionsKeepNumbersCream() {
+		final String[][] affixes = {
+				{ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "3%", "12%"},
+				{ItemTooltip.LEGENDARY_HUNTERS_PACE, "10%", "4 s"},
+				{ItemTooltip.LEGENDARY_LAST_STAND, "30%", "20%"},
+				{ItemTooltip.LEGENDARY_LIFE_TIDE, "20%", "10 s", "20 PZ", "2 s"},
+				{ItemTooltip.LEGENDARY_CLEAVE, "4", "30%", "2"},
+				{ItemTooltip.LEGENDARY_TENACITY, "3%", "15%", "5 s"},
+				{ItemTooltip.LEGENDARY_BREACH, "15%", "6 s"},
+				{ItemTooltip.LEGENDARY_QUICK_RECOVERY, "30%"}
+		};
+		for (final String[] affix : affixes) {
+			final RPObject object = ItemTestHelper.createItem("legendary formatting");
+			put(object, affix[0], "1");
+			final String html = LegendaryAffixPresentation.build(object);
+			for (int index = 1; index < affix.length; index++) {
+				assertTrue(html, html.contains("color='#f3e2b8'>" + affix[index] + "</font>"));
+			}
+			assertFalse(html, html.contains("&#9670;"));
+		}
+	}
+
 	private java.lang.reflect.Field preferences;
 	private Object previousPreferences;
 	@org.junit.Before public void isolatePolishLanguage() throws Exception {

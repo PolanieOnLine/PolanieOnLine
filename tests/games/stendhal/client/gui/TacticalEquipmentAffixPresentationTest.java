@@ -32,12 +32,13 @@ public class TacticalEquipmentAffixPresentationTest {
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
+		final String text = tooltip.replaceAll("<[^>]+>", "");
 
 		assertTrue(tooltip.contains("Kolczaste okucie"));
 		assertTrue(tooltip.contains("25,0%"));
 		assertTrue(tooltip.contains("ciosów wręcz; łącznie maksymalnie 50%"));
 		assertTrue(tooltip.contains("Przypływ życia"));
-		assertTrue(tooltip.contains("20 PZ co 2 s"));
+		assertTrue(text.contains("20 PZ co 2 s"));
 		assertTrue(tooltip.contains("Znak łowcy"));
 		assertTrue(tooltip.contains("6 s"));
 		assertTrue(tooltip.contains("Łowca olbrzymów"));

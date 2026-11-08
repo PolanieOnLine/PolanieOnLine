@@ -8,6 +8,27 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const root = path.resolve(__dirname, "../../../../..");
 const sourceRoot = path.join(root, "src/js/stendhal");
 
+class TooltipNode {
+	constructor() {
+		this.children = [];
+		this.style = {};
+	}
+	appendChild(child) {
+		this.children.push(child);
+	}
+	set textContent(text) {
+		this.children = [];
+		this.text = text;
+	}
+	get textContent() {
+		return (this.text || "") + this.children.map(child => child.textContent).join("");
+	}
+}
+const document = {
+	createElement: () => new TooltipNode(),
+	createTextNode: text => Object.assign(new TooltipNode(), {text})
+};
+
 async function harness() {
 	const compile = file => ts.transpileModule(readFileSync(path.join(sourceRoot, file), "utf8"), {
 		compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
@@ -23,13 +44,18 @@ async function harness() {
 	}
 	const exports = {};
 	const marauroa = {};
-	vm.runInNewContext(compile("ui/component/ItemTooltipPresentation.ts"), {exports, require: name => {
+	vm.runInNewContext(compile("ui/component/ItemTooltipPresentation.ts"), {exports, document, require: name => {
 		if (name === "marauroa") return {marauroa};
 		if (name === "../../entity/Item") return {Item};
 		if (name === "../../util/GameLanguage") return {GameLanguage: language};
 		throw new Error(name);
 	}});
 	return {language, Item, marauroa,
+		render: line => {
+			const target = new TooltipNode();
+			exports.appendStructuredTooltipLine(target, line);
+			return target.children[0];
+		},
 		build: (item, compare=false) => exports.buildStructuredItemTooltip(item, compare)};
 }
 
@@ -254,4 +280,37 @@ test("living water comparison retains the quarter point improvement", async () =
         out_of_combat_regen: "0.75", out_of_combat_regen_cap: "14"});
     const line = h.build(item, true).lines.find(line => line.text.includes("regeneracji co 5 s"));
     assert.equal(line.deltas[0].text, "+0,25");
+});
+
+
+test("translated legendary numeric units retain their full cream fragments", async () => {
+	const h = await harness();
+	const cases = [
+		["pl", {
+			legendary_iron_will: ["+20 pkt proc."], legendary_guardian_seal: ["+20 pkt proc."],
+			legendary_merciless_reach: ["+1 pole"], legendary_falcon_eye: ["4 pól", "+10 pkt proc."]
+		}],
+		["en", {
+			legendary_iron_will: ["+20 percentage points"], legendary_guardian_seal: ["+20 percentage points"],
+			legendary_merciless_reach: ["+1 tile"], legendary_falcon_eye: ["4 tiles", "+10 percentage points"],
+			legendary_life_tide: ["20%", "10 seconds", "20 HP", "2 seconds"]
+		}],
+		["es", {
+			legendary_iron_will: ["+20 puntos porcentuales"], legendary_guardian_seal: ["+20 puntos porcentuales"],
+			legendary_merciless_reach: ["+1 casilla"], legendary_falcon_eye: ["4 casillas", "+10 puntos porcentuales"],
+			legendary_life_tide: ["20%", "10 segundos", "20 PV", "2 segundos"]
+		}]
+	];
+	for (const [language, affixes] of cases) {
+		h.language.synchronize(language);
+		for (const [key, expected] of Object.entries(affixes)) {
+			const line = h.build(new h.Item({category: "other", [key]: "1"})).lines
+				.find(line => line.kind === "affix");
+			const row = h.render(line);
+			assert.equal(row.textContent, line.text, "Coloring must preserve the entire translated description");
+			const cream = row.children[0].children.filter(child => child.style.color === "#f3e2b8")
+				.map(child => child.textContent);
+			assert.deepEqual(cream, expected, language + " " + key);
+		}
+	}
 });
