@@ -18,6 +18,19 @@ import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixTooltipPresentationTest {
 	@Test
+	public void weaponAndAccessoryArmorUseTheSameSignedDiamondRow() {
+		for (final String category : new String[] {ItemTooltip.CATEGORY_WEAPON, ItemTooltip.CATEGORY_ACCESSORY}) {
+			final RPObject object = new RPObject(ItemTestHelper.createItem("armor formatting " + category));
+			put(object, ItemTooltip.CATEGORY, category);
+			put(object, ItemTooltip.DEFENSE, "10");
+			assertEquals(category, ItemRarityPresentation.resolveCategory(object));
+			final String tooltip = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(object));
+			assertTrue(tooltip, tooltip.contains("&#9670; +10 pancerza"));
+			assertFalse(tooltip, tooltip.contains("Pancerz: 10"));
+		}
+	}
+
+	@Test
 	public void lifeStealUsesTheSameDiamondAndSignedBonusStyleAsOtherStats() {
 		final RPObject object = ItemTestHelper.createItem("life steal armour");
 		put(object, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);

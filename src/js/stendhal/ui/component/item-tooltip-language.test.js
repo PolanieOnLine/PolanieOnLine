@@ -146,6 +146,17 @@ test("zero attack without comparison remains hidden", async () => {
 	assert.ok(h.build(item).lines.every(line => !line.text.includes(" ataku")));
 });
 
+test("weapons and accessories use the same signed armor bonus row", async () => {
+	const h = await harness();
+	for (const category of ["weapon", "accessory"]) {
+		const lines = h.build(new h.Item({category, def: "10"})).lines;
+		const defense = lines.find(line => line.text === "+10 pancerza");
+		assert.ok(defense, category);
+		assert.equal(defense.kind, "bonus");
+		assert.ok(lines.every(line => line.text !== "Pancerz: 10"));
+	}
+});
+
 test("life steal uses the other bonuses' row style without an extra label", async () => {
 	const h = await harness();
 	const item = new h.Item({category: "accessory", def: "10", lifesteal: "0.10",

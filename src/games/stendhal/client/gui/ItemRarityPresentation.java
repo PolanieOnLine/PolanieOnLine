@@ -442,10 +442,10 @@ public final class ItemRarityPresentation {
 			final boolean weapon) {
 		final StringBuilder stats = new StringBuilder();
 		if (weapon) {
-			appendPlainStat(stats, "Pancerz",
+			appendComparableBonusLine(stats,
 					WeaponPerformanceCalculator.getInt(object, ItemTooltip.DEFENSE),
 					WeaponPerformanceCalculator.getInt(equippedItem,
-							ItemTooltip.DEFENSE), equippedItem != null);
+							ItemTooltip.DEFENSE), "pancerza", equippedItem != null);
 		}
 
 		appendPlainStat(stats, "Siła ataku",

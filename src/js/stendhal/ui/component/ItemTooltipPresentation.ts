@@ -253,7 +253,7 @@ function appendCoreStats(lines: ItemTooltipLine[], current: Record<string, strin
 		equipped: Record<string, string>|undefined, weapon: boolean) {
 	const section: ItemTooltipLine[] = [];
 	if (weapon) {
-		appendPlainStat(section, "Pancerz", intValue(current, "def"), intValue(equipped, "def"), !!equipped);
+		appendIntegerBonus(section, intValue(current, "def"), intValue(equipped, "def"), "pancerza", !!equipped);
 	}
 	appendPlainStat(section, "Siła ataku", intValue(current, "skill_atk"),
 			intValue(equipped, "skill_atk"), !!equipped);
