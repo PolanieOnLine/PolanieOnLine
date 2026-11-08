@@ -45,7 +45,9 @@ public final class ItemAffixRegistry {
 					new ExecuteDamageAffixDefinition(),
 					new PoisonOnHitAffixDefinition(),
 					new DistanceDamageAffixDefinition(),
-					new ArmorPenetrationAffixDefinition()));
+					new ArmorPenetrationAffixDefinition(),
+					AdditionalCombatAffixDefinition.STEADY_HAND,
+					AdditionalCombatAffixDefinition.POISON_POTENCY));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;

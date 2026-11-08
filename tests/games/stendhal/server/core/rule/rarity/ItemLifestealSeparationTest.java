@@ -81,7 +81,9 @@ public class ItemLifestealSeparationTest {
 		item.put("lifesteal", 0.11);
 		item.put(ItemAffixState.ATTRIBUTE, "lifesteal", "0.11");
 		for (final ItemAffixDefinition definition : ItemAffixRegistry.getInstance().getDefinitions()) {
-			if (!item.has(definition.getAttribute())) item.put(definition.getAttribute(), "0");
+			if (!item.has(definition.getAttribute())) {
+				item.put(definition.getAttribute(), "0");
+			}
 		}
 		final marauroa.common.game.RPObject saved = new marauroa.common.game.RPObject(item);
 

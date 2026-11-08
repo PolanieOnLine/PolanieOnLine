@@ -34,6 +34,8 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.damage.LifeTideService;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
+import games.stendhal.server.core.rule.rarity.AdditionalCombatAffixDefinition;
 import games.stendhal.server.core.events.EquipListener;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.UseListener;
@@ -475,6 +477,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	/** Returns minimum weapon damage at a specified upgrade level. */
 	public int getDamageMinAtUpgradeLevel(final int upgradeLevel) {
+		final int minimum = getUnmodifiedDamageMin(upgradeLevel);
+		final int maximum = getDamageMaxAtUpgradeLevel(upgradeLevel);
+		final double bonus = AdditionalCombatAffixDefinition.STEADY_HAND.value(this);
+		return (int) Math.min(maximum, Math.round(minimum * (1.0 + bonus)));
+	}
+
+	private int getUnmodifiedDamageMin(final int upgradeLevel) {
 		final int fallback = Math.max(getAttackAtUpgradeLevel(upgradeLevel),
 				getRangedAttackAtUpgradeLevel(upgradeLevel));
 		return Math.max(0, getAttributeAtUpgradeLevel("damage_min", fallback,
@@ -488,7 +497,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	/** Returns maximum weapon damage at a specified upgrade level. */
 	public int getDamageMaxAtUpgradeLevel(final int upgradeLevel) {
-		final int minimum = getDamageMinAtUpgradeLevel(upgradeLevel);
+		final int minimum = getUnmodifiedDamageMin(upgradeLevel);
 		return Math.max(minimum, getAttributeAtUpgradeLevel("damage_max", minimum,
 				upgradeLevel));
 	}
@@ -1473,6 +1482,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	public boolean onUnequipped() {
 		if (getContainer() instanceof Player) {
 			LifeTideService.onUnequipped((Player) getContainer(), this);
+			HuntingAffixService.onUnequipped((Player) getContainer(), this);
 		}
 		if (getContainer() instanceof Player && WeaponAffixService.isWeapon(this)
 				&& ("rhand".equals(getContainerSlot().getName())

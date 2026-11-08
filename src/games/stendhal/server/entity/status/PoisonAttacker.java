@@ -18,6 +18,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.ConsumableItem;
@@ -79,7 +80,12 @@ public class PoisonAttacker extends StatusAttacker {
 
 		final int roll = Rand.roll1D100();
 		if (roll <= actualProbability) {
-			if (target.getStatusList().inflictStatus((Status) getStatus().clone(), attacker)) {
+			PoisonStatus poison = (PoisonStatus) getStatus().clone();
+			if (attacker instanceof Player) {
+				poison = HuntingAffixService.weaponPoison((Player) attacker,
+						Math.abs(poison.getAmount()), poison.getFrecuency(), Math.abs(poison.getRegen()));
+			}
+			if (target.getStatusList().inflictStatus(poison, attacker)) {
 				new GameEvent(attacker.getName(), "poison", target.getName(), entityToType(attacker), entityToType(target)).raise();
 				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " " + target.getGenderVerb("otruty") + " przez " + attacker.getName() + ".");
 			}

@@ -17,6 +17,7 @@ import games.stendhal.server.core.rule.damage.CombatStatsService;
 import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.damage.LifeTideService;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
 import static games.stendhal.common.constants.Actions.ADMINLEVEL;
@@ -286,6 +287,7 @@ public class Player extends DressedEntity implements UseListener {
 		player.disconnected = true;
 		GlyphRecoveryService.reset(player);
 		LifeTideService.reset(player);
+		HuntingAffixService.reset(player);
 		GlyphCombatService.clearEffects(player);
 		ChallengeArenaObservation.onLogout(player);
 		NpcShopAction.onLogout(player);
@@ -329,6 +331,7 @@ public class Player extends DressedEntity implements UseListener {
 
 		unlockedPortals = new LinkedList<Integer>();
 		LifeTideService.reset(this);
+		HuntingAffixService.reset(this);
 
 		updateModifiedAttributes();
 	}
@@ -359,12 +362,15 @@ public class Player extends DressedEntity implements UseListener {
 		directions.remove(direction);
 	}
 
+	@Override
+	public double getMovementSpeed() {
+		return getBaseSpeed() * HuntingAffixService.movementMultiplier(this);
+	}
+
 	/**
 	 * Apply the most recent active client direction.
 	 *
-	 * @param stopOnNone
-	 *			Stop movement if no (valid) directions are active if
-	 *			<code>true</code>.
+	 * @param stopOnNone stop movement if no valid directions are active
 	 */
 	public void applyClientDirection(final boolean stopOnNone) {
 		int size;
@@ -387,7 +393,7 @@ public class Player extends DressedEntity implements UseListener {
 			}
 
 			setDirection(direction);
-			setSpeed(getBaseSpeed());
+			setSpeed(getMovementSpeed());
 		}
 	}
 
@@ -1222,6 +1228,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 		GlyphRecoveryService.reset(this);
 		LifeTideService.reset(this);
+		HuntingAffixService.reset(this);
 		GlyphCombatService.clearEffects(this);
 		// Always use remove=false for players, as documented
 		// in RPEntity.onDead()
@@ -2207,6 +2214,7 @@ public class Player extends DressedEntity implements UseListener {
 	public void updateItemAtkDef() {
 		super.updateItemAtkDef();
 		LifeTideService.reconcileEquipment(this);
+		HuntingAffixService.tick(this);
 		CombatStatsService.update(this);
 	}
 
@@ -2214,6 +2222,7 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public void logic() {
 		LifeTideService.tick(this);
+		HuntingAffixService.tick(this);
 		GlyphRecoveryService.tick(this);
 		CombatStatsService.update(this);
 		/*

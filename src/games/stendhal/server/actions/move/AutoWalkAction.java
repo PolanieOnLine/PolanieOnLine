@@ -67,7 +67,7 @@ public class AutoWalkAction implements ActionListener {
 
 		/* The speed at which the player will walk. */
 		final double currentSpeed = player.getSpeed();
-		final double newSpeed = player.getBaseSpeed();
+		final double newSpeed = player.getMovementSpeed();
 		final Direction walkDirection = player.getDirection();
 
 		final String mode = action.get(MODE);

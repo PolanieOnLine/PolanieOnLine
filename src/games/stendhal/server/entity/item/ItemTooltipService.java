@@ -26,6 +26,7 @@ import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.AdditionalCombatAffixDefinition;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusType;
@@ -186,6 +187,12 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_BREACH);
 		copyDouble(item, ItemTooltip.LEGENDARY_QUICK_RECOVERY, ItemTooltip.LEGENDARY_QUICK_RECOVERY);
 		copyDouble(item, ItemTooltip.LEGENDARY_LIFE_TIDE, ItemTooltip.LEGENDARY_LIFE_TIDE);
+		for (final AdditionalCombatAffixDefinition affix : AdditionalCombatAffixDefinition.values()) {
+			final double value = affix.value(item);
+			if (value > 0.0) {
+				put(item, affix.getId(), Double.toString(value));
+			}
+		}
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);

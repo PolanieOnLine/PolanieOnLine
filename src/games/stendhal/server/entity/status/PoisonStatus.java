@@ -11,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.entity.status;
 
+import java.lang.ref.WeakReference;
+
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
 
 /**
@@ -19,6 +22,7 @@ import games.stendhal.server.entity.Killer;
  * Note: this class has a natural ordering that is inconsistent with equals.
  */
 public class PoisonStatus extends ConsumableStatus implements Killer {
+	private final WeakReference<Entity> source;
 
 	/**
 	 * Poison
@@ -28,7 +32,16 @@ public class PoisonStatus extends ConsumableStatus implements Killer {
 	 * @param regen      hp change on each event
 	 */
 	public PoisonStatus(int amount, int frequency, int regen) {
+		this(amount, frequency, regen, null);
+	}
+
+	public PoisonStatus(final int amount, final int frequency, final int regen, final Entity source) {
 		super("poison", amount, frequency, regen);
+		this.source = new WeakReference<>(source);
+	}
+
+	public Entity getSource() {
+		return source.get();
 	}
 
 	/**

@@ -19,6 +19,20 @@ import games.stendhal.common.constants.Nature;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipServiceTest {
+	@Test
+	public void mapOnlyAffixesPublishTheirDescriptionsAndEffectiveWeaponRange() {
+		final Map<String, String> attributes = new HashMap<>();
+		attributes.put("damage_min", "100");
+		attributes.put("damage_max", "160");
+		final Item item = new Item("steady sword", "sword", "test", attributes);
+		item.put("item_affixes", "steady_hand", "0.1");
+		item.put("item_affixes", "poison_potency", "0.25");
+		ItemTooltipService.update(item);
+		assertEquals("110", stat(item, ItemTooltip.DAMAGE_MIN));
+		assertEquals("160", stat(item, ItemTooltip.DAMAGE_MAX));
+		assertEquals("0.1", stat(item, ItemTooltip.STEADY_HAND));
+		assertEquals("0.25", stat(item, ItemTooltip.POISON_POTENCY));
+	}
 	@BeforeClass
 	public static void setUpClass() {
 		ItemTestHelper.generateRPClasses();

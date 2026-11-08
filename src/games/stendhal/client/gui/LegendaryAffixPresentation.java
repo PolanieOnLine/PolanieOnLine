@@ -160,6 +160,25 @@ final class LegendaryAffixPresentation {
 	}
 
 	private static void appendCombatExpansion(final StringBuilder result, final RPObject object) {
+		appendNewPercentage(result, object, ItemTooltip.STEADY_HAND, "Pewna ręka",
+				"Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń.");
+		appendNewPercentage(result, object, ItemTooltip.POISON_POTENCY, "Zjadliwość",
+				"Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%.");
+		if (has(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE)) {
+			appendFixed(result, "Krąg obrony", new String[] {
+					"Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_HUNTERS_PACE)) {
+			appendFixed(result, "Łowczy pęd", new String[] {
+					"Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_LAST_STAND)) {
+			appendFixed(result, "Ostatni zryw", new String[] {
+					"Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się."
+			});
+		}
 		if (has(object, ItemTooltip.LEGENDARY_LIFE_TIDE)) {
 			appendFixed(result, "Przypływ życia", new String[] {
 					"Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."
@@ -194,6 +213,16 @@ final class LegendaryAffixPresentation {
 					"Skraca czas ogłuszenia, ociężałości i dezorientacji o ", "30%",
 					". Efekt nie kumuluje się."
 			});
+		}
+	}
+
+	private static void appendNewPercentage(final StringBuilder result, final RPObject object,
+			final String key, final String title, final String template) {
+		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
+		final Double value = raw == null ? null : parseDouble(raw);
+		if (value != null && value.doubleValue() > 0.0) {
+			appendRegularText(result, title, ClientLanguage.getText(template)
+					.replace("{0}", COMPACT_DECIMAL.format(value.doubleValue() * 100)));
 		}
 	}
 

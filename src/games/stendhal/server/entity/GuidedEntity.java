@@ -96,6 +96,11 @@ public abstract class GuidedEntity extends ActiveEntity {
 		return this.baseSpeed;
 	}
 
+	/** Effective walking speed; temporary bonuses leave base speed and statuses intact. */
+	public double getMovementSpeed() {
+		return getBaseSpeed();
+	}
+
 	/**
 	 * Set the normal movement speed.
 	 *
@@ -127,7 +132,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public final void setPath(final FixedPath path) {
 		if ((path != null) && !path.isFinished()) {
-			setSpeed(getBaseSpeed());
+			setSpeed(getMovementSpeed());
 
 			if (!this.has(PATHSET)) {
 				this.put(PATHSET, "");
@@ -197,7 +202,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public final void setPath(final FixedPath path, final int position) {
 		if ((path != null) && !path.isFinished()) {
-			setSpeed(getBaseSpeed());
+			setSpeed(getMovementSpeed());
 
 			if (!this.has(PATHSET)) {
 				this.put(PATHSET, "");
@@ -366,8 +371,8 @@ public abstract class GuidedEntity extends ActiveEntity {
 		if (getSpeed() > 0) {
 			int resistance = getLocalResistance();
 
-			if ((getSpeed() < getBaseSpeed()) || (resistance != 0)) {
-				setSpeed(getBaseSpeed() * (100 - resistance) / 100.0);
+			if ((getSpeed() < getMovementSpeed()) || (resistance != 0)) {
+				setSpeed(getMovementSpeed() * (100 - resistance) / 100.0);
 			}
 		}
 	}
@@ -403,7 +408,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 							}
 						}
 
-						setSpeed(getBaseSpeed());
+						setSpeed(getMovementSpeed());
 					}
 				});
 			}

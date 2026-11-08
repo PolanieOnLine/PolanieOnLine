@@ -123,7 +123,7 @@ public final class ItemAffixState {
 				: saved.getMap(ATTRIBUTE).entrySet()) {
 			item.put(ATTRIBUTE, entry.getKey(), entry.getValue());
 			final ItemAffixDefinition definition = findDefinition(entry.getKey());
-			if (definition != null) {
+			if (definition != null && definition.hasMaterializedAttribute()) {
 				item.put(definition.getAttribute(), entry.getValue());
 			}
 		}
@@ -139,7 +139,8 @@ public final class ItemAffixState {
 
 	private static void copyLegacyAttribute(final Item item,
 			final RPObject saved, final ItemAffixDefinition definition) {
-		if (definition != null && saved.has(definition.getAttribute())) {
+		if (definition != null && definition.hasMaterializedAttribute()
+				&& saved.has(definition.getAttribute())) {
 			item.put(definition.getAttribute(), saved.get(definition.getAttribute()));
 		}
 	}

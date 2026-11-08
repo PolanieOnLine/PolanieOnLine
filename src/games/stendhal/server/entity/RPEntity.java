@@ -35,6 +35,7 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.damage.WallOfGordService;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
@@ -1943,6 +1944,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		String killerName = killer.getName();
 		final int oldXP = this.getXP();
+		HuntingAffixService.onKilled(killer, this);
 
 		// Establish how much xp points your are rewarded
 		// give XP to everyone who helped killing this RPEntity
@@ -3589,6 +3591,7 @@ public abstract class RPEntity extends CombatEntity {
 			if (defender.getsDefXpFrom(this, didDamage)) { defender.incDefXP(); }
 
 			if (this instanceof Creature && defender instanceof Player) {
+				damage = HuntingAffixService.reduceCreatureHit((Player) defender, this, damage);
 				damage = WallOfGordService
 						.reduceDirectCreatureHit((Player) defender, damage);
 			}

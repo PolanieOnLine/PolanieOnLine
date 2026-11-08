@@ -33,6 +33,24 @@ async function harness() {
 		build: (item, compare=false) => exports.buildStructuredItemTooltip(item, compare)};
 }
 
+test("the five new affixes have descriptions in Polish, English and Spanish", async () => {
+	const h = await harness();
+	for (const [language, names] of [
+		["pl", ["Pewna ręka", "Zjadliwość", "Krąg obrony", "Łowczy pęd", "Ostatni zryw"]],
+		["en", ["Steady Hand", "Virulence", "Circle of Defense", "Hunter's Pace", "Last Stand"]],
+		["es", ["Mano firme", "Virulencia", "Círculo defensivo", "Paso del cazador", "Último esfuerzo"]]
+	]) {
+		h.language.synchronize(language);
+		const text = h.build(new h.Item({category: "weapon", steady_hand: "0.1", poison_potency: "0.25",
+			legendary_defense_circle: "1", legendary_hunters_pace: "1", legendary_last_stand: "1"}))
+			.lines.map(line => line.text).join("\n");
+		for (const name of names) assert.ok(text.includes(name), text);
+		assert.ok(text.includes("25%"), text);
+		assert.ok(text.includes("12%"), text);
+		if (language !== "pl") assert.doesNotMatch(text, /obrażenia|potwora|prędkość|nie kumuluje/);
+	}
+});
+
 test("equipment attack penalties survive missing or zero other attack values", async () => {
 	const h = await harness();
 	for (const [attack, expected] of [

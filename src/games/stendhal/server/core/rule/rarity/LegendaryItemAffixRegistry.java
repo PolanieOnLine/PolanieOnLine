@@ -91,7 +91,10 @@ public final class LegendaryItemAffixRegistry {
 					new EquipmentAffixDefinition(
 							LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE),
 					new EquipmentAffixDefinition(
-							LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE)));
+							LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE),
+					AdditionalCombatAffixDefinition.DEFENSE_CIRCLE,
+					AdditionalCombatAffixDefinition.HUNTERS_PACE,
+					AdditionalCombatAffixDefinition.LAST_STAND));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;

@@ -55,6 +55,7 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.WeaponImpl;
 import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.events.AttackEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.net.message.TransferContent;
@@ -408,6 +409,7 @@ public class StendhalRPAction {
 			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 					damage, weapons, defender, isRanged);
 			if (!usesTrainingDummy) {
+				damage = HuntingAffixService.outgoingDamage(player, damage);
 				damage = TacticalAffixCombatService.prepareHit(player, defender, damage);
 			}
 

@@ -62,6 +62,8 @@ public class ItemCreationCommandOptionsTest {
 		maximums.put("execute_damage", 0.15);
 		maximums.put("armor_penetration", 0.15);
 		maximums.put("armor_crushing", 0.15);
+		maximums.put("steady_hand", 0.10);
+		maximums.put("poison_potency", 0.25);
 		final Set<String> selected = new HashSet<String>();
 		final Random seeds = new Random(7L);
 		for (int roll = 0; roll < 64; roll++) {
@@ -79,7 +81,10 @@ public class ItemCreationCommandOptionsTest {
 				final ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
 				if (definition != null) {
 					assertTrue("Unexpected axe affix: " + id, maximums.containsKey(id));
-					assertEquals(id, maximums.get(id), item.getDouble(definition.getAttribute()), 0.000001);
+					assertEquals(id, maximums.get(id), Double.parseDouble(ItemAffixState.getValues(item).get(id)), 0.000001);
+					if (definition.hasMaterializedAttribute()) {
+						assertEquals(id, maximums.get(id), item.getDouble(definition.getAttribute()), 0.000001);
+					}
 					selected.add(id);
 				}
 			}
@@ -123,6 +128,8 @@ public class ItemCreationCommandOptionsTest {
 		ItemTestHelper.generateRPClasses();
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "20");
+		attributes.put("damage_min", "18");
+		attributes.put("damage_max", "24");
 		attributes.put("rate", "10");
 		final Item item = new Item("topór", "axe", "test", attributes);
 		item.setEquipableSlots(Arrays.asList("rhand", "bag"));

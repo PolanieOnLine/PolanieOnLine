@@ -94,6 +94,9 @@ const STATUS_RESISTANCES: Array<[string, string]> = [
 ];
 
 const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
+	["legendary_defense_circle", "Krąg obrony", "Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."],
+	["legendary_hunters_pace", "Łowczy pęd", "Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."],
+	["legendary_last_stand", "Ostatni zryw", "Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się."],
 	["legendary_cleave", "Rozmach", "Co 4 celne trafienia wręcz zadaje 30% obrażeń trafienia maksymalnie 2 pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."],
 	["legendary_tenacity", "Zaciętość", "Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."],
 	["legendary_breach", "Przełamanie", "Po rozbiciu opancerzenia celu zadajesz mu o 15% więcej obrażeń zdrowiu przez 6 s."],
@@ -395,6 +398,16 @@ function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<strin
 
 function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>) {
 	const affixes: ItemTooltipLine[] = [];
+	for (const [key, title, template] of [
+		["steady_hand", "Pewna ręka", "Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń."],
+		["poison_potency", "Zjadliwość", "Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%."]
+	]) {
+		const value = numberValue(current, key);
+		if (value > 0) {
+			affixes.push({kind: "affix", text: GameLanguage.getText(title) + ": "
+				+ GameLanguage.getText(template).replace("{0}", formatCompact(value * 100))});
+		}
+	}
 	const crushing = numberValue(current, "armor_crushing");
 	if (crushing > 0) {
 		affixes.push({kind: "affix", text: GameLanguage.getText("Kruszenie") + ": "

@@ -128,6 +128,11 @@ public final class ItemTooltip {
 	public static final String USES = "uses";
 	public static final String SAVED_POSITION = "saved_position";
 	public static final String VALUE = "value";
+	public static final String STEADY_HAND = "steady_hand";
+	public static final String POISON_POTENCY = "poison_potency";
+	public static final String LEGENDARY_DEFENSE_CIRCLE = "legendary_defense_circle";
+	public static final String LEGENDARY_HUNTERS_PACE = "legendary_hunters_pace";
+	public static final String LEGENDARY_LAST_STAND = "legendary_last_stand";
 
 	private ItemTooltip() {
 		// constants class

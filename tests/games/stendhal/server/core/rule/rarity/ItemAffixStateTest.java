@@ -70,6 +70,10 @@ public class ItemAffixStateTest {
 
 		for (final ItemAffixDefinition definition
 				: LegendaryItemAffixRegistry.getInstance().getDefinitions()) {
+			if (!definition.hasMaterializedAttribute()) {
+				assertFalse(names.contains(definition.getAttribute()));
+				continue;
+			}
 			assertTrue("legendary attribute missing from item RPClass: "
 					+ definition.getAttribute(),
 					names.contains(definition.getAttribute()));

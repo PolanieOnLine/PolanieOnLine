@@ -135,7 +135,9 @@ public final class ItemRarityTransferSnapshot {
 			} else if (data.itemClass.equals(target.getItemClass())
 					|| definition.isEligible(target)) {
 				target.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
-				target.put(definition.getAttribute(), entry.getValue());
+				if (definition.hasMaterializedAttribute()) {
+					target.put(definition.getAttribute(), entry.getValue());
+				}
 			}
 		}
 		if (replacedLifeSteal > 0) {

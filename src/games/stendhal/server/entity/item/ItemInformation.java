@@ -74,8 +74,10 @@ public class ItemInformation extends Item {
 		 * can make perception serialization fail and disconnect clients. */
 		for (final ItemAffixDefinition definition
 				: LegendaryItemAffixRegistry.getInstance().getDefinitions()) {
-			itemClass.addAttribute(definition.getAttribute(),
-					legendaryAttributeType(definition), Definition.HIDDEN);
+			if (definition.hasMaterializedAttribute()) {
+				itemClass.addAttribute(definition.getAttribute(),
+						legendaryAttributeType(definition), Definition.HIDDEN);
+			}
 		}
 
 		itemClass.addAttribute(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE,

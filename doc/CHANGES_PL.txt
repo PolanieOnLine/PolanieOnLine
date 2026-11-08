@@ -36,6 +36,11 @@
 * Dodano szary pasek opancerzenia na pasku zdrowia przeciwnika i dźwięk jego rozbicia
 * Dodano afiks Kruszenie, który zwiększa obrażenia zadawane opancerzeniu przeciwnika o 10-15%, łącznie maksymalnie o 30%
 * Dodano afiks Hartowanie, który zmniejsza dodatkowe obrażenia z otrzymanych trafień krytycznych o 4-8%, łącznie maksymalnie o 30%
+* Dodano afiks Pewna ręka, który podnosi minimalne obrażenia broni o 5-10%, bez zwiększania maksymalnych obrażeń
+* Dodano afiks Zjadliwość na broni i rękawicach. Zwiększa obrażenia trucizny nakładanej bronią o 15-25%, łącznie maksymalnie o 50%
+* Dodano legendarny afiks Krąg obrony na zbrojach i tarczach. Przy walce z kilkoma potworami każdy dodatkowy przeciwnik zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%
+* Dodano legendarny afiks Łowczy pęd na butach. Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 sekundy. Kolejne zabójstwa odświeżają czas działania, bez zwiększania bonusu
+* Dodano legendarny afiks Ostatni zryw na pasach i rękawicach. Poniżej 30% maksymalnego zdrowia zwiększa obrażenia trafień o 20%. Bonus z kilku przedmiotów nie sumuje się
 * Dodano legendarny afiks Rozmach. Co czwarte celne trafienie wręcz zadaje 30% obrażeń tego ciosu maksymalnie dwóm pobliskim potworom walczącym z graczem
 * Dodano legendarny afiks Zaciętość. Każde celne trafienie tego samego przeciwnika zwiększa obrażenia kolejnych ciosów o 3%, maksymalnie o 15%. Zmiana celu lub 5 sekund bez trafienia zeruje bonus
 * Dodano legendarny afiks Przełamanie. Przez 6 sekund po rozbiciu opancerzenia pozwala zadawać temu przeciwnikowi o 15% większe obrażenia
@@ -46,6 +51,7 @@
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości
 * Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
+* Poprawiono zachowanie dodatkowego zasięgu afiksa Bezlitosny Zasięg po ponownym zalogowaniu
 
 *sklepy i produkcja*
 ---

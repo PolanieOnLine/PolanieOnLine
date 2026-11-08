@@ -13,6 +13,22 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
+	@Test
+	public void allFiveNewAffixesUseTheEstablishedDescriptionSection() {
+		final RPObject object = ItemTestHelper.createItem("new affixes");
+		put(object, ItemTooltip.STEADY_HAND, "0.1");
+		put(object, ItemTooltip.POISON_POTENCY, "0.25");
+		put(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "1");
+		put(object, ItemTooltip.LEGENDARY_HUNTERS_PACE, "1");
+		put(object, ItemTooltip.LEGENDARY_LAST_STAND, "1");
+		final String text = LegendaryAffixPresentation.build(object);
+		for (final String name : new String[] {"Pewna ręka", "Zjadliwość", "Krąg obrony", "Łowczy pęd", "Ostatni zryw"}) {
+			assertTrue(text, text.contains(name));
+		}
+		assertTrue(text.contains("10%"));
+		assertTrue(text.contains("25%"));
+		assertTrue(text.contains("12%"));
+	}
 
 	private java.lang.reflect.Field preferences;
 	private Object previousPreferences;

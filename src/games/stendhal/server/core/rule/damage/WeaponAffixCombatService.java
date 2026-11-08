@@ -12,7 +12,6 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.BleedingAttacker;
 import games.stendhal.server.entity.status.HeavyStatus;
-import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.entity.status.StunnedStatus;
@@ -239,7 +238,7 @@ public final class WeaponAffixCombatService {
 				combinedProcChance(weapons, POISON_ON_HIT_ATTRIBUTE));
 		if (damage > 0 && poisonChance > 0.0
 				&& rollChance(poisonChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
-			defender.getStatusList().inflictStatus(createPoisonStatus(damage),
+			defender.getStatusList().inflictStatus(createPoisonStatus(attacker, damage),
 					attacker);
 		}
 
@@ -360,12 +359,12 @@ public final class WeaponAffixCombatService {
 		return clampFraction(chance * (1.0 - resistance));
 	}
 
-	private static Status createPoisonStatus(final int hitDamage) {
+	private static Status createPoisonStatus(final Player attacker, final int hitDamage) {
 		final int totalDamage = Math.max(1,
 				(int) Math.round(hitDamage * POISON_TOTAL_DAMAGE_FACTOR));
 		final int perTick = Math.max(1,
 				(int) Math.ceil(totalDamage / (double) POISON_TICKS));
-		return new PoisonStatus(-totalDamage, POISON_FREQUENCY, -perTick);
+		return HuntingAffixService.weaponPoison(attacker, totalDamage, POISON_FREQUENCY, perTick);
 	}
 
 	private static int scaleDamage(final int damage, final double multiplier) {

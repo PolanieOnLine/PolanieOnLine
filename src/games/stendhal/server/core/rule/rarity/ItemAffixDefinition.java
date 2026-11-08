@@ -20,6 +20,11 @@ public interface ItemAffixDefinition {
 	/** @return item attribute materialized for combat/presentation */
 	String getAttribute();
 
+	/** Map-only extensions preserve the numeric attribute codes of saved items. */
+	default boolean hasMaterializedAttribute() {
+		return true;
+	}
+
 	/** @return whether this affix can currently be rolled for the item */
 	boolean isEligible(Item item);
 
