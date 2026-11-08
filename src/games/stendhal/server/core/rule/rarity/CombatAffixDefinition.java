@@ -49,8 +49,9 @@ public enum CombatAffixDefinition implements ItemAffixDefinition {
 			return WeaponAffixService.isWeapon(item)
 					|| "glove".equals(item.getItemClass()) || "gloves".equals(item.getItemClass());
 		case HARDENING:
-		case QUICK_RECOVERY:
 			return EquipmentAffixService.isArmour(item);
+		case QUICK_RECOVERY:
+			return "helmet".equals(item.getItemClass()) || "cloak".equals(item.getItemClass());
 		case CLEAVE:
 			return "sword".equals(item.getItemClass()) || "axe".equals(item.getItemClass())
 					|| "club".equals(item.getItemClass());

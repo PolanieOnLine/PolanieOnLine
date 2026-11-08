@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-import games.stendhal.server.core.rule.rarity.EquipmentAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 
@@ -20,7 +19,11 @@ public final class LifeTideService {
 	private LifeTideService() { }
 
 	public static boolean isEligible(final Item item) {
-		return EquipmentAffixService.isArmour(item) && !item.has(ATTRIBUTE);
+		if (item == null || item.has(ATTRIBUTE)) {
+			return false;
+		}
+		return "armor".equals(item.getItemClass()) || "helmet".equals(item.getItemClass())
+				|| "belt".equals(item.getItemClass()) || "belts".equals(item.getItemClass());
 	}
 
 	public static boolean apply(final Item item, final Random random) {

@@ -32,8 +32,8 @@ public class ExpandedCombatAffixTest {
 	@Test
 	public void eligibleAffixesKeepTheirExactRollAfterRestoreAndDoNotRollOnJewellery() {
 		for (CombatAffixDefinition definition : CombatAffixDefinition.values()) {
-			String itemClass = definition == CombatAffixDefinition.HARDENING
-					|| definition == CombatAffixDefinition.QUICK_RECOVERY ? "armor" : "sword";
+			String itemClass = definition == CombatAffixDefinition.QUICK_RECOVERY ? "helmet"
+					: definition == CombatAffixDefinition.HARDENING ? "armor" : "sword";
 			Item saved = new Item("expanded affix", itemClass, "test", null);
 			assertTrue(definition.getId(), definition.apply(saved, new Random(7)));
 			assertFalse("one affix cannot be rolled twice", definition.apply(saved, new Random(8)));
@@ -43,6 +43,39 @@ public class ExpandedCombatAffixTest {
 			assertEquals(saved.get(definition.getAttribute()), restored.get(definition.getAttribute()));
 			assertEquals(ItemAffixState.getValues(saved), ItemAffixState.getValues(restored));
 			assertFalse(definition.getId(), definition.isEligible(new Item("ring", "ring", "test", null)));
+		}
+	}
+
+	@Test
+	public void lifeTideAndQuickRecoveryOnlyRollOnTheirApprovedEquipment() {
+		final ItemAffixDefinition lifeTide = LegendaryItemAffixRegistry.getInstance()
+				.get("legendary_life_tide");
+		final ItemAffixDefinition quickRecovery = CombatAffixDefinition.QUICK_RECOVERY;
+		for (final String itemClass : new String[] {"armor", "helmet", "belt", "belts", "cloak",
+				"shield", "legs", "boots", "glove", "gloves", "ring", "necklace", "sword"}) {
+			final Item item = new Item("affix pool gear", itemClass, "test", null);
+			final boolean lifeTideAllowed = "armor".equals(itemClass) || "helmet".equals(itemClass)
+					|| "belt".equals(itemClass) || "belts".equals(itemClass);
+			final boolean quickRecoveryAllowed = "helmet".equals(itemClass) || "cloak".equals(itemClass);
+			assertEquals("Life Tide on " + itemClass, lifeTideAllowed, lifeTide.isEligible(item));
+			assertEquals("Quick Recovery on " + itemClass, quickRecoveryAllowed, quickRecovery.isEligible(item));
+			assertEquals(lifeTideAllowed, LegendaryItemAffixRegistry.getInstance().getEligible(item).contains(lifeTide));
+			assertEquals(quickRecoveryAllowed, LegendaryItemAffixRegistry.getInstance().getEligible(item).contains(quickRecovery));
+		}
+	}
+
+	@Test
+	public void olderSignaturesRemainRestorableOutsideTheirNewRollPools() {
+		for (final String id : new String[] {"legendary_life_tide", "legendary_quick_recovery"}) {
+			final ItemAffixDefinition definition = LegendaryItemAffixRegistry.getInstance().get(id);
+			final Item saved = new Item("older signature gear", "boots", "test", null);
+			saved.put(id, 1.0);
+			ItemAffixState.record(saved, definition);
+			final Item restored = new Item("older signature gear", "boots", "test", null);
+			ItemAffixState.restore(restored, saved);
+			assertEquals(1.0, restored.getDouble(id), 0.0);
+			assertEquals(ItemAffixState.getValues(saved), ItemAffixState.getValues(restored));
+			assertFalse(definition.isEligible(restored));
 		}
 	}
 }
