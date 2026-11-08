@@ -12,6 +12,8 @@ import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.core.rule.rarity.ItemRollPrecision;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
+import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.rarity.WeaponAffixService;
 import games.stendhal.server.entity.item.GateKey;
 import games.stendhal.server.entity.item.Glyph;
@@ -115,6 +117,12 @@ public final class ItemDefinitionRefreshService {
 		replayFlatBonus(item, saved, EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE, "def");
 		replayFlatBonus(item, saved, LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE, "atk");
 		replayFlatBonus(item, saved, LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE, "def");
+		final String reach = WeaponAffixCombatService.LEGENDARY_MERCILESS_REACH_ATTRIBUTE;
+		if (item.has(reach) && item.getDouble(reach) > 0.0) {
+			final int range = item.has("range") ? Math.max(0, item.getInt("range")) : 0;
+			item.put("range", Math.min(Short.MAX_VALUE,
+					range + LegendaryWeaponAffixService.MERCILESS_REACH_RANGE_BONUS));
+		}
 		preserveUpgrade(item, saved);
 	}
 

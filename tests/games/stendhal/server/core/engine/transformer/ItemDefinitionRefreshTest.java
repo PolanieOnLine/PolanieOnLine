@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.Random;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +30,7 @@ import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
+import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
@@ -43,6 +45,18 @@ import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemDefinitionRefreshTest {
+	@Test
+	public void mercilessReachKeepsExactlyOneExtraTileAcrossLogins() throws Exception {
+		Item whip = definition("zatruty bicz");
+		whip.setRarity(ItemRarity.LEGENDARY);
+		whip.setID(new ID(780, "reach_refresh"));
+		final int originalRange = whip.getRange();
+		assertTrue(LegendaryWeaponAffixService.applyMercilessReach(whip, new Random(1)));
+		for (int login = 0; login < 3; login++) {
+			whip = restore(whip);
+			assertEquals(originalRange + 1, whip.getRange());
+		}
+	}
 	@BeforeClass
 	public static void initialize() {
 		MockStendlRPWorld.get();
