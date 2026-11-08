@@ -39,12 +39,13 @@
 * Dodano legendarny afiks Rozmach. Co czwarte celne trafienie wręcz zadaje 30% obrażeń tego ciosu maksymalnie dwóm pobliskim potworom walczącym z graczem
 * Dodano legendarny afiks Zaciętość. Każde celne trafienie tego samego przeciwnika zwiększa obrażenia kolejnych ciosów o 3%, maksymalnie o 15%. Zmiana celu lub 5 sekund bez trafienia zeruje bonus
 * Dodano legendarny afiks Przełamanie. Przez 6 sekund po rozbiciu opancerzenia pozwala zadawać temu przeciwnikowi o 15% większe obrażenia
-* Dodano legendarny afiks Szybkie otrząśnięcie, który skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Bonus z kilku przedmiotów nie sumuje się
-* Dodano legendarny afiks Przypływ życia. Eliksiry pozwalają uzyskać do 20% PZ ponad maksymalne zdrowie. Po 10 sekundach nadwyżka zaczyna zanikać po 20 PZ co 2 sekundy
+* Dodano legendarny afiks Szybkie otrząśnięcie na hełmach i płaszczach. Skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Bonus z kilku przedmiotów nie sumuje się
+* Dodano legendarny afiks Przypływ życia na pasach, zbrojach i hełmach. Eliksiry pozwalają uzyskać do 20% PZ ponad maksymalne zdrowie. Po 10 sekundach nadwyżka zaczyna zanikać po 20 PZ co 2 sekundy
 * Zmieniono Kolczaste okucie: odbija teraz 20-30% obrażeń z ciosów wręcz, łącznie maksymalnie 50%. Wcześniej zdobyte afiksy otrzymują odpowiednio większe wartości
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości
+* Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
 
 *sklepy i produkcja*
 ---
@@ -58,11 +59,13 @@
 ---
 * Dodano rozbudowane okno aktualizatora z opisem aktualizacji, postępem pobierania, prędkością i pozostałym czasem
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
+* Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java
 * Poprawiono położenie dymków rozmów i wyświetlanie przezroczystości administratorów w trybie ducha w webkliencie
 * Poprawiono kolejność akcji na liście znajomych w webkliencie i dodano zapraszanie do grupy
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
+* Poprawiono ruch przy zwiększonej i zmniejszonej prędkości postaci, usuwając przyczyny skoków i cofania w obu klientach
 
 *pozostałe zmiany*
 ---
