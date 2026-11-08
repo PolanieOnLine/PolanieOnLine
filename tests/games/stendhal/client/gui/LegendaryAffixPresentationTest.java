@@ -14,6 +14,40 @@ import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
 	@Test
+	public void everyNewLegendaryFollowsAllOrdinaryAffixes() {
+		final String[][] legendaries = {
+				{ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "Krąg obrony"},
+				{ItemTooltip.LEGENDARY_HUNTERS_PACE, "Łowczy pęd"},
+				{ItemTooltip.LEGENDARY_LAST_STAND, "Ostatni zryw"},
+				{ItemTooltip.LEGENDARY_LIFE_TIDE, "Przypływ życia"},
+				{ItemTooltip.LEGENDARY_CLEAVE, "Rozmach"},
+				{ItemTooltip.LEGENDARY_TENACITY, "Zaciętość"},
+				{ItemTooltip.LEGENDARY_BREACH, "Przełamanie"},
+				{ItemTooltip.LEGENDARY_QUICK_RECOVERY, "Szybkie otrząśnięcie"}
+		};
+		for (final String[] legendary : legendaries) {
+			final RPObject object = ItemTestHelper.createItem("affix display order");
+			put(object, ItemTooltip.STEADY_HAND, "0.1");
+			put(object, ItemTooltip.POISON_POTENCY, "0.25");
+			put(object, ItemTooltip.SPIKED_PLATING, "0.25");
+			put(object, ItemTooltip.ARMOR_CRUSHING, "0.15");
+			put(object, ItemTooltip.CRITICAL_HARDENING, "0.08");
+			put(object, ItemTooltip.HUNTER_MARK, "1");
+			put(object, ItemTooltip.GIANT_SLAYER, "1");
+			put(object, legendary[0], "1");
+			final String html = LegendaryAffixPresentation.build(object);
+			final int legendaryPosition = html.indexOf(legendary[1] + ":");
+			assertTrue(legendary[1], legendaryPosition >= 0);
+			for (final String ordinary : new String[] {"Pewna ręka", "Zjadliwość", "Kolczaste okucie",
+					"Kruszenie", "Hartowanie", "Znak łowcy", "Łowca olbrzymów"}) {
+				final int ordinaryPosition = html.indexOf(ordinary + ":");
+				assertTrue(ordinary + " must precede " + legendary[1],
+						ordinaryPosition >= 0 && ordinaryPosition < legendaryPosition);
+			}
+		}
+	}
+
+	@Test
 	public void allFiveNewAffixesUseTheEstablishedDescriptionSection() {
 		final RPObject object = ItemTestHelper.createItem("new affixes");
 		put(object, ItemTooltip.STEADY_HAND, "0.1");

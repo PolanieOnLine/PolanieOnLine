@@ -34,7 +34,7 @@ final class LegendaryAffixPresentation {
 		final StringBuilder result = new StringBuilder();
 		appendAttackRateReduction(result, object);
 		appendSpikedPlating(result, object);
-		appendCombatExpansion(result, object);
+		appendRegularCombatAffixes(result, object);
 		if (has(object, ItemTooltip.HUNTER_MARK)) {
 			appendRegularText(result, "Znak łowcy",
 					"trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza.");
@@ -43,6 +43,7 @@ final class LegendaryAffixPresentation {
 			appendRegularText(result, "Łowca olbrzymów",
 					"za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%.");
 		}
+		appendLegendaryCombatAffixes(result, object);
 
 		if (has(object, ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
 			appendFixed(result, "Głębokie Rany", new String[] {
@@ -164,11 +165,18 @@ final class LegendaryAffixPresentation {
 				: "<table width='100%' cellpadding='0' cellspacing='0'>" + result + "</table>";
 	}
 
-	private static void appendCombatExpansion(final StringBuilder result, final RPObject object) {
+	private static void appendRegularCombatAffixes(final StringBuilder result, final RPObject object) {
 		appendNewPercentage(result, object, ItemTooltip.STEADY_HAND, "Pewna ręka",
 				"Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń.");
 		appendNewPercentage(result, object, ItemTooltip.POISON_POTENCY, "Zjadliwość",
 				"Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%.");
+		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
+				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
+		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",
+				"% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.");
+	}
+
+	private static void appendLegendaryCombatAffixes(final StringBuilder result, final RPObject object) {
 		if (has(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE)) {
 			appendFixed(result, "Krąg obrony", new String[] {
 					"Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."
@@ -189,10 +197,6 @@ final class LegendaryAffixPresentation {
 					"Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."
 			});
 		}
-		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
-				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
-		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",
-				"% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.");
 		if (has(object, ItemTooltip.LEGENDARY_CLEAVE)) {
 			appendFixed(result, "Rozmach", new String[] {
 					"Co ", "4", " celne trafienia wręcz zadaje ", "30%",

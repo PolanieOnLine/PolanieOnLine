@@ -120,6 +120,23 @@ test("ordinary descriptive affixes use the standard diamond bonus rows", () => {
 	}
 });
 
+test("all legendary descriptions follow ordinary affixes", () => {
+	const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "accessory", steady_hand: "0.1", poison_potency: "0.25",
+		armor_crushing: "0.15", critical_hardening: "0.08", spiked_plating: "0.25",
+		hunter_mark: "1", giant_slayer: "1", legendary_defense_circle: "1",
+		legendary_hunters_pace: "1", legendary_last_stand: "1", legendary_life_tide: "1",
+		legendary_cleave: "1", legendary_tenacity: "1", legendary_breach: "1",
+		legendary_quick_recovery: "1", legendary_unyielding_protection: "1"
+	}}, false).lines;
+	const firstLegendary = lines.findIndex(line => line.kind === "affix");
+	assert.ok(firstLegendary >= 0);
+	assert.equal(lines.filter(line => line.kind === "affix").length, 9);
+	for (let index = firstLegendary + 1; index < lines.length; index++) {
+		assert.notEqual(lines[index].kind, "bonus", "ordinary bonuses must precede legendary descriptions");
+	}
+});
+
 test("every new legendary uses orange words and cream numeric fragments without diamonds", () => {
 	const values = {
 		legendary_defense_circle: ["3%", "12%"], legendary_hunters_pace: ["10%", "4 s"],
