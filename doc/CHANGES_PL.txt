@@ -34,7 +34,12 @@
 ---
 * Dodano wybranym potworom dodatkową pulę opancerzenia, którą trzeba rozbić przed odebraniem im zdrowia. Otrzymali ją m.in. bossowie, smoki, anioły i archanioły
 * Dodano szary pasek opancerzenia na pasku zdrowia przeciwnika i dźwięk jego rozbicia
-* Dodano afiksy Kruszenie i Hartowanie oraz legendarne bonusy Rozmach, Zaciętość, Przełamanie i Szybkie otrząśnięcie
+* Dodano afiks Kruszenie, który zwiększa obrażenia zadawane opancerzeniu przeciwnika o 10-15%, łącznie maksymalnie o 30%
+* Dodano afiks Hartowanie, który zmniejsza dodatkowe obrażenia z otrzymanych trafień krytycznych o 4-8%, łącznie maksymalnie o 30%
+* Dodano legendarny afiks Rozmach. Co czwarte celne trafienie wręcz zadaje 30% obrażeń tego ciosu maksymalnie dwóm pobliskim potworom walczącym z graczem
+* Dodano legendarny afiks Zaciętość. Każde celne trafienie tego samego przeciwnika zwiększa obrażenia kolejnych ciosów o 3%, maksymalnie o 15%. Zmiana celu lub 5 sekund bez trafienia zeruje bonus
+* Dodano legendarny afiks Przełamanie. Przez 6 sekund po rozbiciu opancerzenia pozwala zadawać temu przeciwnikowi o 15% większe obrażenia
+* Dodano legendarny afiks Szybkie otrząśnięcie, który skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Bonus z kilku przedmiotów nie sumuje się
 * Dodano legendarny afiks Przypływ życia. Eliksiry pozwalają uzyskać do 20% PZ ponad maksymalne zdrowie. Po 10 sekundach nadwyżka zaczyna zanikać po 20 PZ co 2 sekundy
 * Zmieniono Kolczaste okucie: odbija teraz 20-30% obrażeń z ciosów wręcz, łącznie maksymalnie 50%. Wcześniej zdobyte afiksy otrzymują odpowiednio większe wartości
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
