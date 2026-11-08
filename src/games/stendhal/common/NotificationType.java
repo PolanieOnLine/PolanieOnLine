@@ -180,6 +180,16 @@ public enum NotificationType {
 			return COLOR_WARNING;
 		}
 	},
+	LIFE_TIDE("life_tide") {
+		@Override
+		public Color getColor() {
+			return new Color(182, 124, 240);
+		}
+		@Override
+		public String getStyleDescription() {
+			return REGULAR;
+		}
+	},
 	ARMOR("armor") {
 		@Override
 		public Color getColor() { return new Color(154, 164, 175); }

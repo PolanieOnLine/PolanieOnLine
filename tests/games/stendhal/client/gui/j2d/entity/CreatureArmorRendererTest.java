@@ -14,6 +14,26 @@ import games.stendhal.common.CreatureArmor;
 
 public class CreatureArmorRendererTest {
 	@Test
+	public void surplusOverlayCoversOnlyItsShareAndDisappearsAtNormalHealth() {
+		final HealthBar bar = new HealthBar(102, 6);
+		bar.setHPRatio(1.0);
+		bar.setSurplusRatio(0.2);
+		final BufferedImage image = new BufferedImage(102, 6, BufferedImage.TYPE_INT_RGB);
+		final Graphics2D graphics = image.createGraphics();
+		try {
+			bar.draw(graphics, 0, 0);
+			assertNotEquals(Color.GREEN.getRGB(), image.getRGB(20, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(21, 2));
+			assertEquals(Color.BLACK.getRGB(), image.getRGB(0, 2));
+			bar.setSurplusRatio(0);
+			bar.draw(graphics, 0, 0);
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(20, 2));
+		} finally {
+			graphics.dispose();
+		}
+	}
+
+	@Test
 	public void surplusHealthRendersAsAFullBarWithoutInvalidColours() {
 		final HealthBar bar = new HealthBar(34, 6);
 		bar.setHPRatio(1.2);

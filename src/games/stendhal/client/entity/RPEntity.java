@@ -202,6 +202,7 @@ public abstract class RPEntity extends AudibleEntity {
 	private int xp;
 
 	private int hp;
+	private int lifeTideDecay;
 
 	private int adminlevel;
 
@@ -435,6 +436,10 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public float getHpRatio() {
 		return hpRatio;
+	}
+
+	public double getSurplusHPRatio() {
+		return baseHP > 0 ? Math.max(0.0, ((double) hp - baseHP) / baseHP) : 0.0;
 	}
 
 	/**
@@ -1160,6 +1165,7 @@ public abstract class RPEntity extends AudibleEntity {
 			hp = object.getInt("modified_hp");
 		}
 		baseArmorHP = object.has("base_armor_hp") ? object.getInt("base_armor_hp") : 0;
+		lifeTideDecay = object.has("life_tide_decay") ? object.getInt("life_tide_decay") : 0;
 		armorHP = object.has("armor_hp") ? object.getInt("armor_hp") : 0;
 
 		/*
@@ -1429,17 +1435,28 @@ public abstract class RPEntity extends AudibleEntity {
 			/*
 			 * HP
 			 */
-			if (changes.has("hp") || changes.has("modified_hp")) {
-				final int newHP = changes.has("modified_hp")
-						? changes.getInt("modified_hp") : changes.getInt("hp");
-				final int change = newHP - hp;
+			int decay = 0;
+			if (changes.has("life_tide_decay")) {
+				final int counter = changes.getInt("life_tide_decay");
+				decay = counter >= lifeTideDecay ? counter - lifeTideDecay : counter;
+				lifeTideDecay = counter;
+			}
+			if (changes.has("hp") || changes.has("modified_hp") || decay > 0) {
+				final int newHP = changes.has("modified_hp") ? changes.getInt("modified_hp")
+						: changes.has("hp") ? changes.getInt("hp") : hp;
+				final int change = newHP - hp + decay;
 
 				final boolean isCritical = changes.has("crit");
 
 				hp = newHP;
 
-				if (object.has("hp") && (change != 0)) {
-					onHPChange(change, isCritical);
+				if (object.has("hp")) {
+					if (decay > 0 && isInHearingRange()) {
+						addTextIndicator("-" + decay, NotificationType.LIFE_TIDE);
+					}
+					if (change != 0) {
+						onHPChange(change, isCritical);
+					}
 				}
 
 				hpRatioChange = true;

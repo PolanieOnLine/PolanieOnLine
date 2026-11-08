@@ -12,6 +12,7 @@
 import { Component } from "../toolkit/Component";
 import { Color } from "../../data/color/Color";
 import { RenderingContext2D } from "util/Types";
+import { drawLifeTideOverlay } from "../../util/LifeTideVisuals";
 
 /**
  * TODO: move this to `ui.toolkit`.
@@ -20,6 +21,9 @@ export class StatBarComponent extends Component {
 
 	readonly canvas: HTMLCanvasElement;
 	protected readonly ctx: RenderingContext2D;
+	private ratio = 0;
+	private surplusRatio = 0;
+	private pulseFrame?: number;
 
 
 	constructor(id?: string) {
@@ -37,13 +41,30 @@ export class StatBarComponent extends Component {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 
-	draw(ratio: number) {
-		ratio = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
+	draw(ratio: number, surplusRatio = 0) {
+		this.ratio = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
+		this.surplusRatio = Number.isFinite(surplusRatio) ? Math.max(0, Math.min(1, surplusRatio)) : 0;
+		if (this.pulseFrame !== undefined) {
+			cancelAnimationFrame(this.pulseFrame);
+			this.pulseFrame = undefined;
+		}
+		this.paint();
+	}
+
+	private paint() {
 		this.ctx.beginPath();
 		this.ctx.fillStyle = Color.BLACK;
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		this.ctx.fillStyle = Color.getStatBarColor(ratio);
-		this.ctx.fillRect(0, 0, this.canvas.width * ratio, this.canvas.height);
+		this.ctx.fillStyle = Color.getStatBarColor(this.ratio);
+		this.ctx.fillRect(0, 0, this.canvas.width * this.ratio, this.canvas.height);
+		drawLifeTideOverlay(this.ctx, 0, 0, this.canvas.width, this.canvas.height, this.surplusRatio);
+		if (this.surplusRatio > 0 && this.canvas.isConnected
+				&& !document.hidden && this.canvas.getClientRects().length > 0) {
+			this.pulseFrame = requestAnimationFrame(() => {
+				this.pulseFrame = undefined;
+				this.paint();
+			});
+		}
 	}
 
 }

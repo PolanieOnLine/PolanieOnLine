@@ -120,7 +120,8 @@ export class PlayerStatsComponent extends Component {
 	private updateHp(hp: number, base_hp: number) {
 		this.hpText.innerText = "PZ: " + hp + " / " + base_hp;
 		if (this.isBarEnabled("hp")) {
-			this.bars["hp"].draw(hp / base_hp);
+			const ratio = base_hp > 0 ? hp / base_hp : 0;
+			this.bars["hp"].draw(ratio, Math.max(0, ratio - 1));
 		}
 	}
 

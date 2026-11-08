@@ -107,12 +107,15 @@ public class LifeTideServiceTest {
 		assertEquals(11000, player.getHP());
 		LifeTideService.tick(player, 11000);
 		assertEquals(10980, player.getHP());
+		assertEquals(20, player.getInt("life_tide_decay"));
 		LifeTideService.tick(player, 12999);
 		assertEquals(10980, player.getHP());
 		LifeTideService.tick(player, 13000);
 		assertEquals(10960, player.getHP());
+		assertEquals(40, player.getInt("life_tide_decay"));
 		LifeTideService.tick(player, 1000000);
 		assertEquals(10000, player.getHP());
+		assertEquals(1000, player.getInt("life_tide_decay"));
 	}
 
 	@Test
@@ -135,6 +138,21 @@ public class LifeTideServiceTest {
 		assertEquals(9800, player.getHP());
 		LifeTideService.tick(player, 10000);
 		assertEquals(9800, player.getHP());
+	}
+
+	@Test
+	public void decayMetadataDoesNotCountCombatDamageAndIsNotSaved() throws Exception {
+		final Player player = player("tide-decay-wire", 10000);
+		new StendhalRPZone("life_tide_decay_wire", 10, 10).add(player);
+		LifeTideService.healFromPotion(player, 1000, 0);
+		LifeTideService.tick(player, 10000);
+		player.onDamaged(player, 100);
+		assertEquals(20, player.getInt("life_tide_decay"));
+		final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		player.writeObject(new OutputSerializer(bytes), DetailLevel.FULL);
+		final InputSerializer input = new InputSerializer(new ByteArrayInputStream(bytes.toByteArray()));
+		final RPObject saved = (RPObject) input.readObject(new RPObject());
+		assertFalse(saved.has("life_tide_decay"));
 	}
 
 	@Test

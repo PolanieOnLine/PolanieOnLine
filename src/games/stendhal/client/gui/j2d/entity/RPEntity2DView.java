@@ -775,6 +775,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		int barWidth = Math.max(width * 2 / 3, IGameScreen.SIZE_UNIT_PIXELS);
 		healthBar = new HealthBar(barWidth, HEALTH_BAR_HEIGHT);
 		healthBar.setHPRatio(entity.getHpRatio());
+		healthBar.setSurplusRatio(entity.getSurplusHPRatio());
 		healthBar.setArmorRatio(entity.getArmorRatio());
 	}
 
@@ -994,6 +995,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		} else if (property == RPEntity.PROP_HP_RATIO) {
 			if (healthBar != null) {
 				healthBar.setHPRatio(entity.getHpRatio());
+				healthBar.setSurplusRatio(entity.getSurplusHPRatio());
 			}
 		} else if (property == RPEntity.PROP_ARMOR_HP) {
 			if (healthBar != null) {

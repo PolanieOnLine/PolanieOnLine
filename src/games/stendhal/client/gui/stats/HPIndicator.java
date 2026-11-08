@@ -13,8 +13,13 @@ package games.stendhal.client.gui.stats;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import javax.swing.Timer;
 
 import games.stendhal.client.gui.LinearScalingModel;
+import games.stendhal.client.gui.LifeTideOverlay;
 import games.stendhal.client.gui.StatusDisplayBar;
 
 
@@ -25,6 +30,8 @@ public class HPIndicator extends StatusDisplayBar {
 
 	/** Default preferred height of the component. */
 	private static final int DEFAULT_HEIGHT = 6;
+	private double surplusRatio;
+	private final Timer pulseTimer = new Timer(50, event -> repaint());
 
 
 	public HPIndicator() {
@@ -33,6 +40,7 @@ public class HPIndicator extends StatusDisplayBar {
 		setForeground(Color.WHITE);
 		setPreferredSize(new Dimension(0, DEFAULT_HEIGHT));
 		setMinimumSize(getPreferredSize());
+		addHierarchyListener(event -> updatePulseTimer());
 	}
 
 	/**
@@ -42,16 +50,39 @@ public class HPIndicator extends StatusDisplayBar {
 	 * 		HP ratio.
 	 */
 	public void setRatio(float ratio) {
-		// hack to prevent ratio from being over 1.0
-		if (ratio > 1.0f) {
-			ratio = 1.0f;
-		}
+		surplusRatio = Float.isFinite(ratio) ? Math.max(0.0, ratio - 1.0) : 0.0;
+		ratio = Float.isFinite(ratio) ? Math.max(0.0f, Math.min(1.0f, ratio)) : 0.0f;
 
 		// Pick a color from red to green depending on the hp ratio.
 		float r = Math.min((1.0f - ratio) * 2.0f, 1.0f);
 		float g = Math.min(ratio * 2.0f, 1.0f);
 		setBarColor(new Color(r, g, 0.0f));
 		getModel().setValue(ratio);
+		updatePulseTimer();
+		repaint();
+	}
+
+	private void updatePulseTimer() {
+		if (surplusRatio > 0 && isShowing()) {
+			pulseTimer.start();
+		} else {
+			pulseTimer.stop();
+		}
+	}
+
+	@Override
+	public void removeNotify() {
+		pulseTimer.stop();
+		super.removeNotify();
+	}
+
+	@Override
+	public void paintComponent(final Graphics graphics) {
+		super.paintComponent(graphics);
+		final Insets insets = getInsets();
+		LifeTideOverlay.draw(graphics, insets.left + 1, insets.top + 1,
+				getWidth() - insets.left - insets.right - 2,
+				getHeight() - insets.top - insets.bottom - 2, surplusRatio, System.currentTimeMillis());
 	}
 
 	/**
@@ -60,7 +91,7 @@ public class HPIndicator extends StatusDisplayBar {
 	 * @param hp
 	 */
 	public void setHP(final int maxhp, final int hp) {
-		final float ratio = (float) hp / maxhp;
+		final float ratio = maxhp > 0 ? (float) hp / maxhp : 0;
 		setRatio(ratio);
 	}
 }

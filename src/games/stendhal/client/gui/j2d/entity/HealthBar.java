@@ -19,6 +19,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import games.stendhal.client.gui.LinearScalingModel;
+import games.stendhal.client.gui.LifeTideOverlay;
 
 /**
  * Health bar for RPEntities.
@@ -28,6 +29,7 @@ class HealthBar implements ChangeListener {
 	private BufferedImage image;
 	private final LinearScalingModel model;
 	private double armorRatio;
+	private volatile double surplusRatio;
 	/** A flag for signaling that the image needs updating. */
 	private volatile boolean needsRedraw = true;
 
@@ -79,6 +81,10 @@ class HealthBar implements ChangeListener {
 		}
 	}
 
+	void setSurplusRatio(final double ratio) {
+		surplusRatio = Double.isFinite(ratio) ? Math.max(0.0, Math.min(1.0, ratio)) : 0.0;
+	}
+
 	/**
 	 * Draw the health bar.
 	 *
@@ -106,6 +112,8 @@ class HealthBar implements ChangeListener {
 			gr.dispose();
 		}
 		g.drawImage(image, x, y, null);
+		LifeTideOverlay.draw(g, x + 1, y + 1, width - 2, height - 2,
+				surplusRatio, System.currentTimeMillis());
 	}
 
 	/**

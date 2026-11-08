@@ -11,6 +11,7 @@ import games.stendhal.server.entity.player.Player;
 /** Potion-only temporary HP above the player's unchanged maximum health. */
 public final class LifeTideService {
 	public static final String ATTRIBUTE = "legendary_life_tide";
+	public static final String DECAY_ATTRIBUTE = "life_tide_decay";
 	private static final long GRACE_MILLISECONDS = 10000L;
 	private static final long DECAY_INTERVAL_MILLISECONDS = 2000L;
 	private static final int DECAY_HP = 20;
@@ -90,6 +91,9 @@ public final class LifeTideService {
 		final long loss = Math.min((long) player.getHP() - player.getBaseHP(),
 				Math.min(pulses, Integer.MAX_VALUE) * DECAY_HP);
 		player.setHP(player.getHP() - (int) loss);
+		// A session counter distinguishes natural decay from simultaneous combat damage.
+		final int decayed = player.has(DECAY_ATTRIBUTE) ? player.getInt(DECAY_ATTRIBUTE) : 0;
+		player.put(DECAY_ATTRIBUTE, decayed > Integer.MAX_VALUE - loss ? (int) loss : decayed + (int) loss);
 		if (player.getHP() > player.getBaseHP()) {
 			NEXT_DECAY.put(player, now - (now - next.longValue()) % DECAY_INTERVAL_MILLISECONDS
 					+ DECAY_INTERVAL_MILLISECONDS);

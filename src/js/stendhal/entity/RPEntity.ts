@@ -22,6 +22,7 @@ import { Color } from "../data/color/Color";
 import { Chat } from "../util/Chat";
 import { Nature } from "../util/Nature";
 import { GameLanguage } from "../util/GameLanguage";
+import { drawLifeTideOverlay, LIFE_TIDE_COLOR } from "../util/LifeTideVisuals";
 
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
@@ -76,6 +77,7 @@ export class RPEntity extends ActiveEntity {
 		// longer available after super.set()
 		let oldValue = this[key];
 		const oldHP = this.getCurrentHP();
+		const oldDecay = Number(this["life_tide_decay"]) || 0;
 
 		super.set(key, value);
 		if (key == "text") {
@@ -89,11 +91,14 @@ export class RPEntity extends ActiveEntity {
 					stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, "pol-armor-break", 1);
 				}
 			}
+		} else if (key === "life_tide_decay") {
+			this[key] = Math.max(0, Number.parseInt(value, 10) || 0);
+			this.notifyHPAfterChanges(oldHP, oldDecay);
 		} else if (["hp", "modified_hp", "base_hp"].indexOf(key) !== -1) {
 			this[key] = parseInt(value, 10);
 			if (key === "modified_hp" || key === "hp" && this["modified_hp"] === undefined) {
 				const newHp = this.getCurrentHP();
-				this.notifyHPAfterChanges(oldHP);
+				this.notifyHPAfterChanges(oldHP, oldDecay);
 				if (newHp > 0) {
 					this.deathAnnounced = false;
 				} else if (!this.deathAnnounced && oldHP !== undefined && oldHP > 0) {
@@ -661,7 +666,7 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	/** Notify once after all fields of the current perception have been applied. */
-	private notifyHPAfterChanges(previousHP: number | undefined) {
+	private notifyHPAfterChanges(previousHP: number | undefined, previousDecay: number) {
 		if (this.hpChangePending) {
 			return;
 		}
@@ -669,7 +674,15 @@ export class RPEntity extends ActiveEntity {
 		queueMicrotask(() => {
 			this.hpChangePending = false;
 			if (previousHP !== undefined) {
-				this.onHPChanged(this.getCurrentHP() - previousHP);
+				const counter = Number(this["life_tide_decay"]) || 0;
+				const decay = counter >= previousDecay ? counter - previousDecay : counter;
+				if (decay > 0) {
+					this.addFloater("-" + decay, LIFE_TIDE_COLOR);
+				}
+				const change = this.getCurrentHP() - previousHP + decay;
+				if (change !== 0) {
+					this.onHPChanged(change);
+				}
 			}
 		});
 	}
@@ -699,6 +712,8 @@ export class RPEntity extends ActiveEntity {
 			ctx.fillStyle = "#9aa4af";
 			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor), HEALTH_BAR_HEIGHT - 2);
 		}
+		const surplusRatio = this["base_hp"] > 0 ? this.getCurrentHP() / this["base_hp"] - 1 : 0;
+		drawLifeTideOverlay(ctx, drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2, surplusRatio);
 	}
 
 	createTitleTextSprite() {

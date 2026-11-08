@@ -204,5 +204,6 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.ADMIN_INSPECT, Definition.PRIVATE);
 		// Temporary HP must not change the codes or binary types of saved fields.
 		player.addAttribute("modified_hp", Type.INT, Definition.VOLATILE);
+		player.addAttribute("life_tide_decay", Type.INT, Definition.VOLATILE);
 	}
 }

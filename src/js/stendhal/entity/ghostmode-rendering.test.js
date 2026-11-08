@@ -15,6 +15,12 @@ function harness(self = false, administrator = true) {
 		set(key, value) {this[key] = value;}
 	}}, "marauroa": {marauroa}};
 	dependencies["../data/color/Color"] = {Color: {getStatBarColor: () => "green"}};
+	const visuals = {exports: {}};
+	vm.runInNewContext(ts.transpileModule(readFileSync(path.join(__dirname,
+		"../util/LifeTideVisuals.ts"), "utf8"), {
+		compilerOptions: {module: ts.ModuleKind.CommonJS}
+	}).outputText, visuals);
+	dependencies["../util/LifeTideVisuals"] = visuals.exports;
 	const source = ts.transpileModule(readFileSync(path.join(__dirname, "RPEntity.ts"), "utf8"), {
 		compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
 	}).outputText;
@@ -69,10 +75,14 @@ test("surplus health stays within the health bar while keeping the actual HP val
 	Object.assign(h.entity, {hp: 12000, base_hp: 10000, drawWidth: 32, drawHeight: 48,
 		titleDrawYOffset: 0});
 	const widths = [];
-	const ctx = {beginPath() {}, rect() {}, stroke() {}, fillRect(x, y, width) {widths.push(width);}};
+	const ctx = {globalAlpha: 1, save() {}, restore() {}, beginPath() {}, rect() {}, stroke() {},
+		fillRect(x, y, width) {widths.push({x, width, color: this.fillStyle});}};
 	h.entity.drawHealthBar(ctx, 0, 0);
 	assert.equal(h.entity.hp, 12000);
-	assert.deepEqual(widths, [32, 32]);
+	assert.deepEqual(widths.slice(0, 2).map(fill => fill.width), [32, 32]);
+	const stripes = widths.filter(fill => fill.color === "#b67cf0");
+	assert.ok(stripes.length > 0);
+	assert.equal(Math.max(...stripes.map(fill => fill.x + fill.width)), 6);
 });
 
 test("temporary high HP overrides the legacy field without duplicate hit notifications", () => {
@@ -108,4 +118,32 @@ test("perception applies a high-HP override once and initial high-HP objects sta
 		assert.equal(h.entity.getCurrentHP(), 36000);
 		assert.deepEqual(changes, initial ? [] : [6000]);
 	}
+});
+
+test("natural surplus decay floats in purple while simultaneous combat damage stays red", () => {
+	for (const decayFirst of [true, false]) {
+		const h = harness(true);
+		Object.assign(h.entity, {hp: 12000, life_tide_decay: 40});
+		const floaters = [];
+		h.entity.addFloater = (text, color) => floaters.push([text, color]);
+		if (decayFirst) h.entity.set("life_tide_decay", "60");
+		h.entity.set("hp", "11880");
+		if (!decayFirst) h.entity.set("life_tide_decay", "60");
+		h.flush();
+		assert.deepEqual(floaters, [["-20", "#b67cf0"], ["-100", "#ff0000"]]);
+	}
+});
+
+test("decay alone has no duplicate red damage and an initial counter stays silent", () => {
+	const h = harness(true);
+	const floaters = [];
+	h.entity.addFloater = (text, color) => floaters.push([text, color]);
+	h.entity.set("life_tide_decay", "100");
+	h.entity.set("hp", "12000");
+	h.flush();
+	assert.deepEqual(floaters, []);
+	h.entity.set("hp", "11980");
+	h.entity.set("life_tide_decay", "120");
+	h.flush();
+	assert.deepEqual(floaters, [["-20", "#b67cf0"]]);
 });
