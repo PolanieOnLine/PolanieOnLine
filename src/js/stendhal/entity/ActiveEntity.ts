@@ -204,6 +204,12 @@ export class ActiveEntity extends Entity {
 		let speed = this["speed"];
 		if (key == "speed") {
 			speed =  value;
+			if (speed > 0) {
+				// Changing velocity must not replay an old integer position.
+				this.dx = this.direction.dx * speed;
+				this.dy = this.direction.dy * speed;
+				return;
+			}
 		}
 
 

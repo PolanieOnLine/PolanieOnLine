@@ -305,23 +305,39 @@ public abstract class ActiveEntity extends Entity {
 	 * Apply movement and process it's reactions.
 	 */
 	public void applyMovement() {
-		// even if we could we would not move;
-		if (speed == 0) {
-			stepsTaken = 0;
-			return;
-		}
-		/* XXX: Can this.stopped() be called here instead and set direction
-		 *      to Direction.DOWN at construction? Issue found with WalkAction:
-		 *      When player logs in setSpeed() will not cause movement as
-		 *      direction is set to STOP. WalkAction bypasses this by setting
-		 *      default to DOWN if direction is STOP or null.
-		 */
-		if (direction == Direction.STOP) {
+		if (!Double.isFinite(speed) || speed <= 0 || direction == Direction.STOP) {
 			stepsTaken = 0;
 			return;
 		}
 
+		movementOffset += speed;
+		final StendhalRPZone startingZone = getZone();
+		boolean firstStep = true;
+		while (movementOffset >= 1.0 - 1e-9) {
+			if (!firstStep) {
+				prepareNextMovementStep();
+			}
+			if (stopped() || direction == Direction.STOP || getZone() != startingZone) {
+				return;
+			}
+			if (!isMoveCompleted()) {
+				return;
+			}
+			if (!moveOneTile()) {
+				// Blocked movement must not accumulate a burst for later turns.
+				movementOffset = 0.0;
+				return;
+			}
+			firstStep = false;
+		}
+	}
 
+	/** Update a guided route before another step in the same turn. */
+	protected void prepareNextMovementStep() {
+		// Straight movement needs no additional preparation.
+	}
+
+	private boolean moveOneTile() {
 		final int x = getX();
 		final int y = getY();
 		final int nx = x + direction.getdx();
@@ -334,22 +350,19 @@ public abstract class ActiveEntity extends Entity {
 		if (!ignoresCollision()) {
 			if (zone.simpleCollides(this, nx, ny, this.getWidth(), this.getHeight())) {
 				handleSimpleCollision(nx, ny);
-				return;
+				return getZone() == zone && getX() == nx && getY() == ny;
 			}
 		}
 		final Portal p = zone.getPortal(nx, ny);
 		if (p != null) {
 			if (handlePortal(p)) {
-				return;
+				return false;
 			}
 		}
 
-		movementOffset += getSpeed();
 		if (isGhost()) {
-			if (isMoveCompleted()) {
-				move(x, y, nx, ny);
-				return;
-			}
+			move(x, y, nx, ny);
+			return true;
 		}
 
 		final boolean collision = zone.collidesObjects(this, this.getArea(nx, ny));
@@ -360,14 +373,8 @@ public abstract class ActiveEntity extends Entity {
 				logger.debug("Collision at (" + nx + "," + ny + ")");
 			}
 			handleObjectCollision();
+			return false;
 		} else {
-			if (!isMoveCompleted()) {
-				if (logger.isDebugEnabled()) {
-					logger.debug(get("type") + ") move not completed");
-				}
-				return;
-			}
-
 			if (logger.isDebugEnabled()) {
 				logger.debug("Moving from (" + x + "," + y + ") to (" + nx
 						+ "," + ny + ")");
@@ -375,6 +382,7 @@ public abstract class ActiveEntity extends Entity {
 
 			move(x, y, nx, ny);
 			stepsTaken += 1;
+			return true;
 		}
 	}
 
@@ -406,8 +414,8 @@ public abstract class ActiveEntity extends Entity {
 	 * 		<code>true</code> if moved a whole tile
 	 */
 	protected boolean isMoveCompleted() {
-		if (movementOffset >= 1.0) {
-			movementOffset -= 1.0;
+		if (movementOffset >= 1.0 - 1e-9) {
+			movementOffset = Math.max(0.0, movementOffset - 1.0);
 			return true;
 		} else {
 			return false;

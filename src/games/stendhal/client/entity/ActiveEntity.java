@@ -267,6 +267,17 @@ public abstract class ActiveEntity extends Entity {
 	 */
 	@Override
 	protected void processPositioning(final RPObject base, final RPObject diff) {
+		if (!diff.has("x") && !diff.has("y") && !diff.has("dir") && !diff.has("speed")) {
+			return;
+		}
+		if (diff.has("speed") && diff.getDouble("speed") > 0.0
+				&& !diff.has("x") && !diff.has("y") && !diff.has("dir")) {
+			// A speed change is not a correction to the last reported integer tile.
+			final double speed = diff.getDouble("speed");
+			setSpeed(direction.getdx() * speed, direction.getdy() * speed);
+			fireChange(PROP_SPEED);
+			return;
+		}
 		// Real movement case
 		final int oldx = base.getInt("x");
 		final int oldy = base.getInt("y");

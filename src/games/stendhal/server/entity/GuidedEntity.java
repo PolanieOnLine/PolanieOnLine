@@ -102,7 +102,14 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 * @param bs - New normal speed for moving.
 	 */
 	public final void setBaseSpeed(final double bs) {
+		final double previousSpeed = this.baseSpeed;
 		this.baseSpeed = bs;
+		if (has("base_speed")) {
+			put("base_speed", bs);
+		}
+		if (!stopped() && previousSpeed > 0.0) {
+			setSpeed(getSpeed() * bs / previousSpeed);
+		}
 	}
 
 	//
@@ -323,6 +330,14 @@ public abstract class GuidedEntity extends ActiveEntity {
 			faceNext();
 		} else {
 			super.applyMovement();
+		}
+	}
+
+	@Override
+	protected void prepareNextMovementStep() {
+		if (hasPath()) {
+			faceNext();
+			followPath();
 		}
 	}
 

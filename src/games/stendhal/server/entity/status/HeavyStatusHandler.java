@@ -11,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.entity.status;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -22,9 +25,17 @@ import games.stendhal.server.entity.RPEntity;
  * Handles HeavyStatus
  */
 public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
-	private int duration;
-	/** The original speed of the entity */
-	private double originalSpeed;
+	private final Map<StatusList, SlowState> active = new WeakHashMap<>();
+
+	private static final class SlowState {
+		final double originalSpeed;
+		final int duration;
+
+		SlowState(final double originalSpeed, final int duration) {
+			this.originalSpeed = originalSpeed;
+			this.duration = duration;
+		}
+	}
 
 	/**
 	 * @param status
@@ -40,21 +51,12 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 			RPEntity entity = statusList.getEntity();
 			if (entity != null) {
 				/* save the entity's original speed to be replaced later */
-				originalSpeed = entity.getBaseSpeed();
-				entity.setBaseSpeed(0.5);
-
+				final double originalSpeed = entity.getBaseSpeed();
 				/* slow the entity down to half walking speed */
-				entity.setBaseSpeed(entity.getBaseSpeed() / 2);
+				entity.setBaseSpeed(originalSpeed / 2);
 
 				/* Legendary combat procs may request a short fixed duration. */
-				if (status.getDurationSeconds() != null) {
-					duration = status.getDurationSeconds().intValue();
-				} else {
-					/* preserve the legacy random timing exactly */
-					Double d_min = 3.3 * 30;
-					Double d_max = 3.3 * 300;
-					duration = Rand.randUniform(d_min.intValue(), d_max.intValue());
-				}
+				final int duration = duration(status);
 
 				/* status was not inflicted by another entity */
 				if (attacker == null) {
@@ -66,6 +68,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 					+ attacker.getName() + ".");
 				}
 
+				active.put(statusList, new SlowState(originalSpeed, duration));
 				statusList.addInternal(status);
 				statusList.activateStatusAttribute("status_" + status.getName());
 				TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, duration),
@@ -84,6 +87,9 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 	 */
 	@Override
 	public void remove(HeavyStatus status, StatusList statusList) {
+		if (!statusList.getStatuses().contains(status)) {
+			return;
+		}
 		statusList.removeInternal(status);
 
 		RPEntity entity = statusList.getEntity();
@@ -92,17 +98,34 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 		}
 
 		Status nextStatus = statusList.getFirstStatusByClass(HeavyStatus.class);
-		/* replace the entity's original speed */
-		entity.setBaseSpeed(originalSpeed);
+		final SlowState state = active.get(statusList);
 		if (nextStatus != null) {
-			final Integer fixedDuration = ((HeavyStatus) nextStatus).getDurationSeconds();
-			final int nextDuration = fixedDuration == null
-					? duration : fixedDuration.intValue();
+			final HeavyStatus nextHeavy = (HeavyStatus) nextStatus;
+			final int nextDuration;
+			if (nextHeavy.getDurationSeconds() == null && state != null) {
+				nextDuration = state.duration;
+			} else {
+				nextDuration = duration(nextHeavy);
+			}
 			TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, nextDuration),
 					new StatusRemover(statusList, nextStatus));
 		} else {
+			active.remove(statusList);
+			if (state != null) {
+				entity.setBaseSpeed(state.originalSpeed);
+			}
 			entity.remove("status_" + status.getName());
 			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Już nie jesteś przeciążony.");
 		}
+	}
+
+	private int duration(final HeavyStatus status) {
+		if (status.getDurationSeconds() != null) {
+			return status.getDurationSeconds().intValue();
+		}
+		// Preserve the legacy random timing.
+		final Double minimum = 3.3 * 30;
+		final Double maximum = 3.3 * 300;
+		return Rand.randUniform(minimum.intValue(), maximum.intValue());
 	}
 }
