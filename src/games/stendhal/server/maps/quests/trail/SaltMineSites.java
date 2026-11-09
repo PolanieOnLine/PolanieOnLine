@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -56,15 +56,19 @@ public final class SaltMineSites implements ZoneConfigurator {
 		if (!SaltMineProgress.MINE.equals(zone.getName()))
 			throw new IllegalArgumentException("Unknown salt mine story zone");
 		for (Kind kind : Kind.values())
-			zone.add(new Evidence(kind));
+			TrailSceneRegistry.prop(zone, "salt-mine-evidence-" + kind.name(),
+					player -> needed(player, kind), () -> new Evidence(kind));
 		for (Encounter role : Encounter.values()) {
-			Creature template = TrailCreatureVariants.create(
-					role.name);
-			if (template == null)
-				throw new IllegalStateException(
-						"Missing salt mine opponent: " + role.name);
-			zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-					new SaltMineGuard(template, role), 1));
+			TrailSceneRegistry.encounter(zone, "saltmine-" + role.name(),
+					role.x, role.y, player -> SaltMineProgress.needs(player, role),
+					() -> {
+						Creature template = TrailCreatureVariants.create(role.name);
+						if (template == null) {
+							throw new IllegalStateException(
+									"Missing story opponent: " + role.name);
+						}
+						return new SaltMineGuard(template, role);
+					});
 		}
 		addMiner(zone, SaltMineProgress.FOREMAN, 34, 80,
 				"Oto Radost. Sztygar pilnuje wejścia i nasłuchuje odgłosów z chodników.");
@@ -107,7 +111,51 @@ public final class SaltMineSites implements ZoneConfigurator {
 		miner.setPosition(x, y);
 		miner.setDirection(Direction.DOWN);
 		miner.setDescription(description);
-		zone.add(miner);
+		TrailSceneRegistry.actor(zone, miner, player -> {
+			if (SaltMineProgress.FOREMAN.equals(name)) {
+				return Step.SALT_SHIFT.available(player)
+						&& !player.isQuestCompleted(Step.SALT_RETURN.slot)
+						&& !player.isQuestInState(Step.SALT_RETURN.slot, "mayor");
+			}
+			int bit = SaltMineProgress.BOGDAN.equals(name) ? 1 : 2;
+			return unmarked(player, Step.SALT_RESCUE, "miners", bit, "report");
+		});
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		switch (kind) {
+		case SUPPORT:
+			return unmarked(player, Step.SALT_SHIFT, "marks", 1, "report")
+					|| at(player, Step.SALT_RESCUE, "brace")
+					|| unmarked(player, Step.SALT_RETURN, "verify", 1, "mayor");
+		case ROPES:
+			return unmarked(player, Step.SALT_SHIFT, "marks", 2, "report")
+					|| unmarked(player, Step.SALT_RETURN, "verify", 2, "mayor");
+		case SAMPLE:
+			return at(player, Step.SALT_SAMPLE, "sample");
+		case DRAINAGE:
+			return unmarked(player, Step.SALT_SOURCE, "channels", 1, "report");
+		case CHANNEL:
+			return unmarked(player, Step.SALT_SOURCE, "channels", 2, "report");
+		case SEAL:
+			return at(player, Step.SALT_CREATURE, "seal");
+		case RELEASE:
+			return at(player, Step.SALT_RETURN, "drain");
+		default:
+			throw new IllegalStateException("Unknown salt mine evidence");
+		}
+	}
+
+	private static boolean at(Player player, Step step, String state) {
+		return SaltMineProgress.active(player, step)
+				&& player.isQuestInState(step.slot, state);
+	}
+
+	private static boolean unmarked(Player player, Step step, String state,
+			int bit, String terminal) {
+		return SaltMineProgress.active(player, step)
+				&& player.isQuestInState(step.slot, 0, state)
+				&& (SaltMineProgress.mask(player, step, terminal) & bit) == 0;
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -138,6 +186,9 @@ public final class SaltMineSites implements ZoneConfigurator {
 					|| !SaltMineProgress.MINE.equals(getZone().getName()))
 				return false;
 			Player p = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, p)) {
+				return false;
+			}
 			if (!p.nextTo(this)) {
 				p.sendPrivateText("Musisz podejść bliżej.");
 				return false;

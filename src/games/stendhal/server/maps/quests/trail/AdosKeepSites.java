@@ -5,10 +5,10 @@ import java.util.Map;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 
@@ -95,16 +95,28 @@ public final class AdosKeepSites implements ZoneConfigurator {
 			throw new IllegalArgumentException("Unknown keep story zone");
 		for (Kind kind : Kind.values())
 			if (kind.zone.equals(zone.getName()))
-				zone.add(new Evidence(kind));
+				TrailSceneRegistry.prop(zone, "keep-evidence-" + kind.name(),
+						player -> needed(player, kind), () -> new Evidence(kind));
 		if (AdosKeepProgress.KEEP.equals(zone.getName())) {
-			Creature template = TrailCreatureVariants.create(
-					AdosKeepProgress.GUARDIAN);
-			if (template == null)
-				throw new IllegalStateException("Missing keep guardian");
-			zone.add(new CreatureRespawnPoint(zone, AdosKeepProgress.GUARDIAN_X,
-					AdosKeepProgress.GUARDIAN_Y, new AdosKeepGuardian(template),
-					1));
+			TrailSceneRegistry.encounter(zone, "keep-guardian",
+					AdosKeepProgress.GUARDIAN_X,
+					AdosKeepProgress.GUARDIAN_Y,
+					AdosKeepProgress::needsGuardian, () -> {
+						Creature template = TrailCreatureVariants.create(
+								AdosKeepProgress.GUARDIAN);
+						if (template == null) {
+							throw new IllegalStateException(
+									"Missing keep guardian");
+						}
+						return new AdosKeepGuardian(template);
+					});
 		}
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		return AdosKeepProgress.active(player, kind.step)
+				&& player.isQuestInState(kind.step.slot, 0, kind.state)
+				&& (AdosKeepProgress.mask(player, kind.step) & kind.bit) == 0;
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -135,6 +147,9 @@ public final class AdosKeepSites implements ZoneConfigurator {
 					|| !kind.zone.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

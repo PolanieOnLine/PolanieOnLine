@@ -2,13 +2,13 @@
 package games.stendhal.server.maps.quests.trail;
 
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
 import games.stendhal.server.entity.player.Player;
 
 /**
- * Shared scenery; examining it changes only the examining player's persisted
- * quest.
+ * Private investigation scenery advances its owner's persisted quest.
  */
 public final class TrailEvidence extends AreaEntity implements UseListener {
 	public enum Kind {
@@ -85,6 +85,11 @@ public final class TrailEvidence extends AreaEntity implements UseListener {
 		}
 	}
 
+	static boolean needed(Player player, Kind kind) {
+		return kind.step.available(player)
+				&& player.isQuestInState(kind.step.slot, kind.before);
+	}
+
 	private final Kind kind;
 
 	public TrailEvidence(final Kind kind) {
@@ -111,6 +116,9 @@ public final class TrailEvidence extends AreaEntity implements UseListener {
 				|| user.getZone() != getZone())
 			return false;
 		final Player player = (Player) user;
+		if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+			return false;
+		}
 		if (!player.nextTo(this)) {
 			player.sendPrivateText("Musisz podejść bliżej.");
 			return false;

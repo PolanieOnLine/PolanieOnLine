@@ -178,7 +178,7 @@ public final class AdosKeepQuest extends TrailQuest {
 					"Przy schodach na południowym skraju gór zostały ślady i odłamek płyty. Przyjrzyj się obu, zanim uznamy to za przygotowania do napadu.");
 			break;
 		case KEEP_WITNESSES:
-			speaker.say("Julius".equals(speaker.getName())
+			speaker.say("Julius".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Zogfang i Hagnurk widzieli więcej niż moi strażnicy. Wysłuchaj obu, a potem wróć."
 					: "Przekaż Juliusowi, co tu usłyszysz. Chcę, żeby straż Ados znała prawdę.");
 			break;
@@ -191,7 +191,7 @@ public final class AdosKeepQuest extends TrailQuest {
 					"Kamienna postać stoi w środkowej sali na południu, na wschód ode mnie. Nie zostawimy jej tam, żeby znów ruszyła na naszych ludzi.");
 			break;
 		case KEEP_RETURN:
-			speaker.say("Julius".equals(speaker.getName())
+			speaker.say("Julius".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Hagnurk powinien wiedzieć, czy można już spokojnie przewozić towar. Chcę usłyszeć, co powie."
 					: "Powiedz Juliusowi, że w warowni jest już spokojniej. Niech przestanie wypatrywać najazdu na miasto.");
 			break;

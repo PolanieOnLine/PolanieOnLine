@@ -23,6 +23,7 @@ import games.stendhal.common.QuestMarker;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -78,6 +79,21 @@ public class QuestMarkerServiceTest {
 
 	private void prerequisites() {
 		player.setQuest("marker_prerequisite", "done");
+	}
+
+	@Test
+	public void privateActorMarkersArePublishedOnlyToTheirOwner() {
+		load("marker_private", false);
+		prerequisites();
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarker(player, npc));
+		final Player other = PlayerTestHelper.createPlayer("other_marker_owner");
+		PlayerPrivateScene.assign(npc, other);
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, npc));
+		QuestMarkerService.update(player);
+		assertFalse(player.getMap(QuestMarker.ATTRIBUTE)
+				.containsKey(String.valueOf(npc.getID().getObjectID())));
+		PlayerPrivateScene.assign(npc, player);
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarker(player, npc));
 	}
 
 	private void cheese() {

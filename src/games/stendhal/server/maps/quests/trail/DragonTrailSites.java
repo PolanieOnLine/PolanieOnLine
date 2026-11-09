@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -160,16 +160,21 @@ public final class DragonTrailSites implements ZoneConfigurator {
 			throw new IllegalArgumentException("Unknown dragon story zone");
 		for (Kind kind : Kind.values())
 			if (kind.zone.equals(name))
-				zone.add(new Evidence(kind));
+				TrailSceneRegistry.prop(zone, "dragon-evidence-" + kind.name(),
+						player -> needed(player, kind), () -> new Evidence(kind));
 		if (DragonTrailProgress.NORTH.equals(name)) {
 			for (Encounter role : Encounter.values()) {
-				Creature template = TrailCreatureVariants.create(
-						role.name);
-				if (template == null)
-					throw new IllegalStateException(
-							"Missing dragon story opponent: " + role.name);
-				zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-						new DragonTrailGuard(template, role), 1));
+				TrailSceneRegistry.encounter(zone, "dragon-" + role.name(),
+						role.x, role.y,
+						player -> DragonTrailProgress.needs(player, role),
+						() -> {
+							Creature template = TrailCreatureVariants.create(role.name);
+							if (template == null) {
+								throw new IllegalStateException(
+										"Missing story opponent: " + role.name);
+							}
+							return new DragonTrailGuard(template, role);
+						});
 			}
 			addWitness(zone, DragonTrailProgress.GUIDE, 99, 43,
 					"Oto Ostrobor. Na jego nadgarstkach widać otarcia po linie.");
@@ -209,7 +214,20 @@ public final class DragonTrailSites implements ZoneConfigurator {
 		npc.setDirection(Direction.DOWN);
 		npc.setPosition(x, y);
 		npc.setDescription(description);
-		zone.add(npc);
+		TrailSceneRegistry.actor(zone, npc, player ->
+				DragonTrailProgress.GUIDE.equals(name)
+						? Step.EMBER_GUIDE.available(player)
+								&& !player.isQuestCompleted(Step.EMBER_RETURN.slot)
+						: DragonTrailProgress.active(player, Step.EMBER_CAMP)
+								&& player.isQuestInState(Step.EMBER_CAMP.slot, "witness"));
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		return DragonTrailProgress.active(player, kind.step)
+				&& (kind.bit == 0
+						? player.isQuestInState(kind.step.slot, kind.state)
+						: player.isQuestInState(kind.step.slot, 0, kind.state)
+								&& (DragonTrailProgress.traces(player) & kind.bit) == 0);
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -240,6 +258,9 @@ public final class DragonTrailSites implements ZoneConfigurator {
 					|| !kind.zone.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

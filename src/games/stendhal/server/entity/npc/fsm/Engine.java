@@ -649,5 +649,14 @@ public class Engine {
 		return new LinkedList<Transition>(stateTransitionTable);
 	}
 
+	/** Copies dialogue rules into a separate conversation state machine. */
+	public void copyTransitionsFrom(final Engine source) {
+		stateTransitionTable.clear();
+		for (final Transition transition : source.stateTransitionTable) {
+			stateTransitionTable.add(new Transition(transition));
+		}
+		currentState = ConversationStates.IDLE;
+	}
+
 
 }

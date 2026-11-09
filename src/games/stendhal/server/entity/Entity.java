@@ -285,6 +285,9 @@ public abstract class Entity extends RPObject implements Killer {
 	 * @return The amount of combined resistance.
 	 */
 	public int getResistance(final Entity entity) {
+		if (!PlayerPrivateScene.canCollide(this, entity)) {
+			return 0;
+		}
 		return ((getResistance() * entity.getResistance()) / 100);
 	}
 

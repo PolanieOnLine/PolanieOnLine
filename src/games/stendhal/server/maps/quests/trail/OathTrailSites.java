@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -103,16 +103,21 @@ public final class OathTrailSites implements ZoneConfigurator {
 			throw new IllegalArgumentException("Unknown oath zone");
 		for (Kind kind : Kind.values())
 			if (kind.zone.equals(zone.getName()))
-				zone.add(new Evidence(kind));
+				TrailSceneRegistry.prop(zone, "oath-evidence-" + kind.name(),
+						player -> needed(player, kind), () -> new Evidence(kind));
 		for (Encounter role : Encounter.values())
 			if (role.zone.equals(zone.getName())) {
-				Creature template = TrailCreatureVariants.create(
-						role.name);
-				if (template == null)
-					throw new IllegalStateException(
-							"Missing oath guardian: " + role.name);
-				zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-						new OathTrailGuard(template, role), 1));
+				TrailSceneRegistry.encounter(zone, "oath-" + role.name(),
+						role.x, role.y,
+						player -> OathTrailProgress.needs(player, role),
+						() -> {
+							Creature template = TrailCreatureVariants.create(role.name);
+							if (template == null) {
+								throw new IllegalStateException(
+										"Missing story opponent: " + role.name);
+							}
+							return new OathTrailGuard(template, role);
+						});
 			}
 		if (OathTrailProgress.NORTH.equals(zone.getName())) {
 			SpeakerNPC witness = new SpeakerNPC(OathTrailProgress.SENTRY) {
@@ -143,8 +148,39 @@ public final class OathTrailSites implements ZoneConfigurator {
 			witness.setPosition(70, 38);
 			witness.setDescription(
 					"Oto Wszebor. Przez jego bladą postać widać trawę. Wciąż wypatruje kogoś na drodze.");
-			zone.add(witness);
+			TrailSceneRegistry.actor(zone, witness,
+					player -> Step.OATH_WATCH.available(player)
+							&& !OathTrailProgress.released(player));
 		}
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		switch (kind) {
+		case SHIELD:
+		case NAMES:
+			int bit = kind == Kind.SHIELD ? 1 : 2;
+			return OathTrailProgress.active(player, Step.OATH_NAMES)
+					&& player.isQuestInState(Step.OATH_NAMES.slot, 0, "clues")
+					&& (OathTrailProgress.mask(player) & bit) == 0;
+		case GRAVE:
+			return at(player, Step.OATH_GRAVE, "grave")
+					|| at(player, Step.OATH_BURIAL, "remains");
+		case ORDER:
+			return at(player, Step.OATH_TRUTH, "proof");
+		case BANNER:
+			return at(player, Step.OATH_BANNER, "banner");
+		case MOUND:
+			return at(player, Step.OATH_BURIAL, "burial;0");
+		case MEMORIAL:
+			return at(player, Step.OATH_BURIAL, "burial;1");
+		default:
+			throw new IllegalStateException("Unknown oath evidence");
+		}
+	}
+
+	private static boolean at(Player player, Step step, String state) {
+		return OathTrailProgress.active(player, step)
+				&& player.isQuestInState(step.slot, state);
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -174,6 +210,9 @@ public final class OathTrailSites implements ZoneConfigurator {
 					|| !kind.zone.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

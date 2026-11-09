@@ -17,6 +17,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
@@ -99,6 +100,7 @@ public class TrailGuardReturnTest {
 		zone.add(player);
 		MockStendhalRPRuleProcessor.get().addPlayer(player);
 		guard = factory.get();
+		PlayerPrivateScene.assign(guard, player);
 		guard.setRespawnPoint(
 				new CreatureRespawnPoint(zone, homeX, homeY, guard, 1));
 		guard.setPosition(homeX + 8, homeY);

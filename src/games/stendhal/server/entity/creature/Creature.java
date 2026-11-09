@@ -41,6 +41,7 @@ import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.Registrator;
 import games.stendhal.server.entity.creature.impl.DropItem;
@@ -792,11 +793,19 @@ public class Creature extends NPC {
 	 * @return list of enemies
 	 */
 	public List<RPEntity> getEnemyList() {
+		final List<RPEntity> enemies;
 		if (getAIProfiles().containsKey("offensive")) {
-			return getZone().getPlayerAndFriends();
+			enemies = getZone().getPlayerAndFriends();
 		} else {
-			return getAttackingRPEntities();
+			enemies = getAttackingRPEntities();
 		}
+		final List<RPEntity> visibleEnemies = new ArrayList<RPEntity>();
+		for (final RPEntity enemy : enemies) {
+			if (PlayerPrivateScene.canInteract(this, enemy)) {
+				visibleEnemies.add(enemy);
+			}
+		}
+		return visibleEnemies;
 	}
 
 	/**
@@ -816,7 +825,7 @@ public class Creature extends NPC {
 		// calculate the distance of all possible enemies
 		final Map<RPEntity, Double> distances = new HashMap<RPEntity, Double>();
 		for (final RPEntity enemy : enemyList) {
-			if (enemy == this) {
+			if (enemy == this || !PlayerPrivateScene.canInteract(this, enemy)) {
 				continue;
 			}
 
@@ -874,7 +883,7 @@ public class Creature extends NPC {
 		}
 
 		for (final RPEntity playerOrFriend : enemyList) {
-			if (playerOrFriend == this) {
+			if (playerOrFriend == this || !PlayerPrivateScene.canInteract(this, playerOrFriend)) {
 				continue;
 			}
 

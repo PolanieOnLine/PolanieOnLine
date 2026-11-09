@@ -31,6 +31,9 @@ import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.ados.abandonedkeep.OrcKillGiantDwarfNPC;
@@ -150,13 +153,20 @@ public class AdosKeepStoryTest {
 	}
 
 	private AdosKeepSites.Evidence evidence(Kind kind) {
-		StendhalRPZone zone = kind.zone.equals(AdosKeepProgress.KEEP) ? keep
-				: outside;
-		for (Object entity : zone.getEntitiesOfClass(
-				AdosKeepSites.Evidence.class))
-			if (((AdosKeepSites.Evidence) entity).kind == kind)
-				return (AdosKeepSites.Evidence) entity;
-		throw new AssertionError(kind);
+		AdosKeepSites.Evidence prop = new AdosKeepSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = kind.zone.equals(AdosKeepProgress.KEEP) ? keep : outside;
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -200,11 +210,23 @@ public class AdosKeepStoryTest {
 	}
 
 	private AdosKeepGuardian guardian() {
-		CreatureRespawnPoint source = keep.getRespawnPointList().get(0);
-		AdosKeepGuardian guard = (AdosKeepGuardian) source.getPrototypeCreature().getNewInstance();
-		guard.setRespawnPoint(source);
-		guard.setPosition(45, 108);
-		keep.add(guard);
+		StendhalRPZone zone = keep;
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(AdosKeepGuardian.class)) {
+				AdosKeepGuardian current = (AdosKeepGuardian) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player)) {
+					return current;
+				}
+			}
+			assertFalse("An active owned encounter must be reconstructed", AdosKeepProgress.needsGuardian(player));
+		}
+		AdosKeepGuardian guard = new AdosKeepGuardian(
+				TrailCreatureVariants.create(AdosKeepProgress.GUARDIAN));
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(AdosKeepProgress.GUARDIAN_X, AdosKeepProgress.GUARDIAN_Y);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, AdosKeepProgress.GUARDIAN_X, AdosKeepProgress.GUARDIAN_Y, guard, 1));
+		zone.add(guard);
 		return guard;
 	}
 
@@ -264,7 +286,7 @@ public class AdosKeepStoryTest {
 		visit("Julius");
 		say("Julius", "droga do Ados");
 		assertTrue(player.isQuestCompleted(Step.KEEP_RETURN.slot));
-		assertEquals(62501, player.getXP() - xp);
+		assertEquals(62500, player.getXP() - xp);
 		assertEquals(1700, player.getTotalNumberOf("money"));
 		Item reward = player.getFirstEquipped("hełm chaosu");
 		assertNotNull(reward);
@@ -304,7 +326,12 @@ public class AdosKeepStoryTest {
 		assertFalse(prop.onUsed(other));
 		wall.remove(other);
 		outside.add(other);
-		assertTrue(prop.onUsed(other));
+		assertFalse("Another investigator cannot use the owner's clue", prop.onUsed(other));
+		AdosKeepSites.Evidence otherProp = new AdosKeepSites.Evidence(Kind.TRACKS);
+		PlayerPrivateScene.assign(otherProp, other);
+		otherProp.setPosition(prop.getX(), prop.getY());
+		outside.add(otherProp);
+		assertTrue(otherProp.onUsed(other));
 		assertEquals("clues;1", other.getQuest(Step.KEEP_TRAIL.slot));
 		assertEquals("clues;2", player.getQuest(Step.KEEP_TRAIL.slot));
 		assertTrue(use(Kind.TRACKS));
@@ -326,13 +353,14 @@ public class AdosKeepStoryTest {
 		AdosKeepProgress.recordGuardianKill(player, copy);
 		assertEquals("fight", player.getQuest(Step.KEEP_GUARDIAN.slot));
 		AdosKeepGuardian guard = guardian();
+		CreatureRespawnPoint home = guard.getRespawnPoint();
 		guard.setRespawnPoint(null);
 		AdosKeepProgress.recordGuardianKill(player, guard);
 		assertEquals("fight", player.getQuest(Step.KEEP_GUARDIAN.slot));
 		guard.setRespawnPoint(new CreatureRespawnPoint(keep, 1, 1, guard, 1));
 		AdosKeepProgress.recordGuardianKill(player, guard);
 		assertEquals("fight", player.getQuest(Step.KEEP_GUARDIAN.slot));
-		guard.setRespawnPoint(keep.getRespawnPointList().get(0));
+		guard.setRespawnPoint(home);
 		player.setPosition(1, 1);
 		AdosKeepProgress.recordGuardianKill(player, guard);
 		assertEquals("fight", player.getQuest(Step.KEEP_GUARDIAN.slot));

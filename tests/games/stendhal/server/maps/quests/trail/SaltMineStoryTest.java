@@ -22,6 +22,9 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.*;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
@@ -142,11 +145,20 @@ public class SaltMineStoryTest {
 	}
 
 	private SaltMineSites.Evidence evidence(Kind kind) {
-		for (Object e : zones.get(SaltMineProgress.MINE).getEntitiesOfClass(
-				SaltMineSites.Evidence.class))
-			if (((SaltMineSites.Evidence) e).kind == kind)
-				return (SaltMineSites.Evidence) e;
-		throw new AssertionError(kind);
+		SaltMineSites.Evidence prop = new SaltMineSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = zones.get(SaltMineProgress.MINE);
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -157,16 +169,24 @@ public class SaltMineStoryTest {
 	}
 
 	private SaltMineGuard guard(Encounter role) {
-		StendhalRPZone z = zones.get(SaltMineProgress.MINE);
-		for (CreatureRespawnPoint source : z.getRespawnPointList())
-			if (source.getX() == role.x && source.getY() == role.y) {
-				SaltMineGuard g = (SaltMineGuard) source.getPrototypeCreature().getNewInstance();
-				g.setRespawnPoint(source);
-				g.setPosition(role.x, role.y);
-				z.add(g);
-				return g;
+		StendhalRPZone zone = zones.get(SaltMineProgress.MINE);
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(SaltMineGuard.class)) {
+				SaltMineGuard current = (SaltMineGuard) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role) {
+					return current;
+				}
 			}
-		throw new AssertionError(role);
+			assertFalse("An active owned encounter must be reconstructed", SaltMineProgress.needs(player, role));
+		}
+		SaltMineGuard guard = new SaltMineGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(role.x, role.y);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
+		zone.add(guard);
+		return guard;
 	}
 
 	private void kill(Encounter role) {
@@ -249,7 +269,7 @@ public class SaltMineStoryTest {
 		visit("Zbigniew");
 		say("Zbigniew", "bezpieczny szyb");
 		assertTrue(player.isQuestCompleted(Step.SALT_RETURN.slot));
-		assertEquals(450002, player.getXP() - xp);
+		assertEquals(450000, player.getXP() - xp);
 		assertEquals(10000, player.getTotalNumberOf("money"));
 		Item helmet = player.getFirstEquipped("hełm wampirzy");
 		assertNotNull(helmet);

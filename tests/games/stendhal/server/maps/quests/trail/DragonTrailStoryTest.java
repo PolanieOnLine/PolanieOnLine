@@ -21,6 +21,9 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.*;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
@@ -148,11 +151,20 @@ public class DragonTrailStoryTest {
 	}
 
 	private DragonTrailSites.Evidence evidence(Kind kind) {
-		for (Object e : zones.get(kind.zone).getEntitiesOfClass(
-				DragonTrailSites.Evidence.class))
-			if (((DragonTrailSites.Evidence) e).kind == kind)
-				return (DragonTrailSites.Evidence) e;
-		throw new AssertionError(kind);
+		DragonTrailSites.Evidence prop = new DragonTrailSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = zones.get(kind.zone);
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -163,16 +175,24 @@ public class DragonTrailStoryTest {
 	}
 
 	private DragonTrailGuard guard(Encounter role) {
-		StendhalRPZone z = zones.get(DragonTrailProgress.NORTH);
-		for (CreatureRespawnPoint source : z.getRespawnPointList())
-			if (source.getX() == role.x && source.getY() == role.y) {
-				DragonTrailGuard g = (DragonTrailGuard) source.getPrototypeCreature().getNewInstance();
-				g.setRespawnPoint(source);
-				g.setPosition(role.x, role.y);
-				z.add(g);
-				return g;
+		StendhalRPZone zone = zones.get(DragonTrailProgress.NORTH);
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(DragonTrailGuard.class)) {
+				DragonTrailGuard current = (DragonTrailGuard) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role) {
+					return current;
+				}
 			}
-		throw new AssertionError(role);
+			assertFalse("An active owned encounter must be reconstructed", DragonTrailProgress.needs(player, role));
+		}
+		DragonTrailGuard guard = new DragonTrailGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(role.x, role.y);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
+		zone.add(guard);
+		return guard;
 	}
 
 	private void kill(Encounter role) {
@@ -249,7 +269,7 @@ public class DragonTrailStoryTest {
 		visit("Racirad");
 		say("Racirad", "powrocie do gniazda");
 		assertTrue(player.isQuestCompleted(Step.EMBER_RETURN.slot));
-		assertEquals(1200002, player.getXP() - xp);
+		assertEquals(1200000, player.getXP() - xp);
 		assertEquals(25000, player.getTotalNumberOf("money"));
 		Item chest = player.getFirstEquipped("złota skrzynia");
 		assertNotNull(chest);
@@ -409,6 +429,7 @@ public class DragonTrailStoryTest {
 		String previousEvent = System.getProperty("stendhal.minetown");
 		try {
 			System.setProperty("stendhal.minetown", "true");
+			int verifiedCorpses = 0;
 			for (Encounter role : Encounter.values()) {
 				DragonTrailGuard g = guard(role);
 				player.setPosition(role.x - 1, role.y);
@@ -417,16 +438,24 @@ public class DragonTrailStoryTest {
 				g.addDropItem(SingletonRepository.getEntityManager().getItem(
 						"straszna dynia"));
 				g.addDropItem("money", 100.0, 1);
+				List<Corpse> previousCorpses = new ArrayList<>();
+				for (Object entity : player.getZone().getEntitiesOfClass(Corpse.class)) {
+					previousCorpses.add((Corpse) entity);
+				}
 				g.onDamaged(player, g.getHP() + g.getArmorHP());
 				g.onDead(player);
+				int corpses = 0;
+				for (Object entity : player.getZone().getEntitiesOfClass(Corpse.class)) {
+					assertEquals(0, ((Corpse) entity).size());
+					assertTrue(PlayerPrivateScene.isOwnedBy((Corpse) entity, player));
+					if (!previousCorpses.contains(entity)) {
+						corpses++;
+					}
+				}
+				assertEquals("Each defeat leaves one new empty private corpse", 1, corpses);
+				verifiedCorpses += corpses;
 			}
-			int corpses = 0;
-			for (Object entity : player.getZone().getEntitiesOfClass(
-					Corpse.class)) {
-				corpses++;
-				assertEquals(0, ((Corpse) entity).size());
-			}
-			assertEquals(2, corpses);
+			assertEquals(2, verifiedCorpses);
 		} finally {
 			if (previousEvent == null)
 				System.clearProperty("stendhal.minetown");

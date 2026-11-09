@@ -21,6 +21,8 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.Region;
@@ -117,6 +119,7 @@ public class SemosTrailTest {
 
 	private boolean use(TrailEvidence.Kind kind, StendhalRPZone zone) {
 		TrailEvidence prop = new TrailEvidence(kind);
+		PlayerPrivateScene.assign(prop, player);
 		prop.setPosition(10, 10);
 		zone.add(prop);
 		move(zone);

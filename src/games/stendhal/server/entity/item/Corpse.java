@@ -26,6 +26,7 @@ import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.PassiveEntity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.LootableSlot;
@@ -184,6 +185,7 @@ public class Corpse extends PassiveEntity implements EquipListener {
 	public Corpse(final RPEntity victim, final String killerName) {
 		setRPClass("corpse");
 		put("type", "corpse");
+		PlayerPrivateScene.copyOwner(this, victim);
 
 		if (victim.has("class")) {
 			setEntityClass(victim.get("class"));
@@ -529,6 +531,9 @@ public class Corpse extends PassiveEntity implements EquipListener {
 	 * @return true iff the player may access the items in the slots
 	 */
 	public boolean mayUse(Player player) {
+		if (!PlayerPrivateScene.canInteract(this, player)) {
+			return false;
+		}
 
 		// check the simple cases first
 		if (corpseOwner == null || corpseOwner.equals(player.getName()) || get("class").equals("player")) {

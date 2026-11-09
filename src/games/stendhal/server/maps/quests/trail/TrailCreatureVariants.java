@@ -12,6 +12,8 @@ import com.google.common.collect.ImmutableList;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.item.Corpse;
 import marauroa.common.game.RPSlot;
 
 /**
@@ -238,6 +240,13 @@ final class TrailCreatureVariants {
 	}
 
 	private static final class Variant extends Creature {
+		@Override
+		protected void dropItemsOn(final Corpse corpse) {
+			if (PlayerPrivateScene.ownerName(this) == null) {
+				super.dropItemsOn(corpse);
+			}
+		}
+
 		Variant(Creature template, Spec spec) {
 			super(template);
 			for (RPSlot slot : slots()) {

@@ -115,7 +115,7 @@ public final class BellTrailQuest extends TrailQuest {
 	private boolean report(Player player, EventRaiser speaker) {
 		String npc = step == Step.BELL_ESCAPE ? "Festris" : step.npc;
 		String required = step == Step.BELL_ESCAPE ? "return" : "report";
-		if (!npc.equals(speaker.getName())
+		if (!npc.equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 				|| !BellTrailProgress.active(player, step)
 				|| !player.isQuestInState(step.slot, required)) {
 			return false;
@@ -192,7 +192,7 @@ public final class BellTrailQuest extends TrailQuest {
 		if (BellTrailProgress.active(player, step)) {
 			String recipient = step == Step.BELL_ESCAPE ? "Festris" : step.npc;
 			String required = step == Step.BELL_ESCAPE ? "return" : "report";
-			return recipient.equals(npc.getName())
+			return recipient.equals(TrailSceneRegistry.speakerName(npc))
 					&& player.isQuestInState(step.slot, required)
 							? QuestMarker.READY
 							: QuestMarker.IN_PROGRESS;

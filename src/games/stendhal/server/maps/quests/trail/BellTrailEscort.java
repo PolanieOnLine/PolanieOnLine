@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
@@ -16,6 +17,7 @@ final class BellTrailEscort extends NPC {
 
 	private BellTrailEscort(Player owner, int number, int[] start) {
 		this.owner = owner;
+		PlayerPrivateScene.assign(this, owner);
 		setName(number == 0 ? "ranny badacz" : "ranny zwiadowca");
 		setEntityClass(number == 0 ? "woodcutternpc" : "youngsoldiernpc");
 		setDescription("Członek wyprawy pod opieką " + owner.getName()

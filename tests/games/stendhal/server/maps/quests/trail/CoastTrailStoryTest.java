@@ -27,6 +27,9 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.*;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.MainQuestInvitationService;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
@@ -117,6 +120,15 @@ public class CoastTrailStoryTest {
 		assertFalse(player.hasQuest(Step.COAST_WRECK.slot));
 		assertEquals(ConversationStates.IDLE, staszek.getEngine().getCurrentState());
 		player.setQuest(Step.COAST_WRECK.slot, "done");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, lubor));
+		move(lubor.getZone());
+		refreshScene();
+		for (Entity entity : player.getZone().getEntitiesOfClass(PlayerPrivateSpeakerNPC.class)) {
+			if (PlayerPrivateScene.isOwnedBy(entity, player)
+					&& "Lubor".equals(TrailSceneRegistry.speakerName(entity))) {
+				lubor = (SpeakerNPC) entity;
+			}
+		}
 		assertEquals("main_available", QuestMarkerService.getMarker(player, lubor).getCode());
 		assertFalse(player.hasQuest(Step.COAST_LIGHTS.slot));
 		player.setQuest(Step.COAST_LIGHTS.slot, "rejected");
@@ -162,11 +174,20 @@ public class CoastTrailStoryTest {
 	}
 
 	private CoastTrailSites.Evidence evidence(Kind kind) {
-		for (Object e : zones.get(kind.zone).getEntitiesOfClass(
-				CoastTrailSites.Evidence.class))
-			if (((CoastTrailSites.Evidence) e).kind == kind)
-				return (CoastTrailSites.Evidence) e;
-		throw new AssertionError(kind);
+		CoastTrailSites.Evidence prop = new CoastTrailSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = zones.get(kind.zone);
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -177,16 +198,24 @@ public class CoastTrailStoryTest {
 	}
 
 	private CoastTrailGuard guard(Encounter role) {
-		StendhalRPZone z = zones.get(role.zone);
-		for (CreatureRespawnPoint source : z.getRespawnPointList())
-			if (source.getX() == role.x && source.getY() == role.y) {
-				CoastTrailGuard guard = (CoastTrailGuard) source.getPrototypeCreature().getNewInstance();
-				guard.setRespawnPoint(source);
-				guard.setPosition(role.x, role.y);
-				z.add(guard);
-				return guard;
+		StendhalRPZone zone = zones.get(role.zone);
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(CoastTrailGuard.class)) {
+				CoastTrailGuard current = (CoastTrailGuard) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role) {
+					return current;
+				}
 			}
-		throw new AssertionError(role);
+			assertFalse("An active owned encounter must be reconstructed", CoastTrailProgress.needs(player, role));
+		}
+		CoastTrailGuard guard = new CoastTrailGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(role.x, role.y);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
+		zone.add(guard);
+		return guard;
 	}
 
 	private void kill(Encounter role) {
@@ -272,7 +301,7 @@ public class CoastTrailStoryTest {
 		visit("Staszek");
 		say("Staszek", "ratunek dla Jaskółki");
 		assertTrue(player.isQuestCompleted(Step.COAST_RETURN.slot));
-		assertEquals(300003, player.getXP() - xp);
+		assertEquals(300000, player.getXP() - xp);
 		assertEquals(8000, player.getTotalNumberOf("money"));
 		Item cloak = player.getFirstEquipped("płaszcz chaosu");
 		assertNotNull(cloak);

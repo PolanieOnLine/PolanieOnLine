@@ -120,7 +120,7 @@ abstract class TrailQuest extends AbstractQuest {
 	}
 
 	protected void remind(final Player player, final EventRaiser speaker) {
-		speaker.say(TrailDialogue.reminder(player, step, speaker.getName()));
+		speaker.say(TrailDialogue.reminder(player, step, TrailSceneRegistry.speakerName(speaker.getEntity())));
 	}
 
 	protected abstract String completedText();
@@ -179,7 +179,7 @@ abstract class TrailQuest extends AbstractQuest {
 				|| step == TrailQuestLine.Step.RADAN_FINALE) {
 			return QuestMarker.NONE;
 		}
-		return step.available(player) && step.npc.equals(npc.getName())
+		return step.available(player) && step.npc.equals(TrailSceneRegistry.speakerName(npc))
 				? QuestMarker.AVAILABLE : QuestMarker.NONE;
 	}
 

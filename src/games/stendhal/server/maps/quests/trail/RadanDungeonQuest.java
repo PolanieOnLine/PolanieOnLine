@@ -33,7 +33,7 @@ public final class RadanDungeonQuest extends TrailQuest {
 								Step.RADAN_TRANSPORT, Step.RADAN_FINALE }) {
 							if (!player.isQuestCompleted(current.slot)) {
 								speaker.say(TrailDialogue.reminder(player,
-										current, speaker.getName()));
+										current, TrailSceneRegistry.speakerName(speaker.getEntity())));
 								break;
 							}
 						}

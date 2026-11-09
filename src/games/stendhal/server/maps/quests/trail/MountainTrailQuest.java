@@ -238,24 +238,24 @@ public final class MountainTrailQuest extends TrailQuest {
 		}
 		switch (step) {
 		case MOUNTAIN_MINERS:
-			speaker.say(MountainTrailProgress.MINER.equals(speaker.getName())
+			speaker.say(MountainTrailProgress.MINER.equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Zaczekam tu. Powiedz Barbarusowi, gdzie mnie znaleźć. Może przyśle kogoś, kto pomoże mi wrócić."
 					: "Borzym powinien być przy zakręcie na północny wschód stąd. Nie zostawiaj go tam samego, jeśli jest ranny.");
 			break;
 		case MOUNTAIN_THREATS:
-			speaker.say("Gazda Wojtek".equals(speaker.getName())
+			speaker.say("Gazda Wojtek".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Stasek i Jagna widzieli tych ludzi z bliska. Dowiedz się, co pamiętają. Muszę wiedzieć, kto zastrasza mieszkańców."
 					: "Wojtek musi usłyszeć, co tu się dzieje. Przekaż mu wszystko, czego uda ci się dowiedzieć.");
 			break;
 		case MOUNTAIN_MEETING:
-			speaker.say(MountainTrailProgress.DRIVER.equals(speaker.getName())
+			speaker.say(MountainTrailProgress.DRIVER.equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Jeszcze nie ruszę w drogę. Brzezdom wie, gdzie jestem? Zaczekam, aż przyjdzie pomoc."
 					: "Miłosz jest przy skrzyni na wschód stąd. Nie zostawiaj go tym dwóm. Sam nie da rady się uwolnić.");
 			break;
 		case MOUNTAIN_CARGO:
 			speaker.say(player.isQuestInState(step.slot, "briefing")
 					? "Drilenun w ratuszu Semos musi usłyszeć o tym transporcie broni. To już nie jest zwykła kradzież."
-					: "Stasek".equals(speaker.getName())
+					: "Stasek".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 							? "Obejrzyj ostrza w skrzyni obok Miłosza. Jeśli mają znak dostawcy, spróbuję go rozpoznać."
 							: "Ostrza w skrzyni obok Miłosza powinny mieć znak dostawcy. Stasek handluje tu od lat, może go pozna.");
 			break;
@@ -264,7 +264,7 @@ public final class MountainTrailQuest extends TrailQuest {
 					"Dowódca jest ze swoimi ludźmi w północnej części polany, na północ od Miłosza. Musimy zatrzymać całą trójkę, zanim wyruszą.");
 			break;
 		case MOUNTAIN_RETURN:
-			speaker.say("Gazda Wojtek".equals(speaker.getName())
+			speaker.say("Gazda Wojtek".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 					? "Ja już znam wynik wyprawy. Dopilnuj, żeby Drilenun i Barbarus też usłyszeli wieści."
 					: "Wojtek czeka na ciebie w ratuszu w centrum Zakopanego. Niech usłyszy, jak skończyła się wyprawa.");
 			break;

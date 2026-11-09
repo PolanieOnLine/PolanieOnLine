@@ -22,6 +22,7 @@ import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPC;
@@ -71,6 +72,9 @@ public final class QuestMarkerService {
 	}
 
 	public static QuestMarker getMarker(final Player player, final SpeakerNPC npc) {
+		if (!PlayerPrivateScene.canInteract(player, npc)) {
+			return QuestMarker.NONE;
+		}
 		final Map<IQuest, List<Transition>> bindings = new LinkedHashMap<>();
 		for (final Transition transition : npc.getTransitions()) {
 			final IQuest quest = transition.getMarkerQuest();

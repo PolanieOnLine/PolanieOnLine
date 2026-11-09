@@ -51,6 +51,7 @@ import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.ActiveEntity;
 import games.stendhal.server.entity.Blood;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.AttackableCreature;
 import games.stendhal.server.entity.creature.BabyDragon;
@@ -1304,7 +1305,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 				// Check if the objects overlap
 				if (area.intersects(otherEntity.getX(), otherEntity.getY(), otherEntity.getWidth(), otherEntity.getHeight())) {
 					// Check if it's blocking
-					if (otherEntity.isObstacle(entity)) {
+					if (PlayerPrivateScene.canCollide(entity, otherEntity) && otherEntity.isObstacle(entity)) {
 						return otherEntity;
 					}
 				}

@@ -285,7 +285,7 @@ public class SpeakerNPC extends PassiveNPC {
 			final int px = player.getX();
 			final int py = player.getY();
 
-			if (player.has("text")) {
+			if (player.has("text") && canHear(player)) {
 				int dx = px - x;
 				int dy = py - y;
 
@@ -319,6 +319,9 @@ public class SpeakerNPC extends PassiveNPC {
 		int squaredDistanceOfNearestPlayer = Integer.MAX_VALUE;
 
 		for (final Player player : getZone().getPlayers()) {
+			if (!canHear(player)) {
+				continue;
+			}
 			final int px = player.getX();
 			final int py = player.getY();
 
@@ -968,6 +971,9 @@ public class SpeakerNPC extends PassiveNPC {
 	 * @param text
 	 * @return true if step was successfully executed*/
 	private boolean tell(final Player player, final String text) {
+		if (!canHear(player)) {
+			return false;
+		}
 		if (getRidOfPlayerIfAlreadySpeaking(player, text)) {
 			return true;
 		}
@@ -981,6 +987,17 @@ public class SpeakerNPC extends PassiveNPC {
 		lastMessageTurn = SingletonRepository.getRuleProcessor().getTurn();
 
 		return engine.step(player, text);
+	}
+
+	private boolean canHear(final Player player) {
+		if (player == null) {
+			return false;
+		}
+		if (has("#perception_key") && has("#perception_value")) {
+			final String key = get("#perception_key");
+			return player.has(key) && get("#perception_value").equals(player.get(key));
+		}
+		return true;
 	}
 
 	public void setCurrentState(final ConversationStates state) {
@@ -1164,6 +1181,21 @@ public class SpeakerNPC extends PassiveNPC {
 
 	public Engine getEngine() {
 		return engine;
+	}
+
+	/** Copies a story template's dialogue without sharing conversation state. */
+	public void copyDialogueFrom(final SpeakerNPC source) {
+		engine.copyTransitionsFrom(source.engine);
+		waitMessage = source.waitMessage;
+		waitAction = source.waitAction;
+		goodbyeMessage = source.goodbyeMessage;
+		initChatCondition = source.initChatCondition;
+		initChatAction = source.initChatAction;
+		playerChatTimeout = source.playerChatTimeout;
+		knownChatOptions = new LinkedList<>(source.knownChatOptions);
+		if (source.prioritizedGreetingTransitions != null) {
+			prioritizedGreetingTransitions = new LinkedHashMap<>(source.prioritizedGreetingTransitions);
+		}
 	}
 
 	/**

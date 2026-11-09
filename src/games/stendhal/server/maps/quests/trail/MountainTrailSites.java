@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.trail.MountainTrailProgress.Encounter;
@@ -28,28 +28,43 @@ public final class MountainTrailSites implements ZoneConfigurator {
 			npc(zone, MountainTrailProgress.DRIVER, "seller3npc", 89, 65,
 					"Nie podchodź, bo jeszcze ciebie złapią! Te #więzy zaraz odetną mi ręce.",
 					"Oto woźnica Miłosz. Siedzi przy skrzyni z rękami skrępowanymi grubym sznurem.");
-			zone.add(new Cargo());
-			final AreaEntity supplies = new AreaEntity(1, 1);
-			supplies.setRPClass("block");
-			supplies.put("type", "block");
-			supplies.put("class", "questprop");
-			supplies.put("name", "zapasy oddziału");
-			supplies.put("tileset", "item/pot/crate_small");
-			supplies.put("tile_index", 1);
-			supplies.put("tileset_columns", 2);
-			supplies.put("z", 8000);
-			supplies.setDescription(
-					"Oto skrzynia z zapasami oddziału. Na płótnie pozostał znak trzech kółek.");
-			supplies.setPosition(86, 53);
-			zone.add(supplies);
+			TrailSceneRegistry.prop(zone, "mountain-cargo",
+					player -> MountainTrailProgress.active(player,
+							Step.MOUNTAIN_CARGO)
+							&& player.isQuestInState(Step.MOUNTAIN_CARGO.slot,
+									"cargo"),
+					Cargo::new);
+			TrailSceneRegistry.prop(zone, "mountain-supplies",
+					player -> MountainTrailProgress.active(player,
+							Step.MOUNTAIN_BATTLE),
+					() -> {
+						final AreaEntity supplies = new AreaEntity(1, 1);
+						supplies.setRPClass("block");
+						supplies.put("type", "block");
+						supplies.put("class", "questprop");
+						supplies.put("name", "zapasy oddziału");
+						supplies.put("tileset", "item/pot/crate_small");
+						supplies.put("tile_index", 1);
+						supplies.put("tileset_columns", 2);
+						supplies.put("z", 8000);
+						supplies.setDescription(
+								"Oto skrzynia z zapasami oddziału. Na płótnie pozostał znak trzech kółek.");
+						supplies.setPosition(86, 53);
+						return supplies;
+					});
 			for (Encounter role : Encounter.values()) {
-				Creature template = TrailCreatureVariants.create(
-						role.creature);
-				if (template == null)
-					throw new IllegalStateException(
-							"Missing encounter creature: " + role.creature);
-				zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-						new MountainTrailGuard(template, role), 1));
+				TrailSceneRegistry.encounter(zone, "mountain-" + role.name(),
+						role.x, role.y,
+						player -> MountainTrailProgress.needs(player, role),
+						() -> {
+							Creature template = TrailCreatureVariants.create(
+									role.creature);
+							if (template == null) {
+								throw new IllegalStateException(
+										"Missing encounter creature: " + role.creature);
+							}
+							return new MountainTrailGuard(template, role);
+						});
 			}
 		} else
 			throw new IllegalArgumentException(
@@ -70,7 +85,14 @@ public final class MountainTrailSites implements ZoneConfigurator {
 		npc.setDescription(description);
 		npc.setPosition(x, y);
 		npc.setDirection(Direction.DOWN);
-		zone.add(npc);
+		TrailSceneRegistry.actor(zone, npc, player -> {
+			if (MountainTrailProgress.MINER.equals(name)) {
+				return MountainTrailProgress.active(player, Step.MOUNTAIN_MINERS)
+						&& player.isQuestInState(Step.MOUNTAIN_MINERS.slot, "search");
+			}
+			return MountainTrailProgress.active(player, Step.MOUNTAIN_MEETING)
+					&& !player.isQuestInState(Step.MOUNTAIN_MEETING.slot, "report");
+		});
 	}
 
 	static final class Cargo extends AreaEntity implements UseListener {
@@ -98,6 +120,9 @@ public final class MountainTrailSites implements ZoneConfigurator {
 					|| !TrailQuestLine.FOREST.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

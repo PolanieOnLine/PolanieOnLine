@@ -30,6 +30,9 @@ import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
@@ -178,19 +181,38 @@ public class MountainTrailTest {
 	}
 
 	private CreatureRespawnPoint point(Encounter role) {
-		for (CreatureRespawnPoint point : forest.getRespawnPointList())
-			if (point.getX() == role.x && point.getY() == role.y)
-				return point;
-		throw new AssertionError(role);
+		MountainTrailGuard template = new MountainTrailGuard(
+				TrailCreatureVariants.create(role.creature), role);
+		return new CreatureRespawnPoint(forest, role.x, role.y, template, 1);
 	}
 
 	private MountainTrailGuard guard(Encounter role) {
-		CreatureRespawnPoint source = point(role);
-		MountainTrailGuard guard = (MountainTrailGuard) source.getPrototypeCreature().getNewInstance();
+		if (player.getZone() == forest) {
+			refreshScene();
+			for (Entity entity : forest.getEntitiesOfClass(MountainTrailGuard.class)) {
+				MountainTrailGuard current = (MountainTrailGuard) entity;
+				if (current.role == role && PlayerPrivateScene.isOwnedBy(current, player)) {
+					return current;
+				}
+			}
+			assertFalse("An active owned encounter must be reconstructed", MountainTrailProgress.needs(player, role));
+		}
+		MountainTrailGuard guard = new MountainTrailGuard(
+				TrailCreatureVariants.create(role.creature), role);
+		PlayerPrivateScene.assign(guard, player);
 		guard.setPosition(role.x, role.y);
-		guard.setRespawnPoint(source);
+		guard.setRespawnPoint(point(role));
 		forest.add(guard);
 		return guard;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private void kill(Encounter role) {
@@ -213,8 +235,10 @@ public class MountainTrailTest {
 	}
 
 	private MountainTrailSites.Cargo cargo() {
-		return (MountainTrailSites.Cargo) forest.getEntitiesOfClass(
-				MountainTrailSites.Cargo.class).iterator().next();
+		MountainTrailSites.Cargo cargo = new MountainTrailSites.Cargo();
+		PlayerPrivateScene.assign(cargo, player);
+		forest.add(cargo);
+		return cargo;
 	}
 
 	private void weapons() {
@@ -287,9 +311,8 @@ public class MountainTrailTest {
 		visit("Gazda Wojtek");
 		say("Gazda Wojtek", "wieści z lasu");
 		assertTrue(player.isQuestCompleted(Step.MOUNTAIN_RETURN.slot));
-		// Combat still awards the engine's minimum one XP for each of the five
-		// opponents.
-		assertEquals(42005, player.getXP() - beforeXP);
+		// Private encounters award only the persisted quest rewards.
+		assertEquals(42000, player.getXP() - beforeXP);
 		assertEquals(1000, player.getTotalNumberOf("money"));
 		Item reward = player.getFirstEquipped("cuha góralska");
 		assertNotNull(reward);

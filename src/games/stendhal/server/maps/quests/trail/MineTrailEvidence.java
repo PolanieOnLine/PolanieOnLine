@@ -2,12 +2,13 @@
 package games.stendhal.server.maps.quests.trail;
 
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 
-/** Shared clues never disappear; only the reader's quest state changes. */
+/** Private clues exist only while their owner needs the corresponding lead. */
 final class MineTrailEvidence extends AreaEntity implements UseListener {
 	enum Kind {
 		ROSTER(
@@ -73,6 +74,27 @@ final class MineTrailEvidence extends AreaEntity implements UseListener {
 		}
 	}
 
+	static boolean needed(Player player, Kind kind) {
+		if (!MineTrailProgress.active(player, kind.step)) {
+			return false;
+		}
+		switch (kind) {
+		case RATIONS:
+		case BOOTS:
+			int bit = kind == Kind.RATIONS ? 1 : 2;
+			return player.isQuestInState(kind.step.slot, 0, "clues")
+					&& (MineTrailProgress.clues(player) & bit) == 0;
+		case ROSTER:
+			return player.isQuestInState(kind.step.slot, "register");
+		case VOICES:
+			return player.isQuestInState(kind.step.slot, "listen");
+		case DISPATCH:
+			return player.isQuestInState(kind.step.slot, "orders");
+		default:
+			throw new IllegalStateException("Unknown mine clue");
+		}
+	}
+
 	final Kind kind;
 
 	MineTrailEvidence(Kind kind) {
@@ -100,6 +122,9 @@ final class MineTrailEvidence extends AreaEntity implements UseListener {
 				|| !MineTrailProgress.ZONE.equals(getZone().getName()))
 			return false;
 		Player player = (Player) user;
+		if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+			return false;
+		}
 		if (!player.nextTo(this)) {
 			player.sendPrivateText("Musisz podejść bliżej.");
 			return false;

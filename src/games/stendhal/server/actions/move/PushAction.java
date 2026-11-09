@@ -24,6 +24,7 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
@@ -115,6 +116,9 @@ public class PushAction implements ActionListener {
 	 * @return true, if the push is possible, false otherwise
 	 */
 	private boolean canPush(final Player pusher, final RPEntity pushed) {
+		if (!PlayerPrivateScene.canInteract(pusher, pushed)) {
+			return false;
+		}
 
 		// If object is a NPC we ignore the push action because
 		// NPC don't use the pathfinder and would get confused

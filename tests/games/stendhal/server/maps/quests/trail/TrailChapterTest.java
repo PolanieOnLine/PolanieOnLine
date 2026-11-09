@@ -25,6 +25,8 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.koscielisko.plains.BrzezdomNPC;
@@ -124,6 +126,7 @@ public class TrailChapterTest {
 
 	private boolean use(TrailEvidence.Kind kind) {
 		TrailEvidence prop = new TrailEvidence(kind);
+		PlayerPrivateScene.assign(prop, player);
 		StendhalRPZone target = kind == TrailEvidence.Kind.SHIPMENT ? shop
 				: kind == TrailEvidence.Kind.REGISTRY ? townhall : forest;
 		target.add(prop);
@@ -136,6 +139,15 @@ public class TrailChapterTest {
 		boolean result = prop.onUsed(player);
 		target.remove(prop);
 		return result;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private void ready() {
@@ -216,6 +228,7 @@ public class TrailChapterTest {
 		Creature guard = TrailCreatureVariants.create(
 				"strażnik składu");
 		guard.setPosition(62, 61);
+		PlayerPrivateScene.assign(guard, player);
 		forest.add(guard);
 		guard.setRespawnPoint(
 				new CreatureRespawnPoint(forest, 62, 61, guard, 1));
@@ -253,10 +266,11 @@ public class TrailChapterTest {
 	}
 
 	@Test
-	public void publicCluesRemainAvailableForOtherPlayersAndRequireSameZoneAndRange() {
+	public void privateCluesRequireTheirOwnerSameZoneAndRange() {
 		ready();
 		accept("Stasek", "dostawa");
 		TrailEvidence prop = new TrailEvidence(TrailEvidence.Kind.SHIPMENT);
+		PlayerPrivateScene.assign(prop, player);
 		prop.setPosition(7, 10);
 		shop.add(prop);
 		player.setPosition(30, 30);
@@ -272,7 +286,12 @@ public class TrailChapterTest {
 		assertFalse(prop.onUsed(other));
 		townhall.remove(other);
 		shop.add(other);
-		assertTrue(prop.onUsed(other));
+		assertFalse("Another investigator cannot use the owner's clue", prop.onUsed(other));
+		TrailEvidence otherProp = new TrailEvidence(TrailEvidence.Kind.SHIPMENT);
+		PlayerPrivateScene.assign(otherProp, other);
+		otherProp.setPosition(prop.getX(), prop.getY());
+		shop.add(otherProp);
+		assertTrue(otherProp.onUsed(other));
 		assertEquals("archive", other.getQuest("trail_delivery"));
 		assertEquals(shop, prop.getZone());
 	}
@@ -281,6 +300,7 @@ public class TrailChapterTest {
 	public void guardCreditRequiresAnActiveInvestigationAtTheStockpile() {
 		Creature guard = TrailCreatureVariants.create(
 				"strażnik składu");
+		PlayerPrivateScene.assign(guard, player);
 		forest.add(guard);
 		guard.setPosition(62, 61);
 		TrailQuestLine.recordGuardKill(player, guard);
@@ -308,25 +328,42 @@ public class TrailChapterTest {
 	}
 
 	@Test
-	public void worldSitesUseSharedClientTilesAndRespawnTheCorrectGuard() {
+	public void worldSitesCreateTheOwnersGuardWithoutPublicRespawnPoints() {
 		new TrailSites().configureZone(shop, null);
 		new TrailSites().configureZone(townhall, null);
 		new TrailSites().configureZone(forest, null);
-		assertEquals(1, forest.getRespawnPointList().size());
-		CreatureRespawnPoint point = forest.getRespawnPointList().get(0);
-		assertEquals("strażnik składu", point.getPrototypeCreature().getName());
-		assertEquals(62, point.getX());
-		assertEquals(61, point.getY());
-		assertTrue(point.getPrototypeCreature().getAIProfiles().containsKey(
-				"no_elite"));
-		point.onTurnReached(0);
-		assertEquals(1, point.size());
+		assertTrue(forest.getRespawnPointList().isEmpty());
+		ready();
+		player.setQuest("trail_guest", "done");
+		player.setQuest("trail_seal", "guard");
+		shop.remove(player);
+		forest.add(player);
+		refreshScene();
+		Creature guard = null;
+		for (Entity entity : forest.getEntitiesOfClass(Creature.class)) {
+			if (PlayerPrivateScene.isOwnedBy(entity, player)) {
+				guard = (Creature) entity;
+			}
+		}
+		assertNotNull(guard);
+		assertEquals("strażnik składu", guard.getName());
+		assertEquals(62, guard.getX());
+		assertEquals(61, guard.getY());
+		assertTrue(guard.getAIProfiles().containsKey("no_elite"));
+		assertEquals(62, guard.getRespawnPoint().getX());
+		assertEquals(61, guard.getRespawnPoint().getY());
+		assertTrue(forest.getRespawnPointList().isEmpty());
 	}
 
 	@Test
 	public void registryIsOnAVisibleTableAndCanBeReadInTheActualHall()
 			throws Exception {
 		new TrailSites().configureZone(townhall, null);
+		ready();
+		player.setQuest("trail_delivery", "archive");
+		shop.remove(player);
+		townhall.add(player);
+		refreshScene();
 		TrailEvidence registry = null;
 		Entity table = null;
 		for (Entity entity : townhall.getEntitiesOfClass(Entity.class)) {
@@ -353,8 +390,6 @@ public class TrailChapterTest {
 			}
 		}
 		player.setQuest("trail_delivery", "archive");
-		shop.remove(player);
-		townhall.add(player);
 		player.setPosition(registry.getX(), registry.getY() + 1);
 		assertTrue(registry.onUsed(player));
 		assertEquals("discrepancy", player.getQuest("trail_delivery"));

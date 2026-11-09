@@ -7,10 +7,9 @@ import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
@@ -87,20 +86,15 @@ public final class BellTrailSites implements ZoneConfigurator {
 			addNpc(zone, BellTrailProgress.INJURED, 113, 26, "youngsoldiernpc",
 					"Milan ma zabandażowany bark. Co chwilę sprawdza, czy ktoś stoi za nim.");
 			for (Kind kind : Kind.values()) {
-				zone.add(new Evidence(kind));
+				TrailSceneRegistry.prop(zone, "bell-evidence-" + kind.name(),
+						player -> needed(player, kind), () -> new Evidence(kind));
 			}
 			for (Encounter role : Encounter.values()) {
-				Creature template = TrailCreatureVariants.create(
-						role.name);
-				CreatureRespawnPoint point = new CreatureRespawnPoint(zone,
-						role.x, role.y, new BellTrailGuard(template, role), 1) {
-					@Override
-					protected int calculateNextRespawnTurn() {
-						return 33;
-					}
-				};
-				zone.add(point);
-				point.spawnNow();
+				TrailSceneRegistry.encounter(zone, "bell-" + role.name(),
+						role.x, role.y,
+						player -> BellTrailProgress.needs(player, role),
+						() -> new BellTrailGuard(
+								TrailCreatureVariants.create(role.name), role));
 			}
 		} else {
 			throw new IllegalArgumentException("Unknown bell story zone");
@@ -126,7 +120,55 @@ public final class BellTrailSites implements ZoneConfigurator {
 		npc.setPosition(x, y);
 		npc.setDirection(Direction.DOWN);
 		npc.setDescription(description);
-		zone.add(npc);
+		TrailSceneRegistry.actor(zone, npc, player -> {
+			if (BellTrailProgress.WITNESS.equals(name)) {
+				return at(player, Step.BELL_RETURNED, "witness");
+			}
+			if (BellTrailProgress.LEADER.equals(name)) {
+				return Step.BELL_WOUNDED.available(player)
+						&& !player.isQuestCompleted(Step.BELL_ESCAPE.slot)
+						&& !player.isQuestInState(Step.BELL_ESCAPE.slot, "return");
+			}
+			if (BellTrailProgress.SCHOLAR.equals(name)) {
+				return unmarked(player, Step.BELL_WOUNDED, "wounded", 1)
+						|| Step.BELL_VOICE.available(player)
+								&& !player.isQuestCompleted(Step.BELL_VOICE.slot);
+			}
+			return unmarked(player, Step.BELL_WOUNDED, "wounded", 2);
+		});
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		switch (kind) {
+		case LOG:
+		case INSCRIPTION:
+			return unmarked(player, Step.BELL_VOICE, "clues", kind.bit);
+		case BELL:
+		case BELL_TOP:
+			return unmarked(player, Step.BELL_VOICE, "clues", kind.bit)
+					|| at(player, Step.BELL_GUARD, "silence");
+		case WEST_WARD:
+		case EAST_WARD:
+			return unmarked(player, Step.BELL_GUARD, "wards", kind.bit);
+		case ASSEMBLY:
+			return BellTrailProgress.active(player, Step.BELL_ESCAPE)
+					&& (player.isQuestInState(Step.BELL_ESCAPE.slot, 0, "escort")
+							|| player.isQuestInState(Step.BELL_ESCAPE.slot, 0, "ambush"));
+		default:
+			return at(player, Step.BELL_ESCAPE, "escort;" + (kind.bit - 1));
+		}
+	}
+
+	private static boolean at(Player player, Step step, String state) {
+		return BellTrailProgress.active(player, step)
+				&& player.isQuestInState(step.slot, state);
+	}
+
+	private static boolean unmarked(Player player, Step step, String state,
+			int bit) {
+		return BellTrailProgress.active(player, step)
+				&& player.isQuestInState(step.slot, 0, state)
+				&& (BellTrailProgress.counter(player, step) & bit) == 0;
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -158,6 +200,9 @@ public final class BellTrailSites implements ZoneConfigurator {
 				return false;
 			}
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

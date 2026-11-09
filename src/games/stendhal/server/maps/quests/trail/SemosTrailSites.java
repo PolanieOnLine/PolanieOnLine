@@ -7,10 +7,10 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 
 /**
- * Shared scenery and a carrier; each visitor's delivery progress stays
- * personal.
+ * Private delivery clues and a carrier follow each visitor's progress.
  */
 public final class SemosTrailSites implements ZoneConfigurator {
 	@Override
@@ -43,7 +43,11 @@ public final class SemosTrailSites implements ZoneConfigurator {
 					"Oto Olek. Czeka przy skrzyni, co chwilę zerkając w stronę gospody.");
 			carrier.setPosition(48, 40);
 			carrier.setDirection(Direction.LEFT);
-			zone.add(carrier);
+			TrailSceneRegistry.actor(zone, carrier,
+					player -> Step.SEMOS_PICKUP.available(player)
+							&& (player.isQuestInState(Step.SEMOS_PICKUP.slot, "crate")
+									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "contact")
+									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "question")));
 			break;
 		default:
 			throw new IllegalArgumentException(
@@ -53,8 +57,11 @@ public final class SemosTrailSites implements ZoneConfigurator {
 
 	private void evidence(StendhalRPZone zone, TrailEvidence.Kind kind, int x,
 			int y) {
-		final TrailEvidence prop = new TrailEvidence(kind);
-		prop.setPosition(x, y);
-		zone.add(prop);
+		TrailSceneRegistry.prop(zone, "semos-evidence-" + kind.name(),
+				player -> TrailEvidence.needed(player, kind), () -> {
+					TrailEvidence prop = new TrailEvidence(kind);
+					prop.setPosition(x, y);
+					return prop;
+				});
 	}
 }

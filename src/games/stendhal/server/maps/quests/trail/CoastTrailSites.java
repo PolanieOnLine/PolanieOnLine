@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -172,16 +172,21 @@ public final class CoastTrailSites implements ZoneConfigurator {
 			throw new IllegalArgumentException("Unknown coast story zone");
 		for (Kind kind : Kind.values())
 			if (kind.zone.equals(zone.getName()))
-				zone.add(new Evidence(kind));
+				TrailSceneRegistry.prop(zone, "coast-evidence-" + kind.name(),
+						player -> needed(player, kind), () -> new Evidence(kind));
 		for (Encounter role : Encounter.values())
 			if (role.zone.equals(zone.getName())) {
-				Creature template = TrailCreatureVariants.create(
-						role.name);
-				if (template == null)
-					throw new IllegalStateException(
-							"Missing coast opponent: " + role.name);
-				zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-						new CoastTrailGuard(template, role), 1));
+				TrailSceneRegistry.encounter(zone, "coast-" + role.name(),
+						role.x, role.y,
+						player -> CoastTrailProgress.needs(player, role),
+						() -> {
+							Creature template = TrailCreatureVariants.create(role.name);
+							if (template == null) {
+								throw new IllegalStateException(
+										"Missing story opponent: " + role.name);
+							}
+							return new CoastTrailGuard(template, role);
+						});
 			}
 		if (CoastTrailProgress.WEST.equals(zone.getName())) {
 			SpeakerNPC sailor = new SpeakerNPC(CoastTrailProgress.SAILOR) {
@@ -209,8 +214,18 @@ public final class CoastTrailSites implements ZoneConfigurator {
 			sailor.setDirection(Direction.DOWN);
 			sailor.setDescription(
 					"Oto Lubor. Rozbitek odpoczywa blisko brzegu i nie spuszcza wzroku z morza.");
-			zone.add(sailor);
+			TrailSceneRegistry.actor(zone, sailor,
+					player -> Step.COAST_WRECK.available(player)
+							&& !player.isQuestCompleted(Step.COAST_RETURN.slot));
 		}
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		return CoastTrailProgress.active(player, kind.step)
+				&& (kind.bit == 0
+						? player.isQuestInState(kind.step.slot, kind.state)
+						: player.isQuestInState(kind.step.slot, 0, kind.state)
+								&& (CoastTrailProgress.traces(player) & kind.bit) == 0);
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -241,6 +256,9 @@ public final class CoastTrailSites implements ZoneConfigurator {
 					|| !kind.zone.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

@@ -27,6 +27,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Corpse;
@@ -156,13 +157,11 @@ public class RadanDungeonTest {
 	}
 
 	private RadanDungeonSite.PublicProp prop(boolean entrance) {
-		for (RadanDungeonSite.PublicProp prop : typed(outside,
-				RadanDungeonSite.PublicProp.class)) {
-			if (prop.getDescriptionName().equals(
-					entrance ? "boczny chodnik" : "porzucone narzędzia"))
-				return prop;
-		}
-		throw new AssertionError("Missing public prop");
+		RadanDungeonSite.PublicProp prop = new RadanDungeonSite.PublicProp(entrance);
+		PlayerPrivateScene.assign(prop, player);
+		prop.setPosition(entrance ? 26 : 25, 38);
+		outside.add(prop);
+		return prop;
 	}
 
 	private StendhalRPZone enter() {

@@ -61,6 +61,7 @@ import games.stendhal.server.core.engine.dbcommand.LogKillEventCommand;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.item.CaptureTheFlagFlag;
 import games.stendhal.server.entity.item.Corpse;
@@ -72,6 +73,8 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.RebornSystem;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
+import games.stendhal.server.entity.status.BleedingStatus;
+import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusList;
 import games.stendhal.server.entity.status.StatusType;
@@ -1268,6 +1271,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param target
 	 */
 	public void setTarget(final RPEntity target) {
+		if (!PlayerPrivateScene.canInteract(this, target)) {
+			return;
+		}
 		if (this instanceof Player && attackTarget != target) {
 			TacticalAffixCombatService.targetChanged((Player) this);
 		}
@@ -1304,6 +1310,9 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	public void rememberAttacker(final Entity attacker) {
+		if (!PlayerPrivateScene.canInteract(this, attacker)) {
+			return;
+		}
 		if (!attackSources.contains(attacker)) {
 			attackSources.add(attacker);
 		}
@@ -1464,6 +1473,9 @@ public abstract class RPEntity extends CombatEntity {
 
 	private DamageResult receiveDamage(final Entity attacker, final int incomingDamage,
 			final double armorMultiplier, final boolean bypassArmor) {
+		if (!PlayerPrivateScene.canInteract(this, attacker)) {
+			return DamageResult.NONE;
+		}
 		if ((this instanceof Creature && ((Creature) this).isImmortal())
 				|| (this instanceof Player && ((Player) this).isArenaSpectator())) {
 			return DamageResult.NONE;
@@ -1566,6 +1578,19 @@ public abstract class RPEntity extends CombatEntity {
 	 * @return The damage actually taken (in case HP was < amount).
 	 */
 	public int damage(final int amount, final Killer attacker) {
+		final Entity source;
+		if (attacker instanceof Entity) {
+			source = (Entity) attacker;
+		} else if (attacker instanceof PoisonStatus) {
+			source = ((PoisonStatus) attacker).getSource();
+		} else if (attacker instanceof BleedingStatus) {
+			source = ((BleedingStatus) attacker).getSource();
+		} else {
+			source = null;
+		}
+		if (!PlayerPrivateScene.canInteract(this, source)) {
+			return 0;
+		}
 		final int taken = damage(amount);
 
 		if (hp <= 0) {
@@ -1662,6 +1687,10 @@ public abstract class RPEntity extends CombatEntity {
 	 *         entity is not a Player, or if the equivalent player is not online
 	 */
 	protected Player entityAsOnlinePlayer(Entity entity) {
+		if (PlayerPrivateScene.ownerName(this) != null && entity instanceof DomesticAnimal
+				&& PlayerPrivateScene.canInteract(this, entity)) {
+			entity = ((DomesticAnimal) entity).getOwner();
+		}
 		if (!(entity instanceof Player)) {
 			return null;
 		}
@@ -1730,7 +1759,8 @@ public abstract class RPEntity extends CombatEntity {
 
 			// We ensure that the player gets at least 1 experience
 			// point, because getting nothing lowers motivation.
-			if (reward == 0) {
+			// Explicitly unrewarded private quest actors keep their zero reward.
+			if (reward == 0 && !(oldXP == 0 && PlayerPrivateScene.ownerName(this) != null)) {
 				reward = 1;
 			}
 
@@ -1832,6 +1862,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * players.
 	 */
 	protected void rewardKillerAnimals(final int oldXP) {
+		if (oldXP == 0 && PlayerPrivateScene.ownerName(this) != null) {
+			return;
+		}
 		if (!System.getProperty("stendhal.petleveling", "false").equals("true")) {
 			return;
 		}
@@ -3526,6 +3559,10 @@ public abstract class RPEntity extends CombatEntity {
 	public boolean attack() {
 		boolean result = false;
 		final RPEntity defender = this.getAttackTarget();
+		if (defender == null || !PlayerPrivateScene.canInteract(this, defender)) {
+			stopAttack();
+			return false;
+		}
 
 		// isInZoneandNotDead(defender);
 

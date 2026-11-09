@@ -9,6 +9,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
@@ -25,15 +26,28 @@ public final class RadanDungeonSite implements ZoneConfigurator {
 	@Override
 	public void configureZone(StendhalRPZone zone,
 			Map<String, String> attributes) {
-		PublicProp tools = new PublicProp(false);
-		tools.setPosition(25, 38);
-		zone.add(tools);
-		for (int y = 0; y < 2; y++)
+		TrailSceneRegistry.prop(zone, "radan-tools", player ->
+				player.isQuestCompleted(Step.SEMOS_PICKUP.slot)
+						&& player.isQuestInState(Step.RADAN_PASSAGE.slot, "search"), () -> {
+			final PublicProp tools = new PublicProp(false);
+			tools.setPosition(25, 38);
+			return tools;
+		});
+		for (int y = 0; y < 2; y++) {
 			for (int x = 0; x < 2; x++) {
-				PublicProp entrance = new PublicProp(true, y * 2 + x);
-				entrance.setPosition(26 + x, 38 + y);
-				zone.add(entrance);
+				final int tile = y * 2 + x;
+				final int entryX = 26 + x;
+				final int entryY = 38 + y;
+				TrailSceneRegistry.prop(zone, "radan-entrance-" + tile, player ->
+						player.isQuestCompleted(Step.SEMOS_PICKUP.slot)
+								&& player.hasQuest(Step.RADAN_PASSAGE.slot)
+								&& !player.isQuestCompleted(Step.RADAN_FINALE.slot), () -> {
+					final PublicProp entrance = new PublicProp(true, tile);
+					entrance.setPosition(entryX, entryY);
+					return entrance;
+				});
 			}
+		}
 	}
 
 	static final class PublicProp extends AreaEntity implements UseListener {
@@ -71,6 +85,9 @@ public final class RadanDungeonSite implements ZoneConfigurator {
 					|| !PUBLIC_ZONE.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

@@ -27,6 +27,8 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.Region;
@@ -143,12 +145,20 @@ public class SemosMineStoryTest {
 	}
 
 	private MineTrailEvidence evidence(Kind kind) {
-		for (Entity entity : mine.getEntitiesOfClass(MineTrailEvidence.class)) {
-			MineTrailEvidence prop = (MineTrailEvidence) entity;
-			if (prop.kind == kind)
-				return prop;
+		MineTrailEvidence prop = new MineTrailEvidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = mine;
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
 		}
-		throw new AssertionError(kind);
 	}
 
 	private boolean use(Kind kind) {
@@ -187,6 +197,7 @@ public class SemosMineStoryTest {
 	private Creature courier(int x, int y) {
 		Creature creature = TrailCreatureVariants.create(
 				MineTrailProgress.COURIER);
+		PlayerPrivateScene.assign(creature, player);
 		creature.setPosition(x, y);
 		mine.add(creature);
 		return creature;
@@ -350,7 +361,12 @@ public class SemosMineStoryTest {
 		assertFalse(prop.onUsed(other));
 		townhall.remove(other);
 		mine.add(other);
-		assertTrue(prop.onUsed(other));
+		assertFalse("Another investigator cannot use the owner's clue", prop.onUsed(other));
+		MineTrailEvidence otherProp = new MineTrailEvidence(Kind.BOOTS);
+		PlayerPrivateScene.assign(otherProp, other);
+		otherProp.setPosition(prop.getX(), prop.getY());
+		mine.add(otherProp);
+		assertTrue(otherProp.onUsed(other));
 		assertSame(mine, prop.getZone());
 		assertEquals("clues;2", other.getQuest(Step.MINE_TRACKS.slot));
 		assertEquals("clues;2", player.getQuest(Step.MINE_TRACKS.slot));
@@ -429,8 +445,22 @@ public class SemosMineStoryTest {
 		assertEquals(30, courier.getLevel());
 		assertEquals(240, courier.getBaseHP());
 		assertEquals(60, courier.getBaseArmorHP());
-		assertEquals(1, mine.getRespawnPointList().size());
-		assertEquals(MineTrailProgress.COURIER, mine.getRespawnPointList().get(
-				0).getPrototypeCreature().getName());
+		assertTrue(mine.getRespawnPointList().isEmpty());
+		ready(30);
+		player.setQuest(Step.MINE_VOICES.slot, "done");
+		player.setQuest(Step.MINE_DISPATCH.slot, "guard");
+		move(mine);
+		refreshScene();
+		Creature spawnedCourier = null;
+		for (Entity entity : mine.getEntitiesOfClass(Creature.class)) {
+			if (PlayerPrivateScene.isOwnedBy(entity, player)) {
+				spawnedCourier = (Creature) entity;
+			}
+		}
+		assertNotNull(spawnedCourier);
+		assertEquals(MineTrailProgress.COURIER, spawnedCourier.getName());
+		assertEquals(MineTrailProgress.COURIER_X, spawnedCourier.getX());
+		assertEquals(MineTrailProgress.COURIER_Y, spawnedCourier.getY());
+		assertTrue(mine.getRespawnPointList().isEmpty());
 	}
 }

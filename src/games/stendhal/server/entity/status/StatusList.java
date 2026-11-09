@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 
 /**
@@ -189,7 +190,7 @@ public class StatusList {
 	 * @return true, if the was inflected; false if the RPEntity is immune.
 	 */
 	public boolean inflictStatus(final Status status, final Entity attacker) {
-		if (isImmune(status.getStatusType())) {
+		if (!PlayerPrivateScene.canInteract(getEntity(), attacker) || isImmune(status.getStatusType())) {
 			return false;
 		}
 		status.getStatusType().getStatusHandler().inflict(status, this, attacker);

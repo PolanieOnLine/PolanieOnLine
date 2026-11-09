@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,9 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.QuestMarkerService;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
@@ -150,14 +152,20 @@ public class BellTrailStoryTest {
 	}
 
 	private BellTrailSites.Evidence evidence(Kind kind) {
-		for (Object object : islands.getEntitiesOfClass(
-				BellTrailSites.Evidence.class)) {
-			BellTrailSites.Evidence result = (BellTrailSites.Evidence) object;
-			if (result.kind == kind) {
-				return result;
-			}
+		BellTrailSites.Evidence prop = new BellTrailSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = islands;
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
 		}
-		throw new AssertionError(kind);
 	}
 
 	private boolean use(Kind kind) {
@@ -167,27 +175,27 @@ public class BellTrailStoryTest {
 	}
 
 	private BellTrailGuard guard(Encounter role, boolean legitimate) {
-		if (legitimate) {
-			for (Object entity : islands.getEntitiesOfClass(
-					BellTrailGuard.class)) {
+		StendhalRPZone zone = islands;
+		if (legitimate && player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(BellTrailGuard.class)) {
 				BellTrailGuard current = (BellTrailGuard) entity;
-				if (current.role == role && current.getRespawnPoint() != null) {
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role
+						&& current.getRespawnPoint() != null) {
 					return current;
 				}
 			}
+			assertFalse("An active owned encounter must be reconstructed", BellTrailProgress.needs(player, role));
 		}
-		for (CreatureRespawnPoint source : islands.getRespawnPointList()) {
-			if (source.getX() == role.x && source.getY() == role.y) {
-				BellTrailGuard guard = (BellTrailGuard) source.getPrototypeCreature().getNewInstance();
-				if (legitimate) {
-					guard.setRespawnPoint(source);
-				}
-				guard.setPosition(role.x, role.y);
-				islands.add(guard);
-				return guard;
-			}
+		BellTrailGuard guard = new BellTrailGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(role.x, role.y);
+		if (legitimate) {
+			guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
 		}
-		throw new AssertionError(role);
+		zone.add(guard);
+		return guard;
 	}
 
 	private void kill(Encounter role) {
@@ -452,20 +460,27 @@ public class BellTrailStoryTest {
 	}
 
 	@Test
-	public void mandatoryEncountersArePresentImmediatelyAndHaveShortRespawns()
+	public void mandatoryEncountersExistOnlyAtTheOwnersActiveCheckpoint()
 			throws Exception {
-		assertEquals(2, islands.getRespawnPointList().size());
-		for (CreatureRespawnPoint point : islands.getRespawnPointList()) {
-			assertEquals(1, point.size());
-			Method delay = point.getClass().getDeclaredMethod(
-					"calculateNextRespawnTurn");
-			delay.setAccessible(true);
-			assertEquals(33, delay.invoke(point));
-		}
+		assertTrue(islands.getRespawnPointList().isEmpty());
+		assertTrue(islands.getEntitiesOfClass(BellTrailGuard.class).isEmpty());
+		before(Step.BELL_GUARD);
+		player.setQuest(Step.BELL_GUARD.slot, "fight");
+		move(islands);
+		refreshScene();
+		BellTrailGuard warden = guard(Encounter.WARDEN, true);
+		assertTrue(PlayerPrivateScene.isOwnedBy(warden, player));
+		assertEquals(Encounter.WARDEN.x, warden.getX());
+		assertEquals(Encounter.WARDEN.y, warden.getY());
+		assertEquals(1, islands.getEntitiesOfClass(BellTrailGuard.class).size());
+		player.setQuest(Step.BELL_GUARD.slot, "silence");
+		refreshScene();
+		assertTrue(islands.getEntitiesOfClass(BellTrailGuard.class).isEmpty());
+		assertTrue(islands.getRespawnPointList().isEmpty());
 	}
 
 	@Test
-	public void abandonedGuardStopsFollowingRemovedPlayerAndReturnsHome() {
+	public void abandonedGuardStopsFollowingAndLeavesTheWorldWithItsOwner() {
 		before(Step.BELL_GUARD);
 		player.setQuest(Step.BELL_GUARD.slot, "fight");
 		move(islands);
@@ -476,8 +491,7 @@ public class BellTrailStoryTest {
 		islands.remove(player);
 		guard.logic();
 		assertNull(guard.getAttackTarget());
-		assertEquals(Encounter.WARDEN.x, guard.getX());
-		assertEquals(Encounter.WARDEN.y, guard.getY());
+		assertFalse("Leaving removes the abandoned private encounter", islands.has(guard.getID()));
 	}
 
 }

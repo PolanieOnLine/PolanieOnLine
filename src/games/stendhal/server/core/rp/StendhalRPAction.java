@@ -42,6 +42,7 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.DomesticAnimal;
@@ -104,6 +105,9 @@ public class StendhalRPAction {
 	 *	 The target of attack.
 	 */
 	public static void startAttack(final Player player, final RPEntity victim) {
+		if (!PlayerPrivateScene.canInteract(player, victim)) {
+			return;
+		}
 		// Player's can't attack themselves
 		if (player.equals(victim)) {
 			return;
@@ -298,6 +302,9 @@ public class StendhalRPAction {
 	 *
 	 */
 	public static boolean playerAttack(final Player player, final RPEntity defender) {
+		if (!PlayerPrivateScene.canInteract(player, defender)) {
+			return false;
+		}
 		boolean result = false;
 
 		final StendhalRPZone zone = player.getZone();

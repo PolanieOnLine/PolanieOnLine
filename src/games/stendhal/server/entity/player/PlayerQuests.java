@@ -21,6 +21,7 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rp.achievement.condition.ChildFriendQuestCondition;
 import games.stendhal.server.util.QuestUtils;
+import games.stendhal.server.maps.quests.trail.TrailSceneRegistry;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -99,6 +100,7 @@ class PlayerQuests {
 		ChildFriendQuestCondition.rememberCompletion(player, name, oldStatus, status);
 		if ((status == null) || !status.equals(oldStatus)) {
 			new GameEvent(player.getName(), "quest", QuestUtils.evaluateQuestSlotName(name), status).raise();
+			TrailSceneRegistry.questChanged(player, name);
 		}
 		// check for reached achievements
 		SingletonRepository.getAchievementNotifier().onFinishQuest(player);
@@ -186,6 +188,7 @@ class PlayerQuests {
 
 	public void removeQuest(final String name) {
 		player.setKeyedSlot("!quests", QuestUtils.evaluateQuestSlotName(name), null);
+		TrailSceneRegistry.questChanged(player, name);
 	}
 
 	/**

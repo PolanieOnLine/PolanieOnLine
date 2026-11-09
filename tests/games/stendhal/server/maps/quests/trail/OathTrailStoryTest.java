@@ -32,6 +32,9 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.krakow.archeologist.ArcheologistNPC;
@@ -146,12 +149,20 @@ public class OathTrailStoryTest {
 	}
 
 	private OathTrailSites.Evidence evidence(Kind kind) {
-		StendhalRPZone z = kind.zone.equals(OathTrailProgress.NORTH) ? north
-				: west;
-		for (Object e : z.getEntitiesOfClass(OathTrailSites.Evidence.class))
-			if (((OathTrailSites.Evidence) e).kind == kind)
-				return (OathTrailSites.Evidence) e;
-		throw new AssertionError(kind);
+		OathTrailSites.Evidence prop = new OathTrailSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = kind.zone.equals(OathTrailProgress.NORTH) ? north : west;
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -162,13 +173,23 @@ public class OathTrailStoryTest {
 	}
 
 	private OathTrailGuard guard(Encounter role) {
-		StendhalRPZone z = role.zone.equals(OathTrailProgress.NORTH) ? north
-				: west;
-		CreatureRespawnPoint source = z.getRespawnPointList().get(0);
-		OathTrailGuard guard = (OathTrailGuard) source.getPrototypeCreature().getNewInstance();
-		guard.setRespawnPoint(source);
+		StendhalRPZone zone = role.zone.equals(OathTrailProgress.NORTH) ? north : west;
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(OathTrailGuard.class)) {
+				OathTrailGuard current = (OathTrailGuard) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role) {
+					return current;
+				}
+			}
+			assertFalse("An active owned encounter must be reconstructed", OathTrailProgress.needs(player, role));
+		}
+		OathTrailGuard guard = new OathTrailGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
 		guard.setPosition(role.x, role.y);
-		z.add(guard);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
+		zone.add(guard);
 		return guard;
 	}
 
@@ -261,7 +282,7 @@ public class OathTrailStoryTest {
 		visit("Wagabundus");
 		say("Wagabundus", "wspólny pochówek");
 		assertTrue(player.isQuestCompleted(Step.OATH_BURIAL.slot));
-		assertEquals(92002, player.getXP() - xp);
+		assertEquals(92000, player.getXP() - xp);
 		assertEquals(2000, player.getTotalNumberOf("money"));
 		Item item = player.getFirstEquipped("magiczna tarcza płytowa");
 		assertNotNull(item);

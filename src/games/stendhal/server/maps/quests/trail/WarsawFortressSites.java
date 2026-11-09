@@ -6,10 +6,10 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
+import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.area.AreaEntity;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -122,15 +122,20 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 		if (!WarsawFortressProgress.ZONE.equals(zone.getName()))
 			throw new IllegalArgumentException("Unknown Warsaw fortress");
 		for (Kind kind : Kind.values())
-			zone.add(new Evidence(kind));
+			TrailSceneRegistry.prop(zone, "warsaw-evidence-" + kind.name(),
+					player -> needed(player, kind), () -> new Evidence(kind));
 		for (Encounter role : Encounter.values()) {
-			Creature template = TrailCreatureVariants.create(
-					role.name);
-			if (template == null)
-				throw new IllegalStateException(
-						"Missing fortress opponent: " + role.name);
-			zone.add(new CreatureRespawnPoint(zone, role.x, role.y,
-					new WarsawFortressGuard(template, role), 1));
+			TrailSceneRegistry.encounter(zone, "warsawfortress-" + role.name(),
+					role.x, role.y,
+						player -> WarsawFortressProgress.needs(player, role),
+					() -> {
+						Creature template = TrailCreatureVariants.create(role.name);
+						if (template == null) {
+							throw new IllegalStateException(
+									"Missing story opponent: " + role.name);
+						}
+						return new WarsawFortressGuard(template, role);
+					});
 		}
 		SpeakerNPC healer = new SpeakerNPC(WarsawFortressProgress.HEALER) {
 			@Override
@@ -153,7 +158,9 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 		healer.setDirection(Direction.DOWN);
 		healer.setDescription(
 				"Oto Dobrosława. Niestrudzenie opiekuje się rannymi mieszkańcami warowni.");
-		zone.add(healer);
+		TrailSceneRegistry.actor(zone, healer,
+				player -> Step.WARSAW_GATE.available(player)
+						&& !player.isQuestCompleted(Step.WARSAW_FIRE.slot));
 		SpeakerNPC soldier = new SpeakerNPC(WarsawFortressProgress.SOLDIER) {
 			@Override
 			protected void createDialog() {
@@ -175,7 +182,20 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 		soldier.setDirection(Direction.DOWN);
 		soldier.setDescription(
 				"Oto Wszemił. Zmęczony dowódca warty czuwa przy swoich ludziach.");
-		zone.add(soldier);
+		TrailSceneRegistry.actor(zone, soldier,
+				player -> Step.WARSAW_WITNESSES.available(player)
+						&& !player.isQuestCompleted(Step.WARSAW_TRUCE.slot)
+						&& !player.isQuestInState(Step.WARSAW_TRUCE.slot, "prince")
+						&& !player.isQuestInState(Step.WARSAW_TRUCE.slot, "ready"));
+	}
+
+	private static boolean needed(Player player, Kind kind) {
+		return WarsawFortressProgress.active(player, kind.step)
+				&& (kind.bit == 0
+						? player.isQuestInState(kind.step.slot, kind.state)
+						: player.isQuestInState(kind.step.slot, 0, kind.state)
+								&& (WarsawFortressProgress.mask(player, kind.step)
+										& kind.bit) == 0);
 	}
 
 	static final class Evidence extends AreaEntity implements UseListener {
@@ -205,6 +225,9 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 					|| !WarsawFortressProgress.ZONE.equals(getZone().getName()))
 				return false;
 			Player player = (Player) user;
+			if (!PlayerPrivateScene.isOwnedBy(this, player)) {
+				return false;
+			}
 			if (!player.nextTo(this)) {
 				player.sendPrivateText("Musisz podejść bliżej.");
 				return false;

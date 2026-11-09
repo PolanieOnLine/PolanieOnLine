@@ -26,6 +26,9 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.*;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.PlayerPrivateScene;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.quests.IQuest;
@@ -136,11 +139,20 @@ public class WarsawFortressStoryTest {
 	}
 
 	private WarsawFortressSites.Evidence evidence(Kind kind) {
-		for (Object e : inside.getEntitiesOfClass(
-				WarsawFortressSites.Evidence.class))
-			if (((WarsawFortressSites.Evidence) e).kind == kind)
-				return (WarsawFortressSites.Evidence) e;
-		throw new AssertionError(kind);
+		WarsawFortressSites.Evidence prop = new WarsawFortressSites.Evidence(kind);
+		PlayerPrivateScene.assign(prop, player);
+		StendhalRPZone zone = inside;
+		zone.add(prop);
+		return prop;
+	}
+
+	private void refreshScene() {
+		TrailSceneRegistry.refreshLater(player);
+		TurnNotifier notifier = TurnNotifier.get();
+		int start = Math.max(0, notifier.getCurrentTurnForDebugging());
+		for (int turn = start + 1; turn <= start + 3; turn++) {
+			notifier.logic(turn);
+		}
 	}
 
 	private boolean use(Kind kind) {
@@ -151,15 +163,24 @@ public class WarsawFortressStoryTest {
 	}
 
 	private WarsawFortressGuard guard(Encounter role) {
-		for (CreatureRespawnPoint source : inside.getRespawnPointList())
-			if (source.getX() == role.x && source.getY() == role.y) {
-				WarsawFortressGuard guard = (WarsawFortressGuard) source.getPrototypeCreature().getNewInstance();
-				guard.setRespawnPoint(source);
-				guard.setPosition(role.x, role.y);
-				inside.add(guard);
-				return guard;
+		StendhalRPZone zone = inside;
+		if (player.getZone() == zone) {
+			refreshScene();
+			for (Entity entity : zone.getEntitiesOfClass(WarsawFortressGuard.class)) {
+				WarsawFortressGuard current = (WarsawFortressGuard) entity;
+				if (PlayerPrivateScene.isOwnedBy(current, player) && current.role == role) {
+					return current;
+				}
 			}
-		throw new AssertionError(role);
+			assertFalse("An active owned encounter must be reconstructed", WarsawFortressProgress.needs(player, role));
+		}
+		WarsawFortressGuard guard = new WarsawFortressGuard(
+				TrailCreatureVariants.create(role.name), role);
+		PlayerPrivateScene.assign(guard, player);
+		guard.setPosition(role.x, role.y);
+		guard.setRespawnPoint(new CreatureRespawnPoint(zone, role.x, role.y, guard, 1));
+		zone.add(guard);
+		return guard;
 	}
 
 	private void kill(Encounter role) {
@@ -246,7 +267,7 @@ public class WarsawFortressStoryTest {
 		visit("rycerz Mark");
 		say("rycerz Mark", "ocalenie załogi");
 		assertTrue(player.isQuestCompleted(Step.WARSAW_TRUCE.slot));
-		assertEquals(180002, player.getXP() - xp);
+		assertEquals(180000, player.getXP() - xp);
 		assertEquals(5000, player.getTotalNumberOf("money"));
 		Item item = player.getFirstEquipped("magiczna zbroja płytowa");
 		assertNotNull(item);
