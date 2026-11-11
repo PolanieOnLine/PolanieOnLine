@@ -25,9 +25,13 @@ export class Floater {
 	}
 
 	draw(ctx: RenderingContext2D, x: number, y: number): boolean {
-		let textOffset = this.textSprite.getTextMetrics(ctx).width / 2;
-		var timeDiff = Date.now() - this.initTime;
-		this.textSprite.draw(ctx, x - textOffset, y - timeDiff / 50);
+		const metrics = this.textSprite.getTextMetrics(ctx);
+		const textOffset = metrics.width / 2;
+		const ascent = Math.ceil(metrics.fontBoundingBoxAscent ?? metrics.actualBoundingBoxAscent ?? 12);
+		const descent = Math.ceil(metrics.fontBoundingBoxDescent ?? metrics.actualBoundingBoxDescent ?? 3);
+		const timeDiff = Date.now() - this.initTime;
+		const rise = Math.min(timeDiff, 2000) * (ascent + descent) / 2000;
+		this.textSprite.draw(ctx, x - textOffset, y - descent - rise);
 		return (timeDiff > 2000);
 	}
 

@@ -52,7 +52,17 @@ public class RPEntityFloatingTextTest {
 				assertEquals(Color.RED.getRGB(), image.getRGB(damage.x, row));
 			}
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(30, 61 + offset));
-			assertEquals(39 + offset, damage.y);
+			assertEquals(43 + offset, damage.y);
+			int firstY = damage.y;
+			age.setInt(indicator, 2000);
+			graphics = image.createGraphics();
+			try {
+				view.drawTop(graphics, 20, 64, 34, 32);
+			} finally {
+				graphics.dispose();
+			}
+			assertTrue("Damage must stay within one text line of its starting height",
+					firstY - damage.y <= damage.getHeight());
 		}
 	}
 
