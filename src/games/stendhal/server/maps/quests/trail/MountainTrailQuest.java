@@ -94,7 +94,7 @@ public final class MountainTrailQuest extends TrailQuest {
 			}, "więzy", "wiezy", "uwolnij", "woźnica", "woznica");
 			break;
 		case MOUNTAIN_CARGO:
-			offer("Obejrzyj skrzynię obok Miłosza we wschodnim Kościelisku. Jeśli znajdziesz znak na ostrzach, "
+			offer("Wróć na wschodni skraj polany w Kościelisku, tam, gdzie więziono Miłosza. Została tam skrzynia z bronią. Jeśli znajdziesz znak na ostrzach, "
 					+ "przerysuj go dla mnie. Miałem wielu dostawców, może poznam, od kogo pochodzi ta #'ukryta broń'.");
 			reply(step.npc, (player, sentence, speaker) -> {
 				if (MountainTrailProgress.active(player, step)
@@ -256,7 +256,7 @@ public final class MountainTrailQuest extends TrailQuest {
 			speaker.say(player.isQuestInState(step.slot, "briefing")
 					? "Drilenun w koszarach w Ados musi usłyszeć o tym transporcie broni. To już nie jest zwykła kradzież."
 					: "Stasek".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
-							? "Obejrzyj ostrza w skrzyni obok Miłosza. Jeśli mają znak dostawcy, spróbuję go rozpoznać."
+							? "Skrzynia została tam, gdzie więziono Miłosza, na wschodnim skraju polany. Obejrzyj ostrza. Jeśli mają znak dostawcy, spróbuję go rozpoznać."
 							: "Ostrza w skrzyni obok Miłosza powinny mieć znak dostawcy. Stasek handluje tu od lat, może go pozna.");
 			break;
 		case MOUNTAIN_BATTLE:

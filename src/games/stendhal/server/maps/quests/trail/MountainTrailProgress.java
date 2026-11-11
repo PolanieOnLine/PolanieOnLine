@@ -128,7 +128,7 @@ final class MountainTrailProgress {
 					+ " przy woźnicy, na wschodzie polany w Kościelisku (91–93,65).";
 		case MOUNTAIN_CARGO:
 			if ("cargo".equals(state))
-				return "Sprawdź skrzynię z ukrytą bronią obok woźnicy we wschodnim Kościelisku (90,65).";
+				return "Wróć na wschodni skraj polany w Kościelisku. Sprawdź skrzynię z bronią w miejscu, gdzie więziono Miłosza.";
 			if ("stasek".equals(state))
 				return "Pokaż Staskowi znak z głowni znalezionej broni. Powiedz: ukryta broń.";
 			return "Zanieś wieści o broni Drilenunowi w koszarach w Ados. Powiedz: transport broni.";
