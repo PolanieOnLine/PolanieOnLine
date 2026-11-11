@@ -45,6 +45,7 @@ import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.DropTarget;
+import games.stendhal.client.gui.CompassOverlay;
 import games.stendhal.client.gui.EffectLayer;
 import games.stendhal.client.gui.GroundContainer;
 import games.stendhal.client.gui.ItemUpgradeWindow;
@@ -73,6 +74,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private static final long serialVersionUID = -4070406295913030925L;
 
 	private static final Logger logger = Logger.getLogger(GameScreen.class);
+	private final CompassOverlay compassOverlay = new CompassOverlay();
 
 	/** Map KeyEvents to a number, i.e. to determine position in spells slot based on pressed key **/
 	private static final Map<Integer, Integer> keyEventMapping = new HashMap<>();
@@ -543,6 +545,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			// Text/emoji placement uses this same frame's displayed camera.
 			drawText(g2d, viewX, viewY);
 			drawEmojis(g2d, viewX, viewY);
+			compassOverlay.draw(g2d, getWidth(), x, y);
 			drawFpsCounter(g2d);
 
 			paintOffLineIfNeeded(g2d);

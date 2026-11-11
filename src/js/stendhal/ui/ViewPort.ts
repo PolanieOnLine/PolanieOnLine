@@ -40,6 +40,7 @@ import { AdminDiagnostics } from "../util/AdminDiagnostics";
 import { TileMap } from "data/TileMap";
 import { UiStateStore } from "./mobile/UiStateStore";
 import { Creature } from "../entity/Creature";
+import { drawNavigationCompass } from "./render/NavigationCompass";
 
 /**
  * game window aka world view
@@ -245,6 +246,8 @@ export class ViewPort {
 				this.drawEmojiSprites();
 				this.drawTextSprites();
 				this.drawTextSprites(this.notifSprites);
+				drawNavigationCompass(this.ctx, marauroa.me, marauroa.currentZoneName,
+					this.logicalWidth, this.devicePixelRatio);
 
 				// Content is refreshed after a perception; only icon frames change here.
 				stendhal.ui.equip.animate();
