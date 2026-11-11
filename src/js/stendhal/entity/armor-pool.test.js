@@ -82,16 +82,18 @@ test("floating damage is painted after bars and names", () => {
 	assert.deepEqual(order, ["bar", "name", "damage"]);
 });
 
-test("floating damage starts above names and armored bars including screen offsets", () => {
+test("floating damage follows sprite height without an extra name or armor offset", () => {
 	const { entity } = harness();
 	Object.assign(entity, { _x: 2, _y: 4, statusBarYOffset: 12, base_armor_hp: 100 });
 	entity.titleTextSprite = { getTextMetrics: () => ({ actualBoundingBoxAscent: 10 }) };
 	const draws = [];
 	entity.floaters = [{ draw: (ctx, x, y) => { draws.push([x, y]); return false; } }];
 	entity.drawFloaters({});
-	// Bar top: 128 + 12 - 10 = 130. Name baseline: 119, glyph top: 109.
-	assert.deepEqual(draws[0], [80, 106]);
+	assert.deepEqual(draws[0], [80, 140]);
 	entity.titleTextSprite = undefined;
 	entity.drawFloaters({});
-	assert.deepEqual(draws[1], [80, 127]);
+	assert.deepEqual(draws[1], [80, 140]);
+	entity.drawHeight = 64;
+	entity.drawFloaters({});
+	assert.deepEqual(draws[2], [80, 108]);
 });

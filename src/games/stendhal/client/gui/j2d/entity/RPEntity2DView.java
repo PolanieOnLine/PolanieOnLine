@@ -355,11 +355,10 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			final TextIndicator indicator = floater.getKey();
 			final Sprite sprite = floater.getValue();
 			final int age = indicator.getAge();
-			final int rise = (int) (Math.min(age, 2000L) * sprite.getHeight() / 2000L);
+			final int rise = Math.min(IGameScreen.SIZE_UNIT_PIXELS, (int) (age * 5L / 300L));
 
 			final int tx = x + (width - sprite.getWidth()) / 2;
-			final int ty = y + titleDrawYOffset - getStatusBarHeight()
-					- sprite.getHeight() - 2 - rise;
+			final int ty = y + titleDrawYOffset - sprite.getHeight() - rise;
 			sprite.draw(g2d, tx, ty);
 		}
 	}

@@ -581,14 +581,8 @@ export class RPEntity extends ActiveEntity {
 	drawFloaters(ctx: RenderingContext2D) {
 		var centerX = (this["_x"] + this["width"] / 2) * 32;
 		const localY = this["_y"] * 32 + this.statusBarYOffset;
-		var topY = localY + (this["height"] * 32) - this["drawHeight"]
-			- this.getHealthBarHeight() + this.titleDrawYOffset;
-		if (this.titleTextSprite) {
-			const metrics = this.titleTextSprite.getTextMetrics(ctx);
-			topY -= 5 + HEALTH_BAR_HEIGHT + Math.ceil(metrics.actualBoundingBoxAscent ?? 12) + 3;
-		} else {
-			topY -= 3;
-		}
+		const topY = localY + (this["height"] * 32) - this["drawHeight"]
+			+ this.titleDrawYOffset;
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
