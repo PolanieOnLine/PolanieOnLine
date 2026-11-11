@@ -303,9 +303,6 @@ class ProgressLog {
 			if (indexQuery != null) {
 				indexQuery.fire(indexQueryData);
 			}
-			if (contentQuery != null && (contentQueryData != null)) {
-				contentQuery.fire(contentQueryData);
-			}
 		}
 
 		/**
@@ -356,6 +353,11 @@ class ProgressLog {
 		 * @param repeatable names of repeatable quests
 		 */
 		void setIndex(List<String> subjects, ProgressStatusQuery onClick, Collection<String> repeatable) {
+			subjects = new ArrayList<>(subjects);
+			subjects.removeIf(subject -> subject == null || subject.trim().isEmpty());
+			if (!subjects.contains(contentQueryData)) {
+				clearContent();
+			}
 			/*
              * Main quests arrive in story order with the current task first.
              * Other pages retain alphabetical ordering.
@@ -389,9 +391,19 @@ class ProgressLog {
 			contentQuery = onClick;
 
 			indexArea.setText(text.toString());
-            if ("Zadania główne".equals(indexQueryData) && onClick != null && !subjects.isEmpty()) {
-                onClick.fire(subjects.get(0));
-            }
+			if (contentQueryData == null && "Zadania główne".equals(indexQueryData)
+					&& !subjects.isEmpty()) {
+				contentQueryData = subjects.get(0);
+			}
+			if (onClick != null && contentQueryData != null) {
+				onClick.fire(contentQueryData);
+			}
+		}
+
+		private void clearContent() {
+			contentQueryData = null;
+			contentArea.putClientProperty(QuestRewardsPanel.PROPERTY, null);
+			contentArea.setText("");
 		}
 
 		/**
@@ -420,6 +432,9 @@ class ProgressLog {
 		 */
 		void setContent(String header, String description, String information,
 				List<String> contents, boolean repeatable, QuestRewardPreview rewards) {
+			if (header == null || !header.equals(contentQueryData)) {
+				return;
+			}
 			contentArea.putClientProperty(QuestRewardsPanel.PROPERTY, rewards);
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());

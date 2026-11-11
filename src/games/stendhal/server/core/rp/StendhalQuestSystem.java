@@ -788,6 +788,9 @@ public class StendhalQuestSystem {
 	 */
 	public List<String> getQuestProgressDetails(final Player player, final String questName) {
 		List<String> res = new LinkedList<String>();
+		if (questName == null || questName.trim().isEmpty()) {
+			return res;
+		}
 		for (final IQuest quest : quests) {
 			final QuestInfo questInfo = quest.getQuestInfo(player);
 			if (questInfo.getName().equals(questName)) {
@@ -798,8 +801,8 @@ public class StendhalQuestSystem {
                     if (objective != null && !objective.isEmpty()) { res.add("Aktualny cel: " + objective); }
                 }
 				final List<String> history = quest.getFormattedHistory(player);
-				for (final String entry : history) {
-					res.add(entry);
+				if (history != null) {
+					res.addAll(history);
 				}
 			}
 		}

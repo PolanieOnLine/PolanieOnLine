@@ -162,6 +162,9 @@ public class ProgressLogController {
 		 */
 		@Override
 		public void fire(String data) {
+			if ("item".equals(dataKey) && (data == null || data.trim().isEmpty())) {
+				return;
+			}
 			RPAction action = new RPAction();
 			action.put("type", Actions.PROGRESS_STATUS);
 			if (progressType != null) {

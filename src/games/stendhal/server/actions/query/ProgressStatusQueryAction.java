@@ -52,7 +52,7 @@ public class ProgressStatusQueryAction implements ActionListener {
 	public void onAction(final Player player, final RPAction action) {
 		if (!action.has("progress_type")) {
 			sendProgressTypes(player);
-		} else if (!action.has(ITEM)) {
+		} else if (!action.has(ITEM) || action.get(ITEM).trim().isEmpty()) {
 			sendItemList(player, action.get("progress_type"));
 		} else {
 			sendDetails(player, action.get("progress_type"), action.get(ITEM));
@@ -113,6 +113,10 @@ public class ProgressStatusQueryAction implements ActionListener {
 		if (progressType.equals("Otwarte zadania") || progressType.equals("Ukończone zadania")
                 || progressType.equals("Zadania główne") || progressType.equals("Zadania poboczne")) {
             final IQuest quest = questSystem.getQuest(player, item);
+            if (quest == null) {
+                sendItemList(player, progressType);
+                return;
+            }
             final String information = questSystem.getQuestLevelWarning(player, item);
             String description = questSystem.getQuestDescription(player, item);
             if (quest != null && quest.getQuestInfo(player).isMainQuest()) {

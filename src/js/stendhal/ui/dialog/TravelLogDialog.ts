@@ -27,6 +27,8 @@ export class TravelLogDialog extends DialogContentComponent {
 	private currentProgressType = "";
 	private repeatable: {[key: string]: boolean;} = {};
 	private rewards?: ReturnType<typeof createQuestRewards>;
+	private availableItems?: string[];
+	private requestedItem?: string;
 
 	constructor(dataItems?: string[]) {
 		super("travellogdialog-template");
@@ -103,6 +105,8 @@ export class TravelLogDialog extends DialogContentComponent {
 	private onProgressTypeButtonClick(event: Event) {
 		// clear details when changing category
 		this.refreshDetails();
+		this.availableItems = [];
+		this.requestedItem = undefined;
 
 		this.currentProgressType = (event.target as HTMLElement).id;
 		this.updateTabs();
@@ -127,6 +131,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			// ignore options without value
 			return;
 		}
+		this.requestedItem = value;
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType,
@@ -140,12 +145,12 @@ export class TravelLogDialog extends DialogContentComponent {
 		if (progressType !== this.currentProgressType) {
 			return;
 		}
-		if (dataItems.length == 1 && dataItems[0] === "") {
-			// prevent infinitely re-sending request when list is technically empty
-			dataItems = [];
-		}
+		dataItems = dataItems.filter(item => item.trim().length > 0);
+		this.refreshDetails();
 		// sort items alphabetically
         dataItems = progressType === "Zadania główne" ? [...dataItems] : [...dataItems].sort();
+		this.availableItems = dataItems;
+		this.requestedItem = dataItems[0];
 		var html = "";
 		for (var i = 0; i < dataItems.length; i++) {
 			const currentItem = dataItems[i];
@@ -174,6 +179,10 @@ export class TravelLogDialog extends DialogContentComponent {
 
 	public itemData(progressType: string, selectedItem: string, description: string, dataItems: string[], rewards?: QuestRewardData) {
 		if (progressType !== this.currentProgressType) {
+			return;
+		}
+		if ((this.availableItems && !this.availableItems.includes(selectedItem))
+				|| (this.requestedItem !== undefined && this.requestedItem !== selectedItem)) {
 			return;
 		}
 
