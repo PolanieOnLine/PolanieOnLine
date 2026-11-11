@@ -35,6 +35,7 @@ import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
+import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.PurpleDragon;
 import games.stendhal.server.entity.creature.RaidCreature;
 import games.stendhal.server.entity.creature.Sheep;
@@ -43,7 +44,9 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.block.Block;
 import games.stendhal.server.entity.mapstuff.portal.Gate;
 import games.stendhal.server.entity.player.Player;
+import marauroa.common.game.IRPZone;
 import marauroa.common.game.RPAction;
+import marauroa.common.game.RPObject;
 
 public class SummonAction extends AdministrationAction {
 	private static final String ELITE = "elite";
@@ -81,6 +84,29 @@ public class SummonAction extends AdministrationAction {
 		abstract void found(String type, Entity entity);
 		abstract void error(String message);
 
+		private boolean hasExistingPet() {
+			// Saved pets and companions left in another zone must not be replaced.
+			if (player.hasSlot("#pets") && player.getSlot("#pets").size() > 0) {
+				return true;
+			}
+			if (player.getPet() != null) {
+				return true;
+			}
+			for (final IRPZone zone : SingletonRepository.getRPWorld()) {
+				for (final RPObject object : zone) {
+					if (object instanceof Pet && ((Pet) object).getOwner() == player) {
+						return true;
+					}
+				}
+			}
+			if (player.hasPet()) {
+				logger.warn("Removing orphaned pet reference for " + player.getName());
+				player.removePet(null);
+				player.notifyWorldAboutChanges();
+			}
+			return false;
+		}
+
 		/**
 		 * Create the named entity (creature, pet or sheep) of type 'type'.
 		 *
@@ -107,42 +133,42 @@ public class SummonAction extends AdministrationAction {
 				}
 				found(type, entity);
 			} else if ("cat".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					final Cat cat = new Cat(player);
 					found(type, cat);
 				}
 			} else if ("owczarek".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					final Owczarek owczarek = new Owczarek(player);
 					found(type, owczarek);
 				}
 			} else if ("owczarek podhalański".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					final OwczarekPodhalanski owczarek_podhalanski = new OwczarekPodhalanski(player);
 					found(type, owczarek_podhalanski);
 				}
 			} else if ("baby dragon".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					final BabyDragon dragon = new BabyDragon(player);
 					found(type, dragon);
 				}
 			} else if ("purple dragon".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					final PurpleDragon dragon = new PurpleDragon(player);
 					found(type, dragon);
 				}
 			} else if ("duszek".equals(type)) {
-				if (player.hasPet()) {
+				if (hasExistingPet()) {
 					error("Już masz własne zwierzątko!");
 				} else {
 					found(type, new Duszek());

@@ -17,6 +17,7 @@ import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.RPAction;
+import marauroa.common.game.RPSlot;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -97,5 +98,43 @@ public class CompanionSummonActionTest {
 		assertFalse(player.hasGoat());
 		assertNull(player.getGoat());
 		assertTrue(player.hasPet());
+	}
+
+	@Test
+	public void orphanedPetReferenceDoesNotPreventSummoningANewCompanion() {
+		player.put("pet", 123456);
+		new SummonAction().perform(player, summon("duszek"));
+		assertTrue(player.getPet() instanceof Duszek);
+		assertSame(player, player.getPet().getOwner());
+	}
+
+	@Test
+	public void storedCompanionIsNotMistakenForAnOrphanedReference() {
+		player.put("pet", 123456);
+		player.addSlot(new RPSlot("#pets"));
+		Duszek saved = new Duszek();
+		player.getSlot("#pets").add(saved);
+		new SummonAction().perform(player, summon("duszek"));
+		assertSame(saved, player.getSlot("#pets").getFirst());
+		assertTrue(player.hasPet());
+		assertNull(zone.getEntityAt(5, 5));
+	}
+
+	@Test
+	public void companionInAnotherZoneIsNotMistakenForAnOrphanedReference() {
+		StendhalRPZone other = new StendhalRPZone("companion-other-zone", 20, 20);
+		MockStendlRPWorld.get().addRPZone(other);
+		try {
+			Duszek ghost = new Duszek();
+			other.add(ghost);
+			ghost.setOwner(player);
+			player.put("pet", 123456);
+			new SummonAction().perform(player, summon("duszek"));
+			assertSame(player, ghost.getOwner());
+			assertTrue(player.hasPet());
+			assertNull(zone.getEntityAt(5, 5));
+		} finally {
+			MockStendlRPWorld.get().removeZone(other);
+		}
 	}
 }
