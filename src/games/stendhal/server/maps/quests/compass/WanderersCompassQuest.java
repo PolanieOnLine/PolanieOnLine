@@ -2,6 +2,7 @@
 package games.stendhal.server.maps.quests.compass;
 
 import games.stendhal.common.QuestMarker;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.navigation.NavigationGoal;
@@ -96,7 +97,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
   public void addToWorld() {
     fillQuestInfo(
         getName(),
-        "Odnajdź zagubionego wędrowca w Kościelisku i przywróć kompas dawnego przewodnika.",
+        "Odnajdź zagubionego wędrowca w Kościelisku i napraw kompas dawnego przewodnika.",
         false);
     QuestRewards rewards =
         new QuestRewards(5000, 100).note("Stałe odblokowanie kompasu wskazującego cele zadań.");
@@ -113,7 +114,8 @@ public final class WanderersCompassQuest extends AbstractQuest {
             ConversationPhrases.GREETING_MESSAGES,
             (p, s, n) -> !p.isQuestCompleted(SLOT),
             ConversationStates.ATTENDING,
-            "Witaj. Martwię się o Dobromira. Poszedł na #manowce w Kościelisku i dotąd nie wrócił.",
+            "Witaj. Martwię się o Dobromira. Zszedł ze szlaku w Kościelisku. Boję się, że trafił na"
+                + " #manowce.",
             null);
     npcs.get("Sabała")
         .add(
@@ -127,11 +129,12 @@ public final class WanderersCompassQuest extends AbstractQuest {
         "Sabała",
         (p, s, n) -> {
           if (p.hasQuest(SLOT)) {
-            n.say(CompassProgress.objective(p));
+            remind(p, n);
             return;
           }
           if (p.getLevel() < 15) {
-            n.say("To niebezpieczna droga. Nabierz trochę doświadczenia, nim wyruszysz tak daleko.");
+            n.say(
+                "To niebezpieczna droga. Nabierz trochę doświadczenia, nim wyruszysz tak daleko.");
             p.sendPrivateText("Zadanie „Na manowcach” jest dostępne od 15 poziomu.");
             return;
           }
@@ -158,7 +161,9 @@ public final class WanderersCompassQuest extends AbstractQuest {
             null,
             (p, s, n) -> {
               CompassProgress.enter(p, Stage.MISSING);
-              n.say(CompassProgress.objective(p));
+              n.say(
+                  "Dziękuję. Ostatnio widziano go na południowej polanie we wschodnim Kościelisku."
+                      + " Rozejrzyj się za jego śladami. Miał ze sobą dużą skórzaną torbę.");
             });
     npcs.get("Sabała")
         .add(
@@ -172,42 +177,57 @@ public final class WanderersCompassQuest extends AbstractQuest {
         "Sabała",
         (p, s, n) -> {
           if (CompassProgress.stage(p) != Stage.RECOGNITION) {
-            n.say(CompassProgress.objective(p));
+            remind(p, n);
             return;
           }
           CompassProgress.next(p, Stage.RECOGNITION);
           n.say(
               "Miłorad... Znałem jego pismo. Szukał ludzi, których zwabiły ogniki. Nie chciałem"
                   + " takiej wieści. Naprawmy jego kompas, jeszcze komuś pomoże. Smolisław nad"
-                  + " Wisłą w Krakowie wypali węgiel do wykucia nowej"
-                  + " igły. Zamów nową porcję, odbierz ją i powiedz mu: #'węgiel do kompasu'. Potem"
-                  + " odwiedź Kowala Jacka w Kościelisku.");
+                  + " Wisłą w Krakowie wypali węgiel do wykucia nowej igły. Powiedz mu, że"
+                  + " potrzebujesz węgla dla Jacka z kuźni w południowo-wschodnim Kościelisku."
+                  + " Zanieś kowalowi także sztabkę żelaza.");
         },
-        "stary przewodnik");
+        "stary przewodnik",
+        "starym przewodniku",
+        "list",
+        "Miłorad",
+        "Milorad");
     bind(
         "Smolisław",
         (p, s, n) -> {
           if (CompassProgress.stage(p) != Stage.CHARCOAL) {
-            n.say(CompassProgress.objective(p));
+            remind(p, n);
             return;
           }
           if (!p.isQuestCompleted("smolislaw_burn_charcoal")
               || p.getQuantityOfProducedItems("węgiel drzewny") <= CompassProgress.detail(p)
               || !p.isEquipped("węgiel drzewny", 1)) {
             n.say(
-                "Do igły potrzebny jest świeżo wypalony węgiel. Kliknij mój mielerz albo powiedz:"
-                    + " #'wypal 1 węgiel drzewny'. Potrzeba 2 polan i 5 monet. Odbierz zamówienie"
-                    + " po 30 sekundach, potem wróć do tematu #'węgiel do kompasu'.");
+                "Jacek potrzebuje węgla do drobnej roboty? Wypalę ci porcję za dwa polana i pięć"
+                    + " monet. Zamów ją przy moim #mielerzu. Kiedy odbierzesz węgiel, zajrzyj do"
+                    + " mnie jeszcze przed drogą do kuźni.");
             return;
           }
           CompassProgress.next(p, Stage.CHARCOAL);
           n.say(
-              "Ten węgiel wypaliłem dla ciebie. Zanieś 1 sztukę i 1 sztabkę żelaza Jackowi w kuźni"
-                  + " na południowym wschodzie Kościeliska. Powiedz: #'igła kompasu'.");
+              "Ten węgiel będzie w sam raz do paleniska Jacka. Zanieś mu porcję razem ze sztabką"
+                  + " żelaza i zapytaj o igłę do kompasu. Kuźnię znajdziesz na południowym"
+                  + " wschodzie Kościeliska.");
         },
         "węgiel do kompasu",
-        "wegiel do kompasu");
-    bind("Kowal Jacek", (p, s, n) -> needle(p, n), "igła kompasu", "igla kompasu");
+        "wegiel do kompasu",
+        "węgiel dla Jacka",
+        "wegiel dla Jacka");
+    bind(
+        "Kowal Jacek",
+        (p, s, n) -> needle(p, n),
+        "igła kompasu",
+        "igla kompasu",
+        "igła do kompasu",
+        "igla do kompasu",
+        "igłę do kompasu",
+        "igłę kompasu");
     bind(
         CompassProgress.WANDERER,
         (p, s, n) -> {
@@ -221,7 +241,8 @@ public final class WanderersCompassQuest extends AbstractQuest {
             CompassProgress.next(p, stage);
             n.say(
                 "Poszedłem za świeżymi nacięciami. Wilki zagoniły mnie tutaj. Na zachód stąd rosną"
-                    + " zioła. Zbierz je, przynieś 1 sukno i powiedz: #opatrunek.");
+                    + " zioła. Gdybyś przyniósł kilka liści i kawałek sukna, zrobilibyśmy"
+                    + " #opatrunek.");
           } else if (stage == Stage.BANDAGE) {
             if (CompassProgress.detail(p) != 1) {
               n.say("Zbierz najpierw miejscowe zioła na zachód stąd.");
@@ -229,12 +250,22 @@ public final class WanderersCompassQuest extends AbstractQuest {
             }
             if (!consume(p, n, new String[] {"sukno"}, new int[] {1})) return;
             CompassProgress.next(p, stage);
-            n.say("Dziękuję, opatrunek trzyma. Dołóż 3 polana do zimnego ogniska obok mnie.");
-          } else n.say(CompassProgress.objective(p));
+            n.say(
+                "Dziękuję, opatrunek trzyma. Strasznie mi zimno. Dołóż trzy polana do ogniska obok"
+                    + " mnie.");
+          } else remind(p, n);
         },
         "pomoc",
+        "pomocy",
         "opatrunek");
-    bind("Sabała", (p, s, n) -> complete(p, n), "kompas wędrowca", "kompas wedrowca");
+    bind(
+        "Sabała",
+        (p, s, n) -> complete(p, n),
+        "kompas wędrowca",
+        "kompas wedrowca",
+        "kompas",
+        "naprawiony kompas",
+        "odnowiony kompas");
   }
 
   private void bind(String name, ChatAction action, String... triggers) {
@@ -255,12 +286,109 @@ public final class WanderersCompassQuest extends AbstractQuest {
         });
   }
 
+  private static void remind(Player p, EventRaiser speaker) {
+    Stage stage = CompassProgress.stage(p);
+    String name = TrailSceneRegistry.speakerName(speaker.getEntity());
+    String text;
+    if (CompassProgress.WANDERER.equals(name)) {
+      if (stage == Stage.FIRE) {
+        text =
+            "Nadal trzęsę się z zimna. Trzy suche polana powinny wystarczyć. Ognisko masz tuż"
+                + " obok.";
+      } else if (stage == Stage.MEAL) {
+        text = "Ciepło pomogło, ale z głodu nie przejdę ani kawałka. Ugotowałbyś mi trochę mięsa?";
+      } else {
+        text = "Daj mi chwilę. Spróbuję pójść z tobą na zachód, pod świerki.";
+      }
+    } else if ("Smolisław".equals(name)) {
+      text =
+          stage != null && stage.ordinal() > Stage.CHARCOAL.ordinal()
+              ? "Węgiel już odebrałeś. Oby dobrze się Jackowi palił."
+              : "Pilnuję teraz mielerza. Jeśli potrzebujesz węgla, przynieś mi drewno.";
+    } else if ("Kowal Jacek".equals(name)) {
+      text =
+          stage != null && stage.ordinal() > Stage.NEEDLE.ordinal()
+              ? "Igłę dałem ci zawiniętą w płótno. Uważaj na nią, łatwo taką drobinę zgubić."
+              : "Masz coś do naprawy? Przynieś i pokaż, zobaczę, co da się zrobić.";
+    } else if (p.isQuestCompleted(SLOT)) {
+      text = "Niech kompas dobrze ci służy. Dobrze wiedzieć, że można na ciebie liczyć.";
+    } else if (stage == null || stage.ordinal() <= Stage.ESCORT.ordinal()) {
+      text =
+          "Szukaj Dobromira na południowej polanie we wschodnim Kościelisku. Jeśli znajdziesz"
+              + " go rannego, nie zostawiaj go samego.";
+    } else {
+      switch (stage) {
+        case REMAINS:
+        case LETTER:
+        case RECOGNITION:
+          text =
+              "Masz jakieś wieści z polany? Jeśli znalazłeś tam czyjeś zapiski, pokaż mi je."
+                  + " Może rozpoznam pismo.";
+          break;
+        case CHARCOAL:
+          text =
+              "Smolisław pilnuje mielerza nad Wisłą w Krakowie. Wypali węgiel do kuźni Jacka."
+                  + " Zabierz też sztabkę żelaza, z niej kowal zrobi igłę.";
+          break;
+        case NEEDLE:
+          text =
+              "Zanieś węgiel i sztabkę żelaza Jackowi w południowo-wschodnim Kościelisku. Jeśli już"
+                  + " mu je dałeś, zaczekaj chwilę. Takiej drobnej roboty nie warto poganiać.";
+          break;
+        case CASE:
+          text =
+              "Igła to nie wszystko, obudowę też trzeba odnaleźć. Rozejrzyj się jeszcze przy"
+                  + " świerkach na północny wschód od obozu, tam gdzie widziałeś ogniki.";
+          break;
+        case ASSEMBLY:
+        case CROSSROADS:
+          text =
+              "Kiedy złożysz kompas, sprawdź go tak, jak Miłorad opisał w notesie."
+                  + " Te stare znaki nie znalazły się tam bez powodu.";
+          break;
+        case BURIAL:
+          text =
+              "Nie zostawiaj Miłorada między korzeniami. Usyp mu mogiłę pod drzewem."
+                  + " Całe życie szukał zagubionych ludzi, zasłużył na spokojny pochówek.";
+          break;
+        default:
+          text = "Pokaż mi odnowiony kompas. Chciałbym, żeby znów służył komuś na szlaku.";
+          break;
+      }
+    }
+    speaker.say(text);
+  }
+
+  private static String material(String name, int amount) {
+    if (amount == 3 && "polano".equals(name)) {
+      return "trzy polana";
+    }
+    if (amount == 1) {
+      switch (name) {
+        case "sukno":
+          return "kawałek sukna";
+        case "mięso":
+          return "kawałek mięsa";
+        case "buteleczka wody":
+          return "buteleczkę wody";
+        case "sztabka żelaza":
+          return "sztabkę żelaza";
+        case "węgiel drzewny":
+          return "porcję węgla drzewnego";
+        default:
+          break;
+      }
+    }
+    return Grammar.itemQuantityAccusative(amount, name);
+  }
+
   static boolean consume(Player p, EventRaiser n, String[] names, int[] amounts) {
     for (int i = 0; i < names.length; i++)
       if (!p.isEquipped(names[i], amounts[i])) {
-        String text = "Potrzebujesz: ";
+        String text = n == null ? "Przygotuj " : "Przynieś mi ";
         for (int j = 0; j < names.length; j++)
-          text += (j == 0 ? "" : ", ") + amounts[j] + " × " + names[j];
+          text +=
+              (j == 0 ? "" : j == names.length - 1 ? " i " : ", ") + material(names[j], amounts[j]);
         if (n == null) p.sendPrivateText(text + ".");
         else n.say(text + ".");
         return false;
@@ -271,7 +399,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 
   static void needle(Player p, EventRaiser n) {
     if (CompassProgress.stage(p) != Stage.NEEDLE) {
-      n.say(CompassProgress.objective(p));
+      remind(p, n);
       return;
     }
     if (CompassProgress.time(p) == 0) {
@@ -279,31 +407,32 @@ public final class WanderersCompassQuest extends AbstractQuest {
         return;
       CompassProgress.set(p, Stage.NEEDLE, 0, System.currentTimeMillis() + 60000);
       n.say(
-          "Wykuję nową igłę. Ten węgiel da mi równy ogień. Wróć po minucie i powiedz:"
-              + " #'igła kompasu'. Gotowa igła poczeka tu na ciebie.");
+          "Wykuję nową igłę. Ten węgiel da mi równy ogień. Wróć za minutę, powinna już być"
+              + " gotowa.");
       return;
     }
     if (System.currentTimeMillis() < CompassProgress.time(p)) {
-      n.say(CompassProgress.objective(p));
+      n.say("Jeszcze chwila, igła nie ostygła. Zaraz ją dla ciebie zabezpieczę.");
       return;
     }
     CompassProgress.next(p, Stage.NEEDLE);
     n.say(
-        "Gotowe. Zawijam igłę w płótno, żeby nie uszkodziła się w drodze. Dobromir wspominał o"
-            + " ognikach pod korzeniami drzew we wschodnim Kościelisku. Tam poszukaj obudowy,"
-            + " na północny wschód od dawnego obozu.");
+        "Gotowe. Zawijam igłę w płótno, żeby nie uszkodziła się w drodze. Teraz znajdź resztę"
+            + " obudowy. Bez niej igła nie będzie miała na czym się obracać.");
   }
 
   static void complete(Player p, EventRaiser n) {
     if (CompassProgress.stage(p) != Stage.RETURN) {
-      n.say(CompassProgress.objective(p));
+      remind(p, n);
       return;
     }
     Item compass = SingletonRepository.getEntityManager().getItem(REWARD);
     if (compass == null) throw new IllegalStateException("Missing item: " + REWARD);
     compass.setBoundTo(p.getName());
     if (!p.equipToInventoryOnly(compass)) {
-      n.say("Zwolnij jedno miejsce w plecaku na kompas i powiedz ponownie: #'kompas wędrowca'.");
+      n.say(
+          "Chciałbym, żeby kompas został u ciebie. Zrób mu trochę miejsca w plecaku i wróć do"
+              + " mnie.");
       return;
     }
     p.put("compass_unlocked", 1);

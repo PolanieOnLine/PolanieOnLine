@@ -230,7 +230,7 @@ public class WanderersCompassTest {
     visited.add(CompassProgress.stage(player));
     use(Clue.LETTER);
     visited.add(CompassProgress.stage(player));
-    say("Sabała", "stary przewodnik");
+    say("Sabała", "list");
     stage(Stage.CHARCOAL);
     visited.add(Stage.CHARCOAL);
     SpeakerNPC burner = visit("Smolisław");
@@ -243,11 +243,11 @@ public class WanderersCompassTest {
         recipe.getQuestSlot(), "1;węgiel drzewny;" + (System.currentTimeMillis() - 31000));
     recipe.collect(burner, player);
     assertTrue(player.isQuestCompleted(recipe.getQuestSlot()));
-    say("Smolisław", "węgiel do kompasu");
+    say("Smolisław", "węgiel dla Jacka");
     stage(Stage.NEEDLE);
     visited.add(Stage.NEEDLE);
     item("sztabka żelaza", 1);
-    say("Kowal Jacek", "igła kompasu");
+    say("Kowal Jacek", "igła do kompasu");
     long due = CompassProgress.time(player);
     assertTrue(due > System.currentTimeMillis());
     say("Kowal Jacek", "igła kompasu");
@@ -281,7 +281,7 @@ public class WanderersCompassTest {
       // Free room for the keepsake before collecting the reward.
     }
     int beforeReward = player.getXP();
-    say("Sabała", "kompas wędrowca");
+    say("Sabała", "naprawiony kompas");
     assertTrue(player.isQuestCompleted(WanderersCompassQuest.SLOT));
     assertEquals(beforeReward + 5000, player.getXP());
     assertEquals(1, player.getInt("compass_unlocked"));

@@ -27,15 +27,15 @@ final class CompassScenes {
     HERBS("miejscowe zioła lecznicze", 3, 64, 85, Stage.BANDAGE),
     FIRE("zimne ognisko", 4, 69, 85, Stage.FIRE),
     MEAL("kociołek nad ogniskiem", 5, 69, 85, Stage.MEAL),
-    STOP("pierwszy osłonięty postój", 12, 60, 86, Stage.ESCORT),
-    SHELTER("bezpieczne schronienie", 12, 51, 86, Stage.ESCORT),
+    STOP("drewno przy osłoniętym postoju", 12, 60, 86, Stage.ESCORT),
+    SHELTER("drewno pod świerkami", 12, 51, 86, Stage.ESCORT),
     REMAINS("szczątki dawnego przewodnika", 6, 82, 84, Stage.REMAINS),
     LETTER("uszkodzony kompas i niedokończony list", 7, 83, 84, Stage.LETTER),
     CASE("obudowa kompasu", 8, 86, 75, Stage.CASE),
-    ASSEMBLY("miejsce składania kompasu", 9, 69, 85, Stage.ASSEMBLY),
-    CROSS_MOSS("znak mchu", 11, 61, 70, Stage.CROSSROADS),
-    CROSS_STUMP("znak suchego pnia", 11, 67, 70, Stage.CROSSROADS),
-    CROSS_WATER("znak wody", 11, 73, 70, Stage.CROSSROADS),
+    ASSEMBLY("części kompasu przy ognisku", 9, 69, 85, Stage.ASSEMBLY),
+    CROSS_MOSS("omszały kamień przy starym szlaku", 11, 61, 70, Stage.CROSSROADS),
+    CROSS_STUMP("suchy pień przy starym szlaku", 11, 67, 70, Stage.CROSSROADS),
+    CROSS_WATER("kamienna niecka z wodą", 11, 73, 70, Stage.CROSSROADS),
     BURIAL("miejsce spoczynku Miłorada", 6, 82, 84, Stage.BURIAL),
     CAIRN("mogiła Miłorada", 10, 82, 84, Stage.RETURN);
     final String name;
@@ -61,7 +61,7 @@ final class CompassScenes {
         new SpeakerNPC(CompassProgress.WANDERER) {
           @Override
           protected void createDialog() {
-            addGreeting("Pomocy... Nie mogę stanąć na nodze. Powiedz: #pomoc albo #opatrunek.");
+            addGreeting("Dobrze, że jesteś... Nie mogę stanąć na nodze. Potrzebuję #pomocy.");
             addGoodbye("Nie odchodź daleko.");
           }
         };
@@ -138,7 +138,7 @@ final class CompassScenes {
       setResistance(0);
       setCursor("ACTIVITY");
       setMenu("Sprawdź|Użyj");
-      setDescription("Oto " + clue.name + ". Podejdź bliżej i użyj, aby zbadać to miejsce.");
+      setDescription("Oto " + clue.name + ". Możesz przyjrzeć się bliżej.");
     }
 
     @Override
@@ -193,8 +193,8 @@ final class CompassScenes {
           if (expected != CompassProgress.detail(p)) {
             CompassProgress.set(p, Stage.JUNCTIONS, 0, 0);
             p.sendPrivateText(
-                "Ta droga wraca pod fałszywą strzałkę. Wróć myślą do notatek: najpierw mech, potem"
-                    + " suchy pień.");
+                "Tutaj ślad się urywa. Wracasz do zapisków z obozu: najpierw omszały kamień,"
+                    + " potem suchy pień. Trzeba jeszcze raz przyjrzeć się tym miejscom.");
             return false;
           }
           if (expected == 0) {
@@ -210,7 +210,9 @@ final class CompassScenes {
           break;
         case HERBS:
           CompassProgress.set(p, Stage.BANDAGE, 1, 0);
-          p.sendPrivateText(CompassProgress.objective(p));
+          p.sendPrivateText(
+              "Zrywasz kilka leczniczych liści. Z kawałkiem sukna nadadzą się na opatrunek dla"
+                  + " Dobromira.");
           return true;
         case FIRE:
           if (!WanderersCompassQuest.consume(p, null, new String[] {"polano"}, new int[] {3}))
@@ -223,26 +225,29 @@ final class CompassScenes {
           if (!WanderersCompassQuest.consume(
               p, null, new String[] {"mięso", "buteleczka wody"}, new int[] {1, 1})) return false;
           p.sendPrivateText(
-              "Gotujesz mięso w wodzie. Po posiłku Dobromir odzyskuje siły. Idź powoli na zachód,"
-                  + " przez pierwszy osłonięty postój do bezpiecznego schronienia.");
+              "Podajesz Dobromirowi gorącą strawę. Po posiłku próbuje stanąć na nogach."
+                  + " „Chodźmy na zachód. Przy stosie drewna chciałbym chwilę odsapnąć."
+                  + " Potem dojdziemy pod świerki, tam będzie bezpieczniej”.");
           break;
         case STOP:
         case SHELTER:
           return arrive(p, this, clue == Clue.STOP ? 0 : 1);
         case REMAINS:
           p.sendPrivateText(
-              "Pod kamieniem leżą ludzkie kości i spróchniały pas przewodnika. Nie ma śladów walki;"
-                  + " ktoś zabłądził i nie zdołał wrócić.");
+              "Między korzeniami leżą stare ludzkie kości. Przy spróchniałym pasie zachował się"
+                  + " znak podobny do tego z notesu. Obok widać złożoną kartkę i rozbity kompas.");
           break;
         case LETTER:
           p.sendPrivateText(
-              "W zapiskach Miłorad ostrzega przed błędnymi światłami. List do Sabały urywa się w"
-                  + " połowie zdania. Zabezpieczasz list i resztki kompasu; obudowy brakuje. Pokaż"
-                  + " Sabale znalezisko, mówiąc: stary przewodnik.");
+              "„Sabało, szukałem tych, którzy poszli za światłami...” Dalej pismo jest nieczytelne."
+                  + " Pod listem widnieje imię Miłorad. Zabierasz kartkę i resztki kompasu. Obudowy"
+                  + " brakuje; ślady po wleczonym pasku ciągną się ku świerkom na północnym"
+                  + " wschodzie, gdzie migoczą ogniki. Najpierw pokaż list Sabale i zapytaj o"
+                  + " starego przewodnika.");
           break;
         case CASE:
           if (CompassProgress.detail(p) != 3) {
-            p.sendPrivateText("Najpierw pokonaj oba ogniki strzegące obudowy.");
+            p.sendPrivateText("Ogniki krążą tuż nad obudową. Najpierw musisz się ich pozbyć.");
             return false;
           }
           p.sendPrivateText(
@@ -251,9 +256,9 @@ final class CompassScenes {
           break;
         case ASSEMBLY:
           p.sendPrivateText(
-              "Osadzasz igłę w obudowie i zamykasz szkło. Wskazówka wiruje, kiedy zbliżasz kompas"
-                  + " do starych znaków. Sprawdź rozdroże na północ od obozu, według notatek"
-                  + " Miłorada.");
+              "Osadzasz igłę i zamykasz szkło, lecz wskazówka wciąż krąży bez ładu."
+                  + " W notesie Miłorad opisał, co robić, gdy igła błądzi. Trzeba sprawdzić kompas"
+                  + " przy trzech starych znakach na północ od obozu.");
           break;
         case CROSS_MOSS:
         case CROSS_STUMP:
@@ -262,23 +267,26 @@ final class CompassScenes {
           if (choice != CompassProgress.detail(p)) {
             CompassProgress.set(p, Stage.CROSSROADS, 0, 0);
             p.sendPrivateText(
-                "Wskazówka wiruje. To zła kolejność. Zacznij od nowa: mech, pień, woda.");
+                "Igła znów krąży bez ładu. Wracasz do początku drogi opisanej w notesie:"
+                    + " mech, pień, woda.");
             return false;
           }
           if (choice < 2) {
             CompassProgress.set(p, Stage.CROSSROADS, choice + 1, 0);
-            p.sendPrivateText("Wskazówka na chwilę uspokaja się. Wybierz następny znak z notatek.");
+            p.sendPrivateText(
+                "Igła na chwilę się uspokaja. Czas sprawdzić następne miejsce opisane w notesie.");
             return true;
           }
           p.sendPrivateText(
-              "Kompas wskazuje miejsce spoczynku Miłorada. Błędne światła przygasają, gdy zwracasz"
-                  + " się ku szczątkom. Pora godnie je pochować.");
+              "Igła przestaje krążyć, ale ciągnie ku drzewu, pod którym leży Miłorad."
+                  + " Wśród gałęzi na chwilę rysuje się sylwetka wędrowca. Nie ma już dokąd iść."
+                  + " Trzeba go pochować.");
           break;
         case BURIAL:
           p.sendPrivateText(
               "Przysypujesz szczątki ziemią i układasz kamienie w skromną mogiłę. W ciszy"
-                  + " wspominasz imię Miłorada. Fałszywe światła znikają, a kompas odzyskuje stały"
-                  + " kierunek.");
+                  + " wspominasz imię Miłorada. Światła między drzewami gasną. Igła wreszcie"
+                  + " wskazuje północ.");
           break;
         case CAIRN:
           p.sendPrivateText(
@@ -300,17 +308,18 @@ final class CompassScenes {
     for (Entity e : p.getZone().getEntitiesOfClass(Escort.class))
       if (PlayerPrivateScene.isOwnedBy(e, p)) escort = (Escort) e;
     if (escort == null || !escort.nextTo(stop, 3)) {
-      p.sendPrivateText("Zaczekaj na Dobromira. Samo dotarcie do postoju nie wystarczy.");
+      p.sendPrivateText("Dobromir jeszcze nie doszedł. Zaczekaj tu na niego.");
       return false;
     }
     if (checkpoint == 0) {
       CompassProgress.set(p, Stage.ESCORT, 1, 0);
-      p.sendPrivateText("Dobromir odpoczywa chwilę. Bezpieczne schronienie jest dalej na zachód.");
+      p.sendPrivateText(
+          "Dobromir przysiada przy drewnie. „Już lepiej. Chodźmy dalej na zachód, pod świerki”.");
     } else {
       CompassProgress.next(p, Stage.ESCORT);
       p.sendPrivateText(
           "Dobromir: Dalej dam już radę. Pod rozłożystym drzewem na wschodzie znalazłem szczątki z"
-              + " kompasem. Może ten człowiek też poszedł za światłami... Sprawdź je, proszę.");
+              + " kompasem. Może ten człowiek też poszedł za światłami... Zajrzyj tam, proszę.");
     }
     return true;
   }

@@ -10,9 +10,10 @@ final class CompassProgress {
   static final String SLOT = "wanderers_compass", FOREST = "0_koscielisko_e";
   static final String WANDERER = "Wędrowiec Dobromir";
   static final String NOTES =
-      "W notatkach czytasz: nie ufaj świeżym nacięciom. Od obozu idź najpierw ku omszałemu"
-          + " kamieniowi, potem ku suchemu pniowi. Przy starym rozdrożu wybierz kolejno mech, pień"
-          + " i wodę. Błędne światła odciągają od szczątków przewodnika.";
+      "W notesie zapisano: „Nie ufaj świeżym strzałkom ani światłom między drzewami. Z obozu"
+          + " kieruj się ku omszałemu kamieniowi, a stamtąd na południe, do suchego pnia."
+          + " Na północ od obozu zostały jeszcze trzy stare znaki. Gdy igła zacznie błądzić,"
+          + " sprawdź ją kolejno przy mchu, pniu i wodzie”.";
 
   enum Stage {
     MISSING("Sprawdź ślady na południowej polanie we wschodnim Kościelisku.", 43, 74),
@@ -20,20 +21,25 @@ final class CompassProgress {
     MARKS("Sprawdź świeże nacięcia przy ścieżce na wschód od torby.", 57, 74),
     NOTES("Przeczytaj notatki w opuszczonym obozie na wschodzie polany.", 65, 74),
     JUNCTIONS(
-        "Przy rozwidleniach od obozu wybierz mech, potem suchy pień; omiń świeże strzałki.",
+        "Odszukaj omszały kamień na południowy zachód od opuszczonego obozu. Kieruj się"
+            + " wskazówkami z notesu, nie świeżymi strzałkami.",
         60,
         78),
     WOLVES("Pokonaj oba wilki przy rannym Dobromirze, potem powiedz mu: pomoc.", 68, 86),
     BANDAGE(
-        "Zbierz miejscowe zioła na zachód od rannego. Przynieś 1 sukno i powiedz Dobromirowi:"
+        "Zbierz zioła rosnące na zachód od Dobromira. Przynieś kawałek sukna i zapytaj go o"
             + " opatrunek.",
         64,
         85),
     FIRE("Dołóż 3 polana do zimnego ogniska obok Dobromira.", 69, 85),
-    MEAL("Ugotuj strawę przy ognisku: 1 mięso i 1 buteleczka wody.", 69, 85),
+    MEAL(
+        "Przygotuj Dobromirowi ciepłą strawę w kociołku. Potrzebujesz kawałka mięsa i buteleczki"
+            + " wody.",
+        69,
+        85),
     ESCORT(
-        "Odprowadź Dobromira do schronienia na zachodzie polany. Nie oddalaj się od niego; gdy"
-            + " zostanie z tyłu, zaczekaj.",
+        "Odprowadź Dobromira na zachód, do stosu drewna przy osłoniętym postoju. Zaczekaj tam"
+            + " na niego i obejrzyj miejsce, zanim ruszycie dalej.",
         60,
         86),
     REMAINS(
@@ -43,8 +49,9 @@ final class CompassProgress {
     LETTER("Obejrzyj niedokończony list i uszkodzony kompas obok szczątków.", 83, 84),
     RECOGNITION("Wróć do Sabały w Zakopanem S. Powiedz: stary przewodnik.", 35, 46),
     CHARCOAL(
-        "U Smolisława na polanie nad Wisłą w Krakowie wypal nową porcję węgla (2 polana i 5 monet),"
-            + " odbierz ją i powiedz: węgiel do kompasu.",
+        "Zleć Smolisławowi na polanie nad Wisłą w Krakowie wypalenie porcji węgla drzewnego."
+            + " Potrzeba dwóch polan i pięciu monet. Odbierz węgiel z mielerza, potem zapytaj:"
+            + " węgiel do kompasu.",
         57,
         58),
     NEEDLE(
@@ -55,13 +62,13 @@ final class CompassProgress {
     CASE("Pokonaj dwa błędne ogniki we wschodnim Kościelisku i zabierz obudowę kompasu.", 86, 75),
     ASSEMBLY("Złóż kompas przy dawnym ognisku Dobromira na polanie w Kościelisku.", 69, 85),
     CROSSROADS(
-        "Przy starym rozdrożu na północ od obozu wybierz kolejno mech, pień i wodę. Notatki w"
-            + " dzienniku przypominają kolejność.",
+        "Sprawdź naprawiony kompas przy trzech starych znakach na północ od obozu. Kolejność"
+            + " opisano w odnalezionym notesie.",
         67,
         70),
     BURIAL(
-        "Wróć do szczątków na wschodnim skraju polany i usyp niewielką mogiłę. Uciszy to fałszywe"
-            + " światła.",
+        "Pochowaj Miłorada pod rozłożystym drzewem na wschodnim skraju polany. Usyp niewielką"
+            + " mogiłę i przykryj ją kamieniami.",
         82,
         84),
     RETURN(
@@ -136,16 +143,20 @@ final class CompassProgress {
           : "Zapytaj Sabałę w Zakopanem S: na manowcach.";
     if (s == Stage.NEEDLE && time(p) > 0)
       return System.currentTimeMillis() < time(p)
-          ? "Jacek hartuje igłę. Wróć za "
-              + Math.max(1, (time(p) - System.currentTimeMillis() + 999) / 1000)
-              + " s i powiedz: igła kompasu."
+          ? "Jacek pracuje nad nową igłą. Wróć za chwilę i zapytaj o igłę kompasu."
           : "Igła jest gotowa. Odbierz ją od Kowala Jacka, mówiąc: igła kompasu.";
+    if (s == Stage.JUNCTIONS && detail(p) == 1)
+      return "Przy omszałym kamieniu znalazł się kolejny ślad. Odszukaj suchy pień na południe od"
+                 + " kamienia.";
+    if (s == Stage.ESCORT && detail(p) == 1)
+      return "Dobromir odpoczął przy pierwszym postoju. Idźcie dalej na zachód, do drewna pod"
+                 + " świerkami. Zaczekaj na niego i obejrzyj schronienie.";
     if (s == Stage.WOLVES && detail(p) == 3)
       return "Wilki pokonane. Powiedz rannemu Dobromirowi: pomoc.";
     if (s == Stage.BANDAGE && detail(p) == 1)
-      return "Masz miejscowe zioła. Przynieś 1 sukno i powiedz Dobromirowi: opatrunek.";
+      return "Zioła są zebrane. Przynieś Dobromirowi kawałek sukna i zapytaj o opatrunek.";
     if (s == Stage.CASE && detail(p) == 3)
-      return "Ogniki pokonane. Sprawdź obudowę kompasu przy ich dawnym stanowisku.";
+      return "Ogniki zniknęły. Pod świerkiem została obudowa kompasu. Podejdź i zabierz ją.";
     return s.objective;
   }
 
@@ -164,13 +175,11 @@ final class CompassProgress {
               + " drzewem.");
     if (reached >= 13)
       result.add(
-          "Sabała rozpoznał przewodnika Miłorada po niedokończonym liście. Igła jego kompasu"
-              + " została zniszczona. Obudowa zaginęła w miejscu, gdzie pojawiają się błędne"
-              + " ogniki.");
+          "Sabała rozpoznał pismo swojego dawnego znajomego, Miłorada. Chce, żeby jego kompas znów"
+              + " służył wędrowcom. Smolisław wypali węgiel, a Jacek spróbuje wykuć nową igłę.");
     if (reached >= 16)
       result.add(
-          "Węgiel wypalił Smolisław, a Jacek wykuł i zahartował nową igłę. Odzyskałem obudowę"
-              + " kompasu.");
+          "Węgiel wypalił Smolisław, a Jacek wykuł nową igłę. Odzyskałem obudowę" + " kompasu.");
     if (reached >= 19)
       result.add(
           "Ułożyłem kamienie nad szczątkami Miłorada. Błędne światła zgasły, a wskazówka uspokoiła"
