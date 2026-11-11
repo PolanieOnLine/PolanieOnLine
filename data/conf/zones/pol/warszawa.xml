@@ -126,6 +126,11 @@
 		<configurator class-name="games.stendhal.server.maps.warszawa.castle.PrinceNPC"/>
 		<configurator class-name="games.stendhal.server.maps.warszawa.castle.WarsawArmy"/>
 
+		<portal x="74" y="54" ref="fortress_entrance_left">
+			<destination zone="int_warszawa_fortress" ref="exit_left"/>
+			<attribute name="move.continuous" />
+		</portal>
+
 		<portal x="75" y="54" ref="fortress_entrance">
 			<destination zone="int_warszawa_fortress" ref="exit"/>
 			<attribute name="move.continuous" />
@@ -232,6 +237,10 @@
 		<configurator class-name="games.stendhal.server.maps.quests.trail.WarsawFortressSites"/>
 		<portal x="23" y="44" ref="exit">
 			<destination zone="0_warszawa_e" ref="fortress_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+		<portal x="22" y="44" ref="exit_left">
+			<destination zone="0_warszawa_e" ref="fortress_entrance_left"/>
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>

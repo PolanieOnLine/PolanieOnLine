@@ -433,8 +433,22 @@ public class WarsawFortressStoryTest {
 		Element exit = null;
 		for (int i = 0; i < zones.getLength(); i++) {
 			Element zone = (Element) zones.item(i);
-			if (WarsawFortressProgress.ZONE.equals(zone.getAttribute("name")))
+			if (WarsawFortressProgress.ZONE.equals(zone.getAttribute("name"))) {
+				assertEquals(2, zone.getElementsByTagName("portal").getLength());
 				exit = (Element) zone.getElementsByTagName("portal").item(0);
+			}
+			if ("0_warszawa_e".equals(zone.getAttribute("name"))) {
+				int entrances = 0;
+				NodeList portals = zone.getElementsByTagName("portal");
+				for (int j = 0; j < portals.getLength(); j++) {
+					Element portal = (Element) portals.item(j);
+					Element destination = (Element) portal.getElementsByTagName("destination").item(0);
+					if (WarsawFortressProgress.ZONE.equals(destination.getAttribute("zone"))) {
+						entrances++;
+					}
+				}
+				assertEquals(2, entrances);
+			}
 		}
 		assertNotNull(exit);
 		int sx = Integer.parseInt(exit.getAttribute("x")),
