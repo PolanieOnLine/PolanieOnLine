@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.GameLoop;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.stendhal;
@@ -229,14 +230,15 @@ public final class CharacterDialog extends JDialog implements Runnable {
 
 		// this if-block is here for compatibility with stendhal server 0.84
 		if (character.has("name")) {
-			label.append("<br>").append(games.stendhal.client.ClientLanguage.getText("Poziom:")).append(" ");
+			label.append("<br>").append(ClientLanguage.getText("Poziom:")).append(" ");
 			String level = "0";
 			if (character.has("level")) {
 				level = character.get("level");
 			}
 			label.append(level);
 			/** Skills */
-			label.append("<br>").append(games.stendhal.client.ClientLanguage.getText("Umiejętności:")).append(" ");
+			label.append("<br>").append(ClientLanguage.getText(
+					Testing.COMBAT ? "ATK/OBR/RATK:" : "ATK/OBR:")).append(" ");
 			String atk = "0";
 			if (character.has("atk")) {
 				atk = character.get("atk");

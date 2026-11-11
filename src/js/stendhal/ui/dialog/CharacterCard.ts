@@ -17,7 +17,7 @@ export function createCharacterCard(attributes: {[key: string]: any}, preview: H
 		return Number.isFinite(number) && number >= 0 ? Math.floor(number) : 0;
 	};
 	for (const text of [translate("Poziom:") + " " + stat("level"),
-		translate("Umiejętności:") + " " + stat("atk") + "/" + stat("def")]) {
+		translate("ATK/OBR:") + " " + stat("atk") + "/" + stat("def")]) {
 		const line = document.createElement("span"); line.textContent = text; details.append(line);
 	}
 	button.append(details);
