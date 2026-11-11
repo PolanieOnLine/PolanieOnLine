@@ -99,7 +99,7 @@ final class MineTrailProgress {
 				return "Sprawdź pakiet z rozkazem na południowy zachód od miejsca, którego pilnował łącznik duergarów.";
 			if ("identified".equals(state))
 				return "Pokaż Phalkowi przechwycony rozkaz. Powiedz: rozkaz dla straży.";
-			return "Zanieś meldunek Drilenunowi do ratusza Semos. Powiedz: druga zmiana.";
+			return "Zanieś meldunek Drilenunowi do koszar w Ados. Powiedz: druga zmiana.";
 		default:
 			throw new IllegalArgumentException("Not a mine quest: " + step);
 		}

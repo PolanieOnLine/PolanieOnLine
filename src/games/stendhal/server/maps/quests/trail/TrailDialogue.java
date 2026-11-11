@@ -22,7 +22,7 @@ final class TrailDialogue {
 		if (!player.hasQuest(step.slot)
 				&& player.getLevel() < step.minimumLevel) {
 			if (!"Lieutenant Drilenun".equals(npc)) {
-				return "Drilenun w ratuszu zbiera wieści o dostawach do kopalni. Porozmawiaj z nim, zanim zaczniesz zaglądać w boczne tunele.";
+				return "Drilenun w koszarach w Ados zbiera wieści o dostawach do kopalni. Porozmawiaj z nim, zanim zaczniesz zaglądać w boczne tunele.";
 			}
 			return "Niepokoi mnie ten wpis o kopalni, ale nie wyślę cię teraz pod ziemię. "
 					+ "Tam nawet górnicy nie chodzą sami. Nabierz jeszcze doświadczenia i wróć do mnie.";
@@ -77,7 +77,7 @@ final class TrailDialogue {
 			if ("wood".equals(stage))
 				return "Przynieś dwa #polana, a przygotuję skrzynię. Pod płótnem nikt nie odróżni ich od prawdziwego ładunku.";
 			if ("return".equals(stage))
-				return "Skoro na kwicie jest nazwisko, porucznik będzie wiedział, kogo szukać. Zanieś mu te wieści do ratusza.";
+				return "Skoro na kwicie jest nazwisko, porucznik będzie wiedział, kogo szukać. Zanieś mu te wieści do koszar w Ados.";
 			return "Skrzynia czeka na zewnątrz, po prawej stronie wejścia. Olek też tam jest. Pamiętaj, oczekuje umówionego hasła.";
 		case RADAN_PASSAGE:
 			if ("brace".equals(stage))
@@ -109,7 +109,7 @@ final class TrailDialogue {
 			if ("Lieutenant Drilenun".equals(npc))
 				return "Phalk strzeże przejścia w kopalni. Pokaż mu to, co znajdziesz. Powinien rozpoznać, kto wydaje tam rozkazy.";
 			if ("return".equals(stage))
-				return "Zanieś rozkaz Drilenunowi do ratusza. Ja zostanę przy przejściu. Ktoś musi ich pilnować.";
+				return "Zanieś rozkaz Drilenunowi do koszar w Ados. Ja zostanę przy przejściu. Ktoś musi ich pilnować.";
 			if ("orders".equals(stage))
 				return "Sprawdź pakiet przy zakręcie. Może łącznik zostawił tam rozkazy.";
 			if ("identified".equals(stage))

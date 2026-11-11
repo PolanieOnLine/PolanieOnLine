@@ -39,7 +39,7 @@ public final class DebtToZakopaneQuest extends TrailQuest {
 				speaker.say(
 						"W liście piszą o następnym odbiorze towaru w Semos. "
 								+ "Podpisu nie ma, są tylko te trzy kółka. "
-								+ "Pokaż ten list porucznikowi Drilenunowi w ratuszu Semos. Przejście do Semos znajdziesz na północnym wschodzie centrum Zakopanego.");
+								+ "Pokaż ten list porucznikowi Drilenunowi w koszarach w Ados. Może pomoże ustalić, kto zamówił transport.");
 			else
 				remind(player, speaker);
 		}, "list", "Semos", "trzy kółka");
@@ -67,6 +67,6 @@ public final class DebtToZakopaneQuest extends TrailQuest {
 		return "Dobrze, że udało się to wyjaśnić. Poślę ludzi po zapasy i uprzedzę kupców, "
 				+ "żeby uważali na takie zamówienia. Dziękuję ci. Najpierw pomoc sąsiadom, a teraz to. "
 				+ "Gdyby nie ty, szukalibyśmy tych zapasów do wiosny. "
-				+ "Następny transport miał trafić do #'Semos'. Pokaż #'list' porucznikowi Drilenunowi w tamtejszym ratuszu. Może pomoże znaleźć odbiorcę.";
+				+ "Następny transport miał trafić do #'Semos'. Pokaż #'list' porucznikowi Drilenunowi w koszarach w Ados. Może pomoże znaleźć odbiorcę.";
 	}
 }

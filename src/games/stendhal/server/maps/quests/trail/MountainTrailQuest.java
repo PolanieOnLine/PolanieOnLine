@@ -103,7 +103,7 @@ public final class MountainTrailQuest extends TrailQuest {
 					speaker.say(
 							"Znam to nacięcie. Radan skupował takie ostrza jeszcze przed pierwszym zaginionym transportem. "
 									+ "Więc od początku chodziło o broń... Nie będę udawał, że to tylko sprawa mojego węgla. "
-									+ "Powiedz Drilenunowi w ratuszu Semos o #'transporcie broni'. On będzie wiedział, co z tym zrobić.");
+									+ "Powiedz Drilenunowi w koszarach w Ados o #'transporcie broni'. On będzie wiedział, co z tym zrobić.");
 				} else
 					request(player, speaker,
 							"Miłosz miał wieźć broń? Nic dziwnego, że nie chcieli puścić go wolno. "
@@ -254,7 +254,7 @@ public final class MountainTrailQuest extends TrailQuest {
 			break;
 		case MOUNTAIN_CARGO:
 			speaker.say(player.isQuestInState(step.slot, "briefing")
-					? "Drilenun w ratuszu Semos musi usłyszeć o tym transporcie broni. To już nie jest zwykła kradzież."
+					? "Drilenun w koszarach w Ados musi usłyszeć o tym transporcie broni. To już nie jest zwykła kradzież."
 					: "Stasek".equals(TrailSceneRegistry.speakerName(speaker.getEntity()))
 							? "Obejrzyj ostrza w skrzyni obok Miłosza. Jeśli mają znak dostawcy, spróbuję go rozpoznać."
 							: "Ostrza w skrzyni obok Miłosza powinny mieć znak dostawcy. Stasek handluje tu od lat, może go pozna.");

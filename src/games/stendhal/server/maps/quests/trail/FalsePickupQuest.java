@@ -71,7 +71,7 @@ public final class FalsePickupQuest extends TrailQuest {
 			player.setQuest(step.slot, "return");
 			speaker.say(
 					"Proszę. Podpisano: Radan. Dał mi pieniądze i kazał odebrać skrzynię po umówionym haśle. "
-							+ "Nie wiem, co miało być w środku. Jeśli coś się nie zgadza, pokaż ten kwit porucznikowi w ratuszu. "
+							+ "Nie wiem, co miało być w środku. Jeśli coś się nie zgadza, pokaż ten kwit porucznikowi Drilenunowi w koszarach w Ados. "
 							+ "Zaczekam, aż to wyjaśnicie.");
 		}, "kwit", "dla kogo");
 		reply("Lieutenant Drilenun", (player, sentence, speaker) -> {
@@ -88,6 +88,6 @@ public final class FalsePickupQuest extends TrailQuest {
 				+ "a ja poślę ludzi, żeby sprawdzili zleceniodawcę Olka. "
 				+ "Dobrze, że udało się to załatwić bez kolejnej kradzieży. "
 				+ "Napiszę do Wojtka, żeby nie martwił się o tę dostawę. "
-				+ "A co do Radana, chyba wiem, gdzie go szukać. Pod miastem jest pewien stary #chodnik...";
+				+ "A co do Radana, chyba wiem, gdzie go szukać. Pod Semos jest pewien stary #chodnik...";
 	}
 }

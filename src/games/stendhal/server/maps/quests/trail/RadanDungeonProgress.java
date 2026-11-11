@@ -109,7 +109,7 @@ final class RadanDungeonProgress {
 				return "Pokonaj zbrojnego Radana w ostatniej izbie, na południowym wschodzie kryjówki.";
 			if ("radan".equals(stage))
 				return "Porozmawiaj z Radanem w ostatniej izbie. Zapytaj o transport.";
-			return "Wróć do porucznika Drilenuna w ratuszu Semos. Powiedz: Radan. Zrób miejsce w plecaku na nagrodę.";
+			return "Wróć do porucznika Drilenuna w koszarach w Ados. Powiedz: Radan. Zrób miejsce w plecaku na nagrodę.";
 		default:
 			throw new IllegalArgumentException("Not a dungeon step: " + step);
 		}

@@ -131,7 +131,7 @@ final class MountainTrailProgress {
 				return "Sprawdź skrzynię z ukrytą bronią obok woźnicy we wschodnim Kościelisku (90,65).";
 			if ("stasek".equals(state))
 				return "Pokaż Staskowi znak z głowni znalezionej broni. Powiedz: ukryta broń.";
-			return "Zanieś wieści o broni Drilenunowi w ratuszu Semos. Powiedz: transport broni.";
+			return "Zanieś wieści o broni Drilenunowi w koszarach w Ados. Powiedz: transport broni.";
 		case MOUNTAIN_BATTLE:
 			return "report".equals(state)
 					? "Wróć do Brzezdoma i opowiedz o rozbiciu oddziału. Powiedz: zbiórka oddziału."
@@ -145,7 +145,7 @@ final class MountainTrailProgress {
 			if ((known & 1) == 0)
 				recipients.add("Gazdą Wojtkiem w ratuszu Zakopanego C");
 			if ((known & 2) == 0)
-				recipients.add("Drilenunem w ratuszu Semos");
+				recipients.add("Drilenunem w koszarach w Ados");
 			if ((known & 4) == 0)
 				recipients.add("Barbarusem w kopalni Semos");
 			return "Porozmawiaj o wieściach z lasu z: "

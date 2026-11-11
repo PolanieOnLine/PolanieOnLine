@@ -22,13 +22,13 @@ public final class TrailQuestInvitations {
 		case DEBT:
 			return "Wieści od Gazdy Wojtka: Chcę ustalić, komu zabrano te zapasy. Wstąp z papierami do ratusza w Zakopanem C, nim poślę ludzi po towar.";
 		case SEMOS_LETTER:
-			return "Wieści od Drilenuna: Wojtek wspominał o twojej pomocy. Pokaż mi list znaleziony w składzie. Czekam w ratuszu w Semos.";
+			return "Wieści od Drilenuna: Wojtek wspominał o twojej pomocy. Pokaż mi list znaleziony w składzie. Czekam w koszarach w Ados.";
 		case SEMOS_SIGN:
 			return "Wieści od Dagoberta: Znak z listu pojawia się też w moich księgach. Zajrzyj do banku Semos i zapytaj o trzy kółka.";
 		case SEMOS_PICKUP:
 			return "Wieści od Margaret: Ktoś ma odebrać skrzynię spod gospody. Przyjdź do mnie w Semos, zanim się tu zjawi. Może dowiemy się, dla kogo pracuje.";
 		case RADAN_PASSAGE:
-			return "Wieści od Drilenuna: Mam trop prowadzący do kryjówki Radana pod Semos. Zajrzyj do ratusza, zanim jego ludzie wywiozą resztę zapasów.";
+			return "Wieści od Drilenuna: Mam trop prowadzący do kryjówki Radana pod Semos. Zajrzyj do koszar w Ados, zanim jego ludzie wywiozą resztę zapasów.";
 		case RADAN_RESCUE:
 		case RADAN_TRANSPORT:
 		case RADAN_FINALE:
@@ -36,7 +36,7 @@ public final class TrailQuestInvitations {
 			// expedition.
 			return null;
 		case MINE_LEDGER:
-			return "Wieści od Drilenuna: Przejrzałem księgę Radana. Jedna z dostaw miała trafić do kopalni, ale coś mi tu nie pasuje. Zajrzyj do ratusza w Semos.";
+			return "Wieści od Drilenuna: Przejrzałem księgę Radana. Jedna z dostaw miała trafić do kopalni, ale coś mi tu nie pasuje. Zajrzyj do koszar w Ados.";
 		case MINE_TRACKS:
 			return "Wieści od Barbarusa: Nikt u mnie nie pracuje po zmroku, a jednak w tunelach zostają ślady. Zajrzyj do mnie w kopalni Semos, pokażę ci gdzie.";
 		case MINE_VOICES:

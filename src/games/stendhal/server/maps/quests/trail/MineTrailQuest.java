@@ -91,7 +91,7 @@ public final class MineTrailQuest extends TrailQuest {
 				player.setQuest(step.slot, "return");
 				speaker.say(
 						"Ta pieczęć... Tak, duergarowie. Zapasy, zmiana warty przy starej bramie. "
-								+ "A więc to ich #'druga zmiana'. Zanieś rozkaz Drilenunowi do ratusza. "
+								+ "A więc to ich #'druga zmiana'. Zanieś rozkaz Drilenunowi do koszar w Ados. "
 								+ "Musi uprzedzić miasto. Ja zostanę przy przejściu.");
 			}, "rozkaz dla straży", "rozkaz dla strazy");
 			reply("Lieutenant Drilenun", (player, sentence, speaker) -> {

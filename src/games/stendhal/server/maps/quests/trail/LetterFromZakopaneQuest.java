@@ -16,7 +16,7 @@ public final class LetterFromZakopaneQuest extends TrailQuest {
 
 	@Override
 	protected void addDialogs() {
-		offer("Weź ten #'list' do banku. Dagobert sprawdzi #'kwit' za transport z Zakopanego. "
+		offer("Weź ten #'list' do banku w Semos. Dagobert sprawdzi #'kwit' za transport z Zakopanego. "
 				+ "Jeśli wpłacono zaliczkę, będzie wiedział, kiedy i na czyje nazwisko. Wróć, gdy się czegoś dowiesz.");
 		reply("Lieutenant Drilenun", (player, sentence, speaker) -> {
 			if (player.isQuestInState(step.slot, "checked"))

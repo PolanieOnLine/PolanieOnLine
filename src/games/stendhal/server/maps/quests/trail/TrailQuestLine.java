@@ -88,7 +88,7 @@ public final class TrailQuestLine {
 				1800,
 				40,
 				"List znaleziony w składzie prowadzi do Semos. Porucznik Drilenun powinien wiedzieć, gdzie szukać odbiorcy.",
-				"Idź do ratusza w Semos i pokaż list porucznikowi Drilenunowi. Powiedz: list.",
+				"Idź do koszar w Ados i pokaż list porucznikowi Drilenunowi. Powiedz: list.",
 				SEMOS_CHAPTER,
 				1,
 				Region.SEMOS_CITY),
@@ -124,7 +124,7 @@ public final class TrailQuestLine {
 				1200,
 				0,
 				"Radan ukrywa skradzione zapasy pod Semos. Drilenun wskazał boczny chodnik w podziemiach.",
-				"Zapytaj porucznika Drilenuna w ratuszu Semos o chodnik.",
+				"Zapytaj porucznika Drilenuna w koszarach w Ados o chodnik.",
 				DUNGEON_CHAPTER,
 				1,
 				Region.SEMOS_CITY),
@@ -172,7 +172,7 @@ public final class TrailQuestLine {
 				3500,
 				60,
 				"W księdze Radana jest zamówienie na zapasy dla nocnej zmiany w kopalni Semos. Drilenun chce sprawdzić, kto je odbierał.",
-				"Zapytaj porucznika Drilenuna w ratuszu Semos o nocną zmianę.",
+				"Zapytaj porucznika Drilenuna w koszarach w Ados o nocną zmianę.",
 				MINE_CHAPTER,
 				1,
 				Region.SEMOS_MINES,
@@ -931,7 +931,7 @@ public final class TrailQuestLine {
 			case SEMOS_LETTER:
 				if ("bank".equals(stage))
 					return "Pokaż kwit Dagobertowi w banku Semos i sprawdź księgę wpłat przy jego ladzie. Zapytaj: kwit.";
-				return "Wróć do porucznika Drilenuna w ratuszu Semos i porozmawiaj o liście.";
+				return "Wróć do porucznika Drilenuna w koszarach w Ados i porozmawiaj o liście.";
 			case SEMOS_SIGN:
 				if ("library".equals(stage))
 					return "Zapytaj Ceryla w bibliotece Semos o trzy kółka.";
@@ -947,7 +947,7 @@ public final class TrailQuestLine {
 					return "Porozmawiaj z tragarzem Olkiem obok skrzyni pod gospodą. Użyj hasła z księgi: suchy ładunek.";
 				if ("question".equals(stage))
 					return "Poproś tragarza Olka o kwit na odbiór. Powiedz: kwit.";
-				return "Zanieś wiadomość porucznikowi Drilenunowi w ratuszu Semos. Zapytaj o tragarza.";
+				return "Zanieś wiadomość porucznikowi Drilenunowi w koszarach w Ados. Zapytaj o tragarza.";
 			case RADAN_PASSAGE:
 			case RADAN_RESCUE:
 			case RADAN_TRANSPORT:

@@ -40,7 +40,7 @@ public final class RadanDungeonQuest extends TrailQuest {
 					}
 				} else
 					request(player, speaker,
-							"Znaleźliśmy kryjówkę Radana pod miastem. Ma tam ludzi i skradzione zapasy. "
+							"Znaleźliśmy kryjówkę Radana pod Semos. Ma tam ludzi i skradzione zapasy. "
 									+ "Nie chcę, żeby uciekli, zanim zbierzemy strażników. Zajrzysz do bocznego chodnika?",
 							ConversationStates.QUEST_2_OFFERED);
 			}, "chodnik", "kryjówka", "kryjowka");
@@ -69,7 +69,7 @@ public final class RadanDungeonQuest extends TrailQuest {
 
 	@Override
 	protected String completedText() {
-		return "Mamy księgę, a Bartek może potwierdzić, co działo się pod miastem. Poślę strażników po Radana. "
+		return "Mamy księgę, a Bartek może potwierdzić, co działo się pod Semos. Poślę strażników po Radana. "
 				+ "Dopilnuję też, żeby zapasy wróciły do kupców. Dobra robota. Te buty i 150 monet należą się tobie. "
 				+ "Nie podoba mi się jeszcze jedno: Radan zapisał dostawę dla kopalni, na #'nocną zmianę'. "
 				+ "Przyjrzę się temu. Gdy odpoczniesz, zajrzyj do mnie.";
