@@ -21,7 +21,8 @@ import marauroa.server.game.rp.InstanceZoneManager;
  */
 public final class RadanDungeonSite implements ZoneConfigurator {
 	static final String PUBLIC_ZONE = "-1_semos_dungeon";
-	static final int RETURN_X = 27, RETURN_Y = 37;
+	static final int ENTRANCE_X = 23, ENTRANCE_Y = 37;
+	static final int RETURN_X = ENTRANCE_X + 1, RETURN_Y = ENTRANCE_Y - 1;
 
 	@Override
 	public void configureZone(StendhalRPZone zone,
@@ -30,14 +31,14 @@ public final class RadanDungeonSite implements ZoneConfigurator {
 				player.isQuestCompleted(Step.SEMOS_PICKUP.slot)
 						&& player.isQuestInState(Step.RADAN_PASSAGE.slot, "search"), () -> {
 			final PublicProp tools = new PublicProp(false);
-			tools.setPosition(25, 38);
+			tools.setPosition(ENTRANCE_X - 1, ENTRANCE_Y);
 			return tools;
 		});
 		for (int y = 0; y < 2; y++) {
 			for (int x = 0; x < 2; x++) {
 				final int tile = y * 2 + x;
-				final int entryX = 26 + x;
-				final int entryY = 38 + y;
+				final int entryX = ENTRANCE_X + x;
+				final int entryY = ENTRANCE_Y + y;
 				TrailSceneRegistry.prop(zone, "radan-entrance-" + tile, player ->
 						player.isQuestCompleted(Step.SEMOS_PICKUP.slot)
 								&& player.hasQuest(Step.RADAN_PASSAGE.slot)

@@ -159,20 +159,21 @@ public class RadanDungeonTest {
 	private RadanDungeonSite.PublicProp prop(boolean entrance) {
 		RadanDungeonSite.PublicProp prop = new RadanDungeonSite.PublicProp(entrance);
 		PlayerPrivateScene.assign(prop, player);
-		prop.setPosition(entrance ? 26 : 25, 38);
+		prop.setPosition(entrance ? RadanDungeonSite.ENTRANCE_X
+				: RadanDungeonSite.ENTRANCE_X - 1, RadanDungeonSite.ENTRANCE_Y);
 		outside.add(prop);
 		return prop;
 	}
 
 	private StendhalRPZone enter() {
-		player.setPosition(26, 37);
+		player.setPosition(RadanDungeonSite.ENTRANCE_X, RadanDungeonSite.ENTRANCE_Y - 1);
 		assertTrue(prop(true).onUsed(player));
 		return player.getZone();
 	}
 
 	private void start() {
 		accept();
-		player.setPosition(25, 37);
+		player.setPosition(RadanDungeonSite.ENTRANCE_X - 1, RadanDungeonSite.ENTRANCE_Y - 1);
 		assertTrue(prop(false).onUsed(player));
 		enter();
 	}
@@ -226,7 +227,7 @@ public class RadanDungeonTest {
 
 	@Test
 	public void consentClueAndPrecedingStoryAreRequired() {
-		player.setPosition(26, 37);
+		player.setPosition(RadanDungeonSite.ENTRANCE_X, RadanDungeonSite.ENTRANCE_Y - 1);
 		assertFalse(prop(true).onUsed(player));
 		say(leader(), "hi");
 		say(leader(), "chodnik");
@@ -235,7 +236,7 @@ public class RadanDungeonTest {
 		assertFalse(prop(true).onUsed(player));
 		player.setPosition(1, 1);
 		assertFalse(prop(false).onUsed(player));
-		player.setPosition(25, 37);
+		player.setPosition(RadanDungeonSite.ENTRANCE_X - 1, RadanDungeonSite.ENTRANCE_Y - 1);
 		assertTrue(prop(false).onUsed(player));
 		assertNotNull(TrailQuestLine.objective(player, "radan_passage"));
 		StendhalRPZone zone = enter();
@@ -335,7 +336,7 @@ public class RadanDungeonTest {
 		StendhalRPZone zone = player.getZone();
 		Player intruder = PlayerTestHelper.createPlayer("intruder");
 		outside.add(intruder);
-		intruder.setPosition(26, 37);
+		intruder.setPosition(RadanDungeonSite.ENTRANCE_X, RadanDungeonSite.ENTRANCE_Y - 1);
 		assertTrue(zone.collides(intruder, 6, 23));
 		RadanDungeonScene.Mechanism prop = typed(zone,
 				RadanDungeonScene.Mechanism.class).get(0);
