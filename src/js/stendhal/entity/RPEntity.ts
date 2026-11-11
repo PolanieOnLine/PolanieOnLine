@@ -583,6 +583,12 @@ export class RPEntity extends ActiveEntity {
 		const localY = this["_y"] * 32 + this.statusBarYOffset;
 		var topY = localY + (this["height"] * 32) - this["drawHeight"]
 			- this.getHealthBarHeight() + this.titleDrawYOffset;
+		if (this.titleTextSprite) {
+			const metrics = this.titleTextSprite.getTextMetrics(ctx);
+			topY -= 5 + HEALTH_BAR_HEIGHT + Math.ceil(metrics.actualBoundingBoxAscent ?? 12) + 3;
+		} else {
+			topY -= 3;
+		}
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -656,9 +662,9 @@ export class RPEntity extends ActiveEntity {
 	drawTop(ctx: RenderingContext2D) {
 		var localX = this["_x"] * 32;
 		var localY = this["_y"] * 32;
-		this.drawFloaters(ctx);
 		this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
+		this.drawFloaters(ctx);
 	}
 
 	getCurrentHP(): number {

@@ -71,3 +71,27 @@ test("armor loss has gray numbers and break feedback without changing health", (
 	assert.equal(sounds.length, 1);
 	assert.equal(entity.hp, 100);
 });
+
+test("floating damage is painted after bars and names", () => {
+	const { entity } = harness();
+	const order = [];
+	entity.drawHealthBar = () => order.push("bar");
+	entity.drawTitle = () => order.push("name");
+	entity.drawFloaters = () => order.push("damage");
+	entity.drawTop({});
+	assert.deepEqual(order, ["bar", "name", "damage"]);
+});
+
+test("floating damage starts above names and armored bars including screen offsets", () => {
+	const { entity } = harness();
+	Object.assign(entity, { _x: 2, _y: 4, statusBarYOffset: 12, base_armor_hp: 100 });
+	entity.titleTextSprite = { getTextMetrics: () => ({ actualBoundingBoxAscent: 10 }) };
+	const draws = [];
+	entity.floaters = [{ draw: (ctx, x, y) => { draws.push([x, y]); return false; } }];
+	entity.drawFloaters({});
+	// Bar top: 128 + 12 - 9 = 131. Name baseline: 120, glyph top: 110.
+	assert.deepEqual(draws[0], [80, 107]);
+	entity.titleTextSprite = undefined;
+	entity.drawFloaters({});
+	assert.deepEqual(draws[1], [80, 128]);
+});
