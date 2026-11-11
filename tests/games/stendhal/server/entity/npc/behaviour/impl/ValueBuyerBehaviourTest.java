@@ -12,6 +12,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.ItemTransformer;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
@@ -68,6 +69,28 @@ public class ValueBuyerBehaviourTest {
 		assertTrue(buyer().hasItem("zbroja z mithrilu"));
 		assertFalse(buyer().hasItem("money"));
 		assertFalse(buyer().hasItem("skrzynia Areny Wyzwań"));
+	}
+	@Test public void arenaNeverBuysScrollsOrConsumesThemWhenSaleIsConfirmed() {
+		final ValueBuyerBehaviour arenaBuyer = buyer();
+		for (final DefaultItem definition : manager().getDefaultItems()) {
+			if ("scroll".equals(definition.getItemClass())) {
+				assertFalse(definition.getItemName(), arenaBuyer.hasItem(definition.getItemName()));
+			}
+		}
+		final Player player = PlayerTestHelper.createPlayer("ArenaScrollSeller");
+		final StackableItem scroll = (StackableItem) manager().getItem("niezapisany zwój", ItemCreationContext.restore());
+		scroll.setQuantity(5);
+		player.getSlot("bag").add(scroll);
+		final StendhalRPZone zone = new StendhalRPZone("arena-scroll-rejection", 20, 20);
+		zone.add(player);
+		PlayerTestHelper.generateNPCRPClasses();
+		final SpeakerNPC npc = new SpeakerNPC("Scroll Test Buyer");
+		zone.add(npc);
+		final ItemParserResult request = new ItemParserResult(true, "niezapisany zwój", 3, Collections.<String>emptySet());
+		assertEquals(0, arenaBuyer.getCharge(request, player));
+		assertFalse(arenaBuyer.transactAgreedDeal(request, new EventRaiser(npc), player));
+		assertEquals(5, scroll.getQuantity());
+		assertEquals(0, MoneyUtils.getTotalMoneyInCopper(player));
 	}
 	@Test public void elixirsUseReducedArenaPricesWithoutChangingTheirItemValue() {
 		final String[] names = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir",

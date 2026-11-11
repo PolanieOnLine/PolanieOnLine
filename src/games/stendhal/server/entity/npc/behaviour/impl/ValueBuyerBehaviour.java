@@ -90,6 +90,7 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 			if (item.getValue() > 0 && !item.isUnattainable()
 					&& !"money".equals(item.getItemClass())
 					&& !"key".equals(item.getItemClass())
+					&& !"scroll".equals(item.getItemClass())
 					&& item.getEquipableSlots() != null && item.getEquipableSlots().contains("trade")
 					&& (item.getAttributes() == null || !item.getAttributes().containsKey("autobind"))) {
 				prices.put(item.getItemName(), Integer.valueOf(
@@ -138,6 +139,7 @@ public final class ValueBuyerBehaviour extends BuyerBehaviour {
 		for (final Item item : getSaleItems(res, player)) {
 			if (remaining == 0) { break; }
 			if (item.isBound() || item.has("autobind") || item instanceof OwnedItem
+					|| "scroll".equals(item.getItemClass())
 					|| !item.canBeEquippedIn("trade")) {
 				return 0;
 			}

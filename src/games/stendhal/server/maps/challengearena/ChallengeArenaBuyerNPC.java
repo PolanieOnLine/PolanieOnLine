@@ -22,7 +22,7 @@ public final class ChallengeArenaBuyerNPC {
 				addGreeting("Witaj! Masz coś po walce? Chętnie odkupię twoje zdobycze.");
 				addJob("Skupuję łupy od wojowników. Oni wracają na arenę, a ja szukam kupców na ich zdobycze.");
 				addHelp("Chcesz coś sprzedać? Powiedz #sprzedaj i nazwę przedmiotu, na przykład #'sprzedaj polano'. Jeśli sprzedajesz kilka sztuk, podaj też ich liczbę. Najpierw zaproponuję cenę, a ty zdecydujesz.");
-				addOffer("Chętnie odkupię broń, zbroje i inne łupy. Za rzadsze okazy zapłacę więcej. Monet, kluczy i rzeczy przypisanych do postaci nie biorę.");
+				addOffer("Chętnie odkupię broń, zbroje i inne łupy. Za rzadsze okazy zapłacę więcej. Monet, kluczy, zwojów i rzeczy przypisanych do postaci nie biorę.");
 				addGoodbye("Powodzenia na arenie! Wróć, jeśli znów nazbierasz łupów.");
 				new BuyerAdder().addBuyer(this, new ValueBuyerBehaviour(
 						SingletonRepository.getEntityManager().getDefaultItems(),
