@@ -202,11 +202,11 @@ public class SemosTrailTest {
 		sign();
 		accept("Margaret", "odbiór");
 		player.getSlot("bank").add(wood(2));
-		say("Margaret", "przygotuj skrzynię");
+		say("Margaret", "polana");
 		assertEquals("wood", player.getQuest("trail_semos_pickup"));
 		StackableItem carried = wood(3);
 		player.getSlot("bag").add(carried);
-		say("Margaret", "polana");
+		say("Margaret", "polano");
 		assertEquals("crate", player.getQuest("trail_semos_pickup"));
 		assertEquals(1, player.getNumberOfSubmittableEquipped("polano"));
 		say("Margaret", "przygotuj skrzynię");

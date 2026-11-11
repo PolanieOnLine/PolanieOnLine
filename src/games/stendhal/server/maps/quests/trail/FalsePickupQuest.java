@@ -36,7 +36,7 @@ public final class FalsePickupQuest extends TrailQuest {
 			speaker.say(
 					"Gotowe. Skrzynia stoi na zewnątrz, po prawej stronie wejścia do gospody. "
 							+ "Zajrzyj pod płótno, nim podejdziesz do Olka. Dla niego to po prostu kolejny #'suchy ładunek'.");
-		}, "przygotuj skrzynię", "przygotuj skrzynie", "polana");
+		}, "przygotuj skrzynię", "przygotuj skrzynie", "polano", "polana");
 		reply("Tragarz Olek", (player, sentence, speaker) -> {
 			if (player.isQuestInState(step.slot, "contact")) {
 				player.setQuest(step.slot, "question");
