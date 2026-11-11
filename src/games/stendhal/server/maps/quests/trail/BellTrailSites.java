@@ -19,7 +19,7 @@ import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 public final class BellTrailSites implements ZoneConfigurator {
 	enum Kind {
 		LOG("skrzynia z zapiskami", 104, 24, "item/pot/crate_small", 1, 2, 1),
-		INSCRIPTION("kamień z napisem", 112, 30, "object/rock/rocks", 0, 5, 2),
+		INSCRIPTION("kamień z napisem", 112, 30, "object/trail_investigation_props", 1, 3, 2),
 		BELL_TOP(
 				"stary dzwon",
 				117,
@@ -40,17 +40,17 @@ public final class BellTrailSites implements ZoneConfigurator {
 				"kamień wiążący dzwon",
 				108,
 				32,
-				"object/rock/rocks",
+				"object/trail_investigation_props",
 				0,
-				5,
+				3,
 				1),
 		EAST_WARD(
 				"kamień wiążący dzwon",
 				116,
 				30,
-				"object/rock/rocks",
+				"object/trail_investigation_props",
 				0,
-				5,
+				3,
 				2),
 		ASSEMBLY("zbiórka rannych", 109, 26, "item/pot/crate_small", 1, 2, 0),
 		FIRST_STOP("pierwszy postój", 96, 16, "item/campfires", 0, 2, 1),

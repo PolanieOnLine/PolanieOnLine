@@ -31,10 +31,10 @@ public final class SaltMineSites implements ZoneConfigurator {
 				0,
 				2),
 		ROPES("mokre liny przy chodniku", 42, 81, "item/ropes", 1, 2),
-		SAMPLE("wypływ solanki", 55, 92, "ground/water/pool_small", 0, 6),
-		DRAINAGE("zatkany odpływ", 54, 69, "item/gothic/slab", 0, 1),
-		CHANNEL("wykruszony próg kanału", 67, 53, "item/gothic/slab", 0, 1),
-		SEAL("szczelina starego zbiornika", 63, 82, "item/gothic/slab", 0, 1),
+		SAMPLE("wypływ solanki", 55, 92, "object/trail_investigation_props", 2, 3),
+		DRAINAGE("zatkany odpływ", 54, 69, "object/trail_investigation_props", 3, 3),
+		CHANNEL("wykruszony próg kanału", 67, 53, "object/trail_investigation_props", 4, 3),
+		SEAL("szczelina starego zbiornika", 63, 82, "object/trail_investigation_props", 5, 3),
 		RELEASE("lina spustu awaryjnego", 54, 92, "item/ropes", 0, 2);
 
 		final String name, tileset;
