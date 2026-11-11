@@ -21,7 +21,7 @@ public final class SemosTrailSites implements ZoneConfigurator {
 			evidence(zone, TrailEvidence.Kind.SEMOS_PAYMENT, 11, 24);
 			break;
 		case "int_semos_library":
-			evidence(zone, TrailEvidence.Kind.SEMOS_ARCHIVE, 4, 28);
+			evidence(zone, TrailEvidence.Kind.SEMOS_ARCHIVE, 3, 26);
 			break;
 		case "0_semos_city":
 			evidence(zone, TrailEvidence.Kind.SEMOS_CRATE, 46, 40);
