@@ -14,8 +14,11 @@ package games.stendhal.client.entity;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -151,6 +154,23 @@ public class EntityTest {
 		final IEntity en = new MockEntity();
 		assertEquals(null, en.getSlot(""));
 
+	}
+
+	@Test
+	public void tilesetChangesRefreshTheSprite() {
+		for (String attribute : new String[] { "tileset", "tile_index", "tileset_columns" }) {
+			final List<Property> notifications = new ArrayList<>();
+			Entity entity = new Entity() {
+				@Override
+				public void fireChange(Property property) {
+					notifications.add(property);
+				}
+			};
+			RPObject changes = new RPObject();
+			changes.put(attribute, "1");
+			entity.onChangedAdded(new RPObject(), changes);
+			assertTrue(attribute, notifications.contains(IEntity.PROP_STATE));
+		}
 	}
 
 	private static class MockEntity extends Entity {

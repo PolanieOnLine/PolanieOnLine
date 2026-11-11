@@ -102,8 +102,8 @@ final class RadanDungeonProgress {
 					: "Pokonaj dwóch strażników w północno-zachodniej izbie kryjówki Radana. Możesz wrócić przez boczny chodnik pod Semos.";
 		case RADAN_TRANSPORT:
 			return "chain".equals(stage)
-					? "Odepnij łańcuch po prawej stronie hamulca przy wózku w kryjówce Radana."
-					: "Zaciągnij hamulec przy północnej ścianie izby z wózkiem, na wschód od miejsca uwięzienia Bartka.";
+					? "Odepnij łańcuch zaczepiony z prawej strony wózka w kryjówce Radana."
+					: "Zaciągnij hamulec po lewej stronie wózka w izbie na wschód od miejsca uwięzienia Bartka.";
 		case RADAN_FINALE:
 			if ("guard".equals(stage))
 				return "Pokonaj zbrojnego Radana w ostatniej izbie, na południowym wschodzie kryjówki.";

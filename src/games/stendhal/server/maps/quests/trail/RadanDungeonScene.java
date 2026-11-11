@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
@@ -50,10 +51,10 @@ final class RadanDungeonScene {
 		radan.setPosition(36, 23);
 		zone.add(radan);
 		Mechanism brake = new Mechanism(false);
-		brake.setPosition(23, 7);
+		brake.setPosition(22, 11);
 		zone.add(brake);
 		Mechanism chain = new Mechanism(true);
-		chain.setPosition(26, 7);
+		chain.setPosition(25, 11);
 		zone.add(chain);
 		refresh();
 	}
@@ -85,6 +86,9 @@ final class RadanDungeonScene {
 	}
 
 	private void refresh() {
+		for (Entity entity : zone.getEntitiesOfClass(Mechanism.class)) {
+			((Mechanism) entity).refreshAppearance();
+		}
 		if (owner.isQuestCompleted(Step.RADAN_RESCUE.slot))
 			open(rescueGate);
 		if (owner.isQuestCompleted(Step.RADAN_TRANSPORT.slot))
@@ -129,13 +133,25 @@ final class RadanDungeonScene {
 		final boolean chain;
 
 		Mechanism(boolean chain) {
-			super(owner, chain ? "item/armor/chains" : "item/tools",
-					chain ? 0 : 8, chain ? 2 : 3, false);
+			super(owner, "object/radan_mine_mechanisms", chain ? 2 : 0, 2, false);
 			this.chain = chain;
 			setDescription(chain
 					? "Oto zaczep łańcucha wyciągu. Łańcuch jest mocno napięty."
 					: "Oto korba hamulca. Obraca się ciężko, ale nie jest zablokowana.");
 			setMenu(chain ? "Odepnij|Użyj" : "Zaciągnij|Użyj");
+		}
+
+		void refreshAppearance() {
+			boolean applied = owner.isQuestCompleted(Step.RADAN_TRANSPORT.slot)
+					|| (!chain && owner.isQuestInState(Step.RADAN_TRANSPORT.slot, "chain"));
+			int tile = (chain ? 2 : 0) + (applied ? 1 : 0);
+			if (getInt("tile_index") != tile) {
+				put("tile_index", tile);
+				setDescription(chain
+						? "Oto odpięty łańcuch wyciągu. Hak leży obok zaczepu wózka."
+						: "Oto korba hamulca. Hamulec mocno trzyma koła wózka.");
+				notifyWorldAboutChanges();
+			}
 		}
 
 		@Override
@@ -147,7 +163,7 @@ final class RadanDungeonScene {
 			if (changed) {
 				player.sendPrivateText(chain
 						? "Odpinasz łańcuch. Wyciąg nie zabierze już wózka. Odsuwasz skrzynie z przejścia do ostatniej izby."
-						: "Obracasz korbę. Hamulec zaciska się na kołach. Teraz możesz odpiąć łańcuch po prawej stronie.");
+						: "Obracasz korbę. Hamulec zaciska się na kołach. Teraz możesz odpiąć łańcuch po prawej stronie wózka.");
 				refresh();
 			} else
 				player.sendPrivateText(chain && player.isQuestInState(
@@ -219,7 +235,7 @@ final class RadanDungeonScene {
 						} else
 							speaker.say(owner.isQuestCompleted(
 									Step.RADAN_RESCUE.slot)
-											? "Widzisz korbę przy północnej ścianie, obok wózka? To hamulec. Zaciągnij go porządnie, zanim odczepisz łańcuch po prawej. Nie chcę słyszeć, jak to wszystko zjeżdża w dół."
+											? "Widzisz korbę z lewej strony wózka? To hamulec. Zaciągnij go porządnie, zanim odczepisz łańcuch z drugiej strony. Nie chcę słyszeć, jak to wszystko zjeżdża w dół."
 											: "Oni wciąż tu są. Jeśli mnie teraz rozwiążesz, złapią nas oboje. Proszę, zajmij się najpierw strażnikami.");
 					});
 			addGoodbye("Uważaj na siebie.");

@@ -208,15 +208,20 @@ public class RadanDungeonTest {
 		say(npc, topic);
 	}
 
-	private boolean mechanism(boolean chain) {
+	private RadanDungeonScene.Mechanism mechanismProp(boolean chain) {
 		for (RadanDungeonScene.Mechanism prop : typed(player.getZone(),
 				RadanDungeonScene.Mechanism.class)) {
 			if (prop.chain == chain) {
-				player.setPosition(prop.getX(), prop.getY() + 1);
-				return prop.onUsed(player);
+				return prop;
 			}
 		}
 		throw new AssertionError("Missing mechanism");
+	}
+
+	private boolean mechanism(boolean chain) {
+		RadanDungeonScene.Mechanism prop = mechanismProp(chain);
+		player.setPosition(prop.getX(), prop.getY() + 1);
+		return prop.onUsed(player);
 	}
 
 	private void rescue() {
@@ -259,11 +264,21 @@ public class RadanDungeonTest {
 		int xp = player.getXP();
 		talk(false, "więzy");
 		assertEquals(xp, player.getXP());
+		assertEquals("object/radan_mine_mechanisms", mechanismProp(false).get("tileset"));
+		assertEquals("object/radan_mine_mechanisms", mechanismProp(true).get("tileset"));
+		assertEquals(22, mechanismProp(false).getX());
+		assertEquals(11, mechanismProp(false).getY());
+		assertEquals(25, mechanismProp(true).getX());
+		assertEquals(11, mechanismProp(true).getY());
+		assertEquals(0, mechanismProp(false).getInt("tile_index"));
+		assertEquals(2, mechanismProp(true).getInt("tile_index"));
 		assertFalse(mechanism(true));
 		assertEquals("brake", player.getQuest(Step.RADAN_TRANSPORT.slot));
 		assertTrue(mechanism(false));
+		assertEquals(1, mechanismProp(false).getInt("tile_index"));
 		assertFalse(mechanism(false));
 		assertTrue(mechanism(true));
+		assertEquals(3, mechanismProp(true).getInt("tile_index"));
 		assertFalse(zone.collides(player, 29, 21));
 		assertFalse(mechanism(true));
 		talk(true, "transport");
@@ -316,6 +331,8 @@ public class RadanDungeonTest {
 		outside.add(player);
 		enter();
 		assertEquals("chain", player.getQuest(Step.RADAN_TRANSPORT.slot));
+		assertEquals(1, mechanismProp(false).getInt("tile_index"));
+		assertEquals(2, mechanismProp(true).getInt("tile_index"));
 		assertFalse(player.getZone().collides(player, 17, 9));
 		assertTrue(mechanism(true));
 		defeat(4);
