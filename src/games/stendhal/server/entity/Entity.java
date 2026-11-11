@@ -139,6 +139,12 @@ public abstract class Entity extends RPObject implements Killer {
 		// menu (Make a wish,use)
 		entity.addAttribute("menu", Type.STRING, Definition.VOLATILE);
 
+		// Private scene ownership also applies to scenery and corpses.
+		entity.addAttribute("#perception_key", Type.STRING, Definition.HIDDEN);
+		entity.addAttribute("#perception_value", Type.STRING, Definition.HIDDEN);
+		// Clients use this flag to predict collisions only with the scene owner.
+		entity.addAttribute("owner_collision_only", Type.FLAG, Definition.VOLATILE);
+
 		// sound events
 		entity.addRPEvent(Events.SOUND, Definition.VOLATILE);
 		// graphical effects

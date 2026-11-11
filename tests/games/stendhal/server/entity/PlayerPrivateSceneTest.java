@@ -7,6 +7,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -30,6 +32,9 @@ import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.PoisonStatusTurnListener;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
+import games.stendhal.server.maps.quests.trail.TrailEvidence;
+import marauroa.common.game.DetailLevel;
+import marauroa.common.net.OutputSerializer;
 import utilities.PlayerTestHelper;
 
 public class PlayerPrivateSceneTest {
@@ -79,6 +84,29 @@ public class PlayerPrivateSceneTest {
 		assertTrue(PlayerPrivateScene.canInteract(enemy, sibling));
 		PlayerPrivateScene.assign(sibling, outsider);
 		assertFalse(PlayerPrivateScene.canInteract(enemy, sibling));
+	}
+
+	@Test
+	public void privateCluesCanBeSerializedForClientPerceptions() throws IOException {
+		for (TrailEvidence.Kind kind : TrailEvidence.Kind.values()) {
+			TrailEvidence clue = new TrailEvidence(kind);
+			PlayerPrivateScene.assign(clue, owner);
+			assertSerializable(clue);
+		}
+	}
+
+	@Test
+	public void privateCreatureAndItsCorpseCanBeSerializedForClientPerceptions() throws IOException {
+		assertSerializable(enemy);
+		assertSerializable(new Corpse(enemy, owner.getName()));
+	}
+
+	private void assertSerializable(Entity entity) throws IOException {
+		for (DetailLevel detail : new DetailLevel[] { DetailLevel.FULL, DetailLevel.PRIVATE }) {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			entity.writeObject(new OutputSerializer(bytes), detail);
+			assertTrue(entity.getRPClass().getName(), bytes.size() > 0);
+		}
 	}
 
 	@Test
