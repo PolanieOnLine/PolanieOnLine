@@ -121,7 +121,8 @@ public final class TrailSceneRegistry {
 
 	/** Quest mutation callbacks only enqueue work; they never remove the active speaker mid-dialogue. */
 	public static void questChanged(final Player player, final String quest) {
-		if (quest != null && quest.startsWith("trail_")) {
+		if (quest != null && (quest.startsWith("trail_")
+				|| "wanderers_compass".equals(quest))) {
 			refreshLater(player);
 		}
 	}

@@ -220,7 +220,7 @@ public final class CoastTrailSites implements ZoneConfigurator {
 		}
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		return CoastTrailProgress.active(player, kind.step)
 				&& (kind.bit == 0
 						? player.isQuestInState(kind.step.slot, kind.state)

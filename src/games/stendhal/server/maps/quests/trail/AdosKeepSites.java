@@ -113,7 +113,7 @@ public final class AdosKeepSites implements ZoneConfigurator {
 		}
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		return AdosKeepProgress.active(player, kind.step)
 				&& player.isQuestInState(kind.step.slot, 0, kind.state)
 				&& (AdosKeepProgress.mask(player, kind.step) & kind.bit) == 0;

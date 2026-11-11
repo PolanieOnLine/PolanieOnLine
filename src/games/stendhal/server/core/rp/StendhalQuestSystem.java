@@ -31,6 +31,7 @@ import games.stendhal.server.entity.npc.fsm.TransitionContext;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.*;
 import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
+import games.stendhal.server.maps.quests.compass.WanderersCompassQuest;
 import games.stendhal.server.maps.quests.challenges.*;
 import games.stendhal.server.maps.quests.socialstatusrings.*;
 import games.stendhal.server.maps.quests.trail.DebtToZakopaneQuest;
@@ -128,6 +129,7 @@ public class StendhalQuestSystem {
 		loadQuest(new CrownForTheWannaBeKing());
 		loadQuest(new DailyItemQuest());
 		loadQuest(new FirstGlyph());
+		loadQuest(new WanderersCompassQuest());
 		loadQuest(new DailyMonsterQuest());
 		loadQuest(new DiceGambling());
 		loadQuest(new DragonLair());

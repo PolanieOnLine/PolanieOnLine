@@ -180,6 +180,21 @@ public abstract class AccessCheckingPortal extends Portal {
 	 */
 	protected abstract boolean isAllowed(RPEntity user);
 
+	/** Read-only preview; unknown scripted checks must not run during navigation. */
+	public boolean isAccessibleForNavigation(final Player player) {
+		final Class<?> type = getClass();
+		if (type != KeyedPortal.class && type != LevelCheckingPortal.class
+				&& type != QuestCheckingPortal.class && type != QuestCompletedPortal.class
+				&& type != OnePlayerRoomDoor.class) {
+			return false;
+		}
+		return navigationPasswordAccepted(player) && isAllowed(player);
+	}
+
+	protected final boolean navigationPasswordAccepted(final Player player) {
+		return requiredPassword == null || playerIsPortalUnlocked(player, this);
+	}
+
 	public boolean playerIsPortalUnlocked(final Player player, final Portal portal) {
 		if (player.getUnlockedPortals().contains(portalID)) {
 			return true;

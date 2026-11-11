@@ -222,7 +222,7 @@ public final class DragonTrailSites implements ZoneConfigurator {
 								&& player.isQuestInState(Step.EMBER_CAMP.slot, "witness"));
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		return DragonTrailProgress.active(player, kind.step)
 				&& (kind.bit == 0
 						? player.isQuestInState(kind.step.slot, kind.state)

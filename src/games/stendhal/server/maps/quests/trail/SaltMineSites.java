@@ -122,7 +122,7 @@ public final class SaltMineSites implements ZoneConfigurator {
 		});
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		switch (kind) {
 		case SUPPORT:
 			return unmarked(player, Step.SALT_SHIFT, "marks", 1, "report")

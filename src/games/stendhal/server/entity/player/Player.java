@@ -86,6 +86,7 @@ import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.maps.challengearena.ChallengeArenaObservation;
 import games.stendhal.server.maps.quests.trail.TrailSceneRegistry;
+import games.stendhal.server.core.navigation.CompassService;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -2286,6 +2287,7 @@ public class Player extends DressedEntity implements UseListener {
 			QuestMarkerService.update(this);
 			TrailSceneRegistry.checkAvailability(this);
 			MainQuestInvitationService.update(this);
+			CompassService.update(this);
 			nextQuestMarkerTurn = turn + 4;
 			questMarkerZone = currentZone;
 		}

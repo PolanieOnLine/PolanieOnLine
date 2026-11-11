@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="kompas wędrowca" rarity-enabled="false">
+		<type class="tool" subclass="wanderers_compass" tileid="-1"/>
+		<description>Oto kompas wędrowca. Naprawiona igła znów wskazuje drogę. Dawniej służył przewodnikowi, który nie zostawiał nikogo na szlaku.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+		</attributes>
+		<weight value="0.5"/>
+		<value value="0"/>
+		<equipable>
+			<slot name="bag"/>
+			<slot name="content"/>
+			<slot name="ground"/>
+		</equipable>
+	</item>
+
 	<item name="młynek">
 		<type class="tool" subclass="foodmill" tileid="-1"/>
 		<description>Oto młynek. Tradycyjne narzędzie do mielenia jedzenia.</description>

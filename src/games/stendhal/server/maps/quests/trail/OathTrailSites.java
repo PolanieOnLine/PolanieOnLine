@@ -154,7 +154,7 @@ public final class OathTrailSites implements ZoneConfigurator {
 		}
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		switch (kind) {
 		case SHIELD:
 		case NAMES:

@@ -138,7 +138,7 @@ public final class BellTrailSites implements ZoneConfigurator {
 		});
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		switch (kind) {
 		case LOG:
 		case INSCRIPTION:

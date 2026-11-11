@@ -189,7 +189,7 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 						&& !player.isQuestInState(Step.WARSAW_TRUCE.slot, "ready"));
 	}
 
-	private static boolean needed(Player player, Kind kind) {
+	static boolean needed(Player player, Kind kind) {
 		return WarsawFortressProgress.active(player, kind.step)
 				&& (kind.bit == 0
 						? player.isQuestInState(kind.step.slot, kind.state)

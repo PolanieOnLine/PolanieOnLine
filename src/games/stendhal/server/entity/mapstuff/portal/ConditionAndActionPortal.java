@@ -20,6 +20,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.fsm.QuestMarkerConditions;
 import games.stendhal.server.entity.player.Player;
 
 public class ConditionAndActionPortal extends AccessCheckingPortal {
@@ -67,6 +68,13 @@ public class ConditionAndActionPortal extends AccessCheckingPortal {
 			return condition.fire((Player) user, sentence, this);
 		}
 		return true;
+	}
+
+	@Override
+	public boolean isAccessibleForNavigation(final Player player) {
+		return navigationPasswordAccepted(player)
+				&& Boolean.TRUE.equals(QuestMarkerConditions.evaluate(
+						condition, player, ConversationParser.parse(""), this));
 	}
 
 	@Override

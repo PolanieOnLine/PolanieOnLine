@@ -135,6 +135,9 @@ public class PlayerRPClass {
 		player.addRPSlot("!quests", 1, Definition.HIDDEN);
 		player.addAttribute(QuestMarker.ATTRIBUTE, Type.MAP,
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
+		player.addAttribute("compass_unlocked", Type.INT, Definition.PRIVATE);
+		player.addAttribute("compass_targets", Type.MAP,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addRPSlot("!tutorial", 1, Definition.HIDDEN);
 
 		player.addAttribute("karma", Type.FLOAT, Definition.PRIVATE);
