@@ -53,7 +53,7 @@ class HealthBar implements ChangeListener {
 	 * @return height
 	 */
 	int getHeight() {
-		return hasArmor ? Math.max(9, height) : height;
+		return hasArmor ? height + 4 : height;
 	}
 
 	void setHasArmor(final boolean value) {
@@ -128,7 +128,7 @@ class HealthBar implements ChangeListener {
 	}
 
 	private int healthHeight() {
-		return hasArmor ? (getHeight() - 3) / 2 : height - 2;
+		return height - 2;
 	}
 
 	private int healthTop() {

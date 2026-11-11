@@ -694,7 +694,7 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	getHealthBarHeight(): number {
-		return Number(this["base_armor_hp"]) > 0 ? 9 : HEALTH_BAR_HEIGHT;
+		return Number(this["base_armor_hp"]) > 0 ? HEALTH_BAR_HEIGHT + 4 : HEALTH_BAR_HEIGHT;
 	}
 
 	drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
@@ -707,7 +707,7 @@ export class RPEntity extends ActiveEntity {
 		ctx.beginPath();
 		const barHeight = this.getHealthBarHeight();
 		const hasArmor = Number(this["base_armor_hp"]) > 0;
-		const healthHeight = hasArmor ? Math.floor((barHeight - 3) / 2) : barHeight - 2;
+		const healthHeight = HEALTH_BAR_HEIGHT - 2;
 		const healthY = drawY + (hasArmor ? barHeight - 2 - healthHeight : 0);
 		ctx.rect(drawX, drawY, this["drawWidth"], barHeight - 2);
 		ctx.stroke();

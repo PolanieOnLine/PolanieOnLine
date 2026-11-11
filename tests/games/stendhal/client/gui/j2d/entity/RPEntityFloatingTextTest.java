@@ -47,12 +47,12 @@ public class RPEntityFloatingTextTest {
 			} finally {
 				graphics.dispose();
 			}
-			assertTrue("Damage must fit entirely above armor", damage.y + 10 < 64 + offset - 9);
+			assertTrue("Damage must fit entirely above armor", damage.y + 10 < 64 + offset - 8);
 			for (int row = damage.y; row < damage.y + 10; row++) {
 				assertEquals(Color.RED.getRGB(), image.getRGB(damage.x, row));
 			}
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(30, 61 + offset));
-			assertEquals(38 + offset, damage.y);
+			assertEquals(39 + offset, damage.y);
 		}
 	}
 

@@ -32,22 +32,22 @@ function harness() {
 	return { entity, floaters, sounds };
 }
 
-test("armor and health have separate three-pixel bands without changing ordinary bars", () => {
+test("armor keeps three pixels while health keeps its original height", () => {
 	const { entity } = harness();
 	const fills = [];
 	const ctx = { beginPath() {}, rect() {}, stroke() {}, fillRect(...rect) { fills.push([this.fillStyle, ...rect]); } };
 	entity.set("base_armor_hp", "100");
 	entity.set("armor_hp", "50");
 	entity.drawHealthBar(ctx, 100, 200);
-	assert.equal(entity.getHealthBarHeight(), 9);
-	assert.deepEqual(fills.at(-1), ["#b9c4cf", 100, 191, 16, 3]);
-	assert.deepEqual(fills.find(fill => fill[0] === "#00ff00"), ["#00ff00", 100, 195, 32, 3]);
+	assert.equal(entity.getHealthBarHeight(), 10);
+	assert.deepEqual(fills.at(-1), ["#b9c4cf", 100, 190, 16, 3]);
+	assert.deepEqual(fills.find(fill => fill[0] === "#00ff00"), ["#00ff00", 100, 194, 32, 4]);
 	fills.length = 0;
 	entity.set("armor_hp", "0");
 	entity.drawHealthBar(ctx, 100, 200);
-	assert.equal(entity.getHealthBarHeight(), 9);
-	assert.deepEqual(fills.find(fill => fill[0] === "#00ff00"), ["#00ff00", 100, 195, 32, 3]);
-	assert.deepEqual(fills.find(fill => fill[0] === "#373f48"), ["#373f48", 100, 191, 32, 3]);
+	assert.equal(entity.getHealthBarHeight(), 10);
+	assert.deepEqual(fills.find(fill => fill[0] === "#00ff00"), ["#00ff00", 100, 194, 32, 4]);
+	assert.deepEqual(fills.find(fill => fill[0] === "#373f48"), ["#373f48", 100, 190, 32, 3]);
 	entity.set("base_armor_hp", "0");
 	fills.length = 0;
 	entity.drawHealthBar(ctx, 100, 200);
@@ -89,9 +89,9 @@ test("floating damage starts above names and armored bars including screen offse
 	const draws = [];
 	entity.floaters = [{ draw: (ctx, x, y) => { draws.push([x, y]); return false; } }];
 	entity.drawFloaters({});
-	// Bar top: 128 + 12 - 9 = 131. Name baseline: 120, glyph top: 110.
-	assert.deepEqual(draws[0], [80, 107]);
+	// Bar top: 128 + 12 - 10 = 130. Name baseline: 119, glyph top: 109.
+	assert.deepEqual(draws[0], [80, 106]);
 	entity.titleTextSprite = undefined;
 	entity.drawFloaters({});
-	assert.deepEqual(draws[1], [80, 128]);
+	assert.deepEqual(draws[1], [80, 127]);
 });
