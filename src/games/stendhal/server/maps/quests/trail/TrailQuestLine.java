@@ -198,7 +198,7 @@ public final class TrailQuestLine {
 				5500,
 				100,
 				"Ślady prowadzą w głąb kopalni. Barbarus słyszał tam rozkazy. Trzeba sprawdzić, skąd dochodzą.",
-				"Zapytaj Barbarusa o głosy spod skały i zgódź się pomóc. Gdy zapyta, czy posłuchasz przy szybie, odpowiedz: tak.",
+				"Zapytaj Barbarusa o głosy spod skały.",
 				MINE_CHAPTER,
 				3,
 				Region.SEMOS_MINES,
@@ -893,7 +893,7 @@ public final class TrailQuestLine {
 						+ step.hint.substring(1);
 			}
 			if (stage == null || "rejected".equals(stage))
-				return step.hint;
+				return step.hint + " Aby podjąć zadanie, odpowiedz: tak.";
 			switch (step) {
 			case DELIVERY:
 				if ("inspect".equals(stage))

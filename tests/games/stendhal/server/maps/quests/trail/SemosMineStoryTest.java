@@ -228,8 +228,10 @@ public class SemosMineStoryTest {
 		say("Lieutenant Drilenun", "nie");
 		assertFalse(player.hasQuest(Step.MINE_LEDGER.slot));
 		say("Lieutenant Drilenun", "nocna zmiana");
+		assertTrue(TrailQuestLine.objective(player, Step.MINE_LEDGER.slot).contains("odpowiedz: tak"));
 		say("Lieutenant Drilenun", "tak");
 		assertEquals("barbarus", player.getQuest(Step.MINE_LEDGER.slot));
+		assertFalse(TrailQuestLine.objective(player, Step.MINE_LEDGER.slot).contains("odpowiedz: tak"));
 		assertEquals(1, system.getMainQuests(player).size());
 		IQuest quest = system.getQuest(player, Step.MINE_LEDGER.title);
 		assertEquals(30, quest.getMinLevel());
