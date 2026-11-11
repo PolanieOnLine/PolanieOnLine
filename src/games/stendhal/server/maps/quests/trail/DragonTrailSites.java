@@ -216,7 +216,7 @@ public final class DragonTrailSites implements ZoneConfigurator {
 		npc.setDescription(description);
 		TrailSceneRegistry.actor(zone, npc, player ->
 				DragonTrailProgress.GUIDE.equals(name)
-						? Step.EMBER_GUIDE.available(player)
+						? Step.EMBER_GUIDE.availableOrStarted(player)
 								&& !player.isQuestCompleted(Step.EMBER_RETURN.slot)
 						: DragonTrailProgress.active(player, Step.EMBER_CAMP)
 								&& player.isQuestInState(Step.EMBER_CAMP.slot, "witness"));

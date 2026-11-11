@@ -159,7 +159,7 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 		healer.setDescription(
 				"Oto Dobrosława. Niestrudzenie opiekuje się rannymi mieszkańcami warowni.");
 		TrailSceneRegistry.actor(zone, healer,
-				player -> Step.WARSAW_GATE.available(player)
+				player -> Step.WARSAW_GATE.availableOrStarted(player)
 						&& !player.isQuestCompleted(Step.WARSAW_FIRE.slot));
 		SpeakerNPC soldier = new SpeakerNPC(WarsawFortressProgress.SOLDIER) {
 			@Override
@@ -183,7 +183,7 @@ public final class WarsawFortressSites implements ZoneConfigurator {
 		soldier.setDescription(
 				"Oto Wszemił. Zmęczony dowódca warty czuwa przy swoich ludziach.");
 		TrailSceneRegistry.actor(zone, soldier,
-				player -> Step.WARSAW_WITNESSES.available(player)
+				player -> Step.WARSAW_WITNESSES.availableOrStarted(player)
 						&& !player.isQuestCompleted(Step.WARSAW_TRUCE.slot)
 						&& !player.isQuestInState(Step.WARSAW_TRUCE.slot, "prince")
 						&& !player.isQuestInState(Step.WARSAW_TRUCE.slot, "ready"));

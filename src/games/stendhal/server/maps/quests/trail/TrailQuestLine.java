@@ -849,6 +849,11 @@ public final class TrailQuestLine {
 					&& player.getLevel() >= minimumLevel;
 		}
 
+		boolean availableOrStarted(final Player player) {
+			// A rebirth must not hide actors needed by an accepted story.
+			return available(player) || player.hasQuest(slot);
+		}
+
 		String previousSlot() {
 			return ordinal() == 0 ? "wegiel_na_opal"
 					: values()[ordinal() - 1].slot;

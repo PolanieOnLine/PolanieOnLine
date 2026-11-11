@@ -215,7 +215,7 @@ public final class CoastTrailSites implements ZoneConfigurator {
 			sailor.setDescription(
 					"Oto Lubor. Rozbitek odpoczywa blisko brzegu i nie spuszcza wzroku z morza.");
 			TrailSceneRegistry.actor(zone, sailor,
-					player -> Step.COAST_WRECK.available(player)
+					player -> Step.COAST_WRECK.availableOrStarted(player)
 							&& !player.isQuestCompleted(Step.COAST_RETURN.slot));
 		}
 	}

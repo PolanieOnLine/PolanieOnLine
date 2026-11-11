@@ -113,7 +113,7 @@ public final class SaltMineSites implements ZoneConfigurator {
 		miner.setDescription(description);
 		TrailSceneRegistry.actor(zone, miner, player -> {
 			if (SaltMineProgress.FOREMAN.equals(name)) {
-				return Step.SALT_SHIFT.available(player)
+				return Step.SALT_SHIFT.availableOrStarted(player)
 						&& !player.isQuestCompleted(Step.SALT_RETURN.slot)
 						&& !player.isQuestInState(Step.SALT_RETURN.slot, "mayor");
 			}

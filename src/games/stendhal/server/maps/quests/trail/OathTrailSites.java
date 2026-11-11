@@ -149,7 +149,7 @@ public final class OathTrailSites implements ZoneConfigurator {
 			witness.setDescription(
 					"Oto Wszebor. Przez jego bladą postać widać trawę. Wciąż wypatruje kogoś na drodze.");
 			TrailSceneRegistry.actor(zone, witness,
-					player -> Step.OATH_WATCH.available(player)
+					player -> Step.OATH_WATCH.availableOrStarted(player)
 							&& !OathTrailProgress.released(player));
 		}
 	}
