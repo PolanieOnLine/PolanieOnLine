@@ -100,61 +100,61 @@ final class SaltMineProgress {
 		switch (step) {
 		case SALT_SHIFT:
 			if ("foreman".equals(state))
-				return "Porozmawiaj ze sztygarem Radostem przy wejściu do kopalni Wieliczki (34,80). Powiedz: zaginiona zmiana.";
+				return "Porozmawiaj ze sztygarem Radostem zaraz pod szybem kopalni Wieliczki. Powiedz: zaginiona zmiana.";
 			if ("report".equals(state))
 				return "Pokaż Radostowi ślady wstrząsu i wypływu. Powiedz: zaginiona zmiana.";
 			int marks = mask(player, step, "report");
 			return "Obejrzyj "
 					+ ((marks & 1) == 0
-							? "skrzynkę przy naruszonej podporze (38,89)"
+							? "skrzynkę przy naruszonej podporze na południe od Radosta"
 							: "")
 					+ (marks == 0 ? " i " : "")
-					+ ((marks & 2) == 0 ? "mokre liny przy chodniku (42,81)"
+					+ ((marks & 2) == 0 ? "mokre liny przy chodniku na wschód od szybu"
 							: "")
 					+ " w centralnej części kopalni.";
 		case SALT_RESCUE:
 			if ("brace".equals(state))
-				return "Zabezpiecz strop przy skrzynce z rozpórkami (38,89).";
+				return "Podeprzyj strop rozpórkami ze skrzynki na południe od Radosta.";
 			if ("fight".equals(state))
-				return "Pokonaj solny szlam zastępujący drogę górnikom (50,82).";
+				return "Pokonaj solny szlam w chodniku na wschód od szybu, dalej za mokrymi linami.";
 			if ("report".equals(state))
 				return "Powiadom Radosta, że obaj górnicy dotrą do szybu. Powiedz: odcięci górnicy.";
 			int miners = mask(player, step, "report");
 			return "Wskaż drogę: "
-					+ ((miners & 1) == 0 ? "Bogdanowi (43,79)" : "")
+					+ ((miners & 1) == 0 ? "Bogdanowi we wschodnim odgałęzieniu niedaleko szybu" : "")
 					+ (miners == 0 ? " i " : "")
-					+ ((miners & 2) == 0 ? "Wojmirowi (40,54)" : "")
+					+ ((miners & 2) == 0 ? "Wojmirowi w odnodze prowadzącej dalej na północ" : "")
 					+ ". Powiedz: odcięci górnicy.";
 		case SALT_SAMPLE:
 			return "agrypin".equals(state)
 					? "Zanieś próbkę Agrypinowi w jego domu w Wieliczce. Powiedz: próbka solanki."
-					: "Pobierz próbkę z wypływu w dalszej części chodnika (55,92).";
+					: "Pobierz próbkę z wypływu solanki w chodniku na południowy wschód od szybu.";
 		case SALT_SOURCE:
 			if ("report".equals(state))
 				return "Wyjaśnij Radostowi, którędy płynie woda. Powiedz: stary zbiornik.";
 			int channels = mask(player, step, "report");
 			return "Zbadaj "
-					+ ((channels & 1) == 0 ? "zatkany odpływ (54,69)" : "")
+					+ ((channels & 1) == 0 ? "zatkany odpływ na północny wschód od szybu" : "")
 					+ (channels == 0 ? " i " : "")
-					+ ((channels & 2) == 0 ? "wykruszony próg kanału (67,53)"
+					+ ((channels & 2) == 0 ? "wykruszony próg kanału w odnodze dalej na północny wschód"
 							: "")
 					+ ". Nie otwieraj jeszcze spustu.";
 		case SALT_CREATURE:
 			if ("seal".equals(state))
-				return "Zamknij szczelinę starego zbiornika (63,82).";
+				return "Zamknij szczelinę po zachodniej stronie starego zbiornika, przy miejscu, którego pilnował żywiołak.";
 			return "report".equals(state)
 					? "Powiedz Radostowi, że dopływ jest zamknięty. Temat: żywiołak solanki."
-					: "Pokonaj żywiołaka solanki przy starym zbiorniku (65,80).";
+					: "Pokonaj żywiołaka solanki przy starym zbiorniku, w chodnikach na wschód od szybu.";
 		case SALT_RETURN:
 			if ("drain".equals(state))
-				return "Otwórz spust awaryjny liną przy wypływie (54,92).";
+				return "Otwórz spust awaryjny liną leżącą przy wypływie solanki na południowy wschód od szybu.";
 			if ("mayor".equals(state))
 				return "Wróć do Zbigniewa w ratuszu Wieliczki. Powiedz: bezpieczny szyb.";
 			int checked = mask(player, step, "mayor");
 			return "Sprawdź "
-					+ ((checked & 1) == 0 ? "podpartą belkę (38,89)" : "")
+					+ ((checked & 1) == 0 ? "podpartą belkę przy skrzynce na południe od Radosta" : "")
 					+ (checked == 0 ? " oraz " : "")
-					+ ((checked & 2) == 0 ? "drogę przy mokrych linach (42,81)"
+					+ ((checked & 2) == 0 ? "drogę przy mokrych linach na wschód od szybu"
 							: "")
 					+ ", zanim wrócisz na powierzchnię.";
 		default:

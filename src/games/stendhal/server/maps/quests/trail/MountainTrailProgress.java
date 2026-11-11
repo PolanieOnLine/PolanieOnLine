@@ -105,7 +105,7 @@ final class MountainTrailProgress {
 		switch (step) {
 		case MOUNTAIN_MINERS:
 			return "search".equals(state)
-					? "Odszukaj górnika Borzyma w bocznym tunelu kopalni Semos, na północny wschód od Barbarusa (76,65). Zapytaj o górników."
+					? "Odszukaj rannego Borzyma przy zakręcie bocznego tunelu, na północny wschód od Barbarusa w kopalni Semos. Zapytaj o górników."
 					: "Wróć do Barbarusa i opowiedz o odnalezionym górniku. Powiedz: zaginieni górnicy.";
 		case MOUNTAIN_THREATS:
 			if ("report".equals(state))
@@ -121,11 +121,11 @@ final class MountainTrailProgress {
 					+ ".";
 		case MOUNTAIN_MEETING:
 			if ("rescue".equals(state))
-				return "Uwolnij woźnicę Miłosza na wschodzie polany w Kościelisku (89,65). Powiedz: więzy.";
+				return "Uwolnij Miłosza przy skrzyni na wschodnim skraju polany w Kościelisku. Powiedz: więzy.";
 			if ("report".equals(state))
 				return "Wróć do Brzezdoma z wieściami o woźnicy. Powiedz: obcy na polanie.";
 			return "Pokonaj " + remaining(player, step)
-					+ " przy woźnicy, na wschodzie polany w Kościelisku (91–93,65).";
+					+ " przy skrzyni na wschodnim skraju polany w Kościelisku, żeby uwolnić woźnicę.";
 		case MOUNTAIN_CARGO:
 			if ("cargo".equals(state))
 				return "Wróć na wschodni skraj polany w Kościelisku. Sprawdź skrzynię z bronią w miejscu, gdzie więziono Miłosza.";
@@ -136,7 +136,7 @@ final class MountainTrailProgress {
 			return "report".equals(state)
 					? "Wróć do Brzezdoma i opowiedz o rozbiciu oddziału. Powiedz: zbiórka oddziału."
 					: "Pokonaj " + remaining(player, step)
-							+ " w północnej części polany we wschodnim Kościelisku (80–88,48–54).";
+							+ " przy obozowisku na północ od miejsca, gdzie więziono Miłosza. Dowódca stoi nieco na północny zachód od skrzyni z zapasami.";
 		case MOUNTAIN_RETURN:
 			if ("ready".equals(state))
 				return "Odbierz podziękowanie od Gazdy Wojtka w ratuszu Zakopanego C. Zostaw miejsce w plecaku. Powiedz: wieści z lasu.";

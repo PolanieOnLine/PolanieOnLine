@@ -118,46 +118,46 @@ final class CoastTrailProgress {
 		switch (step) {
 		case COAST_WRECK:
 			if ("survivor".equals(state))
-				return "Porozmawiaj z rozbitkiem Luborem na plaży Gdańska NW (110,60). Powiedz: zaginiona Mewa.";
+				return "Porozmawiaj z Luborem na plaży w północno-zachodnim Gdańsku. Rozbitek odpoczywa na wschód od skrzyni i zerwanych lin. Powiedz: zaginiona Mewa.";
 			if ("report".equals(state))
 				return "Wróć do Staszka na przystani promu w Gdańsku NW. Powiedz: zaginiona Mewa.";
 			int bits = traces(player);
-			return "Na plaży Gdańska NW zbadaj "
-					+ ((bits & 1) == 0 ? "skrzynię z Mewy (97,57)" : "")
+			return "Na plaży w północno-zachodnim Gdańsku zbadaj "
+					+ ((bits & 1) == 0 ? "skrzynię z Mewy" : "")
 					+ (bits == 0 ? " i " : "")
-					+ ((bits & 2) == 0 ? "strzępy olinowania (105,58)" : "")
+					+ ((bits & 2) == 0 ? "strzępy olinowania leżące kawałek dalej na wschód" : "")
 					+ ". Szukaj na wschód od przystani promu.";
 		case COAST_LIGHTS:
 			if ("lookout".equals(state))
-				return "Obejrzyj palenisko na wschodnim krańcu plaży Gdańska NE (105,62).";
+				return "Obejrzyj palenisko z blaszanymi osłonami na wschodnim krańcu północno-wschodniej plaży Gdańska, za ujściem rzeki i zabudowaniami portu.";
 			return "report".equals(state)
 					? "Wróć do Lubora w Gdańsku NW z wieściami o fałszywym świetle."
-					: "Pokonaj rabusia wybrzeża przy fałszywym palenisku w Gdańsku NE (108,64).";
+					: "Pokonaj rabusia pilnującego fałszywego paleniska na wschodnim krańcu północno-wschodniej plaży Gdańska.";
 		case COAST_CARGO:
 			if ("cargo".equals(state))
-				return "Sprawdź skrzynię w piwnicy składu (27,12). Wejście do składu: Gdańsk N (27,77); schody w budynku prowadzą do piwnicy.";
+				return "Wejdź do składu niedaleko muzeum w północnej części Gdańska. Zejdź schodami do piwnicy i sprawdź mokrą skrzynię w jej północnej części.";
 			return "rosa".equals(state)
 					? "Zapytaj Rosę w tawernie Gdańska N o ładunek z Mewy."
 					: "Zanieś Malteisowi relację Rosy. Powiedz: ładunek z Mewy.";
 		case COAST_WRECKERS:
 			if ("papers".equals(state))
-				return "Zabierz zapiski przywódcy z głębi piwnicy składu (30,26).";
+				return "Zabierz zapiski leżące przy beczkach w głębi piwnicy składu, obok miejsca, którego pilnował herszt.";
 			return "report".equals(state)
 					? "Pokaż Malteisowi plan rabusiów. Powiedz: rabusie wybrzeża."
-					: "Pokonaj herszta nadbrzeżnych rabusiów w głębi piwnicy składu (28,26).";
+					: "Pokonaj herszta nadbrzeżnych rabusiów w południowej części piwnicy składu, między beczkami.";
 		case COAST_LAMPS:
 			if ("rigging".equals(state))
-				return "Napraw linki lamp sygnałowych na plaży Gdańska NE (56,60).";
+				return "Napraw zerwane linki pośrodku północno-wschodniej plaży Gdańska, między czerwoną a zieloną lampą.";
 			if ("lamps".equals(state))
 				return "1".equals(player.getQuest(step.slot, 1))
-						? "Ustaw zieloną lampę po wschodniej stronie plaży Gdańska NE (75,57)."
-						: "Najpierw ustaw czerwoną lampę po zachodniej stronie plaży Gdańska NE (40,57).";
+						? "Ustaw zieloną lampę po wschodniej stronie północno-wschodniej plaży Gdańska."
+						: "Najpierw ustaw czerwoną lampę po zachodniej stronie północno-wschodniej plaży Gdańska.";
 			return "Zawiadom Lubora w Gdańsku NW, że lampy są gotowe. Powiedz: bezpieczny brzeg.";
 		case COAST_RETURN:
 			if ("fight".equals(state))
-				return "Pokonaj niszczyciela sygnałów na plaży Gdańska NE (56,63).";
+				return "Pokonaj człowieka próbującego zniszczyć sygnały. Kręci się przy mocowaniach lamp, pośrodku północno-wschodniej plaży Gdańska.";
 			if ("signal".equals(state))
-				return "Nadaj sygnał latarnią pilota w Gdańsku NE (56,57).";
+				return "Nadaj sygnał latarnią pilota pośrodku północno-wschodniej plaży Gdańska, między kolorowymi lampami.";
 			return "lookout".equals(state)
 					? "Zapytaj Lubora w Gdańsku NW, czy statek obrał bezpieczny kurs. Powiedz: bezpieczny kurs."
 					: "Wróć do Staszka na przystani promu w Gdańsku NW. Zostaw miejsce na płaszcz i monety. Powiedz: ratunek dla Jaskółki.";

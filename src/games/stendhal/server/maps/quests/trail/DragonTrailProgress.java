@@ -102,40 +102,40 @@ final class DragonTrailProgress {
 		switch (step) {
 		case EMBER_CAMP:
 			if ("witness".equals(state))
-				return "Porozmawiaj z Radowitem przy spalonym obozie na Smoczych Ziemiach S (31,118). Powiedz: spalony obóz.";
+				return "Porozmawiaj z rannym Radowitem przy spalonym obozie, niedaleko południowego wejścia na Smocze Ziemie. Powiedz: spalony obóz.";
 			if ("report".equals(state))
 				return "Wróć do Racirada przy południowym wejściu na Smocze Ziemie. Powiedz: spalony obóz.";
 			int bits = traces(p);
 			return "Obejrzyj "
-					+ ((bits & 1) == 0 ? "nadpaloną skrzynię (28,119)" : "")
+					+ ((bits & 1) == 0 ? "nadpaloną skrzynię" : "")
 					+ (bits == 0 ? " i " : "")
-					+ ((bits & 2) == 0 ? "wygasłe palenisko (34,119)" : "")
+					+ ((bits & 2) == 0 ? "wygasłe palenisko obok skrzyni" : "")
 					+ " przy południowym wejściu na Smocze Ziemie.";
 		case EMBER_TRANSPORT:
 			return "cargo".equals(state)
-					? "Sprawdź porzucony ładunek na Smoczych Ziemiach N (60,40), na południe od Robercika."
-					: "Porozmawiaj z Robercikiem na Smoczych Ziemiach N (63,31). Powiedz: porzucony transport.";
+					? "Sprawdź porzucony ładunek przy drodze w północnej osadzie Smoczych Ziem, na południe od ławki Robercika."
+					: "Porozmawiaj z Robercikiem przy ławce w północnej osadzie Smoczych Ziem. Powiedz: porzucony transport.";
 		case EMBER_SCENT:
 			return "mixture".equals(state)
-					? "Sprawdź naczynie z płótnem obok Wizariusza na szczycie jego wieży (6,42)."
+					? "Zanurz płótno w glinianym naczyniu obok Wizariusza, na szczycie jego wieży w północno-zachodniej części Smoczych Ziem."
 					: "Pokaż Wizariuszowi, co stało się z płótnem. Powiedz: zapach jaj.";
 		case EMBER_GUIDE:
 			return "fight".equals(state)
-					? "Pokonaj strażnika łowców jaj przy obozowisku na Smoczych Ziemiach N (99,46)."
-					: "Porozmawiaj z uwolnionym Ostroborem przy obozowisku na Smoczych Ziemiach N (99,43). Powiedz: pojmany przewodnik.";
+					? "Pokonaj człowieka pilnującego Ostrobora w obozowisku na północnym wschodzie Smoczych Ziem, niedaleko kamiennej wieży."
+					: "Porozmawiaj z uwolnionym Ostroborem w obozowisku łowców jaj, niedaleko kamiennej wieży na północnym wschodzie Smoczych Ziem. Powiedz: pojmany przewodnik.";
 		case EMBER_EGGS:
 			if ("fight".equals(state))
-				return "Pokonaj herszta łowców jaj na Smoczych Ziemiach N (104,41).";
+				return "Pokonaj herszta łowców jaj, który pilnuje skrzyni na północny wschód od Ostrobora.";
 			return "cache".equals(state)
-					? "Odzyskaj jaja ze skrzyni obok stanowiska herszta (107,41)."
+					? "Odzyskaj jaja ze skrzyni na wschód od miejsca, którego pilnował herszt łowców."
 					: "Powiedz Ostroborowi, że jaja są odzyskane. Temat: skradziony lęg.";
 		case EMBER_RETURN:
 			if ("wash".equals(state))
-				return "Obmyj jaja przy naczyniu w obozie handlarzy (97,43), używając środka od Wizariusza.";
+				return "Obmyj jaja w naczyniu z wodą obok Ostrobora, po zachodniej stronie obozu handlarzy. Użyj środka od Wizariusza.";
 			if ("traps".equals(state))
-				return "Usuń pułapki przy dawnym lęgowisku w południowo-zachodniej części Smoczych Ziem N (25,110).";
+				return "Usuń sidła przy lęgowisku między kamieniami, w południowo-zachodniej części północnych Smoczych Ziem.";
 			return "nest".equals(state)
-					? "Odłóż jaja na wyściółkę gniazda na Smoczych Ziemiach N (27,107)."
+					? "Odłóż jaja na wyściółkę gniazda między kamieniami, nieco na północ od rozbrojonych sideł."
 					: "Wróć do Racirada przy południowym wejściu na Smocze Ziemie. Powiedz: powrót do gniazda.";
 		default:
 			throw new IllegalArgumentException("Not a dragon story quest");

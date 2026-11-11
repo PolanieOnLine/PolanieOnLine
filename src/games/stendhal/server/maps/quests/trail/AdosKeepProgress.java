@@ -74,12 +74,12 @@ final class AdosKeepProgress {
 				return "Wróć do Juliusa przy głównym wejściu do Ados. Powiedz: stara warownia.";
 			return "Sprawdź "
 					+ ((seen & 1) == 0
-							? "ciężkie ślady przy wejściu do warowni (13,122)"
+							? "ciężkie ślady pod schodami do warowni"
 							: "")
 					+ (seen == 0 ? " oraz " : "")
-					+ ((seen & 2) == 0 ? "odłamek kamiennej płyty obok (20,119)"
+					+ ((seen & 2) == 0 ? "odłamek kamiennej płyty na północny wschód od schodów"
 							: "")
-					+ " w górach na północny zachód od Ados. Wejście do warowni jest na południowym skraju tej mapy.";
+					+ " w górach na północny zachód od Ados. Schody do warowni są na południowym skraju gór.";
 		case KEEP_WITNESSES:
 			if ("report".equals(state))
 				return "Przekaż Juliusowi relacje mieszkańców. Powiedz: uciekinierzy.";
@@ -96,15 +96,15 @@ final class AdosKeepProgress {
 			if ("report".equals(state))
 				return "Wróć do Wikipediana w bibliotece Ados. Powiedz: stare napisy.";
 			return "Odczytaj " + ((seen & 1) == 0
-					? "stary napis w południowo-zachodniej sali (22,105)"
+					? "stary napis w południowo-zachodniej sali, niedaleko Zogfanga"
 					: "") + (seen == 0 ? " oraz " : "")
-					+ ((seen & 2) == 0 ? "napis w sali dalej na wschód (65,105)"
+					+ ((seen & 2) == 0 ? "napis w sali dalej na wschód"
 							: "")
 					+ " na pierwszym piętrze warowni.";
 		case KEEP_GUARDIAN:
 			return "report".equals(state)
 					? "Wróć do Zogfanga i opowiedz o pokonaniu strażnika. Powiedz: kamienny strażnik."
-					: "Pokonaj strażnika warowni w środkowej sali na południu pierwszego piętra (45,108). Pozostań w pobliżu podczas walki.";
+					: "Pokonaj kamiennego strażnika w środkowej sali na południu pierwszego piętra warowni, na wschód od Zogfanga.";
 		case KEEP_RETURN:
 			return "ready".equals(state)
 					? "Odbierz podziękowanie od Juliusa przy wejściu do Ados. Zostaw miejsce w plecaku. Powiedz: droga do Ados."

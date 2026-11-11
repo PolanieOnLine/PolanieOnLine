@@ -113,39 +113,39 @@ final class OathTrailProgress {
 		switch (step) {
 		case OATH_WATCH:
 			if ("witness".equals(state))
-				return "Porozmawiaj z Wszeborem na dawnym trakcie na północny zachód od Krakowa (70,38). Powiedz: polegli wartownicy.";
+				return "Porozmawiaj z Wszeborem przy dawnym trakcie na północno-zachodnich polach pod Krakowem. Czeka przy zakręcie drogi. Powiedz: polegli wartownicy.";
 			if ("report".equals(state))
 				return "Wróć do Wagabundusa na południe od Krakowa. Powiedz: polegli wartownicy.";
-			return "Pokonaj poległego wartownika na północno-zachodnich polach pod Krakowem (73,38). Nie atakuje osób, które nie prowadzą tej sprawy.";
+			return "Pokonaj poległego wartownika przy Wszeborze, tam, gdzie dawny trakt na północny zachód od Krakowa skręca na północ.";
 		case OATH_NAMES:
 			if ("report".equals(state))
 				return "Pokaż Amileuszowi w Krakowie odrysowane znaki. Powiedz: znak oddziału.";
 			int seen = mask(player);
-			return "Zbadaj " + ((seen & 1) == 0 ? "resztki tarczy (53,40)" : "")
+			return "Zbadaj " + ((seen & 1) == 0 ? "resztki tarczy" : "")
 					+ (seen == 0 ? " i " : "")
-					+ ((seen & 2) == 0 ? "kamień z imionami (58,40)" : "")
-					+ " na polach na północny zachód od Krakowa, niedaleko Wszebora.";
+					+ ((seen & 2) == 0 ? "kamień z imionami" : "")
+					+ " na polach na północny zachód od Krakowa, kawałek na zachód od Wszebora.";
 		case OATH_GRAVE:
 			return "report".equals(state)
 					? "Wróć do Wagabundusa z wieścią o mogile. Powiedz: samotny grób."
-					: "Przyjrzyj się samotnemu grobowi na zachodnich polach pod Krakowem (92,34).";
+					: "Przyjrzyj się samotnemu grobowi w północno-wschodniej części zachodnich pól pod Krakowem.";
 		case OATH_TRUTH:
 			return "report".equals(state)
 					? "Zanieś odpis Amileuszowi. Powiedz: ostatni rozkaz."
-					: "Przeszukaj resztki posterunku obok samotnego grobu, na zachodnich polach pod Krakowem (94,38).";
+					: "Przeszukaj resztki dawnego posterunku, nieco na południe od samotnego grobu na zachodnich polach pod Krakowem.";
 		case OATH_BANNER:
 			if ("banner".equals(state))
-				return "Zabierz chorągiew leżącą przy dawnym posterunku na zachodnich polach (100,85).";
+				return "Zabierz chorągiew w południowo-wschodniej części zachodnich pól pod Krakowem, przy miejscu, którego pilnował chorąży.";
 			if ("report".equals(state))
 				return "Wróć do Wszebora na północno-zachodnie pola. Powiedz: chorągiew oddziału.";
-			return "Pokonaj strażnika dawnej chorągwi na zachodnich polach pod Krakowem (98,85).";
+			return "Pokonaj chorążego pilnującego płótna w południowo-wschodniej części zachodnich pól pod Krakowem, daleko na południe od grobu Borzywoja.";
 		case OATH_BURIAL:
 			if ("remains".equals(state))
-				return "Wróć do samotnego grobu dowódcy na zachodnich polach (92,34) i przygotuj szczątki do przeniesienia.";
+				return "Wróć do samotnego grobu dowódcy w północno-wschodniej części zachodnich pól pod Krakowem i przygotuj szczątki do przeniesienia.";
 			if ("burial".equals(state))
 				return "1".equals(player.getQuest(step.slot, 1))
-						? "Złóż chorągiew przy wspólnej mogile na północno-zachodnich polach (78,28)."
-						: "Złóż szczątki dowódcy we wspólnej mogile na północno-zachodnich polach (76,28).";
+						? "Umieść chorągiew przy kamieniu po wschodniej stronie wspólnej mogiły, na północ od miejsca, gdzie czeka Wszebor."
+						: "Złóż szczątki dowódcy we wspólnej mogile, kawałek na północ od miejsca, gdzie czeka Wszebor, na północno-zachodnich polach pod Krakowem.";
 			if ("release".equals(state))
 				return "Porozmawiaj z Wszeborem o dotrzymanym słowie.";
 			return "Wróć do Wagabundusa po podziękowanie. Zostaw miejsce w plecaku. Powiedz: wspólny pochówek.";

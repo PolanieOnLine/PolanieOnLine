@@ -114,7 +114,7 @@ final class BellTrailProgress {
 		switch (step) {
 		case BELL_RETURNED:
 			return "witness".equals(state)
-					? "Porozmawiaj z Niemirem obok Festris na piętrze 4 Kikareukin (110,76). Powiedz: wyprawa."
+					? "Porozmawiaj z Niemirem, który odpoczywa obok Festris na czwartym piętrze Kikareukin. Powiedz: wyprawa."
 					: "Wróć do Festris na piętrze 4 Kikareukin. Powiedz: zaginiona wyprawa.";
 		case BELL_WOUNDED:
 			if ("report".equals(state)) {
@@ -127,30 +127,32 @@ final class BellTrailProgress {
 					+ " przy skrzyniach w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: ranni.";
 		case BELL_VOICE:
 			return "report".equals(state)
-					? "Pokaż Borzęcie zapiski i opowiedz o pustym dzwonie. Wyspy Kikareukin (111,26). Powiedz: głos z mgły."
-					: "Sprawdź skrzynię z zapiskami (104,24), kamień z napisem (112,30) i stary dzwon (117,34) na wyspach Kikareukin.";
+					? "Pokaż Borzęcie zapiski i opowiedz o pustym dzwonie. Czeka przy skrzyniach w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: głos z mgły."
+					: "Sprawdź skrzynię z zapiskami na zachód od obozu. Następnie obejrzyj kamień z napisem i stary dzwon na południowy wschód od rannych.";
 		case BELL_GUARD:
 			if ("wards".equals(state)) {
-				return "Rozłącz dwa kamienie wiążące dzwon na wyspach Kikareukin: (108,32) i (116,30).";
+				return "Rozłącz dwa kamienie ze znakami przy dzwonie. Jeden leży na zachód od niego, drugi nieco na północ. Dzwon stoi na południowy wschód od obozu.";
 			}
 			if ("fight".equals(state)) {
-				return "Pokonaj strażnika milczącego dzwonu na wyspach Kikareukin (110,32).";
+				return "Pokonaj strażnika milczącego dzwonu, między kamieniami ze znakami a obozem rannych.";
 			}
 			return "silence".equals(state)
-					? "Poluzuj mocowanie starego dzwonu na wyspach Kikareukin (117,34)."
-					: "Wróć do Witosława w obozie na wyspach Kikareukin (108,26). Powiedz: milczący dzwon.";
+					? "Poluzuj mocowanie starego dzwonu na południowy wschód od obozu rannych."
+					: "Wróć do Witosława przy skrzyniach w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: milczący dzwon.";
 		case BELL_ESCAPE:
 			if ("return".equals(state)) {
 				return "Ranni dotarli do zachodniego obozowiska. Wróć do Festris na piętrze 4 Kikareukin. Powiedz: powrót wyprawy.";
 			}
 			if ("ambush".equals(state)) {
-				return "Ranni czekają przy pierwszym postoju. Pokonaj echo strażnika przy kładce na wyspach Kikareukin (78,10), potem wróć po nich.";
+				return "Ranni czekają przy pierwszym palenisku na północny zachód od obozu. Pokonaj echo strażnika przy kładce dalej na zachód, a potem wróć po rannych.";
 			}
 			int checkpoint = Math.min(2, Math.max(0, counter(player, step)));
-			int[] next = ROUTE[checkpoint + 1];
-			return "Zbierz rannych przy Witosławie (109,26), jeśli nie idą za tobą. Prowadź ich powoli do następnego postoju ("
-					+ next[0] + "," + next[1]
-					+ ") na wyspach Kikareukin i sprawdź palenisko. Muszą dotrzeć obaj.";
+			String nextStop = checkpoint == 0
+					? "pierwszego paleniska na północny zachód od obozu"
+					: checkpoint == 1 ? "paleniska przy kładce na zachodzie"
+							: "zachodniego obozowiska za kładką";
+			return "Zbierz rannych przy skrzyni obok Witosława, jeśli nie idą za tobą. Prowadź ich powoli do "
+					+ nextStop + ". Gdy dotrą obaj, sprawdź palenisko.";
 		default:
 			throw new IllegalArgumentException("Not a bell story quest");
 		}
