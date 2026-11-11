@@ -19,6 +19,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Goat;
+import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
@@ -46,11 +47,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 							final Sheep sheep = player.getSheep();
-							if(!player.hasSheep()) {
-								return false;
-							}
-							final int weight = 100 - sheep.getWeight();
-							return weight <= 0;
+							return sheep != null && sheep.getWeight() >= 100;
 						}
 					}));
 		achievements.add(createAchievement(
@@ -61,11 +58,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 							final Goat goat = player.getGoat();
-							if(!player.hasGoat()) {
-								return false;
-							}
-							final int weight = 100 - goat.getWeight();
-							return weight <= 0;
+							return goat != null && goat.getWeight() >= 100;
 						}
 					}));
 		achievements.add(createAchievement(
@@ -75,11 +68,8 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 					new ChatCondition() {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-							if(!player.hasPet()) {
-								return false;
-							}
-							final int weight = 100 - player.getPet().getWeight();
-							return weight <= 0;
+							final Pet pet = player.getPet();
+							return pet != null && pet.getWeight() >= 100;
 						}
 					}));
 
