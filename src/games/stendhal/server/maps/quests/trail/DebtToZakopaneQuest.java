@@ -26,10 +26,14 @@ public final class DebtToZakopaneQuest extends TrailQuest {
 		}, "dowody", "zeznania");
 		addWitness("Stasek", 1,
 				"Tak, to moje worki z węglem. Tylko co one robią w Kościelisku? "
-						+ "Woźnica pokazał pieczęć ratusza i mówił, że wszystko jest uzgodnione. Kazał nawet szykować następną dostawę. Powiedz Wojtkowi, że poznaję te worki.");
+						+ "Woźnica pokazał pieczęć ratusza i mówił, że wszystko jest uzgodnione. Kazał nawet szykować następną dostawę.",
+				"Pokaż jeszcze te #'dowody' Jagnie w karczmie na północnym wschodzie Zakopanego. "
+						+ "Może rozpozna coś swojego.");
 		addWitness("Jagna", 2,
 				"Tak, tę mąkę zamawiałam do karczmy. Woźnica mówił, że musi ją najpierw zawieźć "
-						+ "do miejskiego magazynu, a potem przywiezie do mnie. No to już wiem, dlaczego tak wypytywał o Brzezdoma. Powiedz Wojtkowi, że wszystko się zgadza.");
+						+ "do miejskiego magazynu, a potem przywiezie do mnie. No to już wiem, dlaczego tak wypytywał o Brzezdoma.",
+				"Zajrzyj jeszcze do Staska w sklepie w centrum Zakopanego i pokaż mu #'dowody'. "
+						+ "Może pozna swoje worki.");
 		reply("Gazda Wojtek", (player, sentence, speaker) -> {
 			if (player.isQuestCompleted(step.slot))
 				speaker.say(
@@ -42,7 +46,7 @@ public final class DebtToZakopaneQuest extends TrailQuest {
 	}
 
 	private void addWitness(final String name, final int bit,
-			final String statement) {
+			final String statement, final String nextWitness) {
 		reply(name, (player, sentence, speaker) -> {
 			if (!"witnesses".equals(player.getQuest(step.slot, 0))) {
 				remind(player, speaker);
@@ -52,8 +56,9 @@ public final class DebtToZakopaneQuest extends TrailQuest {
 			player.setQuest(step.slot,
 					witnesses == 3 ? "report" : "witnesses;" + witnesses);
 			speaker.say(statement + (witnesses == 3
-					? " Nie zwlekaj z tymi papierami. Dla Wojtka to ważne #'dowody'."
-					: " Oby udało się odzyskać te zapasy, zanim je stamtąd wywiozą."));
+					? " Wróć z tymi papierami do Gazdy Wojtka w ratuszu w centrum Zakopanego "
+							+ "i przedstaw mu #'dowody'. Niech pośle ludzi po nasze zapasy."
+					: " " + nextWitness));
 		}, "dowody", "zeznania");
 	}
 
