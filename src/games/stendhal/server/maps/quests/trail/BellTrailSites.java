@@ -130,11 +130,11 @@ public final class BellTrailSites implements ZoneConfigurator {
 						&& !player.isQuestInState(Step.BELL_ESCAPE.slot, "return");
 			}
 			if (BellTrailProgress.SCHOLAR.equals(name)) {
-				return unmarked(player, Step.BELL_WOUNDED, "wounded", 1)
+				return BellTrailProgress.active(player, Step.BELL_WOUNDED)
 						|| Step.BELL_VOICE.available(player)
 								&& !player.isQuestCompleted(Step.BELL_VOICE.slot);
 			}
-			return unmarked(player, Step.BELL_WOUNDED, "wounded", 2);
+			return BellTrailProgress.active(player, Step.BELL_WOUNDED);
 		});
 	}
 

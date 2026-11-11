@@ -231,6 +231,25 @@ public class BellTrailStoryTest {
 	}
 
 	@Test
+	public void heardWitnessesStayInCampButTheObjectiveOnlyNamesTheOtherPerson() {
+		before(Step.BELL_WOUNDED);
+		move(islands);
+		for (int heard : new int[] { 1, 2 }) {
+			player.setQuest(Step.BELL_WOUNDED.slot, "wounded;" + heard);
+			refreshScene();
+			String objective = TrailQuestLine.objective(player, Step.BELL_WOUNDED.slot);
+			assertTrue(objective, objective.contains(heard == 1 ? "Milanem" : "Borzętą"));
+			assertFalse(objective, objective.contains(heard == 1 ? "Borzętą" : "Milanem"));
+			for (String name : new String[] { "Borzęta", "Milan" }) {
+				assertTrue(name + " should remain in the camp", islands.getNPCList().stream()
+						.filter(npc -> npc instanceof SpeakerNPC)
+						.anyMatch(npc -> name.equals(TrailSceneRegistry.speakerName((SpeakerNPC) npc))
+								&& PlayerPrivateScene.canInteract(player, npc)));
+			}
+		}
+	}
+
+	@Test
 	public void wholeStoryRescuesBothWoundedAndPaysOnlyOnce() {
 		ready(550);
 		accept("Festris", "zaginiona wyprawa");

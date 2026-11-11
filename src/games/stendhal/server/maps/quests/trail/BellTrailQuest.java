@@ -57,7 +57,10 @@ public final class BellTrailQuest extends TrailQuest {
 				if (BellTrailProgress.mark(p, step, "wounded", 1, 3,
 						"report")) {
 					n.say("Skręciłem nogę, kiedy próbowałem odciągnąć Witosława od kamieni. Ja słyszę swojego nauczyciela. "
-							+ "Umarł przy mnie, więc wiem, że nie stoi za dzwonem. Milan też kogoś słyszał. Zapytaj go.");
+							+ "Umarł przy mnie, więc wiem, że nie stoi za dzwonem. "
+							+ (p.isQuestInState(step.slot, "report")
+									? "Opowiedz Witosławowi, co usłyszałeś od nas obu. Może wreszcie nas posłucha."
+									: "Milan też kogoś słyszał. Zapytaj go."));
 				} else {
 					remind(p, n);
 				}
@@ -66,7 +69,10 @@ public final class BellTrailQuest extends TrailQuest {
 				if (BellTrailProgress.mark(p, step, "wounded", 2, 3,
 						"report")) {
 					n.say("Mnie wołała córka. Jest w domu, cała i zdrowa. Nie powinna wiedzieć, gdzie teraz jestem. "
-							+ "Gdy ruszyłem za głosem, coś uderzyło mnie w bark. Powiedz Witosławowi, że chcę wrócić do prawdziwego dziecka.");
+							+ "Gdy ruszyłem za głosem, coś uderzyło mnie w bark. "
+							+ (p.isQuestInState(step.slot, "report")
+									? "Powiedz Witosławowi, że chcę wrócić do prawdziwego dziecka."
+									: "Porozmawiaj jeszcze z Borzętą. On też kogoś słyszał."));
 				} else {
 					remind(p, n);
 				}
@@ -165,8 +171,16 @@ public final class BellTrailQuest extends TrailQuest {
 						"Niemir siedzi obok Festris. Wysłuchaj go, a potem wróć do kapłanki. Chłopak nie powinien zostać sam z tym, co słyszał.");
 				break;
 			case BELL_WOUNDED:
-				speaker.say(
-						"Borzęta i Milan są przy skrzyniach w obozie. Porozmawiaj z oboma. Każdy słyszy tu kogoś innego.");
+				if (player.isQuestInState(step.slot, "report")) {
+					speaker.say("Witosław czeka przy obozie. Powiedz mu, kogo wołały te głosy. Musi wysłuchać nas obu.");
+				} else {
+					int heard = BellTrailProgress.counter(player, step);
+					speaker.say(heard == 1
+							? "Milan jest przy skrzyniach w obozie. Zapytaj go, kogo usłyszał."
+							: heard == 2
+									? "Borzęta jest przy skrzyniach w obozie. Jego też warto wysłuchać."
+									: "Borzęta i Milan są przy skrzyniach w obozie. Porozmawiaj z oboma. Każdy słyszy tu kogoś innego.");
+				}
 				break;
 			case BELL_VOICE:
 				speaker.say(

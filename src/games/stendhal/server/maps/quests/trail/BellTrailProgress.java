@@ -117,9 +117,14 @@ final class BellTrailProgress {
 					? "Porozmawiaj z Niemirem obok Festris na piętrze 4 Kikareukin (110,76). Powiedz: wyprawa."
 					: "Wróć do Festris na piętrze 4 Kikareukin. Powiedz: zaginiona wyprawa.";
 		case BELL_WOUNDED:
-			return "report".equals(state)
-					? "Opowiedz Witosławowi, co usłyszeli ranni. Wyspy Kikareukin (108,26). Powiedz: ranni."
-					: "Porozmawiaj z Borzętą (111,26) i Milanem (113,26) w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: ranni.";
+			if ("report".equals(state)) {
+				return "Opowiedz Witosławowi w obozie na północno-wschodniej wyspie Kikareukin, co usłyszeli ranni. Powiedz: ranni.";
+			}
+			int heard = counter(player, step);
+			String witnesses = heard == 1 ? "z Milanem" : heard == 2
+					? "z Borzętą" : "z Borzętą i Milanem";
+			return "Porozmawiaj " + witnesses
+					+ " przy skrzyniach w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: ranni.";
 		case BELL_VOICE:
 			return "report".equals(state)
 					? "Pokaż Borzęcie zapiski i opowiedz o pustym dzwonie. Wyspy Kikareukin (111,26). Powiedz: głos z mgły."
