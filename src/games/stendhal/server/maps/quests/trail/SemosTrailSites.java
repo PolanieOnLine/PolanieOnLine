@@ -47,7 +47,8 @@ public final class SemosTrailSites implements ZoneConfigurator {
 					player -> Step.SEMOS_PICKUP.available(player)
 							&& (player.isQuestInState(Step.SEMOS_PICKUP.slot, "crate")
 									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "contact")
-									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "question")));
+									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "question")
+									|| player.isQuestInState(Step.SEMOS_PICKUP.slot, "return")));
 			break;
 		default:
 			throw new IllegalArgumentException(

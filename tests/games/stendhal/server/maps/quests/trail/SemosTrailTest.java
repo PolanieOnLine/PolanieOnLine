@@ -31,6 +31,7 @@ import games.stendhal.server.maps.semos.bank.CustomerAdvisorNPC;
 import games.stendhal.server.maps.semos.library.LibrarianNPC;
 import games.stendhal.server.maps.semos.tavern.BarMaidNPC;
 import games.stendhal.server.maps.semos.townhall.LeaderNPC;
+import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -229,9 +230,13 @@ public class SemosTrailTest {
 		assertEquals("contact", player.getQuest("trail_semos_pickup"));
 		say("Tragarz Olek", "suchy ładunek");
 		assertEquals("question", player.getQuest("trail_semos_pickup"));
+		player.clearEvents();
 		say("Tragarz Olek", "kwit");
+		assertReceiptShown();
 		assertEquals("return", player.getQuest("trail_semos_pickup"));
+		player.clearEvents();
 		assertTrue(say("Tragarz Olek", "kwit").contains("Radan"));
+		assertReceiptShown();
 		assertEquals("return", player.getQuest("trail_semos_pickup"));
 		visit("Lieutenant Drilenun");
 		say("Lieutenant Drilenun", "tragarz");
@@ -243,6 +248,17 @@ public class SemosTrailTest {
 		assertEquals(xp, player.getXP());
 		assertEquals(coins, player.getTotalNumberOf("money"));
 		assertTrue(system.getMainQuests(player).isEmpty());
+	}
+
+	private void assertReceiptShown() {
+		for (RPEvent event : player.events()) {
+			if ("examine".equals(event.getName())) {
+				assertEquals("/data/sprites/examine/kwit-radana.png", event.get("path"));
+				assertEquals("Kwit odbioru", event.get("title"));
+				return;
+			}
+		}
+		fail("Olek should show his receipt in the existing image viewer");
 	}
 
 	@Test

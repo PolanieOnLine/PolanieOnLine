@@ -1,6 +1,8 @@
 /* Copyright (C) 2026 - PolanieOnLine; GPL version 2 or later. */
 package games.stendhal.server.maps.quests.trail;
 
+import games.stendhal.server.entity.npc.action.ExamineChatAction;
+
 /**
  * A personal decoy and spoken pickup phrase expose the carrier's signed
  * receipt.
@@ -16,6 +18,8 @@ public final class FalsePickupQuest extends TrailQuest {
 
 	@Override
 	protected void addDialogs() {
+		final ExamineChatAction showReceipt = new ExamineChatAction(
+				"kwit-radana.png", "Kwit odbioru", "");
 		offer("Przynieś mi dwa #'polana'. Włożę je do skrzyni i przykryję płótnem. "
 				+ "Powinny starczyć, żeby tragarz poczuł ciężar. Olek czeka na zewnątrz, po prawej stronie wejścia.");
 		reply("Margaret",
@@ -61,6 +65,7 @@ public final class FalsePickupQuest extends TrailQuest {
 					|| player.isQuestCompleted(step.slot)) {
 				speaker.say(
 						"Radan, tak jest podpisane. Nic więcej o nim nie wiem. Miałem tylko odebrać skrzynię.");
+				showReceipt.fire(player, sentence, speaker);
 				return;
 			}
 			if (!player.isQuestInState(step.slot, "question")) {
@@ -73,6 +78,7 @@ public final class FalsePickupQuest extends TrailQuest {
 					"Proszę. Podpisano: Radan. Dał mi pieniądze i kazał odebrać skrzynię po umówionym haśle. "
 							+ "Nie wiem, co miało być w środku. Jeśli coś się nie zgadza, pokaż ten kwit porucznikowi Drilenunowi w koszarach w Ados. "
 							+ "Zaczekam, aż to wyjaśnicie.");
+			showReceipt.fire(player, sentence, speaker);
 		}, "kwit", "dla kogo");
 		reply("Lieutenant Drilenun", (player, sentence, speaker) -> {
 			if (player.isQuestInState(step.slot, "return"))
