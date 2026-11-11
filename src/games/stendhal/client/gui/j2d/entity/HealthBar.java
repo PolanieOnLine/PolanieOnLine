@@ -131,7 +131,9 @@ class HealthBar implements ChangeListener {
 		g.fillRect(1, 1, model.getRepresentation(), height - 2);
 		if (armorRatio > 0.0) {
 			g.setColor(new Color(154, 164, 175));
-			g.fillRect(1, 1, (int) Math.round((width - 2) * armorRatio), height - 2);
+			// Keep the lower half of the health bar visible even with full armor.
+			g.fillRect(1, 1, (int) Math.round((width - 2) * armorRatio),
+					Math.max(1, (height - 2) / 2));
 		}
 
 		g.setColor(Color.BLACK);

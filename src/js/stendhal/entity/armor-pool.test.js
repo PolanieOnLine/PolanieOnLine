@@ -32,14 +32,14 @@ function harness() {
 	return { entity, floaters, sounds };
 }
 
-test("armor overlays health at its own ratio and disappears when depleted", () => {
+test("armor uses the upper half and leaves health visible underneath", () => {
 	const { entity } = harness();
 	const fills = [];
 	const ctx = { beginPath() {}, rect() {}, stroke() {}, fillRect(...rect) { fills.push([this.fillStyle, ...rect]); } };
 	entity.set("base_armor_hp", "100");
 	entity.set("armor_hp", "50");
 	entity.drawHealthBar(ctx, 100, 200);
-	assert.deepEqual(fills.at(-1), ["#9aa4af", 100, 194, 16, 4]);
+	assert.deepEqual(fills.at(-1), ["#9aa4af", 100, 194, 16, 2]);
 	entity.set("armor_hp", "0");
 	entity.drawHealthBar(ctx, 100, 200);
 	assert.deepEqual(fills.at(-1), ["#00ff00", 100, 194, 32, 4]);

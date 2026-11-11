@@ -57,6 +57,11 @@ public class CreatureArmorRendererTest {
 			bar.draw(graphics, 0, 0);
 			assertEquals(new Color(154, 164, 175).getRGB(), image.getRGB(8, 2));
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 4));
+			bar.setArmorRatio(1.0);
+			bar.draw(graphics, 0, 0);
+			assertEquals(new Color(154, 164, 175).getRGB(), image.getRGB(24, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 4));
 			bar.setArmorRatio(0.0);
 			bar.draw(graphics, 0, 0);
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 2));

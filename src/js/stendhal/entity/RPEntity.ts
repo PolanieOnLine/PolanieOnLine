@@ -710,7 +710,9 @@ export class RPEntity extends ActiveEntity {
 		const armor = Math.max(0, Number(this["armor_hp"]) || 0);
 		if (maximumArmor > 0 && armor > 0) {
 			ctx.fillStyle = "#9aa4af";
-			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor), HEALTH_BAR_HEIGHT - 2);
+			// Armor occupies the upper half so health stays visible underneath.
+			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor),
+				Math.max(1, Math.floor((HEALTH_BAR_HEIGHT - 2) / 2)));
 		}
 		const surplusRatio = this["base_hp"] > 0 ? this.getCurrentHP() / this["base_hp"] - 1 : 0;
 		drawLifeTideOverlay(ctx, drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2, surplusRatio);
