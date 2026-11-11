@@ -33,7 +33,9 @@ public final class MountainTrailQuest extends TrailQuest {
 					request(player, speaker,
 							"Borzym i Oskar powinni już tu być. Poszli tylko obejrzeć boczny tunel, nawet kilofów nie zabrali. "
 									+ "Po tym, co odkryliśmy z duergarami, nie chcę czekać do jutra. Poszukasz ich?");
-			}, "zaginieni górnicy", "zaginieni gornicy");
+			}, "zaginieni górnicy", "zaginieni gornicy",
+					"zaginionych górnikach", "zaginionych gornikach",
+					"zaginionych górników", "zaginionych gornikow");
 			reply(MountainTrailProgress.MINER, (player, sentence, speaker) -> {
 				if (MountainTrailProgress.active(player, step)
 						&& player.isQuestInState(step.slot, "search")) {

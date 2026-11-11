@@ -224,7 +224,7 @@ public final class TrailQuestLine {
 				6000,
 				100,
 				"Dwaj górnicy nie wrócili z bocznego tunelu. Barbarus obawia się, że spotkali ludzi zaopatrujących duergarów.",
-				"Porozmawiaj z Barbarusem w kopalni Semos o zaginionych górnikach.",
+				"Porozmawiaj z Barbarusem w kopalni Semos. Powiedz: zaginieni górnicy.",
 				MOUNTAIN_CHAPTER,
 				1,
 				Region.SEMOS_MINES,
