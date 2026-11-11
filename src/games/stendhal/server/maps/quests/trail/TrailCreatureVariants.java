@@ -72,7 +72,7 @@ final class TrailCreatureVariants {
 		register(new Spec("wartownik buntowników", "rycerz karmazynowy",
 				"Oto wartownik buntowników. Pozostaje w warszawskiej warowni podczas sporu księcia z załogą.")
 				.combat(2200, 700, 0, 105, 150)
-				.armour("heavy", 550)
+				.armour("heavy", 1100)
 				.movement(0.45, 0, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
@@ -80,7 +80,7 @@ final class TrailCreatureVariants {
 		register(new Spec("zarządca Radomir", "czarny rycerz",
 				"Oto zarządca Radomir. Pozostaje w warszawskiej warowni podczas sporu księcia z załogą.")
 				.combat(3400, 850, 0, 120, 155)
-				.armour("heavy", 850)
+				.armour("heavy", 1700)
 				.movement(0.45, 0, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));

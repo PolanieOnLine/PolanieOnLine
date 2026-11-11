@@ -130,6 +130,14 @@ public class CreatureArmorTest {
 		expectedHealth.put("balrog", 10000);
 		expectedHealth.put("czarny rycerz", 800);
 		expectedHealth.put("superczłowiek olbrzym", 4618);
+		expectedHealth.put("rycerz szafirowy", 500);
+		expectedHealth.put("rycerz na białym koniu", 2800);
+		expectedHealth.put("strażnik", 800);
+		final Map<String, Integer> expectedArmor = new HashMap<>();
+		expectedArmor.put("czarny rycerz", 400);
+		expectedArmor.put("rycerz szafirowy", 250);
+		expectedArmor.put("rycerz na białym koniu", 1400);
+		expectedArmor.put("strażnik", 280);
 		for (final DefaultCreature definition : new CreatureGroupsXMLLoader("/data/conf/creatures.xml").load()) {
 			final Integer health = expectedHealth.remove(definition.getCreatureName());
 			if (health == null) {
@@ -138,7 +146,8 @@ public class CreatureArmorTest {
 			final Creature creature = definition.getCreature();
 			assertEquals(definition.getCreatureName(), health.intValue(), creature.getBaseHP());
 			assertEquals(health.intValue(), creature.getHP());
-			assertEquals(Math.round(health / 4.0f), creature.getBaseArmorHP());
+			assertEquals(expectedArmor.getOrDefault(definition.getCreatureName(),
+					Math.round(health / 4.0f)).intValue(), creature.getBaseArmorHP());
 			assertEquals(creature.getBaseArmorHP(), creature.getArmorHP());
 		}
 		assertTrue("All representative creatures must be loaded", expectedHealth.isEmpty());
