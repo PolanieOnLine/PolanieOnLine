@@ -27,7 +27,7 @@ final class TrailCreatureVariants {
 				"Oto strażnik ukrytego składu. Pilnuje worków z zapasami i dokumentów fałszywych dostaw.")
 				.combat(120, 105, 0, 12, 8)
 				.armour("light", 0)
-				.movement(0.5, 0, 0)
+				.movement(0.5, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human", "patrolling")
 				.experience(2000)
@@ -38,7 +38,7 @@ final class TrailCreatureVariants {
 				"Oto człowiek Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.")
 				.combat(150, 125, 0, 15, 11)
 				.armour("light", 0)
-				.movement(0.5, 0, 0)
+				.movement(0.5, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human")
 				.respawn(200));
@@ -47,7 +47,7 @@ final class TrailCreatureVariants {
 				"Oto strażnik więźnia. Pilnuje skradzionego towaru w kryjówce pod Semos.")
 				.combat(170, 135, 0, 16, 12)
 				.armour("light", 0)
-				.movement(0.5, 0, 0)
+				.movement(0.5, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human")
 				.respawn(200));
@@ -56,7 +56,7 @@ final class TrailCreatureVariants {
 				"Oto zbrojny Radana. Pilnuje skradzionego towaru w kryjówce pod Semos.")
 				.combat(300, 160, 0, 22, 15)
 				.armour("light", 75)
-				.movement(0.5, 0, 0)
+				.movement(0.5, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human")
 				.respawn(200));
@@ -65,7 +65,7 @@ final class TrailCreatureVariants {
 				"Oto wspólnik Radana. Pilnuje przygotowań do napadów na transporty między Zakopanem a Semos.")
 				.combat(380, 330, 0, 52, 42)
 				.armour("light", 95)
-				.movement(0.4, 0, 0)
+				.movement(0.4, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human"));
 
@@ -73,7 +73,7 @@ final class TrailCreatureVariants {
 				"Oto wartownik buntowników. Pozostaje w warszawskiej warowni podczas sporu księcia z załogą.")
 				.combat(2200, 700, 0, 105, 150)
 				.armour("heavy", 1100)
-				.movement(0.45, 0, 0)
+				.movement(0.45, 100, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -81,7 +81,7 @@ final class TrailCreatureVariants {
 				"Oto zarządca Radomir. Pozostaje w warszawskiej warowni podczas sporu księcia z załogą.")
 				.combat(3400, 850, 0, 120, 155)
 				.armour("heavy", 1700)
-				.movement(0.45, 0, 0)
+				.movement(0.45, 100, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -89,7 +89,7 @@ final class TrailCreatureVariants {
 				"Oto rabuś wybrzeża. Jego banda zwabia statki na mieliznę i zabiera ładunki rozbitków.")
 				.combat(3200, 950, 1800, 135, 200)
 				.armour("light", 800)
-				.movement(0.45, 65, 0)
+				.movement(0.45, 100, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -97,7 +97,7 @@ final class TrailCreatureVariants {
 				"Oto herszt nadbrzeżnych rabusiów. Jego banda zwabia statki na mieliznę i zabiera ładunki rozbitków.")
 				.combat(5200, 1150, 1800, 155, 210)
 				.armour("medium", 1300)
-				.movement(0.45, 65, 0)
+				.movement(0.45, 100, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -105,7 +105,7 @@ final class TrailCreatureVariants {
 				"Oto niszczyciel sygnałów. Jego banda zwabia statki na mieliznę i zabiera ładunki rozbitków.")
 				.combat(3800, 1000, 1800, 140, 205)
 				.armour("light", 950)
-				.movement(0.45, 65, 0)
+				.movement(0.45, 100, 0)
 				.remains("human", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -113,7 +113,7 @@ final class TrailCreatureVariants {
 				"Oto strażnik milczącego dzwonu. W szczelinach jego pancerza drżą głosy ludzi, których zwabił na wyspy.")
 				.combat(22000, 5000, 3455, 210, 550)
 				.armour("heavy", 5500)
-				.movement(0.8, 0, 0)
+				.movement(0.8, 100, 0)
 				.remains("giant_humanoid", "bag_2x2", 3, 2)
 				.respawn(33)
 				.damage( Nature.LIGHT)
@@ -123,7 +123,7 @@ final class TrailCreatureVariants {
 				"Oto echo strażnika. Ostatni głos dzwonu przybrał skrzydlatą postać i zagrodził drogę ocalałym.")
 				.combat(9000, 4000, 3455, 175, 500)
 				.armour("heavy", 2250)
-				.movement(0.8, 0, 0)
+				.movement(0.8, 100, 0)
 				.remains("giant_humanoid", "bag_2x2", 3, 2)
 				.respawn(33)
 				.damage( Nature.LIGHT)
@@ -133,7 +133,7 @@ final class TrailCreatureVariants {
 				"Oto łącznik duergarów. Pilnuje pakietów z rozkazami przy bocznym zakręcie kopalni.")
 				.combat(240, 260, 0, 35, 30)
 				.armour("light", 60)
-				.movement(0.5, 0, 0)
+				.movement(0.5, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human")
 				.experience(5000)
@@ -144,7 +144,7 @@ final class TrailCreatureVariants {
 				"Oto wysłannik duergarów. Pilnuje przygotowań do napadów na transporty między Zakopanem a Semos.")
 				.combat(430, 365, 0, 58, 46)
 				.armour("light", 107)
-				.movement(0.4, 0, 0)
+				.movement(0.4, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human"));
 
@@ -152,7 +152,7 @@ final class TrailCreatureVariants {
 				"Oto dowódca duergarów. Pilnuje przygotowań do napadów na transporty między Zakopanem a Semos.")
 				.combat(650, 405, 0, 68, 55)
 				.armour("heavy", 162)
-				.movement(0.4, 0, 0)
+				.movement(0.4, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human"));
 
@@ -160,7 +160,7 @@ final class TrailCreatureVariants {
 				"Oto żywiołak solanki. Z dna starego zbiornika podnosi się postać z gęstej, słonej wody.")
 				.combat(7800, 1450, 0, 170, 260)
 				.armour("none", 0)
-				.movement(0.45, 0, 0)
+				.movement(0.45, 100, 0)
 				.remains("humanoid", "bag", 1, 1)
 				.behaviour("human", "abnormal"));
 
@@ -168,7 +168,7 @@ final class TrailCreatureVariants {
 				"Oto dawny strażnik warowni. Popękany kamień wciąż wykonuje rozkazy nieżyjącej załogi.")
 				.combat(1050, 480, 0, 82, 80)
 				.armour("heavy", 262)
-				.movement(0.35, 0, 0)
+				.movement(0.35, 100, 0)
 				.remains("rock", "rock", 1, 1)
 				.behaviour("animal"));
 
@@ -192,7 +192,7 @@ final class TrailCreatureVariants {
 				"Oto solny szlam. Wypełzł z zalanego chodnika i wciska się między kamienie.")
 				.combat(4300, 1200, 0, 140, 250)
 				.armour("none", 0)
-				.movement(0.35, 0, 0)
+				.movement(0.35, 100, 0)
 				.remains("puddle_green", "puddle_green", 1, 1)
 				.behaviour("human", "abnormal")
 				.movementSound("loop-drag-slimy-1"));
