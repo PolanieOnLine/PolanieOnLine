@@ -10,12 +10,14 @@ import org.junit.Test;
 
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.achievement.Achievement;
+import games.stendhal.server.entity.Blood;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import marauroa.common.game.RPSlot;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -80,11 +82,44 @@ public class PetsWeightAchievementFactoryTest {
 			assertFalse(achievement.isFulfilled(player));
 			DomesticAnimal animal = animals[i];
 			zone.add(animal);
+			animal.setOwner(player);
 			player.put(attributes[i], animal.getID().getObjectID());
 			animal.setWeight(99);
 			assertFalse(achievement.isFulfilled(player));
 			animal.setWeight(100);
 			assertTrue(achievement.isFulfilled(player));
+		}
+	}
+
+	@Test
+	public void reusedAnimalIdsDoNotEraseStoredCompanions() {
+		Blood blood = new Blood();
+		zone.add(blood);
+		String[] attributes = { "pet", "sheep", "goat" };
+		String[] slots = { "#pets", "#flock", "#goat" };
+		DomesticAnimal[] animals = { new Cat(), new Sheep(), new Goat() };
+		for (int i = 0; i < attributes.length; i++) {
+			player.put(attributes[i], blood.getID().getObjectID());
+			player.addSlot(new RPSlot(slots[i]));
+			player.getSlot(slots[i]).add(animals[i]);
+			assertFalse(achievement("weight." + attributes[i] + ".100").isFulfilled(player));
+			assertTrue(player.has(attributes[i]));
+			assertTrue(player.hasSlot(slots[i]));
+			assertTrue(player.getSlot(slots[i]).size() == 1);
+		}
+	}
+
+	@Test
+	public void anotherPlayersAnimalDoesNotCountAsOursWhenAnIdIsReused() {
+		Player other = PlayerTestHelper.createPlayer("other-owner");
+		DomesticAnimal[] animals = { new Cat(), new Sheep(), new Goat() };
+		String[] attributes = { "pet", "sheep", "goat" };
+		for (int i = 0; i < animals.length; i++) {
+			zone.add(animals[i]);
+			animals[i].setOwner(other);
+			animals[i].setWeight(100);
+			player.put(attributes[i], animals[i].getID().getObjectID());
+			assertFalse(achievement("weight." + attributes[i] + ".100").isFulfilled(player));
 		}
 	}
 }

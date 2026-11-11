@@ -31,6 +31,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
@@ -85,23 +86,25 @@ public class SummonAction extends AdministrationAction {
 		abstract void error(String message);
 
 		private boolean hasExistingPet() {
+			return hasExistingAnimal(Pet.class, "pet", "#pets");
+		}
+
+		private boolean hasExistingAnimal(final Class<? extends DomesticAnimal> type,
+				final String attribute, final String storedSlot) {
 			// Saved pets and companions left in another zone must not be replaced.
-			if (player.hasSlot("#pets") && player.getSlot("#pets").size() > 0) {
-				return true;
-			}
-			if (player.getPet() != null) {
+			if (player.hasSlot(storedSlot) && player.getSlot(storedSlot).size() > 0) {
 				return true;
 			}
 			for (final IRPZone zone : SingletonRepository.getRPWorld()) {
 				for (final RPObject object : zone) {
-					if (object instanceof Pet && ((Pet) object).getOwner() == player) {
+					if (type.isInstance(object) && ((DomesticAnimal) object).getOwner() == player) {
 						return true;
 					}
 				}
 			}
-			if (player.hasPet()) {
-				logger.warn("Removing orphaned pet reference for " + player.getName());
-				player.removePet(null);
+			if (player.has(attribute)) {
+				logger.warn("Removing orphaned " + attribute + " reference for " + player.getName());
+				player.remove(attribute);
 				player.notifyWorldAboutChanges();
 			}
 			return false;
@@ -174,14 +177,14 @@ public class SummonAction extends AdministrationAction {
 					found(type, new Duszek());
 				}
 			} else if ("sheep".equals(type)) {
-				if (player.hasSheep()) {
+				if (hasExistingAnimal(Sheep.class, "sheep", "#flock")) {
 					error("Już masz własną owcę!");
 				} else {
 					final Sheep sheep = new Sheep(player);
 					found(type, sheep);
 				}
 			} else if ("goat".equals(type)) {
-				if (player.hasGoat()) {
+				if (hasExistingAnimal(Goat.class, "goat", "#goat")) {
 					error("Już masz własną kozę!");
 				} else {
 					final Goat goat = new Goat(player);

@@ -12,6 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rp.StendhalRPAction;
+import games.stendhal.server.entity.Blood;
 import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.player.Player;
@@ -133,6 +135,54 @@ public class CompanionSummonActionTest {
 			assertSame(player, ghost.getOwner());
 			assertTrue(player.hasPet());
 			assertNull(zone.getEntityAt(5, 5));
+		} finally {
+			MockStendlRPWorld.get().removeZone(other);
+		}
+	}
+
+	@Test
+	public void missingGoatAndSheepReferencesDoNotBlockNewAnimals() {
+		player.put("goat", 123456);
+		new SummonAction().perform(player, summon("goat"));
+		assertNotNull(player.getGoat());
+		player.put("sheep", 123456);
+		RPAction action = summon("sheep");
+		action.put("x", 8);
+		new SummonAction().perform(player, action);
+		assertNotNull(player.getSheep());
+	}
+
+	@Test
+	public void aBloodPuddleWithTheOldGoatIdDoesNotBlockSummoning() {
+		Blood blood = new Blood();
+		blood.setPosition(10, 10);
+		zone.add(blood);
+		player.put("goat", blood.getID().getObjectID());
+		new SummonAction().perform(player, summon("goat"));
+		assertNotNull(player.getGoat());
+		assertSame(blood, zone.getEntityAt(10, 10));
+	}
+
+	@Test
+	public void genuineCompanionsRemainAttachedAfterChangingZones() {
+		new SummonAction().perform(player, summon("duszek"));
+		Duszek ghost = (Duszek) player.getPet();
+		RPAction goatAction = summon("goat");
+		goatAction.put("x", 8);
+		new SummonAction().perform(player, goatAction);
+		Goat goat = player.getGoat();
+		assertNotNull(ghost);
+		assertNotNull(goat);
+		StendhalRPZone other = new StendhalRPZone("companion-transfer", 20, 20);
+		MockStendlRPWorld.get().addRPZone(other);
+		try {
+			assertTrue(StendhalRPAction.placeat(other, player, 10, 10));
+			assertSame(ghost, player.getPet());
+			assertSame(goat, player.getGoat());
+			assertSame(other, ghost.getZone());
+			assertSame(other, goat.getZone());
+			assertSame(player, ghost.getOwner());
+			assertSame(player, goat.getOwner());
 		} finally {
 			MockStendlRPWorld.get().removeZone(other);
 		}

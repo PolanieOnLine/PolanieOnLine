@@ -15,6 +15,7 @@ package games.stendhal.server.entity.player;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.creature.Goat;
@@ -111,8 +112,8 @@ public class PetOwner {
 	 */
 	public void setPet(final Pet pet) {
 		player.put(ATTR_PET, pet.getID().getObjectID());
-		SingletonRepository.getAchievementNotifier().onPet(player);
 		pet.setOwner(player);
+		SingletonRepository.getAchievementNotifier().onPet(player);
 	}
 
 	/**
@@ -123,8 +124,8 @@ public class PetOwner {
 	 */
 	public void setSheep(final Sheep sheep) {
 		player.put(ATTR_SHEEP, sheep.getID().getObjectID());
-		SingletonRepository.getAchievementNotifier().onPet(player);
 		sheep.setOwner(player);
+		SingletonRepository.getAchievementNotifier().onPet(player);
 	}
 
 	/**
@@ -135,8 +136,8 @@ public class PetOwner {
 	 */
 	public void setGoat(final Goat goat) {
 		player.put(ATTR_GOAT, goat.getID().getObjectID());
-		SingletonRepository.getAchievementNotifier().onPet(player);
 		goat.setOwner(player);
+		SingletonRepository.getAchievementNotifier().onPet(player);
 	}
 
 	/**
@@ -145,66 +146,29 @@ public class PetOwner {
 	 * @return The sheep.
 	 */
 	public Sheep getSheep() {
-		if (player.has(ATTR_SHEEP)) {
-			try {
-				return (Sheep) SingletonRepository.getRPWorld().get(
-						new RPObject.ID(player.getInt(ATTR_SHEEP), player.get("zoneid")));
-			} catch (final Exception e) {
-				LOGGER.error("Pre 1.00 Marauroa sheep bug. (player = "
-						+ player.getName() + ")", e);
-
-				if (player.has(ATTR_SHEEP)) {
-					player.remove(ATTR_SHEEP);
-				}
-
-				if (player.hasSlot("#flock")) {
-					player.removeSlot("#flock");
-				}
-
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return getAnimal(ATTR_SHEEP, Sheep.class);
 	}
 	
 	public Goat getGoat() {
-		if (player.has(ATTR_GOAT)) {
-			try {
-				return (Goat) SingletonRepository.getRPWorld().get(
-						new RPObject.ID(player.getInt(ATTR_GOAT), player.get("zoneid")));
-			} catch (final Exception e) {
-				LOGGER.error("Pre 1.00 Marauroa goat bug. (player = "
-						+ player.getName() + ")", e);
-
-				if (player.has(ATTR_GOAT)) {
-					player.remove(ATTR_GOAT);
-				}
-
-				if (player.hasSlot("#goat")) {
-					player.removeSlot("#goat");
-				}
-
-				return null;
-			}
-		} else {
-			return null;
-		}
+		return getAnimal(ATTR_GOAT, Goat.class);
 	}
 
 	public Pet getPet() {
-		try {
-			if (player.has(ATTR_PET)) {
-				return (Pet) SingletonRepository.getRPWorld().get(
-						new RPObject.ID(player.getInt(ATTR_PET), player.get("zoneid")));
-			} else {
-				return null;
-			}
-		} catch (final ClassCastException e) {
-			player.remove(ATTR_PET);
-			LOGGER.error("removed pets attribute" + e);
+		return getAnimal(ATTR_PET, Pet.class);
+	}
+
+	private <T extends DomesticAnimal> T getAnimal(final String attribute, final Class<T> type) {
+		if (!player.has(attribute) || !player.has("zoneid")) {
 			return null;
 		}
+		final RPObject object = SingletonRepository.getRPWorld().get(
+				new RPObject.ID(player.getInt(attribute), player.get("zoneid")));
+		if (!type.isInstance(object)) {
+			return null;
+		}
+		final T animal = type.cast(object);
+		// IDs are local to a zone and can later belong to an unrelated object.
+		return animal.getOwner() == player ? animal : null;
 	}
 
 	public void destroy() {
