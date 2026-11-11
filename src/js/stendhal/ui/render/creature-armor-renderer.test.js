@@ -80,6 +80,7 @@ test("the actual creature view shows armor only for our current target and respe
 	let target; let healthBars = 0;
 	class RPEntity {
 		constructor() { this.titleDrawYOffset = -2; }
+		getHealthBarHeight() { return this.base_armor_hp > 0 ? 9 : 6; }
 		drawHealthBar() { healthBars++; }
 	}
 	const { Creature } = load(path.resolve(__dirname, "../../entity/Creature.ts"), {
@@ -106,6 +107,7 @@ test("the actual creature view shows armor only for our current target and respe
 	creature.armor_hp = 1122;
 	creature.drawHealthBar(h.ctx, 30, 40);
 	assert.equal(h.draws.length, 2);
+	assert.deepEqual(h.draws[1].slice(1), [20, 29]);
 	target = new Creature();
 	creature.drawHealthBar(h.ctx, 30, 40);
 	assert.equal(h.draws.length, 2);

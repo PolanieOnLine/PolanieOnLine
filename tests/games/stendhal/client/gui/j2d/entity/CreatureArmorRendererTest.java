@@ -47,28 +47,38 @@ public class CreatureArmorRendererTest {
 		}
 	}
 	@Test
-	public void armorOverlayRecedesWithoutChangingTheUnderlyingHealthBar() {
-		final HealthBar bar = new HealthBar(34, 6);
+	public void armorAndHealthHaveSeparateThreePixelBandsAtNativeScale() {
+		final HealthBar bar = new HealthBar(34, 4);
 		bar.setHPRatio(1.0);
+		bar.setHasArmor(true);
 		bar.setArmorRatio(0.5);
-		final BufferedImage image = new BufferedImage(34, 6, BufferedImage.TYPE_INT_RGB);
+		assertEquals(9, bar.getHeight());
+		final BufferedImage image = new BufferedImage(34, 9, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D graphics = image.createGraphics();
 		try {
 			bar.draw(graphics, 0, 0);
-			assertEquals(new Color(154, 164, 175).getRGB(), image.getRGB(8, 2));
-			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 2));
-			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 4));
+			assertEquals(new Color(185, 196, 207).getRGB(), image.getRGB(8, 2));
+			assertEquals(new Color(55, 63, 72).getRGB(), image.getRGB(24, 2));
+			assertEquals(Color.BLACK.getRGB(), image.getRGB(8, 4));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 6));
 			bar.setArmorRatio(1.0);
 			bar.draw(graphics, 0, 0);
-			assertEquals(new Color(154, 164, 175).getRGB(), image.getRGB(24, 2));
-			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 4));
+			assertEquals(new Color(185, 196, 207).getRGB(), image.getRGB(24, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(24, 6));
 			bar.setArmorRatio(0.0);
+			bar.draw(graphics, 0, 0);
+			assertEquals(9, bar.getHeight());
+			assertEquals(new Color(55, 63, 72).getRGB(), image.getRGB(8, 2));
+			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 6));
+			bar.setHasArmor(false);
+			assertEquals(4, bar.getHeight());
 			bar.draw(graphics, 0, 0);
 			assertEquals(Color.GREEN.getRGB(), image.getRGB(8, 2));
 		} finally {
 			graphics.dispose();
 		}
 	}
+
 	@Test
 	public void onlyKnownTypesHaveNamesAndArmorIcons() {
 		assertNull(CreatureArmor.fromId(null));

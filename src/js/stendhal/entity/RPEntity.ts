@@ -360,7 +360,7 @@ export class RPEntity extends ActiveEntity {
 		const entityBottom = (this["_y"] * 32) + (this["height"] * 32);
 		// FIXME: how to get text height dynamically?
 		const entityTop = entityBottom - this["drawHeight"]
-			- HEALTH_BAR_HEIGHT - 26;
+			- this.getHealthBarHeight() - 26;
 
 		if (screenOffsetY > entityTop && screenOffsetY < entityBottom) {
 			this.statusBarYOffset = screenOffsetY - entityTop;
@@ -582,7 +582,7 @@ export class RPEntity extends ActiveEntity {
 		var centerX = (this["_x"] + this["width"] / 2) * 32;
 		const localY = this["_y"] * 32 + this.statusBarYOffset;
 		var topY = localY + (this["height"] * 32) - this["drawHeight"]
-			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
+			- this.getHealthBarHeight() + this.titleDrawYOffset;
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -687,35 +687,46 @@ export class RPEntity extends ActiveEntity {
 		});
 	}
 
+	getHealthBarHeight(): number {
+		return Number(this["base_armor_hp"]) > 0 ? 9 : HEALTH_BAR_HEIGHT;
+	}
+
 	drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
 		var drawX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 		var drawY = y + (this["height"] * 32) - this["drawHeight"]
-			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
+			- this.getHealthBarHeight() + this.titleDrawYOffset;
 
 		ctx.strokeStyle = "#000000";
 		ctx.lineWidth = 2;
 		ctx.beginPath();
-		ctx.rect(drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2);
+		const barHeight = this.getHealthBarHeight();
+		const hasArmor = Number(this["base_armor_hp"]) > 0;
+		const healthHeight = hasArmor ? Math.floor((barHeight - 3) / 2) : barHeight - 2;
+		const healthY = drawY + (hasArmor ? barHeight - 2 - healthHeight : 0);
+		ctx.rect(drawX, drawY, this["drawWidth"], barHeight - 2);
 		ctx.stroke();
 
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(drawX, drawY, this["drawWidth"], barHeight - 2);
 		ctx.fillStyle = "#808080"; // same as java.awt.Color.GRAY (rgb(128,128,128))
-		ctx.fillRect(drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2);
+		ctx.fillRect(drawX, healthY, this["drawWidth"], healthHeight);
 
 		// Bar color
 		const hpRatio = this["base_hp"] > 0
 			? Math.max(0, Math.min(1, this.getCurrentHP() / this["base_hp"])) : 0;
 		ctx.fillStyle = Color.getStatBarColor(hpRatio);
-		ctx.fillRect(drawX, drawY, this["drawWidth"] * hpRatio, HEALTH_BAR_HEIGHT - 2);
+		ctx.fillRect(drawX, healthY, this["drawWidth"] * hpRatio, healthHeight);
 		const maximumArmor = Number(this["base_armor_hp"]) || 0;
 		const armor = Math.max(0, Number(this["armor_hp"]) || 0);
-		if (maximumArmor > 0 && armor > 0) {
-			ctx.fillStyle = "#9aa4af";
-			// Armor occupies the upper half so health stays visible underneath.
-			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor),
-				Math.max(1, Math.floor((HEALTH_BAR_HEIGHT - 2) / 2)));
+		if (hasArmor) {
+			const armorHeight = healthY - drawY - 1;
+			ctx.fillStyle = "#373f48";
+			ctx.fillRect(drawX, drawY, this["drawWidth"], armorHeight);
+			ctx.fillStyle = "#b9c4cf";
+			ctx.fillRect(drawX, drawY, this["drawWidth"] * Math.min(1, armor / maximumArmor), armorHeight);
 		}
 		const surplusRatio = this["base_hp"] > 0 ? this.getCurrentHP() / this["base_hp"] - 1 : 0;
-		drawLifeTideOverlay(ctx, drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2, surplusRatio);
+		drawLifeTideOverlay(ctx, drawX, healthY, this["drawWidth"], healthHeight, surplusRatio);
 	}
 
 	createTitleTextSprite() {
@@ -742,7 +753,7 @@ export class RPEntity extends ActiveEntity {
 				throw new Error("textMetrics is undefined");
 			}
 			var drawY = y + (this["height"] * 32) - this["drawHeight"]
-				- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
+				- this.getHealthBarHeight() + this.titleDrawYOffset;
 			this.titleTextSprite.draw(ctx, x + (this["width"] * 32 - textMetrics.width) / 2, drawY - 5 - HEALTH_BAR_HEIGHT);
 		}
 	}

@@ -29,6 +29,7 @@ class HealthBar implements ChangeListener {
 	private BufferedImage image;
 	private final LinearScalingModel model;
 	private double armorRatio;
+	private boolean hasArmor;
 	private volatile double surplusRatio;
 	/** A flag for signaling that the image needs updating. */
 	private volatile boolean needsRedraw = true;
@@ -52,7 +53,14 @@ class HealthBar implements ChangeListener {
 	 * @return height
 	 */
 	int getHeight() {
-		return height;
+		return hasArmor ? Math.max(9, height) : height;
+	}
+
+	void setHasArmor(final boolean value) {
+		if (hasArmor != value) {
+			hasArmor = value;
+			needsRedraw = true;
+		}
 	}
 
 	/**
@@ -93,8 +101,9 @@ class HealthBar implements ChangeListener {
 	 * @param y y coordinate of the top left corner
 	 */
 	void draw(Graphics g, int x, int y) {
-		if (image == null) {
-			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		if (image == null || image.getHeight() != getHeight()) {
+			image = new BufferedImage(width, getHeight(), BufferedImage.TYPE_INT_RGB);
+			needsRedraw = true;
 		}
 
 		if (needsRedraw) {
@@ -113,9 +122,17 @@ class HealthBar implements ChangeListener {
 		}
 		g.drawImage(image, x, y, null);
 		if (surplusRatio > 0) {
-			LifeTideOverlay.draw(g, x + 1, y + 1, width - 2, height - 2,
+			LifeTideOverlay.draw(g, x + 1, y + healthTop(), width - 2, healthHeight(),
 					surplusRatio, System.currentTimeMillis());
 		}
+	}
+
+	private int healthHeight() {
+		return hasArmor ? (getHeight() - 3) / 2 : height - 2;
+	}
+
+	private int healthTop() {
+		return hasArmor ? getHeight() - 1 - healthHeight() : 1;
 	}
 
 	/**
@@ -124,20 +141,20 @@ class HealthBar implements ChangeListener {
 	 * @param g graphics
 	 */
 	private void drawImage(Graphics g) {
-		g.setColor(Color.GRAY);
-		g.fillRect(1, 1, width, height);
-
-		g.setColor(determineColor());
-		g.fillRect(1, 1, model.getRepresentation(), height - 2);
-		if (armorRatio > 0.0) {
-			g.setColor(new Color(154, 164, 175));
-			// Keep the lower half of the health bar visible even with full armor.
-			g.fillRect(1, 1, (int) Math.round((width - 2) * armorRatio),
-					Math.max(1, (height - 2) / 2));
-		}
-
+		// A dark divider keeps armor and health readable at native game scale.
 		g.setColor(Color.BLACK);
-		g.drawRect(0, 0, width - 1, height - 1);
+		g.fillRect(0, 0, width, getHeight());
+		g.setColor(Color.GRAY);
+		g.fillRect(1, healthTop(), width - 2, healthHeight());
+		g.setColor(determineColor());
+		g.fillRect(1, healthTop(), model.getRepresentation(), healthHeight());
+		if (hasArmor) {
+			int armorHeight = healthTop() - 2;
+			g.setColor(new Color(55, 63, 72));
+			g.fillRect(1, 1, width - 2, armorHeight);
+			g.setColor(new Color(185, 196, 207));
+			g.fillRect(1, 1, (int) Math.round((width - 2) * armorRatio), armorHeight);
+		}
 	}
 
 	/**

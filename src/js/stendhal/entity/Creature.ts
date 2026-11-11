@@ -56,8 +56,8 @@ export class Creature extends RPEntity {
 		super.drawHealthBar(ctx, x, y);
 		if (marauroa.me?.getAttackTarget() === this) {
 			const barX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
-			const barY = y + this["height"] * 32 - this["drawHeight"] - 6 + this.titleDrawYOffset;
-			drawCreatureArmor(ctx, this.getEffectiveArmorType(), barX, barY, this["drawWidth"], 4);
+			const barY = y + this["height"] * 32 - this["drawHeight"] - this.getHealthBarHeight() + this.titleDrawYOffset;
+			drawCreatureArmor(ctx, this.getEffectiveArmorType(), barX, barY, this["drawWidth"], this.getHealthBarHeight() - 2);
 		}
 	}
 

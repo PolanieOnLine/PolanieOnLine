@@ -82,7 +82,7 @@ class Creature2DView extends RPEntity2DView<Creature> {
 			final int y, final int width) {
 		super.drawStatusBar(g2d, x, y, width);
 		EliteCreatureRenderer.drawTitleAndCrown(entity, g2d, x, y, width,
-				titleDrawYOffset);
+				titleDrawYOffset - getHPBarExtraHeight());
 	}
 
 	@Override

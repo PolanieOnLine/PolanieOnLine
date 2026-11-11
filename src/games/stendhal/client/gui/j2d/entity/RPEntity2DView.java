@@ -388,6 +388,10 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		return healthBar.getHeight();
 	}
 
+	protected int getHPBarExtraHeight() {
+		return healthBar == null ? 0 : Math.max(0, healthBar.getHeight() - HEALTH_BAR_HEIGHT);
+	}
+
 	/**
 	 * Draw the entity status bar. The status bar show the title and HP bar.
 	 *
@@ -411,7 +415,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 
 	private int getStatusBarHeight() {
 		if (titleSprite != null) {
-			return 3 + titleSprite.getHeight();
+			return 3 + titleSprite.getHeight() + getHPBarExtraHeight();
 		} else if (healthBar != null) {
 			return healthBar.getHeight();
 		}
@@ -776,6 +780,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		healthBar = new HealthBar(barWidth, HEALTH_BAR_HEIGHT);
 		healthBar.setHPRatio(entity.getHpRatio());
 		healthBar.setSurplusRatio(entity.getSurplusHPRatio());
+		healthBar.setHasArmor(entity.getBaseArmorHP() > 0);
 		healthBar.setArmorRatio(entity.getArmorRatio());
 	}
 
@@ -999,6 +1004,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			}
 		} else if (property == RPEntity.PROP_ARMOR_HP) {
 			if (healthBar != null) {
+				healthBar.setHasArmor(entity.getBaseArmorHP() > 0);
 				healthBar.setArmorRatio(entity.getArmorRatio());
 			}
 		} else if (property == RPEntity.PROP_HP_DISPLAY) {
