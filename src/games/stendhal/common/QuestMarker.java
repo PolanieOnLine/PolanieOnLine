@@ -15,7 +15,9 @@ public enum QuestMarker {
 	REPEATABLE("repeatable", 2),
 	AVAILABLE("available", 3),
 	READY("ready", 5),
-	MAIN_AVAILABLE("main_available", 4);
+	MAIN_AVAILABLE("main_available", 6),
+	MAIN_IN_PROGRESS("main_progress", 7),
+	MAIN_READY("main_ready", 8);
 
 	public static final String ATTRIBUTE = "quest_markers";
 	public static final String ZONE_KEY = "_zone";

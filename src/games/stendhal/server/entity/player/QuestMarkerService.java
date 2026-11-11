@@ -105,7 +105,7 @@ public final class QuestMarkerService {
 		}
 		final QuestMarker explicit = quest.getNPCQuestMarker(player, npc);
 		if (explicit != null) {
-			return classifyOffer(player, quest, explicit);
+			return classifyMarker(player, quest, explicit);
 		}
 		final boolean completed = quest.isCompleted(player);
 		final boolean rejected = "rejected".equals(player.getQuest(quest.getSlotName(), 0));
@@ -123,11 +123,11 @@ public final class QuestMarkerService {
 					|| (transition.getCondition() != null && transition.getAction() != null
 						&& transition.getAction().completesQuest(quest.getSlotName())));
 			if (ready && isFulfilled(player, npc, transition)) {
-				return QuestMarker.READY;
+				return classifyMarker(player, quest, QuestMarker.READY);
 			}
 		}
 		if (active) {
-			return QuestMarker.IN_PROGRESS;
+			return classifyMarker(player, quest, QuestMarker.IN_PROGRESS);
 		}
 		for (final Transition transition : transitions) {
 			final boolean offer = isOfferState(transition.getNextState())
@@ -138,19 +138,28 @@ public final class QuestMarkerService {
 					&& isFulfilled(player, npc, transition)) {
 				final QuestMarker offerMarker = quest.getQuestInfo(player).getRepeatable() || completed
 						? QuestMarker.REPEATABLE : QuestMarker.AVAILABLE;
-				return classifyOffer(player, quest, offerMarker);
+				return classifyMarker(player, quest, offerMarker);
 			}
 		}
 		return QuestMarker.NONE;
 	}
 
-	private static QuestMarker classifyOffer(final Player player, final IQuest quest,
+	private static QuestMarker classifyMarker(final Player player, final IQuest quest,
 			final QuestMarker marker) {
-		if ((marker == QuestMarker.AVAILABLE || marker == QuestMarker.REPEATABLE)
-				&& quest.getQuestInfo(player).isMainQuest()) {
-			return QuestMarker.MAIN_AVAILABLE;
+		if (!quest.getQuestInfo(player).isMainQuest()) {
+			return marker;
 		}
-		return marker;
+		switch (marker) {
+		case AVAILABLE:
+		case REPEATABLE:
+			return QuestMarker.MAIN_AVAILABLE;
+		case IN_PROGRESS:
+			return QuestMarker.MAIN_IN_PROGRESS;
+		case READY:
+			return QuestMarker.MAIN_READY;
+		default:
+			return marker;
+		}
 	}
 
 	private static boolean isEntryState(final ConversationStates state) {

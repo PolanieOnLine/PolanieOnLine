@@ -31,6 +31,8 @@ final class QuestMarkerRenderer {
 
 	static {
 		IMAGES.put(QuestMarker.MAIN_AVAILABLE, create(EXCLAMATION, new Color(0xf27766)));
+		IMAGES.put(QuestMarker.MAIN_IN_PROGRESS, create(QUESTION, new Color(0xf27766)));
+		IMAGES.put(QuestMarker.MAIN_READY, create(QUESTION, new Color(0xf27766)));
 		IMAGES.put(QuestMarker.AVAILABLE, create(EXCLAMATION, new Color(0xf4d06f)));
 		IMAGES.put(QuestMarker.REPEATABLE, create(EXCLAMATION, new Color(0x79b9eb)));
 		IMAGES.put(QuestMarker.READY, create(QUESTION, new Color(0x82d878)));

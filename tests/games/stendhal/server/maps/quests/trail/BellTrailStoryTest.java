@@ -275,7 +275,7 @@ public class BellTrailStoryTest {
 		arrive(Kind.SAFE_CAMP);
 		assertTrue(BellTrailEscort.group(player).isEmpty());
 		visit("Festris");
-		assertEquals(QuestMarker.READY, QuestMarkerService.getMarker(player,
+		assertEquals(QuestMarker.MAIN_READY, QuestMarkerService.getMarker(player,
 				NPCList.get().get("Festris")));
 		say("Festris", "powrót wyprawy");
 		assertTrue(player.isQuestCompleted(Step.BELL_ESCAPE.slot));

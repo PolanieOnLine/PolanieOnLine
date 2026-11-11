@@ -103,7 +103,7 @@ public class QuestMarkerServiceTest {
 	}
 
 	@Test
-	public void mainOfferOutranksSideOfferButNeverAReadyReward() {
+	public void mainQuestMarkersOutrankEverySideQuestMarker() {
 		final TestQuest main = load("marker_main", false);
 		main.getQuestInfo(player).setMainQuest("Chapter", 1, "Hint");
 		final TestQuest side = load("marker_side", false);
@@ -111,7 +111,11 @@ public class QuestMarkerServiceTest {
 		assertEquals("main_available", QuestMarkerService.getMarker(player, npc).getCode());
 		player.setQuest(side.slot, "start");
 		cheese();
-		assertEquals(QuestMarker.READY, QuestMarkerService.getMarker(player, npc));
+		assertEquals(QuestMarker.MAIN_AVAILABLE, QuestMarkerService.getMarker(player, npc));
+		player.setQuest(main.slot, "start");
+		assertEquals("main_ready", QuestMarkerService.getMarker(player, npc).getCode());
+		player.drop("ser", 2);
+		assertEquals("main_progress", QuestMarkerService.getMarker(player, npc).getCode());
 		player.setQuest(main.slot, "done");
 		player.drop("ser", 2);
 		assertEquals(QuestMarker.IN_PROGRESS, QuestMarkerService.getMarker(player, npc));
@@ -126,7 +130,7 @@ public class QuestMarkerServiceTest {
 	}
 
 	@Test
-	public void explicitOfferIsClassifiedAsMainWithoutChangingOtherMarkers() {
+	public void explicitMainMarkersUseTheMainQuestColor() {
 		final TestQuest main = new TestQuest("marker_explicit_main", false) {
 			@Override
 			public QuestMarker getNPCQuestMarker(final Player p, final SpeakerNPC speaker) {
@@ -138,7 +142,7 @@ public class QuestMarkerServiceTest {
 		main.getQuestInfo(player).setMainQuest("Chapter", 1, "Hint");
 		assertEquals("main_available", QuestMarkerService.getMarker(player, npc).getCode());
 		player.setQuest(main.getSlotName(), "start");
-		assertEquals(QuestMarker.READY, QuestMarkerService.getMarker(player, npc));
+		assertEquals("main_ready", QuestMarkerService.getMarker(player, npc).getCode());
 	}
 
 	@Test

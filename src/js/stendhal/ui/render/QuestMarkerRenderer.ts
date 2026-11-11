@@ -4,13 +4,14 @@
  */
 import { RenderingContext2D } from "util/Types";
 
-export type QuestMarker = "main_available" | "available" | "repeatable" | "ready" | "progress";
+export type QuestMarker = "main_available" | "main_progress" | "main_ready" | "available" | "repeatable" | "ready" | "progress";
 export const QUEST_MARKER_WIDTH = 12;
 export const QUEST_MARKER_HEIGHT = 16;
 const EXCLAMATION = ["00100", "01110", "01110", "00100", "00100", "00000", "00100"];
 const QUESTION = ["01110", "10001", "00001", "00110", "00100", "00000", "00100"];
 const COLORS: Record<QuestMarker, string> = {
-	main_available: "#f27766", available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
+	main_available: "#f27766", main_progress: "#f27766", main_ready: "#f27766",
+	available: "#f4d06f", repeatable: "#79b9eb", ready: "#82d878", progress: "#a4a49b"
 };
 const IMAGES = new Map<QuestMarker, HTMLCanvasElement>();
 
