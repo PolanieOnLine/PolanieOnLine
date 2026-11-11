@@ -148,8 +148,8 @@ final class MountainTrailProgress {
 				recipients.add("Drilenunem w koszarach w Ados");
 			if ((known & 4) == 0)
 				recipients.add("Barbarusem w kopalni Semos");
-			return "Porozmawiaj o wieściach z lasu z: "
-					+ String.join(", ", recipients) + ".";
+			return "Opowiedz o rozbiciu oddziału. Porozmawiaj z: "
+					+ String.join(", ", recipients) + ". Powiedz: wieści z lasu.";
 		default:
 			throw new IllegalArgumentException("Not a mountain quest");
 		}

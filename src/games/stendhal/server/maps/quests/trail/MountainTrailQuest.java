@@ -132,7 +132,7 @@ public final class MountainTrailQuest extends TrailQuest {
 			}, "zbiórka oddziału", "zbiorka oddzialu", "zbiórkę oddziału");
 			break;
 		case MOUNTAIN_RETURN:
-			offer("Chcę znać wszystko z pierwszej ręki. Powiedz mi, jak skończyła się walka, a potem zajrzyj do Drilenuna i Barbarusa. "
+			offer("Chcę znać wszystko z pierwszej ręki. Powiedz, jakie #'wieści z lasu' przynosisz, a potem zajrzyj do Drilenuna i Barbarusa. "
 					+ "Porucznik musi wiedzieć, co zostało z oddziału, a Barbarus wciąż martwi się o swoich ludzi.");
 			reply(step.npc, (player, sentence, speaker) -> {
 				if (player.isQuestInState(step.slot, "ready")) {
@@ -187,7 +187,7 @@ public final class MountainTrailQuest extends TrailQuest {
 				"ready", 7);
 		String text = bit == 1
 				? "Dobrze się spisujesz. Przestaną wreszcie straszyć ludzi i wywozić nam zapasy. "
-						+ "Pamiętaj jeszcze o Drilenunie i Barbarusie."
+						+ "Drilenun i Barbarus też powinni usłyszeć #'wieści z lasu'."
 				: bit == 2
 						? "Dziękuję. Dopilnuję reszty wspólników Radana. Jego dostawy i ten oddział nie będą już zagrażać drodze."
 						: "Oskar wrócił cały, a po Borzyma idą moi ludzie. Nie mógł już chodzić po tej nodze. "
