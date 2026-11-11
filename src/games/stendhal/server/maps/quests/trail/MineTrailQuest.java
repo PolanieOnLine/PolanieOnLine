@@ -62,7 +62,8 @@ public final class MineTrailQuest extends TrailQuest {
 			reply(step.npc, (player, sentence, speaker) -> request(player,
 					speaker,
 					"Myślałem, że mi się przesłyszało. A tu najpierw krzyk, potem kroki, równo jak na komendę. "
-							+ "I nagle cisza. Nie podoba mi się to. Posłuchasz przy starej obudowie szybu? Może tobie uda się coś zrozumieć."),
+							+ "I nagle cisza. Nie podoba mi się to. Pójdziesz posłuchać przy starej obudowie szybu? "
+							+ "Jeśli #tak, wskażę ci drogę."),
 					"głosy spod skały", "glosy spod skaly",
 					"głosach spod skały", "glosach spod skaly");
 			reply("Zynn Iwuhos", (player, sentence, speaker) -> {
@@ -74,13 +75,13 @@ public final class MineTrailQuest extends TrailQuest {
 			}, "rozkazy spod ziemi");
 			break;
 		case MINE_DISPATCH:
-			offer("Przechodzi przy zakręcie na południe stąd. Ma przy sobie pakiety. Jeśli go pokonasz, przeszukaj je. "
-					+ "Może znajdziesz #'rozkaz dla straży'. Przynieś mi go, obejrzę pieczęć. "
+			offer("Przechodzi przy zakręcie na południe stąd. Ma przy sobie zapieczętowany list. Jeśli go pokonasz, rozejrzyj się za nim. "
+					+ "Może dowiemy się, co planują. Przynieś mi list, obejrzę pieczęć. "
 					+ "I trzymaj się tej strony blokady. Dalej sam nie pójdziesz bezpiecznie.");
 			reply(step.npc, (player, sentence, speaker) -> request(player,
 					speaker,
-					"Zynn cię przysyła? Więc też usłyszał o tych komendach. Widziałem duergara z pakietami, chodzi między korytarzami. "
-							+ "Sam nie mogę ruszyć się z przejścia. Zdobędziesz to, co niesie? Muszę wiedzieć, co się tu szykuje."),
+					"Zynn cię przysyła? Więc też usłyszał o tych komendach. Widziałem duergara z zapieczętowanym listem, chodzi między korytarzami. "
+							+ "Sam nie mogę ruszyć się z przejścia. Zdobędziesz ten list? Muszę wiedzieć, co się tu szykuje."),
 					"łącznik", "lacznik", "łącznika", "lacznika");
 			reply(step.npc, (player, sentence, speaker) -> {
 				if (!MineTrailProgress.active(player, step)

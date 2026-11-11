@@ -198,7 +198,7 @@ public final class TrailQuestLine {
 				5500,
 				100,
 				"Ślady prowadzą w głąb kopalni. Barbarus słyszał tam rozkazy. Trzeba sprawdzić, skąd dochodzą.",
-				"Porozmawiaj z Barbarusem o głosach z głębi kopalni. Powiedz: głosy spod skały.",
+				"Zapytaj Barbarusa o głosy spod skały i zgódź się pomóc. Gdy zapyta, czy posłuchasz przy szybie, odpowiedz: tak.",
 				MINE_CHAPTER,
 				3,
 				Region.SEMOS_MINES,

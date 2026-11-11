@@ -63,7 +63,7 @@ final class MineTrailProgress {
 			return;
 		player.setQuest(Step.MINE_DISPATCH.slot, "orders");
 		player.sendPrivateText(
-				"Łącznik nie przeniesie już tego rozkazu. Sprawdź pakiet przy zakręcie, na południowy zachód od miejsca, którego pilnował.");
+				"Łącznik upuścił list. Leży przy zakręcie, na południowy zachód od miejsca, którego pilnował.");
 	}
 
 	static String objective(Player player, Step step) {
@@ -96,7 +96,7 @@ final class MineTrailProgress {
 			if ("guard".equals(state))
 				return "Pokonaj łącznika duergarów przy zakręcie na południe od Phalka w kopalni Semos. Pozostań w pobliżu. Jeśli go nie ma, poczekaj na jego powrót.";
 			if ("orders".equals(state))
-				return "Sprawdź pakiet z rozkazem na południowy zachód od miejsca, którego pilnował łącznik duergarów.";
+				return "Przeczytaj list leżący na południowy zachód od miejsca, którego pilnował łącznik duergarów.";
 			if ("identified".equals(state))
 				return "Pokaż Phalkowi przechwycony rozkaz. Powiedz: rozkaz dla straży.";
 			return "Zanieś meldunek Drilenunowi do koszar w Ados. Powiedz: druga zmiana.";
@@ -151,10 +151,10 @@ final class MineTrailProgress {
 			break;
 		case MINE_DISPATCH:
 			entries.add(
-					"Phalk widział uzbrojonego duergara przenoszącego pakiety. Wskazał zakręt na południe od swojego stanowiska. Nie trzeba przechodzić przez zablokowane wejście.");
+					"Phalk widział uzbrojonego duergara z zapieczętowanym listem. Wskazał zakręt na południe od swojego stanowiska. Nie trzeba przechodzić przez zablokowane wejście.");
 			if (!"guard".equals(state))
 				entries.add(
-						"Łącznik został pokonany. Można sprawdzić pakiet z rozkazem.");
+						"Łącznik został pokonany. Upuszczony list leży przy zakręcie, można go przeczytać.");
 			if ("identified".equals(state) || "return".equals(state) || done)
 				entries.add(
 						"Rozkaz każe odbierać zapasy Radana i utrzymywać wartę przy starej bramie. Jest na nim znak duergarów.");

@@ -42,7 +42,7 @@ public final class TrailQuestInvitations {
 		case MINE_VOICES:
 			return "Wieści od Barbarusa: Z głębi kopalni znowu dochodziły głosy. To nie brzmiało jak rozmowa górników. Wróć do mnie, trzeba to sprawdzić.";
 		case MINE_DISPATCH:
-			return "Wieści od Phalka: Widziałem kogoś z pakietem rozkazów przy bocznym tunelu. Znajdziesz mnie przy zablokowanym przejściu w kopalni Semos.";
+			return "Wieści od Phalka: Widziałem duergara z zapieczętowanym listem. Zajrzyj do mnie przy zablokowanym przejściu w kopalni Semos, opowiem ci więcej.";
 		case MOUNTAIN_MINERS:
 			return "Wieści od Barbarusa: Borzym i Oskar nie wrócili z bocznego tunelu. Martwię się o nich. Zejdź do mnie do kopalni Semos, potrzebuję pomocy.";
 		case MOUNTAIN_THREATS:

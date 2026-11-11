@@ -40,22 +40,22 @@ final class MineTrailEvidence extends AreaEntity implements UseListener {
 				"W pyle odbiły się ciężkie podkute buty. Ślady idą parami, w równych odstępach. Nie widać przy nich kolein po wózkach. Prowadzą dalej na północny wschód."),
 		VOICES(
 				"stara obudowa szybu",
-				"object/wooden_scaffold",
-				4,
-				4,
+				"object/old_mine_shaft",
+				0,
+				1,
 				106,
 				29,
 				Step.MINE_VOICES,
 				"Przykładasz ucho do belek. Za skałą słychać równe kroki. Ktoś woła: druga zmiana do bramy, zapasy na dół! Po krótkim sygnale głosy cichną. Opowiedz Zynnowi Iwuhosowi w bibliotece Semos o rozkazach spod ziemi."),
 		DISPATCH(
-				"pakiet z rozkazem",
-				"item/documents/book",
-				2,
+				"list łącznika",
+				"item/documents/letter",
+				0,
 				2,
 				111,
 				33,
 				Step.MINE_DISPATCH,
-				"W pakiecie jest rozkaz odbioru zapasów od Radana i utrzymania warty przy starej bramie. Pod tekstem ktoś odcisnął znak na ciemnym wosku. Przepisujesz treść i rysujesz znak. Pokaż je Phalkowi. Powiedz: rozkaz dla straży.");
+				"Rozwijasz list. Ktoś nakazał odebrać zapasy od Radana i utrzymać wartę przy starej bramie. Na ciemnym wosku widać odciśnięty znak. Przepisujesz treść i rysujesz znak. Pokaż je Phalkowi. Powiedz: rozkaz dla straży.");
 
 		final String name, tileset, text;
 		final int tile, columns, x, y;

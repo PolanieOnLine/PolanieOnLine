@@ -111,10 +111,10 @@ final class TrailDialogue {
 			if ("return".equals(stage))
 				return "Zanieś rozkaz Drilenunowi do koszar w Ados. Ja zostanę przy przejściu. Ktoś musi ich pilnować.";
 			if ("orders".equals(stage))
-				return "Sprawdź pakiet przy zakręcie. Może łącznik zostawił tam rozkazy.";
+				return "Rozejrzyj się przy zakręcie. Łącznik mógł tam upuścić list.";
 			if ("identified".equals(stage))
 				return "Masz już ten pergamin? Daj mi spojrzeć na pieczęć.";
-			return "Łącznik przechodzi przy zakręcie na południe stąd. Pilnuj pakietu, jeśli uda ci się go pokonać. Bez rozkazu nie dowiemy się, co szykują.";
+			return "Łącznik przechodzi przy zakręcie na południe stąd. Jeśli uda ci się go pokonać, odszukaj list, który niesie. Może dowiemy się z niego, co szykują.";
 		default:
 			throw new IllegalStateException("Unknown story step");
 		}
