@@ -31,6 +31,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Cat;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.creature.Duszek;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
@@ -140,6 +141,12 @@ public class SummonAction extends AdministrationAction {
 					final PurpleDragon dragon = new PurpleDragon(player);
 					found(type, dragon);
 				}
+			} else if ("duszek".equals(type)) {
+				if (player.hasPet()) {
+					error("Już masz własne zwierzątko!");
+				} else {
+					found(type, new Duszek());
+				}
 			} else if ("sheep".equals(type)) {
 				if (player.hasSheep()) {
 					error("Już masz własną owcę!");
@@ -161,7 +168,7 @@ public class SummonAction extends AdministrationAction {
 			return "cat".equals(type) || "owczarek".equals(type)
 					|| "owczarek podhalański".equals(type)
 					|| "baby dragon".equals(type) || "purple dragon".equals(type)
-					|| "sheep".equals(type) || "goat".equals(type);
+					|| "duszek".equals(type) || "sheep".equals(type) || "goat".equals(type);
 		}
 	}
 
@@ -248,6 +255,9 @@ public class SummonAction extends AdministrationAction {
 							}
 
 							StendhalRPAction.placeat(zone, entityToBePlaced, x, y);
+							if (entityToBePlaced instanceof Duszek) {
+								player.setPet((Duszek) entityToBePlaced);
+							}
 							new GameEvent(player.getName(), SUMMON, type).raise();
 							if (entityToBePlaced instanceof Item) {
 								new ItemLogger().summon(player, (Item) entityToBePlaced, zone.getName(), x+","+y);
