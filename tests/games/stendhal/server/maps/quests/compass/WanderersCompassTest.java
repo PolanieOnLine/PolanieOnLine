@@ -4,9 +4,11 @@ package games.stendhal.server.maps.quests.compass;
 import static org.junit.Assert.*;
 
 import games.stendhal.common.Level;
+import games.stendhal.common.QuestMarker;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.navigation.NavigationGoal;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.item.StackableItem;
@@ -243,6 +245,10 @@ public class WanderersCompassTest {
         recipe.getQuestSlot(), "1;węgiel drzewny;" + (System.currentTimeMillis() - 31000));
     recipe.collect(burner, player);
     assertTrue(player.isQuestCompleted(recipe.getQuestSlot()));
+    item("polano", 2);
+    item("money", 5);
+    assertTrue(recipe.start(burner, player, 1));
+    assertFalse(player.isQuestCompleted(recipe.getQuestSlot()));
     say("Smolisław", "węgiel dla Jacka");
     stage(Stage.NEEDLE);
     visited.add(Stage.NEEDLE);
@@ -341,6 +347,65 @@ public class WanderersCompassTest {
     item("węgiel drzewny", 1);
     say("Smolisław", "węgiel do kompasu");
     stage(Stage.CHARCOAL);
+  }
+
+  @Test
+  public void markersFollowTheCurrentSpeakerAndReadiness() {
+    SpeakerNPC sabala = NPCList.get().get("Sabała");
+    SpeakerNPC burner = NPCList.get().get("Smolisław");
+    SpeakerNPC jack = NPCList.get().get("Kowal Jacek");
+    assertEquals(QuestMarker.AVAILABLE, quest.getNPCQuestMarker(player, sabala));
+    CompassProgress.enter(player, Stage.CHARCOAL);
+    assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, sabala));
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, burner));
+    player.incProducedForItem("węgiel drzewny", 1);
+    item("węgiel drzewny", 1);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, burner));
+    CompassProgress.enter(player, Stage.NEEDLE);
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, jack));
+    item("sztabka żelaza", 1);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, jack));
+    CompassProgress.set(player, Stage.NEEDLE, 0, System.currentTimeMillis() + 60000);
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, jack));
+    CompassProgress.set(player, Stage.NEEDLE, 0, System.currentTimeMillis() - 1);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, jack));
+    CompassProgress.set(player, Stage.WOLVES, 0, 0);
+    SpeakerNPC wounded = visit(CompassProgress.WANDERER);
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, wounded));
+    CompassProgress.set(player, Stage.WOLVES, 3, 0);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, wounded));
+    CompassProgress.enter(player, Stage.BANDAGE);
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, wounded));
+    CompassProgress.set(player, Stage.BANDAGE, 1, 0);
+    assertEquals(QuestMarker.IN_PROGRESS, quest.getNPCQuestMarker(player, wounded));
+    item("sukno", 1);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, wounded));
+    CompassProgress.enter(player, Stage.RECOGNITION);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, sabala));
+    CompassProgress.enter(player, Stage.RETURN);
+    assertEquals(QuestMarker.READY, quest.getNPCQuestMarker(player, sabala));
+    player.setQuest(WanderersCompassQuest.SLOT, "done");
+    assertEquals(QuestMarker.NONE, quest.getNPCQuestMarker(player, sabala));
+  }
+
+  @Test
+  public void navigationFollowsTheNextWaymarkAndReturnsToFirstAfterAMistake() {
+    CompassProgress.enter(player, Stage.CROSSROADS);
+    for (Clue clue : new Clue[] {Clue.CROSS_MOSS, Clue.CROSS_STUMP, Clue.CROSS_WATER}) {
+      CompassScenes.Prop prop = prop(clue);
+      NavigationGoal target = WanderersCompassQuest.target(player);
+      assertEquals(prop.getX(), target.x);
+      assertEquals(prop.getY(), target.y);
+      use(clue);
+    }
+    stage(Stage.BURIAL);
+    CompassProgress.enter(player, Stage.CROSSROADS);
+    use(Clue.CROSS_MOSS);
+    CompassScenes.Prop wrong = prop(Clue.CROSS_WATER);
+    player.setPosition(wrong.getX(), wrong.getY() + 1);
+    assertFalse(wrong.onUsed(player));
+    CompassScenes.Prop first = prop(Clue.CROSS_MOSS);
+    assertEquals(first.getX(), WanderersCompassQuest.target(player).x);
   }
 
   @Test

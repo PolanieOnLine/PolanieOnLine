@@ -234,7 +234,7 @@ final class CompassScenes {
           return arrive(p, this, clue == Clue.STOP ? 0 : 1);
         case REMAINS:
           p.sendPrivateText(
-              "Między korzeniami leżą stare ludzkie kości. Przy spróchniałym pasie zachował się"
+              "W trawie leżą stare ludzkie kości. Przy spróchniałym pasie zachował się"
                   + " znak podobny do tego z notesu. Obok widać złożoną kartkę i rozbity kompas.");
           break;
         case LETTER:
@@ -318,8 +318,9 @@ final class CompassScenes {
     } else {
       CompassProgress.next(p, Stage.ESCORT);
       p.sendPrivateText(
-          "Dobromir: Dalej dam już radę. Pod rozłożystym drzewem na wschodzie znalazłem szczątki z"
-              + " kompasem. Może ten człowiek też poszedł za światłami... Zajrzyj tam, proszę.");
+          "Dobromir: Dalej dam już radę. Na wschód od rozłożystego drzewa, na skraju polany,"
+              + " znalazłem czyjeś szczątki i kompas. Może ten człowiek też poszedł za światłami..."
+              + " Zajrzyj tam, proszę.");
     }
     return true;
   }

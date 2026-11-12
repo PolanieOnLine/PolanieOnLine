@@ -60,8 +60,42 @@ public final class WanderersCompassQuest extends AbstractQuest {
 
   @Override
   public QuestMarker getNPCQuestMarker(Player p, SpeakerNPC npc) {
-    if (!"Sabała".equals(TrailSceneRegistry.speakerName(npc))) return QuestMarker.NONE;
-    return !p.hasQuest(SLOT) && p.getLevel() >= 15 ? QuestMarker.AVAILABLE : null;
+    if (!PlayerPrivateScene.canInteract(npc, p)) return QuestMarker.NONE;
+    String name = TrailSceneRegistry.speakerName(npc);
+    Stage stage = CompassProgress.stage(p);
+    if (stage == null)
+      return "Sabała".equals(name) && !p.hasQuest(SLOT) && p.getLevel() >= 15
+          ? QuestMarker.AVAILABLE : QuestMarker.NONE;
+    switch (stage) {
+      case RECOGNITION:
+      case RETURN:
+        return "Sabała".equals(name) ? QuestMarker.READY : QuestMarker.NONE;
+      case CHARCOAL:
+        return "Smolisław".equals(name)
+            ? (hasFreshCharcoal(p) ? QuestMarker.READY : QuestMarker.IN_PROGRESS)
+            : QuestMarker.NONE;
+      case NEEDLE:
+        if (!"Kowal Jacek".equals(name)) return QuestMarker.NONE;
+        long due = CompassProgress.time(p);
+        boolean ready = due > 0
+            ? System.currentTimeMillis() >= due
+            : p.isEquipped("sztabka żelaza", 1) && p.isEquipped("węgiel drzewny", 1);
+        return ready ? QuestMarker.READY : QuestMarker.IN_PROGRESS;
+      case WOLVES:
+      case BANDAGE:
+        if (!CompassProgress.WANDERER.equals(name)) return QuestMarker.NONE;
+        boolean helped = stage == Stage.WOLVES
+            ? CompassProgress.detail(p) == 3
+            : CompassProgress.detail(p) == 1 && p.isEquipped("sukno", 1);
+        return helped ? QuestMarker.READY : QuestMarker.IN_PROGRESS;
+      default:
+        return QuestMarker.NONE;
+    }
+  }
+
+  private static boolean hasFreshCharcoal(Player p) {
+    return p.getQuantityOfProducedItems("węgiel drzewny") > CompassProgress.detail(p)
+        && p.isEquipped("węgiel drzewny", 1);
   }
 
   public static NavigationGoal target(Player p) {
@@ -79,6 +113,14 @@ public final class WanderersCompassQuest extends AbstractQuest {
     if (s == Stage.BANDAGE && CompassProgress.detail(p) == 1) {
       x = 68;
       y = 86;
+    }
+    if (s == Stage.CROSSROADS) {
+      CompassScenes.Clue clue = CompassProgress.detail(p) == 0
+          ? CompassScenes.Clue.CROSS_MOSS
+          : CompassProgress.detail(p) == 1
+              ? CompassScenes.Clue.CROSS_STUMP : CompassScenes.Clue.CROSS_WATER;
+      x = clue.x;
+      y = clue.y;
     }
     if (s == Stage.RECOGNITION || s == Stage.RETURN) {
       SpeakerNPC sabala = SingletonRepository.getNPCList().get("Sabała");
@@ -200,9 +242,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
             remind(p, n);
             return;
           }
-          if (!p.isQuestCompleted("smolislaw_burn_charcoal")
-              || p.getQuantityOfProducedItems("węgiel drzewny") <= CompassProgress.detail(p)
-              || !p.isEquipped("węgiel drzewny", 1)) {
+          if (!hasFreshCharcoal(p)) {
             n.say(
                 "Jacek potrzebuje węgla do drobnej roboty? Wypalę ci porcję za dwa polana i pięć"
                     + " monet. Zamów ją przy moim #mielerzu. Kiedy odbierzesz węgiel, zajrzyj do"
@@ -348,7 +388,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
           break;
         case BURIAL:
           text =
-              "Nie zostawiaj Miłorada między korzeniami. Usyp mu mogiłę pod drzewem."
+              "Nie zostawiaj Miłorada w trawie. Usyp mu mogiłę tam, gdzie go znalazłeś."
                   + " Całe życie szukał zagubionych ludzi, zasłużył na spokojny pochówek.";
           break;
         default:

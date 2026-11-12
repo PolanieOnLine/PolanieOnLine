@@ -43,7 +43,8 @@ final class CompassProgress {
         60,
         86),
     REMAINS(
-        "Obejrzyj szczątki dawnego przewodnika pod rozłożystym drzewem na wschodnim skraju polany.",
+        "Obejrzyj szczątki dawnego przewodnika w trawie na wschód od rozłożystego drzewa,"
+            + " na skraju polany.",
         82,
         84),
     LETTER("Obejrzyj niedokończony list i uszkodzony kompas obok szczątków.", 83, 84),
@@ -64,11 +65,11 @@ final class CompassProgress {
     CROSSROADS(
         "Sprawdź naprawiony kompas przy trzech starych znakach na północ od obozu. Kolejność"
             + " opisano w odnalezionym notesie.",
-        67,
+        61,
         70),
     BURIAL(
-        "Pochowaj Miłorada pod rozłożystym drzewem na wschodnim skraju polany. Usyp niewielką"
-            + " mogiłę i przykryj ją kamieniami.",
+        "Pochowaj Miłorada tam, gdzie znalazłeś jego szczątki, na wschód od rozłożystego drzewa."
+            + " Usyp niewielką mogiłę i przykryj ją kamieniami.",
         82,
         84),
     RETURN(
@@ -171,8 +172,8 @@ final class CompassProgress {
     if (reached >= 10)
       result.add(
           "Opatrzyłem Dobromira, rozpaliłem ognisko i nakarmiłem go. Doprowadziłem go do"
-              + " osłoniętego postoju. Wskazał szczątki dawnego przewodnika pod rozłożystym"
-              + " drzewem.");
+              + " osłoniętego postoju. Wskazał szczątki dawnego przewodnika w trawie na wschód"
+              + " od rozłożystego drzewa.");
     if (reached >= 13)
       result.add(
           "Sabała rozpoznał pismo swojego dawnego znajomego, Miłorada. Chce, żeby jego kompas znów"
