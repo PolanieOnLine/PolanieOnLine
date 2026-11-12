@@ -109,7 +109,7 @@ public class QuestRewardRarityMigrationServiceTest {
 				QuestRewardRarityMigrationService.registeredItemNames();
 		assertFalse(names.contains("bielikrasa"));
 		assertFalse(names.contains("złoty amulet"));
-		assertFalse(names.contains("tarcza ciemnomithrilowa"));
+		assertFalse(names.contains("tarcza z hartowanego mithrilu"));
 		assertFalse(names.contains("złoty róg"));
 		assertFalse(names.contains("zdobyczny hełm"));
 	}

@@ -71,12 +71,13 @@ public class BlacksmithNPC implements ZoneConfigurator {
 					"Witaj w moich skromnych progach! W czymś mogę #pomóc?");
 
 				String productionList = "Oto moja aktualna lista usług:"
-					+ "\n- #'hełm ciemnomithrilowy'"
-					+ "\n- #'zbroja ciemnomithrilowa'"
-					+ "\n- #'pas ciemnomithrilowy'"
-					+ "\n- #'spodnie ciemnomithrilowe'"
-					+ "\n- #'płaszcz ciemnomithrilowy'"
-					+ "\n- #'tarcza ciemnomithrilowa'"
+					+ "\n- #'hełm z hartowanego mithrilu'"
+					+ "\n- #'zbroja z hartowanego mithrilu'"
+					+ "\n- #'pas z hartowanego mithrilu'"
+					+ "\n- #'spodnie z hartowanego mithrilu'"
+					+ "\n- #'buty z hartowanego mithrilu'"
+					+ "\n- #'płaszcz z hartowanego mithrilu'"
+					+ "\n- #'tarcza z hartowanego mithrilu'"
 					+ "\nJeżeli jesteś zainteresowany to powiedz mi #stwórz i wybierz jakie uzbrojenie potrzebujesz.";
 
 				add(ConversationStates.ANY,

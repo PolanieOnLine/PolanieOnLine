@@ -1662,6 +1662,7 @@ full	ADJ
 genius	ADJ
 global	ADJ
 golden	ADJ-COL
+hardened	ADJ
 good	ADJ
 grand	ADJ
 great	ADJ

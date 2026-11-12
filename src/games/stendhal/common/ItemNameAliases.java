@@ -17,6 +17,13 @@ public final class ItemNameAliases {
         names.put("prążkowany płaszcz lazurowy", "płaszcz prążkowany lazurowy");
         names.put("szmaragdowy płaszcz smoczy", "płaszcz smoczy szmaragdowy");
         names.put("szmaragdowa tarcza smocza", "tarcza smocza szmaragdowa");
+        names.put("hełm ciemnomithrilowy", "hełm z hartowanego mithrilu");
+        names.put("zbroja ciemnomithrilowa", "zbroja z hartowanego mithrilu");
+        names.put("pas ciemnomithrilowy", "pas z hartowanego mithrilu");
+        names.put("spodnie ciemnomithrilowe", "spodnie z hartowanego mithrilu");
+        names.put("buty ciemnomithrilowe", "buty z hartowanego mithrilu");
+        names.put("tarcza ciemnomithrilowa", "tarcza z hartowanego mithrilu");
+        names.put("płaszcz ciemnomithrilowy", "płaszcz z hartowanego mithrilu");
         RENAMED = Collections.unmodifiableMap(names);
     }
 

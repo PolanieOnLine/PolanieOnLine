@@ -40,7 +40,7 @@ public class ForgeNewArmsTest {
 				+ ItemRarityTransferSnapshot.encode(source));
 
 		final Item result = ForgeNewArms.createTransferredItem(player,
-				"tarcza ciemnomithrilowa");
+				"tarcza z hartowanego mithrilu");
 
 		assertSame(ItemRarity.LEGENDARY, result.getRarity());
 		assertEquals(Double.valueOf(1.24), result.getRarityModifier("def"));

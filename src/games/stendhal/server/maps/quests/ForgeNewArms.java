@@ -227,7 +227,7 @@ public class ForgeNewArms extends AbstractQuest {
 				new TimePassedCondition(QUEST_SLOT, 1, DELAY)),
 			ConversationStates.IDLE,
 			null,
-			new ForgeItemAction("tarcza ciemnomithrilowa",
+			new ForgeItemAction("tarcza z hartowanego mithrilu",
 				"Kurczę, te klejnoty nie chciały się złączyć z tarczą... Nie martw się, zreperowałem uszkodzenia jakie wywołałem na tarczy, bryłkami. Zwracam twoją własność, jak nazbierasz kolejne surowce możemy powtórzyć proces...",
 				"Udało się! Ino spójrz jak pięknie wygląda! Myślę, że już wiem w jaki sposób obchodzić się z tym surowcem."));
 	}

@@ -396,9 +396,9 @@
 		</equipable>
 	</item>
 
-	<item name="hełm ciemnomithrilowy">
-		<type class="helmet" subclass="nocturium_mithril_helmet" tileid="-1"/>
-		<description>Oto hełm ciemnomithrilowy.</description>
+	<item name="hełm z hartowanego mithrilu">
+		<type class="helmet" subclass="hardened_mithril_helmet" tileid="-1"/>
+		<description>Oto hełm z hartowanego mithrilu. Pod srebrzystą osłoną połyskują niebieskie wstawki z ciemnolitu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<atk value="1"/>

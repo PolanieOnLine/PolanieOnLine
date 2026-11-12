@@ -267,9 +267,9 @@
 		</equipable>
 	</item>
 
-	<item name="spodnie ciemnomithrilowe">
-		<type class="legs" subclass="nocturium_mithril_legs" tileid="-1"/>
-		<description>Oto para spodni ciemnomithrilowych.</description>
+	<item name="spodnie z hartowanego mithrilu">
+		<type class="legs" subclass="hardened_mithril_legs" tileid="-1"/>
+		<description>Oto spodnie z hartowanego mithrilu. Niebieskie wstawki z ciemnolitu wzmacniają osłony nóg.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<atk value="1"/>

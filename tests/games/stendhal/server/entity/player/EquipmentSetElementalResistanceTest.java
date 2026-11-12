@@ -187,9 +187,9 @@ public class EquipmentSetElementalResistanceTest {
 	@Test
 	public void endgameNocturiumSetKeepsItsExistingProtectionWithoutVulnerability() {
 		final Player player = equipSet(new String[] {
-				"zbroja ciemnomithrilowa", "hełm ciemnomithrilowy", "płaszcz ciemnomithrilowy",
-				"spodnie ciemnomithrilowe", "buty ciemnomithrilowe", "tarcza ciemnomithrilowa",
-				null, "pas ciemnomithrilowy" });
+				"zbroja z hartowanego mithrilu", "hełm z hartowanego mithrilu", "płaszcz z hartowanego mithrilu",
+				"spodnie z hartowanego mithrilu", "buty z hartowanego mithrilu", "tarcza z hartowanego mithrilu",
+				null, "pas z hartowanego mithrilu" });
 		assertEquals(0.4782969, player.getSusceptibility(Nature.DARK), EPSILON);
 		assertEquals(0.4782969, player.getSusceptibility(Nature.LIGHT), EPSILON);
 		assertEquals(1.0, player.getSusceptibility(Nature.FIRE), EPSILON);

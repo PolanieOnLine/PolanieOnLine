@@ -268,9 +268,9 @@
 		</equipable>
 	</item>
 
-	<item name="buty ciemnomithrilowe">
-		<type class="boots" subclass="nocturium_mithril_boots" tileid="-1"/>
-		<description>Oto para butów ciemnomithrilowych. Czuć w nich jak pulsuje, próbująca się wydostać energia.</description>
+	<item name="buty z hartowanego mithrilu">
+		<type class="boots" subclass="hardened_mithril_boots" tileid="-1"/>
+		<description>Oto buty z hartowanego mithrilu. Srebrzyste okucia chronią stopy, a ciemnolit mieni się w ich cholewach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<atk value="1"/>

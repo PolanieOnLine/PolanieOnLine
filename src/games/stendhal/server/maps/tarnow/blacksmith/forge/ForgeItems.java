@@ -19,6 +19,10 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.ItemNameAliases;
+import games.stendhal.common.Translation;
+import games.stendhal.common.parser.ExpressionType;
+import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityTransferSnapshot;
@@ -30,13 +34,13 @@ import games.stendhal.server.util.TimeUtil;
 public class ForgeItems {
 	private static final Logger LOGGER = Logger.getLogger(ForgeItems.class);
 	private static final String RARITY_STATE_PREFIX = "rarity-v1:";
-	private final static String helmet = "hełm ciemnomithrilowy";
-	private final static String armor = "zbroja ciemnomithrilowa";
-	private final static String belt = "pas ciemnomithrilowy";
-	private final static String legs = "spodnie ciemnomithrilowe";
-	private final static String boots = "buty ciemnomithrilowe";
-	private final static String shield = "tarcza ciemnomithrilowa";
-	private final static String cloak = "płaszcz ciemnomithrilowy";
+	private final static String helmet = "hełm z hartowanego mithrilu";
+	private final static String armor = "zbroja z hartowanego mithrilu";
+	private final static String belt = "pas z hartowanego mithrilu";
+	private final static String legs = "spodnie z hartowanego mithrilu";
+	private final static String boots = "buty z hartowanego mithrilu";
+	private final static String shield = "tarcza z hartowanego mithrilu";
+	private final static String cloak = "płaszcz z hartowanego mithrilu";
 
 	private static HashSet<String> getNewItems() {
 		final HashSet<String> productionItems = new HashSet<String>();
@@ -152,6 +156,13 @@ public class ForgeItems {
 				getItemResources(),
 				getProductionTime(),
 				getItemsBound());
+
+		for (final String product : behaviour.getProductsNames()) {
+			WordList.getInstance().registerName(Translation.getText("en", product), ExpressionType.OBJECT);
+			for (final String legacyName : ItemNameAliases.legacyNames(product)) {
+				WordList.getInstance().registerName(legacyName, ExpressionType.OBJECT);
+			}
+		}
 
 		return behaviour;
 	}

@@ -34,6 +34,7 @@ import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.Banks;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.DetailLevel;
@@ -45,6 +46,57 @@ import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemDefinitionRefreshTest {
+	@Test
+	public void hardenedMithrilReplacesLegacyNamesWithoutLosingEquipmentProgress() throws Exception {
+		final String[][] names = {
+				{"hełm ciemnomithrilowy", "hełm z hartowanego mithrilu", "helmet"},
+				{"zbroja ciemnomithrilowa", "zbroja z hartowanego mithrilu", "armor"},
+				{"pas ciemnomithrilowy", "pas z hartowanego mithrilu", "belt"},
+				{"spodnie ciemnomithrilowe", "spodnie z hartowanego mithrilu", "legs"},
+				{"buty ciemnomithrilowe", "buty z hartowanego mithrilu", "boots"},
+				{"tarcza ciemnomithrilowa", "tarcza z hartowanego mithrilu", "shield"},
+				{"płaszcz ciemnomithrilowy", "płaszcz z hartowanego mithrilu", "cloak"}
+		};
+		for (final String[] entry : names) {
+			assertEquals(entry[1], UpdateConverter.updateItemName(entry[0]));
+			assertEquals(entry[1] + "=2", UpdateConverter.updateItemName(entry[0] + "=2"));
+			assertEquals(entry[1], UpdateConverter.updateItemName(entry[1]));
+			Item saved = SingletonRepository.getEntityManager().getItem(entry[1],
+					ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+							.withRarity(ItemRarity.LEGENDARY)
+							.withModifiers(ItemRarityModifiers.builder()
+									.defenseMultiplier(1.25).valueMultiplier(2.0).build())
+							.withAffixSeed(12345L).build());
+			assertNotNull(saved);
+			final int defense = saved.getInt("def");
+			final Map<String, String> affixes = ItemAffixState.getValues(saved);
+			final Map<String, Double> modifiers = saved.getRarityModifiers();
+			saved.setID(new ID(790, "hardened_mithril"));
+			saved.put("name", entry[0]);
+			saved.put("subclass", "nocturium_mithril_" + entry[2]);
+			saved.setDescription("Oto " + entry[0] + ".");
+			saved.put(Item.DEFINITION_DESCRIPTION, saved.getDescription());
+			saved.setUpgradeLevel(2);
+			saved.setBoundTo("kowal");
+			saved.put("logid", 123456);
+			saved.setPersistent(true);
+			for (int login = 0; login < 2; login++) {
+				saved = restore(saved);
+				assertEquals(entry[1], saved.getName());
+				assertEquals("hardened_mithril_" + entry[2], saved.get("subclass"));
+				assertEquals(definition(entry[1]).getDescription(), saved.getDescription());
+				assertEquals(defense, saved.getInt("def"));
+				assertEquals(2, saved.getUpgradeLevel());
+				assertEquals(ItemRarity.LEGENDARY, saved.getRarity());
+				assertEquals(affixes, ItemAffixState.getValues(saved));
+				assertEquals(modifiers, saved.getRarityModifiers());
+				assertEquals(Long.valueOf(12345L), ItemAffixState.getSeed(saved));
+				assertEquals("kowal", saved.getBoundTo());
+				assertEquals(123456, saved.getInt("logid"));
+			}
+		}
+	}
+
 	@Test
 	public void mercilessReachKeepsExactlyOneExtraTileAcrossLogins() throws Exception {
 		Item whip = definition("zatruty bicz");
