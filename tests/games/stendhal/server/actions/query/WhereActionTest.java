@@ -137,6 +137,26 @@ public class WhereActionTest {
 	}
 
 	@Test
+	public void testWhereTranslatesTheLocationForSelfAndAnotherPlayer() {
+		final WhereAction query = new WhereAction();
+		final RPAction action = new RPAction();
+		action.put(Actions.TYPE, "where");
+		final Player caller = PlayerTestHelper.createPlayer("caller");
+		final Player target = PlayerTestHelper.createPlayer("traveller");
+		final StendhalRPZone zone = new StendhalRPZone("-2_dragon_cave");
+		zone.add(target);
+		MockStendhalRPRuleProcessor.get().addPlayer(target);
+		action.put(Actions.TARGET, target.getName());
+
+		query.onAction(target, action);
+		assertThat(target.events().get(0).get("text"),
+				equalTo("Twoja lokalizacja: Jaskinia Smoczej Krainy, poziom -2 (0,0)"));
+		query.onAction(caller, action);
+		assertThat(caller.events().get(0).get("text"),
+				equalTo("Lokalizacja gracza traveller: Jaskinia Smoczej Krainy, poziom -2 (0,0)"));
+	}
+
+	@Test
 	public void testOnActionUsesReadableZoneName() {
 		final WhereAction pq = new WhereAction();
 		final RPAction action = new RPAction();

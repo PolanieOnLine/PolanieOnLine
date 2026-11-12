@@ -111,7 +111,7 @@ public final class ZoneDisplayNameFormatter {
 		} else if (level != null && level.matches("-?\\d+") && !"0".equals(level)) {
 			final int numericLevel = Integer.parseInt(level);
 			if (numericLevel < 0) {
-				displayName += " Podziemie " + Math.abs(numericLevel);
+				displayName += ", poziom " + numericLevel;
 			} else {
 				displayName += " Poziom " + numericLevel;
 			}
@@ -142,19 +142,48 @@ public final class ZoneDisplayNameFormatter {
 			return "";
 		}
 
-		if (tokens.size() == 2) {
-			final String type = translateLocationType(tokens.get(1));
+		final String name = String.join("_", tokens).toLowerCase(Locale.ROOT);
+		if ("dragon_land".equals(name)) {
+			return "Smocza Kraina";
+		}
+		if (name.startsWith("dragon_knights_")) {
+			final String type = translateLocationType(name.substring("dragon_knights_".length()));
 			if (type != null) {
-				return type + " " + titleize(tokens.get(0));
+				return type + " Smoczych Rycerzy";
+			}
+		} else if (name.startsWith("dragon_")) {
+			final String type = translateLocationType(name.substring("dragon_".length()));
+			if (type != null) {
+				return type + " Smoczej Krainy";
+			}
+		}
+
+		if (tokens.size() >= 2) {
+			final String type = translateLocationType(String.join("_", tokens.subList(1, tokens.size())));
+			if (type != null) {
+				return type + " " + translatePlaceName(tokens.get(0));
 			}
 		}
 
 		final List<String> translated = new ArrayList<String>();
 		for (final String token : tokens) {
 			final String type = translateLocationType(token);
-			translated.add(type != null ? type : titleize(token));
+			translated.add(type != null ? type : translatePlaceName(token));
 		}
 		return String.join(" ", translated);
+	}
+
+	private static String translatePlaceName(final String token) {
+		switch (token.toLowerCase(Locale.ROOT)) {
+			case "gdansk":
+				return "Gdańsk";
+			case "krakow":
+				return "Kraków";
+			case "koscielisko":
+				return "Kościelisko";
+			default:
+				return titleize(token);
+		}
 	}
 
 	private static String translateLocationType(final String token) {
@@ -185,15 +214,96 @@ public final class ZoneDisplayNameFormatter {
 			case "temple":
 				return "Świątynia";
 			case "mine":
+			case "mines":
+			case "kopalnia":
 				return "Kopalnia";
+			case "salt_mines":
+				return "Kopalnia soli";
+			case "coalmine":
+				return "Kopalnia węgla";
+			case "dwarf_mine":
+				return "Kopalnia krasnoludów";
 			case "cave":
 				return "Jaskinia";
 			case "caves":
 				return "Jaskinie";
+			case "great_cave":
+				return "Wielka jaskinia";
+			case "lost_caves":
+				return "Zaginione jaskinie";
+			case "mountain_cave":
+				return "Górska jaskinia";
+			case "yeti_cave":
+				return "Jaskinia yeti";
 			case "dungeon":
 				return "Loch";
+			case "dungeons":
+				return "Lochy";
+			case "little_dungeon":
+				return "Mały loch";
+			case "castle_dungeons":
+				return "Lochy zamku";
+			case "catacombs":
+				return "Katakumby";
+			case "underground":
+				return "Podziemia";
+			case "underground_forest":
+				return "Podziemny las";
+			case "canals":
+			case "sewers":
+				return "Kanały";
+			case "tunnel":
+				return "Tunel";
+			case "drows_tunnel":
+				return "Tunel drowów";
+			case "vault":
+				return "Krypta";
+			case "vaults":
+				return "Krypty";
+			case "jail":
+			case "prison":
+				return "Więzienie";
+			case "sea_floor":
+				return "Dno morza";
+			case "lich_palace":
+				return "Pałac licza";
 			case "castle":
 				return "Zamek";
+			case "abandoned_keep":
+				return "Opuszczona warownia";
+			case "armory":
+				return "Zbrojownia";
+			case "bar":
+				return "Tawerna";
+			case "barrack":
+				return "Koszary";
+			case "chappel":
+			case "chapel":
+				return "Kaplica";
+			case "courtyard":
+				return "Dziedziniec";
+			case "guard_room":
+				return "Wartownia";
+			case "main_hall":
+				return "Sala główna";
+			case "meeting_room":
+				return "Sala narad";
+			case "room":
+				return "Komnata";
+			case "castle_room":
+				return "Komnata zamku";
+			case "springs":
+				return "Źródła";
+			case "treasury":
+				return "Skarbiec";
+			case "warehouse":
+				return "Magazyn";
+			case "workshop":
+				return "Warsztat";
+			case "wizard_tower":
+				return "Wieża czarodzieja";
+			case "wizard_tower_room":
+				return "Komnata wieży czarodzieja";
 			case "house":
 				return "Dom";
 			case "school":
