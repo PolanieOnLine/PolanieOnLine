@@ -519,6 +519,8 @@ public class CoastTrailStoryTest {
 
 	@Test
 	public void invitationTextsAreBriefAndUseASeparateColour() {
+		assertTrue(TrailQuestInvitations.forStep(Step.COAST_LAMPS)
+				.startsWith("Wieści od Lubora:"));
 		for (Step step : Step.values()) {
 			String text = TrailQuestInvitations.forStep(step);
 			if (step == Step.RADAN_RESCUE || step == Step.RADAN_TRANSPORT

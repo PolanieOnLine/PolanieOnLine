@@ -98,7 +98,7 @@ public final class TrailQuestInvitations {
 		case COAST_WRECKERS:
 			return "Wieści od Malteisa: Herszt tych rabusiów wciąż ukrywa się w składzie. Trzeba go zatrzymać przed kolejnym napadem. Wróć do mojej kwatery w Gdańsku.";
 		case COAST_LAMPS:
-			return "Wieści od Staszka: Jaskółka zbliża się do Gdańska. Musimy przywrócić bezpieczny sygnał na brzegu. Przyjdź do mnie przy przystani.";
+			return "Wieści od Lubora: Jaskółka zbliża się do Gdańska. Trzeba naprawić lampy, żeby bezpiecznie weszła do portu. Czekam na plaży przy przystani.";
 		case COAST_RETURN:
 			return "Wieści od Staszka: Lampy są gotowe, ale ktoś jeszcze kręci się przy brzegu. Zajrzyj do mnie przy gdańskiej przystani. Nie możemy teraz zostawić Jaskółki.";
 		case SALT_SHIFT:

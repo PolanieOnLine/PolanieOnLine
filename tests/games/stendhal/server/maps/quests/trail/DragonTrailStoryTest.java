@@ -252,6 +252,11 @@ public class DragonTrailStoryTest {
 		say("Wizariusz", "zapachu jaj");
 		accept("Racirad", "pojmanym przewodniku");
 		kill(Encounter.CAPTOR);
+		visit("Racirad");
+		String reminder = say("Racirad", "pojmany przewodnik");
+		assertFalse(reminder.contains("Najpierw uwolnij"));
+		assertTrue(reminder.contains("Porozmawiaj z Ostroborem"));
+		assertEquals("guide", player.getQuest(Step.EMBER_GUIDE.slot));
 		visit("Ostrobor");
 		say("Ostrobor", "pojmanego przewodnika");
 		accept("Ostrobor", "skradzionym lęgu");

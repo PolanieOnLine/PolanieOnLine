@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import games.stendhal.common.Level;
+import games.stendhal.server.core.navigation.NavigationGoal;
 import games.stendhal.common.tiled.StendhalMapStructure;
 import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.server.core.pathfinder.Path;
@@ -344,6 +345,45 @@ public class BellTrailStoryTest {
 		assertEquals("escort;2", player.getQuest(Step.BELL_ESCAPE.slot));
 		assertTrue(use(Kind.ASSEMBLY));
 		assertEquals(2, BellTrailEscort.group(player).size());
+	}
+
+	@Test
+	public void compassWaitsForTheWoundedBeforeShowingTheNextStop() {
+		before(Step.BELL_ESCAPE);
+		move(islands);
+		player.setQuest(Step.BELL_ESCAPE.slot, "escort;0");
+		assertCompassTarget(Kind.ASSEMBLY);
+		assertTrue(use(Kind.ASSEMBLY));
+		assertCompassTarget(Kind.FIRST_STOP);
+
+		player.setQuest(Step.BELL_ESCAPE.slot, "escort;2");
+		List<BellTrailEscort> escorts = BellTrailEscort.group(player);
+		islands.remove(escorts.get(0));
+		assertCompassTarget(Kind.ASSEMBLY);
+		islands.remove(escorts.get(1));
+		assertCompassTarget(Kind.ASSEMBLY);
+		assertTrue(use(Kind.ASSEMBLY));
+		assertCompassTarget(Kind.SAFE_CAMP);
+		assertEquals("escort;2", player.getQuest(Step.BELL_ESCAPE.slot));
+
+		player.setQuest(Step.BELL_ESCAPE.slot, "ambush;1");
+		for (BellTrailEscort escort : BellTrailEscort.group(player)) {
+			islands.remove(escort);
+		}
+		assertCompassTarget(Kind.ASSEMBLY);
+		assertTrue(use(Kind.ASSEMBLY));
+		List<NavigationGoal> goals = TrailNavigationTargets.targets(player);
+		assertEquals(1, goals.size());
+		assertEquals(Encounter.ECHO.x, goals.get(0).x);
+		assertEquals(Encounter.ECHO.y, goals.get(0).y);
+	}
+
+	private void assertCompassTarget(Kind kind) {
+		List<NavigationGoal> goals = TrailNavigationTargets.targets(player);
+		assertEquals(1, goals.size());
+		assertEquals(BellTrailProgress.ISLANDS, goals.get(0).zone);
+		assertEquals(kind.x, goals.get(0).x);
+		assertEquals(kind.y, goals.get(0).y);
 	}
 
 	@Test

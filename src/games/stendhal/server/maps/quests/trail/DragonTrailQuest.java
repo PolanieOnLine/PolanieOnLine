@@ -185,7 +185,9 @@ public final class DragonTrailQuest extends TrailQuest {
 			break;
 		case EMBER_GUIDE:
 			speaker.say(
-					"Ostrobor jest pod strażą przy obozowisku na północnym wschodzie. Najpierw uwolnij go od strażnika. Potem zapytaj o #'pojmanego przewodnika'.");
+					player.isQuestInState(step.slot, "guide")
+							? "Porozmawiaj z Ostroborem przy obozowisku na północnym wschodzie. Teraz, gdy jest wolny, może opowie, co się tam stało. Zapytaj go o #'pojmanego przewodnika'."
+							: "Ostrobor jest pod strażą przy obozowisku na północnym wschodzie. Najpierw uwolnij go od strażnika. Potem zapytaj o #'pojmanego przewodnika'.");
 			break;
 		case EMBER_EGGS:
 			speaker.say(

@@ -70,11 +70,15 @@ public final class TrailNavigationTargets {
     }
     for (DragonTrailSites.Kind k : DragonTrailSites.Kind.values())
       if (DragonTrailSites.needed(player, k)) add(player, goals, k.step, k.zone, k.x, k.y, k.name);
+    final boolean needsAssembly = needsBellAssembly(player);
     for (BellTrailSites.Kind k : BellTrailSites.Kind.values()) {
       // The upper bell tile is decorative; both tiles perform the same interaction.
       if (k == BellTrailSites.Kind.BELL_TOP || !BellTrailSites.needed(player, k)) continue;
-      // During an escort the compass leads to the next stop, rather than back to assembly.
-      if (k == BellTrailSites.Kind.ASSEMBLY) continue;
+      if (k == BellTrailSites.Kind.ASSEMBLY && !needsAssembly) continue;
+      if (needsAssembly
+          && (k == BellTrailSites.Kind.FIRST_STOP
+              || k == BellTrailSites.Kind.BRIDGE_STOP
+              || k == BellTrailSites.Kind.SAFE_CAMP)) continue;
       Step step =
           k == BellTrailSites.Kind.LOG || k == BellTrailSites.Kind.INSCRIPTION
               ? Step.BELL_VOICE
@@ -98,6 +102,11 @@ public final class TrailNavigationTargets {
   private static boolean active(Player player, Step step) {
     String state = player.getQuest(step.slot, 0);
     return state != null && !"done".equals(state) && !"rejected".equals(state);
+  }
+
+  private static boolean needsBellAssembly(Player player) {
+    return BellTrailSites.needed(player, BellTrailSites.Kind.ASSEMBLY)
+        && BellTrailEscort.group(player).size() != 2;
   }
 
   private static void add(
@@ -201,7 +210,8 @@ public final class TrailNavigationTargets {
       if (DragonTrailProgress.needs(p, e))
         add(p, goals, e.step, DragonTrailProgress.NORTH, e.x, e.y, e.name);
     for (BellTrailProgress.Encounter e : BellTrailProgress.Encounter.values())
-      if (BellTrailProgress.needs(p, e))
+      if (BellTrailProgress.needs(p, e)
+          && (e.step != Step.BELL_ESCAPE || !needsBellAssembly(p)))
         add(p, goals, e.step, BellTrailProgress.ISLANDS, e.x, e.y, e.name);
   }
 
