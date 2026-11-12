@@ -188,7 +188,7 @@ public class ZlotyAmulet extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 						new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES * 3))),
-				ConversationStates.IDLE, 
+				ConversationStates.ATTENDING,
 				null, 
 				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES * 3, "Jeszcze nie skończyłem wyrabiać amuletu. Proszę wróć za "));
 		
@@ -202,8 +202,8 @@ public class ZlotyAmulet extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
-						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)),
-				ConversationStates.IDLE, 
+						new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES * 3)),
+				ConversationStates.ATTENDING,
 				"Proszę, oto złoty amulet dla Jagienki. Teraz możesz wrócić do niej i jej wręczyć.",
 				new MultipleActions(reward2));
 	}

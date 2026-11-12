@@ -23,6 +23,7 @@ import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.koscielisko.stones.KowalJacekNPC;
 import games.stendhal.server.maps.krakow.woodcutter.CharcoalBurnerNPC;
+import games.stendhal.server.maps.quests.ZlotyAmulet;
 import games.stendhal.server.maps.quests.compass.CompassProgress.Stage;
 import games.stendhal.server.maps.quests.compass.CompassScenes.Clue;
 import games.stendhal.server.maps.quests.trail.TrailSceneRegistry;
@@ -56,7 +57,7 @@ public class WanderersCompassTest {
   @Before
   public void setup() {
     for (String name :
-        new String[] {"Sabała", "Smolisław", "Kowal Jacek", CompassProgress.WANDERER})
+        new String[] {"Sabała", "Smolisław", "Kowal Jacek", "Jagienka", CompassProgress.WANDERER})
       previousNPCs.put(name, NPCList.get().remove(name));
     forest = zone(CompassProgress.FOREST);
     town = zone("0_zakopane_s");
@@ -446,6 +447,51 @@ public class WanderersCompassTest {
     String reminder = SpeakerNPCTestHelper.getReply(sabala);
     assertTrue(reminder.contains("kompas"));
     assertFalse(reminder.contains("Zapytaj o #manowce"));
+  }
+
+  @Test
+  public void needleCanBeOrderedAndCollectedWhileJackWorksOnTheAmulet() {
+    town.add(new SpeakerNPC("Jagienka"));
+    new ZlotyAmulet().addToWorld();
+    String amuletOrder = "forging;" + System.currentTimeMillis();
+    player.setQuest(ZlotyAmulet.QUEST_SLOT, amuletOrder);
+    CompassProgress.enter(player, Stage.NEEDLE);
+    item("sztabka żelaza", 1);
+    item("węgiel drzewny", 1);
+    SpeakerNPC jack = visit("Kowal Jacek");
+    assertEquals(ConversationStates.ATTENDING, jack.getEngine().getCurrentState());
+    assertTrue(jack.getEngine().step(player, "igła kompasu"));
+    assertTrue(CompassProgress.time(player) > System.currentTimeMillis());
+    assertEquals(amuletOrder, player.getQuest(ZlotyAmulet.QUEST_SLOT));
+
+    amuletOrder = "forging;" + (System.currentTimeMillis() - 15 * 60000L);
+    player.setQuest(ZlotyAmulet.QUEST_SLOT, amuletOrder);
+    CompassProgress.set(player, Stage.NEEDLE, 0, System.currentTimeMillis() - 1);
+    jack = visit("Kowal Jacek");
+    assertFalse(player.isEquipped("złoty amulet"));
+    assertEquals(amuletOrder, player.getQuest(ZlotyAmulet.QUEST_SLOT));
+    assertEquals(ConversationStates.ATTENDING, jack.getEngine().getCurrentState());
+    assertTrue(jack.getEngine().step(player, "igła kompasu"));
+    stage(Stage.CASE);
+    assertEquals(amuletOrder, player.getQuest(ZlotyAmulet.QUEST_SLOT));
+  }
+
+  @Test
+  public void readyAmuletAndNeedleCanBeCollectedInTheSameConversationWithoutDuplicateRewards() {
+    town.add(new SpeakerNPC("Jagienka"));
+    new ZlotyAmulet().addToWorld();
+    player.setQuest(ZlotyAmulet.QUEST_SLOT, "forging;" + (System.currentTimeMillis() - 31 * 60000L));
+    CompassProgress.set(player, Stage.NEEDLE, 0, System.currentTimeMillis() - 1);
+    SpeakerNPC jack = visit("Kowal Jacek");
+    assertEquals("jagienka", player.getQuest(ZlotyAmulet.QUEST_SLOT));
+    assertEquals(1, player.getNumberOfEquipped("złoty amulet"));
+    assertEquals(ConversationStates.ATTENDING, jack.getEngine().getCurrentState());
+    assertTrue(jack.getEngine().step(player, "igła kompasu"));
+    stage(Stage.CASE);
+    int xp = player.getXP();
+    visit("Kowal Jacek");
+    assertEquals(xp, player.getXP());
+    assertEquals(1, player.getNumberOfEquipped("złoty amulet"));
   }
 
   @Test
