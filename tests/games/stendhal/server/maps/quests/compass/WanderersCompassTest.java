@@ -17,6 +17,8 @@ import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.ProductionRecipe;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.PoisonStatus;
+import games.stendhal.server.entity.status.PoisonStatusTurnListener;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.koscielisko.stones.KowalJacekNPC;
@@ -36,6 +38,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
+import utilities.SpeakerNPCTestHelper;
 
 /** One complete playable route plus focused ownership, replay and production checks. */
 public class WanderersCompassTest {
@@ -406,6 +409,43 @@ public class WanderersCompassTest {
     assertFalse(wrong.onUsed(player));
     CompassScenes.Prop first = prop(Clue.CROSS_MOSS);
     assertEquals(first.getX(), WanderersCompassQuest.target(player).x);
+  }
+
+  @Test
+  public void poisonFinishingBlowsCountForBothWolvesAndBothLights() {
+    move(forest);
+    for (int role = 0; role < 4; role++) {
+      if (role % 2 == 0) CompassProgress.enter(player, role < 2 ? Stage.WOLVES : Stage.CASE);
+      refresh();
+      CompassGuard guard = null;
+      for (Entity entity : forest.getEntitiesOfClass(CompassGuard.class))
+        if (PlayerPrivateScene.isOwnedBy(entity, player) && entity.getX() == CompassGuard.X[role])
+          guard = (CompassGuard) entity;
+      assertNotNull(guard);
+      player.setPosition(guard.getX(), guard.getY() + 1);
+      int damage = guard.getHP();
+      assertTrue(guard.getStatusList().inflictStatus(new PoisonStatus(-damage, 1, -damage, player), player));
+      new PoisonStatusTurnListener(guard.getStatusList()).onTurnReached(0);
+      assertEquals(role % 2 == 0 ? 1 : 3, CompassProgress.detail(player));
+      assertFalse(CompassGuard.needed(player, role));
+      refresh();
+      assertFalse(forest.has(guard.getID()));
+    }
+  }
+
+  @Test
+  public void sabalaGreetingAndTaskReminderFollowSavedQuestProgress() {
+    SpeakerNPC sabala = visit("Sabała");
+    assertTrue(SpeakerNPCTestHelper.getReply(sabala).contains("Martwię się o Dobromira"));
+    CompassProgress.enter(player, Stage.RETURN);
+    sabala = visit("Sabała");
+    String greeting = SpeakerNPCTestHelper.getReply(sabala);
+    assertFalse(greeting.contains("Martwię się o Dobromira"));
+    assertTrue(greeting.contains("kompas"));
+    assertTrue(sabala.getEngine().step(player, "zadanie"));
+    String reminder = SpeakerNPCTestHelper.getReply(sabala);
+    assertTrue(reminder.contains("kompas"));
+    assertFalse(reminder.contains("Zapytaj o #manowce"));
   }
 
   @Test

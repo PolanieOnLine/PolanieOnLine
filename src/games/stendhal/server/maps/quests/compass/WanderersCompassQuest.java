@@ -156,17 +156,24 @@ public final class WanderersCompassQuest extends AbstractQuest {
             ConversationPhrases.GREETING_MESSAGES,
             (p, s, n) -> !p.isQuestCompleted(SLOT),
             ConversationStates.ATTENDING,
-            "Witaj. Martwię się o Dobromira. Zszedł ze szlaku w Kościelisku. Boję się, że trafił na"
-                + " #manowce.",
-            null);
+            null,
+            (p, s, n) -> {
+              if (p.hasQuest(SLOT)) remind(p, n);
+              else n.say(
+                  "Witaj. Martwię się o Dobromira. Zszedł ze szlaku w Kościelisku. Boję się, że"
+                      + " trafił na #manowce.");
+            });
     npcs.get("Sabała")
         .add(
             ConversationStates.ATTENDING,
             ConversationPhrases.QUEST_MESSAGES,
             (p, s, n) -> !p.isQuestCompleted(SLOT),
             ConversationStates.ATTENDING,
-            "Jest coś, w czym możesz mi pomóc. Zapytaj o #manowce.",
-            null);
+            null,
+            (p, s, n) -> {
+              if (p.hasQuest(SLOT)) remind(p, n);
+              else n.say("Jest coś, w czym możesz mi pomóc. Zapytaj o #manowce.");
+            });
     bind(
         "Sabała",
         (p, s, n) -> {
@@ -352,10 +359,14 @@ public final class WanderersCompassQuest extends AbstractQuest {
               : "Masz coś do naprawy? Przynieś i pokaż, zobaczę, co da się zrobić.";
     } else if (p.isQuestCompleted(SLOT)) {
       text = "Niech kompas dobrze ci służy. Dobrze wiedzieć, że można na ciebie liczyć.";
-    } else if (stage == null || stage.ordinal() <= Stage.ESCORT.ordinal()) {
+    } else if (stage == null || stage.ordinal() <= Stage.JUNCTIONS.ordinal()) {
       text =
           "Szukaj Dobromira na południowej polanie we wschodnim Kościelisku. Jeśli znajdziesz"
               + " go rannego, nie zostawiaj go samego.";
+    } else if (stage.ordinal() <= Stage.ESCORT.ordinal()) {
+      text =
+          "Masz wieści o Dobromirze? Jeśli jest ranny, pomóż mu dotrzeć w bezpieczne miejsce."
+              + " Noc w lesie może być dla niego niebezpieczna.";
     } else {
       switch (stage) {
         case REMAINS:

@@ -2,12 +2,14 @@
 package games.stendhal.server.maps.quests.compass;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.PlayerPrivateScene;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.maps.quests.compass.CompassProgress.Stage;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -94,10 +96,13 @@ final class CompassGuard extends Creature {
 
   @Override
   public void onDead(Killer killer, boolean remove) {
+    Entity source = killer instanceof PoisonStatus
+        ? ((PoisonStatus) killer).getSource()
+        : killer instanceof RPEntity ? (RPEntity) killer : null;
     if (!recorded
         && getZone() != null
-        && killer instanceof RPEntity
-        && PlayerPrivateScene.canInteract(this, (RPEntity) killer)) {
+        && source != null
+        && PlayerPrivateScene.canInteract(this, source)) {
       recorded = true;
       for (Player owner : getZone().getPlayers())
         if (PlayerPrivateScene.isOwnedBy(this, owner)

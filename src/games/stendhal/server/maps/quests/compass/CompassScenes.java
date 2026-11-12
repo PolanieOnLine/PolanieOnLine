@@ -278,7 +278,7 @@ final class CompassScenes {
             return true;
           }
           p.sendPrivateText(
-              "Igła przestaje krążyć, ale ciągnie ku drzewu, pod którym leży Miłorad."
+              "Igła przestaje krążyć i wskazuje miejsce, w którym znalazłeś szczątki Miłorada."
                   + " Wśród gałęzi na chwilę rysuje się sylwetka wędrowca. Nie ma już dokąd iść."
                   + " Trzeba go pochować.");
           break;
