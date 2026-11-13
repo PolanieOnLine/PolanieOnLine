@@ -111,13 +111,12 @@ public class ProducerRegister {
 				int amount = behaviour.getNumberOfProductItems(player);
 				if (behaviour.isOrderReady(player)) {
 					// put all completed orders first - player wants to collect these!
-					sb.insert(0,"\n" + npcName + " ukończył twój "
-							+ Grammar.plnoun(amount,product) + ".");
+					sb.insert(0, "\n" + readyOrderMessage(npcName, amount, product));
 				} else {
 					String timeleft = behaviour.getApproximateRemainingTime(player);
 					// put all ongoing orders last
-					sb.append("\n" + npcName + " pracuje nad "
-							+ Grammar.quantityplnoun(amount, product) + ". Będzie gotowy za " + timeleft + ".");
+					sb.append("\n" + preparingOrderMessage(npcName, amount, product)
+							+ " Zamówienie będzie gotowe za " + timeleft + ".");
 				}
 			}
 		}
@@ -135,13 +134,12 @@ public class ProducerRegister {
                 final String product = order[1];
 				if (behaviour.isOrderReady(player)) {
 					// put all completed orders first - player wants to collect these!
-					sb.insert(0,"\n" + npcName + " ukończył twój "
-							+ Grammar.plnoun(amount,product) + ".");
+					sb.insert(0, "\n" + readyOrderMessage(npcName, amount, product));
 				} else {
 					String timeleft = behaviour.getApproximateRemainingTime(player);
 					// put all ongoing orders last
-					sb.append("\n" + npcName + " wciąż pracuje nad "
-							+ Grammar.quantityplnoun(amount, product) + ". Będzie gotowy za " + timeleft + ".");
+					sb.append("\n" + preparingOrderMessage(npcName, amount, product)
+							+ " Zamówienie będzie gotowe za " + timeleft + ".");
 				}
 			}
 		}
@@ -152,6 +150,16 @@ public class ProducerRegister {
 		}
 		return sb.toString();
 	}
+
+	private static String preparingOrderMessage(final String npcName, final int amount, final String product) {
+		return npcName + " przygotowuje dla ciebie " + Grammar.itemQuantityAccusative(amount, product) + ".";
+	}
+
+	private static String readyOrderMessage(final String npcName, final int amount, final String product) {
+		return npcName + " ma już dla ciebie " + Grammar.itemQuantityAccusative(amount, product)
+				+ ". Możesz odebrać zamówienie.";
+	}
+
 
 	/**
 	 * gets description of the production
@@ -298,13 +306,11 @@ public class ProducerRegister {
 					int amount = behaviour.getNumberOfProductItems(player);
 					if (behaviour.isOrderReady(player)) {
 						// put all completed orders first - player wants to collect these!
-						res.add(npcName + " ukończył "
-							+ Grammar.youryour(amount, product) + " " + Grammar.plnoun(amount, product) + ".");
+						res.add(readyOrderMessage(npcName, amount, product));
 					} else {
 						String timeleft = behaviour.getApproximateRemainingTime(player);
 						// put all ongoing orders last
-						res.add("\n" + npcName + " pracuje nad "
-							+ Grammar.quantityplnoun(amount, Grammar.alternativeSingular(amount, product)) + ".");
+						res.add("\n" + preparingOrderMessage(npcName, amount, product));
 						res.add("\n Powinno być gotowe za " + timeleft + ".");
 					}
 				}
@@ -324,13 +330,11 @@ public class ProducerRegister {
                     final String product = order[1];
                     if (behaviour.isOrderReady(player)) {
                         // put all completed orders first - player wants to collect these!
-                        res.add(npcName + " ukończył "
-                        	+ Grammar.youryour(amount, product) + " " + Grammar.plnoun(amount, product) + ".");
+                        res.add(readyOrderMessage(npcName, amount, product));
                     } else {
                         String timeleft = behaviour.getApproximateRemainingTime(player);
                         // put all ongoing orders last
-						res.add("\n" + npcName + " wciąż pracuje nad "
-							+ Grammar.quantityplnoun(amount, Grammar.alternativeSingular(amount, product)) + ".");
+						res.add("\n" + preparingOrderMessage(npcName, amount, product));
 						res.add("\n Powinno być gotowe za " + timeleft + ".");
                     }
                 }
