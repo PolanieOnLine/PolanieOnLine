@@ -12,8 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
-//
-//
+import games.stendhal.client.ClientLanguage;
 
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -22,6 +21,14 @@ import marauroa.common.game.RPSlot;
  * A corpse entity.
  */
 public class Corpse extends Entity {
+	@Override
+	public String getTitle() {
+		final RPObject object = getRPObject();
+		final String title = super.getTitle();
+		return object != null && object.has("class") && "player".equals(object.get("class"))
+				? title : ClientLanguage.getText(title);
+	}
+
 	/**
 	 * The current content slot.
 	 */

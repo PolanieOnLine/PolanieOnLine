@@ -220,8 +220,9 @@ class Corpse2DView<T extends Corpse> extends Entity2DView<T> {
 			slotWindow = inspector.inspectMe(entity, content, slotWindow, content_row, content_col);
 			SlotWindow window = slotWindow;
 			if (window != null) {
-				window.setTitle(entity.getTitle());
+				window.setTitle(entity.getTitle(), true);
 				window.setMinimizable(false);
+				window.fitTitleWidth();
 				prepareInspectAutoClose(window, entity, content);
 			}
 			/*

@@ -18,6 +18,18 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipTranslationTest {
+	@Test
+	public void comparisonHeadingAndEquippedNameUseTheSelectedLanguage() {
+		for (final String category : new String[] {ItemTooltip.CATEGORY_WEAPON, ItemTooltip.CATEGORY_ACCESSORY}) {
+			final RPObject item = ItemTestHelper.createItem("test comparison item");
+			stat(item, ItemTooltip.CATEGORY, category);
+			stat(item, ItemTooltip.DEFENSE, "10");
+			final RPObject equipped = ItemTestHelper.createItem("miecz");
+			final String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), equipped);
+			assertTrue(html, html.contains("Compared with: sword"));
+		}
+	}
+
 	private Field preferences;
 	private Object previousPreferences;
 

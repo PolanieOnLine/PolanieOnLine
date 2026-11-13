@@ -3,6 +3,10 @@ package games.stendhal.client.gui;
 
 import static org.junit.Assert.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -15,6 +19,22 @@ import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.common.NotificationType;
 
 public class UiTranslationTest {
+	@Test
+	public void journalSortingUsesTranslatedNamesAndKeepsMainQuestOrder() throws Exception {
+		language("en");
+		final Class<?> journal = Class.forName("games.stendhal.client.gui.progress.ProgressLog");
+		final Method sort = journal.getDeclaredMethod("sortSubjects", List.class, String.class);
+		sort.setAccessible(true);
+		final List<String> subjects = new ArrayList<>(Arrays.asList("Użyj", "Zamknij"));
+		sort.invoke(null, subjects, "Ukończone zadania");
+		assertEquals(Arrays.asList("Zamknij", "Użyj"), subjects);
+		language("pl");
+		subjects.clear();
+		subjects.addAll(Arrays.asList("Spotkanie Pietrka", "Kosa Fryderyka"));
+		sort.invoke(null, subjects, "Zadania główne");
+		assertEquals(Arrays.asList("Spotkanie Pietrka", "Kosa Fryderyka"), subjects);
+	}
+
 	private Field preferences;
 	private Object previousPreferences;
 	@Before public void isolatePreferences() throws Exception {

@@ -264,8 +264,9 @@ public final class ItemRarityPresentation {
 				: equippedItem.has("name") ? equippedItem.get("name") : null;
 		if (name != null && !name.isEmpty()) {
 			tooltip.append("<br><font size='-1' color='")
-					.append(getAccentColor()).append("'>Porównanie z: ")
-					.append(escapeHtml(name)).append("</font>");
+					.append(getAccentColor()).append("'>")
+					.append(escapeHtml(ClientLanguage.getText("Porównanie z:"))).append(" ")
+					.append(escapeHtml(ClientLanguage.getText(name))).append("</font>");
 		}
 	}
 

@@ -19,6 +19,21 @@ import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPObject;
 
 public class GeneratedEntityMessageTranslationTest {
+	@Test
+	public void lootTitlesTranslateCreaturesButPreservePlayerNames() {
+		final RPObject object = new RPObject();
+		object.put("type", "corpse");
+		object.put("name", "Elitarny mgielny zielony smok");
+		object.put("class", "dragon");
+		final Corpse corpse = new Corpse();
+		corpse.initialize(object);
+		assertEquals("Elite Mist green dragon", corpse.getTitle());
+		object.put("name", "Zamknij");
+		object.put("class", "player");
+		corpse.initialize(object);
+		assertEquals("Zamknij", corpse.getTitle());
+	}
+
 	private Field preferences, userProxy;
 	private Object previousPreferences, previousUser;
 	private UserInterface previousInterface;

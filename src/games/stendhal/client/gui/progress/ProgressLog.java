@@ -20,10 +20,13 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -41,6 +44,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.j2d.BackgroundPainter;
@@ -179,6 +183,15 @@ class ProgressLog {
 	 */
 	void setRepeatable(Collection<String> repeatable) {
 		this.repeatable = repeatable;
+	}
+
+	static void sortSubjects(final List<String> subjects, final String category) {
+		if ("Zadania główne".equals(category)) {
+			return;
+		}
+		final Collator collator = Collator.getInstance(Locale.forLanguageTag(ClientLanguage.getLanguage()));
+		subjects.sort(Comparator.comparing(ClientLanguage::getText, collator)
+				.thenComparing(Comparator.naturalOrder()));
 	}
 
 	/** Look up the protocol category, not its translated tab caption. */
@@ -362,7 +375,7 @@ class ProgressLog {
              * Main quests arrive in story order with the current task first.
              * Other pages retain alphabetical ordering.
 			 */
-            if (!"Zadania główne".equals(indexQueryData)) { Collections.sort(subjects); }
+			sortSubjects(subjects, indexQueryData);
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());
 			for (String elem : subjects) {

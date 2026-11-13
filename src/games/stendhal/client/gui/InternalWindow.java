@@ -162,6 +162,16 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 		titleBar.setPreferredWidth(content.getPreferredSize().width);
 	}
 
+	/** Fit a single-line title without squeezing it to the inventory grid width. */
+	public final void fitTitleWidth() {
+		final int titleWidth = titleBar.getLayout().preferredLayoutSize(titleBar).width;
+		final int contentWidth = content == null ? 0 : content.getPreferredSize().width;
+		titleBar.setPreferredWidth(Math.max(titleWidth, contentWidth));
+		setSize(getPreferredSize());
+		revalidate();
+		repaint();
+	}
+
 	/**
 	 * Make the window closeable by the user by showing or hiding the close
 	 * button.

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,6 +27,22 @@ import org.junit.Test;
 import games.stendhal.client.util.UserInterfaceTestHelper;
 
 public class InternalWindowTest {
+	@Test
+	public void longLootTitlesCanExpandBeyondTheSlotGrid() {
+		final InternalWindow window = new InternalWindow("corpse");
+		final JPanel slots = new JPanel();
+		slots.setPreferredSize(new Dimension(80, 80));
+		window.setContent(slots);
+		final int oldWidth = window.getPreferredSize().width;
+		window.setTitle("Elite Mist two-headed green dragon", true);
+		window.setMinimizable(false);
+		window.fitTitleWidth();
+		window.doLayout();
+		window.titleLabel.getParent().doLayout();
+		assertTrue(window.getWidth() > oldWidth);
+		assertTrue(window.titleLabel.getWidth() >= window.titleLabel.getPreferredSize().width);
+	}
+
 	@BeforeClass
 	public static void init() {
 		UserInterfaceTestHelper.initUserInterface();

@@ -87,6 +87,15 @@ test("repeatable quest note is translated while canonical title and escaped serv
 });
 
 
+test("completed quests sort by translated labels while option values stay canonical",async()=>{
+ const {Dialog,list}=await harness();const dialog=new Dialog();dialog.currentProgressType="Ukończone zadania";
+ const names=["Użyj","Zamknij"];
+ dialog.progressTypeData("Ukończone zadania",names);
+ assert.ok(list.innerHTML.indexOf('value="Zamknij"')<list.innerHTML.indexOf('value="Użyj"'));
+ assert.ok(list.innerHTML.includes('value="Zamknij">Close'));
+ assert.deepEqual(names,["Użyj","Zamknij"]);
+});
+
 test("main quests preserve the server's current-step order without mutating data",async()=>{
  const {Dialog,list,details}=await harness();const dialog=new Dialog();dialog.currentProgressType="Zadania główne";
  const names=["Spotkanie Pietrka","Kosa Fryderyka"];

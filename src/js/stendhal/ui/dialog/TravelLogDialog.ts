@@ -148,14 +148,17 @@ export class TravelLogDialog extends DialogContentComponent {
 		dataItems = dataItems.filter(item => item.trim().length > 0);
 		this.refreshDetails();
 		// sort items alphabetically
-        dataItems = progressType === "Zadania główne" ? [...dataItems] : [...dataItems].sort();
+		const collator = new Intl.Collator(GameLanguage.getLanguage());
+		dataItems = progressType === "Zadania główne" ? [...dataItems] : [...dataItems].sort((first, second) =>
+			collator.compare(GameLanguage.getText(first), GameLanguage.getText(second))
+			|| collator.compare(first, second));
 		this.availableItems = dataItems;
 		this.requestedItem = dataItems[0];
 		var html = "";
 		for (var i = 0; i < dataItems.length; i++) {
 			const currentItem = dataItems[i];
 			html += "<option value=\"" + stendhal.ui.html.esc(currentItem) + "\">"
-				+ stendhal.ui.html.esc(currentItem);
+				+ stendhal.ui.html.esc(GameLanguage.getText(currentItem));
 			if (this.repeatable[currentItem]) {
 				html += " (R)";
 			}
