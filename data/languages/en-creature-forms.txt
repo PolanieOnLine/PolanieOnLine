@@ -1545,3 +1545,6 @@ echa strażnika=echoes of the warden
 {number:0} echa strażnika={0} echoes of the warden
 ech strażnika=echoes of the warden
 {number:0} ech strażnika={0} echoes of the warden
+mgielny {0}=Mist {item:0}
+Elitarny {0}=Elite {item:0}
+elitarny {0}=elite {item:0}

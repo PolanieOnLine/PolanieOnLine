@@ -1406,3 +1406,5 @@ niszczyciel sygnałów=saboteador de señales
 
 strażnik milczącego dzwonu=guardián de la campana silenciosa
 echo strażnika=eco del guardián
+Oto strażnik milczącego dzwonu. W szczelinach jego pancerza drżą głosy ludzi, których zwabił na wyspy.=Ves al guardián de la campana silenciosa. En las grietas de su armadura resuenan las voces de quienes atrajo a las islas.
+Oto echo strażnika. Ostatni głos dzwonu przybrał skrzydlatą postać i zagrodził drogę ocalałym.=Ves un eco del guardián. El último tañido de la campana tomó una forma alada y bloqueó el paso a los supervivientes.

@@ -1769,3 +1769,7 @@ Oto glif korzeni. Więź z naturą osłabia obrażenia od ziemi i wody.=You see 
 Oto glif zmory. Podczas trafienia może na krótko osłabić atak przeciwnika.=You see a glyph of the nightmare. A successful hit may briefly weaken the enemy’s attack.
 Oto glif Świętowita. Błogosławieństwo boga wojny wzmacnia atak, obronę i szansę na trafienie krytyczne.=You see a glyph of Świętowit. The war god’s blessing strengthens attack, defense and critical hit chance.
 Oto glif przodków. Opieka dawnych pokoleń wzmacnia zdrowie i obronę oraz chroni przed sześcioma żywiołami.=You see a glyph of the ancestors. Their protection strengthens health and defense and shields you against the six elements.
+kompas wędrowca=wanderer's compass
+Oto antidotum. Neutralizuje do 400 PZ obrażeń pozostałych z zatrucia.=You see an antidote. It neutralizes up to 400 HP of remaining poison damage.
+Oto mocne antidotum. Neutralizuje do 800 PZ obrażeń pozostałych z zatrucia.=You see a strong antidote. It neutralizes up to 800 HP of remaining poison damage.
+Oto kompas wędrowca. Naprawiona igła znów wskazuje drogę. Dawniej służył przewodnikowi, który nie zostawiał nikogo na szlaku.=You see a wanderer's compass. Its repaired needle points the way once more. It once belonged to a guide who never left anyone behind on the trail.

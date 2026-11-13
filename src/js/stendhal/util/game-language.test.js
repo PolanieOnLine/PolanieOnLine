@@ -6,6 +6,16 @@ const vm = require("node:vm");
 const {test} = require("node:test");
 const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const repo = path.resolve(__dirname, "../../../..");
+
+test("dynamic elite and mist names and corpse descriptions use the English creature catalogue", async () => {
+	const {language} = harness();
+	await language.load("/data");
+	language.synchronize("en");
+	assert.equal(language.getText("Elitarny mgielny zielony smok"), "Elite Mist green dragon");
+	assert.equal(language.getText("Gdzie"), "Where");
+	assert.equal(language.getText("Oto świeże zwłoki dżin. Możesz je #przeszukać, aby zobaczyć co zawierają."),
+		"You see a fresh djinn corpse. You can #search it to see what it contains.");
+});
 const compile = name => ts.transpileModule(readFileSync(path.join(__dirname, name), "utf8"), {
 	compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
 }).outputText;

@@ -4,6 +4,20 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TranslationTest {
+	@Test
+	public void dynamicCreatureTitlesAndCorpseMessagesAreTranslated() {
+		assertEquals("Mist green dragon", Translation.getText("en", "mgielny zielony smok"));
+		assertEquals("Elite Mist green dragon", Translation.getText("en", "Elitarny mgielny zielony smok"));
+		assertEquals("You see a fresh djinn corpse. You can #search it to see what it contains.",
+				Translation.getText("en", "Oto świeże zwłoki dżin. Możesz je #przeszukać, aby zobaczyć co zawierają."));
+		assertEquals("mgielny zielony smok", Translation.getText("pl", "mgielny zielony smok"));
+		assertEquals("Where", Translation.getText("en", "Gdzie"));
+		assertEquals("You see Zamknij's fresh corpse, killed by Plecak. You can #search it to see what it contains.",
+				Translation.getText("en", "Oto świeże zwłoki Zamknij, został zabity przez Plecak. Możesz je #przeszukać, aby zobaczyć co zawierają."));
+		assertEquals("Carmen has your 5 greater potions ready. You can collect your order now.",
+				Translation.getText("en", "Carmen ma już dla ciebie 5 sztuk dużego eliksiru. Możesz odebrać zamówienie."));
+	}
+
 	@Test public void repeatedQuestCountsTranslateNumbersAndMayorJournalEntries() {
 		assertEquals("2 times", Translation.getText("en", "2 razy"));
 		assertEquals("12 times", Translation.getText("en", "12 razy"));

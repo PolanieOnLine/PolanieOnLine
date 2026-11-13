@@ -939,3 +939,7 @@ Po rozbiciu opancerzenia celu zadajesz mu o=After breaking a target's armor, dea
 więcej obrażeń zdrowiu przez=more damage to its health for
 Skraca czas ogłuszenia, ociężałości i dezorientacji o=Reduces stun, slow and confusion duration by
 . Efekt nie kumuluje się.=. This effect does not stack.
+Gdzie=Where
+gdzie=where
+Wypij/Zjedz=Drink/Eat
+Wypij/zjedz=Drink/eat

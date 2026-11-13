@@ -1847,7 +1847,6 @@ mocną truciznę=dosis de veneno mayor
 {number:0} sztuki mocnego antidotum={0} antídotos mayores
 1 money=1 moneda
 monetę=moneda
-monet=monedas
 monety=monedas
 1 moździerz z tłuczkiem=1 juego de maza y mortero
 {number:0} moździerz z tłuczkiem={0} juegos de maza y mortero
