@@ -26,6 +26,7 @@ import games.stendhal.client.entity.Corpse;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
+import games.stendhal.client.gui.CorpseLootWindow;
 import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.gui.SlotWindow;
@@ -220,7 +221,11 @@ class Corpse2DView<T extends Corpse> extends Entity2DView<T> {
 			slotWindow = inspector.inspectMe(entity, content, slotWindow, content_row, content_col);
 			SlotWindow window = slotWindow;
 			if (window != null) {
-				window.setTitle(entity.getTitle(), true);
+				if (window instanceof CorpseLootWindow) {
+					((CorpseLootWindow) window).setLootTitle(entity.getTitle());
+				} else {
+					window.setTitle(entity.getTitle(), true);
+				}
 				window.setMinimizable(false);
 				window.fitTitleWidth();
 				prepareInspectAutoClose(window, entity, content);

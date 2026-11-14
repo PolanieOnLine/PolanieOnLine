@@ -48,9 +48,13 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	 * @param height number of slot rows
 	 */
 	public SlotWindow(final String title, final int width, final int height) {
+		this(title, new SlotGrid(width, height));
+	}
+
+	protected SlotWindow(final String title, final SlotGrid grid) {
 		super(title, title);
 
-		content = new SlotGrid(width, height);
+		content = grid;
 		setContent(content);
 	}
 

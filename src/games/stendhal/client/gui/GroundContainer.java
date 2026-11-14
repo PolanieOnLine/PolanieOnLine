@@ -307,7 +307,9 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 			container.raise();
 			return container;
 		} else {
-			SlotWindow window = new SlotWindow(suspect.getType(), width, height);
+			SlotWindow window = "corpse".equals(suspect.getType())
+					? new CorpseLootWindow(width, height)
+					: new SlotWindow(suspect.getType(), width, height);
 			window.setAcceptedTypes(EntityMap.getClass("item", null, null));
 			window.setSlot(suspect, content.getName());
 			// Only display the window if it's actually going to stay open
