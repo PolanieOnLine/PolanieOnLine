@@ -7,7 +7,9 @@
     "Nie publikuj prawdziwego pliku w paczkach gry, na stronie ani w repozytorium. Do commita dodawaj tylko ten przykład.",
     "Pole days zawiera numery dni. Każdy dzień ma listę nagród w nawiasach kwadratowych. Aby dodać kolejną nagrodę tego dnia, dopisz kolejny obiekt po przecinku, jak w dniu 24.",
     "name to dokładna wewnętrzna nazwa przedmiotu, np. money dla monet. quantity jest dodatnią liczbą całkowitą. Dla przedmiotów, które nie łączą się w stosy, ustaw 1.",
-    "Opcjonalne equipment: true nadaje wyposażeniu rzadkość epicką i losowe afiksy tak jak nagrodom z zadań. Dla monet, materiałów i eliksirów pomiń to pole lub ustaw false.",
+    "Opcjonalne rarity określa rzadkość wyposażenia: common (zwykły), rare (rzadki), epic (epicki), legendary (legendarny). Wartości muszą być w cudzysłowach. Rzadkie, epickie i legendarne przedmioty dostają losowe afiksy, które są zapisywane razem z nimi.",
+    "Dla monet, materiałów, eliksirów i przedmiotów bez obsługi rzadkości pomiń rarity. Starszy zapis equipment: true nadal oznacza epic; jeśli podasz też rarity, ma ono pierwszeństwo.",
+    "Broń, pancerze i biżuteria są automatycznie podpisane imieniem postaci odbierającej prezent, również gdy nie mają pola rarity. Monet, materiałów, eliksirów i skrzyń ten podpis nie dotyczy.",
     "Pola _instructions i _comment służą do opisów i są pomijane przez serwer. JSON nie obsługuje komentarzy // ani przecinka po ostatnim elemencie.",
     "Nie usuwaj dni i nie zostawiaj pustych list. Brak pliku lub błędny wpis blokuje wydawanie nagród; serwer nie ma zapasowej listy nagród w kodzie.",
     "Odbiór nadal wymaga aktywnego eventu xmas oraz właściwej daty w grudniu. Jeden prezent można odebrać raz na konto."
@@ -15,9 +17,9 @@
   "days": {
     "1": [{"name": "money", "quantity": 1, "_comment": "Przykładowa liczba monet. Zmień ją na wybraną kwotę."}],
     "2": [{"name": "duży eliksir", "quantity": 1}],
-    "3": [{"name": "drewniana tarcza", "quantity": 1, "equipment": true}],
-    "4": [{"name": "money", "quantity": 1}],
-    "5": [{"name": "money", "quantity": 1}],
+    "3": [{"name": "drewniana tarcza", "quantity": 1, "rarity": "rare"}],
+    "4": [{"name": "drewniana tarcza", "quantity": 1, "rarity": "epic"}],
+    "5": [{"name": "drewniana tarcza", "quantity": 1, "rarity": "legendary"}],
     "6": [{"name": "money", "quantity": 1}],
     "7": [{"name": "money", "quantity": 1}],
     "8": [{"name": "money", "quantity": 1}],

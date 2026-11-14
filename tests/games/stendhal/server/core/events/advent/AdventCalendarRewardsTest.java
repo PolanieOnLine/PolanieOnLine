@@ -15,11 +15,44 @@ import java.util.List;
 
 import org.junit.Test;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.events.advent.AdventCalendarRewards.Reward;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import utilities.PlayerTestHelper;
 
 public class AdventCalendarRewardsTest {
+	@Test
+	public void grantsConfiguredEquipmentRarityWithPersistedAffixes() throws Exception {
+		PlayerTestHelper.createPlayer("advent_rarity");
+		for (final ItemRarity rarity : new ItemRarity[] {ItemRarity.RARE, ItemRarity.EPIC, ItemRarity.LEGENDARY}) {
+			final String json = exampleCalendar().replace(
+					"\"1\":[{\"name\":\"money\",\"quantity\":1,\"equipment\":false}]",
+					"\"1\":[{\"name\":\"drewniana tarcza\",\"quantity\":1,\"rarity\":\"" + rarity.getId() + "\"}]");
+			final List<Reward> rewards = AdventCalendarRewards.read(new StringReader(json)).get(0);
+			final Item item = AdventCalendarRewards.createItems(rewards).get(0);
+			assertEquals(rarity, item.getRarity());
+			assertTrue(ItemAffixState.hasAny(item));
+			assertTrue(ItemAffixState.hasSeed(item));
+			final Item saved = new Item(item);
+			assertEquals(rarity, saved.getRarity());
+			assertEquals(ItemAffixState.getValues(item), ItemAffixState.getValues(saved));
+		}
+	}
+
+	@Test
+	public void rejectsUnknownRarityRatherThanReplacingItWithCommon() throws Exception {
+		for (final String rarity : new String[] {"\"legendery\"", "3", "null"}) {
+			try {
+				AdventCalendarRewards.read(new StringReader(exampleCalendar().replace(
+						"\"equipment\":false", "\"rarity\":" + rarity)));
+				fail("Invalid rarity must be rejected");
+			} catch (final IllegalArgumentException expected) {
+				// Configuration typos must not silently downgrade equipment.
+			}
+		}
+	}
 
 	static String exampleCalendar() {
 		final StringBuilder json = new StringBuilder("{\"_instructions\":[\"Example only\"],\"days\":{");

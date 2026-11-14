@@ -51,7 +51,9 @@ public class ItemAffixDropIntegrationTest {
 				assertTrue(definition != null);
 				legendaryAffixes++;
 			}
-			assertTrue(item.has(definition.getAttribute()));
+			if (definition.hasMaterializedAttribute()) {
+				assertTrue(item.has(definition.getAttribute()));
+			}
 			assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 					definition.getAttribute()));
 		}

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import games.stendhal.common.AdventCalendarLayout;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO;
 import games.stendhal.server.core.events.advent.AdventCalendarService.AccountState;
 import games.stendhal.server.core.events.advent.AdventCalendarService.Result;
@@ -27,6 +28,31 @@ import utilities.RPClass.ItemTestHelper;
 
 public class AdventCalendarServiceTest {
 	private String previousChristmas;
+
+	@Test
+	public void equipmentIsBoundToTheReceivingCharacterButSuppliesStayUnbound() throws Exception {
+		final Player player = PlayerTestHelper.createPlayer("advent_recipient");
+		final Item shield = SingletonRepository.getEntityManager().getItem("drewniana tarcza");
+		final Item ring = SingletonRepository.getEntityManager().getItem("złoty pierścień");
+		final Item material = SingletonRepository.getEntityManager().getItem("polano");
+		final Item potion = SingletonRepository.getEntityManager().getItem("duży eliksir");
+		final Item chest = SingletonRepository.getEntityManager().getItem("srebrna skrzynia");
+		final Item money = coins(5000);
+		final AdventCalendarService service = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-10T12:00:00Z"), ZoneOffset.UTC),
+				(owner, year) -> new AccountState(77, 0), day -> Arrays.asList(shield, ring, material, money, potion, chest));
+		assertEquals("received", service.process(player, "claim", 10).status);
+		for (final Item equipment : new Item[] {shield, ring}) {
+			assertEquals(player.getName(), equipment.getBoundTo());
+			assertTrue(player.isBoundTo(equipment));
+			assertFalse(PlayerTestHelper.createPlayer("other_advent_character").isBoundTo(equipment));
+			assertEquals(player.getName(), new Item(equipment).getBoundTo());
+		}
+		assertFalse(material.isBound());
+		assertFalse(money.isBound());
+		assertFalse(potion.isBound());
+		assertFalse(chest.isBound());
+	}
 
 	@Before
 	public void enableChristmas() {

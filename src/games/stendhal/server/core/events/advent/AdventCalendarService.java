@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import games.stendhal.common.Constants;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO.Account;
 import games.stendhal.server.core.events.seasonal.SeasonalEventType;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
@@ -99,6 +101,17 @@ public final class AdventCalendarService {
 		}
 		final int ownMask = ownMask(player, date.getYear());
 		final List<Item> items = rewards.apply(day);
+		for (final Item item : items) {
+			if (item instanceof StackableItem) {
+				continue;
+			}
+			for (final String slot : Constants.EQUIPMENT_SLOTS) {
+				if (item.getPossibleSlots().contains(slot)) {
+					item.setBoundTo(player.getName());
+					break;
+				}
+			}
+		}
 		if (!AdventInventoryGrant.give(player, items)) {
 			return new Result(date, mask, "no_space",
 					"Zwolnij miejsce w plecaku, aby odebrać świąteczny prezent.", 0, Collections.emptyList());

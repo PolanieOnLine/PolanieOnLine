@@ -15,6 +15,7 @@ import java.util.Map;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
@@ -54,10 +55,16 @@ public final class AdventCalendarRewards {
 	static List<Item> createItems(final List<Reward> rewards) {
 		final List<Item> items = new ArrayList<>();
 		for (final Reward reward : rewards) {
-			final Item item = SingletonRepository.getEntityManager().getItem(reward.name,
-					reward.equipment ? ItemCreationContext.questReward() : ItemCreationContext.defaultCreation());
+			final ItemCreationContext context = reward.rarity == null ? ItemCreationContext.defaultCreation()
+					: ItemCreationContext.builder(ItemCreationContext.Source.QUEST)
+							.withQuestRarity(reward.rarity).randomizeModifiers(false)
+							.generateAffixes(reward.rarity != ItemRarity.COMMON).build();
+			final Item item = SingletonRepository.getEntityManager().getItem(reward.name, context);
 			if (item == null) {
 				throw new IllegalStateException("Unknown advent reward: " + reward.name);
+			}
+			if (reward.rarity != null && item.getRarity() != reward.rarity) {
+				throw new IllegalArgumentException("Advent reward does not support the requested rarity: " + reward.name);
 			}
 			if (item instanceof StackableItem) {
 				((StackableItem) item).setQuantity(reward.quantity);
@@ -91,7 +98,7 @@ public final class AdventCalendarRewards {
 			final List<Reward> rewards = new ArrayList<>();
 			for (final Object entry : (List<?>) entries) {
 				final Map<?, ?> reward = object(entry, "day " + day);
-				checkKeys(reward, "name", "quantity", "equipment", "_comment");
+				checkKeys(reward, "name", "quantity", "equipment", "rarity", "_comment");
 				final Object name = reward.get("name");
 				final Object quantity = reward.get("quantity");
 				final Object equipment = reward.get("equipment");
@@ -100,7 +107,15 @@ public final class AdventCalendarRewards {
 						|| (reward.containsKey("equipment") && !(equipment instanceof Boolean))) {
 					throw new IllegalArgumentException("Invalid advent reward for day " + day);
 				}
-				rewards.add(new Reward(((String) name).trim(), ((Long) quantity).intValue(), Boolean.TRUE.equals(equipment)));
+				ItemRarity rarity = Boolean.TRUE.equals(equipment) ? ItemRarity.EPIC : null;
+				if (reward.containsKey("rarity")) {
+					final Object value = reward.get("rarity");
+					rarity = value instanceof String ? ItemRarity.fromId((String) value) : null;
+					if (rarity == null) {
+						throw new IllegalArgumentException("Invalid advent reward rarity for day " + day);
+					}
+				}
+				rewards.add(new Reward(((String) name).trim(), ((Long) quantity).intValue(), rarity));
 			}
 			result.add(Collections.unmodifiableList(rewards));
 		}
@@ -126,11 +141,13 @@ public final class AdventCalendarRewards {
 		public final String name;
 		public final int quantity;
 		public final boolean equipment;
+		public final ItemRarity rarity;
 
-		private Reward(final String name, final int quantity, final boolean equipment) {
+		private Reward(final String name, final int quantity, final ItemRarity rarity) {
 			this.name = name;
 			this.quantity = quantity;
-			this.equipment = equipment;
+			this.rarity = rarity;
+			this.equipment = rarity != null;
 		}
 	}
 }
