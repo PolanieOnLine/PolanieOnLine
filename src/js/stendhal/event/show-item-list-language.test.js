@@ -17,7 +17,10 @@ async function harness() {
 	const language = languageExports.GameLanguage;
 	await language.load("/data");
 	const chatExports = {};
-	vm.runInNewContext(compile("util/Chat.ts"), {exports: chatExports, require: () => ({})});
+	const htmlExports = {};
+	vm.runInNewContext(compile("ui/HTMLManager.ts"), {exports: htmlExports, require: () => ({})});
+	vm.runInNewContext(compile("util/Chat.ts"), {exports: chatExports,
+		require: name => name === "../ui/HTMLManager" ? htmlExports : {}});
 	class Element {
 		constructor(tag) { this.tag = tag; this.children = []; this.classList = {add() {}}; }
 		appendChild(child) { this.children.push(child); }
