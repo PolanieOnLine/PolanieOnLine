@@ -125,6 +125,31 @@ public final class ItemAffixGenerator {
 		return Collections.unmodifiableList(applied);
 	}
 
+	/** Completes the tier's regular and signature slots while retaining every saved roll. */
+	public List<String> refillMissingAffixes(final Item item, final long seed) {
+		int regular = 0;
+		int signatures = 0;
+		for (final String id : ItemAffixState.getValues(item).keySet()) {
+			if (registry.get(id) != null) {
+				regular++;
+			} else if (legendaryRegistry.get(id) != null) {
+				signatures++;
+			}
+		}
+		final List<String> applied = new ArrayList<>();
+		final Random rollRandom = new Random(seed);
+		if (!ItemAffixState.hasSeed(item)) {
+			ItemAffixState.setSeed(item, seed);
+		}
+		applyRegularAffixes(item, Math.max(0, getSlotCount(item.getRarity()) - regular),
+				applied, rollRandom, rollRandom);
+		if (getLegendarySlotCount(item.getRarity()) > signatures
+				&& !applyLegendarySignature(item, applied, rollRandom, rollRandom)) {
+			throw new IllegalStateException("Upgraded legendary item has no eligible signature: " + item.getName());
+		}
+		return Collections.unmodifiableList(applied);
+	}
+
 	/** Adds only missing eligible regular affixes; never rerolls existing ones. */
 	public List<String> refillRegularAffixes(final Item item, final int slots,
 			final long seed) {

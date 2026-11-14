@@ -5,18 +5,46 @@ package games.stendhal.server.entity.npc.quest;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 import utilities.PlayerTestHelper;
 
 public class CraftItemTaskTest {
 	private static final String QUEST_SLOT = "legacy_craft";
+
+	@Test
+	public void capturesTheInputBeforeDroppingMaterialsAndInheritsItAtCompletion() {
+		final Player player = PlayerTestHelper.createPlayer("builder_upgrade");
+		final Item source = SingletonRepository.getEntityManager().getItem("ciupaga", ItemCreationContext
+				.builder(ItemCreationContext.Source.QUEST).withRarity(ItemRarity.LEGENDARY)
+				.withAffixSeed(123L).build());
+		player.getSlot("bag").add(source);
+		final CraftItemTask task = new CraftItemTask().craftItem("złota ciupaga")
+				.rarity(ItemRarity.EPIC).inheritFrom("ciupaga").requiredItem(1, "ciupaga")
+				.respondToCraft("Pracuję.").respondToCraftReject("Brak materiałów.");
+		task.buildForgeQuestAction(QUEST_SLOT).fire(player, null, new EventRaiser(null));
+		task.dropRequeredItemsToForge().fire(player, null, null);
+		assertEquals(0, player.getNumberOfEquipped("ciupaga"));
+		task.buildQuestCompleteAction(QUEST_SLOT).fire(player, null, null);
+		final Item received = player.getFirstEquipped("złota ciupaga");
+		assertNotNull(received);
+		assertEquals(ItemRarity.LEGENDARY, received.getRarity());
+		assertEquals(ItemAffixState.getValues(source), ItemAffixState.getValues(received));
+		assertEquals(player.getName(), received.getBoundTo());
+	}
 
 	@Test
 	public void legacyForgingStateKeepsTimestampAndMatchesExactSubstate() {

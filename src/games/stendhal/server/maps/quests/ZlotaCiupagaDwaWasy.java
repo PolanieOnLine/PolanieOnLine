@@ -19,18 +19,19 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.rule.rarity.ItemCreationContext;
-import games.stendhal.server.entity.item.Item;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
+import games.stendhal.server.entity.npc.action.CaptureItemUpgradeAction;
+import games.stendhal.server.entity.npc.action.EquipUpgradedItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
@@ -123,6 +124,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	private void step_2() {
 		final SpeakerNPC npc = npcs.get("Krasnolud");
 		final List<ChatAction> ciupagaactions = new LinkedList<ChatAction>();
+		ciupagaactions.add(new CaptureItemUpgradeAction(QUEST_SLOT, "złota ciupaga z wąsem"));
 		ciupagaactions.add(new DropItemAction("pazur zielonego smoka",1));
 		ciupagaactions.add(new DropItemAction("pazur czerwonego smoka",1));
 		ciupagaactions.add(new DropItemAction("złota ciupaga z wąsem",1));
@@ -130,7 +132,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("money",1200000));
 		ciupagaactions.add(new DropItemAction("polano",10));
 		ciupagaactions.add(new DropItemAction("pióro serafina",2));
-		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
+		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, 0, "forging"));
+		ciupagaactions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
@@ -187,14 +190,11 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+					new EquipUpgradedItemAction(QUEST_SLOT, "złota ciupaga z dwoma wąsami", ItemRarity.EPIC)
+							.fire(player, sentence, raiser);
 					raiser.say("Żar ostygł. Oto ciupaga z dwoma wąsami, nasycona oddechem chmur.");
 					player.addXP(500000);
 					player.addKarma(100);
-					final Item zlotaCiupagaZDwomaWasami = SingletonRepository.getEntityManager().getItem(
-							"złota ciupaga z dwoma wąsami", ItemCreationContext.questReward());
-					zlotaCiupagaZDwomaWasami.setBoundTo(player.getName());
-					player.equipOrPutOnGround(zlotaCiupagaZDwomaWasami);
-					player.notifyWorldAboutChanges();
 					player.setQuest(QUEST_SLOT, "done");
 				}
 			});

@@ -14,6 +14,7 @@ import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityTransferSnapshot;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.common.game.DetailLevel;
@@ -23,6 +24,26 @@ import marauroa.common.net.OutputSerializer;
 import utilities.RPClass.ItemTestHelper;
 
 public class LifestealRestoreMigrationTest {
+	@Test
+	public void inheritedLifeStealSurvivesNativeBonusAndRepeatedLogins() throws Exception {
+		for (final boolean persistent : new boolean[] {false, true}) {
+			final Item source = definition("ciupaga");
+			source.setRarity(ItemRarity.RARE);
+			source.put("lifesteal", 0.07);
+			source.put(ItemAffixState.ATTRIBUTE, "lifesteal", "0.07");
+			ItemAffixState.setSeed(source, 191L);
+			Item upgraded = definition("złota ciupaga z wąsem");
+			ItemRarityTransferSnapshot.apply(upgraded, ItemRarityTransferSnapshot.encode(source), ItemRarity.EPIC);
+			upgraded.setID(new RPObject.ID(619, "lifesteal_test"));
+			upgraded.setPersistent(persistent);
+			final Map<String, String> affixes = ItemAffixState.getValues(upgraded);
+			for (int login = 0; login < 3; login++) {
+				upgraded = restore(upgraded);
+				assertEquals(0.12, upgraded.getDouble("lifesteal"), 0.000001);
+				assertEquals(affixes, ItemAffixState.getValues(upgraded));
+			}
+		}
+	}
 	@BeforeClass public static void classes() {
 		MockStendlRPWorld.get();
 		ItemTestHelper.generateRPClasses();

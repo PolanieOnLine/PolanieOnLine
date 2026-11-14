@@ -124,8 +124,16 @@ public final class ItemAffixState {
 			item.put(ATTRIBUTE, entry.getKey(), entry.getValue());
 			final ItemAffixDefinition definition = findDefinition(entry.getKey());
 			if (definition != null && definition.hasMaterializedAttribute()) {
-				item.put(definition.getAttribute(), entry.getValue());
+				materialize(item, definition, entry.getValue());
 			}
+		}
+	}
+
+	static void materialize(final Item item, final ItemAffixDefinition definition, final String value) {
+		if ("lifesteal".equals(definition.getId()) && item.getDefinitionLifesteal() > 0.0) {
+			item.put(definition.getAttribute(), item.getDefinitionLifesteal() + Double.parseDouble(value));
+		} else {
+			item.put(definition.getAttribute(), value);
 		}
 	}
 

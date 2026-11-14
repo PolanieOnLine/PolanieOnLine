@@ -15,11 +15,73 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
+import utilities.PlayerTestHelper;
 
 public class ItemRarityTransferSnapshotTest {
+	private Item ciupaga(final ItemRarity rarity, final long seed) {
+		PlayerTestHelper.createPlayer("ciupaga_transfer");
+		return SingletonRepository.getEntityManager().getItem("ciupaga", ItemCreationContext
+				.builder(ItemCreationContext.Source.QUEST).withRarity(rarity)
+				.randomizeModifiers(false).withAffixSeed(seed).build());
+	}
+
+	@Test
+	public void rareToEpicUpgradeKeepsTheOldAffixAndOnlyFillsOneSlot() {
+		final Item source = ciupaga(ItemRarity.RARE, 91L);
+		final Item target = SingletonRepository.getEntityManager().getItem("złota ciupaga", ItemCreationContext.restore());
+		ItemRarityTransferSnapshot.apply(target, ItemRarityTransferSnapshot.encode(source), ItemRarity.EPIC);
+		assertSame(ItemRarity.EPIC, target.getRarity());
+		assertEquals(2, ItemAffixState.getValues(target).size());
+		assertTrue(ItemAffixState.getValues(target).entrySet().containsAll(ItemAffixState.getValues(source).entrySet()));
+		assertEquals(ItemAffixState.getSeed(source), ItemAffixState.getSeed(target));
+		final Item repeated = SingletonRepository.getEntityManager().getItem("złota ciupaga", ItemCreationContext.restore());
+		ItemRarityTransferSnapshot.apply(repeated, ItemRarityTransferSnapshot.encode(source), ItemRarity.EPIC);
+		assertEquals(ItemAffixState.getValues(target), ItemAffixState.getValues(repeated));
+	}
+
+	@Test
+	public void legendaryCiupagaKeepsAllAffixesAcrossTheWholeUpgradeChain() {
+		Item source = ciupaga(ItemRarity.LEGENDARY, 91L);
+		final java.util.Map<String, String> original = ItemAffixState.getValues(source);
+		for (final String name : Arrays.asList("złota ciupaga", "złota ciupaga z wąsem",
+				"złota ciupaga z dwoma wąsami", "złota ciupaga z trzema wąsami")) {
+			final Item target = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
+			ItemRarityTransferSnapshot.apply(target, ItemRarityTransferSnapshot.encode(source), ItemRarity.EPIC);
+			assertSame(ItemRarity.LEGENDARY, target.getRarity());
+			assertEquals(original, ItemAffixState.getValues(target));
+			source = target;
+		}
+	}
+
+	@Test
+	public void keepsLifeStealAffixWhenLaterCiupagasHaveIntrinsicLifeSteal() {
+		Item source = ciupaga(ItemRarity.COMMON, 91L);
+		source.setRarity(ItemRarity.RARE);
+		source.put("lifesteal", 0.07);
+		source.put(ItemAffixState.ATTRIBUTE, "lifesteal", "0.07");
+		ItemAffixState.setSeed(source, 91L);
+		for (final String name : Arrays.asList("złota ciupaga", "złota ciupaga z wąsem",
+				"złota ciupaga z dwoma wąsami", "złota ciupaga z trzema wąsami")) {
+			final Item target = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
+			ItemRarityTransferSnapshot.apply(target, ItemRarityTransferSnapshot.encode(source), ItemRarity.EPIC);
+			assertEquals("0.07", ItemAffixState.getValues(target).get("lifesteal"));
+			assertEquals(target.getDefinitionLifesteal() + 0.07, target.getDouble("lifesteal"), 0.000001);
+			assertEquals(0.07, Double.parseDouble(target.getMap(ItemTooltip.ATTRIBUTE)
+					.get(ItemTooltip.AFFIX_LIFESTEAL)), 0.000001);
+			assertEquals(target.getDefinitionLifesteal(), Double.parseDouble(target.getMap(ItemTooltip.ATTRIBUTE)
+					.get(ItemTooltip.BASE_LIFESTEAL)), 0.000001);
+			final Item restored = SingletonRepository.getEntityManager().getItem(name, ItemCreationContext.restore());
+			ItemAffixState.restore(restored, target);
+			assertEquals(target.getDouble("lifesteal"), restored.getDouble("lifesteal"), 0.000001);
+			assertEquals(2, ItemAffixState.getValues(target).size());
+			source = target;
+		}
+	}
 	@BeforeClass
 	public static void setUpClasses() {
 		ItemTestHelper.generateRPClasses();

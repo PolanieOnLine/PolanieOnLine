@@ -67,6 +67,7 @@
 
 *sklepy i produkcja*
 ---
+* Przekuwanie ciupag u kowali zachowuje ich afiksy i legendarną rzadkość. Przy awansie rzadkiej ciupagi do epickiej dochodzi tylko brakujący afiks
 * Dodano okna sklepów NPC w obu klientach, z zakładkami Kup i Sprzedaj, wyszukiwarką oraz podglądem przedmiotów
 * Dodano wybór ilości i podgląd ceny całego zamówienia. Ofertę skupu można przeglądać także bez posiadania danych przedmiotów
 * Dodano informacje o wymaganiach do odblokowania handlu u kupców

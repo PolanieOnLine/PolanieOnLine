@@ -52,6 +52,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 
 		quest.task().craftItem("złota ciupaga")
 			.rarity(ItemRarity.EPIC)
+			.inheritFrom("ciupaga")
 			.waitingTime(6 * 60) // 6 godzin
 			.playerMinLevel(100).playerMinKarma(100).completedQuest("kill_herszt_basehp")
 			.requiredItem(1, "ciupaga").requiredItem(5, "polano").requiredItem(25, "sztabka złota").requiredItem(50000, "money")

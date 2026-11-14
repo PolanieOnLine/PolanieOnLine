@@ -36,6 +36,14 @@ public final class ItemRarityTransferSnapshot {
 		// utility class
 	}
 
+	/** Preserves stronger rarity and existing affixes, filling only the upgraded tier's missing slots. */
+	public static void apply(final Item target, final String encoded, final ItemRarity minimumRarity) {
+		if (minimumRarity == null) {
+			throw new IllegalArgumentException("Minimum upgrade rarity must not be null");
+		}
+		applyInternal(target, encoded, minimumRarity);
+	}
+
 	/** Captures tier, exact roll, compatible affixes and upgrade level. */
 	public static String encode(final Item item) {
 		if (item == null) {
@@ -71,6 +79,10 @@ public final class ItemRarityTransferSnapshot {
 	 * statistics and receives only affixes which remain eligible for it.
 	 */
 	public static void apply(final Item target, final String encoded) {
+		applyInternal(target, encoded, null);
+	}
+
+	private static void applyInternal(final Item target, final String encoded, final ItemRarity minimumRarity) {
 		if (target == null) {
 			throw new IllegalArgumentException("Target item must not be null");
 		}
@@ -79,18 +91,24 @@ public final class ItemRarityTransferSnapshot {
 		}
 		final TransferData data = decode(encoded);
 		final ItemRarityService service = ItemRarityService.getInstance();
-		final ItemRarityModifiers modifiers = completeModifiers(target, data, service);
-		final ItemCreationContext context = ItemCreationContext
+		final ItemRarity rarity = minimumRarity != null && minimumRarity.ordinal() > data.rarity.ordinal()
+				? minimumRarity : data.rarity;
+		final ItemCreationContext.Builder context = ItemCreationContext
 				.builder(ItemCreationContext.Source.QUEST)
-				.withRarity(data.rarity)
+				.withRarity(rarity)
 				.withProfile(data.profile)
-				.withModifiers(modifiers)
 				.randomizeModifiers(false)
-				.generateAffixes(false)
-				.build();
-		service.initialize(target, context);
-		restoreCompatibleAffixes(target, data);
+				.generateAffixes(false);
+		if (rarity == data.rarity) {
+			context.withModifiers(completeModifiers(target, data, service));
+		}
+		service.initialize(target, context.build());
+		restoreCompatibleAffixes(target, data, minimumRarity != null && data.itemClass.equals(target.getItemClass()));
 		ItemDefinitionRefreshService.replayFlatBonuses(target, target);
+		if (minimumRarity != null) {
+			new ItemAffixGenerator(new java.util.Random(0L)).refillMissingAffixes(target,
+					(data.affixSeed == null ? 0L : data.affixSeed.longValue()) ^ 0x55504752414445L);
+		}
 		ItemAffixBalanceService.enforce(target);
 		if (target.hasUpgradeLimit()) {
 			target.setUpgradeLevel(Math.min(data.upgradeLevel,
@@ -119,7 +137,7 @@ public final class ItemRarityTransferSnapshot {
 	}
 
 	private static void restoreCompatibleAffixes(final Item target,
-			final TransferData data) {
+			final TransferData data, final boolean preserveSameClass) {
 		int replacedLifeSteal = 0;
 		if (data.affixSeed != null) {
 			ItemAffixState.setSeed(target, data.affixSeed.longValue());
@@ -130,13 +148,13 @@ public final class ItemRarityTransferSnapshot {
 				target.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
 			} else if (("lifesteal".equals(entry.getKey())
 					|| ItemLifestealService.EFFECTIVENESS.equals(entry.getKey()))
-					&& !definition.isEligible(target)) {
+					&& !preserveSameClass && !definition.isEligible(target)) {
 				replacedLifeSteal++;
 			} else if (data.itemClass.equals(target.getItemClass())
 					|| definition.isEligible(target)) {
 				target.put(ItemAffixState.ATTRIBUTE, entry.getKey(), entry.getValue());
 				if (definition.hasMaterializedAttribute()) {
-					target.put(definition.getAttribute(), entry.getValue());
+					ItemAffixState.materialize(target, definition, entry.getValue());
 				}
 			}
 		}

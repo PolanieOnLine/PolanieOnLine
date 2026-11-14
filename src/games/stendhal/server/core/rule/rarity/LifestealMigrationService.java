@@ -38,6 +38,10 @@ public final class LifestealMigrationService {
 		}
 		if (authored != 0.0) {
 			item.put("lifesteal", authored);
+			if (converted && ItemAffixState.has(item, "lifesteal")) {
+				ItemAffixState.materialize(item, ItemAffixRegistry.getInstance().get("lifesteal"),
+						ItemAffixState.getValues(item).get("lifesteal"));
+			}
 			if (item.hasMap(Item.RARITY_MODIFIERS)) item.remove(Item.RARITY_MODIFIERS, "lifesteal");
 		} else if (saved.has("lifesteal") && !item.has("lifesteal")) {
 			// Preserve unclassified legacy grants, without inventing an affix slot.

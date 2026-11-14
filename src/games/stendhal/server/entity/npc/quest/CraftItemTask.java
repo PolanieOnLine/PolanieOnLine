@@ -24,6 +24,8 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.action.DropItemAction;
+import games.stendhal.server.entity.npc.action.CaptureItemUpgradeAction;
+import games.stendhal.server.entity.npc.action.EquipUpgradedItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
@@ -44,6 +46,7 @@ import marauroa.common.Pair;
 public class CraftItemTask extends QuestTaskBuilder {
 	private String itemName;
 	private ItemRarity itemRarity = ItemRarity.COMMON;
+	private String inheritedItem;
 
 	private int waitingTime = 0;
 
@@ -71,6 +74,15 @@ public class CraftItemTask extends QuestTaskBuilder {
 			throw new IllegalArgumentException("Crafted item rarity must not be null");
 		}
 		this.itemRarity = rarity;
+		return this;
+	}
+
+	/** Carries one submitted item's rarity and exact affix rolls through the timed order. */
+	public CraftItemTask inheritFrom(final String itemName) {
+		if (itemName == null || itemName.trim().isEmpty()) {
+			throw new IllegalArgumentException("Source item name must not be empty");
+		}
+		this.inheritedItem = itemName;
 		return this;
 	}
 
@@ -310,6 +322,9 @@ public class CraftItemTask extends QuestTaskBuilder {
 				params.put("time", Grammar.quantityplnoun(getProductionTime(), "minuta"));
 
 				if (playerIsEquippedRequiredItems(player)) {
+					if (inheritedItem != null) {
+						new CaptureItemUpgradeAction(questSlot, inheritedItem).fire(player, sentence, npc);
+					}
 					npc.say(StringUtils.substitute(respondToCraft, params));
 					player.setQuest(questSlot, 0, "forging");
 					new SetQuestToTimeStampAction(questSlot, 1).fire(player, null, npc);
@@ -344,6 +359,9 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	@Override
 	ChatAction buildQuestCompleteAction(String questSlot) {
+		if (inheritedItem != null) {
+			return new EquipUpgradedItemAction(questSlot, getItemName(), itemRarity);
+		}
 		return new EquipItemAction(getItemName(), 1, true, itemRarity);
 	}
 

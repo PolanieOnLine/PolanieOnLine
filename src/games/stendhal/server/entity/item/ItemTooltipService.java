@@ -116,10 +116,10 @@ public final class ItemTooltipService {
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
 		if (item.has("lifesteal")) {
 			final double value = item.getDouble("lifesteal");
-			final boolean affix = item.getDefinitionLifesteal() == 0.0
-					&& ItemAffixState.has(item, "lifesteal");
-			put(item, ItemTooltip.BASE_LIFESTEAL, Double.toString(affix ? 0.0 : value));
-			put(item, ItemTooltip.AFFIX_LIFESTEAL, Double.toString(affix ? value : 0.0));
+			final double affix = ItemAffixState.has(item, "lifesteal")
+					? Double.parseDouble(ItemAffixState.getValues(item).get("lifesteal")) : 0.0;
+			put(item, ItemTooltip.BASE_LIFESTEAL, Double.toString(value - affix));
+			put(item, ItemTooltip.AFFIX_LIFESTEAL, Double.toString(affix));
 			put(item, ItemTooltip.EFFECTIVE_LIFESTEAL,
 					Double.toString(ItemLifestealService.getEffectiveLifesteal(item)));
 			copyInt(item, ItemLifestealService.EFFECTIVENESS, ItemTooltip.LIFESTEAL_EFFECTIVENESS);
