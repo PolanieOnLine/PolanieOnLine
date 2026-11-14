@@ -64,6 +64,10 @@ public class StendhalCharacterDAO extends CharacterDAO {
 	public void storeCharacter(final DBTransaction transaction, final String username,
 			final String character, final RPObject player, Timestamp timestamp) throws SQLException, IOException {
 
+		if (player instanceof Player) {
+			new AdventCalendarDAO().persistClaims(transaction, username, (Player) player);
+		}
+
 		super.storeCharacter(transaction, username, character,
 				ChallengeArenaObservation.persistenceSnapshot(player), timestamp);
 

@@ -218,6 +218,8 @@ class SettingsPanel extends JButton {
 		column.addComponent(item);
 		item = createMenuItem("Ołtarz Runiczny", "runicaltar");
 		column.addComponent(item);
+		item = createMenuItem("Kalendarz adwentowy", "adventcalendar");
+		column.addComponent(item);
 	}
 
 	/**

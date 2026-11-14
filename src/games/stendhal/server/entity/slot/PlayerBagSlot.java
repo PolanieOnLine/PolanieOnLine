@@ -25,15 +25,18 @@ public class PlayerBagSlot extends PlayerSlot {
 		if (!(owner instanceof Player)) {
 			return super.isFull();
 		}
+		return size() >= getMaxSize();
+	}
 
-		final Player player = (Player) owner;
-		int maxSize;
-		if (!player.hasFeature("bag")) {
-			// default bag size
-			maxSize = 36;
-		} else {
-			maxSize = player.getMaxSlotSize("bag");
+	/** Current effective capacity, including a player's expanded backpack. */
+	public int getMaxSize() {
+		if (!(getOwner() instanceof Player)) {
+			return super.getCapacity();
 		}
-		return size() >= maxSize;
+		final Player player = (Player) getOwner();
+		if (!player.hasFeature("bag")) {
+			return 36;
+		}
+		return player.getMaxSlotSize("bag");
 	}
 }

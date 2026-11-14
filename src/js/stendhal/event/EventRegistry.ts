@@ -21,6 +21,7 @@ import { GroupInviteEvent } from "./GroupInviteEvent";
 import { ImageEvent } from "event/ImageEvent";
 import { ItemUpgradeEvent } from "./ItemUpgradeEvent";
 import { ProductionEvent } from "./ProductionEvent";
+import { AdventCalendarEvent } from "./AdventCalendarEvent";
 import { NpcShopEvent } from "./NpcShopEvent";
 import { AdminInspectEvent } from "./AdminInspectEvent";
 import { PlayerLoggedOnEvent } from "./PlayerLoggedOnEvent";
@@ -82,6 +83,7 @@ export class EventRegistry {
 		marauroa.rpeventFactory.register("image_event", ImageEvent);
 		marauroa.rpeventFactory.register("item_upgrade_event", ItemUpgradeEvent);
 		marauroa.rpeventFactory.register("production_event", ProductionEvent);
+		marauroa.rpeventFactory.register("advent_calendar_event", AdventCalendarEvent);
 		marauroa.rpeventFactory.register("npc_shop_event", NpcShopEvent);
         marauroa.rpeventFactory.register("admin_inspect_event", AdminInspectEvent);
 		marauroa.rpeventFactory.register("player_logged_on", PlayerLoggedOnEvent);

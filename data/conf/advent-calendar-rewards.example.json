@@ -1,0 +1,44 @@
+{
+  "_instructions": [
+    "To jest wyłącznie przykład formatu, a nie lista nagród na serwerze gry.",
+    "Skopiuj ten plik jako data/conf/advent-calendar-rewards.json i ustaw własne nagrody dla wszystkich dni od 1 do 24.",
+    "Plik z prawdziwymi nagrodami jest ignorowany przez Git. Na serwer trzeba skopiować go osobno, do data/conf względem katalogu uruchomienia serwera.",
+    "Po zmianie nagród uruchom serwer ponownie. Nagrody są wczytywane raz, przy pierwszym otwarciu odebranego prezentu lub próbie odbioru.",
+    "Nie publikuj prawdziwego pliku w paczkach gry, na stronie ani w repozytorium. Do commita dodawaj tylko ten przykład.",
+    "Pole days zawiera numery dni. Każdy dzień ma listę nagród w nawiasach kwadratowych. Aby dodać kolejną nagrodę tego dnia, dopisz kolejny obiekt po przecinku, jak w dniu 24.",
+    "name to dokładna wewnętrzna nazwa przedmiotu, np. money dla monet. quantity jest dodatnią liczbą całkowitą. Dla przedmiotów, które nie łączą się w stosy, ustaw 1.",
+    "Opcjonalne equipment: true nadaje wyposażeniu rzadkość epicką i losowe afiksy tak jak nagrodom z zadań. Dla monet, materiałów i eliksirów pomiń to pole lub ustaw false.",
+    "Pola _instructions i _comment służą do opisów i są pomijane przez serwer. JSON nie obsługuje komentarzy // ani przecinka po ostatnim elemencie.",
+    "Nie usuwaj dni i nie zostawiaj pustych list. Brak pliku lub błędny wpis blokuje wydawanie nagród; serwer nie ma zapasowej listy nagród w kodzie.",
+    "Odbiór nadal wymaga aktywnego eventu xmas oraz właściwej daty w grudniu. Jeden prezent można odebrać raz na konto."
+  ],
+  "days": {
+    "1": [{"name": "money", "quantity": 1, "_comment": "Przykładowa liczba monet. Zmień ją na wybraną kwotę."}],
+    "2": [{"name": "duży eliksir", "quantity": 1}],
+    "3": [{"name": "drewniana tarcza", "quantity": 1, "equipment": true}],
+    "4": [{"name": "money", "quantity": 1}],
+    "5": [{"name": "money", "quantity": 1}],
+    "6": [{"name": "money", "quantity": 1}],
+    "7": [{"name": "money", "quantity": 1}],
+    "8": [{"name": "money", "quantity": 1}],
+    "9": [{"name": "money", "quantity": 1}],
+    "10": [{"name": "money", "quantity": 1}],
+    "11": [{"name": "money", "quantity": 1}],
+    "12": [{"name": "money", "quantity": 1}],
+    "13": [{"name": "money", "quantity": 1}],
+    "14": [{"name": "money", "quantity": 1}],
+    "15": [{"name": "money", "quantity": 1}],
+    "16": [{"name": "money", "quantity": 1}],
+    "17": [{"name": "money", "quantity": 1}],
+    "18": [{"name": "money", "quantity": 1}],
+    "19": [{"name": "money", "quantity": 1}],
+    "20": [{"name": "money", "quantity": 1}],
+    "21": [{"name": "money", "quantity": 1}],
+    "22": [{"name": "money", "quantity": 1}],
+    "23": [{"name": "money", "quantity": 1}],
+    "24": [
+      {"name": "money", "quantity": 1},
+      {"name": "polano", "quantity": 1}
+    ]
+  }
+}

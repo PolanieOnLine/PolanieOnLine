@@ -140,6 +140,7 @@ public class SlashActionRepository {
 		actions.put("emojilist", new EmojiListAction());
 
 		actions.put("runicaltar", new RunicAltarAction());
+		actions.put("adventcalendar", new AdventCalendarAction());
 	}
 
 	/**

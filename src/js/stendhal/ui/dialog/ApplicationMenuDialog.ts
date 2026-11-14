@@ -92,6 +92,10 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 					{
 						title: "Ołtarz Runiczny",
 						action: "runicaltar",
+					},
+					{
+						title: "Kalendarz adwentowy",
+						action: "adventcalendar",
 					}
 				] as MenuAction[]
 			},

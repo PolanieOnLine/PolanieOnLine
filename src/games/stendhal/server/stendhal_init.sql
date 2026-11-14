@@ -509,3 +509,13 @@ CREATE TABLE IF NOT EXISTS group_quest
   );
 
 CREATE INDEX IF NOT EXISTS i_group_quest_questname ON group_quest(questname);
+
+CREATE TABLE IF NOT EXISTS advent_calendar_claims
+  (
+  account_id INTEGER NOT NULL,
+  reward_year INTEGER NOT NULL,
+  reward_day INTEGER NOT NULL,
+  charname VARCHAR(32) NOT NULL,
+  claimed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(account_id, reward_year, reward_day)
+  );

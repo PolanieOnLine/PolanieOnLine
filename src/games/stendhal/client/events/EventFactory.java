@@ -131,6 +131,8 @@ class EventFactory {
 			event = new ItemUpgradeEvent();
 		} else if (name.equals(Events.PRODUCTION)) {
 			event = new ProductionEvent();
+		} else if (name.equals(Events.ADVENT_CALENDAR)) {
+			event = new AdventCalendarEvent();
 		} else if (name.equals(Events.ADMIN_INSPECT)) {
             event = new AdminInspectEvent();
         } else if (name.equals(Events.NPC_SHOP)) {

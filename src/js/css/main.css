@@ -2617,3 +2617,57 @@ td.number {
 .admin-inspect-dialog .dialogbuttons {display:flex;justify-content:flex-end;gap:5px;margin:0;background:none;flex-shrink:0;}
 .admin-inspect-dialog .dialogbutton + .dialogbutton {margin-left:0;}
 @media(max-width:600px){.admin-inspect-layout{flex-direction:column;}.admin-inspect-navigation{flex-direction:row;flex:0 0 auto;flex-wrap:wrap;}.admin-inspect-navigation button{flex:1;}.admin-inspect-details{height:90px;flex-basis:90px;}}
+
+.advent-calendar-dialog {
+	box-sizing: border-box;
+	width: 530px;
+	max-width: calc(100vw - 24px);
+	max-height: calc(100dvh - 48px);
+	overflow-y: auto;
+	padding: 12px;
+	font: 12px/16px Arial, sans-serif;
+}
+.advent-calendar-heading { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.advent-calendar-heading strong { color: #ffd67c; }
+.advent-calendar-board { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(5, 86px); gap: 8px; }
+.advent-calendar-dialog .advent-calendar-door {
+	position: relative;
+	box-sizing: border-box;
+	min-width: 0;
+	padding: 0;
+	border: 1px solid #b78654;
+	border-radius: 0;
+	color: #ffdf9d;
+	background: linear-gradient(#4114122d, #4114122d), var(--background-url);
+	box-shadow: inset 2px 2px #d09a625c, inset -2px -2px #2f160c;
+	font: bold 24px Georgia, serif;
+	text-shadow: 1px 2px #261607;
+	white-space: normal;
+	cursor: pointer;
+}
+.advent-calendar-dialog .advent-calendar-door.tone-green { background-image: linear-gradient(#1e372450, #1e372450), var(--background-url); }
+.advent-calendar-door[data-day="24"]::before { content: ""; position: absolute; top: 2px; bottom: 2px; left: 50%; border-left: 1px solid #27190f; border-right: 1px solid #b99158; }
+.advent-calendar-door[data-day="24"] .advent-calendar-number { position: relative; padding: 3px 8px; background: #492a12dd; border: 1px solid #b99355; font-size: 30px; }
+.advent-calendar-dialog .advent-calendar-door.is-today { outline: 2px solid white; outline-offset: 1px; color: white; }
+.advent-calendar-dialog .advent-calendar-door.is-claimed { background-image: linear-gradient(#1a100bab, #1a100bab), var(--background-url); color: #c8b08a; box-shadow: inset 0 2px 6px #000a; }
+.advent-calendar-door.is-claimed .advent-calendar-number { position: absolute; top: 5px; right: 6px; padding: 0; background: none; border: 0; font: 12px Arial, sans-serif; }
+.advent-calendar-door.is-claimed::before { display: none; }
+.advent-calendar-received { display: none; font: 24px Arial, sans-serif; }
+.advent-calendar-door.is-claimed .advent-calendar-received { display: inline; }
+.advent-calendar-dialog .advent-calendar-door.is-expired { color: #a18d71; background-image: linear-gradient(#1a100b99, #1a100b99), var(--background-url); }
+.advent-calendar-dialog .advent-calendar-door:disabled { cursor: default; text-shadow: 1px 2px #261607; }
+.advent-calendar-rewards { min-height: 56px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 16px; margin-top: 10px; }
+.advent-calendar-reward { display: flex; align-items: center; gap: 6px; max-width: 100%; }
+.advent-calendar-reward .itemSlot { flex-shrink: 0; }
+.advent-calendar-status { min-height: 32px; text-align: center; }
+.advent-calendar-dialog .dialogbuttons { display: flex; justify-content: flex-end; padding: 0; margin-top: 6px; }
+.advent-calendar-dialog .dialogbutton { font: inherit; color: var(--text-color); background: var(--background-url); border: 2px solid; border-color: var(--border-top-color) var(--border-bottom-color) var(--border-bottom-color) var(--border-top-color); border-radius: 0; padding: 3px 12px; }
+@media (max-width: 540px) {
+	.advent-calendar-board { grid-template-rows: repeat(5, 64px); gap: 6px; }
+	.advent-calendar-dialog { padding: 10px; }
+	.advent-calendar-dialog .advent-calendar-door { font-size: 20px; }
+}
+@media (max-width: 360px) {
+	.advent-calendar-dialog { padding: 6px; }
+	.advent-calendar-board { gap: 4px; }
+}

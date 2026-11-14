@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -816,6 +817,12 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 
 	@Override
 	public InputStream getResource(String resource) {
+		// Configuration is server-only. Normalize Windows path aliases as well.
+		final String normalized = resource.replace('\\', '/').toLowerCase(Locale.ROOT)
+				.replaceAll("[. ]+(?=/|$)", "").replaceAll("/+", "/");
+		if (resource.contains("..") || resource.indexOf(':') >= 0 || normalized.startsWith("/data/conf/")) {
+			return null;
+		}
 		if (resource.startsWith("/tiled") || resource.startsWith("/data")) {
 			return StendhalRPRuleProcessor.class.getClassLoader().getResourceAsStream(resource.substring(1));
 		}

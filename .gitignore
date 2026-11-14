@@ -66,3 +66,4 @@ update-1.16.properties
 /tests/net
 /tiled/world/large
 /bin/
+/data/conf/advent-calendar-rewards.json
