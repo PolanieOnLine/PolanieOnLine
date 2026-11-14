@@ -11,14 +11,17 @@
 * Dodano historię rozbitków i fałszywych świateł w Gdańsku od 200 poziomu oraz wyprawę do zalanych chodników Wieliczki od 250 poziomu
 * Dodano zadania o skradzionych smoczych jajach od 400 poziomu oraz Milczący dzwon na Kikareukin od 550 poziomu
 * Dodano osiągnięcie za ukończenie ostatniego rozdziału głównej historii
+* Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje poszukiwania zaginionego wędrowca, pomoc rannemu i naprawę starego kompasu. Nagrodą jest kompas wędrowca
+* Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 
 *dziennik zadań*
 ---
 * Dodano osobne zakładki z zadaniami głównymi i pobocznymi oraz opis aktualnego celu głównej historii
 * Dodano podgląd nagród za zadania: doświadczenia, monet i przedmiotów z opisami statystyk
-* Dodano czerwone znaczniki dostępnych zadań głównych nad NPC
+* Dodano czerwone wykrzykniki i pytajniki nad NPC związanymi z zadaniami głównymi. Mają pierwszeństwo przed znacznikami pozostałych zadań
 * Dodano krótkie zaproszenia od NPC po odblokowaniu kolejnego zadania głównego, wyróżnione turkusowym kolorem
+* Dodano podgląd odręcznie zapisanego kwitu odnalezionego podczas śledztwa
 
 *glify*
 ---
@@ -32,8 +35,8 @@
 
 *walka i wyposażenie*
 ---
-* Dodano wybranym potworom dodatkową pulę opancerzenia, którą trzeba rozbić przed odebraniem im zdrowia. Otrzymali ją m.in. bossowie, smoki, anioły i archanioły
-* Dodano szary pasek opancerzenia na pasku zdrowia przeciwnika i dźwięk jego rozbicia
+* Dodano wybranym potworom dodatkową pulę opancerzenia, którą trzeba rozbić przed odebraniem im zdrowia. Otrzymali ją m.in. bossowie, smoki, anioły, archanioły, rycerze i uzbrojeni strażnicy. Opancerzenie nie zmniejsza dotychczasowej liczby PZ potwora
+* Dodano osobny szary pasek opancerzenia nad paskiem zdrowia przeciwnika i dźwięk jego rozbicia
 * Dodano afiks Kruszenie, który zwiększa obrażenia zadawane opancerzeniu przeciwnika o 10-15%, łącznie maksymalnie o 30%
 * Dodano afiks Hartowanie, który zmniejsza dodatkowe obrażenia z otrzymanych trafień krytycznych o 4-8%, łącznie maksymalnie o 30%
 * Dodano afiks Pewna ręka, który podnosi minimalne obrażenia broni o 5-10%, bez zwiększania maksymalnych obrażeń
@@ -55,9 +58,11 @@
 * Zmieniono antidotum i mocne antidotum: usuwają odpowiednio do 400 i 800 PZ pozostałych obrażeń od trucizny, zamiast zapewniać czasową niewrażliwość. Nie zużywają się, gdy postać nie jest zatruta
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
+* Zmieniono zestaw ciemnomithrilowy na zestaw z hartowanego mithrilu. Wszystkie siedem części otrzymało nowe grafiki i opisy nawiązujące do mithrilu wzmocnionego ciemnolitem. Posiadane przedmioty zachowują swoje statystyki, rzadkość, afiksy i ulepszenia
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości
 * Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
 * Poprawiono zachowanie dodatkowego zasięgu afiksa Bezlitosny Zasięg po ponownym zalogowaniu
+* Poprawiono parowanie ciosów wręcz w walkach między graczami, również z uruchamianiem riposty Mistrza Pojedynku
 
 *sklepy i produkcja*
 ---
@@ -66,10 +71,13 @@
 * Dodano informacje o wymaganiach do odblokowania handlu u kupców
 * Dodano klikalne stanowiska rzemieślników i okna produkcji z wyborem ilości, listą składników, kosztem, czasem pracy i odbiorem zamówienia
 * Dodano Smolisława przy drwalu pod Krakowem. Wypala węgiel drzewny w zamówieniach do 1000 sztuk; jedna sztuka wymaga 2 polan, 5 monet i 30 sekund pracy
+* Wykluczono zwoje ze skupu u Kupca Areny, aby nie można było zarabiać na odsprzedaży zwojów kupionych z rabatem
 
 *klient gry*
 ---
 * Dodano rozbudowane okno aktualizatora z opisem aktualizacji, postępem pobierania, prędkością i pozostałym czasem
+* Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata oraz kierunek do aktualnych celów zadań głównych, a znaczniki przesuwają się podczas poruszania postaci
+* Kompas odblokowuje się na stałe po ukończeniu zadania Na manowcach. W drodze do celu na innej mapie wskazuje prowadzące do niego przejście
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java
@@ -79,14 +87,22 @@
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
 * Poprawiono ruch przy zwiększonej i zmniejszonej prędkości postaci, usuwając przyczyny skoków i cofania w obu klientach
+* Uzupełniono angielskie i hiszpańskie tłumaczenia opisów przedmiotów, odporności, wariantów potworów, komunikatów walki, produkcji i wybranych rozmów z NPC
+* Poprawiono sortowanie zadań i bestiariusza według nazw w wybranym języku oraz tłumaczenia nazw regionów i podziemi
+* Poprawiono wyświetlanie wiadomości na czacie webklienta, aby wpisany tekst nie był odczytywany jako kod strony
 
 *pozostałe zmiany*
 ---
 * Zmieniono kolejność słów w nazwach lazurowego i szmaragdowego wyposażenia, umieszczając rodzaj przedmiotu na początku nazwy
 * Poprawiono zaliczanie osiągnięcia Przyjaciel Dzieci
 * Poprawiono przechodzenie zwierząt na piętro banku w Krakowie
+* Poprawiono rozpoznawanie właścicieli zwierząt i usuwanie nieaktualnych powiązań z towarzyszami, które mogły blokować zdobycie nowego zwierzątka
+* Poprawiono błędy przy sprawdzaniu osiągnięć związanych z wagą zwierząt
 * Poprawiono odpowiedzi kupców na prośby o handel przedmiotami spoza ich oferty
+* Poprawiono odmianę nazw przedmiotów w komunikatach o produkcji
+* Poprawiono czas podawany przez zegary w grze i w informacji o poprzednim logowaniu. Jest wyświetlany według czasu polskiego
 * Dodano administratorom wizualne okno inspect, pozwalające przeglądać statystyki, wyposażenie i zadania gracza
+* Dodano możliwość przywoływania duszka poleceniem administratora
 
 
 1.43.4
