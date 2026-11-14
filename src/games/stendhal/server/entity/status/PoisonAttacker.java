@@ -87,7 +87,8 @@ public class PoisonAttacker extends StatusAttacker {
 			}
 			if (target.getStatusList().inflictStatus(poison, attacker)) {
 				new GameEvent(attacker.getName(), "poison", target.getName(), entityToType(attacker), entityToType(target)).raise();
-				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " " + target.getGenderVerb("otruty") + " przez " + attacker.getName() + ".");
+				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " "
+						+ target.getGenderVerb("otruty") + " przez " + sourceName(attacker, target) + ".");
 			}
 		}
 	}

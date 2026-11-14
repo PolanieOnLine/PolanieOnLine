@@ -15,9 +15,12 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
+import games.stendhal.common.Translation;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -26,6 +29,12 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public class StatusAttacker {
+	/** Creature names are localized; player and NPC names remain unchanged. */
+	static String sourceName(final Entity attacker, final RPEntity target) {
+		return attacker instanceof Creature
+				? Translation.getText(target.getLanguage(), attacker.getName()) : attacker.getName();
+	}
+
 	/** The logger instance */
 	private static final Logger logger = Logger.getLogger(StatusAttacker.class);
 

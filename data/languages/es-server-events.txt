@@ -71,3 +71,7 @@ Ten wojownik akurat znajduje się w grze. Użyj normalnych komend.=Este jugador 
 Dostaniesz trochę przedmiotów, poziomów i umiejętności oraz odblokowany tobie rzemyk.=Recibirás algunos objetos, niveles y habilidades, y se desbloqueará tu bolsa.
 Wygląda na to, że znalazłeś lukę w grze.=Parece que has encontrado un fallo del juego.
 Zapytaj mnie znowu, gdy będziesz miał miejsce na na zwój.=Vuelve a preguntarme cuando tengas sitio para el pergamino.
+Zostałeś zraniony przez {0}.=Has sido herido por {0}.
+Zostałaś zraniona przez {0}.=Has sido herida por {0}.
+Zostałeś otruty przez {0}.=Has sido envenenado por {0}.
+Zostałaś otruta przez {0}.=Has sido envenenada por {0}.

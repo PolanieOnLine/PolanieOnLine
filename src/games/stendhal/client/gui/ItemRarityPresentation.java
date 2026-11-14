@@ -666,7 +666,7 @@ public final class ItemRarityPresentation {
 			return;
 		}
 		appendBonusLine(bonuses, signed(formatCompact(modifier.doubleValue()))
-				+ "% odporności na " + ClientLanguage.getText(label),
+				+ "% " + ClientLanguage.getText("odporności na " + label),
 				equippedItem == null ? "" : delta(modifier.doubleValue(),
 						equippedModifier == null ? 0.0
 								: equippedModifier.doubleValue(), 1));

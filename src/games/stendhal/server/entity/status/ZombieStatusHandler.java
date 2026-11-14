@@ -41,7 +41,8 @@ public class ZombieStatusHandler implements StatusHandler<ZombieStatus> {
 				if (attacker == null) {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zombie.");
 				} else {
-					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zombie przez " + attacker.getName() + ".");
+					entity.sendPrivateText(NotificationType.SCENE_SETTING,
+							"Zostałeś zombie przez " + StatusAttacker.sourceName(attacker, entity) + ".");
 				}
 			}
 

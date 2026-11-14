@@ -1547,3 +1547,5 @@ ech strażnika=ecos del guardián
 mgielny {0}={item:0} de la niebla
 Elitarny {0}={item:0} de élite
 elitarny {0}={item:0} de élite
+{0} (rzadki)={item:0} (raro)
+{0} (anormalny)={item:0} (anormal)

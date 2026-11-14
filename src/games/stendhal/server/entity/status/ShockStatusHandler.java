@@ -42,7 +42,8 @@ public class ShockStatusHandler implements StatusHandler<ShockStatus> {
 				if (attacker == null) {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zszokowany.");
 				} else {
-					entity.sendPrivateText(NotificationType.SCENE_SETTING, "Doznałeś szoku przez " + attacker.getName() + ".");
+					entity.sendPrivateText(NotificationType.SCENE_SETTING,
+							"Doznałeś szoku przez " + StatusAttacker.sourceName(attacker, entity) + ".");
 				}
 
 				statusList.addInternal(status);

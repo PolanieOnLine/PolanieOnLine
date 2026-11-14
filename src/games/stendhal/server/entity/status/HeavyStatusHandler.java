@@ -65,7 +65,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 				} else {
 					entity.sendPrivateText(NotificationType.SCENE_SETTING,
 							"Twoje stopy zaczynają być ciężkie. Zostałeś ociężały przez "
-					+ attacker.getName() + ".");
+					+ StatusAttacker.sourceName(attacker, entity) + ".");
 				}
 
 				active.put(statusList, new SlowState(originalSpeed, duration));

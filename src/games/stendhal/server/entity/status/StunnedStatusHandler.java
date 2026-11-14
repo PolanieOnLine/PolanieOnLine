@@ -47,7 +47,7 @@ public class StunnedStatusHandler implements StatusHandler<StunnedStatus> {
 					"Zostałeś ogłuszony.");
 		} else {
 			entity.sendPrivateText(NotificationType.SCENE_SETTING,
-					"Zostałeś ogłuszony przez " + attacker.getName() + ".");
+					"Zostałeś ogłuszony przez " + StatusAttacker.sourceName(attacker, entity) + ".");
 		}
 
 		statusList.addInternal(status);

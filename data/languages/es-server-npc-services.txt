@@ -109,3 +109,5 @@ Powinno być gotowe za {0}.=Debería estar listo dentro de {item:0}.
 {0} ukończył twój {1}.={0} ha terminado tu pedido de {item:1}.
 {0} ukończył twoje {1}.={0} ha terminado tu pedido de {item:1}.
 {0} ukończył twoją {1}.={0} ha terminado tu pedido de {item:1}.
+Sprzedaję {0}.=A la venta: {item:0}.
+Sprzedaję bilet na mecz oraz piłka.=Vendo entradas para el partido y balones.

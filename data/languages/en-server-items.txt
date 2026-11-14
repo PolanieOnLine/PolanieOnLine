@@ -109,3 +109,7 @@ Oto zgniłe zwłoki {0}, został zabity przez {1}. Możesz je #przeszukać, aby 
 Oto zgniłe zwłoki {0}, została zabita przez {1}. Możesz je #przeszukać, aby zobaczyć co zawierają.=You see {0}'s rotten corpse, killed by {1}. You can #search it to see what it contains.
 Oto przegniłe zwłoki {0}, został zabity przez {1}. Możesz je #przeszukać, aby zobaczyć co zawierają.=You see {0}'s badly decomposed corpse, killed by {1}. You can #search it to see what it contains.
 Oto przegniłe zwłoki {0}, została zabita przez {1}. Możesz je #przeszukać, aby zobaczyć co zawierają.=You see {0}'s badly decomposed corpse, killed by {1}. You can #search it to see what it contains.
+!me przytulił pluszowego misia.=!me hugged their teddy bear.
+Pluszowy miś jest miękki i kojący.=The teddy bear is soft and comforting.
+Oto skrzynia. Jest otwarta. Możesz nacisnąć prawy przycisk myszy, aby zobaczyć zawartość.=You see a chest. It is open. Right-click to view its contents.
+Oto skrzynia. Jest zamknięta.=You see a chest. It is closed.

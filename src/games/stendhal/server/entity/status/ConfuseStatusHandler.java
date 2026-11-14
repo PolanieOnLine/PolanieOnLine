@@ -42,7 +42,8 @@ public class ConfuseStatusHandler implements StatusHandler<ConfuseStatus> {
 		if (attacker == null) {
 			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zdezorientowany.");
 		} else {
-			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Zostałeś zdezorientowany przez " + attacker.getName() + ".");
+			entity.sendPrivateText(NotificationType.SCENE_SETTING,
+					"Zostałeś zdezorientowany przez " + StatusAttacker.sourceName(attacker, entity) + ".");
 		}
 
 		statusList.activateStatusAttribute("status_" + status.getName());

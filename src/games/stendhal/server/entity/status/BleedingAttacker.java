@@ -103,7 +103,7 @@ public class BleedingAttacker extends StatusAttacker {
 			new GameEvent(attacker.getName(), "bleeding", target.getName()).raise();
 			target.sendPrivateText(target.getGenderVerb("Zostałeś") + " "
 					+ target.getGenderVerb("zraniony") + " przez "
-					+ attacker.getName() + ".");
+					+ sourceName(attacker, target) + ".");
 		}
 	}
 

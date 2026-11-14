@@ -77,6 +77,19 @@ test("the five new affixes have descriptions in Polish, English and Spanish", as
 	}
 });
 
+test("every elemental resistance has a fully translated label", async () => {
+	const h = await harness();
+	h.language.synchronize("en");
+	const stats = {category: "armour"};
+	for (const element of ["light", "dark", "fire", "ice", "earth", "water", "cut"]) {
+		stats["resistance_" + element] = "105";
+	}
+	const lines = h.build(new h.Item(stats)).lines.map(line => line.text);
+	for (const label of ["light", "dark", "fire", "ice", "nature", "water", "physical damage"]) {
+		assert.ok(lines.includes("+5% resistance to " + label), lines.join("\n"));
+	}
+});
+
 test("equipment attack penalties survive missing or zero other attack values", async () => {
 	const h = await harness();
 	for (const [attack, expected] of [

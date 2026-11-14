@@ -111,10 +111,15 @@ public class ItemTooltipTranslationTest {
 		RPObject item = ItemTestHelper.createItem("test ring");
 		item.put("rarity_id", "epic");
 		stat(item, ItemTooltip.CATEGORY, ItemTooltip.CATEGORY_ACCESSORY);
-		stat(item, ItemTooltip.RESISTANCE_PREFIX + "light", "105");
+		for (String element : new String[] {"light", "dark", "fire", "ice", "earth", "water", "cut"}) {
+			stat(item, ItemTooltip.RESISTANCE_PREFIX + element, "105");
+		}
 		String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(item), null, false);
 		assertTrue(html, html.contains("Epic"));
 		assertTrue(html, html.contains("&#9670; +5% resistance to light"));
+		for (String element : new String[] {"dark", "fire", "ice", "nature", "water", "physical damage"}) {
+			assertTrue(html, html.contains("&#9670; +5% resistance to " + element));
+		}
 	}
 
 	@Test public void translatesStandaloneAffixWeightAndPreservesItsValue() {

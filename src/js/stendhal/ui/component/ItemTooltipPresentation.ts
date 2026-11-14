@@ -320,7 +320,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 		}
 		resistances.push({
 			kind: "bonus",
-			text: signed(formatCompact(value)) + "% odporności na " + GameLanguage.getText(label),
+			text: signed(formatCompact(value)) + "% " + GameLanguage.getText("odporności na " + label),
 			deltas: equipped ? [createDelta(value - previous, 1)] : undefined
 		});
 	}

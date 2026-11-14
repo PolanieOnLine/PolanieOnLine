@@ -3,8 +3,52 @@ package games.stendhal.common;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.StunnedStatus;
+import games.stendhal.server.entity.status.StunnedStatusHandler;
+import games.stendhal.server.maps.MockStendlRPWorld;
+import utilities.PlayerTestHelper;
 
 public class BulkEventTranslationTest {
+	@Test public void statusTemplatesTranslateBothPlayerGendersWithoutChangingNames() {
+		check("Zostałeś zraniony przez Zamknij.", "You have been wounded by Zamknij.");
+		check("Zostałaś zraniona przez Zamknij.", "You have been wounded by Zamknij.");
+		check("Zostałeś otruty przez Jożin z bażin.", "You have been poisoned by Jożin z bażin.");
+		check("Zostałaś otruta przez Jożin z bażin.", "You have been poisoned by Jożin z bażin.");
+		check("Zostałeś ogłuszony przez Zamknij.", "You were stunned by Zamknij.");
+	}
+
+	@Test public void statusHandlersLocalizeCreaturesButPreservePlayerNames() {
+		MockStendlRPWorld.get();
+		final Creature giant = SingletonRepository.getEntityManager().getCreature("lodowy starszy olbrzym");
+		final Entity[] sources = {giant, PlayerTestHelper.createPlayer("Zamknij")};
+		final String[] names = {"elder ice giant", "Zamknij"};
+		for (int i = 0; i < sources.length; i++) {
+			final Player target = PlayerTestHelper.createPlayer("Reader" + i);
+			target.setLanguage("en");
+			final StunnedStatusHandler handler = new StunnedStatusHandler();
+			final StunnedStatus status = new StunnedStatus();
+			handler.inflict(status, target.getStatusList(), sources[i]);
+			assertEquals("You were stunned by " + names[i] + ".", target.events().get(0).get("text"));
+			handler.remove(status, target.getStatusList());
+		}
+	}
+
+	@Test public void chestAndTeddyDescriptionsAndGeneratedShopOffersTranslate() {
+		check("Przytul", "Hug");
+		check("!me przytulił pluszowego misia.", "!me hugged their teddy bear.");
+		check("Pluszowy miś jest miękki i kojący.", "The teddy bear is soft and comforting.");
+		check("chest jest zbyt daleko.", "The chest is too far away.");
+		check("corpse jest zbyt daleko.", "The corpse is too far away.");
+		check("Oto skrzynia. Jest otwarta. Możesz nacisnąć prawy przycisk myszy, aby zobaczyć zawartość.",
+			"You see a chest. It is open. Right-click to view its contents.");
+		check("Oto skrzynia. Jest zamknięta.", "You see a chest. It is closed.");
+		check("Sprzedaję bilet na mecz oraz piłka.", "I sell match tickets and balls.");
+		check("Sprzedaję miecz oraz topór.", "For sale: sword and axe.");
+	}
  @Test public void tutorialAndSceneNotificationsReachTheEnglishPlayerInEnglish() {
   games.stendhal.server.maps.MockStendlRPWorld.get();
   games.stendhal.server.entity.player.Player player = utilities.PlayerTestHelper.createPlayer("LearningEnglish");

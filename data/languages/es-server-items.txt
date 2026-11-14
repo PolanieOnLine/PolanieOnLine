@@ -109,3 +109,7 @@ Oto zgniłe zwłoki {0}, została zabita przez {1}. Możesz je #przeszukać, aby
 Oto przegniłe zwłoki {0}. Możesz je #przeszukać, aby zobaczyć co zawierają.=Ves un cadáver muy descompuesto de {item:0}. Puedes #registrar el cadáver para ver qué contiene.
 Oto przegniłe zwłoki {0}, został zabity przez {1}. Możesz je #przeszukać, aby zobaczyć co zawierają.=Ves el cadáver muy descompuesto de {0}, a quien mató {1}. Puedes #registrar el cadáver para ver qué contiene.
 Oto przegniłe zwłoki {0}, została zabita przez {1}. Możesz je #przeszukać, aby zobaczyć co zawierają.=Ves el cadáver muy descompuesto de {0}, a quien mató {1}. Puedes #registrar el cadáver para ver qué contiene.
+!me przytulił pluszowego misia.=!me abrazó su osito de peluche.
+Pluszowy miś jest miękki i kojący.=El osito de peluche es suave y reconfortante.
+Oto skrzynia. Jest otwarta. Możesz nacisnąć prawy przycisk myszy, aby zobaczyć zawartość.=Ves un cofre. Está abierto. Haz clic derecho para ver su contenido.
+Oto skrzynia. Jest zamknięta.=Ves un cofre. Está cerrado.

@@ -1548,3 +1548,5 @@ ech strażnika=echoes of the warden
 mgielny {0}=Mist {item:0}
 Elitarny {0}=Elite {item:0}
 elitarny {0}=elite {item:0}
+{0} (rzadki)={item:0} (rare)
+{0} (anormalny)={item:0} (abnormal)

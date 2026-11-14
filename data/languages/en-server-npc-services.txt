@@ -111,3 +111,5 @@ Powinno być gotowe za {0}.=It should be ready in {item:0}.
 {0} ma już dla ciebie {1}. Możesz odebrać zamówienie.={0} has your {item:1} ready. You can collect your order now.
 {0} przygotowuje dla ciebie {1}.={0} is preparing your {item:1}.
 {0} przygotowuje dla ciebie {1}. Zamówienie będzie gotowe za {2}.={0} is preparing your {item:1}. Your order will be ready in {item:2}.
+Sprzedaję {0}.=For sale: {item:0}.
+Sprzedaję bilet na mecz oraz piłka.=I sell match tickets and balls.
