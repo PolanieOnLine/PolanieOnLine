@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.events;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.entity.RPEntity;
 
 /**
@@ -25,10 +26,12 @@ class PublicTextEvent extends Event<RPEntity> {
 	 */
 	@Override
 	public void execute() {
+		final String text = event.has("translate")
+				? ClientLanguage.getText(event.get("text")) : event.get("text");
 		if (event.has("range")) {
-			entity.onTalk(event.get("text"), event.getInt("range"));
+			entity.onTalk(text, event.getInt("range"));
 		} else {
-			entity.onTalk(event.get("text"));
+			entity.onTalk(text);
 		}
 	}
 }

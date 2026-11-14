@@ -3,6 +3,7 @@ package games.stendhal.client.entity;
 import static org.junit.Assert.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -11,14 +12,49 @@ import org.junit.After;
 import org.junit.Test;
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.events.Event;
 import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.gui.MockUserInterface;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.RPEvent;
 
 public class GeneratedEntityMessageTranslationTest {
+	@Test public void creatureDeathsUseGenderNotEnglishNounEndingsAndStartWithACapital() throws Exception {
+		for (final String victimTitle : new String[] {"giant eagle", "mega mage"}) {
+			final Creature victim = new Creature() {
+				@Override public String getTitle() { return victimTitle; }
+				@Override public String getGender() { return "M"; }
+				@Override protected void playSoundFromCategory(String group, String category) { }
+			};
+			victim.getAttackers().add(user);
+			invoke(RPEntity.class, victim, "onDeath", new Class<?>[0]);
+			assertEquals(Character.toUpperCase(victimTitle.charAt(0)) + victimTitle.substring(1) + " was killed by Zamknij",
+					events.get(events.size() - 1).getText());
+		}
+	}
+
+	@Test public void publicItemEventsTranslateOnlyWhenMarkedByTheServer() throws Exception {
+		final List<String> heard = new ArrayList<>();
+		final RPEntity speaker = new RPEntity() {
+			@Override public void onTalk(String text) { heard.add(text); }
+		};
+		final Constructor<?> constructor = Class.forName("games.stendhal.client.events.PublicTextEvent")
+				.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		@SuppressWarnings("unchecked")
+		final Event<RPEntity> handler = (Event<RPEntity>) constructor.newInstance();
+		final RPEvent event = new RPEvent("text");
+		event.put("text", "!me przytulił pluszowego misia.");
+		handler.init(speaker, event);
+		handler.execute();
+		assertEquals("!me przytulił pluszowego misia.", heard.get(0));
+		event.put("translate", "");
+		handler.execute();
+		assertEquals("!me hugged their teddy bear.", heard.get(1));
+	}
 	@Test
 	public void lootTitlesTranslateCreaturesButPreservePlayerNames() {
 		final RPObject object = new RPObject();

@@ -33,6 +33,7 @@ public class TextEvent extends RPEvent {
 		final RPClass rpclass = new RPClass(RPCLASS_NAME);
 		rpclass.add(DefinitionClass.ATTRIBUTE, TEXT, Type.LONG_STRING);
 		rpclass.addAttribute("range", Type.INT);
+		rpclass.addAttribute("translate", Type.FLAG);
 	}
 
 	/**
@@ -44,6 +45,14 @@ public class TextEvent extends RPEvent {
 	public TextEvent(final String text) {
 		super(RPCLASS_NAME);
 		put(TEXT, text);
+	}
+
+	/** Marks a server-generated message for translation by the receiving client. */
+	public TextEvent(final String text, final boolean translate) {
+		this(text);
+		if (translate) {
+			put("translate", "");
+		}
 	}
 
 	/**

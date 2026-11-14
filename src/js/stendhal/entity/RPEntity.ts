@@ -853,7 +853,9 @@ export class RPEntity extends ActiveEntity {
 			return;
 		}
 
-		const deathText = `${victimName} ${this.genderize(gender, "został", "została", "zostało")} `
+		const sentenceName = this["type"] === "creature"
+			? victimName.charAt(0).toLocaleUpperCase(GameLanguage.getLanguage()) + victimName.slice(1) : victimName;
+		const deathText = `${sentenceName} ${this.genderize(gender, "został", "została", "zostało")} `
 			+ `${this.genderize(gender, "zabity", "zabita", "zabite")} przez ${this.enumerateList(attackerNames)}`;
 		Chat.log("significant_negative", GameLanguage.getText(deathText));
 	}

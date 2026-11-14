@@ -13,6 +13,7 @@ package games.stendhal.server.entity.item.behavior;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +64,16 @@ public class MessagingUseBehaviorTest {
 		return null;
 	}
 
+	private String getPublic(RPEntity entity) {
+		for (RPEvent event : entity.events()) {
+			if ("text".equals(event.getName())) {
+				assertTrue("Item messages must be marked as generated text", event.has("translate"));
+				return event.get(TEXT_ATTR);
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Test sending private messages.
 	 */
@@ -103,12 +114,12 @@ public class MessagingUseBehaviorTest {
 		RPEntity entity = PlayerTestHelper.createPlayer("player");
 		UseBehavior b = new MessagingUseBehavior(params);
 		b.use(entity, item);
-		assertEquals(WRONG_PUBLIC, MSG_1, entity.get(TEXT_ATTR));
+		assertEquals(WRONG_PUBLIC, MSG_1, getPublic(entity));
 
 		// The same through item's use()
 		item.setUseBehavior(b);
 		item.onUsed(entity);
-		assertEquals(WRONG_PUBLIC, MSG_1, entity.get(TEXT_ATTR));
+		assertEquals(WRONG_PUBLIC, MSG_1, getPublic(entity));
 
 		// NPCs can trigger the public part
 		MockNPC npc = new MockNPC();
@@ -130,7 +141,7 @@ public class MessagingUseBehaviorTest {
 		UseBehavior b = new MessagingUseBehavior(params);
 		b.use(entity, item);
 		assertEquals(WRONG_PRIVATE, MSG_1, getPrivate(entity));
-		assertEquals(WRONG_PUBLIC, MSG_2, entity.get(TEXT_ATTR));
+		assertEquals(WRONG_PUBLIC, MSG_2, getPublic(entity));
 
 		entity.clearEvents();
 		entity.remove(TEXT_ATTR);
@@ -141,7 +152,7 @@ public class MessagingUseBehaviorTest {
 		item.setUseBehavior(b);
 		item.onUsed(entity);
 		assertEquals(WRONG_PRIVATE, MSG_1, getPrivate(entity));
-		assertEquals(WRONG_PUBLIC, MSG_2, entity.get(TEXT_ATTR));
+		assertEquals(WRONG_PUBLIC, MSG_2, getPublic(entity));
 
 		// NPCs get only the public part
 		MockNPC npc = new MockNPC();

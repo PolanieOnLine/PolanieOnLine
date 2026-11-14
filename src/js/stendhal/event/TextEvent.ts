@@ -20,9 +20,11 @@ export class TextEvent extends RPEvent {
 
 	public range!: string;
 	public text!: string;
+	public translate?: string;
 
 	public execute(entity: Entity): void {
-		const text = entity["type"] === "npc" ? GameLanguage.getText(this["text"]) : this["text"];
+		const text = entity["type"] === "npc" || this.translate !== undefined
+			? GameLanguage.getText(this["text"]) : this["text"];
 		if (this["range"]) {
 			entity.say(text, parseInt(this["range"], 10));
 		} else {

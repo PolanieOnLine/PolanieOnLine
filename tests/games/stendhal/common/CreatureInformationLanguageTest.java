@@ -35,5 +35,12 @@ public class CreatureInformationLanguageTest {
   player.setLanguage("pl");
   String polish=(String)type.getMethod(method,Player.class,DefaultCreature.class,int.class,int.class,boolean.class).invoke(info,player,rat,0,0,false);
   assertEquals("O, tak. Znam stwory zwane szczur! Szczur nie stanowi dla Ciebie wyzwania. ",polish);
+  Object nameFirstInfo = type.getConstructor(Map.class, Map.class, Map.class,
+      String[].class, String[].class, String[].class, String[].class, String[].class, String[].class)
+      .newInstance(probabilities, amounts, danger, new String[]{"%s"},
+          new String[0], new String[0], new String[0], new String[0], new String[0]);
+  player.setLanguage("en");
+  String startsWithName=(String)type.getMethod("getCreatureBasicInfo",Player.class,DefaultCreature.class).invoke(nameFirstInfo,player,rat);
+  assertTrue(startsWithName, startsWithName.startsWith("Rat "));
  }
 }

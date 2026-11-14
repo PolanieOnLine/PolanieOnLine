@@ -17,6 +17,7 @@ import { ui } from "../ui/UI";
 import { DialogContentComponent } from "../ui/toolkit/DialogContentComponent";
 
 import { stendhal } from "../stendhal";
+import { GameLanguage } from "../util/GameLanguage";
 
 
 export class BestiaryEvent extends RPEvent {
@@ -33,8 +34,8 @@ export class BestiaryEvent extends RPEvent {
 		// --- title & headers --- //
 
 		const header = ["Bestiariusz:", "\"???\" = niewiadome"];
-		const hasRare = this["enemies"].includes("(rzadkie)");
-		const hasAbnormal = this["enemies"].includes("(anormalne)");
+		const hasRare = /\((rzadki|rare)\)/.test(this.enemies);
+		const hasAbnormal = /\((anormalny|abnormal)\)/.test(this.enemies);
 
 		// show explanation of "rare" & "abnormal" creatures in header
 		if (hasRare || hasAbnormal) {
@@ -73,15 +74,21 @@ export class BestiaryEvent extends RPEvent {
 		}
 		t2.classList.add("center-text");
 		t3.classList.add("center-text");
-		t1.textContent = "Nazwa";
-		t2.textContent = "Sam";
-		t3.textContent = "Wspólnie";
+		t1.textContent = GameLanguage.getText("Nazwa");
+		t2.textContent = GameLanguage.getText("Sam");
+		t3.textContent = GameLanguage.getText("Wspólnie");
 
 		col1.appendChild(t1);
 		col2.appendChild(t2);
 		col3.appendChild(t3);
 
-		for (const e of this["enemies"].split(";")) {
+		const group = (entry: string) => / \((rzadki|rare)\),/.test(entry) ? 1
+			: / \((anormalny|abnormal)\),/.test(entry) ? 2 : 0;
+		const enemies = this.enemies.split(";").filter(Boolean);
+		enemies.sort((a, b) => group(a) - group(b)
+			|| GameLanguage.getText(a.split(",")[0]).localeCompare(
+				GameLanguage.getText(b.split(",")[0]), GameLanguage.getLanguage()));
+		for (const e of enemies) {
 			const info = e.split(",");
 			let solo = "";
 			let shared = "";
@@ -101,7 +108,7 @@ export class BestiaryEvent extends RPEvent {
 			l2.classList.add("center-text");
 			l3.classList.add("center-text");
 
-			l1.textContent = info[0];
+			l1.textContent = GameLanguage.getText(info[0]);
 			l2.textContent = solo;
 			l3.textContent = shared;
 
@@ -115,7 +122,7 @@ export class BestiaryEvent extends RPEvent {
 		layout.appendChild(col3);
 		content.componentElement.appendChild(layout);
 
-		stendhal.ui.globalInternalWindow.set(ui.createSingletonFloatingWindow(header.join(" "),
+		stendhal.ui.globalInternalWindow.set(ui.createSingletonFloatingWindow(GameLanguage.getText(header.join(" ")),
 				content, 20, 20));
 	}
 }

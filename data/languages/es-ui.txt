@@ -1130,6 +1130,7 @@ Bestiariusz=Bestiario
 Nazwa stworzenia=Nombre de la criatura
 Nazwa=Nombre
 Sam=En solitario
+W grupie=En grupo
 "???" \= niepoznane="???" \= desconocido
 "rzadkie" stworzenia nie są wymagane do osiągnięć=Las criaturas "raras" no son necesarias para los logros
 "anormalne" stworzenia nie są wymagane do osiągnięć=Las criaturas "anormales" no son necesarias para los logros

@@ -19,6 +19,18 @@ import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.common.NotificationType;
 
 public class UiTranslationTest {
+	@Test public void bestiarySortsTranslatedCreatureNamesWithinTheirGroups() throws Exception {
+		final Method sort = Class.forName("games.stendhal.client.events.BestiaryEvent")
+				.getDeclaredMethod("sortedEnemies", String.class);
+		sort.setAccessible(true);
+		final String source = "dzik,true,false;niedźwiedź,false,true;dzik (rzadki),true,false;niedźwiedź (rzadki),false,true";
+		language("en");
+		assertEquals("Shared", ClientLanguage.getText("W grupie"));
+		assertEquals(Arrays.asList("niedźwiedź,false,true", "dzik,true,false",
+				"niedźwiedź (rzadki),false,true", "dzik (rzadki),true,false"), sort.invoke(null, source));
+		language("pl");
+		assertEquals(Arrays.asList(source.split(";")), sort.invoke(null, source));
+	}
 	@Test
 	public void journalSortingUsesTranslatedNamesAndKeepsMainQuestOrder() throws Exception {
 		language("en");

@@ -1713,12 +1713,13 @@ public abstract class RPEntity extends AudibleEntity {
 				attackerNames.add(attacker.getTitle());
 			}
 
-			String attackers = Grammar.enumerateCollection(attackerNames);
-			final String deathText = getTitle() + " " + Grammar.genderNouns(getTitle(), "został") + " " + Grammar.genderNouns(getTitle(), "zabity") + " przez " + attackers;
-
 			if (getGender() == null) {
 				return;
 			}
+			final String attackers = Grammar.enumerateCollection(attackerNames, getText("oraz"));
+			final String victim = this instanceof Creature ? Grammar.capitalize(getTitle()) : getTitle();
+			final String deathText = victim + " " + Grammar.genderVerb(getGender(), "został")
+					+ " " + Grammar.genderVerb(getGender(), "zabity") + " przez " + attackers;
 
 			ClientSingletonRepository.getUserInterface().addEventLine(new StandardEventLine(getText(deathText)));
 		}

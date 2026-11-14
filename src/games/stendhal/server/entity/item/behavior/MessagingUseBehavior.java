@@ -16,12 +16,12 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.grammar.Grammar;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.TextEvent;
 import marauroa.common.game.RPObject;
 
 /**
@@ -85,8 +85,7 @@ public class MessagingUseBehavior implements UseBehavior {
 		if (publicMessage != null) {
 			if (user instanceof Player) {
 				Player player = (Player) user;
-				player.put("text", publicMessage);
-				SingletonRepository.getRuleProcessor().removePlayerText(player);
+				player.addEvent(new TextEvent(publicMessage, true));
 			} else if (user instanceof NPC) {
 				((NPC) user).say(publicMessage);
 			}

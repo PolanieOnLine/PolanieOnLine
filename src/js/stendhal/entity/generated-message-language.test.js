@@ -64,6 +64,60 @@ test("death translates its wrapper but never the attacker names or their interna
  entity.onDeath();
  assert.equal(logs.at(-1).text,"Zamknij was killed by Witaj. and Zamknij i Plecak");
 });
+
+test("creature death sentences start with a capital while player names retain their case", async () => {
+	const {entity, logs} = await harness();
+	entity.title = "giant eagle";
+	entity.type = "creature";
+	entity.attackers.set("1", {getTitle: () => "Mroczny"});
+	entity.onDeath();
+	assert.equal(logs.at(-1).text, "Giant eagle was killed by Mroczny");
+	entity.title = "mroczny";
+	entity.type = "player";
+	entity.onDeath();
+	assert.equal(logs.at(-1).text, "mroczny was killed by Mroczny");
+});
+
+test("only server-marked item emotes are translated, leaving player-authored text alone", async () => {
+	const {deps} = await harness();
+	const {TextEvent} = load("../event/TextEvent.ts", {...deps,
+		"util/GameLanguage": deps["../util/GameLanguage"]});
+	const heard = [];
+	const player = {type: "player", say: text => heard.push(text)};
+	const event = new TextEvent();
+	event.text = "!me przytulił pluszowego misia.";
+	event.execute(player);
+	assert.equal(heard.at(-1), event.text);
+	event.translate = "";
+	event.execute(player);
+	assert.equal(heard.at(-1), "!me hugged their teddy bear.");
+});
+
+test("bestiary sorts displayed English names and preserves kill flags and rarity groups", async () => {
+	const {deps, stendhal} = await harness();
+	class Node {
+		constructor() {this.children = []; this.classList = {add() {}};}
+		appendChild(node) {this.children.push(node);}
+	}
+	class Content {
+		constructor() {this.componentElement = new Node();}
+		setConfigId() {}
+	}
+	let shown;
+	stendhal.ui = {globalInternalWindow: {set() {}}};
+	const {BestiaryEvent} = load("../event/BestiaryEvent.ts", {...deps,
+		"../ui/UI": {ui: {createSingletonFloatingWindow: (_title, content) => {shown = content;}}},
+		"../ui/toolkit/DialogContentComponent": {DialogContentComponent: Content}},
+		{document: {createElement: () => new Node()}});
+	const event = new BestiaryEvent();
+	event.enemies = "dzik,true,false;niedźwiedź,false,true;dzik (rzadki),true,false;niedźwiedź (rzadki),false,true";
+	event.execute();
+	const columns = shown.componentElement.children[0].children;
+	assert.deepEqual(columns[0].children.slice(1).map(node => node.textContent),
+		["bear", "boar", "bear (rare)", "boar (rare)"]);
+	assert.deepEqual(columns[1].children.slice(1).map(node => node.textContent), ["", "✔", "", "✔"]);
+	assert.deepEqual(columns[2].children.slice(1).map(node => node.textContent), ["✔", "", "✔", ""]);
+});
 test("away floaters translate but player chat remains exactly as written",async()=>{
  const {entity,logs,floaters}=await harness();
  entity.set("away","Zamknij");

@@ -956,6 +956,7 @@ Bestiariusz=Bestiary
 Nazwa stworzenia=Creature name
 Nazwa=Name
 Sam=Solo
+W grupie=Shared
 "???" \= niepoznane="???" \= unknown
 "rzadkie" stworzenia nie są wymagane do osiągnięć="rare" creatures are not required for achievements
 "anormalne" stworzenia nie są wymagane do osiągnięć="abnormal" creatures are not required for achievements

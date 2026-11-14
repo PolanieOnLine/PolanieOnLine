@@ -263,7 +263,7 @@ public class CreatureInfoZ {
 				Translation.getText(player.getLanguage(), creature.getCreatureName()))
 				+ " ";
 		result += getHowDangerous(player, creature, dangerLiterals) + " ";
-		return result;
+		return Grammar.capitalize(result);
 	}
 
 	/**

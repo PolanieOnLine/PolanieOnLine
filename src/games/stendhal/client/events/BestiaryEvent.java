@@ -14,9 +14,13 @@ package games.stendhal.client.events;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -28,6 +32,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.GameScreen;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.gui.ScrolledViewport;
@@ -42,6 +47,25 @@ public class BestiaryEvent extends Event<RPEntity> {
 
 	private boolean hasRare = false;
 	private boolean hasAbnormal = false;
+
+	static List<String> sortedEnemies(final String entries) {
+		final List<String> enemies = new ArrayList<>(Arrays.asList(entries.split(";")));
+		enemies.removeIf(String::isEmpty);
+		final Collator collator = Collator.getInstance(Locale.forLanguageTag(ClientLanguage.getLanguage()));
+		enemies.sort(Comparator.comparingInt(BestiaryEvent::enemyGroup)
+				.thenComparing(entry -> ClientLanguage.getText(entry.split(",")[0]), collator));
+		return enemies;
+	}
+
+	private static int enemyGroup(final String entry) {
+		if (entry.contains(" (rzadki),") || entry.contains(" (rare),")) {
+			return 1;
+		}
+		if (entry.contains(" (anormalny),") || entry.contains(" (abnormal),")) {
+			return 2;
+		}
+		return 0;
+	}
 
 	@Override
 	public void execute() {
@@ -113,16 +137,17 @@ public class BestiaryEvent extends Event<RPEntity> {
 						headerText.append(" stworzenia nie są wymagane do osiągnięć");
 					}
 
-					header.setText("<html><div width=" + (maxPreferredWidth
-							- 10) + ">" + headerText.toString() + "</div></html>");
+					header.setText(ClientLanguage.getText("<html><div width=" + (maxPreferredWidth
+							- 10) + ">" + headerText.toString() + "</div></html>"));
 
 					setVisible(true);
 				}
 
 				private JTable createTable() {
-					final String[] columnNames = { "Nazwa stworzenia", "W pojedynkę", "W grupie" };
+					final String[] columnNames = { ClientLanguage.getText("Nazwa stworzenia"),
+							ClientLanguage.getText("W pojedynkę"), ClientLanguage.getText("W grupie") };
 
-					final List<String> enemies = Arrays.asList(event.get("enemies").split(";"));
+					final List<String> enemies = sortedEnemies(event.get("enemies"));
 
 					final Object[][] data = new Object[enemies.size()][];
 					int i = 0;
@@ -147,7 +172,7 @@ public class BestiaryEvent extends Event<RPEntity> {
 						}
 					}
 
-					rval[0] = name;
+					rval[0] = ClientLanguage.getText(name);
 					rval[1] = "";
 					rval[2] = "";
 
@@ -214,7 +239,7 @@ public class BestiaryEvent extends Event<RPEntity> {
 	 * 		<code>true</code> if enemyName ends with "(rare)".
 	 */
 	private boolean isRare(final String enemyName) {
-		return enemyName.endsWith("(rare)");
+		return enemyName.endsWith("(rare)") || enemyName.endsWith("(rzadki)");
 	}
 
 	/**
@@ -226,7 +251,7 @@ public class BestiaryEvent extends Event<RPEntity> {
 	 * 		<code>true</code> if enemyName ends with "(abnormal)".
 	 */
 	private boolean isAbnormal(final String enemyName) {
-		return enemyName.endsWith("(abnormal)");
+		return enemyName.endsWith("(abnormal)") || enemyName.endsWith("(anormalny)");
 	}
 
 	/**
