@@ -22,6 +22,11 @@ public final class ArmorPoolService {
 		public int getTotalDamage() {
 			return (int) Math.min(Integer.MAX_VALUE, (long) armorDamage + healthDamage);
 		}
+
+		/** Keeps armor damage and kill credit consistent when a fatal-hit guard saves health. */
+		public DamageResult withMaximumHealthDamage(final int maximum) {
+			return new DamageResult(armorDamage, Math.min(healthDamage, Math.max(0, maximum)));
+		}
 	}
 
 	/** Incoming damage already includes weapon matchups; armor-only bonuses apply to the absorbed part. */

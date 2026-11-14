@@ -45,6 +45,9 @@ public class ItemAffixGeneratorTest {
 		maximums.put("critical_hardening", 0.08);
 		maximums.put("steady_hand", 0.10);
 		maximums.put("poison_potency", 0.25);
+		maximums.put("bleed_potency", 0.25);
+		maximums.put("vigilance", 0.12);
+		maximums.put("ammo_conservation", 0.20);
 		maximums.put("legendary_relic_power", 7.0);
 		for (StatusType status : StatusType.values()) {
 			maximums.put(EquipmentStatusResistanceService.getResistanceAttribute(status), 0.12);
@@ -81,6 +84,8 @@ public class ItemAffixGeneratorTest {
 			}
 		}
 		assertTrue(seen.containsAll(Arrays.asList("parry_chance", "lifesteal_effectiveness", "legendary_relic_power")));
+		assertTrue(seen.toString(), seen.containsAll(Arrays.asList("bleed_potency", "vigilance",
+				"ammo_conservation", "legendary_inevitability", "legendary_iron_resolve")));
 	}
 
 	@BeforeClass

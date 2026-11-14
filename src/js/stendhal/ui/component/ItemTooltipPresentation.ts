@@ -94,6 +94,8 @@ const STATUS_RESISTANCES: Array<[string, string]> = [
 ];
 
 const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
+	["legendary_inevitability", "Nieuchronność", "Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się."],
+	["legendary_iron_resolve", "Żelazny upór", "Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się."],
 	["legendary_defense_circle", "Krąg obrony", "Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."],
 	["legendary_hunters_pace", "Łowczy pęd", "Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."],
 	["legendary_last_stand", "Ostatni zryw", "Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się."],
@@ -400,7 +402,10 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	const affixes: ItemTooltipLine[] = [];
 	for (const [key, title, template] of [
 		["steady_hand", "Pewna ręka", "Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń."],
-		["poison_potency", "Zjadliwość", "Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%."]
+		["poison_potency", "Zjadliwość", "Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%."],
+		["bleed_potency", "Rozdarcie", "Zwiększa obrażenia krwawienia nakładanego bronią o {0}%, łącznie maksymalnie o 50%."],
+		["vigilance", "Czujność", "Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%."],
+		["ammo_conservation", "Oszczędny strzał", "{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej."]
 	]) {
 		const value = numberValue(current, key);
 		if (value > 0) {

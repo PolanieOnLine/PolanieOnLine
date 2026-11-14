@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.reflect.Method;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,18 +12,64 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rp.StendhalRPAction;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ConsumableItem;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.HeavyStatus;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.PoisonAttacker;
+import games.stendhal.server.entity.status.BleedingAttacker;
+import games.stendhal.server.entity.status.BleedingStatus;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import utilities.PlayerTestHelper;
 
 public class HuntingAffixServiceTest {
+	@Test
+	public void savedArrowsAreNotRemovedAndWandsDoNotReceiveTheBowBonus() throws Exception {
+		final Player archer = player("saved-ammo");
+		archer.getSlot("lhand").add(affix("ranged", "ammo_conservation", 0.20));
+		final StackableItem arrows = (StackableItem) SingletonRepository.getEntityManager().getItem("strzała");
+		arrows.setQuantity(1000);
+		archer.getSlot("rhand").add(arrows);
+		final Method shoot = StendhalRPAction.class.getDeclaredMethod("useMissile", Player.class, RPEntity.class, int.class);
+		shoot.setAccessible(true);
+		final Creature target = creature(archer, 100);
+		for (int i = 0; i < 1000; i++) {
+			shoot.invoke(null, archer, target, -1);
+		}
+		assertTrue("Saved arrows: " + arrows.getQuantity(), arrows.getQuantity() >= 100 && arrows.getQuantity() <= 300);
+		archer.getSlot("lhand").clear();
+		archer.getSlot("lhand").add(affix("wand", "ammo_conservation", 1.0));
+		archer.getSlot("rhand").clear();
+		final StackableItem spells = (StackableItem) SingletonRepository.getEntityManager().getItem("magia ziemi");
+		spells.setQuantity(2);
+		archer.getSlot("rhand").add(spells);
+		shoot.invoke(null, archer, target, -1);
+		assertEquals(1, spells.getQuantity());
+	}
+
+	@Test
+	public void woundPotencySnapshotsDamageFromWeaponAndGlovesWithoutChangingItsTicks() {
+		final Player attacker = player("wound-potency");
+		attacker.getSlot("rhand").add(affix("sword", "bleed_potency", 0.25));
+		attacker.getSlot("glove").add(affix("glove", "bleed_potency", 0.15));
+		final Creature target = creature(attacker, 100);
+		new BleedingAttacker(100.0, 1.0).onHit(target, attacker, 40);
+		final BleedingStatus wound = (BleedingStatus) target.getStatusList().getStatuses().get(0);
+		assertEquals(56, wound.getTotalDamage());
+		assertSame(attacker, wound.getSource());
+		attacker.getSlot("rhand").clear();
+		int total = 0;
+		while (!wound.isConsumed()) {
+			total += wound.consumeNextTick();
+		}
+		assertEquals(56, total);
+	}
 	@BeforeClass
 	public static void initialize() {
 		MockStendlRPWorld.get();

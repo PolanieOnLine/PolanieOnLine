@@ -14,7 +14,9 @@ package games.stendhal.server.entity.status;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
+import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * Applies physical bleeding wounds after successful damaging hits.
@@ -94,9 +96,12 @@ public class BleedingAttacker extends StatusAttacker {
 			return;
 		}
 
-		final BleedingStatus wound = new BleedingStatus(
-				calculateTotalDamage(damage, damageFactor, target.getBaseHP(),
-						minimumTargetHpFactor, maximumTargetHpFactor),
+		int totalDamage = calculateTotalDamage(damage, damageFactor, target.getBaseHP(),
+				minimumTargetHpFactor, maximumTargetHpFactor);
+		if (attacker instanceof Player) {
+			totalDamage = HuntingAffixService.weaponBleedDamage((Player) attacker, totalDamage);
+		}
+		final BleedingStatus wound = new BleedingStatus(totalDamage,
 				DEFAULT_TICKS, DEFAULT_TICK_INTERVAL_TURNS, attacker);
 		target.getStatusList().inflictStatus(wound, attacker);
 		if (wound.wasApplied()) {

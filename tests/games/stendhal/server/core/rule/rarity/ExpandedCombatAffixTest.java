@@ -14,6 +14,33 @@ import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
 public class ExpandedCombatAffixTest {
+	@Test
+	public void survivalAndWoundAffixesRollOnlyOnApprovedItemsAndSurviveRestoring() {
+		final String[][] cases = {
+			{"bleed_potency", "0.15", "0.25", "sword,axe,glove,gloves"},
+			{"vigilance", "0.08", "0.12", "helmet,cloak"},
+			{"ammo_conservation", "0.10", "0.20", "ranged"},
+			{"legendary_inevitability", "1", "1", "sword,axe,ranged,wand"},
+			{"legendary_iron_resolve", "1", "1", "armor,belt,belts"}
+		};
+		for (String[] row : cases) {
+			final ItemAffixDefinition definition = row[0].startsWith("legendary_")
+					? LegendaryItemAffixRegistry.getInstance().get(row[0])
+					: ItemAffixRegistry.getInstance().get(row[0]);
+			assertNotNull(row[0], definition);
+			for (String type : row[3].split(",")) {
+				final Item item = new Item("new affix item", type, "test", null);
+				assertTrue(row[0] + " on " + type, definition.apply(item, new Random(19)));
+				final double value = Double.parseDouble(ItemAffixState.getValues(item).get(row[0]));
+				assertTrue(value >= Double.parseDouble(row[1]) && value <= Double.parseDouble(row[2]));
+				assertFalse(definition.apply(item, new Random(20)));
+				final Item restored = new Item("new affix item", type, "test", null);
+				ItemAffixState.restore(restored, item);
+				assertEquals(ItemAffixState.getValues(item), ItemAffixState.getValues(restored));
+			}
+			assertFalse(definition.isEligible(new Item("ring", "ring", "test", null)));
+		}
+	}
 	@BeforeClass
 	public static void setupClasses() {
 		ItemTestHelper.generateRPClasses();

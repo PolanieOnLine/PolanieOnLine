@@ -130,6 +130,11 @@ public final class ItemTooltip {
 	public static final String VALUE = "value";
 	public static final String STEADY_HAND = "steady_hand";
 	public static final String POISON_POTENCY = "poison_potency";
+	public static final String BLEED_POTENCY = "bleed_potency";
+	public static final String VIGILANCE = "vigilance";
+	public static final String AMMO_CONSERVATION = "ammo_conservation";
+	public static final String LEGENDARY_INEVITABILITY = "legendary_inevitability";
+	public static final String LEGENDARY_IRON_RESOLVE = "legendary_iron_resolve";
 	public static final String LEGENDARY_DEFENSE_CIRCLE = "legendary_defense_circle";
 	public static final String LEGENDARY_HUNTERS_PACE = "legendary_hunters_pace";
 	public static final String LEGENDARY_LAST_STAND = "legendary_last_stand";

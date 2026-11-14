@@ -38,6 +38,11 @@
 * Dodano afiks Hartowanie, który zmniejsza dodatkowe obrażenia z otrzymanych trafień krytycznych o 4-8%, łącznie maksymalnie o 30%
 * Dodano afiks Pewna ręka, który podnosi minimalne obrażenia broni o 5-10%, bez zwiększania maksymalnych obrażeń
 * Dodano afiks Zjadliwość na broni i rękawicach. Zwiększa obrażenia trucizny nakładanej bronią o 15-25%, łącznie maksymalnie o 50%
+* Dodano afiks Rozdarcie na broni i rękawicach. Zwiększa obrażenia nakładanego krwawienia o 15-25%, łącznie maksymalnie o 50%
+* Dodano afiks Czujność na hełmach i płaszczach. Zmniejsza obrażenia pierwszego trafienia danego przeciwnika o 8-12%. Ochrona odnawia się po 10 sekundach bez trafienia od niego
+* Dodano afiks Oszczędny strzał na broni strzeleckiej. Daje 10-20% szansy, że strzał nie zużyje amunicji
+* Dodano legendarny afiks Nieuchronność na broni. Po dwóch kolejnych chybieniach następny atak nie chybi, a przez 4 sekundy obrażenia rosną o 20%
+* Dodano legendarny afiks Żelazny upór na zbrojach i pasach. Raz na 120 sekund śmiertelne trafienie pozostawia 1 PZ. Nie chroni przed trucizną i krwawieniem
 * Dodano legendarny afiks Krąg obrony na zbrojach i tarczach. Przy walce z kilkoma potworami każdy dodatkowy przeciwnik zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%
 * Dodano legendarny afiks Łowczy pęd na butach. Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 sekundy. Kolejne zabójstwa odświeżają czas działania, bez zwiększania bonusu
 * Dodano legendarny afiks Ostatni zryw na pasach i rękawicach. Poniżej 30% maksymalnego zdrowia zwiększa obrażenia trafień o 20%. Bonus z kilku przedmiotów nie sumuje się

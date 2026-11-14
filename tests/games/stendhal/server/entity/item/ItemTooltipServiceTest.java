@@ -27,11 +27,21 @@ public class ItemTooltipServiceTest {
 		final Item item = new Item("steady sword", "sword", "test", attributes);
 		item.put("item_affixes", "steady_hand", "0.1");
 		item.put("item_affixes", "poison_potency", "0.25");
+		item.put("item_affixes", "bleed_potency", "0.20");
+		item.put("item_affixes", "vigilance", "0.12");
+		item.put("item_affixes", "ammo_conservation", "0.20");
+		item.put("item_affixes", "legendary_inevitability", "1.0");
+		item.put("item_affixes", "legendary_iron_resolve", "1.0");
 		ItemTooltipService.update(item);
 		assertEquals("110", stat(item, ItemTooltip.DAMAGE_MIN));
 		assertEquals("160", stat(item, ItemTooltip.DAMAGE_MAX));
 		assertEquals("0.1", stat(item, ItemTooltip.STEADY_HAND));
 		assertEquals("0.25", stat(item, ItemTooltip.POISON_POTENCY));
+		assertEquals("0.2", stat(item, ItemTooltip.BLEED_POTENCY));
+		assertEquals("0.12", stat(item, ItemTooltip.VIGILANCE));
+		assertEquals("0.2", stat(item, ItemTooltip.AMMO_CONSERVATION));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_INEVITABILITY));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_IRON_RESOLVE));
 	}
 	@BeforeClass
 	public static void setUpClass() {

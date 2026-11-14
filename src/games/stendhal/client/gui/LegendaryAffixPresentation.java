@@ -170,6 +170,12 @@ final class LegendaryAffixPresentation {
 				"Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń.");
 		appendNewPercentage(result, object, ItemTooltip.POISON_POTENCY, "Zjadliwość",
 				"Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%.");
+		appendNewPercentage(result, object, ItemTooltip.BLEED_POTENCY, "Rozdarcie",
+				"Zwiększa obrażenia krwawienia nakładanego bronią o {0}%, łącznie maksymalnie o 50%.");
+		appendNewPercentage(result, object, ItemTooltip.VIGILANCE, "Czujność",
+				"Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%.");
+		appendNewPercentage(result, object, ItemTooltip.AMMO_CONSERVATION, "Oszczędny strzał",
+				"{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej.");
 		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
 				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
 		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",
@@ -177,6 +183,16 @@ final class LegendaryAffixPresentation {
 	}
 
 	private static void appendLegendaryCombatAffixes(final StringBuilder result, final RPObject object) {
+		if (has(object, ItemTooltip.LEGENDARY_INEVITABILITY)) {
+			appendFixed(result, "Nieuchronność", new String[] {
+					"Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_IRON_RESOLVE)) {
+			appendFixed(result, "Żelazny upór", new String[] {
+					"Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się."
+			});
+		}
 		if (has(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE)) {
 			appendFixed(result, "Krąg obrony", new String[] {
 					"Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."

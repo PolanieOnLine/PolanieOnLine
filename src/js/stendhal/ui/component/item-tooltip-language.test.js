@@ -77,6 +77,27 @@ test("the five new affixes have descriptions in Polish, English and Spanish", as
 	}
 });
 
+test("wound and survival affixes retain ordinary and legendary formatting in every language", async () => {
+	const h = await harness();
+	for (const [language, ordinary, legendary] of [
+		["pl", ["Rozdarcie", "Czujność", "Oszczędny strzał"], ["Nieuchronność", "Żelazny upór"]],
+		["en", ["Rending", "Vigilance", "Frugal Shot"], ["Inevitability", "Iron Resolve"]],
+		["es", ["Desgarro", "Vigilancia", "Disparo ahorrador"], ["Inevitabilidad", "Tesón de hierro"]]
+	]) {
+		h.language.synchronize(language);
+		const lines = h.build(new h.Item({category: "armour", bleed_potency: "0.20", vigilance: "0.12",
+			ammo_conservation: "0.20", legendary_inevitability: "1", legendary_iron_resolve: "1"})).lines;
+		for (const name of ordinary) {
+			assert.ok(lines.some(line => line.kind === "bonus" && line.text.startsWith(name + ":")), name);
+		}
+		for (const name of legendary) {
+			assert.ok(lines.some(line => line.kind === "affix" && line.text.startsWith(name + ":")), name);
+		}
+		assert.ok(lines.findIndex(line => line.text.startsWith(ordinary[2] + ":"))
+			< lines.findIndex(line => line.text.startsWith(legendary[0] + ":")));
+	}
+});
+
 test("every elemental resistance has a fully translated label", async () => {
 	const h = await harness();
 	h.language.synchronize("en");

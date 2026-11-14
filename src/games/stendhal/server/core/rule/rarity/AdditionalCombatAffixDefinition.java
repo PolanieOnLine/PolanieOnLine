@@ -10,6 +10,11 @@ import games.stendhal.server.entity.item.Item;
 public enum AdditionalCombatAffixDefinition implements ItemAffixDefinition {
 	STEADY_HAND(ItemTooltip.STEADY_HAND, 5, 10),
 	POISON_POTENCY(ItemTooltip.POISON_POTENCY, 15, 25),
+	BLEED_POTENCY(ItemTooltip.BLEED_POTENCY, 15, 25),
+	VIGILANCE(ItemTooltip.VIGILANCE, 8, 12),
+	AMMO_CONSERVATION(ItemTooltip.AMMO_CONSERVATION, 10, 20),
+	INEVITABILITY(ItemTooltip.LEGENDARY_INEVITABILITY),
+	IRON_RESOLVE(ItemTooltip.LEGENDARY_IRON_RESOLVE),
 	DEFENSE_CIRCLE(ItemTooltip.LEGENDARY_DEFENSE_CIRCLE),
 	HUNTERS_PACE(ItemTooltip.LEGENDARY_HUNTERS_PACE),
 	LAST_STAND(ItemTooltip.LEGENDARY_LAST_STAND);
@@ -53,7 +58,16 @@ public enum AdditionalCombatAffixDefinition implements ItemAffixDefinition {
 		case STEADY_HAND:
 			return WeaponAffixService.isWeapon(item) && item.getDamageMax() > item.getDamageMin();
 		case POISON_POTENCY:
+		case BLEED_POTENCY:
 			return WeaponAffixService.isWeapon(item) || "glove".equals(type) || "gloves".equals(type);
+		case VIGILANCE:
+			return "helmet".equals(type) || "cloak".equals(type);
+		case AMMO_CONSERVATION:
+			return "ranged".equals(type);
+		case INEVITABILITY:
+			return WeaponAffixService.isWeapon(item);
+		case IRON_RESOLVE:
+			return "armor".equals(type) || "belt".equals(type) || "belts".equals(type);
 		case DEFENSE_CIRCLE:
 			return "armor".equals(type) || "shield".equals(type);
 		case HUNTERS_PACE:

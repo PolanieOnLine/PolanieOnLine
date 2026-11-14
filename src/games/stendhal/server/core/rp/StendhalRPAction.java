@@ -57,6 +57,7 @@ import games.stendhal.server.entity.item.WeaponImpl;
 import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.core.rule.damage.HuntingAffixService;
+import games.stendhal.server.core.rule.damage.InevitabilityService;
 import games.stendhal.server.events.AttackEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.net.message.TransferContent;
@@ -394,6 +395,8 @@ public class StendhalRPAction {
 			getsAtkXp = player.getsAtkXpFrom(defender);
 		}
 
+		beaten = InevitabilityService.resolveHit(player, defender, beaten);
+
 		int damage = -1;
 		int armorDamage = 0;
 		if (beaten) {
@@ -418,6 +421,7 @@ public class StendhalRPAction {
 			if (!usesTrainingDummy) {
 				damage = HuntingAffixService.outgoingDamage(player, damage);
 				damage = TacticalAffixCombatService.prepareHit(player, defender, damage);
+				damage = InevitabilityService.boostDamage(player, defender, damage);
 			}
 
 			// Handle critical hit logic
@@ -574,7 +578,9 @@ public class StendhalRPAction {
 		// will lose a projectile for each shot.
 		if (projectilesItem != null) {
 			// TODO: handle in Projectile class
-			projectilesItem.removeOne();
+			if (!HuntingAffixService.conserveAmmunition(player, projectilesItem)) {
+				projectilesItem.removeOne();
+			}
 			if (damage >= 0 && projectilesItem instanceof Projectile) {
 				((Projectile) projectilesItem).onAttackSuccess(target, player, damage);
 			}

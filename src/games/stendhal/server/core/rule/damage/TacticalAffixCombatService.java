@@ -107,6 +107,7 @@ public final class TacticalAffixCombatService {
 
 	/** Target changes reset target-specific bonuses, including switches followed by a miss. */
 	public static void targetChanged(final Player player) {
+		InevitabilityService.reset(player);
 		Sequence sequence = SEQUENCES.get(player);
 		if (sequence != null) {
 			sequence.target.clear();
@@ -116,6 +117,7 @@ public final class TacticalAffixCombatService {
 
 	/** Item hooks also catch unequip/re-equip between hits and changes to either hand. */
 	public static void equipmentChanged(final Player player) {
+		InevitabilityService.reset(player);
 		SEQUENCES.remove(player);
 	}
 

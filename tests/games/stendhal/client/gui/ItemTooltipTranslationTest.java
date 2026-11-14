@@ -18,6 +18,21 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipTranslationTest {
+	@Test public void survivalAndWoundAffixesHaveTranslatedDescriptionsInTheExistingSections() {
+		final RPObject item = ItemTestHelper.createItem("five combat affixes");
+		stat(item, ItemTooltip.BLEED_POTENCY, "0.20");
+		stat(item, ItemTooltip.VIGILANCE, "0.12");
+		stat(item, ItemTooltip.AMMO_CONSERVATION, "0.20");
+		stat(item, ItemTooltip.LEGENDARY_INEVITABILITY, "1");
+		stat(item, ItemTooltip.LEGENDARY_IRON_RESOLVE, "1");
+		final String html = LegendaryAffixPresentation.build(item);
+		for (String name : new String[] {"Rending", "Vigilance", "Frugal Shot", "Inevitability", "Iron Resolve"}) {
+			assertTrue(html, html.contains(name));
+		}
+		assertTrue(html, html.indexOf("Frugal Shot") < html.indexOf("Inevitability"));
+		assertTrue(html, html.contains("20%"));
+		assertTrue(html, html.contains("120"));
+	}
 	@Test
 	public void comparisonHeadingAndEquippedNameUseTheSelectedLanguage() {
 		for (final String category : new String[] {ItemTooltip.CATEGORY_WEAPON, ItemTooltip.CATEGORY_ACCESSORY}) {

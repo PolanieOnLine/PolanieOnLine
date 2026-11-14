@@ -18,6 +18,7 @@ import static games.stendhal.server.entity.player.PlayerLootedItemsHandler.LOOTE
 import games.stendhal.common.QuestMarker;
 import games.stendhal.common.constants.CombatStat;
 import games.stendhal.common.constants.Events;
+import games.stendhal.server.core.rule.damage.SurvivalAffixService;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -54,6 +55,7 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.ITEM_UPGRADE, Definition.PRIVATE);
 
 		player.addAttribute("dead", Type.FLAG, Definition.PRIVATE);
+		player.addAttribute(SurvivalAffixService.IRON_RESOLVE_COOLDOWN_ATTRIBUTE, Type.STRING, Definition.HIDDEN);
 
 		player.addAttribute("away", Type.LONG_STRING, Definition.VOLATILE);
 		player.addAttribute("grumpy", Type.LONG_STRING, Definition.VOLATILE);

@@ -18,6 +18,7 @@ import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.damage.LifeTideService;
 import games.stendhal.server.core.rule.damage.HuntingAffixService;
+import games.stendhal.server.core.rule.damage.InevitabilityService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import static games.stendhal.common.NotificationType.getServerNotificationType;
 import static games.stendhal.common.constants.Actions.ADMINLEVEL;
@@ -290,6 +291,7 @@ public class Player extends DressedEntity implements UseListener {
 		GlyphRecoveryService.reset(player);
 		LifeTideService.reset(player);
 		HuntingAffixService.reset(player);
+		InevitabilityService.reset(player);
 		GlyphCombatService.clearEffects(player);
 		ChallengeArenaObservation.onLogout(player);
 		NpcShopAction.onLogout(player);
@@ -334,6 +336,7 @@ public class Player extends DressedEntity implements UseListener {
 		unlockedPortals = new LinkedList<Integer>();
 		LifeTideService.reset(this);
 		HuntingAffixService.reset(this);
+		InevitabilityService.reset(this);
 
 		updateModifiedAttributes();
 	}
@@ -1231,6 +1234,7 @@ public class Player extends DressedEntity implements UseListener {
 		GlyphRecoveryService.reset(this);
 		LifeTideService.reset(this);
 		HuntingAffixService.reset(this);
+		InevitabilityService.reset(this);
 		GlyphCombatService.clearEffects(this);
 		// Always use remove=false for players, as documented
 		// in RPEntity.onDead()

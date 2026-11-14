@@ -36,6 +36,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.damage.WallOfGordService;
 import games.stendhal.server.core.rule.damage.HuntingAffixService;
+import games.stendhal.server.core.rule.damage.SurvivalAffixService;
 import games.stendhal.server.core.rule.glyph.GlyphCombatService;
 import games.stendhal.server.core.rule.glyph.GlyphEffectService;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
@@ -1480,8 +1481,14 @@ public abstract class RPEntity extends CombatEntity {
 				|| (this instanceof Player && ((Player) this).isArenaSpectator())) {
 			return DamageResult.NONE;
 		}
-		final DamageResult result = ArmorPoolService.resolve(this,
-				GlyphCombatService.reduceIncomingDamage(this, incomingDamage), armorMultiplier, bypassArmor);
+		int resolvedDamage = GlyphCombatService.reduceIncomingDamage(this, incomingDamage);
+		if (!bypassArmor) {
+			resolvedDamage = SurvivalAffixService.reduceDirectHit(this, attacker, resolvedDamage);
+		}
+		DamageResult result = ArmorPoolService.resolve(this, resolvedDamage, armorMultiplier, bypassArmor);
+		if (!bypassArmor && attacker instanceof RPEntity && attacker != this) {
+			result = SurvivalAffixService.guardFatalHit(this, result);
+		}
 		final int damage = result.getTotalDamage();
 		if (damage <= 0) {
 			return result;

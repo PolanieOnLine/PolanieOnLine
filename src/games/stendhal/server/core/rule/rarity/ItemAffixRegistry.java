@@ -47,7 +47,10 @@ public final class ItemAffixRegistry {
 					new DistanceDamageAffixDefinition(),
 					new ArmorPenetrationAffixDefinition(),
 					AdditionalCombatAffixDefinition.STEADY_HAND,
-					AdditionalCombatAffixDefinition.POISON_POTENCY));
+					AdditionalCombatAffixDefinition.POISON_POTENCY,
+					AdditionalCombatAffixDefinition.BLEED_POTENCY,
+					AdditionalCombatAffixDefinition.VIGILANCE,
+					AdditionalCombatAffixDefinition.AMMO_CONSERVATION));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;
