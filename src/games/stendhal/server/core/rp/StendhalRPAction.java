@@ -58,6 +58,7 @@ import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.core.rule.damage.HuntingAffixService;
 import games.stendhal.server.core.rule.damage.InevitabilityService;
+import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.events.AttackEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.net.message.TransferContent;
@@ -396,6 +397,14 @@ public class StendhalRPAction {
 		}
 
 		beaten = InevitabilityService.resolveHit(player, defender, beaten);
+		if (beaten && defender instanceof Player
+				&& (attackWeapon == null || !attackWeapon.isNonMeleeWeapon())
+				&& ParryService.rollParry((Player) defender)) {
+			player.addEvent(new AttackEvent(true, 0, player.getDamageType(),
+					weaponClass, false, true));
+			player.notifyWorldAboutChanges();
+			return false;
+		}
 
 		int damage = -1;
 		int armorDamage = 0;

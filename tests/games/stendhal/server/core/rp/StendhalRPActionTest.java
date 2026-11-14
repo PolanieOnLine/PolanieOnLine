@@ -13,12 +13,16 @@
 package games.stendhal.server.core.rp;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static utilities.PlayerTestHelper.getPrivateReply;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,18 +30,23 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Projectile;
 import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.Sheep;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.AttackEvent;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.server.game.db.DatabaseFactory;
+import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
 
 public class StendhalRPActionTest {
@@ -58,7 +67,7 @@ public class StendhalRPActionTest {
 	@Before
 	public void setUp() throws Exception {
 		zone = new StendhalRPZone("zone", 20, 20);
-		zone.protectionMap.init(1, 1);
+		zone.protectionMap.init(20, 20);
 		MockStendlRPWorld.get().addRPZone(zone);
 	}
 
@@ -335,6 +344,145 @@ public class StendhalRPActionTest {
 				verifyAmmunitionUse("wand", "magia ziemi", hits, adjacent);
 			}
 		}
+	}
+
+	@Test
+	public void pvpParryBlocksDamageAndArmsOneDuelMasterRiposte() throws Exception {
+		final Player attacker = combatPlayer("parry_attacker", true, "sword");
+		final Player defender = combatPlayer("parry_defender", true, "sword");
+		defender.getWeapon().put(ParryService.LEGENDARY_DUEL_MASTER_ATTRIBUTE, 1.0);
+		defender.initArmorHP(50);
+		attacker.setHP(500);
+		attacker.getWeapon().put("lifesteal", 1.0);
+
+		assertFalse(attackWithParryRoll(attacker, defender, 0.0));
+		assertEquals(1000, defender.getHP());
+		assertEquals(50, defender.getArmorHP());
+		assertEquals("a parried hit cannot steal life", 500, attacker.getHP());
+		final AttackEvent event = lastAttackEvent(attacker);
+		assertTrue(event.has("parried"));
+		assertEquals(0, event.getInt("damage"));
+
+		assertTrue(attackWithParryRoll(defender, attacker, 0.99));
+		assertEquals("the riposte deals 30% more damage", 370, attacker.getHP());
+		assertTrue(attackWithParryRoll(defender, attacker, 0.99));
+		assertEquals("the riposte is consumed exactly once", 270, attacker.getHP());
+	}
+
+	@Test
+	public void failedPvpParryAllowsNormalDamageWithoutArmingRiposte() throws Exception {
+		final Player attacker = combatPlayer("failed_parry_attacker", true, "sword");
+		final Player defender = combatPlayer("failed_parry_defender", true, "sword");
+		defender.getWeapon().put(ParryService.LEGENDARY_DUEL_MASTER_ATTRIBUTE, 1.0);
+
+		assertTrue(attackWithParryRoll(attacker, defender, 0.99));
+		assertEquals(900, defender.getHP());
+		assertFalse(lastAttackEvent(attacker).has("parried"));
+		assertTrue(attackWithParryRoll(defender, attacker, 0.99));
+		assertEquals(900, attacker.getHP());
+	}
+
+	@Test
+	public void pvpProjectilesCannotBeParriedEvenAtPointBlankRange() throws Exception {
+		for (final String weaponClass : new String[] {"ranged", "wand"}) {
+			for (final boolean adjacent : new boolean[] {false, true}) {
+				final String suffix = weaponClass + adjacent;
+				final Player attacker = combatPlayer("projectile_attacker_" + suffix, true, weaponClass);
+				final Player defender = combatPlayer("projectile_defender_" + suffix, true, "sword");
+				defender.getWeapon().put(ParryService.PARRY_CHANCE_ATTRIBUTE, 0.15);
+				defender.setPosition(adjacent ? 6 : 9, 5);
+				final String ammunitionName = "wand".equals(weaponClass) ? "magia ziemi" : "strzała";
+				final Projectile ammunition = (Projectile) SingletonRepository.getEntityManager()
+						.getItem(ammunitionName);
+				ammunition.setQuantity(2);
+				attacker.getSlot("rhand").add(ammunition);
+
+				assertTrue(attackWithParryRoll(attacker, defender, 0.0));
+				assertEquals(900, defender.getHP());
+				assertEquals(1, ammunition.getQuantity());
+				assertFalse(lastAttackEvent(attacker).has("parried"));
+				zone.remove(attacker);
+				zone.remove(defender);
+			}
+		}
+	}
+
+	@Test
+	public void pvpParryCanBlockInevitabilityWithoutCountingAsAnAccuracyMiss() throws Exception {
+		final Player attacker = combatPlayer("inevitable_parry_attacker", false, "sword");
+		final Player defender = combatPlayer("inevitable_parry_defender", true, "sword");
+		attacker.getWeapon().put(ItemAffixState.ATTRIBUTE, "legendary_inevitability", "1.0");
+		defender.getWeapon().put(ParryService.PARRY_CHANCE_ATTRIBUTE, 0.15);
+
+		assertFalse(attackWithParryRoll(attacker, defender, 0.0));
+		assertFalse(lastAttackEvent(attacker).has("parried"));
+		assertFalse(attackWithParryRoll(attacker, defender, 0.0));
+		assertFalse(lastAttackEvent(attacker).has("parried"));
+		assertFalse(attackWithParryRoll(attacker, defender, 0.0));
+		assertTrue(lastAttackEvent(attacker).has("parried"));
+		assertFalse(attackWithParryRoll(attacker, defender, 0.0));
+		assertFalse(lastAttackEvent(attacker).has("parried"));
+		assertEquals(1000, defender.getHP());
+	}
+
+	private Player combatPlayer(final String name, final boolean hits, final String weaponClass) {
+		final Player player = new Player(PlayerTestHelper.createPlayer(name)) {
+			@Override
+			public boolean canHit(final RPEntity defender) {
+				return hits;
+			}
+
+			@Override
+			public int damageDone(final RPEntity defender, final double attack, final Nature nature) {
+				return 100;
+			}
+		};
+		final Weapon weapon = new Weapon("test pvp weapon", weaponClass, "test", null);
+		weapon.put("atk", 10);
+		weapon.put("damage_min", 100);
+		weapon.put("damage_max", 100);
+		weapon.put("rate", 5);
+		weapon.put("range", 7);
+		player.getSlot("lhand").add(weapon);
+		player.initHP(1000);
+		player.setPosition(5, 5);
+		zone.add(player);
+		return player;
+	}
+
+	private boolean attackWithParryRoll(final Player attacker, final Player defender,
+			final double parryRoll) throws Exception {
+		final Field randomField = Rand.class.getDeclaredField("rand");
+		randomField.setAccessible(true);
+		final Random previous = (Random) randomField.get(null);
+		randomField.set(null, new Random() {
+			@Override
+			public double nextDouble() {
+				return parryRoll;
+			}
+
+			@Override
+			public int nextInt(final int bound) {
+				return bound - 1;
+			}
+		});
+		attacker.clearEvents();
+		try {
+			return StendhalRPAction.playerAttack(attacker, defender);
+		} finally {
+			randomField.set(null, previous);
+		}
+	}
+
+	private AttackEvent lastAttackEvent(final Player player) {
+		AttackEvent last = null;
+		for (final RPEvent event : player.events()) {
+			if (event instanceof AttackEvent) {
+				last = (AttackEvent) event;
+			}
+		}
+		assertNotNull("an attack event must reach the client", last);
+		return last;
 	}
 
 	@Test
