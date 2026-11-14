@@ -16,6 +16,22 @@ import { stendhal } from "../stendhal";
  */
 export class HTMLManager {
 
+	/** Escapes one literal character before inserting it into HTML text. */
+	public static escapeChar(character: string): string {
+		switch (character) {
+			case "&":
+				return "&amp;";
+			case "<":
+				return "&lt;";
+			case ">":
+				return "&gt;";
+			case "\"":
+				return "&quot;";
+			default:
+				return character;
+		}
+	}
+
 	/** Singleton instance. */
 	private static instance: HTMLManager;
 	private mobileTooltipTarget?: HTMLElement;

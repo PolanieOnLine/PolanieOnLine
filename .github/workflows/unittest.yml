@@ -62,6 +62,8 @@ jobs:
         run: npm run test:build-tools
       - name: Test player presence privacy
         run: npm run test:player-presence
+      - name: Check chat HTML escaping and channels
+        run: npm run test:chat
       - name: Check inventory animation and sprite preparation
         run: npm run test:inventory
       - name: Check quest marker rendering

@@ -10,6 +10,7 @@
  ***************************************************************************/
 
 import { stendhal } from "stendhal";
+import { HTMLManager } from "../ui/HTMLManager";
 import { ui } from "../ui/UI";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 import { ChatLogComponent } from "../ui/component/ChatLogComponent";
@@ -122,8 +123,12 @@ export class Chat {
 
 			if (c === "\\") {
 				let n = message[i + 1];
-				res += n;
-				i++;
+				if (n !== undefined) {
+					res += HTMLManager.escapeChar(n);
+					i++;
+				} else {
+					res += "\\";
+				}
 
 			// Highlight Start?
 			} else if (c === "#") {
@@ -229,10 +234,6 @@ export class Chat {
 				}
 				res += c;
 
-			// HTML escape
-			} else if (c === "<") {
-				res += "&lt;";
-
 			// End of word
 			} else if (delims.indexOf(c) > -1) {
 				let n = message[i + 1];
@@ -262,7 +263,7 @@ export class Chat {
 
 			// Normal characters
 			} else {
-				res += c;
+				res += HTMLManager.escapeChar(c);
 			}
 		}
 
