@@ -11,6 +11,9 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,7 +25,6 @@ import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,11 +52,11 @@ public final class AdventCalendarDialog extends JDialog {
 	private final Map<Integer, Door> doors = new HashMap<>();
 	private final JLabel date = new JLabel();
 	private final JLabel status = new JLabel(text("Wczytywanie kalendarza…"), JLabel.CENTER);
-	private final JPanel rewards = new JPanel();
 	private final Timer refresh;
 	private String requestId;
 	private long sentAt;
 	private int sequence;
+	private int displayedYear;
 	private boolean waiting;
 	private final List<String> states = new ArrayList<>();
 
@@ -72,6 +74,15 @@ public final class AdventCalendarDialog extends JDialog {
 		board.setBorder(BorderFactory.createEmptyBorder());
 		for (final int[] cell : AdventCalendarLayout.doors()) {
 			final Door door = new Door(cell[0]);
+			door.addActionListener(event -> {
+				if (waiting || states.size() != 24) return;
+				if ("available".equals(door.state) || "claimed".equals(door.state)) {
+					send("claimed".equals(door.state) ? "view" : "claim", door.day);
+				} else {
+					status.setText(text("expired".equals(door.state) ? "Minął już termin odbioru tego prezentu."
+							: "Na ten prezent trzeba jeszcze poczekać."));
+				}
+			});
 			doors.put(cell[0], door);
 			final GridBagConstraints constraints = new GridBagConstraints();
 			constraints.gridx = cell[1];
@@ -88,9 +99,6 @@ public final class AdventCalendarDialog extends JDialog {
 		content.add(board, BorderLayout.CENTER);
 		final JPanel footer = new JPanel(new BorderLayout(0, 8));
 		footer.setBorder(BorderFactory.createEmptyBorder());
-		rewards.setBorder(BorderFactory.createEmptyBorder());
-		rewards.setPreferredSize(new Dimension(480, 56));
-		footer.add(rewards, BorderLayout.NORTH);
 		footer.add(status, BorderLayout.CENTER);
 		final JButton close = new JButton(text("Zamknij"));
 		close.addActionListener(event -> dispose());
@@ -105,7 +113,9 @@ public final class AdventCalendarDialog extends JDialog {
 		setMinimumSize(getSize());
 		setLocationRelativeTo(parent);
 		refresh = new Timer(1000, event -> {
-			rewards.repaint();
+			for (final Door door : doors.values()) {
+				if (door.showingRewards()) door.repaint();
+			}
 			if (StendhalClient.get().getPlayer() != owner) {
 				dispose();
 			} else if (waiting && System.currentTimeMillis() - sentAt > 8000) {
@@ -167,47 +177,45 @@ public final class AdventCalendarDialog extends JDialog {
 		waiting = false;
 		states.clear();
 		states.addAll(event.getList("states"));
-		date.setText(LocalDate.parse(event.get("date")).format(DateTimeFormatter.ofPattern(
+		final LocalDate calendarDate = LocalDate.parse(event.get("date"));
+		if (displayedYear != calendarDate.getYear()) {
+			for (final Door door : doors.values()) door.clearRewards();
+			displayedYear = calendarDate.getYear();
+		}
+		date.setText(calendarDate.format(DateTimeFormatter.ofPattern(
 				"d MMMM yyyy", Locale.forLanguageTag(ClientLanguage.getLanguage()))));
 		final int today = event.getInt("today");
 		for (final Door door : doors.values()) {
-			door.state = states.get(door.day - 1);
+			door.updateState(states.get(door.day - 1), today == door.day);
 			door.setEnabled(!"inactive".equals(door.state));
-			door.today = today == door.day;
-				door.getAccessibleContext().setAccessibleDescription(text("claimed".equals(door.state)
-						? "Prezent odebrany" : "available".equals(door.state) ? "Odbierz prezent"
-						: "expired".equals(door.state) ? "Termin odbioru minął" : "Prezent jeszcze niedostępny"));
+			door.getAccessibleContext().setAccessibleDescription(text("claimed".equals(door.state)
+					? "Prezent odebrany" : "available".equals(door.state) ? "Odbierz prezent"
+					: "expired".equals(door.state) ? "Termin odbioru minął" : "Prezent jeszcze niedostępny")
+					+ (door.showingRewards() ? ". " + door.rewardDescription() : ""));
 			door.repaint();
 		}
 		final String message = event.get("message");
 		status.setText(text(message.isEmpty() ? "Otwórz dzisiejsze okienko lub odbierz zaległy prezent." : message));
-		if ("inactive".equals(event.get("status"))) {
-			rewards.removeAll();
-			rewards.revalidate();
-			rewards.repaint();
-		}
 		if (event.getInt("revealed_day") > 0 && event.has("reward_names")) {
-			rewards.removeAll();
+			final Door door = doors.get(event.getInt("revealed_day"));
+			if (door == null || !"claimed".equals(door.state)) return;
 			final List<String> names = event.getList("reward_names");
 			final List<String> classes = event.getList("reward_classes");
 			final List<String> subclasses = event.getList("reward_subclasses");
 			final List<String> quantities = event.getList("reward_quantities");
+			final List<RewardIcon> icons = new ArrayList<>();
 			for (int i = 0; i < names.size(); i++) {
-				final JPanel reward = new JPanel(new BorderLayout(6, 0));
-				reward.setBorder(BorderFactory.createEmptyBorder());
-				reward.add(new RewardIcon(classes.get(i), subclasses.get(i), Integer.parseInt(quantities.get(i))), BorderLayout.WEST);
 				final String name = "money".equals(names.get(i)) ? "monety" : names.get(i);
-				reward.add(new JLabel(text(name)), BorderLayout.CENTER);
-				rewards.add(reward);
+				icons.add(new RewardIcon(classes.get(i), subclasses.get(i), text(name), Integer.parseInt(quantities.get(i))));
 			}
-			rewards.revalidate();
-			rewards.repaint();
+			door.reveal(icons);
 		}
 	}
 
 	@Override
 	public void dispose() {
 		refresh.stop();
+		for (final Door door : doors.values()) door.clearRewards();
 		if (active == this) {
 			active = null;
 		}
@@ -218,30 +226,59 @@ public final class AdventCalendarDialog extends JDialog {
 		return ClientLanguage.getText(value);
 	}
 
-	private final class Door extends JButton {
+	static final class Door extends JButton {
 		private static final long serialVersionUID = 1L;
 		private final int day;
 		private String state = "future";
 		private boolean today;
+		private final List<RewardIcon> rewards = new ArrayList<>();
 		private final Sprite wood = SpriteStore.get().getSprite("data/gui/panel_wood.jpg");
 
-		private Door(final int day) {
+		Door(final int day) {
 			this.day = day;
 			setPreferredSize(new Dimension(76, 84));
 			setContentAreaFilled(false);
 			setBorderPainted(false);
 			getAccessibleContext().setAccessibleName(day + " " + text("grudnia"));
-			addActionListener(event -> {
-				if (waiting || states.size() != 24) {
-					return;
-				}
-				if ("available".equals(state) || "claimed".equals(state)) {
-					send("claimed".equals(state) ? "view" : "claim", day);
-				} else {
-					status.setText(text("expired".equals(state) ? "Minął już termin odbioru tego prezentu."
-							: "Na ten prezent trzeba jeszcze poczekać."));
-				}
-			});
+		}
+
+		void updateState(final String nextState, final boolean isToday) {
+			state = nextState;
+			today = isToday;
+			if (!"claimed".equals(state)) clearRewards();
+			repaint();
+		}
+
+		void reveal(final List<RewardIcon> icons) {
+			if (!"claimed".equals(state)) return;
+			rewards.clear();
+			rewards.addAll(icons);
+			final StringBuilder hint = new StringBuilder("<html>");
+			for (final RewardIcon icon : icons) {
+				hint.append(icon.name).append(" × ").append(icon.count).append("<br>");
+			}
+			setToolTipText(hint.append("</html>").toString());
+			getAccessibleContext().setAccessibleDescription(text("Prezent odebrany") + ". " + rewardDescription());
+			repaint();
+		}
+
+		private String rewardDescription() {
+			final StringBuilder description = new StringBuilder();
+			for (final RewardIcon icon : rewards) {
+				if (description.length() > 0) description.append(", ");
+				description.append(icon.name).append(" × ").append(icon.count);
+			}
+			return description.toString();
+		}
+
+		void clearRewards() {
+			rewards.clear();
+			setToolTipText(null);
+			repaint();
+		}
+
+		boolean showingRewards() {
+			return "claimed".equals(state) && !rewards.isEmpty();
 		}
 
 		@Override
@@ -263,6 +300,7 @@ public final class AdventCalendarDialog extends JDialog {
 			g.drawRect(1, 1, width - 3, height - 3);
 			g.setColor(new Color(45, 24, 12));
 			g.drawRect(3, 3, width - 7, height - 7);
+			if (claimed) paintOpenDoor(g, width, height);
 			if (day == 24 && !claimed) {
 				g.drawLine(width / 2, 3, width / 2, height - 4);
 				g.setColor(new Color(186, 145, 88));
@@ -283,7 +321,9 @@ public final class AdventCalendarDialog extends JDialog {
 				g.setColor(new Color(255, 223, 157));
 			}
 			g.drawString(number, x, y);
-			if (claimed) {
+			if (showingRewards()) {
+				paintRewards(g, width, height);
+			} else if (claimed) {
 				g.setFont(getFont().deriveFont(24f));
 				g.drawString("✓", width / 2 - 9, height / 2 + 9);
 			}
@@ -298,32 +338,108 @@ public final class AdventCalendarDialog extends JDialog {
 			}
 			g.dispose();
 		}
+
+		private int leafWidth(final int width) {
+			return Math.max(10, Math.min(18, width / 6));
+		}
+
+		private void paintOpenDoor(final Graphics2D g, final int width, final int height) {
+			g.setColor(new Color(17, 12, 9, 220));
+			g.fillRect(4, 4, width - 8, height - 8);
+			g.setColor(new Color(7, 5, 3));
+			g.drawRect(5, 5, width - 11, height - 11);
+			g.setColor(new Color(104, 73, 43));
+			g.drawLine(6, height - 6, width - 6, height - 6);
+			paintLeaf(g, width, height, false);
+			if (day == 24) paintLeaf(g, width, height, true);
+		}
+
+		private void paintLeaf(final Graphics2D g, final int width, final int height, final boolean right) {
+			final int hinge = right ? width - 4 : 4;
+			final int edge = right ? width - leafWidth(width) : leafWidth(width);
+			final Polygon leaf = new Polygon(new int[] {hinge, edge, edge, hinge},
+					new int[] {4, 12, height - 12, height - 4}, 4);
+			final Graphics2D panel = (Graphics2D) g.create();
+			panel.clip(leaf);
+			for (int y = 0; y < height; y += wood.getHeight()) {
+				wood.draw(panel, right ? width - wood.getWidth() : 0, y);
+			}
+			panel.setColor(new Color(30, 16, 7, 80));
+			panel.fillRect(0, 0, width, height);
+			panel.dispose();
+			g.setColor(new Color(182, 135, 76));
+			g.drawPolygon(leaf);
+			g.setColor(new Color(58, 35, 18));
+			g.drawLine(edge + (right ? 2 : -2), 14, edge + (right ? 2 : -2), height - 14);
+			g.setColor(new Color(162, 136, 90));
+			for (final int y : new int[] {height / 3, height * 2 / 3}) {
+				g.fillRect(right ? width - 7 : 2, y, 5, 4);
+			}
+		}
+
+		Rectangle rewardArea(final int width, final int height) {
+			final int left = leafWidth(width) + 5;
+			final int right = day == 24 ? leafWidth(width) + 5 : 7;
+			return new Rectangle(left, 23, Math.max(0, width - left - right), Math.max(0, height - 31));
+		}
+
+		private void paintRewards(final Graphics2D g, final int width, final int height) {
+			final Rectangle area = rewardArea(width, height);
+			int size = 36;
+			int columns;
+			int rows;
+			do {
+				columns = Math.max(1, area.width / size);
+				rows = (rewards.size() + columns - 1) / columns;
+				if (rows * size <= area.height) break;
+				size -= 4;
+			} while (size > 12);
+			final int gridWidth = Math.min(columns, rewards.size()) * size;
+			final int x = area.x + (area.width - gridWidth) / 2;
+			final int y = area.y + (area.height - rows * size) / 2;
+			final Graphics2D items = (Graphics2D) g.create();
+			items.clip(area);
+			for (int index = 0; index < rewards.size(); index++) {
+				rewards.get(index).draw(items, x + index % columns * size, y + index / columns * size, size);
+			}
+			items.dispose();
+		}
 	}
 
-	private static final class RewardIcon extends JComponent {
-		private static final long serialVersionUID = 1L;
+	static final class RewardIcon {
 		private final Sprite slot = SpriteStore.get().getSprite("data/gui/slot.png");
 		private final Sprite icon;
 		private final Sprite quantity;
+		private final String name;
+		private final int count;
 
-		private RewardIcon(final String itemClass, final String subclass, final int count) {
-			setPreferredSize(new Dimension(42, 42));
+		RewardIcon(final String itemClass, final String subclass, final String name, final int count) {
+			this.name = name;
+			this.count = count;
 			final SpriteStore store = SpriteStore.get();
 			final Sprite sheet = store.getSprite("data/sprites/items/" + itemClass + "/" + subclass + ".png");
 			icon = sheet.getWidth() > 32
 					? store.getAnimatedSprite(sheet, 0, 0, sheet.getWidth() / 32, 32, 32, 100)
 					: store.getTile(sheet, 0, 0, 32, 32);
-			quantity = count > 1 ? TextSprite.createTextSprite(Integer.toString(count), Color.WHITE) : null;
+			final String label = count > 9999999 ? count / 1000000 + "M"
+					: count > 9999 ? count / 1000 + "K" : Integer.toString(count);
+			quantity = count > 1 ? TextSprite.createTextSprite(label, Color.WHITE) : null;
 		}
 
-		@Override
-		protected void paintComponent(final Graphics g) {
-			slot.draw(g, (getWidth() - slot.getWidth()) / 2, (getHeight() - slot.getHeight()) / 2);
-			icon.draw(g, (getWidth() - 32) / 2, (getHeight() - 32) / 2);
+		void draw(final Graphics2D graphics, final int x, final int y, final int size) {
+			final Graphics2D g = (Graphics2D) graphics.create();
+			g.translate(x, y);
+			g.scale(size / 42.0, size / 42.0);
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+			slot.draw(g, (42 - slot.getWidth()) / 2, (42 - slot.getHeight()) / 2);
+			icon.draw(g, 5, 5);
 			if (quantity != null) {
-				quantity.draw(g, (getWidth() + slot.getWidth()) / 2 - quantity.getWidth(),
-						(getHeight() - slot.getHeight()) / 2);
+				final double scale = Math.min(1.0, 40.0 / quantity.getWidth());
+				g.translate(41 - quantity.getWidth() * scale, 1);
+				g.scale(scale, scale);
+				quantity.draw(g, 0, 0);
 			}
+			g.dispose();
 		}
 	}
 }
