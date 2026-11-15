@@ -35,6 +35,7 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.semos.guardhouse.RetiredAdventurerNPC;
 import games.stendhal.server.util.ResetSpeakerNPC;
@@ -51,7 +52,7 @@ import games.stendhal.server.util.ResetSpeakerNPC;
  * <li> Return and learn how to click move, and get some URLs
  * </ul>
  *
- * REWARD: <ul><li> 200 XP <li> 150 gold coins <li> studded shield </ul>
+ * REWARD: <ul><li> 220 XP <li> 150 gold coins <li> wooden shield </ul>
  *
  * REPETITIONS: <ul><li> Get the URLs as much as wanted but you only get the reward once.</ul>
  */
@@ -198,6 +199,9 @@ public class MeetHayunn extends AbstractQuest {
 				"Spotkanie Hayunna Naratha",
 				"Hayunn Naratha może nauczyć młodych bohaterów podstaw świata PolanieOnLine.",
 				false);
+		questInfo.setRewards(new QuestRewards(220, 150)
+				.item("drewniana tarcza", 1, ItemRarity.COMMON, false)
+				.note("Nagrody otrzymujesz w kolejnych etapach zadania.").build());
 		prepareHayunn();
 	}
 
@@ -231,7 +235,7 @@ public class MeetHayunn extends AbstractQuest {
 		if ("taught".equals(questState)) {
 			return res;
 		} 
-		res.add("Hayunn powiedział mi wiele przydatnych informacji na temat jak przetrwać,  dał mi też tarczę ćwiekową i pieniądze.");
+		res.add("Hayunn przekazał mi kolejne wskazówki i drewnianą tarczę.");
 		if (isCompleted(player)) {
 			return res;
 		}

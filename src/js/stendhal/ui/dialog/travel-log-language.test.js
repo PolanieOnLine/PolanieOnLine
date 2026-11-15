@@ -193,3 +193,27 @@ test("a quest with only XP and coins does not create an empty item slot",async()
  assert.equal(section.children.length,2);
  assert.equal(timers.size,0);
 });
+
+test("side quest rewards show binding and variable completed prizes remain an overview",async()=>{
+	const {Dialog,language,details}=await harness();language.synchronize("pl");
+	const dialog=new Dialog();dialog.currentProgressType="Zadania poboczne";
+	dialog.itemData("Zadania poboczne","Nagroda","Opis",[],{
+		reward_xp:50,reward_coins:20,reward_completed:0,reward_names:["ciupaga"],reward_classes:["axe"],
+		reward_subclasses:["axe"],reward_amounts:["1"],reward_rarities:["rare"],reward_bindings:["1"]
+	});
+	const caption=details.children.at(-1).children[0].children[2].children[0].children[1];
+	assert.ok(caption.children.some(child=>child.textContent==="Przypisany do postaci"));
+	dialog.itemData("Zadania poboczne","Nagroda losowa","Opis",[],{
+		reward_xp:200,reward_completed:1,reward_variable:1,reward_notes:["Losowo od 1 do 4 grillowanych steków."]
+	});
+	const section=details.children.at(-1).children[0];
+	assert.equal(section.children[0].textContent,"Nagrody za zadanie");
+	assert.equal(section.children.at(-1).textContent,"Losowo od 1 do 4 grillowanych steków.");
+	language.synchronize("en");
+	dialog.itemData("Zadania poboczne","Nagroda losowa","Opis",[],{
+		reward_xp:200,reward_completed:1,reward_variable:1,reward_notes:["Losowo od 1 do 4 grillowanych steków."]
+	});
+	const translated=details.children.at(-1).children[0];
+	assert.equal(translated.children[0].textContent,"Quest rewards");
+	assert.equal(translated.children.at(-1).textContent,"Randomly 1 to 4 grilled steaks.");
+});

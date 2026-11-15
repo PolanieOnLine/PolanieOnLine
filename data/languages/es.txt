@@ -3153,3 +3153,14 @@ Dostarcz przesyłkę. Odbiorca: {0}.=Entrega el paquete. Destinatario: {0}.
 Aby śledzić rozpoczęte zadanie poboczne, miej swój kompas w plecaku.=Para seguir una misión secundaria activa, lleva tu brújula en la mochila.
 
 Zbierz potrzebne przedmioty. {0}: {1}/{2}=Reúne los objetos necesarios. {0}: {1}/{2}
+
+Nagrody za zadanie=Recompensas de la misión
+
+
+Losowo od 1 do 4 grillowanych steków.=Entre 1 y 4 filetes a la parrilla al azar.
+
+Doświadczenie i napiwek zależą od odbiorcy oraz czasu dostawy.=La experiencia y la propina dependen del destinatario y del tiempo de entrega.
+
+Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.=Una entrega tardía otorga la mitad de experiencia y ninguna propina.
+
+Nagrody otrzymujesz w kolejnych etapach zadania.=Las recompensas se entregan en las distintas etapas de la misión.

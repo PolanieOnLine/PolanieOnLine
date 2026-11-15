@@ -11,6 +11,7 @@ export interface QuestRewardData {
 	reward_xp?: number | string;
 	reward_coins?: number | string;
 	reward_completed?: number | string;
+	reward_variable?: number | string;
 	reward_names?: string[] | string;
 	reward_classes?: string[] | string;
 	reward_subclasses?: string[] | string;
@@ -46,7 +47,8 @@ export function createQuestRewards(data?: QuestRewardData): {
 	const root = document.createElement("section");
 	root.className = "quest-rewards";
 	const heading = document.createElement("strong");
-	heading.textContent = text(Number(data.reward_completed) ? "Otrzymane nagrody" : "Nagrody");
+	heading.textContent = text(Number(data.reward_completed)
+		? (Number(data.reward_variable) ? "Nagrody za zadanie" : "Otrzymane nagrody") : "Nagrody");
 	root.appendChild(heading);
 	const amounts = document.createElement("div");
 	amounts.className = "quest-reward-amounts";
@@ -63,6 +65,7 @@ export function createQuestRewards(data?: QuestRewardData): {
 	const subclasses = list(data.reward_subclasses);
 	const quantities = list(data.reward_amounts);
 	const tiers = list(data.reward_rarities);
+	const bindings = list(data.reward_bindings);
 	const stats = list(data.reward_stats);
 	const items = document.createElement("div");
 	items.className = "quest-reward-items";
@@ -87,6 +90,11 @@ export function createQuestRewards(data?: QuestRewardData): {
 			const label = document.createElement("small");
 			label.textContent = text(rarity[0]);
 			label.style.color = rarity[1];
+			caption.appendChild(label);
+		}
+		if (bindings[index] === "1") {
+			const label = document.createElement("small");
+			label.textContent = text("Przypisany do postaci");
 			caption.appendChild(label);
 		}
 		const item = new Item();

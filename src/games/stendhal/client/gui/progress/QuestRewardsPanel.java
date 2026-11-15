@@ -79,7 +79,7 @@ final class QuestRewardsPanel extends JPanel {
 			return;
 		}
 		JLabel title = label(
-				text(rewards.completed ? "Otrzymane nagrody" : "Nagrody"));
+				text(rewards.completed ? (rewards.variable ? "Nagrody za zadanie" : "Otrzymane nagrody") : "Nagrody"));
 		title.setFont(title.getFont().deriveFont(Font.BOLD));
 		add(title);
 		JPanel amounts = transparent(new FlowLayout(FlowLayout.LEFT, 0, 3));
@@ -106,6 +106,7 @@ final class QuestRewardsPanel extends JPanel {
 						+ escape(text(rarity.getPolishDisplayName()))
 						+ "</font>";
 			}
+			if (item.bound) caption += "<br><small>" + escape(text("Przypisany do postaci")) + "</small>";
 			JLabel name = new JLabel("<html><div style='width:110px'>" + caption
 					+ "</div></html>") {
 				private static final long serialVersionUID = 1L;

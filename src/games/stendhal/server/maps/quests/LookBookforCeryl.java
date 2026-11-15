@@ -69,6 +69,7 @@ public class LookBookforCeryl implements QuestManuscript {
 		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
 		quest.info()
+			.rewards(new QuestRewards(100, 50).build())
 			.name("Znajdź Książkę Ceryla")
 			.description("Ceryl chce starej książki, która została wypożyczona.")
 			.internalName(QUEST_SLOT)

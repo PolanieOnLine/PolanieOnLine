@@ -56,6 +56,7 @@ public class BeerForHayunn implements QuestManuscript {
 		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
 		quest.info()
+			.rewards(new QuestRewards(50, 20).build())
 			.name("Trunek dla Hayunna")
 			.description("Hayunn Naratha, wielki wojownik w strażnicy Semos, chce specjalnego trunku.")
 			.internalName(QUEST_SLOT)

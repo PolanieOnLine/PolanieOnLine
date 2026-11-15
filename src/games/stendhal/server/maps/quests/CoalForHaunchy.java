@@ -40,7 +40,7 @@ import games.stendhal.server.maps.Region;
  * REWARD:
  * <ul>
  * <li>Karma +25 in all</li>
- * <li>XP +1000 in all</li>
+ * <li>XP +200 in all</li>
  * <li>Some grilled steaks, random between 1 and 4.</li>
  * </ul>
  *
@@ -56,6 +56,8 @@ public class CoalForHaunchy implements QuestManuscript {
 		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
 		quest.info()
+			.rewards(new QuestRewards(200, 0).variable()
+					.note("Losowo od 1 do 4 grillowanych steków.").build())
 			.name("Węgiel do Grilla")
 			.description("Haunchy Meatoch ma wątpliwości co do swojego ognia w grillu, jego zapas węgla może nie wystarczyć do usmażenia przepysznych steków. Czy Haunchy będzie potrzebował więcej?")
 			.internalName("coal_for_haunchy")

@@ -21,6 +21,16 @@ import games.stendhal.server.events.ProgressStatusEvent;
 import utilities.RPClass.ItemTestHelper;
 
 public class QuestRewardsPanelTest {
+	@Test public void variableCompletedRewardsDoNotClaimToBeTheExactReceivedPrize() throws Exception {
+		QuestRewardPreview preview = new QuestRewardPreview(200, 0, true,
+				Collections.emptyList(), Collections.singletonList("Losowo od 1 do 4 grillowanych steków."), true);
+		SwingUtilities.invokeAndWait(() -> {
+			QuestRewardsPanel panel = new QuestRewardsPanel(preview);
+			assertEquals(games.stendhal.client.ClientLanguage.getText("Nagrody za zadanie"),
+					((javax.swing.JLabel) panel.getComponent(0)).getText());
+		});
+	}
+
 	@Test
 	public void rewardSlotUsesEquipmentTooltipWithStatisticsInsteadOfDescription()
 			throws Exception {

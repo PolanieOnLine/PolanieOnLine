@@ -114,6 +114,7 @@ public class MeetHackim extends AbstractQuest {
 				"Spotkanie Hackima Easso",
 				"Asystent kowala Hackim Easso posiada pewne użyteczne informacje.",
 				false);
+		questInfo.setRewards(new QuestRewards(350, 75).build());
 		yesTrigger = new LinkedList<String>(ConversationPhrases.YES_MESSAGES);
 		yesTrigger.add("Xin Blanca");
 		yesTrigger.add("Blanca");

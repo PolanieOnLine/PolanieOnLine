@@ -16,6 +16,7 @@ import games.stendhal.server.entity.item.Item;
 public final class QuestRewards {
 	private final int xp;
 	private final int coins;
+	private boolean variable;
 	private final List<QuestRewardPreview.Item> items = new ArrayList<>();
 	private final List<String> notes = new ArrayList<>();
 
@@ -48,7 +49,12 @@ public final class QuestRewards {
 		return this;
 	}
 
+	public QuestRewards variable() {
+		variable = true;
+		return this;
+	}
+
 	public QuestRewardPreview build() {
-		return new QuestRewardPreview(xp, coins, false, items, notes);
+		return new QuestRewardPreview(xp, coins, false, items, notes, variable);
 	}
 }

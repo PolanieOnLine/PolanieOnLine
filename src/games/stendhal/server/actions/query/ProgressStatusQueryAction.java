@@ -142,10 +142,7 @@ public class ProgressStatusQueryAction implements ActionListener {
 					questSystem.getQuestProgressDetails(player, item));
 			if (QuestTracking.eligible(player, quest))
 				event.put("tracking_slot", quest.getSlotName());
-			if (quest != null && quest.getQuestInfo(player).isMainQuest()) {
-				event.setRewards(quest.getQuestInfo(player).getRewards(),
-						quest.isCompleted(player));
-			}
+			event.setRewards(quest.getQuestInfo(player).getRewards(), quest.isCompleted(player));
 			player.addEvent(event);
 		} else if (progressType.equals("Produkcja")) {
 			player.addEvent(new ProgressStatusEvent(progressType, item,

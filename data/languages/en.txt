@@ -228,3 +228,14 @@ Dostarcz przesyłkę. Odbiorca: {0}.=Deliver the parcel. Recipient: {0}.
 Aby śledzić rozpoczęte zadanie poboczne, miej swój kompas w plecaku.=To track an active side quest, keep your compass in your bag.
 
 Zbierz potrzebne przedmioty. {0}: {1}/{2}=Gather the required items. {0}: {1}/{2}
+
+Nagrody za zadanie=Quest rewards
+
+
+Losowo od 1 do 4 grillowanych steków.=Randomly 1 to 4 grilled steaks.
+
+Doświadczenie i napiwek zależą od odbiorcy oraz czasu dostawy.=Experience and the tip depend on the recipient and delivery time.
+
+Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.=A late delivery gives half the experience and no tip.
+
+Nagrody otrzymujesz w kolejnych etapach zadania.=Rewards are given during successive stages of the quest.

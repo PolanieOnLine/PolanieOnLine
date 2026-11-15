@@ -40,7 +40,7 @@ public class ProgressStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "information", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "data", Type.VERY_LONG_STRING);
 		for (String key : new String[] { "reward_xp", "reward_coins",
-				"reward_completed" }) {
+				"reward_completed", "reward_variable" }) {
 			rpclass.add(DefinitionClass.ATTRIBUTE, key, Type.INT);
 		}
 		for (String key : new String[] { "reward_names", "reward_classes",

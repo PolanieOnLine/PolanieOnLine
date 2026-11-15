@@ -383,6 +383,8 @@ public class MedicineForTad extends AbstractQuest {
 				"Lekarstwo dla Tada",
 				"Tad chłopiec w hostelu Semos, który potrzebuje pomocy w zdobyciu lekarstwa.",
 				false);
+		questInfo.setRewards(new QuestRewards(550, 100)
+				.note("Nagrody otrzymujesz w kolejnych etapach zadania.").build());
 		step_1();
 		step_2();
 		step_3();

@@ -15,19 +15,27 @@ import marauroa.common.game.RPObject;
 
 import marauroa.common.game.RPEvent;
 
-/** Guaranteed quest rewards, without generated affixes or inventory objects. */
+/** Display-only quest rewards; variable payouts are described without rolling items. */
 public final class QuestRewardPreview {
 	public final int xp;
 	public final int coins;
 	public final boolean completed;
+	/** A range or conditional payout, not an exact record of a previous completion. */
+	public final boolean variable;
 	public final List<Item> items;
 	public final List<String> notes;
 
 	public QuestRewardPreview(int xp, int coins, boolean completed,
 			List<Item> items, List<String> notes) {
+		this(xp, coins, completed, items, notes, false);
+	}
+
+	public QuestRewardPreview(int xp, int coins, boolean completed,
+			List<Item> items, List<String> notes, boolean variable) {
 		this.xp = xp;
 		this.coins = coins;
 		this.completed = completed;
+		this.variable = variable;
 		this.items = Collections.unmodifiableList(new ArrayList<>(items));
 		this.notes = Collections.unmodifiableList(new ArrayList<>(notes));
 	}
@@ -87,6 +95,7 @@ public final class QuestRewardPreview {
 		event.put("reward_xp", xp);
 		event.put("reward_coins", coins);
 		event.put("reward_completed", received ? 1 : 0);
+		event.put("reward_variable", variable ? 1 : 0);
 		event.put("reward_notes", notes);
 		List<String> names = new ArrayList<>();
 		List<String> classes = new ArrayList<>();
@@ -144,7 +153,8 @@ public final class QuestRewardPreview {
 		notes.removeIf(String::isEmpty);
 		return new QuestRewardPreview(event.getInt("reward_xp"),
 				event.getInt("reward_coins"),
-				event.getInt("reward_completed") != 0, items, notes);
+				event.getInt("reward_completed") != 0, items, notes,
+				event.has("reward_variable") && event.getInt("reward_variable") != 0);
 	}
 
 	private static Map<String, String> readStats(String json) {

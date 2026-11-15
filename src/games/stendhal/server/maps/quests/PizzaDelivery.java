@@ -66,6 +66,9 @@ public class PizzaDelivery implements QuestManuscript {
 		DeliverItemQuestBuilder quest = new DeliverItemQuestBuilder();
 
 		quest.info()
+			.rewards(new QuestRewards(0, 0).variable()
+					.note("Doświadczenie i napiwek zależą od odbiorcy oraz czasu dostawy.")
+					.note("Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.").build())
 			.name("Dostawca Pizzy")
 			.description("Pizzeria Leandera radzi sobie tak dobrze, że teraz rekrutuje chętnych na dostawcę.")
 			.internalName(questSlot)
