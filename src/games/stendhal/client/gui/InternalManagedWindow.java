@@ -75,6 +75,8 @@ public class InternalManagedWindow extends InternalWindow implements ManagedWind
 
 		getTitlebar().addMouseListener(clickListener);
 		getTitlebar().addMouseMotionListener(dragListener);
+		titleLabel.addMouseListener(clickListener);
+		titleLabel.addMouseMotionListener(dragListener);
 		/*
 		 * Add the movement start listener to the whole window as well. This
 		 * provides a convenience access for moving or raising the window. Note
@@ -229,7 +231,7 @@ public class InternalManagedWindow extends InternalWindow implements ManagedWind
 		@Override
 		public void mousePressed(final MouseEvent ev) {
 			if (ev.getButton() == MouseEvent.BUTTON1) {
-				startDrag(ev.getPoint());
+				startDrag(SwingUtilities.convertPoint(ev.getComponent(), ev.getPoint(), InternalManagedWindow.this));
 			}
 		}
 
@@ -258,7 +260,7 @@ public class InternalManagedWindow extends InternalWindow implements ManagedWind
 	private class DragListener extends MouseMotionAdapter {
 		@Override
 		public void mouseDragged(final MouseEvent ev) {
-			drag(ev.getPoint());
+			drag(SwingUtilities.convertPoint(ev.getComponent(), ev.getPoint(), InternalManagedWindow.this));
 		}
 	}
 

@@ -1,8 +1,6 @@
 /* Copyright (C) 2026 PolanieOnLine; GPL version 2 or later. */
 package games.stendhal.client.gui;
 
-import java.awt.Dimension;
-
 /** Original compact slot window with single-line corpse names. */
 public final class CorpseLootWindow extends SlotWindow {
 
@@ -13,13 +11,6 @@ public final class CorpseLootWindow extends SlotWindow {
 		setMinimizable(false);
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension size = super.getPreferredSize();
-		size.width = Math.max(108, size.width);
-		return size;
-	}
-
 	/** Plain labels abbreviate overflowing names with "..."; hover shows all. */
 	public void setLootTitle(final String title) {
 		titleLabel.putClientProperty(UiTranslation.PRESERVE_TEXT, true);
@@ -27,7 +18,7 @@ public final class CorpseLootWindow extends SlotWindow {
 		titleLabel.setText(title);
 		titleLabel.setToolTipText(title);
 		getTitlebar().setToolTipText(title);
-		// Keep the compact reference width; larger grids retain their own width.
+		// Let the native slot grid determine the fixed window width.
 		setSize(getPreferredSize());
 		revalidate();
 		repaint();

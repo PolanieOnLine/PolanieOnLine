@@ -1859,6 +1859,8 @@ public class Player extends DressedEntity implements UseListener {
 			return false;
 		}
 		if (StendhalRPAction.placeat(zone, this, x, y)) {
+			CompassService.onTeleport(this);
+			nextQuestMarkerTurn = 0;
 			if (dir != null) {
 				this.setDirection(dir);
 			}

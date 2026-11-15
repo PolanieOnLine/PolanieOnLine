@@ -18,7 +18,6 @@ import games.stendhal.server.maps.quests.IQuest;
 import games.stendhal.server.maps.quests.compass.WanderersCompassQuest;
 import games.stendhal.server.maps.quests.trail.TrailNavigationTargets;
 import java.awt.Rectangle;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.WeakHashMap;
 import marauroa.common.game.IRPZone;
@@ -42,6 +42,12 @@ public final class CompassService {
 	private static final Map<Player, Map<String, CachedPath>> localPaths = new WeakHashMap<>();
 
 	private CompassService() {}
+
+	/** A teleport changes the current route leg even when the map stays the same. */
+	public static void onTeleport(Player player) {
+		routes.remove(player);
+		localPaths.remove(player);
+	}
 
 	public static void update(final Player player) {
 		if (player.isQuestCompleted("wanderers_compass")
@@ -127,7 +133,7 @@ public final class CompassService {
 		Set<BlockedStep> unreachable = new HashSet<>();
 		// Retry when the shortest zone route starts in an isolated room of this map.
 		while (true) {
-			List<Edge> path = findRoute(player, current.getName(), goal.zone, unreachable);
+			List<Edge> path = findRoute(player, goal, unreachable);
 			if (path.isEmpty()) {
 				cache.remove(key);
 				return null;
@@ -166,37 +172,71 @@ public final class CompassService {
 		return nodes.size() - 1 + Math.abs(last.getX() - x) + Math.abs(last.getY() - y);
 	}
 
-	private static List<Edge> findRoute(
-			Player player, String from, String target, Set<BlockedStep> unreachable) {
-		ArrayDeque<RoutePosition> queue = new ArrayDeque<>();
+	private static List<Edge> findRoute(Player player, NavigationGoal goal, Set<BlockedStep> unreachable) {
+		PriorityQueue<RoutePosition> queue = new PriorityQueue<>(Comparator.comparingInt(p -> p.distance));
 		Map<Edge, Edge> previous = new HashMap<>();
-		queue.add(new RoutePosition(from, null));
+		Map<Edge, Integer> distances = new HashMap<>();
+		queue.add(new RoutePosition(player.getZone().getName(), null, 0));
+		Edge best = null;
+		int bestDistance = Integer.MAX_VALUE;
 		while (!queue.isEmpty()) {
 			RoutePosition position = queue.remove();
-			for (Edge edge : topology.getOrDefault(position.zone, Collections.emptyList())) {
-				if (unreachable.contains(new BlockedStep(position.incoming, edge))
-						|| previous.containsKey(edge) || !edge.allowed(player))
-					continue;
-				previous.put(edge, position.incoming);
-				if (target.equals(edge.to) && !unreachable.contains(new BlockedStep(edge, null))) {
-					List<Edge> path = new ArrayList<>();
-					for (Edge back = edge; back != null; back = previous.get(back)) path.add(back);
-					Collections.reverse(path);
-					return path;
+			if (position.distance >= bestDistance) {
+				break;
+			}
+			if (position.incoming != null && position.distance != distances.get(position.incoming)) {
+				continue;
+			}
+			Spot start = position.incoming == null
+					? new Spot(player.getZone(), player.getX(), player.getY()) : arrival(position.incoming);
+			if (start == null) {
+				continue;
+			}
+			if (position.zone.equals(goal.zone)
+					&& !unreachable.contains(new BlockedStep(position.incoming, null))) {
+				int lastLeg = walkingDistance(start.getZone(), start.getX(), start.getY(), goal.x, goal.y, false);
+				if (lastLeg >= 0 && position.distance + lastLeg < bestDistance) {
+					bestDistance = position.distance + lastLeg;
+					best = position.incoming;
 				}
-				queue.add(new RoutePosition(edge.to, edge));
+			}
+			for (Edge edge : topology.getOrDefault(position.zone, Collections.emptyList())) {
+				if (unreachable.contains(new BlockedStep(position.incoming, edge)) || !edge.allowed(player)) {
+					continue;
+				}
+				int lowerBound = position.distance + Math.abs(start.getX() - edge.x) + Math.abs(start.getY() - edge.y);
+				if (lowerBound >= Math.min(bestDistance, distances.getOrDefault(edge, Integer.MAX_VALUE))) {
+					continue;
+				}
+				int leg = walkingDistance(start.getZone(), start.getX(), start.getY(), edge.x, edge.y, edge.portal != null);
+				if (leg < 0) {
+					continue;
+				}
+				int distance = position.distance + leg + (edge.portal == null ? 1 : 0);
+				if (distance < bestDistance && distance < distances.getOrDefault(edge, Integer.MAX_VALUE)) {
+					distances.put(edge, distance);
+					previous.put(edge, position.incoming);
+					queue.add(new RoutePosition(edge.to, edge, distance));
+				}
 			}
 		}
-		return Collections.emptyList();
+		List<Edge> path = new ArrayList<>();
+		for (Edge back = best; back != null; back = previous.get(back)) {
+			path.add(back);
+		}
+		Collections.reverse(path);
+		return path;
 	}
 
 	private static final class RoutePosition {
 		final String zone;
 		final Edge incoming;
+		final int distance;
 
-		RoutePosition(String zone, Edge incoming) {
+		RoutePosition(String zone, Edge incoming, int distance) {
 			this.zone = zone;
 			this.incoming = incoming;
+			this.distance = distance;
 		}
 	}
 
@@ -464,6 +504,13 @@ public final class CompassService {
 			if (nodes == null || nodes.isEmpty()) recalculate(player);
 			if (nodes.isEmpty()) return null;
 			int nearest = nearest(player);
+			if (nearest > 0) {
+				recalculate(player);
+				if (nodes.isEmpty()) {
+					return null;
+				}
+				nearest = nearest(player);
+			}
 			if (anchor != null && (player.getX() != anchor.getX() || player.getY() != anchor.getY())
 					&& zone.collidesOnLine(player.getX(), player.getY(), anchor.getX(), anchor.getY())) {
 				recalculate(player);

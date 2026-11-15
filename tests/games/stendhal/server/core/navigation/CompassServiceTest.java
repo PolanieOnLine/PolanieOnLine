@@ -3,6 +3,7 @@ package games.stendhal.server.core.navigation;
 import static org.junit.Assert.*;
 
 import games.stendhal.common.tiled.LayerDefinition;
+import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.Spot;
@@ -16,8 +17,210 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class CompassServiceTest {
+	@Test
+	public void aShortcutWithinTheSameMapAdvancesToTheNextExit() {
+		StendhalRPZone first = register("compass_self_first");
+		StendhalRPZone last = register("compass_self_last");
+		Teleporter shortcut = new Teleporter(new Spot(first, 18, 18));
+		shortcut.setPosition(2, 3);
+		first.add(shortcut);
+		Portal onward = new Portal();
+		onward.setPosition(18, 17);
+		onward.setDestination(last.getName(), "entry");
+		first.add(onward);
+		Player player = PlayerTestHelper.createPlayer("compass_self");
+		player.setPosition(2, 2);
+		first.add(player);
+		NavigationGoal goal = new NavigationGoal(last.getName(), 3, 1, "cel", "active");
+		assertEquals(4, CompassService.localTarget(player, goal).remainingSteps);
+		assertTrue(player.teleport(first, 18, 18, null, null));
+		// The compass may be refreshed after the player has already left the landing tile.
+		player.setPosition(17, 18);
+		NavigationGoal local = CompassService.localTarget(player, goal);
+		assertEquals(4, local.remainingSteps);
+		assertTrue(local.x >= 17);
+	}
+
+	@Test
+	public void realAdosCliffsLeadToTheCityWithoutLoopsOrDistanceResets() throws Exception {
+		String[] names = {"mountain_n2_w2", "mountain_n2_w", "mountain_n2", "wall_n2",
+				"mountain_n_w2", "mountain_nw", "outside_nw", "wall_n",
+				"rock_w", "rock", "outside_w", "wall", "city_n2"};
+		List<StendhalRPZone> zones = new ArrayList<>();
+		for (int i = 0; i < names.length; i++) {
+			String file = "data/maps/Level 0/ados/" + names[i] + ".tmx";
+			LayerDefinition collision = TMXLoader.load(getClass().getClassLoader().getResource(file).toExternalForm())
+					.getLayer("collision");
+			StendhalRPZone zone = new StendhalRPZone("compass_ados_" + names[i], collision.getWidth(), collision.getHeight());
+			int column = i == 12 ? 4 : i % 4;
+			int row = i == 12 ? 0 : i / 4;
+			zone.setPosition(79, 10000 + column * 128, 10000 + row * 128);
+			zone.addCollisionLayer("collision", collision);
+			SingletonRepository.getRPWorld().addRPZone("compass_ados", zone);
+			zones.add(zone);
+		}
+		for (int start : new int[] {1, 2, 4, 5}) {
+			followAdosRoute(zones, start);
+		}
+	}
+
+	private void followAdosRoute(List<StendhalRPZone> zones, int start) {
+		Player player = PlayerTestHelper.createPlayer("compass_ados_" + start);
+		player.setPosition(100, 100);
+		zones.get(start).add(player);
+		NavigationGoal goal = new NavigationGoal(zones.get(7).getName(), 84, 109, "Julius", "active");
+		Set<String> visited = new HashSet<>();
+		int previousDistance = -1;
+		long started = System.nanoTime();
+		for (int step = 0; step < 1600; step++) {
+			StendhalRPZone current = player.getZone();
+			assertTrue("The route must not lead back to an earlier tile",
+					visited.add(current.getName() + ":" + player.getX() + "," + player.getY()));
+			NavigationGoal local = CompassService.localTarget(player, goal);
+			assertNotNull("No guidance at " + current.getName() + ":" + player.getX() + "," + player.getY(), local);
+			if (previousDistance >= 0) {
+				assertEquals("Distance must count continuously across actual map borders", previousDistance - 1, local.remainingSteps);
+			}
+			previousDistance = local.remainingSteps;
+			if (local.remainingSteps == 0) {
+				assertEquals(goal.zone, current.getName());
+				assertEquals(goal.x, player.getX());
+				assertEquals(goal.y, player.getY());
+				System.out.println("Ados cliff route: " + step + " steps, " + (System.nanoTime() - started) / 1000000 + " ms");
+				return;
+			}
+			assertTrue("Do not stop at an intermediate turn", local.x != player.getX() || local.y != player.getY());
+			int x = player.getX() + Integer.compare(local.x, player.getX());
+			int y = player.getY() + (x == player.getX() ? Integer.compare(local.y, player.getY()) : 0);
+			if (x >= 0 && y >= 0 && x < current.getWidth() && y < current.getHeight()) {
+				assertFalse("Compass must not lead into the cliff", current.collides(x, y));
+				player.setPosition(x, y);
+			} else {
+				int worldX = current.getX() + x;
+				int worldY = current.getY() + y;
+				StendhalRPZone next = zones.stream().filter(z -> worldX >= z.getX() && worldY >= z.getY()
+						&& worldX < z.getX() + z.getWidth() && worldY < z.getY() + z.getHeight()).findFirst().get();
+				current.remove(player);
+				player.setPosition(worldX - next.getX(), worldY - next.getY());
+				next.add(player);
+			}
+		}
+		fail("The city was never reached");
+	}
+
+	@Test
+	public void portalBehindACliffMustBeReachedFromTheOpenSide() throws Exception {
+		StendhalRPZone first = register("compass_stairs_first");
+		StendhalRPZone last = register("compass_stairs_last");
+		LayerDefinition wall = new LayerDefinition(20, 20);
+		wall.setName("collision");
+		for (int y = 0; y < 11; y++) {
+			wall.set(9, y, 1);
+		}
+		first.addCollisionLayer("collision", wall);
+		Portal stairs = new Portal();
+		stairs.setPosition(10, 2);
+		stairs.setDestination(last.getName(), "entry");
+		first.add(stairs);
+		Player player = PlayerTestHelper.createPlayer("compass_stairs");
+		player.setPosition(2, 2);
+		first.add(player);
+		NavigationGoal goal = new NavigationGoal(last.getName(), 1, 1, "schody", "active");
+		Set<String> visited = new HashSet<>();
+		for (int step = 0; step < 60; step++) {
+			assertTrue("Do not stop beside the cliff", visited.add(player.getX() + "," + player.getY()));
+			NavigationGoal local = CompassService.localTarget(player, goal);
+			assertNotNull(local);
+			int x = player.getX() + Integer.compare(local.x, player.getX());
+			int y = player.getY() + (x == player.getX() ? Integer.compare(local.y, player.getY()) : 0);
+			assertFalse("The chosen side of the stairs must be reachable", first.collides(x, y));
+			player.setPosition(x, y);
+			if (x == 10 && y == 2) {
+				return;
+			}
+		}
+		fail("The stairs were never reached");
+	}
+
+	@Test
+	public void shorterWalkingRouteWinsEvenWhenItCrossesMoreMaps() {
+		StendhalRPZone first = register("compass_short_first");
+		StendhalRPZone middle = register("compass_short_middle");
+		StendhalRPZone last = register("compass_short_last");
+		Portal longWay = new Portal();
+		longWay.setPosition(18, 18);
+		longWay.setDestination(last.getName(), "entry");
+		first.add(longWay);
+		Portal shortcut = new Portal();
+		shortcut.setPosition(2, 3);
+		shortcut.setDestination(middle.getName(), "entry");
+		first.add(shortcut);
+		Portal onward = new Portal();
+		onward.setPosition(2, 1);
+		onward.setDestination(last.getName(), "entry");
+		middle.add(onward);
+		Player player = PlayerTestHelper.createPlayer("compass_short");
+		player.setPosition(2, 2);
+		first.add(player);
+		NavigationGoal local = CompassService.localTarget(player,
+				new NavigationGoal(last.getName(), 3, 1, "cel", "active"));
+		assertNotNull(local);
+		assertEquals(4, local.remainingSteps);
+		assertEquals(2, local.x);
+		assertEquals(3, local.y);
+	}
+
+	@Test
+	public void diagonalApproachDoesNotStopBeforeThePortal() {
+		StendhalRPZone first = register("compass_diagonal_first");
+		StendhalRPZone last = register("compass_diagonal_last");
+		Portal exit = new Portal();
+		exit.setPosition(10, 10);
+		exit.setDestination(last.getName(), "entry");
+		first.add(exit);
+		Player player = PlayerTestHelper.createPlayer("compass_diagonal");
+		player.setPosition(2, 2);
+		first.add(player);
+		NavigationGoal goal = new NavigationGoal(last.getName(), 3, 1, "cel", "active");
+		for (int step = 0; step < 40; step++) {
+			NavigationGoal local = CompassService.localTarget(player, goal);
+			assertNotNull(local);
+			assertTrue("Guidance must not end at a tile diagonally beside stairs",
+					local.x != player.getX() || local.y != player.getY());
+			player.setPosition(local.x, local.y);
+			if (local.x == 10 && local.y == 10) {
+				return;
+			}
+		}
+		fail("Portal was never reached");
+	}
+
+	@Test
+	public void leavingTheRouteRecalculatesInsteadOfReturningToAnOldTurn() throws Exception {
+		StendhalRPZone zone = register("compass_deviation");
+		LayerDefinition wall = new LayerDefinition(20, 20);
+		wall.setName("collision");
+		for (int y = 0; y < 15; y++) {
+			wall.set(10, y, 1);
+		}
+		zone.addCollisionLayer("collision", wall);
+		Player player = PlayerTestHelper.createPlayer("compass_deviation");
+		player.setPosition(2, 2);
+		zone.add(player);
+		NavigationGoal goal = new NavigationGoal(zone.getName(), 17, 2, "cel", "active");
+		assertNotNull(CompassService.localTarget(player, goal));
+		player.setPosition(2, 15);
+		NavigationGoal local = CompassService.localTarget(player, goal);
+		assertEquals("Do not return to a turn already bypassed along the cliff", 15, local.y);
+		assertEquals(28, local.remainingSteps);
+	}
+
 	@Test
 	public void anotherEntranceCanReachAnExitInADisconnectedRoom() throws Exception {
 		StendhalRPZone from = register("compass_rooms_from");
