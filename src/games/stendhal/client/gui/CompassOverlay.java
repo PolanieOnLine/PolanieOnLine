@@ -65,6 +65,7 @@ public final class CompassOverlay {
 		if (user.has(NavigationTarget.HIDDEN_ATTRIBUTE) && "1".equals(user.get(NavigationTarget.HIDDEN_ATTRIBUTE))) {
 			return;
 		}
+		if (user.has(NavigationTarget.AVAILABLE_ATTRIBUTE) && "0".equals(user.get(NavigationTarget.AVAILABLE_ATTRIBUTE))) return;
 		int width = widthForViewport(viewportWidth);
 		if (width < 80) {
 			return;
@@ -108,6 +109,7 @@ public final class CompassOverlay {
 					&& zone.equals(user.get(NavigationTarget.TARGETS_ATTRIBUTE, "_zone"))) {
 				for (Map.Entry<String, String> entry :
 						user.getMap(NavigationTarget.TARGETS_ATTRIBUTE).entrySet()) {
+					if (entry.getKey().startsWith("_")) continue;
 					NavigationTarget target = NavigationTarget.parse(entry.getKey(), entry.getValue());
 					if (target != null && Double.isFinite(target.distance(playerX, playerY))) {
 						targets.add(target);
@@ -144,9 +146,15 @@ public final class CompassOverlay {
 					break;
 				}
 			}
-			if (primary != null) {
+			boolean tracked = zone != null && user.has(NavigationTarget.TARGETS_ATTRIBUTE, "_zone")
+					&& zone.equals(user.get(NavigationTarget.TARGETS_ATTRIBUTE, "_zone"))
+					&& user.has(NavigationTarget.TARGETS_ATTRIBUTE, "_tracked");
+			if (primary != null || tracked) {
 				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 11));
-				String caption = ClientLanguage.getText(primary.instruction(playerX, playerY)) + " · " + primary.label;
+				String caption = primary == null
+						? ClientLanguage.getText(user.get(NavigationTarget.TARGETS_ATTRIBUTE, "_label")) + " · "
+								+ ClientLanguage.getText(user.get(NavigationTarget.TARGETS_ATTRIBUTE, "_objective"))
+						: ClientLanguage.getText(primary.instruction(playerX, playerY)) + " · " + primary.label;
 				boolean shortened = false;
 				while (!caption.isEmpty() && g.getFontMetrics().stringWidth(caption + (shortened ? "..." : "")) > width - 20) {
 					caption = caption.substring(0, caption.length() - 1);

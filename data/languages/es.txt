@@ -3135,3 +3135,21 @@ Pokaż / schowaj kompas=Mostrar / ocultar brújula
 Ten kompas jeszcze cię nie prowadzi. Porozmawiaj z Sabałą w Zakopanem.=Esta brújula aún no puede guiarte. Habla con Sabała en Zakopane.
 Chowasz kompas z ekranu. Użyj go ponownie, aby go pokazać.=Ocultas la brújula de la pantalla. Úsala de nuevo para mostrarla.
 Kompas jest znowu widoczny na ekranie.=La brújula vuelve a estar visible en la pantalla.
+
+Śledź kompasem=Seguir con la brújula
+
+Przestań śledzić=Dejar de seguir
+
+Sprawdź wskazówki w dzienniku.=Consulta las pistas en tu diario.
+
+Zbierz potrzebne przedmioty.=Reúne los objetos necesarios.
+
+Wróć do zleceniodawcy po nagrodę.=Vuelve con quien te encargó la misión para recibir tu recompensa.
+
+Wróć do zleceniodawcy po przesyłkę.=Vuelve con el remitente para recoger el paquete.
+
+Dostarcz przesyłkę. Odbiorca: {0}.=Entrega el paquete. Destinatario: {0}.
+
+Aby śledzić rozpoczęte zadanie poboczne, miej swój kompas w plecaku.=Para seguir una misión secundaria activa, lleva tu brújula en la mochila.
+
+Zbierz potrzebne przedmioty. {0}: {1}/{2}=Reúne los objetos necesarios. {0}: {1}/{2}

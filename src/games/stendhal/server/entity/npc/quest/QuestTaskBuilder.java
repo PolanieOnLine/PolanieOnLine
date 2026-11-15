@@ -27,6 +27,13 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public abstract class QuestTaskBuilder {
+	/** Read-only navigation supplied by task data, never extracted from dialogue. */
+	String compassNpc(Player player, String questSlot, String questGiver) { return null; }
+
+	String compassHint(Player player, String questSlot) {
+		return "Sprawdź wskazówki w dzienniku.";
+	}
+
 	static final String REQUIREMENTS_MARKER = "<requirements>";
 
 	private final List<String> requiredCompletedQuests = new LinkedList<>();

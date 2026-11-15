@@ -28,6 +28,18 @@ import marauroa.common.Pair;
  * @author hendrik
  */
 public class BringItemTask extends QuestTaskBuilder {
+	@Override
+	String compassNpc(Player player, String questSlot, String questGiver) {
+		return isCompleted(player, questSlot) ? questGiver : null;
+	}
+
+	@Override
+	String compassHint(Player player, String questSlot) {
+		if (isCompleted(player, questSlot)) return "Wróć do zleceniodawcy po nagrodę.";
+		int current = Math.min(player.getNumberOfSubmittableEquipped(requestItem.first()), requestItem.second());
+		return "Zbierz potrzebne przedmioty. " + requestItem.first() + ": " + current + "/" + requestItem.second();
+	}
+
 	private Pair<String, Integer> requestItem;
 	private List<Pair<String, Integer>> alternativeItems = new LinkedList<>();
 

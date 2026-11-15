@@ -116,13 +116,34 @@ public class ProgressLogController {
 	 */
 	public void showDescription(final String category, final String item, final String description, final String information,
 			final List<String> details, final QuestRewardPreview rewards) {
+		showDescription(category, item, description, information, details, rewards, "");
+	}
+
+	public void showDescription(final String category, final String item, final String description, final String information,
+			final List<String> details, final QuestRewardPreview rewards, final String trackingSlot) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				getProgressLog().setPageContent(category, item, description, information, details, rewards);
+				getProgressLog().setPageContent(category, item, description, information, details, rewards, trackingSlot);
 				showWindow();
 			}
 		});
+	}
+
+	/** Player state changes update an existing book without opening a new window. */
+	public void refreshTracking(boolean reload) {
+		SwingUtilities.invokeLater(() -> {
+			if (progressLog != null) progressLog.refreshTracking(reload);
+		});
+	}
+
+	static void trackQuest(String slot, String category, String title) {
+		RPAction action = new RPAction();
+		action.put("type", Actions.PROGRESS_STATUS);
+		action.put("progress_type", category);
+		action.put("item", title);
+		action.put("track_quest", slot);
+		StendhalClient.get().send(action);
 	}
 
 	/**

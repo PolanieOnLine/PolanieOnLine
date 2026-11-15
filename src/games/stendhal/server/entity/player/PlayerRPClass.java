@@ -139,6 +139,11 @@ public class PlayerRPClass {
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("compass_unlocked", Type.INT, Definition.PRIVATE);
 		player.addAttribute("compass_hidden", Type.INT, Definition.PRIVATE);
+		player.addAttribute("compass_tracked", Type.STRING, Definition.PRIVATE);
+		player.addAttribute("compass_tracked_title", Type.STRING,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
+		player.addAttribute("compass_available", Type.INT,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("compass_targets", Type.MAP,
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addRPSlot("!tutorial", 1, Definition.HIDDEN);

@@ -29,6 +29,27 @@ export class TravelLogDialog extends DialogContentComponent {
 	private rewards?: ReturnType<typeof createQuestRewards>;
 	private availableItems?: string[];
 	private requestedItem?: string;
+	private trackingButton?: HTMLButtonElement;
+	private trackingSlot = "";
+	private trackingTitle = "";
+
+	public refreshTracking(reload = false) {
+		const player = marauroa.me;
+		if (this.trackingButton) {
+			this.trackingButton.hidden = Number(player?.["compass_available"]) !== 1;
+			this.trackingButton.disabled = false;
+			this.trackingButton.textContent = GameLanguage.getText(
+				player?.["compass_tracked"] === this.trackingSlot ? "Przestań śledzić" : "Śledź kompasem");
+		}
+		const list = this.child(".travellogitems") as HTMLSelectElement;
+		if (list.options) for (const option of Array.from(list.options)) {
+			option.textContent = (player?.["compass_tracked_title"] === option.value ? "⌖ " : "")
+				+ GameLanguage.getText(option.value) + (this.repeatable[option.value] ? " (R)" : "");
+		}
+		if (reload && this.currentProgressType) {
+			marauroa.clientFramework.sendAction({type: "progressstatus", progress_type: this.currentProgressType});
+		}
+	}
 
 	constructor(dataItems?: string[]) {
 		super("travellogdialog-template");
@@ -132,6 +153,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			return;
 		}
 		this.requestedItem = value;
+		this.refreshDetails();
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType,
@@ -153,7 +175,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			collator.compare(GameLanguage.getText(first), GameLanguage.getText(second))
 			|| collator.compare(first, second));
 		this.availableItems = dataItems;
-		this.requestedItem = dataItems[0];
+		this.requestedItem = this.requestedItem && dataItems.includes(this.requestedItem) ? this.requestedItem : dataItems[0];
 		var html = "";
 		for (var i = 0; i < dataItems.length; i++) {
 			const currentItem = dataItems[i];
@@ -169,7 +191,7 @@ export class TravelLogDialog extends DialogContentComponent {
 
 		if (dataItems.length > 0) {
 			// trigger loading of content for first entry
-			itemList.selectedIndex = 0;
+			itemList.selectedIndex = dataItems.indexOf(this.requestedItem!);
 			itemList.dispatchEvent(new Event("change"));
 		} else if (stendhal.session.touchOnly()) {
 			// show a "none" option for touch enabled devices
@@ -180,7 +202,8 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 
-	public itemData(progressType: string, selectedItem: string, description: string, dataItems: string[], rewards?: QuestRewardData) {
+	public itemData(progressType: string, selectedItem: string, description: string, dataItems: string[], rewards?: QuestRewardData,
+			trackingSlot = "") {
 		if (progressType !== this.currentProgressType) {
 			return;
 		}
@@ -239,9 +262,27 @@ export class TravelLogDialog extends DialogContentComponent {
 
 		detailsSpan.appendChild(ul);
 		this.refreshDetails("", detailsSpan);
+		if (trackingSlot && progressType === "Zadania poboczne") {
+			this.trackingSlot = trackingSlot;
+			this.trackingTitle = selectedItem;
+			const button = document.createElement("button");
+			button.className = "quest-tracking-button dialogbutton";
+			button.addEventListener("click", () => {
+				if (!this.trackingSlot || (this.requestedItem !== undefined && this.trackingTitle !== this.requestedItem)
+						|| Number(marauroa.me?.["compass_available"]) !== 1) return;
+				marauroa.clientFramework.sendAction({type: "progressstatus", progress_type: this.currentProgressType,
+					item: this.trackingTitle, track_quest: marauroa.me?.["compass_tracked"] === this.trackingSlot ? "" : this.trackingSlot});
+				button.disabled = true;
+			});
+			this.trackingButton = button;
+			detailsSpan.appendChild(button);
+		}
+		this.refreshTracking();
 	}
 
 	private refreshDetails(html: string="", newDetails?: HTMLElement) {
+		this.trackingButton = undefined;
+		this.trackingSlot = "";
 		if (!newDetails) {
 			this.rewards?.dispose();
 			this.rewards = undefined;
@@ -255,6 +296,7 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 	public override onParentClose() {
+		this.trackingButton = undefined;
 		this.rewards?.dispose();
 		this.rewards = undefined;
 		ui.unregisterComponent(this);

@@ -42,7 +42,8 @@ class ProgressStatusEvent extends Event<RPEntity> {
 				}
 			} else {
 				ProgressLogController.get().showDescription(event.get("progress_type"), event.get("item"),
-						event.get("description"), event.get("information"), event.getList("data"), QuestRewardPreview.read(event));
+						event.get("description"), event.get("information"), event.getList("data"), QuestRewardPreview.read(event),
+						event.has("tracking_slot") ? event.get("tracking_slot") : "");
 			}
 		} catch (RuntimeException e) {
 			logger.error("Failed to process progress status. Event: " + event, e);

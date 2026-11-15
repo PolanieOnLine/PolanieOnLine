@@ -19,6 +19,7 @@
 *dziennik zadań*
 ---
 * Dodano osobne zakładki z zadaniami głównymi i pobocznymi oraz opis aktualnego celu głównej historii
+* Dodano możliwość śledzenia jednego rozpoczętego zadania pobocznego z dziennika, gdy kompas wędrowca znajduje się w plecaku. Wybrane zadanie ma pierwszeństwo na kompasie; tam, gdzie cel nie ma jednego miejsca, pasek pokazuje podpowiedź zamiast kierunku
 * Dodano podgląd nagród za zadania: doświadczenia, monet i przedmiotów z opisami statystyk
 * Dodano czerwone wykrzykniki i pytajniki nad NPC związanymi z zadaniami głównymi. Mają pierwszeństwo przed znacznikami pozostałych zadań
 * Dodano krótkie zaproszenia od NPC po odblokowaniu kolejnego zadania głównego, wyróżnione turkusowym kolorem

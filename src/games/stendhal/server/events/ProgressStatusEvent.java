@@ -35,6 +35,7 @@ public class ProgressStatusEvent extends RPEvent {
 		final RPClass rpclass = new RPClass(Events.PROGRESS_STATUS_CHANGE);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "progress_type", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "item", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "tracking_slot", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "description", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "information", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "data", Type.VERY_LONG_STRING);

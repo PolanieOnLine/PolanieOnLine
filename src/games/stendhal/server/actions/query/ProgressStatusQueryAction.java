@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.actions.query;
 
+import games.stendhal.server.core.navigation.QuestTracking;
+import games.stendhal.server.core.navigation.CompassService;
 import static games.stendhal.common.constants.Actions.ITEM;
 import static games.stendhal.common.constants.Actions.PROGRESS_STATUS;
 
@@ -50,6 +52,17 @@ public class ProgressStatusQueryAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		if (action.has("track_quest")) {
+			String previous = player.has(QuestTracking.SELECTED) ? player.get(QuestTracking.SELECTED) : "";
+			if (!QuestTracking.select(player, action.get("track_quest"))) {
+				player.sendPrivateText("Aby śledzić rozpoczęte zadanie poboczne, miej swój kompas w plecaku.");
+			} else if (!previous.equals(action.get("track_quest"))) {
+				CompassService.onTeleport(player);
+			}
+			CompassService.update(player);
+		} else if (QuestTracking.refresh(player)) {
+			player.notifyWorldAboutChanges();
+		}
 		if (!action.has("progress_type")) {
 			sendProgressTypes(player);
 		} else if (!action.has(ITEM) || action.get(ITEM).trim().isEmpty()) {
@@ -127,6 +140,8 @@ public class ProgressStatusQueryAction implements ActionListener {
                     description,
                     information,
 					questSystem.getQuestProgressDetails(player, item));
+			if (QuestTracking.eligible(player, quest))
+				event.put("tracking_slot", quest.getSlotName());
 			if (quest != null && quest.getQuestInfo(player).isMainQuest()) {
 				event.setRewards(quest.getQuestInfo(player).getRewards(),
 						quest.isCompleted(player));

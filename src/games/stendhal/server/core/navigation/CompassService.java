@@ -52,28 +52,42 @@ public final class CompassService {
 	}
 
 	public static void update(final Player player) {
+		final boolean trackingChanged = QuestTracking.refresh(player);
 		if (player.isQuestCompleted("wanderers_compass")
 				&& (!player.has(UNLOCKED) || player.getInt(UNLOCKED) != 1)) player.put(UNLOCKED, 1);
 		final Map<String, String> next = new LinkedHashMap<>();
 		if (player.getZone() != null) next.put("_zone", player.getZone().getName());
 		if (player.getZone() != null && player.has(UNLOCKED) && player.getInt(UNLOCKED) == 1
+				&& player.getInt(QuestTracking.AVAILABLE) == 1
 				&& (!player.has(HIDDEN) || player.getInt(HIDDEN) != 1)) {
-			final NavigationGoal side = WanderersCompassQuest.target(player);
-			if (side != null) publish(player, next, "side:compass", "side", side);
-			List<NavigationGoal> main = TrailNavigationTargets.targets(player);
-			addOtherMainQuests(player, main);
-			// Local objectives precede remote ones; ties remain deterministic.
-			main.sort(
-					Comparator.comparing((NavigationGoal g) -> !player.getZone().getName().equals(g.zone))
-							.thenComparingDouble(g -> distance(player, g))
-							.thenComparing(g -> g.stage)
-							.thenComparing(g -> g.label));
-			for (NavigationGoal goal : main)
-				publish(player, next, "main:" + goal.stage + ":" + goal.zone + ":" + goal.identity, "main", goal);
+			final IQuest tracked = QuestTracking.current(player);
+			if (tracked != null) {
+				next.put("_tracked", tracked.getSlotName());
+				next.put("_label", sanitize(tracked.getQuestInfo(player).getName()));
+				next.put("_objective", sanitize(tracked.getCompassHint(player)));
+				NavigationGoal target = tracked.getCompassTarget(player);
+				if (target != null) publish(player, next, "tracked:" + tracked.getSlotName(), "side", target);
+			} else {
+				final NavigationGoal side = WanderersCompassQuest.target(player);
+				if (side != null) publish(player, next, "side:compass", "side", side);
+				List<NavigationGoal> main = TrailNavigationTargets.targets(player);
+				addOtherMainQuests(player, main);
+				// Local objectives precede remote ones; ties remain deterministic.
+				main.sort(
+						Comparator.comparing((NavigationGoal g) -> !player.getZone().getName().equals(g.zone))
+								.thenComparingDouble(g -> distance(player, g))
+								.thenComparing(g -> g.stage)
+								.thenComparing(g -> g.label));
+				for (NavigationGoal goal : main)
+					publish(player, next, "main:" + goal.stage + ":" + goal.zone + ":" + goal.identity, "main", goal);
+			}
 		}
 		final Map<String, String> previous =
 				player.hasMap(TARGETS) ? player.getMap(TARGETS) : Collections.emptyMap();
-		if (next.equals(previous)) return;
+		if (next.equals(previous)) {
+			if (trackingChanged) player.notifyWorldAboutChanges();
+			return;
+		}
 		for (String key : new ArrayList<>(previous.keySet()))
 			if (!next.containsKey(key)) player.remove(TARGETS, key);
 		for (Map.Entry<String, String> entry : next.entrySet())

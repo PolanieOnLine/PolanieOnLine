@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import games.stendhal.client.gui.progress.ProgressLogController;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
@@ -32,6 +33,11 @@ class UserController implements ObjectChangeListener {
 	// maybe extend this
 
 	public UserController() {
+		PropertyChangeListener tracking = event -> ProgressLogController.get()
+				.refreshTracking(event != null && "compass_tracked".equals(event.getPropertyName()));
+		pcs.addPropertyChangeListener("compass_available", tracking);
+		pcs.addPropertyChangeListener("compass_tracked", tracking);
+		pcs.addPropertyChangeListener("compass_tracked_title", tracking);
 		pcs.addPropertyChangeListener("buddies", BuddyPanelController.get());
 		pcs.addPropertyChangeListener("features", KarmaIndicator.get());
 		pcs.addPropertyChangeListener("features", ManaIndicator.get());

@@ -15,7 +15,8 @@ async function harness() {
   fetch:async url=>({ok:true,text:async()=>readFileSync(path.join(root,"data/languages",path.basename(url)),"utf8")})});
  const language=exportsLanguage.GameLanguage; await language.load("/data"); language.synchronize("en");
  class Element {
-  constructor() {this.innerHTML="";this.children=[];this.style={setProperty(){}};}
+  constructor() {this.innerHTML="";this.children=[];this.style={setProperty(){}};this.listeners={};}
+  addEventListener(name,callback){this.listeners[name]=callback;}
   appendChild(child){this.children.push(child);}
   append(...children){this.children.push(...children);}
   dispatchEvent() {}
@@ -26,13 +27,14 @@ async function harness() {
   child(selector){return selector===".travellogitems"?list:details;}
  }
  const escape=value=>value.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+ const me={compass_available:1},actions=[];
  const modules={
   "../../util/GameLanguage":{GameLanguage:language},
   "../../data/Paths":{Paths:{gui:"/gui"}},
   "../toolkit/DialogContentComponent":{DialogContentComponent},
   "../UI":{ui:{registerComponent(){},unregisterComponent(){}}},
   "../UIComponentEnum":{UIComponentEnum:{TravelLogDialog:1}},
-  marauroa:{marauroa:{clientFramework:{sendAction(){}}}},
+  marauroa:{marauroa:{me,clientFramework:{sendAction(action){actions.push(action);}}}},
   "../../stendhal":{stendhal:{config:{get:()=>"sans-serif"},session:{touchOnly:()=>true},ui:{html:{esc:escape}}}}
  };
  const timers = new Set();
@@ -60,8 +62,39 @@ async function harness() {
  const exports={};
  vm.runInNewContext(compile("ui/dialog/TravelLogDialog.ts"),{exports,console,
   Event:class {},document:{createElement:()=>new Element()},require:name=>{assert.ok(modules[name],name);return modules[name];}});
- return {Dialog:exports.TravelLogDialog,language,list,details,timers,tooltips};
+ return {Dialog:exports.TravelLogDialog,language,list,details,timers,tooltips,me,actions};
 }
+
+test("tracking uses the canonical selected slot and disappears when the compass is banked",async()=>{
+	const {Dialog,language,details,me,actions}=await harness();language.synchronize("pl");
+	const dialog=new Dialog();dialog.currentProgressType="Zadania poboczne";
+	dialog.itemData("Zadania poboczne","Węgiel do Grilla","Opis",[],undefined,"coal_for_haunchy");
+	const button=details.children.at(-1).children.find(child=>child.className?.split(" ").includes("quest-tracking-button"));
+	assert.ok(button);assert.equal(button.hidden,false);assert.equal(button.textContent,"Śledź kompasem");
+	button.listeners.click();
+	assert.equal(actions.at(-1).track_quest,"coal_for_haunchy");
+	assert.equal(actions.at(-1).item,"Węgiel do Grilla");
+	me.compass_tracked="coal_for_haunchy";dialog.refreshTracking();
+	assert.equal(button.textContent,"Przestań śledzić");
+	button.listeners.click();assert.equal(actions.at(-1).track_quest,"");
+	me.compass_available=0;dialog.refreshTracking();assert.equal(button.hidden,true);
+	me.compass_available=1;dialog.onTravelLogItemsChange({target:{value:"Dostawca Pizzy"}});
+	assert.equal(dialog.trackingButton,undefined);
+	const count=actions.length;button.listeners.click();assert.equal(actions.length,count);
+	dialog.itemData("Zadania poboczne","Węgiel do Grilla","Opis",[],undefined,"coal_for_haunchy");
+	assert.equal(dialog.trackingButton,undefined);
+});
+
+test("compass tracking controls and generated hints are translated",async()=>{
+	const {Dialog,language,details,me}=await harness();
+	const dialog=new Dialog();dialog.currentProgressType="Zadania poboczne";
+	dialog.itemData("Zadania poboczne","Węgiel do Grilla","Opis",[],undefined,"coal_for_haunchy");
+	const button=details.children.at(-1).children.find(child=>child.className?.includes("quest-tracking-button"));
+	assert.equal(button.textContent,"Track with compass");
+	me.compass_tracked="coal_for_haunchy";dialog.refreshTracking();assert.equal(button.textContent,"Stop tracking");
+	assert.ok(language.getText("Zbierz potrzebne przedmioty. węgiel: 3/25").startsWith("Gather the required items."));
+	assert.equal(language.getText("Dostarcz przesyłkę. Odbiorca: Balduin."),"Deliver the parcel. Recipient: Balduin.");
+});
 test("travel log translates loading and empty states without changing its option value",async()=>{
  const {Dialog,language,list}=await harness(); const dialog=new Dialog();
  assert.equal(list.innerHTML,'<option value="">(loading)</option>');

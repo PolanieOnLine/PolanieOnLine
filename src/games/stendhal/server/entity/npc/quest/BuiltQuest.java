@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
+import games.stendhal.server.core.navigation.NavigationGoal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,22 @@ import games.stendhal.server.maps.quests.AbstractQuest;
  * @author hendrik
  */
 public class BuiltQuest extends AbstractQuest {
+	@Override
+	public String getCompassHint(Player player) {
+		return questBuilder.task().compassHint(player, questSlot);
+	}
+
+	@Override
+	public NavigationGoal getCompassTarget(Player player) {
+		if (!isStarted(player) || isCompleted(player) || "rejected".equals(player.getQuest(questSlot, 0))) return null;
+		String npcName = questBuilder.task().compassNpc(player, questSlot, getNPCName());
+		if (npcName == null) return null;
+		SpeakerNPC npc = npcs.get(npcName);
+		if (npc == null || npc.getZone() == null || npc.isLocationHidden()) return null;
+		return new NavigationGoal(npc.getZone().getName(),
+				npc.getX(), npc.getY(), npc.getName(), questSlot, "npc:" + npc.getName());
+	}
+
 	private QuestBuilder<?, ?, ?, ?> questBuilder;
 	private String questSlot = null;
 

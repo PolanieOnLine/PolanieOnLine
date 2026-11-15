@@ -12,6 +12,7 @@
 import { marauroa } from "marauroa"
 import { stendhal } from "../stendhal";
 import { ArenaObservationDialog } from "../ui/dialog/ArenaObservationDialog";
+import { TravelLogDialog } from "../ui/dialog/TravelLogDialog";
 
 import { Entity } from "./Entity";
 import { Player } from "./Player";
@@ -54,6 +55,9 @@ export class User extends Player {
 		const oldX = this["x"];
 		const oldY = this["y"];
 		super.set(key, value);
+		if (["compass_available", "compass_tracked", "compass_tracked_title"].includes(key)) {
+			(ui.get(UIComponentEnum.TravelLogDialog) as TravelLogDialog | undefined)?.refreshTracking(key === "compass_tracked");
+		}
 
 		if ((key === "x" || key === "y") && this["x"] && this["y"]
 				&& (this["x"] !== oldX || this["y"] !== oldY)) {
@@ -72,6 +76,9 @@ export class User extends Player {
 
 	override unset(key: string) {
 		super.unset(key);
+		if (["compass_available", "compass_tracked", "compass_tracked_title"].includes(key)) {
+			(ui.get(UIComponentEnum.TravelLogDialog) as TravelLogDialog | undefined)?.refreshTracking(key === "compass_tracked");
+		}
 
 		queueMicrotask( () => {
 			(ui.get(UIComponentEnum.StatusesList) as StatusesListComponent).update(this);

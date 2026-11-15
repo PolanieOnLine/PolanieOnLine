@@ -43,6 +43,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
+import marauroa.common.game.RPObject;
 
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.gui.WindowUtils;
@@ -55,6 +56,8 @@ import games.stendhal.client.gui.wt.core.SettingChangeAdapter;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.common.QuestRewardPreview;
+import games.stendhal.common.NavigationTarget;
+import games.stendhal.client.entity.User;
 
 /**
  * Progress status window. For displaying quest information.
@@ -90,7 +93,11 @@ class ProgressLog {
 	 * @param name name of the window
 	 */
 	ProgressLog(String name) {
-		window = new JDialog(j2DClient.get().getMainFrame(), name);
+		this(name, j2DClient.get().getMainFrame());
+	}
+
+	ProgressLog(String name, java.awt.Frame owner) {
+		window = new JDialog(owner, name);
 
 		tabs = new JTabbedPane();
 		tabs.setPreferredSize(new Dimension(PAGE_WIDTH, PAGE_HEIGHT));
@@ -164,15 +171,27 @@ class ProgressLog {
 	 * @param contents content paragraphs
 	 */
 	void setPageContent(String page, String header, String description, String information, List<String> contents,
-			QuestRewardPreview rewards) {
+			QuestRewardPreview rewards, String trackingSlot) {
 		int index = pageIndex(page);
 		if (index != -1) {
 			Component comp = tabs.getComponent(index);
 			if (comp instanceof Page) {
 				boolean rep = repeatable.contains(header);
-				((Page) comp).setContent(header, description, information, contents, rep, rewards);
+				((Page) comp).setContent(header, description, information, contents, rep, rewards, trackingSlot);
 			}
 		}
+	}
+
+	void refreshTracking(boolean reload) {
+		for (Page page : pages) {
+			page.updateTracking();
+			page.renderIndex();
+			if (reload && window.isVisible() && tabs.getSelectedComponent() == page) page.update();
+		}
+	}
+
+	private static RPObject trackingUser() {
+		return User.isNull() ? null : User.get().getRPObject();
 	}
 
 	/**
@@ -229,6 +248,10 @@ class ProgressLog {
 	 * A page on the window.
 	 */
 	private class Page extends JComponent implements HyperlinkListener {
+		private final JButton trackButton = new JButton();
+		private String trackingSlot = "";
+		private List<String> subjects = Collections.emptyList();
+		private Collection<String> repeatableSubjects = Collections.emptySet();
 		/** Html area for the subjects. */
 		private final JEditorPane indexArea;
 		/** The html area. */
@@ -287,6 +310,16 @@ class ProgressLog {
 			buttonBox.setBorder(BorderFactory.createEmptyBorder(SBoxLayout.COMMON_PADDING,
 					0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING));
 			add(buttonBox);
+			trackButton.setVisible(false);
+			trackButton.addActionListener(event -> {
+				if (trackingSlot.isEmpty()) return;
+				RPObject user = trackingUser();
+				boolean tracked = user != null && user.has(NavigationTarget.TRACKED_ATTRIBUTE)
+						&& trackingSlot.equals(user.get(NavigationTarget.TRACKED_ATTRIBUTE));
+				ProgressLogController.trackQuest(tracked ? "" : trackingSlot, indexQueryData, contentQueryData);
+				trackButton.setEnabled(false);
+			});
+			buttonBox.add(trackButton);
 			// A button for reloading the page contents
 			JButton refresh = new JButton("Odśwież");
 			refresh.setMnemonic(KeyEvent.VK_U);
@@ -376,10 +409,26 @@ class ProgressLog {
              * Other pages retain alphabetical ordering.
 			 */
 			sortSubjects(subjects, indexQueryData);
+			this.subjects = subjects;
+			this.repeatableSubjects = repeatable;
+			contentQuery = onClick;
+			renderIndex();
+			if (contentQueryData == null && "Zadania główne".equals(indexQueryData) && !subjects.isEmpty())
+				contentQueryData = subjects.get(0);
+			if (onClick != null && contentQueryData != null) onClick.fire(contentQueryData);
+		}
+
+		void renderIndex() {
+			ProgressStatusQuery onClick = contentQuery;
+			Collection<String> repeatable = repeatableSubjects;
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());
 			for (String elem : subjects) {
 				text.append("<p>");
+				RPObject user = trackingUser();
+				if (user != null && user.has(NavigationTarget.TRACKED_TITLE_ATTRIBUTE)
+						&& elem.equals(user.get(NavigationTarget.TRACKED_TITLE_ATTRIBUTE)))
+					text.append("<span style='font-family:SansSerif'>&#8982;</span> ");
 				// Make the elements clickable only if we have a handler for the
 				// clicks
 				if (onClick != null) {
@@ -401,20 +450,25 @@ class ProgressLog {
 				}
 			}
 			text.append("</html>");
-			contentQuery = onClick;
-
 			indexArea.setText(text.toString());
-			if (contentQueryData == null && "Zadania główne".equals(indexQueryData)
-					&& !subjects.isEmpty()) {
-				contentQueryData = subjects.get(0);
-			}
-			if (onClick != null && contentQueryData != null) {
-				onClick.fire(contentQueryData);
-			}
+		}
+
+		void updateTracking() {
+			RPObject user = trackingUser();
+			boolean available = user != null && user.has(NavigationTarget.AVAILABLE_ATTRIBUTE)
+					&& "1".equals(user.get(NavigationTarget.AVAILABLE_ATTRIBUTE));
+			boolean tracked = user != null && user.has(NavigationTarget.TRACKED_ATTRIBUTE)
+					&& trackingSlot.equals(user.get(NavigationTarget.TRACKED_ATTRIBUTE));
+			trackButton.setText(ClientLanguage.getText(tracked ? "Przestań śledzić" : "Śledź kompasem"));
+			trackButton.setVisible(available && !trackingSlot.isEmpty() && "Zadania poboczne".equals(indexQueryData));
+			trackButton.setEnabled(true);
+			revalidate();
 		}
 
 		private void clearContent() {
 			contentQueryData = null;
+			trackingSlot = "";
+			updateTracking();
 			contentArea.putClientProperty(QuestRewardsPanel.PROPERTY, null);
 			contentArea.setText("");
 		}
@@ -444,10 +498,12 @@ class ProgressLog {
 		 * 	repeatable, otherwise <code>false</code>
 		 */
 		void setContent(String header, String description, String information,
-				List<String> contents, boolean repeatable, QuestRewardPreview rewards) {
+				List<String> contents, boolean repeatable, QuestRewardPreview rewards, String trackingSlot) {
 			if (header == null || !header.equals(contentQueryData)) {
 				return;
 			}
+			this.trackingSlot = trackingSlot == null ? "" : trackingSlot;
+			updateTracking();
 			contentArea.putClientProperty(QuestRewardsPanel.PROPERTY, rewards);
 			StringBuilder text = new StringBuilder("<html>");
 			text.append(createStyleDefinition());
@@ -526,6 +582,8 @@ class ProgressLog {
 				 * to parse it as an URL.
 				 */
 				contentQueryData = event.getDescription();
+				trackingSlot = "";
+				updateTracking();
 				if (contentQuery != null) {
 					contentQuery.fire(contentQueryData);
 				}

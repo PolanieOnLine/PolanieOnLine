@@ -66,6 +66,16 @@ function player(targets) {return {compass_unlocked: 1, _x: 0, _y: 0, compass_tar
 function draw(p, viewport = 560) {const ctx = context();drawNavigationCompass(ctx, p, "zone", viewport);return ctx;}
 function footer(ctx) {return ctx.texts.at(-1);}
 
+test("a tracked gathering quest shows its instruction without an invented direction or distance", () => {
+	const p = player({_tracked: "coal", _label: "Węgiel do Grilla", _objective: "węgiel: 3/25"});
+	const ctx = draw(p);
+	assert.equal(footer(ctx), "Węgiel do Grilla · węgiel: 3/25");
+	assert.equal(ctx.markers.length, 0);
+	assert.ok(!ctx.texts.some(text => text.includes("kr.")));
+	p.compass_available = 0;
+	assert.deepEqual(draw(p).operations, []);
+});
+
 test("using the compass hides and restores the unlocked bar", () => {
 	const p = player({goal: "5\t0\tmain\tCel"});
 	assert.ok(draw(p).operations.length > 0);

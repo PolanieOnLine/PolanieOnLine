@@ -6,6 +6,9 @@ public final class NavigationTarget {
 	public static final String UNLOCKED_ATTRIBUTE = "compass_unlocked";
 	public static final String HIDDEN_ATTRIBUTE = "compass_hidden";
 	public static final String TARGETS_ATTRIBUTE = "compass_targets";
+	public static final String AVAILABLE_ATTRIBUTE = "compass_available";
+	public static final String TRACKED_ATTRIBUTE = "compass_tracked";
+	public static final String TRACKED_TITLE_ATTRIBUTE = "compass_tracked_title";
 	public final String id;
 	public final double x;
 	public final double y;

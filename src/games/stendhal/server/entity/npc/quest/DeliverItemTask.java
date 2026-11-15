@@ -43,6 +43,24 @@ import games.stendhal.server.util.StringUtils;
 
 
 public class DeliverItemTask extends QuestTaskBuilder {
+	@Override
+	String compassNpc(Player player, String questSlot, String questGiver) {
+		String customer = player.getQuest(questSlot, 0);
+		if (customer == null || !orders.containsKey(customer)) return null;
+		String flavor = orders.get(customer).getFlavor();
+		for (Item item : player.getAllEquipped(itemName)) {
+			if (flavor != null && flavor.equals(item.getItemData())) return customer;
+		}
+		return questGiver;
+	}
+
+	@Override
+	String compassHint(Player player, String questSlot) {
+		String customer = compassNpc(player, questSlot, null);
+		return customer == null ? "Wróć do zleceniodawcy po przesyłkę."
+				: "Dostarcz przesyłkę. Odbiorca: " + customer + ".";
+	}
+
 	private static final Logger logger = Logger.getLogger(DeliverItemTask.class);
 
 	private Outfit outfit;

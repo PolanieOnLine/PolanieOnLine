@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import games.stendhal.server.core.navigation.NavigationGoal;
 import java.util.List;
 
 import games.stendhal.common.QuestMarker;
@@ -22,6 +23,19 @@ import games.stendhal.server.entity.player.Player;
  * AbstractQuest in order for the loader to recognize them.
  */
 public interface IQuest {
+	/** Optional authored location of the current stage. Never infer it from prose or the quest giver. */
+	default NavigationGoal getCompassTarget(Player player) {
+		return null;
+	}
+
+	/** A short current instruction for stages without a single destination. */
+	default String getCompassHint(Player player) {
+		List<String> hints = getHint(player);
+		if (hints != null) for (String hint : hints)
+			if (hint != null && !hint.trim().isEmpty()) return hint;
+		return "Sprawdź wskazówki w dzienniku.";
+	}
+
 	/**
 	 * Read-only marker override for quests whose checks happen inside actions.
 	 * Return null to use the guarded conversation transitions, or NONE to hide.

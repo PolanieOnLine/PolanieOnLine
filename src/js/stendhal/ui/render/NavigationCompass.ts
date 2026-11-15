@@ -13,7 +13,7 @@ export function parseNavigationTargets(snapshot: unknown, zone: string): Navigat
 	if (map["_zone"] !== zone) return [];
 	const targets: NavigationTarget[] = [];
 	for (const [id, value] of Object.entries(map)) {
-		if (id === "_zone" || !id || typeof value !== "string") continue;
+		if (id.startsWith("_") || !id || typeof value !== "string") continue;
 		const fields = value.split("\t");
 		if ((fields.length !== 4 && fields.length !== 5) || !fields[0].trim() || !fields[1].trim() || !fields[3].trim()
 				|| (fields[2] !== "main" && fields[2] !== "side")) continue;
@@ -73,6 +73,7 @@ export function drawNavigationCompass(ctx: RenderingContext2D, player: any, zone
 		return;
 	}
 	if (Number(player["compass_hidden"]) === 1) return;
+	if (player["compass_available"] !== undefined && Number(player["compass_available"]) === 0) return;
 	const x = Number(player["_x"] ?? player["x"]), y = Number(player["_y"] ?? player["y"]);
 	if (!Number.isFinite(x) || !Number.isFinite(y)) return;
 	const {left, width} = compassBounds(viewportWidth);
@@ -136,8 +137,12 @@ export function drawNavigationCompass(ctx: RenderingContext2D, player: any, zone
 			}
 			if (occupied.length === 4) break;
 		}
-		if (primary) {
-			const caption = fitCaption(ctx, `${directionInstruction(primary, x, y)} · ${primary.label}`, width - 20);
+		const snapshot = player["compass_targets"];
+		const tracked = snapshot && snapshot._zone === zone && typeof snapshot._tracked === "string";
+		if (primary || tracked) {
+			const label = primary ? `${directionInstruction(primary, x, y)} · ${primary.label}`
+				: `${GameLanguage.getText(snapshot._label ?? "")} · ${GameLanguage.getText(snapshot._objective ?? "")}`;
+			const caption = fitCaption(ctx, label, width - 20);
 			ctx.textAlign = "center"; ctx.fillStyle = INK;
 			ctx.fillText(caption, width / 2, 36);
 		}
