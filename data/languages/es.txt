@@ -3131,3 +3131,7 @@ Idź na północny zachód=Ve al noroeste
 Idź dalej=Sigue adelante
 Jesteś na miejscu=Has llegado
 kr.=casillas
+Pokaż / schowaj kompas=Mostrar / ocultar brújula
+Ten kompas jeszcze cię nie prowadzi. Porozmawiaj z Sabałą w Zakopanem.=Esta brújula aún no puede guiarte. Habla con Sabała en Zakopane.
+Chowasz kompas z ekranu. Użyj go ponownie, aby go pokazać.=Ocultas la brújula de la pantalla. Úsala de nuevo para mostrarla.
+Kompas jest znowu widoczny na ekranie.=La brújula vuelve a estar visible en la pantalla.

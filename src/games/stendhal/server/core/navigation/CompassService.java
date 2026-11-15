@@ -19,6 +19,7 @@ import games.stendhal.server.maps.quests.compass.WanderersCompassQuest;
 import games.stendhal.server.maps.quests.trail.TrailNavigationTargets;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ import marauroa.common.game.IRPZone;
 public final class CompassService {
 	public static final String TARGETS = "compass_targets";
 	public static final String UNLOCKED = "compass_unlocked";
+	public static final String HIDDEN = "compass_hidden";
 	private static final long TOPOLOGY_LIFETIME = 60000L;
 	private static long topologyExpires;
 	private static Map<String, List<Edge>> topology = Collections.emptyMap();
@@ -54,7 +56,8 @@ public final class CompassService {
 				&& (!player.has(UNLOCKED) || player.getInt(UNLOCKED) != 1)) player.put(UNLOCKED, 1);
 		final Map<String, String> next = new LinkedHashMap<>();
 		if (player.getZone() != null) next.put("_zone", player.getZone().getName());
-		if (player.getZone() != null && player.has(UNLOCKED) && player.getInt(UNLOCKED) == 1) {
+		if (player.getZone() != null && player.has(UNLOCKED) && player.getInt(UNLOCKED) == 1
+				&& (!player.has(HIDDEN) || player.getInt(HIDDEN) != 1)) {
 			final NavigationGoal side = WanderersCompassQuest.target(player);
 			if (side != null) publish(player, next, "side:compass", "side", side);
 			List<NavigationGoal> main = TrailNavigationTargets.targets(player);
@@ -66,7 +69,7 @@ public final class CompassService {
 							.thenComparing(g -> g.stage)
 							.thenComparing(g -> g.label));
 			for (NavigationGoal goal : main)
-				publish(player, next, "main:" + goal.stage + ":" + goal.zone + ":" + goal.x + "," + goal.y, "main", goal);
+				publish(player, next, "main:" + goal.stage + ":" + goal.zone + ":" + goal.identity, "main", goal);
 		}
 		final Map<String, String> previous =
 				player.hasMap(TARGETS) ? player.getMap(TARGETS) : Collections.emptyMap();
@@ -92,7 +95,7 @@ public final class CompassService {
 			if (npc != null && npc.getZone() != null)
 				main.add(
 						new NavigationGoal(
-								npc.getZone().getName(), npc.getX(), npc.getY(), npc.getName(), slot));
+								npc.getZone().getName(), npc.getX(), npc.getY(), npc.getName(), slot, "npc:" + npc.getName()));
 		}
 	}
 
@@ -123,7 +126,7 @@ public final class CompassService {
 			if (local != null) return local;
 		}
 		ensureTopology(current.getName(), goal.zone);
-		final String key = goal.zone + "\t" + goal.x + "," + goal.y;
+		final String key = goal.zone + "\t" + goal.stage + "\t" + goal.identity;
 		Map<String, CachedRoute> cache = routes.computeIfAbsent(player, p -> new HashMap<>());
 		CachedRoute cached = cache.get(key);
 		if (cached != null && cached.valid(player)) {
@@ -176,6 +179,7 @@ public final class CompassService {
 		PriorityQueue<RoutePosition> queue = new PriorityQueue<>(Comparator.comparingInt(p -> p.distance));
 		Map<Edge, Edge> previous = new HashMap<>();
 		Map<Edge, Integer> distances = new HashMap<>();
+		Map<StendhalRPZone, WalkingMap> walkingMaps = new HashMap<>();
 		queue.add(new RoutePosition(player.getZone().getName(), null, 0));
 		Edge best = null;
 		int bestDistance = Integer.MAX_VALUE;
@@ -192,9 +196,11 @@ public final class CompassService {
 			if (start == null) {
 				continue;
 			}
+			WalkingMap walk = walkingMaps.computeIfAbsent(start.getZone(), WalkingMap::new);
+			walk.startAt(start.getX(), start.getY());
 			if (position.zone.equals(goal.zone)
 					&& !unreachable.contains(new BlockedStep(position.incoming, null))) {
-				int lastLeg = walkingDistance(start.getZone(), start.getX(), start.getY(), goal.x, goal.y, false);
+				int lastLeg = walk.distanceTo(goal.x, goal.y, false);
 				if (lastLeg >= 0 && position.distance + lastLeg < bestDistance) {
 					bestDistance = position.distance + lastLeg;
 					best = position.incoming;
@@ -208,7 +214,7 @@ public final class CompassService {
 				if (lowerBound >= Math.min(bestDistance, distances.getOrDefault(edge, Integer.MAX_VALUE))) {
 					continue;
 				}
-				int leg = walkingDistance(start.getZone(), start.getX(), start.getY(), edge.x, edge.y, edge.portal != null);
+				int leg = walk.distanceTo(edge.x, edge.y, edge.portal != null);
 				if (leg < 0) {
 					continue;
 				}
@@ -226,6 +232,77 @@ public final class CompassService {
 		}
 		Collections.reverse(path);
 		return path;
+	}
+
+	/** One primitive flood per arrival, shared by all exits of that map in this search. */
+	private static final class WalkingMap {
+		final int width, height;
+		final boolean[] blocked;
+		final int[] distances, queue;
+		int startX = Integer.MIN_VALUE, startY = Integer.MIN_VALUE;
+
+		WalkingMap(StendhalRPZone zone) {
+			width = zone.getWidth();
+			height = zone.getHeight();
+			blocked = new boolean[width * height];
+			distances = new int[blocked.length];
+			queue = new int[blocked.length];
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
+					blocked[y * width + x] = zone.collides(x, y);
+				}
+			}
+		}
+
+		void startAt(int x, int y) {
+			if (startX == x && startY == y) {
+				return;
+			}
+			startX = x;
+			startY = y;
+			Arrays.fill(distances, -1);
+			if (x < 0 || y < 0 || x >= width || y >= height) {
+				return;
+			}
+			int tail = 1;
+			queue[0] = y * width + x;
+			distances[queue[0]] = 0;
+			for (int head = 0; head < tail; head++) {
+				int position = queue[head];
+				int nextDistance = distances[position] + 1;
+				if (position % width > 0) tail = visit(position - 1, nextDistance, tail);
+				if (position % width + 1 < width) tail = visit(position + 1, nextDistance, tail);
+				if (position >= width) tail = visit(position - width, nextDistance, tail);
+				if (position + width < distances.length) tail = visit(position + width, nextDistance, tail);
+			}
+		}
+
+		private int visit(int position, int distance, int tail) {
+			if (!blocked[position] && distances[position] < 0) {
+				distances[position] = distance;
+				queue[tail++] = position;
+			}
+			return tail;
+		}
+
+		int distanceTo(int x, int y, boolean portal) {
+			if (x < 0 || y < 0 || x >= width || y >= height) {
+				return -1;
+			}
+			if (!portal && !blocked[y * width + x]) {
+				return distances[y * width + x];
+			}
+			int best = Integer.MAX_VALUE;
+			for (int row = Math.max(0, y - 1); row <= Math.min(height - 1, y + 1); row++) {
+				for (int column = Math.max(0, x - 1); column <= Math.min(width - 1, x + 1); column++) {
+					int distance = distances[row * width + column];
+					if (distance >= 0) {
+						best = Math.min(best, distance + Math.abs(x - column) + Math.abs(y - row));
+					}
+				}
+			}
+			return best == Integer.MAX_VALUE ? -1 : best;
+		}
 	}
 
 	private static final class RoutePosition {
@@ -386,6 +463,7 @@ public final class CompassService {
 		final Map<Integer, Integer> tails = new HashMap<>();
 		BlockedStep failed;
 		int currentIndex;
+		int goalX = Integer.MIN_VALUE, goalY = Integer.MIN_VALUE;
 
 		CachedRoute(List<Edge> edges) {
 			this.edges = edges;
@@ -437,6 +515,11 @@ public final class CompassService {
 		}
 
 		NavigationGoal waypoint(Player player, NavigationGoal goal) {
+			if (goalX != goal.x || goalY != goal.y) {
+				tails.clear();
+				goalX = goal.x;
+				goalY = goal.y;
+			}
 			int index = index(player.getZone().getName());
 			if (index < 0) return null;
 			Edge first = edges.get(index);

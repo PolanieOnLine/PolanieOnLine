@@ -206,3 +206,7 @@ Idź na północny zachód=Head northwest
 Idź dalej=Keep going
 Jesteś na miejscu=You have arrived
 kr.=tiles
+Pokaż / schowaj kompas=Show / hide compass
+Ten kompas jeszcze cię nie prowadzi. Porozmawiaj z Sabałą w Zakopanem.=This compass cannot guide you yet. Speak to Sabała in Zakopane.
+Chowasz kompas z ekranu. Użyj go ponownie, aby go pokazać.=You hide the compass from the screen. Use it again to show it.
+Kompas jest znowu widoczny na ekranie.=The compass is visible on the screen again.

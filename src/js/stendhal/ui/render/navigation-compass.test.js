@@ -65,6 +65,15 @@ function context() {
 function player(targets) {return {compass_unlocked: 1, _x: 0, _y: 0, compass_targets: {_zone: "zone", ...targets}};}
 function draw(p, viewport = 560) {const ctx = context();drawNavigationCompass(ctx, p, "zone", viewport);return ctx;}
 function footer(ctx) {return ctx.texts.at(-1);}
+
+test("using the compass hides and restores the unlocked bar", () => {
+	const p = player({goal: "5\t0\tmain\tCel"});
+	assert.ok(draw(p).operations.length > 0);
+	p.compass_hidden = 1;
+	assert.deepEqual(draw(p).operations, []);
+	p.compass_hidden = 0;
+	assert.ok(draw(p).texts.includes("5 kr."));
+});
 test("locked and logout hide overlay, empty compass retains only original cardinals", () => {
 	const ctx = context();
 	drawNavigationCompass(ctx, undefined, "zone", 320);

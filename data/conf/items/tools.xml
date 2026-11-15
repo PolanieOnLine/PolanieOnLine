@@ -3,9 +3,11 @@
 
 	<item name="kompas wędrowca" rarity-enabled="false">
 		<type class="tool" subclass="wanderers_compass" tileid="-1"/>
-		<description>Oto kompas wędrowca. Naprawiona igła znów wskazuje drogę. Dawniej służył przewodnikowi, który nie zostawiał nikogo na szlaku.</description>
+		<description>Oto kompas wędrowca. Naprawiona igła znów wskazuje drogę. Dawniej służył przewodnikowi, który nie zostawiał nikogo na szlaku. Użyj go, aby pokazać lub schować kompas na ekranie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<behavior class-name="games.stendhal.server.entity.item.behavior.WanderersCompassUseBehavior"/>
 		<attributes>
+			<menu value="Pokaż / schowaj kompas|Użyj"/>
 		</attributes>
 		<weight value="0.5"/>
 		<value value="0"/>

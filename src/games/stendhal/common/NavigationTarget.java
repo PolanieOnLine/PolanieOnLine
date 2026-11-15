@@ -4,6 +4,7 @@ package games.stendhal.common;
 /** A server-selected destination in the player's current zone. */
 public final class NavigationTarget {
 	public static final String UNLOCKED_ATTRIBUTE = "compass_unlocked";
+	public static final String HIDDEN_ATTRIBUTE = "compass_hidden";
 	public static final String TARGETS_ATTRIBUTE = "compass_targets";
 	public final String id;
 	public final double x;

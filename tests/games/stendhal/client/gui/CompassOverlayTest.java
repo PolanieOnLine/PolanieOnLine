@@ -18,6 +18,22 @@ import org.junit.Test;
 
 public class CompassOverlayTest {
 	@Test
+	public void usingTheCompassCanHideAndRestoreAnAlreadyUnlockedBar() {
+		PLAYER_CLASS.addAttribute("compass_hidden", Type.INT);
+		RPObject user = player(true);
+		BufferedImage image = new BufferedImage(640, 100, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		CompassOverlay overlay = new CompassOverlay(new ImageSprite(new BufferedImage(8, 8, BufferedImage.TYPE_INT_RGB)));
+		user.put("compass_hidden", 1);
+		overlay.drawSnapshot(g, 640, 50, 50, user, "zone");
+		assertEquals("A hidden compass must not cover the game", 0, image.getRGB(320, 27));
+		user.put("compass_hidden", 0);
+		overlay.drawSnapshot(g, 640, 50, 50, user, "zone");
+		assertNotEquals(0, image.getRGB(320, 27));
+		g.dispose();
+	}
+
+	@Test
 	public void keepsThePrimaryGoalWhenAnotherObjectiveBecomesCloser() {
 		CompassOverlay overlay = new CompassOverlay();
 		RPObject owner = playerFixture();

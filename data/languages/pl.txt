@@ -1820,3 +1820,7 @@ Idź na północny zachód=Idź na północny zachód
 Idź dalej=Idź dalej
 Jesteś na miejscu=Jesteś na miejscu
 kr.=kr.
+Pokaż / schowaj kompas=Pokaż / schowaj kompas
+Ten kompas jeszcze cię nie prowadzi. Porozmawiaj z Sabałą w Zakopanem.=Ten kompas jeszcze cię nie prowadzi. Porozmawiaj z Sabałą w Zakopanem.
+Chowasz kompas z ekranu. Użyj go ponownie, aby go pokazać.=Chowasz kompas z ekranu. Użyj go ponownie, aby go pokazać.
+Kompas jest znowu widoczny na ekranie.=Kompas jest znowu widoczny na ekranie.

@@ -62,6 +62,9 @@ public final class CompassOverlay {
 			selectedTarget = null;
 			return;
 		}
+		if (user.has(NavigationTarget.HIDDEN_ATTRIBUTE) && "1".equals(user.get(NavigationTarget.HIDDEN_ATTRIBUTE))) {
+			return;
+		}
 		int width = widthForViewport(viewportWidth);
 		if (width < 80) {
 			return;

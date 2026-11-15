@@ -24,6 +24,56 @@ import java.util.Set;
 
 public class CompassServiceTest {
 	@Test
+	public void aWalkingNpcDoesNotRestartTheSearchAcrossAllMaps() {
+		CountingZone first = new CountingZone("compass_moving_first");
+		first.setPosition();
+		SingletonRepository.getRPWorld().addRPZone("compass_moving", first);
+		StendhalRPZone last = register("compass_moving_last");
+		Portal exit = new Portal();
+		exit.setPosition(12, 2);
+		exit.setDestination(last.getName(), "entry");
+		first.add(exit);
+		Player player = PlayerTestHelper.createPlayer("compass_moving");
+		player.setPosition(2, 2);
+		first.add(player);
+		NavigationGoal initial = CompassService.localTarget(player,
+				new NavigationGoal(last.getName(), 7, 1, "Julius", "return", "npc:Julius"));
+		assertNotNull(initial);
+		first.checks = 0;
+		NavigationGoal moved = CompassService.localTarget(player,
+				new NavigationGoal(last.getName(), 8, 1, "Julius", "return", "npc:Julius"));
+		assertEquals(initial.remainingSteps + 1, moved.remainingSteps);
+		assertEquals("An NPC taking one step must not restart the world route search", 0, first.checks);
+	}
+
+	private static final class CountingZone extends StendhalRPZone {
+		int checks;
+		boolean lineCheck;
+
+		CountingZone(String name) {
+			super(name, 20, 20);
+		}
+
+		@Override
+		public boolean collides(int x, int y) {
+			if (!lineCheck) {
+				checks++;
+			}
+			return super.collides(x, y);
+		}
+
+		@Override
+		public boolean collidesOnLine(int x1, int y1, int x2, int y2) {
+			lineCheck = true;
+			try {
+				return super.collidesOnLine(x1, y1, x2, y2);
+			} finally {
+				lineCheck = false;
+			}
+		}
+	}
+
+	@Test
 	public void aShortcutWithinTheSameMapAdvancesToTheNextExit() {
 		StendhalRPZone first = register("compass_self_first");
 		StendhalRPZone last = register("compass_self_last");

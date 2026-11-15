@@ -82,6 +82,7 @@
 * Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata oraz kierunek do aktualnych celów zadań głównych, a znaczniki przesuwają się podczas poruszania postaci
 * Kompas podpowiada kierunek marszu i pokazuje łączną pozostałą drogę do celu przez kolejne mapy. Prowadzi przez zakręty, zachowując wybrany cel podczas ruchu
 * Kompas odblokowuje się na stałe po ukończeniu zadania Na manowcach. W drodze do celu na innej mapie wskazuje prowadzące do niego przejście
+* Użycie kompasu wędrowca pokazuje lub chowa jego pasek na ekranie. Wybór jest zapamiętywany dla postaci, a po zdobyciu kompas jest domyślnie widoczny. Jego wskazówka delikatnie się porusza
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java

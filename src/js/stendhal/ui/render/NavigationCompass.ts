@@ -72,6 +72,7 @@ export function drawNavigationCompass(ctx: RenderingContext2D, player: any, zone
 		primaryTargetIds.delete(player);
 		return;
 	}
+	if (Number(player["compass_hidden"]) === 1) return;
 	const x = Number(player["_x"] ?? player["x"]), y = Number(player["_y"] ?? player["y"]);
 	if (!Number.isFinite(x) || !Number.isFinite(y)) return;
 	const {left, width} = compassBounds(viewportWidth);
