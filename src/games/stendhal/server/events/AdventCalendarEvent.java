@@ -8,7 +8,6 @@ import games.stendhal.common.constants.Events;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.advent.AdventCalendarRewards;
 import games.stendhal.server.core.events.advent.AdventCalendarRewards.Reward;
-import games.stendhal.server.core.events.advent.AdventCalendarRules;
 import games.stendhal.server.core.events.advent.AdventCalendarService.Result;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
@@ -47,7 +46,7 @@ public final class AdventCalendarEvent extends RPEvent {
 		put("revealed_day", result.revealedDay);
 		final List<String> states = new ArrayList<>();
 		for (int day = 1; day <= 24; day++) {
-			states.add(inactive ? "inactive" : AdventCalendarRules.state(result.date, day, result.mask));
+			states.add(result.stateForDay(day));
 		}
 		put("states", states);
 		final List<String> layout = new ArrayList<>();

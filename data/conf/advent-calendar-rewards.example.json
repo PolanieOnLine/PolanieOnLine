@@ -1,5 +1,7 @@
 {
   "_instructions": [
+    "Aby testować dowolny dzień poza terminem, dodaj -Dstendhal.advent.debug=true do opcji Java PRZED -jar lub nazwą klasy uruchamiającej serwer. Nie dodawaj go do klienta.",
+    "Tryb testowy działa tylko dla administratorów od poziomu 35, także bez wydarzenia xmas. Otwórz zwykły kalendarz z menu lub komendą /adventcalendar. Nagrody naprawdę trafiają do plecaka i nadal można odebrać je tylko raz na konto w danym roku. Wyłączenie trybu nie kasuje odebranych nagród; aby go wyłączyć, usuń argument i uruchom serwer ponownie.",
     "To jest wyłącznie przykład formatu, a nie lista nagród na serwerze gry.",
     "Skopiuj ten plik jako data/conf/advent-calendar-rewards.json i ustaw własne nagrody dla wszystkich dni od 1 do 24.",
     "Plik z prawdziwymi nagrodami jest ignorowany przez Git. Na serwer trzeba skopiować go osobno, do data/conf względem katalogu uruchomienia serwera.",

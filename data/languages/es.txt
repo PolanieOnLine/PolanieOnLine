@@ -3164,3 +3164,5 @@ Doświadczenie i napiwek zależą od odbiorcy oraz czasu dostawy.=La experiencia
 Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.=Una entrega tardía otorga la mitad de experiencia y ninguna propina.
 
 Nagrody otrzymujesz w kolejnych etapach zadania.=Las recompensas se entregan en las distintas etapas de la misión.
+Tryb testowy administratora. {item:0}=Modo de prueba del administrador. {item:0}
+Możesz otworzyć dowolne okienko. Nagrody są przyznawane raz na konto.=Puedes abrir cualquier casilla. Los regalos solo se pueden recoger una vez por cuenta.

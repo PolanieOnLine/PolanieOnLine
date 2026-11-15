@@ -21,6 +21,9 @@ import marauroa.server.db.TransactionPool;
 
 /** One authoritative calendar for every character on an account. */
 public final class AdventCalendarService {
+	public static final String DEBUG_PROPERTY = "stendhal.advent.debug";
+	// Match the level required to summon items; support access alone is insufficient.
+	private static final int DEBUG_ADMIN_LEVEL = 35;
 
 	public interface Accounts {
 		AccountState load(Player player, int year) throws SQLException;
@@ -71,33 +74,36 @@ public final class AdventCalendarService {
 
 	public Result process(final Player player, final String command, final int day) throws SQLException {
 		final LocalDate date = AdventCalendarRules.dateAt(clock.instant());
-		if (!SeasonalEventType.CHRISTMAS.isEnabled()) {
+		final boolean debug = Boolean.getBoolean(DEBUG_PROPERTY) && player.getAdminLevel() >= DEBUG_ADMIN_LEVEL;
+		if (!SeasonalEventType.CHRISTMAS.isEnabled() && !debug) {
 			return new Result(date, 0, "inactive",
 					"Kalendarz jest dostępny tylko podczas wydarzenia świątecznego.",
-					0, Collections.emptyList());
+					0, Collections.emptyList(), false);
 		}
 		final AccountState account = accounts.load(player, date.getYear());
 		final long key = ((long) date.getYear() << 32) | (account.id & 0xffffffffL);
 		int mask = account.mask | pendingClaims.getOrDefault(key, 0);
 		if ("open".equals(command) || "refresh".equals(command)) {
-			final String message = date.getMonthValue() != 12
+			final String message = debug
+					? "Możesz otworzyć dowolne okienko. Nagrody są przyznawane raz na konto."
+					: date.getMonthValue() != 12
 					? "Kalendarz otwiera się 1 grudnia. Wróć wtedy po pierwszy prezent."
 					: date.getDayOfMonth() > 27 ? "Tegoroczny kalendarz dobiegł końca. Do zobaczenia za rok!"
 					: date.getDayOfMonth() > 24 ? "Możesz jeszcze odebrać zaległe prezenty."
 					: "Otwórz dzisiejsze okienko lub odbierz zaległy prezent.";
-			return new Result(date, mask, "ok", message, 0, Collections.emptyList());
+			return new Result(date, mask, "ok", message, 0, Collections.emptyList(), debug);
 		}
-		final String state = AdventCalendarRules.state(date, day, mask);
+		final String state = AdventCalendarRules.state(date, day, mask, debug);
 		if ("view".equals(command) && "claimed".equals(state)) {
 			return new Result(date, mask, "claimed", "Ten prezent został już odebrany na twoim koncie.",
-					day, Collections.emptyList());
+					day, Collections.emptyList(), debug);
 		}
 		if (!"claim".equals(command) || !"available".equals(state)) {
 			final String message = "claimed".equals(state) ? "Ten prezent został już odebrany na twoim koncie."
 					: "expired".equals(state) ? "Minął już termin odbioru tego prezentu."
 					: "future".equals(state) ? "Na ten prezent trzeba jeszcze poczekać."
 					: "Nie można otworzyć tego okienka.";
-			return new Result(date, mask, state, message, 0, Collections.emptyList());
+			return new Result(date, mask, state, message, 0, Collections.emptyList(), debug);
 		}
 		final int ownMask = ownMask(player, date.getYear());
 		final List<Item> items = rewards.apply(day);
@@ -114,14 +120,14 @@ public final class AdventCalendarService {
 		}
 		if (!AdventInventoryGrant.give(player, items)) {
 			return new Result(date, mask, "no_space",
-					"Zwolnij miejsce w plecaku, aby odebrać świąteczny prezent.", 0, Collections.emptyList());
+					"Zwolnij miejsce w plecaku, aby odebrać świąteczny prezent.", 0, Collections.emptyList(), debug);
 		}
 		final int bit = 1 << (day - 1);
 		player.setQuest(AdventCalendarDAO.QUEST_SLOT, date.getYear() + ";" + (ownMask | bit));
 		mask |= bit;
 		pendingClaims.put(key, mask);
 		player.notifyWorldAboutChanges();
-		return new Result(date, mask, "received", "Świąteczny prezent trafił do twojego plecaka.", day, items);
+		return new Result(date, mask, "received", "Świąteczny prezent trafił do twojego plecaka.", day, items, debug);
 	}
 
 	private int ownMask(final Player player, final int year) {
@@ -145,15 +151,22 @@ public final class AdventCalendarService {
 		public final String message;
 		public final int revealedDay;
 		public final List<Item> items;
+		private final boolean debug;
 
 		private Result(final LocalDate date, final int mask, final String status, final String message,
-				final int revealedDay, final List<Item> items) {
+				final int revealedDay, final List<Item> items, final boolean debug) {
 			this.date = date;
 			this.mask = mask;
 			this.status = status;
-			this.message = message;
+			this.message = debug ? "Tryb testowy administratora. " + message : message;
 			this.revealedDay = revealedDay;
 			this.items = Collections.unmodifiableList(items);
+			this.debug = debug;
+		}
+
+		/** Both clients receive exactly the eligibility used to process claims. */
+		public String stateForDay(final int day) {
+			return "inactive".equals(status) ? "inactive" : AdventCalendarRules.state(date, day, mask, debug);
 		}
 	}
 }
