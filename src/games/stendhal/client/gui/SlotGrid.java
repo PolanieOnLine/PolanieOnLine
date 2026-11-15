@@ -27,7 +27,6 @@ import games.stendhal.client.GameObjects;
 import games.stendhal.client.entity.ContentChangeListener;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
-import games.stendhal.client.sprite.Sprite;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
 import marauroa.common.game.RPSlot;
@@ -45,30 +44,21 @@ public class SlotGrid extends JComponent implements ContentChangeListener, Inspe
 	private IEntity parent;
 	/** Name of the shown slot. */
 	private String slotName;
-	private final Sprite surface;
-	private final int padding;
 
 	public SlotGrid(final int width, final int height) {
-		this(width, height, null, PADDING);
-	}
-
-	SlotGrid(final int width, final int height, final Sprite surface, final int padding) {
-		this.surface = surface;
-		this.padding = padding;
 		panels = new ArrayList<ItemPanel>();
 		setSlotsLayout(width, height);
 	}
 
 	public void setSlotsLayout(final int width, final int height) {
-		setLayout(new GridLayout(height, width, padding, padding));
+		setLayout(new GridLayout(height, width, PADDING, PADDING));
 
 		for (ItemPanel panel : panels) {
 			remove(panel);
 		}
 		panels.clear();
 		for (int i = 0; i < width * height; i++) {
-			final ItemPanel panel = surface == null ? new ItemPanel(null, null)
-					: new ItemPanel(null, null, surface);
+			final ItemPanel panel = new ItemPanel(null, null);
 			panel.setItemNumber(i);
 			panels.add(panel);
 			add(panel);

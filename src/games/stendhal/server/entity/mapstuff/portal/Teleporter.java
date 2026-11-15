@@ -24,6 +24,11 @@ public class Teleporter extends Portal {
 
 	}
 
+	/** Read-only destination preview; does not use the teleporter. */
+	public Spot getDestinationSpot() {
+		return spot;
+	}
+
 	/**
 	 * Use the portal.
 	 *

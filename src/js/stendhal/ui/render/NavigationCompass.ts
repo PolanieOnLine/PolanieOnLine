@@ -1,9 +1,10 @@
 /* Copyright (C) 2026 - PolanieOnLine; AGPL version 3 or later. */
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../../data/Paths";
+import { GameLanguage } from "../../util/GameLanguage";
 
 export interface NavigationTarget {
-	id: string; x: number; y: number; main: boolean; label: string;
+	id: string; x: number; y: number; main: boolean; label: string; remainingSteps?: number;
 }
 
 export function parseNavigationTargets(snapshot: unknown, zone: string): NavigationTarget[] {
@@ -14,11 +15,14 @@ export function parseNavigationTargets(snapshot: unknown, zone: string): Navigat
 	for (const [id, value] of Object.entries(map)) {
 		if (id === "_zone" || !id || typeof value !== "string") continue;
 		const fields = value.split("\t");
-		if (fields.length !== 4 || !fields[0].trim() || !fields[1].trim() || !fields[3].trim()
+		if ((fields.length !== 4 && fields.length !== 5) || !fields[0].trim() || !fields[1].trim() || !fields[3].trim()
 				|| (fields[2] !== "main" && fields[2] !== "side")) continue;
+		const remainingSteps = fields.length === 5 ? Number(fields[4]) : undefined;
+		if (remainingSteps !== undefined && (!/^\d+$/.test(fields[4])
+				|| !Number.isSafeInteger(remainingSteps) || remainingSteps > 2147483647)) continue;
 		const x = Number(fields[0]), y = Number(fields[1]);
 		if (Number.isFinite(x) && Number.isFinite(y)) {
-			targets.push({id, x, y, main: fields[2] === "main", label: fields[3]});
+			targets.push({id, x, y, main: fields[2] === "main", label: fields[3], remainingSteps});
 		}
 	}
 	return targets;
@@ -36,19 +40,49 @@ export function compassBounds(viewportWidth: number): {left: number; width: numb
 
 const INK = "#fff3d2", MAIN = "#f27766", SIDE = "#d9c697";
 let wood: HTMLImageElement | undefined;
+let primaryTargetIds = new WeakMap<object, string>();
+
+const DIRECTIONS = ["Idź na północ", "Idź na północny wschód", "Idź na wschód",
+	"Idź na południowy wschód", "Idź na południe", "Idź na południowy zachód",
+	"Idź na zachód", "Idź na północny zachód"];
+
+function directionInstruction(target: NavigationTarget, x: number, y: number): string {
+	const dx = target.x - x, dy = target.y - y;
+	if (dx === 0 && dy === 0) {
+		return GameLanguage.getText((target.remainingSteps ?? 0) > 0 ? "Idź dalej" : "Jesteś na miejscu");
+	}
+	const sector = (Math.round(Math.atan2(dx, -dy) / (Math.PI / 4)) + 8) % 8;
+	return GameLanguage.getText(DIRECTIONS[sector]);
+}
+
+function fitCaption(ctx: RenderingContext2D, caption: string, width: number): string {
+	if (ctx.measureText(caption).width <= width) return caption;
+	while (caption && ctx.measureText(caption + "...").width > width) caption = caption.slice(0, -1);
+	return caption + "...";
+}
 
 /** Screen-space overlay, using only our own private perception snapshot. */
 export function drawNavigationCompass(ctx: RenderingContext2D, player: any, zone: string,
 		viewportWidth: number, pixelRatio = 1): void {
-	if (!player || Number(player["compass_unlocked"]) !== 1) return;
+	if (!player || typeof player !== "object") {
+		primaryTargetIds = new WeakMap<object, string>();
+		return;
+	}
+	if (Number(player["compass_unlocked"]) !== 1) {
+		primaryTargetIds.delete(player);
+		return;
+	}
 	const x = Number(player["_x"] ?? player["x"]), y = Number(player["_y"] ?? player["y"]);
 	if (!Number.isFinite(x) || !Number.isFinite(y)) return;
 	const {left, width} = compassBounds(viewportWidth);
 	if (width < 80) return;
 	const targets = parseNavigationTargets(player["compass_targets"], zone)
-		.map(target => ({...target, distance: Math.hypot(target.x - x, target.y - y)}))
+		.map(target => ({...target, distance: target.remainingSteps ?? Math.hypot(target.x - x, target.y - y)}))
 		.filter(target => Number.isFinite(target.distance))
-		.sort((a, b) => a.distance - b.distance || a.id.localeCompare(b.id));
+		.sort((a, b) => Number(b.main) - Number(a.main) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+	const primary = targets.find(target => target.id === primaryTargetIds.get(player)) ?? targets[0];
+	if (primary) primaryTargetIds.set(player, primary.id);
+	else primaryTargetIds.delete(player);
 	ctx.save();
 	try {
 		ctx.setTransform(pixelRatio, 0, 0, pixelRatio, left * pixelRatio, 12 * pixelRatio);
@@ -75,22 +109,35 @@ export function drawNavigationCompass(ctx: RenderingContext2D, player: any, zone
 		}
 		ctx.font = "11px Arial, sans-serif";
 		const occupied: number[] = [];
-		for (const target of targets) {
+		let distanceBounds: {left: number; right: number} | undefined;
+		// Reserve the selected marker first, even when another goal overlaps it.
+		const ordered = primary ? [primary, ...targets.filter(target => target !== primary)] : [];
+		for (const target of ordered) {
 			const tx = 8 + Math.round((width - 16) * compassPosition(target, x, y));
-			if (occupied.some(previous => Math.abs(previous - tx) < 45)) continue;
+			if (occupied.some(previous => Math.abs(previous - tx) < 14)) continue;
+			if (distanceBounds && tx >= distanceBounds.left - 3 && tx <= distanceBounds.right + 3) continue;
 			occupied.push(tx);
 			ctx.fillStyle = target.main ? MAIN : SIDE;
-			ctx.beginPath(); ctx.moveTo(tx, 18); ctx.lineTo(tx + 4, 22);
-			ctx.lineTo(tx, 26); ctx.lineTo(tx - 4, 22); ctx.closePath(); ctx.fill();
-			ctx.fillStyle = INK; ctx.textAlign = "left";
-			const distance = String(Math.round(target.distance));
-			ctx.fillText(distance, Math.min(width - ctx.measureText(distance).width - 3, tx + 6), 26);
+			if (target === primary) {
+				ctx.beginPath(); ctx.moveTo(tx, 17); ctx.lineTo(tx + 5, 22);
+				ctx.lineTo(tx, 27); ctx.lineTo(tx - 5, 22); ctx.closePath(); ctx.fill();
+				ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1; ctx.stroke();
+				ctx.fillStyle = INK; ctx.textAlign = "left";
+				const distance = `${Math.round(target.distance)} ${GameLanguage.getText("kr.")}`;
+				const distanceWidth = ctx.measureText(distance).width;
+				const distanceLeft = Math.max(3, Math.min(width - distanceWidth - 3, tx + 7));
+				distanceBounds = {left: distanceLeft, right: distanceLeft + distanceWidth};
+				ctx.fillText(distance, distanceLeft, 26);
+			} else {
+				ctx.globalAlpha = 0.5;
+				ctx.beginPath(); ctx.arc(tx, 22, 2, 0, 2 * Math.PI); ctx.fill();
+				ctx.globalAlpha = 1;
+			}
 			if (occupied.length === 4) break;
 		}
-		if (targets.length) {
-			let caption = targets[0].label;
-			while (caption && ctx.measureText(caption).width > width - 20) caption = caption.slice(0, -1);
-			ctx.textAlign = "center"; ctx.fillStyle = targets[0].main ? MAIN : SIDE;
+		if (primary) {
+			const caption = fitCaption(ctx, `${directionInstruction(primary, x, y)} · ${primary.label}`, width - 20);
+			ctx.textAlign = "center"; ctx.fillStyle = INK;
 			ctx.fillText(caption, width / 2, 36);
 		}
 	} finally { ctx.restore(); }

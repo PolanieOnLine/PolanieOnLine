@@ -240,12 +240,6 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 		return titleBar;
 	}
 
-	/** Set a title border that is also retained when restoring the window. */
-	protected void setTitlebarBorder(final Border border) {
-		titleBar.border = border;
-		titleBar.setBorder(border);
-	}
-
 	/**
 	 * Set the window title.
 	 *
@@ -461,7 +455,7 @@ public class InternalWindow extends JPanel implements ComponentPaintCache.Cachea
 		private static final long serialVersionUID = -6859560118307192124L;
 		/** Original, unmodified insets. */
 		private Insets insets;
-		private Border border;
+		private final Border border;
 		private final ComponentPaintCache cache;
 		/**
 		 * Width of the window content. The title bar should not request a

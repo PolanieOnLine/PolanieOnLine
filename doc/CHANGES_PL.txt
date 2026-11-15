@@ -77,9 +77,10 @@
 
 *klient gry*
 ---
-* Odświeżono okno łupu w kliencie Java: dodano czytelniejszy nagłówek, ciemniejsze kratki i lepsze odstępy. Długie nazwy potworów mają pełny podgląd po najechaniu myszą
+* Okno łupu w kliencie Java zachowuje niewielki rozmiar. Zbyt długie nazwy potworów są skracane wielokropkiem, a pełną nazwę można podejrzeć po najechaniu myszą
 * Dodano rozbudowane okno aktualizatora z opisem aktualizacji, postępem pobierania, prędkością i pozostałym czasem
 * Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata oraz kierunek do aktualnych celów zadań głównych, a znaczniki przesuwają się podczas poruszania postaci
+* Kompas podpowiada kierunek marszu i pokazuje łączną pozostałą drogę do celu przez kolejne mapy. Prowadzi przez zakręty, zachowując wybrany cel podczas ruchu
 * Kompas odblokowuje się na stałe po ukończeniu zadania Na manowcach. W drodze do celu na innej mapie wskazuje prowadzące do niego przejście
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami

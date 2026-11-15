@@ -70,8 +70,6 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 * The background surface sprite.
 	 */
 	private static final Sprite background = SpriteStore.get().getSprite("data/gui/slot.png");
-	/** Surface for this panel; ordinary inventory panels keep the shared sprite. */
-	private final Sprite slotBackground;
 
 	/** The placeholder sprite, or <code>null</code>. */
 	private final Sprite placeholder;
@@ -106,15 +104,10 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 * @param placeholder image used in an empty panel, or <code>null</code>
 	 */
 	ItemPanel(final String slotName, final Sprite placeholder) {
-		this(slotName, placeholder, background);
-	}
-
-	ItemPanel(final String slotName, final Sprite placeholder, final Sprite surface) {
-		slotBackground = surface;
 		this.placeholder = preparePlaceholder(placeholder);
 		setName(slotName);
 
-		Dimension size = new Dimension(surface.getWidth(), surface.getHeight());
+		Dimension size = new Dimension(background.getWidth(), background.getHeight());
 		setPreferredSize(size);
 		setMinimumSize(size);
 		setMaximumSize(size);
@@ -269,7 +262,7 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	@Override
 	public void paintComponent(Graphics g) {
 		// draw the background image
-		slotBackground.draw(g, 0, 0);
+		background.draw(g, 0, 0);
 
 		// Take a temporary copy in case the game loop destroys the view under
 		// us.
