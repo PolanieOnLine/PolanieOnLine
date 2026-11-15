@@ -11,7 +11,7 @@
 * Dodano historię rozbitków i fałszywych świateł w Gdańsku od 200 poziomu oraz wyprawę do zalanych chodników Wieliczki od 250 poziomu
 * Dodano zadania o skradzionych smoczych jajach od 400 poziomu oraz Milczący dzwon na Kikareukin od 550 poziomu
 * Dodano osiągnięcie za ukończenie ostatniego rozdziału głównej historii
-* Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje tropienie zaginionego wędrowca, ratunek przed wilkami, eskortę przez cztery mapy i naprawę starego kompasu. Ślady i miejsca strojenia igły są rozsiane po leśnej polanie. Nagrodą jest kompas wędrowca
+* Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje tropienie zaginionego wędrowca, ratunek przed wilkami, eskortę przez cztery mapy i naprawę starego kompasu. Nagrodą jest kompas wędrowca
 * Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
@@ -88,10 +88,9 @@
 * Dodano informacje o zatruciu po spożyciu skrzydlicy i trucizn w butelkach: obrażenia, odstęp między nimi, łączną utratę zdrowia i czas działania
 * Pojedyncze kliknięcie przedmiotu w plecaku, wyposażeniu lub innym pojemniku przenosi cały stos do otwartej skrzyni. Nie dotyczy przedmiotów na ziemi. Przytrzymanie przycisku i przeciąganie zachowuje ręczne przenoszenie
 * Dodano rozbudowane okno aktualizatora z opisem aktualizacji, postępem pobierania, prędkością i pozostałym czasem
-* Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata oraz kierunek do aktualnych celów zadań głównych, a znaczniki przesuwają się podczas poruszania postaci
-* Kompas podpowiada kierunek marszu i pokazuje łączną pozostałą drogę do celu przez kolejne mapy. Prowadzi przez zakręty, zachowując wybrany cel podczas ruchu
-* Kompas odblokowuje się na stałe po ukończeniu zadania Na manowcach. W drodze do celu na innej mapie wskazuje prowadzące do niego przejście
-* Użycie kompasu wędrowca pokazuje lub chowa jego pasek na ekranie. Wybór jest zapamiętywany dla postaci, a po zdobyciu kompas jest domyślnie widoczny. Jego wskazówka delikatnie się porusza
+* Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata, kierunek marszu do celu zadania oraz pozostałą drogę przez kolejne mapy. Wskazania zmieniają się podczas poruszania postaci
+* Kompas wędrowca jest nagrodą za zadanie Na manowcach. Działa, gdy gracz ma go w plecaku. Prowadzi do celów zadań głównych lub jednego zadania pobocznego wybranego w dzienniku
+* Użycie kompasu pokazuje lub chowa jego pasek na ekranie. Wybór jest zapamiętywany dla postaci, a po zdobyciu kompas jest domyślnie widoczny. Jego wskazówka delikatnie się porusza
 * Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java
