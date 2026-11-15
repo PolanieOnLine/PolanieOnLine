@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.entity.RPEntity;
 
 /**
@@ -69,7 +70,7 @@ public class BreakableWeapon extends Weapon {
 	 */
 	@Override
 	public void repair() {
-		put("uses", 0);
+		setUses(0);
 		// reset so player will be notified when item is about to break again
 		notified = false;
 	}
@@ -89,7 +90,13 @@ public class BreakableWeapon extends Weapon {
 	 */
 	@Override
 	public void deteriorate() {
-		put("uses", getUses() + 1);
+		setUses(getUses() + 1);
+	}
+
+	private void setUses(final int uses) {
+		put("uses", uses);
+		// Keep both clients' published value current without rebuilding all item stats per hit.
+		put(ItemTooltip.ATTRIBUTE, ItemTooltip.USES, Integer.toString(uses));
 	}
 
 	/**

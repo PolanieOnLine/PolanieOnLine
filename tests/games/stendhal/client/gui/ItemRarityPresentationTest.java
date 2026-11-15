@@ -160,7 +160,7 @@ public class ItemRarityPresentationTest {
 		assertFalse(tooltip.contains("pkt. ataku"));
 		assertFalse(tooltip.contains("Moc przedmiotu"));
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
-		assertTrue(tooltip.contains("Pancerz: 10"));
+		assertTrue(tooltip.contains("+10 pancerza"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
 		assertTrue(tooltip.contains("+15% szansy na parowanie"));
 		assertTrue(tooltip.contains("&#9670; +15% szansy na parowanie"));

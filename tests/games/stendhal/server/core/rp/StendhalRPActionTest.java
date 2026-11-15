@@ -31,12 +31,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.item.BreakableWeapon;
 import games.stendhal.server.entity.item.Projectile;
 import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.creature.Creature;
@@ -300,6 +302,33 @@ public class StendhalRPActionTest {
 		assertEquals("message at attacking a sheep in protected area",
 				"Silna ochronna aura w tym miejscu powstrzymuje Ciebie od atakowania jekyll sheep.",
 				getPrivateReply(hyde));
+	}
+
+	@Test
+	public void starterAxeDurabilityFollowsHitsAndIsPublishedToClients() {
+		for (final boolean hits : new boolean[] {false, true}) {
+			final Player player = new Player(PlayerTestHelper.createPlayer("starter_axe_" + hits)) {
+				@Override public boolean canHit(final RPEntity defender) { return hits; }
+				@Override public int damageDone(final RPEntity defender, final double attack, final Nature nature) { return 1; }
+			};
+			final BreakableWeapon weapon = (BreakableWeapon) SingletonRepository.getEntityManager()
+					.getItem("ciupaga startowa");
+			player.getSlot("rhand").add(weapon);
+			final Creature target = SingletonRepository.getEntityManager().getCreature("mysz domowa");
+			target.initHP(100);
+			player.setPosition(5, 5);
+			target.setPosition(6, 5);
+			zone.add(player);
+			zone.add(target);
+			for (int swing = 1; swing <= 4; swing++) {
+				StendhalRPAction.playerAttack(player, target);
+				assertEquals(hits ? swing : 0, weapon.getUses());
+				assertEquals(Integer.toString(hits ? swing : 0),
+						weapon.getMap(ItemTooltip.ATTRIBUTE).get(ItemTooltip.USES));
+			}
+			zone.remove(player);
+			zone.remove(target);
+		}
 	}
 
 	@Test

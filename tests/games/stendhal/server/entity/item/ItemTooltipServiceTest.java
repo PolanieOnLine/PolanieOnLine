@@ -19,6 +19,35 @@ import games.stendhal.common.constants.Nature;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipServiceTest {
+	private BreakableWeapon starterAxe() {
+		final Map<String, String> attributes = new HashMap<>();
+		attributes.put("durability", "1000");
+		attributes.put("uses", "0");
+		return new BreakableWeapon("ciupaga startowa", "axe", "ciupaga", attributes);
+	}
+
+	@Test
+	public void deteriorationPublishesCurrentUsesWithoutRebuildingTheTooltip() {
+		final BreakableWeapon weapon = starterAxe();
+		ItemTooltipService.update(weapon);
+		for (int hit = 1; hit <= 4; hit++) {
+			weapon.deteriorate();
+			assertEquals(hit, weapon.getUses());
+			assertEquals(Integer.toString(hit), stat(weapon, ItemTooltip.USES));
+			assertEquals("1000", stat(weapon, ItemTooltip.DURABILITY));
+		}
+	}
+
+	@Test
+	public void repairPublishesRestoredDurability() {
+		final BreakableWeapon weapon = starterAxe();
+		weapon.put("uses", 430);
+		ItemTooltipService.update(weapon);
+		weapon.repair();
+		assertEquals(0, weapon.getUses());
+		assertEquals("0", stat(weapon, ItemTooltip.USES));
+	}
+
 	@Test
 	public void mapOnlyAffixesPublishTheirDescriptionsAndEffectiveWeaponRange() {
 		final Map<String, String> attributes = new HashMap<>();
