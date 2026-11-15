@@ -14,6 +14,7 @@
 * Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje tropienie zaginionego wędrowca, ratunek przed wilkami, eskortę przez cztery mapy i naprawę starego kompasu. Ślady i miejsca strojenia igły są rozsiane po leśnej polanie. Nagrodą jest kompas wędrowca
 * Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
+* Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
 * Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie
 
 *dziennik zadań*
@@ -22,6 +23,7 @@
 * Dodano możliwość śledzenia jednego rozpoczętego zadania pobocznego z dziennika, gdy kompas wędrowca znajduje się w plecaku. Wybrane zadanie ma pierwszeństwo na kompasie; tam, gdzie cel nie ma jednego miejsca, pasek pokazuje podpowiedź zamiast kierunku
 * Dodano podgląd nagród za zadania główne i pierwsze misje poboczne: doświadczenia, monet i przedmiotów z opisami statystyk. Nagrody losowe i zależne od przebiegu zadania mają osobne objaśnienia
 * Dodano czerwone wykrzykniki i pytajniki nad NPC związanymi z zadaniami głównymi. Mają pierwszeństwo przed znacznikami pozostałych zadań
+* Poprawiono wykrzykniki przy zadaniach z rozmową wprowadzającą oraz zielone pytajniki przy oddawaniu drewna Ouchitowi i kolejnych etapach Lekarstwa dla Tada
 * Dodano krótkie zaproszenia od NPC po odblokowaniu kolejnego zadania głównego, wyróżnione turkusowym kolorem
 * Dodano podgląd odręcznie zapisanego kwitu odnalezionego podczas śledztwa
 

@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -72,6 +73,25 @@ import games.stendhal.server.util.ResetSpeakerNPC;
 public class BowsForOuchit extends AbstractQuest {
 	public static final String QUEST_SLOT = "bows_ouchit";
 	private final SpeakerNPC npc = npcs.get("Ouchit");
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC speaker) {
+		if ("Karl".equals(speaker.getName())) {
+			return player.isQuestInState(QUEST_SLOT, "hair")
+					&& !new PlayerHasItemWithHimCondition("końskie włosie").fire(player, null, speaker)
+					? QuestMarker.READY : QuestMarker.NONE;
+		}
+		if ("Ouchit".equals(speaker.getName())
+				&& woodReadyCondition().fire(player, null, speaker)) {
+			return QuestMarker.READY;
+		}
+		return null;
+	}
+
+	private AndCondition woodReadyCondition() {
+		return new AndCondition(new QuestInStateCondition(QUEST_SLOT, "wood"),
+				new PlayerHasItemWithHimCondition("polano", 10));
+	}
 
 	public void prepareQuestStep() {
 		// Add a reply on the trigger phrase "quest" to Ouchit
@@ -150,8 +170,7 @@ public class BowsForOuchit extends AbstractQuest {
 		//  Player asks about wood, and has collected some - take it and ask for horse hair.
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("wood", "polano", "drewna", "drewno"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"wood"),
-								new PlayerHasItemWithHimCondition("polano",10)),
+				woodReadyCondition(),
 				ConversationStates.ATTENDING,
 				"Bardzo dobrze, teraz mogę zrobić nowe strzały. Ale do łuku, który robię potrzebuję " +
 				"cięciwę. Proszę idź do #Karl. Wiem, że posiada konie " +

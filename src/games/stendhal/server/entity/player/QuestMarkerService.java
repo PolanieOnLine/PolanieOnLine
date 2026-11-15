@@ -10,9 +10,11 @@ package games.stendhal.server.entity.player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -130,12 +132,14 @@ public final class QuestMarkerService {
 			return classifyMarker(player, quest, QuestMarker.IN_PROGRESS);
 		}
 		for (final Transition transition : transitions) {
-			final boolean offer = isOfferState(transition.getNextState())
-					&& canAccept(player, npc, transition.getNextState(), transitions);
+			if (!isEntryState(transition.getState()) || !isFulfilled(player, npc, transition)) {
+				continue;
+			}
+			final boolean offer = reachesOffer(player, npc, transition, transitions,
+					EnumSet.noneOf(ConversationStates.class));
 			final boolean direct = transition.getAction() != null
 					&& transition.getAction().startsQuest(quest.getSlotName());
-			if (isEntryState(transition.getState()) && (offer || direct)
-					&& isFulfilled(player, npc, transition)) {
+			if (offer || direct) {
 				final QuestMarker offerMarker = quest.getQuestInfo(player).getRepeatable() || completed
 						? QuestMarker.REPEATABLE : QuestMarker.AVAILABLE;
 				return classifyMarker(player, quest, offerMarker);
@@ -171,6 +175,26 @@ public final class QuestMarkerService {
 		return state == ConversationStates.QUEST_OFFERED
 				|| state == ConversationStates.QUEST_2_OFFERED
 				|| state == ConversationStates.QUEST_3_OFFERED;
+	}
+
+	/** Follow introductory questions only while no action changes the previewed state. */
+	private static boolean reachesOffer(final Player player, final SpeakerNPC npc,
+			final Transition transition, final List<Transition> transitions,
+			final Set<ConversationStates> visited) {
+		final ConversationStates next = transition.getNextState();
+		if (isOfferState(next)) {
+			return canAccept(player, npc, next, transitions);
+		}
+		if (transition.getAction() != null || isEntryState(next) || !visited.add(next)) {
+			return false;
+		}
+		for (final Transition following : transitions) {
+			if (following.getState() == next && isFulfilled(player, npc, following)
+					&& reachesOffer(player, npc, following, transitions, visited)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private static boolean canAccept(final Player player, final SpeakerNPC npc,

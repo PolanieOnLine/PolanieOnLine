@@ -201,6 +201,34 @@ public class QuestMarkerServiceTest {
 	}
 
 	@Test
+	public void introductoryQuestionsRespectEveryGuardWithoutRunningActions() {
+		final TestQuest quest = new TestQuest("marker_intro", false) {
+			@Override public void addToWorld() {
+				fillQuestInfo(getName(), getName(), false);
+				npc.add(ConversationStates.ATTENDING, "quest", new QuestNotStartedCondition(getSlotName()),
+						ConversationStates.QUESTION_1, null, null);
+				npc.add(ConversationStates.QUESTION_1, "explain", null,
+						ConversationStates.QUESTION_1, null, null);
+				npc.add(ConversationStates.QUESTION_1, ConversationPhrases.YES_MESSAGES,
+						new LevelGreaterThanCondition(40), ConversationStates.QUEST_OFFERED, null, null);
+				npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.YES_MESSAGES,
+						new QuestCompletedCondition("marker_prerequisite"), ConversationStates.ATTENDING,
+						null, new SetQuestAction(getSlotName(), "start"));
+			}
+		};
+		SingletonRepository.getStendhalQuestSystem().loadQuest(quest);
+		loaded.add(quest);
+		prerequisites();
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, npc));
+		player.setLevel(50);
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarker(player, npc));
+		assertFalse(player.hasQuest(quest.getSlotName()));
+		assertEquals(ConversationStates.IDLE, npc.getEngine().getCurrentState());
+		player.setQuest("marker_prerequisite", "start");
+		assertEquals(QuestMarker.NONE, QuestMarkerService.getMarker(player, npc));
+	}
+
+	@Test
 	public void completedQuestDisappearsAndRejectedQuestCanBeOfferedAgain() {
 		final TestQuest quest = load("marker_finished", false);
 		prerequisites();

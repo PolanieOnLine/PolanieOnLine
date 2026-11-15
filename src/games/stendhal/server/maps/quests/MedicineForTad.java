@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.QuestMarker;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -74,6 +75,32 @@ import games.stendhal.server.util.ResetSpeakerNPC;
 public class MedicineForTad extends AbstractQuest {
 	private static final String QUEST_SLOT = "introduce_players";
 	private final SpeakerNPC npc = npcs.get("Tad");
+
+	@Override
+	public QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC speaker) {
+		if ("Tad".equals(speaker.getName())) {
+			if ((player.isQuestInState(QUEST_SLOT, 0, STATE_START)
+					&& new PlayerHasItemWithHimCondition("butelka").fire(player, null, speaker))
+					|| player.isQuestInState(QUEST_SLOT, 0, STATE_POTION)) {
+				return QuestMarker.READY;
+			}
+			return null;
+		}
+		if ("Ilisa".equals(speaker.getName())) {
+			final String required;
+			if (player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA)) {
+				required = "butelka";
+			} else if (player.isQuestInState(QUEST_SLOT, 0, STATE_HERB)) {
+				required = "arandula";
+			} else {
+				return QuestMarker.NONE;
+			}
+			return new PlayerHasItemWithHimCondition(required).fire(player, null, speaker)
+					? QuestMarker.READY : QuestMarker.IN_PROGRESS;
+		}
+		// Ketteh only reminds the player about Tad, without advancing this quest.
+		return QuestMarker.NONE;
+	}
 
 	static final String ILISA_TALK_ASK_FOR_FLASK = "Lekarstwo dla #Tad? Nie powiedział Tobie, aby przynieść butelkę?";
 	static final String ILISA_TALK_ASK_FOR_HERB = "Ach widzę, że masz flaszę. #Tad potrzebuje lekarstwa? Hmm... Potrzebuję kilku #ziół. Pomożesz?";

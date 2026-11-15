@@ -29,7 +29,6 @@ import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.ResetBlockChatAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -202,18 +201,18 @@ public class HelpWithTheHarvest extends AbstractQuest {
 		cartTwo.setPosition(79, 106);
 		cartTwo.setDescription(cartDescription);
 
-		ChatAction a = new MultipleActions(new IncrementQuestAction(QUEST_SLOT, 1, -1), new ResetBlockChatAction(cartOne), new ResetBlockChatAction(cartTwo));
+		ChatAction a = new IncrementQuestAction(QUEST_SLOT, 1, -1);
 
 		zone.add(cartOne);
 		zone.add(cartTwo);
 
-		BlockTarget targetOne = new BlockTarget();
+		BlockTarget targetOne = new HarvestCartTarget();
 		targetOne.setPosition(64, 75);
 		targetOne.setDescription("Oto wyraźny punkt na ziemi. Wcześniej coś ciężkiego tutaj stało.");
 		targetOne.setCondition(c);
 		targetOne.setAction(a);
 
-		BlockTarget targetTwo = new BlockTarget();
+		BlockTarget targetTwo = new HarvestCartTarget();
 		targetTwo.setPosition(65, 75);
 		targetTwo.setDescription("Oto wyraźny punkt na ziemi. Wcześniej coś ciężkiego tutaj stało.");
 		targetTwo.setAction(a);
@@ -221,6 +220,15 @@ public class HelpWithTheHarvest extends AbstractQuest {
 
 		zone.add(targetOne);
 		zone.add(targetTwo);
+	}
+
+	/** Delivering one cart must not move another player's cart back to the field. */
+	private static class HarvestCartTarget extends BlockTarget {
+		@Override
+		public void trigger(final Block cart, final Player player) {
+			super.trigger(cart, player);
+			cart.reset();
+		}
 	}
 
 	/**
