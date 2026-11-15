@@ -674,7 +674,7 @@ Południe: Zakopane
 
 		<entity x="57" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">saur-4, saur-3</parameter>
+				<parameter name="sound">roar-dragon-2, roar-dragon-1</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">5</parameter>
@@ -1890,7 +1890,7 @@ Południe: Zakopane
 
 		<entity x="98" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
-				<parameter name="sound">ghost-1, ghost-2, saur-4</parameter>
+				<parameter name="sound">ghost-01, ghost-02, roar-dragon-2</parameter>
 				<parameter name="min">30</parameter>
 				<parameter name="max">60</parameter>
 				<parameter name="radius">25</parameter>
