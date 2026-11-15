@@ -71,3 +71,39 @@ test("continuous walking stays monotonic at fractional, normal and higher speeds
 		}
 	}
 });
+
+test("fast movement stays smooth in all four directions across server updates", () => {
+	for (const direction of [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]) {
+		for (const speed of [1, 1.2, 2, 2.5, 4.5, 8]) {
+			const entity = movingEntity();
+			Object.assign(entity, {x: 100, y: 100, _x: 100, _y: 100, direction});
+			entity.set("speed", speed);
+			for (let frame = 1; frame <= 300; frame++) {
+				entity.updatePosition(30);
+				if (frame % 10 !== 0) continue;
+				const steps = Math.floor(frame / 10 * speed + 1e-9);
+				const axis = direction.dx === 0 ? "y" : "x";
+				const predictedX = entity._x, predictedY = entity._y;
+				entity.set(axis, 100 + steps * (direction.dx + direction.dy));
+				const context = `direction ${direction.val}, speed ${speed}, frame ${frame}`;
+				assert.ok(Math.abs(entity._x - predictedX) < 0.00001, `${context}: horizontal snap`);
+				assert.ok(Math.abs(entity._y - predictedY) < 0.00001, `${context}: vertical snap`);
+				const forwardSpeed = entity.dx * direction.dx + entity.dy * direction.dy;
+				assert.ok(forwardSpeed >= speed * 0.65, `${context}: excessive slowdown`);
+				assert.ok(forwardSpeed <= speed * 1.35, `${context}: excessive acceleration`);
+			}
+		}
+	}
+});
+
+test("large relocations and stops still use the server position at high speed", () => {
+	const entity = movingEntity();
+	entity.set("speed", 4.5);
+	entity.set("x", 40);
+	assert.equal(entity._x, 40);
+	assert.equal(entity.dx, 4.5);
+	entity._x = 40.7;
+	entity.set("speed", 0);
+	assert.equal(entity._x, 40);
+	assert.ok(entity.stopped());
+});

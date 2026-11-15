@@ -78,13 +78,13 @@ export class ActiveEntity extends Entity {
 	 * @param serverPos
 	 *            the position the server has reported
 	 * @param delta
-	 *            the movement based on direction
+	 *            the signed movement speed in tiles per turn
 	 * @return the new delta to correct the movement error
 	 */
 	private calcDeltaMovement(clientPos: number, serverPos: number, delta: number) {
-		let moveErr = clientPos - serverPos;
-		let moveCorrection = (delta - moveErr) / delta;
-		return (delta + delta * moveCorrection) / 2;
+		const moveErr = clientPos - serverPos;
+		// Faster movement must not amplify the correction of a positional error.
+		return delta - moveErr * Math.min(1.0, Math.abs(delta)) / 2;
 	}
 
 	/**
@@ -105,20 +105,18 @@ export class ActiveEntity extends Entity {
 
 		if ((Direction.LEFT == direction) || (Direction.RIGHT == direction)) {
 			this["_y"] = y;
-			if (MathUtil.compareDouble(this["_x"], x, 1.0)) {
+			if (MathUtil.compareDouble(this["_x"], x, Math.max(1.0, speed))) {
 				// make the movement look more nicely: + this.dx * 0.1
-				this.dx = this.calcDeltaMovement(this["_x"] + this.dx * 0.1, x, direction.dx)
-						* speed || 0;
+				this.dx = this.calcDeltaMovement(this["_x"] + this.dx * 0.1, x, direction.dx * speed) || 0;
 			} else {
 				this["_x"] = x;
 			}
 			this.dy = 0;
 		} else if ((Direction.UP == direction) || (Direction.DOWN == direction)) {
 			this["_x"] = x;
-			if (MathUtil.compareDouble(this["_y"], y, 1.0)) {
+			if (MathUtil.compareDouble(this["_y"], y, Math.max(1.0, speed))) {
 				// make the movement look more nicely: + this.dy * 0.1
-				this.dy = this.calcDeltaMovement(this["_y"] + this.dy * 0.1, y, direction.dy)
-						* speed || 0;
+				this.dy = this.calcDeltaMovement(this["_y"] + this.dy * 0.1, y, direction.dy * speed) || 0;
 			} else {
 				this["_y"] = y;
 			}

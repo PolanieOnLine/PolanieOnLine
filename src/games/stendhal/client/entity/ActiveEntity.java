@@ -122,14 +122,14 @@ public abstract class ActiveEntity extends Entity {
 	 * @param serverPos
 	 *            the position the server has reported
 	 * @param delta
-	 *            the movement based on direction
+	 *            the signed movement speed in tiles per turn
 	 * @return the new delta to correct the movement error
 	 */
 	private static double calcDeltaMovement(final double clientPos,
 			final double serverPos, final double delta) {
 		final double moveErr = clientPos - serverPos;
-		final double moveCorrection = (delta - moveErr) / delta;
-		return (delta + delta * moveCorrection) / 2;
+		// Faster movement must not amplify the correction of a positional error.
+		return delta - moveErr * Math.min(1.0, Math.abs(delta)) / 2;
 	}
 
 	/**
@@ -150,11 +150,10 @@ public abstract class ActiveEntity extends Entity {
 		if ((Direction.LEFT == direction)
 				|| (Direction.RIGHT == direction)) {
 			this.y = y;
-			if (compareDouble(this.x, x, 1.0)) {
+			if (compareDouble(this.x, x, Math.max(1.0, speed))) {
 				// make the movement look more nicely: + this.dx * 0.1
 				this.dx = calcDeltaMovement(this.x + this.dx * 0.1, x,
-						direction.getdx())
-						* speed;
+						direction.getdx() * speed);
 			} else {
 				this.x = x;
 			}
@@ -163,11 +162,10 @@ public abstract class ActiveEntity extends Entity {
 				|| (Direction.DOWN == direction)) {
 			this.x = x;
 			this.dx = 0;
-			if (compareDouble(this.y, y, 1.0)) {
+			if (compareDouble(this.y, y, Math.max(1.0, speed))) {
 				// make the movement look more nicely: + this.dy * 0.1
 				this.dy = calcDeltaMovement(this.y + this.dy * 0.1, y,
-						direction.getdy())
-						* speed;
+						direction.getdy() * speed);
 			} else {
 				this.y = y;
 			}
