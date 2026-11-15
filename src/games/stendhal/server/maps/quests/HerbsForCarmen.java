@@ -79,6 +79,8 @@ public class HerbsForCarmen extends AbstractQuest {
 	 * required items for the quest.
 	 */
 	protected static final String NEEDED_ITEMS = "arandula=5;borowik=1;jabłko=3;polano=2;pieczarka=1";
+	private static final List<String> INGREDIENT_MESSAGES = Arrays.asList(
+			"składniki", "skladniki", "zapasy", "ingredients");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
@@ -114,7 +116,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 		npc.add(
 			ConversationStates.ATTENDING,
-			Arrays.asList("ingredients", "leczniczych", "lecznicze"),
+			ConversationPhrases.combine(INGREDIENT_MESSAGES, "leczniczych", "lecznicze"),
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
 			"Tak wielu wojowników prosi mnie o pomoc. Do leczenia potrzebne jest wiele składników a moje zapasy są na wyczerpaniu. Możesz mi przynieść brakujące zioła?",
@@ -127,7 +129,8 @@ public class HerbsForCarmen extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			null,
 			new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, NEEDED_ITEMS, 5.0),
-								new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Jak miło! Proszę przynieś mi te składniki: [items].")));
+								new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+										"Dziękuję! Potrzebuję [items]. Gdy wrócisz, powiedz #składniki albo od razu podaj nazwę tego, co przyniesiesz.")));
 
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
@@ -175,24 +178,27 @@ public class HerbsForCarmen extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj ponownie. Mogę cię #uleczyć, lub jeśli przyniosłeś mi #składniki, z radością je wezmę!",
+				"Witaj ponownie! Mogę cię #uleczyć. Jeśli masz dla mnie #składniki, podaj ich nazwy, a je przyjmę.",
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapasy", "yes", "tak"), null,
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.YES_MESSAGES,
+				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.QUESTION_2, null,
-				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Masz coś ze sobą?"));
+				new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+						"Potrzebuję jeszcze [items]. Podaj nazwę składnika, który chcesz mi przekazać."));
 
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+		npc.add(new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.QUESTION_2},
+				ConversationPhrases.combine(ConversationPhrases.QUEST_FINISH_MESSAGES, INGREDIENT_MESSAGES),
 				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.QUESTION_2,
-				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Przyniosłeś coś?"));		
+				null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+						"Potrzebuję jeszcze [items]. Podaj nazwę składnika, który chcesz mi przekazać."));
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.QUESTION_2, "Świetnie! Co przyniosłeś?",
+				ConversationPhrases.YES_MESSAGES, new QuestActiveCondition(QUEST_SLOT),
+				ConversationStates.QUESTION_2, "Podaj nazwę składnika, który chcesz mi przekazać, na przykład: #arandula.",
 				null);
 
 		ChatAction completeAction = new  MultipleActions(
@@ -221,12 +227,13 @@ public class HerbsForCarmen extends AbstractQuest {
 				sl.add("porcinis");
 			}
 
-			npc.add(ConversationStates.QUESTION_2, sl, null,
+			npc.add(new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.QUESTION_2},
+					sl, new QuestActiveCondition(QUEST_SLOT),
 					ConversationStates.QUESTION_2, null,
 					new CollectRequestedItemsAction(
 							itemName, QUEST_SLOT,
-							"Dobrze, a masz coś jeszcze?"," " +
-							Grammar.quantityplnoun(entry.getValue(), itemName) + " już przyniosłeś dla mnie, ale dziękuję i tak.",
+							"Dziękuję. Brakuje mi jeszcze [items]. Jeśli masz coś z tej listy, podaj nazwę.",
+							"Te składniki mam już od ciebie. Zapytaj o #składniki, żeby sprawdzić, czego jeszcze brakuje.",
 							completeAction, ConversationStates.ATTENDING));
 		}
 
@@ -246,7 +253,7 @@ public class HerbsForCarmen extends AbstractQuest {
 
 		/* says quest and quest can't be started nor is active*/
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.combine(ConversationPhrases.QUEST_FINISH_MESSAGES, INGREDIENT_MESSAGES),
 				null,
 				ConversationStates.ATTENDING,
 			    "Nic nie potrzebuję teraz, dziękuję.",
@@ -257,7 +264,7 @@ public class HerbsForCarmen extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zioła dla Carmen",
-				"Semosiański uzdrowiciel Carmen szuka składników do zrobienia eliksirów i innych użytecznych medykamentów. Czy możesz przynieść jej zioła, które potrzebuje?",
+				"Carmen, uzdrowicielka z Semos, potrzebuje składników do eliksirów i lekarstw. Pomóż jej uzupełnić zapasy.",
 				true);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -277,11 +284,12 @@ public class HerbsForCarmen extends AbstractQuest {
 		res.add("Carmen poprosiła mnie o zebranie składników, aby pomóc jej nadal leczyć innych.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie chcę, pomóc Carmen. Myślę, że ona znajdzie kogoś, kto jej pomoże.");
+			res.add("Nie chcę pomóc Carmen. Będzie musiała znaleźć kogoś innego.");
 		} else if (!"done".equals(questState)) {
 			final ItemCollection missingItems = new ItemCollection();
 			missingItems.addFromQuestStateString(questState);
 			res.add("Wciąż muszę przynieść Carmen " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+			res.add("Aby oddać składniki, wystarczy po przywitaniu podać ich nazwy. Carmen przyjmuje je także partiami.");
 		} else {
 			res.add(player.getGenderVerb("Pomogłem") + " Carmen i ona może teraz dalej uzdrawiać.");
 		}

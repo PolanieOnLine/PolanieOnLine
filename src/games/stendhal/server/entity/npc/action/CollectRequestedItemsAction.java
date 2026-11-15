@@ -84,7 +84,12 @@ public final class CollectRequestedItemsAction implements ChatAction {
 				missingItems = getMissingItems(player);
 
 				if (missingItems.size() > 0) {
-					raiser.say(questionForMore);
+					if (questionForMore.contains("[items]")) {
+						new SayRequiredItemsFromCollectionAction(questSlot, position, questionForMore)
+								.fire(player, sentence, raiser);
+					} else {
+						raiser.say(questionForMore);
+					}
 				} else {
 					toExecuteOnCompletion.fire(player, sentence, raiser);
 					raiser.setCurrentState(this.stateAfterCompletion);

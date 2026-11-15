@@ -15,6 +15,7 @@
 * Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
+* Uporządkowano oddawanie składników Carmen i Jadźce. Obie rozumieją hasło „składniki”, przyjmują przedmioty po podaniu ich nazw i informują, czego jeszcze brakuje
 * Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie
 
 *dziennik zadań*

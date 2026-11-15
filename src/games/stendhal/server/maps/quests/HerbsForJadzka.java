@@ -77,6 +77,8 @@ public class HerbsForJadzka extends AbstractQuest {
 	 * required items for the quest.
 	 */
 	protected static final String NEEDED_ITEMS = "arandula=5;borowik=1;jabłko=3;polano=2;pieczarka=1";
+	private static final List<String> INGREDIENT_MESSAGES = Arrays.asList(
+			"składniki", "skladniki", "zapasy", "ingredients");
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING, 
@@ -111,8 +113,8 @@ public class HerbsForJadzka extends AbstractQuest {
 			null);
 
 		npc.add(
-			ConversationStates.ATTENDING,(Arrays.asList
-			("ingredients", "leczniczych", "lecznicze")),
+			ConversationStates.ATTENDING,
+			ConversationPhrases.combine(INGREDIENT_MESSAGES, "leczniczych", "lecznicze"),
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED,
 			"Tak wielu wojowników prosi mnie o pomoc. Do leczenia potrzebne jest wiele składników a moje zapasy są na wyczerpaniu. Możesz mi przynieść brakujące zioła?",
@@ -125,7 +127,8 @@ public class HerbsForJadzka extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			null,
 			new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, NEEDED_ITEMS, 5.0),
-								new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Jak miło! Proszę przynieś mi: [items].")));
+								new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+										"Dziękuję! Potrzebuję [items]. Gdy wrócisz, powiedz #składniki albo od razu podaj nazwę tego, co przyniesiesz.")));
 
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
@@ -140,7 +143,7 @@ public class HerbsForJadzka extends AbstractQuest {
 			"jabłko",
 			null,
 			ConversationStates.ATTENDING,
-			"jabłko mają wiele witamin. Rosną na wschód od Semos, ale ich pełen talerz jest także w Matinternecie.",
+			"Jabłka mają wiele witamin. Rosną na wschód od Semos, ale ich pełen talerz jest także w Matinternecie.",
 			null);
 
 		npc.add(
@@ -148,7 +151,7 @@ public class HerbsForJadzka extends AbstractQuest {
 			"polano",
 			null,
 			ConversationStates.ATTENDING,
-			"polano to świetny materiał. Można go wykorzystać na wiele sposobów. Znajdź drzewo w lesie i je zetnij.",
+			"Drewno przydaje się do wielu rzeczy. Polana zdobędziesz, ścinając drzewa w lesie.",
 			null);
 
 		npc.add(
@@ -173,24 +176,27 @@ public class HerbsForJadzka extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestActiveCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Witaj ponownie. Czy przyniosłeś mi #zapasy ziół leczniczych?",
+				"Witaj ponownie! Jeśli masz dla mnie #składniki, podaj ich nazwy, a je przyjmę. Możesz też zapytać o brakujące #zapasy.",
 				null);
 
 		/* player asks what exactly is missing (says ingredients) */
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("zapasy", "yes", "tak"), null,
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.YES_MESSAGES,
+				new QuestActiveCondition(QUEST_SLOT),
 				ConversationStates.QUESTION_2, null,
-				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz coś ze sobą?"));
+				new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+						"Potrzebuję jeszcze [items]. Podaj nazwę składnika, który chcesz mi przekazać."));
 
-		npc.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.QUEST_MESSAGES,
+		npc.add(new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.QUESTION_2},
+				ConversationPhrases.combine(ConversationPhrases.QUEST_FINISH_MESSAGES, INGREDIENT_MESSAGES),
 				new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_2, 
-			null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Potrzebuję [items]. Czy masz to?"));		
+			null, new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
+						"Potrzebuję jeszcze [items]. Podaj nazwę składnika, który chcesz mi przekazać."));
 
 		/* player says he has a required item with him (says yes) */
 		npc.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.QUESTION_2, "Dobrze, a co jeszcze masz?",
+				ConversationPhrases.YES_MESSAGES, new QuestActiveCondition(QUEST_SLOT),
+				ConversationStates.QUESTION_2, "Podaj nazwę składnika, który chcesz mi przekazać, na przykład: #arandula.",
 				null);
 
 		ChatAction completeAction = new  MultipleActions(
@@ -219,12 +225,13 @@ public class HerbsForJadzka extends AbstractQuest {
 				sl.add("borowik");
 			}
 
-			npc.add(ConversationStates.QUESTION_2, sl, null,
+			npc.add(new ConversationStates[] {ConversationStates.ATTENDING, ConversationStates.QUESTION_2},
+					sl, new QuestActiveCondition(QUEST_SLOT),
 					ConversationStates.QUESTION_2, null,
 					new CollectRequestedItemsAction(
 							itemName, QUEST_SLOT,
-							"Dobra, masz coś jeszcze?"," " +
-							Grammar.quantityplnoun(entry.getValue(), itemName) + " już przyniosłeś dla mnie, ale dziękuję i tak.",
+							"Dziękuję. Brakuje mi jeszcze [items]. Jeśli masz coś z tej listy, podaj nazwę.",
+							"Te składniki mam już od ciebie. Zapytaj o #składniki, żeby sprawdzić, czego jeszcze brakuje.",
 							completeAction, ConversationStates.ATTENDING));
 		}
 
@@ -244,7 +251,7 @@ public class HerbsForJadzka extends AbstractQuest {
 
 		/* says quest and quest can't be started nor is active*/
 		npc.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.QUEST_MESSAGES,
+				ConversationPhrases.combine(ConversationPhrases.QUEST_FINISH_MESSAGES, INGREDIENT_MESSAGES),
 				null,
 				ConversationStates.ATTENDING, 
 				"Nic nie potrzebuję teraz, dziękuję.",
@@ -255,7 +262,7 @@ public class HerbsForJadzka extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 				"Zioła dla Jadźki",
-				"Zakopiański uzdrowiciel Gaździna Jadźka poszukuje składników do eliksirów i lekarstw. Czy moższe jej przynieść jej zioła, które potrzebuje?",
+				"Gaździna Jadźka, uzdrowicielka z Zakopanego, potrzebuje składników do eliksirów i lekarstw. Pomóż jej uzupełnić zapasy.",
 				true);
 		prepareRequestingStep();
 		prepareBringingStep();
@@ -270,11 +277,12 @@ public class HerbsForJadzka extends AbstractQuest {
 		res.add("Gaździna Jadźka poprosiła mnie o zebranie składników, aby pomóc jej nadal leczyć innych.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie chcę, pomóc Gaździnie. Myślę, że ona znajdzie kogoś, kto jej pomoże.");
+			res.add("Nie chcę pomóc Jadźce. Będzie musiała znaleźć kogoś innego.");
 		} else if (!"done".equals(questState)) {
 			final ItemCollection missingItems = new ItemCollection();
 			missingItems.addFromQuestStateString(questState);
 			res.add("Wciąż muszę przynieść Gaździnie " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
+			res.add("Aby oddać składniki, wystarczy po przywitaniu podać ich nazwy. Jadźka przyjmuje je także partiami.");
 		} else {
 			res.add(player.getGenderVerb("Pomogłem") + " Gaździnie i ona może teraz dalej uzdrawiać.");
 		}

@@ -5,6 +5,21 @@ import org.junit.Test;
 
 public class TranslationTest {
 	@Test
+	public void herbalistInstructionsAndRemainingIngredientsTranslateTheirLinks() {
+		String greeting = "Witaj ponownie! Mogę cię #uleczyć. Jeśli masz dla mnie #składniki, podaj ich nazwy, a je przyjmę.";
+		String en = Translation.getText("en", greeting);
+		String es = Translation.getText("es", greeting);
+		assertTrue(en, en.contains("#ingredients"));
+		assertTrue(es, es.contains("#ingredientes"));
+		assertEquals("składniki", Translation.getOriginalKeyword("en", "ingredients", en));
+		assertEquals("składniki", Translation.getOriginalKeyword("es", "ingredientes", es));
+		String remaining = "Dziękuję. Brakuje mi jeszcze 2 #polana. Jeśli masz coś z tej listy, podaj nazwę.";
+		assertTrue(Translation.getText("en", remaining).startsWith("Thank you. I still need "));
+		assertTrue(Translation.getText("es", remaining).startsWith("Gracias. Aún necesito "));
+		assertEquals(remaining, Translation.getText("pl", remaining));
+	}
+
+	@Test
 	public void dynamicCreatureTitlesAndCorpseMessagesAreTranslated() {
 		assertEquals("Mist green dragon", Translation.getText("en", "mgielny zielony smok"));
 		assertEquals("Elite Mist green dragon", Translation.getText("en", "Elitarny mgielny zielony smok"));
