@@ -971,3 +971,6 @@ Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odn
 {0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej.={0}% chance that a shot consumes no ammunition; up to 20% in total. Does not apply to spells or thrown weapons.
 Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się.=After 2 consecutive misses, your next attack cannot miss and you deal 20% more damage for 4 s. Changing target or weapon resets the effect. Does not stack.
 Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się.=A fatal hit leaves you with 1 HP. Cooldown: 120 s. Does not protect against poison or bleeding. Does not stack.
+Zatrucie po spożyciu: -{0} PW co {1} s=Poisoning after consumption: -{0} HP every {1} s
+Łączna utrata PW: {0}=Total HP loss: {0}
+Czas zatrucia: {0} s=Poison duration: {0} s

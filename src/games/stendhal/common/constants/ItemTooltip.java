@@ -118,6 +118,12 @@ public final class ItemTooltip {
 	public static final String CONSUMABLE_HEALING_DURATION_SECONDS =
 			"consumable_healing_duration_seconds";
 	public static final String CONSUMABLE_HEALING_INSTANT = "consumable_healing_instant";
+	public static final String CONSUMABLE_POISON_AMOUNT = "consumable_poison_amount";
+	public static final String CONSUMABLE_POISON_DAMAGE = "consumable_poison_damage";
+	public static final String CONSUMABLE_POISON_FREQUENCY_SECONDS =
+			"consumable_poison_frequency_seconds";
+	public static final String CONSUMABLE_POISON_DURATION_SECONDS =
+			"consumable_poison_duration_seconds";
 	public static final String MIN_LEVEL = "min_level";
 	public static final String MIN_USE = "min_use";
 	/** Legacy wire key retained for compatibility with saved items and clients. */

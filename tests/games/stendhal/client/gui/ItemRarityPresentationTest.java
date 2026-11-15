@@ -176,6 +176,24 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
+	public void testPoisonousFoodAndDrinkExplainHealthLossAfterConsumption() {
+		for (final String itemClass : new String[] {"food", "drink"}) {
+			final RPObject object = ItemTestHelper.createItem("trujący przedmiot");
+			object.put("class", itemClass);
+			putStat(object, "consumable_poison_amount", "80");
+			putStat(object, "consumable_poison_damage", "5");
+			putStat(object, "consumable_poison_frequency_seconds", "7.5");
+			putStat(object, "consumable_poison_duration_seconds", "120");
+			final String tooltip = ItemRarityPresentation.buildItemToolTip(
+					EntityFactory.createEntity(object));
+			assertTrue(tooltip.contains("Zatrucie po spożyciu: -5 PW co 7,5 s"));
+			assertTrue(tooltip.contains("Łączna utrata PW: 80"));
+			assertTrue(tooltip.contains("Czas zatrucia: 120 s"));
+			assertFalse(tooltip.contains("Leczenie:"));
+		}
+	}
+
+	@Test
 	public void testConsumableTooltipShowsHealingPerTickAndInstantElixir() {
 		final RPObject food = ItemTestHelper.createItem("jabłko testowe");
 		food.put("class", "food");

@@ -151,6 +151,7 @@ export function buildStructuredItemTooltip(item: Item,
 	appendCoreStats(lines, current, equipped, weapon);
 	appendBonuses(lines, current, equipped, weapon, armour);
 	appendConsumableHealing(lines, current);
+	appendConsumablePoison(lines, current);
 	appendAffixes(lines, current);
 	appendFooter(lines, current, item);
 
@@ -364,6 +365,25 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	appendSection(lines, core);
 	appendSection(lines, resistances);
 	appendSection(lines, special);
+}
+
+function appendConsumablePoison(lines: ItemTooltipLine[], current: Record<string, string>) {
+	const damage = intValue(current, "consumable_poison_damage");
+	const frequency = numberValue(current, "consumable_poison_frequency_seconds");
+	if (damage <= 0 || frequency <= 0) {
+		return;
+	}
+	const poison: ItemTooltipLine[] = [{kind: "detail",
+		text: "Zatrucie po spożyciu: -" + damage + " PW co " + formatCompact(frequency) + " s"}];
+	const amount = intValue(current, "consumable_poison_amount");
+	if (amount > 0) {
+		poison.push({kind: "detail", text: "Łączna utrata PW: " + amount});
+	}
+	const duration = numberValue(current, "consumable_poison_duration_seconds");
+	if (duration > 0) {
+		poison.push({kind: "detail", text: "Czas zatrucia: " + formatCompact(duration) + " s"});
+	}
+	appendSection(lines, poison);
 }
 
 function appendConsumableHealing(lines: ItemTooltipLine[], current: Record<string, string>) {

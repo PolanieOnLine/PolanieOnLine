@@ -18,6 +18,29 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipTranslationTest {
+	@Test
+	public void consumablePoisonKeepsItsStatsInEnglishAndSpanish() {
+		final RPObject item = ItemTestHelper.createItem("skrzydlica");
+		stat(item, "consumable_poison_amount", "80");
+		stat(item, "consumable_poison_damage", "5");
+		stat(item, "consumable_poison_frequency_seconds", "7.5");
+		stat(item, "consumable_poison_duration_seconds", "120");
+		for (final String language : new String[] {"en", "es"}) {
+			WtWindowManager.getInstance().setProperty(ClientLanguage.PROPERTY, language);
+			final String text = ItemRarityPresentation.buildItemToolTip(
+					EntityFactory.createEntity(item)).replaceAll("<[^>]*>", "");
+			if ("en".equals(language)) {
+				assertTrue(text, text.contains("Poisoning after consumption: -5 HP every 7,5 s"));
+				assertTrue(text, text.contains("Total HP loss: 80"));
+				assertTrue(text, text.contains("Poison duration: 120 s"));
+			} else {
+				assertTrue(text, text.contains("Envenenamiento al consumir: -5 PV cada 7,5 s"));
+				assertTrue(text, text.contains("Pérdida total de PV: 80"));
+				assertTrue(text, text.contains("Duración del veneno: 120 s"));
+			}
+		}
+	}
+
 	@Test public void survivalAndWoundAffixesHaveTranslatedDescriptionsInTheExistingSections() {
 		final RPObject item = ItemTestHelper.createItem("five combat affixes");
 		stat(item, ItemTooltip.BLEED_POTENCY, "0.20");

@@ -59,6 +59,22 @@ async function harness() {
 		build: (item, compare=false) => exports.buildStructuredItemTooltip(item, compare)};
 }
 
+test("consumable poison retains exact values in Polish, English and Spanish", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "other", consumable_poison_amount: "80",
+		consumable_poison_damage: "5", consumable_poison_frequency_seconds: "7.5",
+		consumable_poison_duration_seconds: "120"});
+	for (const [language, expected] of [
+		["pl", ["Zatrucie po spożyciu: -5 PW co 7,5 s", "Łączna utrata PW: 80", "Czas zatrucia: 120 s"]],
+		["en", ["Poisoning after consumption: -5 HP every 7.5 s", "Total HP loss: 80", "Poison duration: 120 s"]],
+		["es", ["Envenenamiento al consumir: -5 PV cada 7,5 s", "Pérdida total de PV: 80", "Duración del veneno: 120 s"]]
+	]) {
+		h.language.synchronize(language);
+		const text = h.build(item, false).lines.map(line => line.text).join("\n");
+		for (const line of expected) assert.ok(text.includes(line), text);
+	}
+});
+
 test("the five new affixes have descriptions in Polish, English and Spanish", async () => {
 	const h = await harness();
 	for (const [language, names] of [

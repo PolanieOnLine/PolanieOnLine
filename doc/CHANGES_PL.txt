@@ -83,6 +83,7 @@
 ---
 * Zbyt długie nazwy potworów w oknie łupu są skracane wielokropkiem, a pełną nazwę można podejrzeć po najechaniu myszą
 * Poprawiono wyświetlanie wytrzymałości broni po trafieniu i naprawie, aby opis nie pokazywał starej wartości
+* Dodano informacje o zatruciu po spożyciu skrzydlicy i trucizn w butelkach: obrażenia, odstęp między nimi, łączną utratę zdrowia i czas działania
 * Dodano rozbudowane okno aktualizatora z opisem aktualizacji, postępem pobierania, prędkością i pozostałym czasem
 * Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata oraz kierunek do aktualnych celów zadań głównych, a znaczniki przesuwają się podczas poruszania postaci
 * Kompas podpowiada kierunek marszu i pokazuje łączną pozostałą drogę do celu przez kolejne mapy. Prowadzi przez zakręty, zachowując wybrany cel podczas ruchu

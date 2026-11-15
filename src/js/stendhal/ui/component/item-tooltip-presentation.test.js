@@ -42,6 +42,17 @@ vm.runInNewContext(source, {exports: exportsObject, document,
 		return {};
 	}});
 
+test("poisoned consumables show health loss after consumption, total and duration", () => {
+	const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "other", consumable_poison_amount: "80", consumable_poison_damage: "5",
+		consumable_poison_frequency_seconds: "7.5", consumable_poison_duration_seconds: "120"
+	}}, false).lines.map(line => line.text).join("\n");
+	assert.match(text, /Zatrucie po spożyciu: -5 PW co 7,5 s/);
+	assert.match(text, /Łączna utrata PW: 80/);
+	assert.match(text, /Czas zatrucia: 120 s/);
+	assert.doesNotMatch(text, /Leczenie:/);
+});
+
 test("new combat affixes explain armor damage, critical protection and legendary triggers", () => {
 	const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
 		category: "weapon", armor_crushing: "0.15", critical_hardening: "0.08",

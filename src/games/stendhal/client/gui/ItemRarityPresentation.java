@@ -161,6 +161,7 @@ public final class ItemRarityPresentation {
 		appendCoreStats(tooltip, object, comparisonItem, weapon);
 		appendBonuses(tooltip, object, comparisonItem, weapon, armour);
 		appendConsumableHealing(tooltip, object);
+		appendConsumablePoison(tooltip, object);
 		final String legendaryAffix = LegendaryAffixPresentation.build(object);
 		if (!legendaryAffix.isEmpty()) {
 			appendDivider(tooltip);
@@ -807,6 +808,34 @@ public final class ItemRarityPresentation {
 			value *= 100.0;
 		}
 		return value;
+	}
+
+	private static void appendConsumablePoison(final StringBuilder tooltip,
+			final RPObject object) {
+		final int damage = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.CONSUMABLE_POISON_DAMAGE);
+		final double frequency = WeaponPerformanceCalculator.getDouble(object,
+				ItemTooltip.CONSUMABLE_POISON_FREQUENCY_SECONDS);
+		if (damage <= 0 || frequency <= 0.0) {
+			return;
+		}
+		appendDivider(tooltip);
+		tooltip.append("<font size='-1' color='").append(getTextColor()).append("'><b>")
+				.append(escapeHtml(ClientLanguage.getText("Zatrucie po spożyciu: -" + damage
+						+ " PW co " + formatCompact(frequency) + " s"))).append("</b>");
+		final int amount = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.CONSUMABLE_POISON_AMOUNT);
+		if (amount > 0) {
+			tooltip.append("<br>").append(escapeHtml(ClientLanguage.getText(
+					"Łączna utrata PW: " + amount)));
+		}
+		final double duration = WeaponPerformanceCalculator.getDouble(object,
+				ItemTooltip.CONSUMABLE_POISON_DURATION_SECONDS);
+		if (duration > 0.0) {
+			tooltip.append("<br>").append(escapeHtml(ClientLanguage.getText(
+					"Czas zatrucia: " + formatCompact(duration) + " s")));
+		}
+		tooltip.append("</font>");
 	}
 
 	private static void appendConsumableHealing(final StringBuilder tooltip,

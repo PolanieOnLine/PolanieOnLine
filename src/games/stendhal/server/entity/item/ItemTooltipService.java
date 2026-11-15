@@ -233,6 +233,7 @@ public final class ItemTooltipService {
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
 		publishConsumableHealing(item);
+		publishConsumablePoison(item);
 		if (item instanceof RingOfTeleportation) {
 			// Keep an empty value after use to avoid a contained-object deletion delta.
 			put(item, ItemTooltip.SAVED_POSITION,
@@ -254,6 +255,33 @@ public final class ItemTooltipService {
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static void publishConsumablePoison(final Item item) {
+		if (!(item instanceof Food) && !(item instanceof Drink)) {
+			return;
+		}
+		final ConsumableItem consumable = (ConsumableItem) item;
+		final String name = item.getName() == null ? "" : item.getName();
+		// These are routed to other feeders even when they have negative regen.
+		if (item instanceof StatusHealer || name.contains("eliksir") || name.contains("mana")) {
+			return;
+		}
+		final long amount = -(long) consumable.getAmount();
+		final long damage = -(long) consumable.getRegen();
+		final int frequency = consumable.getFrecuency();
+		if (amount <= 0 || damage <= 0 || frequency <= 0) {
+			return;
+		}
+		final double frequencySeconds = frequency * GameTiming.SECONDS_PER_TURN;
+		// PoisonStatus consumes a partial final tick when the total is not divisible.
+		final long ticks = (amount + damage - 1L) / damage;
+		put(item, ItemTooltip.CONSUMABLE_POISON_AMOUNT, Long.toString(amount));
+		put(item, ItemTooltip.CONSUMABLE_POISON_DAMAGE, Long.toString(damage));
+		put(item, ItemTooltip.CONSUMABLE_POISON_FREQUENCY_SECONDS,
+				Double.toString(frequencySeconds));
+		put(item, ItemTooltip.CONSUMABLE_POISON_DURATION_SECONDS,
+				Double.toString(ticks * frequencySeconds));
 	}
 
 	private static void publishConsumableHealing(final Item item) {

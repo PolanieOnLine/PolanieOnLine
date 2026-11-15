@@ -6,6 +6,7 @@ package games.stendhal.server.entity.item;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -16,6 +17,9 @@ import org.junit.Test;
 
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.config.ItemsXMLLoader;
+import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipServiceTest {
@@ -266,6 +270,50 @@ public class ItemTooltipServiceTest {
 		assertEquals("0.18", stat(item, ItemTooltip.RESIST_CONFUSED));
 		assertEquals("0.25", stat(item, ItemTooltip.RESIST_HEAVY));
 		assertEquals("0.3", stat(item, ItemTooltip.RESIST_STUNNED));
+	}
+
+	@Test
+	public void testLionfishPublishesPoisonDamageInsteadOfHealing() throws Exception {
+		assertPoisonStats(configuredConsumable("food", "skrzydlica"),
+				"80", "5", "7.5", "120.0");
+	}
+
+	@Test
+	public void testBottledPoisonsPublishTheirConfiguredEffectsIncludingPartialLastTick()
+			throws Exception {
+		final String[] names = {"trucizna", "mocna trucizna", "śmiertelna trucizna",
+				"zabójcza trucizna", "bardzo mocna trucizna", "jad kobry"};
+		final String[] amounts = {"40", "60", "100", "2000", "500", "1000"};
+		final String[] damage = {"2", "3", "5", "3", "30", "60"};
+		final String[] seconds = {"9.0", "4.5", "4.5", "6.0", "3.0", "3.0"};
+		final String[] durations = {"180.0", "90.0", "90.0", "4002.0", "51.0", "51.0"};
+		for (int index = 0; index < names.length; index++) {
+			assertPoisonStats(configuredConsumable("drinks", names[index]),
+					amounts[index], damage[index],
+					seconds[index], durations[index]);
+		}
+	}
+
+	private ConsumableItem configuredConsumable(final String file, final String name)
+			throws Exception {
+		for (final DefaultItem definition : new ItemsXMLLoader().load(
+				new URI("/data/conf/items/" + file + ".xml"))) {
+			if (name.equals(definition.getItemName())) {
+				return (ConsumableItem) definition.getItem(ItemCreationContext.restore());
+			}
+		}
+		throw new AssertionError("Missing configured consumable: " + name);
+	}
+
+	private void assertPoisonStats(final ConsumableItem item, final String amount,
+			final String damage, final String frequency, final String duration) {
+		ItemTooltipService.update(item);
+		assertEquals(amount, stat(item, "consumable_poison_amount"));
+		assertEquals(damage, stat(item, "consumable_poison_damage"));
+		assertEquals(frequency, stat(item, "consumable_poison_frequency_seconds"));
+		assertEquals(duration, stat(item, "consumable_poison_duration_seconds"));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.CONSUMABLE_HEALING_REGEN));
 	}
 
 	@Test
