@@ -9,7 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../stendhal";
+import { marauroa } from "marauroa";
+import type { Chest } from "../entity/Chest";
 
 import { ItemContainerImplementation } from "./component/ItemContainerImplementation";
 
@@ -17,6 +18,33 @@ import { ItemContainerImplementation } from "./component/ItemContainerImplementa
 export class Inventory {
 
 	private inventory: ItemContainerImplementation[] = [];
+	private activeChests: {chest: Chest; player: any; zone: string}[] = [];
+
+	/** Called only by genuine chest windows when opened or focused. */
+	activateChest(chest: Chest) {
+		this.activeChests = this.activeChests.filter(entry => entry.chest !== chest);
+		this.activeChests.push({chest, player: marauroa.me, zone: marauroa.currentZoneName});
+	}
+
+	/** Revalidate at the moment of input; a world sprite alone is never a target. */
+	getQuickTransferTarget(): string|undefined {
+		this.activeChests = this.activeChests.filter(({chest, player, zone}) => {
+			if (!player || player !== marauroa.me || zone !== marauroa.currentZoneName
+					|| marauroa.currentZone?.[chest["id"]] !== chest || !chest.open
+					|| !chest.inventory?.isOpen() || chest.getDistanceTo(player) > 4) {
+				return false;
+			}
+			return this.inventory.some(container => container.getObject() === chest && container.getSlot() === "content");
+		});
+		for (let i = this.activeChests.length - 1; i >= 0; i--) {
+			const chest = this.activeChests[i].chest;
+			const container = this.inventory.find(view => view.getObject() === chest && view.getSlot() === "content")!;
+			if (!chest.inventory?.isMinimized() && container.isVisible()) {
+				return chest.getIdPath().slice(0, -1) + "\tcontent]";
+			}
+		}
+		return undefined;
+	}
 
 	/** Singleton instance. */
 	private static instance: Inventory;

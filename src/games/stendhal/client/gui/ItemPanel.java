@@ -18,6 +18,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
+import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 * the left up corner.
 	 */
 	private static final int POPUP_MENU_OFFSET = 10;
+	private static final int QUICK_TRANSFER_MODIFIERS = InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK
+			| InputEvent.META_DOWN_MASK | InputEvent.ALT_DOWN_MASK;
 	private static final CursorRepository cursorRepository = new CursorRepository();
 
 	/**
@@ -401,6 +404,26 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 	 * Handler for mouse use. Takes care of both drags and clicks.
 	 */
 	private class ItemPanelMouseHandler extends MouseHandler {
+		private RPAction transferOnPress;
+		private IEntity pressedItem;
+		private boolean modifiedRelease;
+
+		@Override
+		public void mousePressed(final MouseEvent event) {
+			super.mousePressed(event);
+			transferOnPress = null;
+			pressedItem = getEntity();
+			if (event.getButton() == MouseEvent.BUTTON1 && (event.getModifiersEx() & QUICK_TRANSFER_MODIFIERS) == 0) {
+				transferOnPress = ChestQuickTransfer.createAction(pressedItem, User.get());
+			}
+		}
+
+		@Override
+		public void mouseReleased(final MouseEvent event) {
+			modifiedRelease = (event.getModifiersEx() & QUICK_TRANSFER_MODIFIERS) != 0;
+			super.mouseReleased(event);
+		}
+
 		@Override
 		protected void onDragStart(Point point) {
 			if (view != null && view.isMovable()) {
@@ -412,6 +435,16 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		protected boolean onMouseClick(Point point) {
 			// ignore empty slots
 			if (view == null) {
+				return true;
+			}
+			if (transferOnPress != null) {
+				final RPAction action = ChestQuickTransfer.createAction(view.getEntity(), User.get());
+				if (!modifiedRelease && view.getEntity() == pressedItem && action != null
+						&& action.get(EquipActionConsts.SOURCE_PATH).equals(transferOnPress.get(EquipActionConsts.SOURCE_PATH))
+						&& action.get(Actions.TARGET_PATH).equals(transferOnPress.get(Actions.TARGET_PATH))) {
+					StendhalClient.get().send(action);
+				}
+				// A chest closed during the press must not turn a deposit into item use.
 				return true;
 			}
 

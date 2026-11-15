@@ -155,7 +155,7 @@ export class Chest extends PopupInventory {
 			this.refreshSprite();
 		}
 		if (this.isNextTo(marauroa.me as Entity)) {
-			this.openInventoryWindow();
+			this.openInventoryWindow(false);
 		}
 	}
 
@@ -223,7 +223,8 @@ export class Chest extends PopupInventory {
 		marauroa.clientFramework.sendAction(action);
 	}
 
-	openInventoryWindow() {
+	openInventoryWindow(focus = true) {
+		let opened = false;
 		if (!this.inventory || !this.inventory.isOpen()) {
 			const invComponent = new ItemInventoryComponent(this,
 				"content", 6, 6, stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
@@ -237,8 +238,17 @@ export class Chest extends PopupInventory {
 			windowInstance.enableMinimizeButton(true);
 			windowInstance.setFixedWidth(232);
 			this.inventory = windowInstance;
+			opened = true;
+			const activate = (event: Event) => {
+				// A populated slot is a transfer source; focus the frame or an empty slot to select a destination.
+				const slot = (event.target as HTMLElement).closest(".itemSlot");
+				if (!slot || !(slot as any).dataItem) stendhal.ui.equip.activateChest(this);
+			};
+			windowInstance.componentElement.addEventListener("mousedown", activate, true);
+			windowInstance.componentElement.addEventListener("focusin", activate);
 		}
 		(this.inventory as FloatingWindow).setMinimized(false);
+		if (opened || focus) stendhal.ui.equip.activateChest(this);
 	}
 
 	/**

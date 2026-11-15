@@ -67,6 +67,8 @@ export class ItemContainerImplementation {
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
 	private lastClickedId = "";
+	private mousePress?: {target: EventTarget|null; item: Item; path: string; x: number; y: number;
+		started: number; moved: boolean; zone: string; player: any; destination?: string; modified: boolean};
 
 	// marked for updating certain attributes
 	private dirty = false;
@@ -140,6 +142,7 @@ export class ItemContainerImplementation {
 			e.addEventListener("mouseup", (event: MouseEvent) => {
 				this.onMouseUp(event)
 			});
+			e.addEventListener("mousemove", (event: MouseEvent) => this.onMouseMove(event));
 			e.addEventListener("touchstart", (event: TouchEvent) => {
 				this.onTouchStart(event)
 			}, {passive: true});
@@ -228,6 +231,7 @@ export class ItemContainerImplementation {
 	}
 
 	public dispose() {
+		this.mousePress = undefined;
 		AdminDiagnostics.removeInventory(this);
 		this.slotVisibilityObserver?.disconnect();
 		for (const view of this.slots) {
@@ -249,6 +253,10 @@ export class ItemContainerImplementation {
 			return element.checkVisibility({checkOpacity: true, checkVisibilityCSS: true});
 		}
 		return element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden";
+	}
+
+	public isVisible(): boolean {
+		return this.isAnimationVisible();
 	}
 
 	private updatePosition(view: InventorySlotView, item: Item) {
@@ -380,6 +388,7 @@ export class ItemContainerImplementation {
 	}
 
 	private onDragStart(event: DragEvent|TouchEvent) {
+		if (this.mousePress) this.mousePress.moved = true;
 		let myobject = this.object || marauroa.me;
 		// some mobile browsers such as Chrome call "dragstart" via long touch
 		if (!myobject[this.slot] || (event.type === "dragstart" && stendhal.ui.touch.isTouchEngaged())) {
@@ -547,11 +556,34 @@ export class ItemContainerImplementation {
 	onMouseDown(evt: MouseEvent|TouchEvent) {
 		this.timestampMouseDownPrev = this.timestampMouseDown;
 		this.timestampMouseDown = +new Date();
+		if (evt instanceof MouseEvent) {
+			const item = (evt.target as any).dataItem as Item;
+			this.mousePress = item && evt.button === 0 ? {
+				target: evt.target, item, path: item.getIdPath(), x: evt.clientX, y: evt.clientY,
+				started: Date.now(), moved: false, zone: marauroa.currentZoneName, player: marauroa.me,
+				destination: stendhal.ui.equip.getQuickTransferTarget(),
+				modified: evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey
+			} : undefined;
+		}
+	}
+
+	private onMouseMove(evt: MouseEvent) {
+		if (this.mousePress && Math.hypot(evt.clientX - this.mousePress.x, evt.clientY - this.mousePress.y) > 5) {
+			this.mousePress.moved = true;
+		}
 	}
 
 	onMouseUp(evt: MouseEvent|TouchEvent) {
+		const press = this.mousePress;
+		this.mousePress = undefined;
 		if (evt instanceof MouseEvent) {
 			evt.preventDefault();
+			if (evt.button === 0 && (!press || press.moved || Date.now() - press.started >= this.rightClickDuration
+					|| press.target !== evt.target || press.item !== (evt.target as any).dataItem
+					|| press.path !== press.item.getIdPath() || press.zone !== marauroa.currentZoneName
+					|| press.player !== marauroa.me || stendhal.ui.heldObject)) {
+				return;
+			}
 		}
 
 		// workaround to prevent accidentally using items when disengaging joystick
@@ -564,6 +596,21 @@ export class ItemContainerImplementation {
 		if ((event.target as any).dataItem) {
 			const long_touch = stendhal.ui.touch.isLongTouch(evt);
 			const context_action = (evt instanceof MouseEvent && this.isRightClick(evt)) || long_touch;
+			if (evt instanceof MouseEvent && evt.button === 0 && press && !context_action
+					&& !press.modified && !evt.ctrlKey && !evt.shiftKey && !evt.altKey && !evt.metaKey) {
+				const destination = stendhal.ui.equip.getQuickTransferTarget();
+				// Closing or changing the destination during a press must not consume the item.
+				if (press.destination && press.destination !== destination) return;
+				if (destination) {
+					const source = press.path.slice(0, -1);
+					if (press.path.split("\t").length < 3 || destination.startsWith(source + "\t")) return;
+					if (!press.path.startsWith(destination.slice(0, -1) + "\t")) {
+						marauroa.clientFramework.sendAction({type: "equip", source_path: press.path,
+							target_path: destination, zone: marauroa.currentZoneName});
+						return;
+					}
+				}
+			}
 			if (this.quickPickup && !context_action) {
 				marauroa.clientFramework.sendAction({
 					type: "equip",
@@ -631,6 +678,7 @@ export class ItemContainerImplementation {
 	}
 
 	private onMouseLeave(evt: MouseEvent) {
+		if (this.mousePress) this.mousePress.moved = true;
 		const target = evt.currentTarget as HTMLElement;
 		ItemContainerImplementation.hideRarityToolTip(target);
 	}

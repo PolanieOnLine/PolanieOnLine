@@ -10,6 +10,12 @@ const ts = require(process.env.STENDHAL_TEST_TYPESCRIPT || "typescript");
 const stendhalRoot = path.resolve(__dirname, "../..");
 const mainCSS = readFileSync(path.join(stendhalRoot, "../css/main.css"), "utf8");
 const compiled = new Map();
+compiled.set("ui/Inventory.ts", ts.transpileModule(readFileSync(path.join(stendhalRoot, "ui/Inventory.ts"), "utf8"), {
+	compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+}).outputText);
+compiled.set("entity/Chest.ts", ts.transpileModule(readFileSync(path.join(stendhalRoot, "entity/Chest.ts"), "utf8"), {
+	compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
+}).outputText);
 for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "data/GlyphAppearance.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
@@ -118,7 +124,7 @@ function createHarness() {
 			this.callback([{ target: element, isIntersecting: visible }]);
 		}
 	}
-	const document = { body: new Element(), visibilityState: "visible", createElement: () => new Element(), querySelectorAll: () => [] };
+	const document = { body: new Element(), visibilityState: "visible", createElement: () => new Element(), querySelectorAll: () => [], getElementById: () => ({focus() {}}) };
 	document.createTextNode = text => ({textContent: text});
 	const sentActions = [], dragFrames = [];
 	const marauroa = { me: undefined, currentZoneName: "0_test",
@@ -132,7 +138,15 @@ function createHarness() {
 		removeInventory: owner => diagnosticCounts.delete(owner)
 	};
 	const stendhal = { config: { getBoolean: () => false },
-		ui: { touch: { isTouchEngaged: () => false }, html: { esc: text => text } } };
+		ui: { touch: { isTouchEngaged: () => false, isLongTouch: () => false, setHolding() {}, holding: () => false },
+			actionContextMenu: {set() {}},
+			html: { esc: text => text, extractPosition: event => event, extractTarget: event => event.target } } };
+	class MouseEvent {
+		constructor(target, options = {}) {
+			Object.assign(this, {target, currentTarget: target, button: 0, clientX: 10, clientY: 10}, options);
+		}
+		preventDefault() {}
+	}
 	class DragEvent {
 		constructor(target) {
 			this.type = "dragstart";
@@ -140,6 +154,7 @@ function createHarness() {
 			this.dataTransfer = { setDragImage: image => { this.image = image; } };
 		}
 		preventDefault() { this.prevented = true; }
+		stopPropagation() {}
 	}
 	const images = new Map();
 	const spriteStore = {
@@ -151,7 +166,8 @@ function createHarness() {
 			return frame;
 		}
 	};
-	const singletons = { getSpriteStore: () => spriteStore, getConfigManager: () => stendhal.config };
+	const singletons = { getSpriteStore: () => spriteStore, getConfigManager: () => stendhal.config,
+		getJoystickController: () => ({isEngaged: () => false}), getHeldObjectManager: () => ({onRelease() {}}) };
 	const raritySlotCalls = [], groundCalls = [];
 	const rarityEffects = { ItemRarityEffects: {
 		updateSlot(target, item) {
@@ -167,7 +183,7 @@ function createHarness() {
 		vm.runInNewContext(compiled.get(name), {
 			exports, Date: Clock, document, console, window: {innerWidth: 1024, innerHeight: 768},
 			fetch: async url => ({ok: true, text: async () => readFileSync(path.resolve(stendhalRoot, "../../../data/languages", path.basename(url)), "utf8")}),
-			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent,
+			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent, MouseEvent,
 			getComputedStyle: element => ({ visibility: element.visible ? "visible" : "hidden" }),
 			require: name => {
 				assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency: ${name}`);
@@ -208,9 +224,9 @@ function createHarness() {
 	});
 	const { ItemContainerImplementation: Container } = load("ui/component/ItemContainerImplementation.ts", {
         "../../data/GlyphAppearance": glyphAppearance,
-		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {} },
-		"../dialog/ActionContextMenu": {}, "../dialog/DropQuantitySelectorDialog": {},
-		"../dialog/ItemUpgradeDialog": {}, "../../entity/Item": { Item },
+		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {createSingletonFloatingWindow() {}} },
+		"../dialog/ActionContextMenu": {ActionContextMenu: class {}}, "../dialog/DropQuantitySelectorDialog": {},
+		"../dialog/ItemUpgradeDialog": {ItemUpgradeDialog: {canSelectItem: () => false}}, "../../entity/Item": { Item },
 		"../../SingletonRepo": { singletons }, "../../util/Point": {},
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": tooltipPresentation,
@@ -226,6 +242,18 @@ function createHarness() {
 		"../toolkit/Component": { Component: class {
 			constructor() { this.componentElement = { addEventListener() {}, dispatchEvent() {} }; }
 		} }, marauroa: { marauroa }, "../../stendhal": { stendhal }
+	});
+	const { Inventory } = load("ui/Inventory.ts", {marauroa: {marauroa}, "../stendhal": {stendhal}});
+	stendhal.ui.equip = Inventory.get();
+	const { Chest } = load("entity/Chest.ts", {
+		"./PopupInventory": {PopupInventory: class extends Entity {}},
+		"../data/color/Color": {Color: {}}, "../util/Chat": {},
+		"../data/Paths": {Paths: {sprites: "/sprites"}}, marauroa: {marauroa}, "../stendhal": {stendhal},
+		"../ui/component/ItemInventoryComponent": {ItemInventoryComponent: class {setConfigId() {}}},
+		"../ui/toolkit/FloatingWindow": {FloatingWindow: class {
+			constructor() {this.componentElement = new Element();}
+			isOpen() {return true;} setId() {} enableMinimizeButton() {} setFixedWidth() {} setMinimized() {}
+		}}
 	});
 	const updateToolTip = Container.updateToolTipFor;
 	Container.updateToolTipFor = (...args) => { metrics.tooltipUpdates++; updateToolTip(...args); };
@@ -270,7 +298,7 @@ function createHarness() {
 	}
 	function resetMetrics() { for (const key of Object.keys(metrics)) { metrics[key] = 0; } }
 	return {
-		metrics, document, marauroa, images, observers, Container, ItemRarity, GameLanguage, raritySlotCalls, groundCalls,
+		metrics, document, marauroa, images, observers, Container, Chest, ItemRarity, GameLanguage, raritySlotCalls, groundCalls, stendhal, MouseEvent,
 		diagnostics, diagnosticCounts,
 		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
 		setNow: value => { now = value; }
@@ -278,6 +306,160 @@ function createHarness() {
 }
 
 function iconOf(slot) { return slot.children.find(child => child.className === "item-slot-icon"); }
+
+function quickTransferFixture() {
+	const h = createHarness();
+	h.marauroa.me = {id: 7};
+	h.marauroa.currentZone = {};
+	function chest(id) {
+		const object = {id, open: true, inventory: {isOpen: () => true, isMinimized: () => false},
+			getDistanceTo: () => 1, getIdPath: () => `[${id}]`};
+		h.marauroa.currentZone[id] = object;
+		const container = h.makeContainer([], {object}).container;
+		container.getSlot = () => "content";
+		h.stendhal.ui.equip.add(container);
+		return {object, container, activate: () => h.stendhal.ui.equip.activateChest?.(object)};
+	}
+	const destination = chest(42);
+	const item = h.makeItem(1, {quantity: "99"});
+	const source = h.makeContainer([item]);
+	destination.activate();
+	function down(options) { source.container.onMouseDown(new h.MouseEvent(source.parent.elements[0], options)); }
+	function up(options) { source.container.onMouseUp(new h.MouseEvent(source.parent.elements[0], options)); }
+	return {...h, chest, destination, item, source, down, up};
+}
+
+test("a short left click sends the full stack to the open chest before use", () => {
+	const h = quickTransferFixture();
+	h.stendhal.config.getBoolean = key => key === "inventory.double-click";
+	h.down(); h.up();
+	assert.equal(h.sentActions.length, 1);
+	assert.equal(h.sentActions[0].type, "equip");
+	assert.equal(h.sentActions[0].source_path, "[7\tbag\t1]");
+	assert.equal(h.sentActions[0].target_path, "[42\tcontent]");
+	assert.equal(h.sentActions[0].zone, "0_test");
+	assert.equal(Object.hasOwn(h.sentActions[0], "clicked"), false);
+	assert.equal(Object.hasOwn(h.sentActions[0], "quantity"), false, "The normal equip action moves the full stack");
+});
+
+test("the actual Chest registers newly opened windows and reactivates on focus but ordinary updates do not steal focus", () => {
+	const h = createHarness(), activations = [];
+	h.stendhal.config.getWindowState = () => ({x: 0, y: 0});
+	h.stendhal.ui.equip.activateChest = chest => activations.push(chest);
+	const chest = new h.Chest();
+	chest.openInventoryWindow(false);
+	assert.equal(activations.length, 1);
+	assert.equal(activations[0], chest);
+	chest.openInventoryWindow(false);
+	assert.equal(activations.length, 1);
+	chest.openInventoryWindow();
+	assert.equal(activations.length, 2);
+	for (const listener of chest.inventory.componentElement.listeners.get("mousedown")) listener({target: chest.inventory.componentElement});
+	for (const listener of chest.inventory.componentElement.listeners.get("focusin")) listener({target: chest.inventory.componentElement});
+	assert.equal(activations.length, 4);
+	const populatedSlot = {dataItem: h.makeItem(1)};
+	const itemEvent = {target: {closest: () => populatedSlot}};
+	for (const listener of chest.inventory.componentElement.listeners.get("mousedown")) listener(itemEvent);
+	for (const listener of chest.inventory.componentElement.listeners.get("focusin")) listener(itemEvent);
+	assert.equal(activations.length, 4, "Clicking another chest's populated slot preserves the current destination");
+});
+
+test("drag, movement, long hold and a release without a press never transfer or use", () => {
+	for (const gesture of ["drag", "move", "hold", "release"]) {
+		const h = quickTransferFixture();
+		if (gesture !== "release") h.down();
+		if (gesture === "drag") {
+			h.source.container.onDragStart(new h.DragEvent(h.source.parent.elements[0]));
+			h.stendhal.ui.heldObject = undefined; // drop already consumed the drag
+		}
+		if (gesture === "move") h.source.container.onMouseMove(new h.MouseEvent(h.source.parent.elements[0], {clientX: 30}));
+		if (gesture === "hold") h.setNow(1400);
+		h.up();
+		assert.equal(h.sentActions.length, 0, gesture);
+	}
+});
+
+test("a manual drag drop sends only its normal equip and the later mouse release does not deposit again", () => {
+	const h = quickTransferFixture(); h.down();
+	h.source.container.onDragStart(new h.DragEvent(h.source.parent.elements[0]));
+	h.stendhal.ui.html.parseSlotName = () => "content";
+	h.destination.container.onDrop(new h.DragEvent(h.source.parent.elements[0]));
+	h.up();
+	assert.equal(h.sentActions.length, 1);
+	assert.equal(h.sentActions[0].type, "equip");
+	assert.equal(h.sentActions[0].target_path, "[42\tcontent]");
+});
+
+test("right click keeps the context menu and sends no transfer or use", () => {
+	const h = quickTransferFixture(); h.down({button: 2}); h.up({button: 2});
+	assert.equal(h.sentActions.length, 0);
+});
+
+test("closed, minimized, hidden, removed, distant, changed-zone and changed-user targets cancel a pending click", () => {
+	for (const stale of ["closed", "minimized", "hidden", "removed", "distance", "zone", "user"]) {
+		const h = quickTransferFixture(); h.down();
+		if (stale === "closed") h.destination.object.open = false;
+		if (stale === "minimized") h.destination.object.inventory.isMinimized = () => true;
+		if (stale === "hidden") h.destination.container.getParentElement().hidden = true;
+		if (stale === "removed") delete h.marauroa.currentZone[42];
+		if (stale === "distance") h.destination.object.getDistanceTo = () => 5;
+		if (stale === "zone") h.marauroa.currentZoneName = "other";
+		if (stale === "user") h.marauroa.me = {id: 8};
+		h.up(); assert.equal(h.sentActions.length, 0, stale);
+	}
+});
+
+test("most recently focused valid chest wins and closing it falls back to the previous chest", () => {
+	const h = quickTransferFixture(), second = h.chest(43);
+	second.activate(); h.down(); h.up();
+	assert.equal(h.sentActions.at(-1).target_path, "[43\tcontent]");
+	h.destination.activate(); h.down(); h.up();
+	assert.equal(h.sentActions.at(-1).target_path, "[42\tcontent]");
+	h.destination.object.open = false; h.down(); h.up();
+	assert.equal(h.sentActions.at(-1).target_path, "[43\tcontent]");
+});
+
+test("other slotted sources deposit, ground and chest ancestors do not, and the current chest keeps quick pickup", () => {
+	for (const sourcePath of ["[7\trighthand\t1]", "[40\tcontent\t1]"]) {
+		const h = quickTransferFixture(); h.item.getIdPath = () => sourcePath;
+		h.down(); h.up(); assert.equal(h.sentActions[0].target_path, "[42\tcontent]");
+	}
+	for (const sourcePath of ["[1]", "[42]"]) {
+		const h = quickTransferFixture(); h.item.getIdPath = () => sourcePath;
+		h.down(); h.up(); assert.equal(h.sentActions.length, 0, sourcePath);
+	}
+	const ancestor = quickTransferFixture();
+	ancestor.destination.object.getIdPath = () => "[7\tbag\t1\tcontent\t42]";
+	ancestor.down(); ancestor.up(); assert.equal(ancestor.sentActions.length, 0, "Containers cannot move into descendants");
+	const h = quickTransferFixture(); h.item.getIdPath = () => "[42\tcontent\t1]";
+	h.source.container.quickPickup = true;
+	h.down(); h.up();
+	assert.equal(h.sentActions[0].target_path, "[7\tbag]");
+	assert.equal(h.sentActions[0].clicked, "");
+});
+
+test("an item in another open chest deposits into the selected chest while its own contents go to the bag", () => {
+	const h = quickTransferFixture(), other = h.chest(43);
+	function clickContents(chest) {
+		const item = h.makeItem(3); item.getIdPath = () => `[${chest.object.id}\tcontent\t3]`;
+		chest.object.content = h.makeOwner([item]).bag;
+		const parent = h.makeParent(1); parent.elements[0].id = "content0";
+		const container = new h.Container(parent, "content", 1, chest.object, "", true);
+		container.onMouseDown(new h.MouseEvent(parent.elements[0]));
+		container.onMouseUp(new h.MouseEvent(parent.elements[0]));
+	}
+	clickContents(other);
+	assert.equal(h.sentActions.at(-1).target_path, "[42\tcontent]");
+	clickContents(h.destination);
+	assert.equal(h.sentActions.at(-1).target_path, "[7\tbag]");
+});
+
+test("modifier clicks retain their existing use behavior instead of quick deposit", () => {
+	for (const modifier of ["ctrlKey", "shiftKey", "metaKey", "altKey"]) {
+		const h = quickTransferFixture(); h.down({[modifier]: true}); h.up({[modifier]: true});
+		assert.equal(h.sentActions[0].type, "use", modifier);
+	}
+});
 
 test("detached reward previews share the inventory hover tooltip and dispose all handlers", () => {
 	const h = createHarness(), item = h.makeItem(1);

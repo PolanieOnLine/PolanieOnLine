@@ -115,6 +115,13 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	public void setSlot(final IEntity parent, final String slot) {
 		this.parent = parent;
 		content.setSlot(parent, slot);
+		ChestQuickTransfer.register(this, parent, slot);
+	}
+
+	@Override
+	public void raise() {
+		super.raise();
+		ChestQuickTransfer.activate(this);
 	}
 
 	/**
@@ -122,6 +129,7 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 	 * configured visibility. Used when returning to character selection.
 	 */
 	void clearSlot() {
+		ChestQuickTransfer.remove(this);
 		content.release();
 		parent = null;
 	}
@@ -159,6 +167,7 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 
 	@Override
 	public void close() {
+		ChestQuickTransfer.remove(this);
 		content.release();
 		super.close();
 	}

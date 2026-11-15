@@ -100,6 +100,7 @@ public abstract class MouseHandler implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		final boolean wasDragging = dragging;
 		// be sure to stop dragging operations when the left button is released
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			dragging = false;
@@ -110,7 +111,7 @@ public abstract class MouseHandler implements MouseListener, MouseMotionListener
 		}
 
 		// Handle as a click if the button wasn't held for > a second
-		if ((System.currentTimeMillis() - timeOfLastMousePress) < 1000) {
+		if (!wasDragging && (System.currentTimeMillis() - timeOfLastMousePress) < 1000) {
 			onMouseClick(e);
 			timeOfLastMousePress = 0;
 		}
