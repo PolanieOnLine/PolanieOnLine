@@ -144,6 +144,18 @@ public class ItemUpgradeServiceTest {
 	}
 
 	@Test
+	public void earnedCiupagaDiscountSurvivesRepeatingTheQuest() {
+		final Player player = player("repeat_ciupaga_discount");
+		final Weapon dagger = weapon("sztylecik z mithrilu", 10, 0, 2);
+		for (String state : Arrays.asList("start;;1", "forging;123456;1", "rejected;;1")) {
+			player.setQuest("ciupaga_trzy_wasy", state);
+			assertEquals(state, 121800, service(0).calculateUpgradeFee(player, dagger));
+		}
+		player.setQuest("ciupaga_trzy_wasy", "start;;0");
+		assertEquals(174000, service(0).calculateUpgradeFee(player, dagger));
+	}
+
+	@Test
 	public void missingMoneyAndMaterialsAreDistinguished() {
 		final Player player = player("requirements");
 		final Weapon item = weapon("requirements", 10, 0, 3);

@@ -39,6 +39,7 @@ import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 import games.stendhal.server.maps.quests.AbstractQuest;
 import games.stendhal.server.util.TimeUtil;
 
@@ -87,7 +88,9 @@ public class PierscienBarona extends AbstractQuest {
 	private final SpeakerNPC judgmentWitness = npcs.get("Zakonnik");
 
 	private boolean hasLegacyPrerequisites(final Player player) {
-		return player.isQuestCompleted(CIUPAGA_DWA_WASY_QUEST_SLOT)
+		return (player.isQuestCompleted(CIUPAGA_DWA_WASY_QUEST_SLOT)
+				|| new QuestStateGreaterThanCondition(
+						CIUPAGA_DWA_WASY_QUEST_SLOT, 2, 0).fire(player, null, null))
 				&& player.isQuestCompleted(HUNGRY_JOSHUA_QUEST_SLOT)
 				&& player.isQuestCompleted(FISHERMANS_LICENSE2_QUEST_SLOT)
 				&& player.isQuestCompleted(OBSIDIAN_KNIFE_QUEST_SLOT)

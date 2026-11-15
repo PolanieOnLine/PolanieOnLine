@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -34,6 +35,13 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.KarmaLessThanCondition;
+import games.stendhal.server.entity.npc.condition.KilledCondition;
+import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
+import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
@@ -52,72 +60,54 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaDwaWasy.class);
 
+	private ChatCondition canAcceptQuest() {
+		return new AndCondition(new QuestCompletedCondition(KRASNOLUD_QUEST_SLOT),
+				new LevelGreaterThanCondition(249), new NotCondition(new KarmaLessThanCondition(1000)),
+				new KilledCondition("serafin"),
+				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestCompletedCondition(QUEST_SLOT)));
+	}
+
 	private void step_1() {
 		final SpeakerNPC npc = npcs.get("Władca Smoków");
-
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, null,
-			ConversationStates.QUEST_OFFERED, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					if (player.isQuestCompleted(KRASNOLUD_QUEST_SLOT)) {
-						if(player.getLevel() >= 250) {
-							if(player.getKarma() >= 1000) {
-								if(player.hasKilled("serafin")) {
-									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Wiatry nad chmurami szepczą o tobie, skoro " + player.getGenderVerb("wdrapałeś") + " się aż na mój taras. Mam dla ciebie wyprawę, podejmiesz się?");
-									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
-										if (player.isQuestCompleted(QUEST_SLOT)) {
-						raiser.say("Dzięki tobie smoki znowu krążą spokojnie wśród chmur nad moją twierdzą.");
-											raiser.setCurrentState(ConversationStates.ATTENDING);
-										} else {
-						raiser.say("Nie wracaj, dopóki nie " + player.getGenderVerb("uspokoiłeś") + " wichrów, o które cię prosiłem.");
-											raiser.setCurrentState(ConversationStates.ATTENDING);
-										}
-									} else if (player.getQuest(QUEST_SLOT).startsWith("zbroja;")) {
-						raiser.say("Najpierw dokończ żarliwą robotę u Krasnoluda, potem wróć z wieściami.");
-										raiser.setCurrentState(ConversationStates.ATTENDING);
-									}
-								} else {
-						npc.say("Wróć, gdy serafin runie z nieba pod twoją ciupagą.");
-									raiser.setCurrentState(ConversationStates.ATTENDING);
-								}
-							} else {
-						npc.say("Twoje imię brzmi zbyt lekko. Zadbaj o karmę równą tysiącowi, nim kolejny raz staniesz wśród chmur.");
-								raiser.setCurrentState(ConversationStates.ATTENDING);
-							}
-						} else {
-						npc.say("Najpierw wznieś się na dwusetny pięćdziesiąty poziom, potem porozmawiamy o smoczych pazurach.");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					} else {
-						npc.say("Najpierw wesprzyj Krasnoluda i pokaż, że nie boisz się kuźnianego dymu.");
-						raiser.setCurrentState(ConversationStates.ATTENDING);
-					}
-				}
-			});
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(canAcceptQuest(), new QuestNotStartedCondition(QUEST_SLOT)),
+				ConversationStates.QUEST_OFFERED,
+				"Wiatry nad chmurami szepczą o tobie. Chcesz zebrać trofea potrzebne do dodania drugiego wąsa twojej ciupadze?", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(canAcceptQuest(), new QuestCompletedCondition(QUEST_SLOT)),
+				ConversationStates.QUEST_OFFERED,
+				"Mogę pomóc przy kolejnej ciupadze z dwoma wąsami. Ponownie zbierz wszystkie trofea i materiały dla Krasnoluda. Podejmiesz się?", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new QuestActiveCondition(QUEST_SLOT), ConversationStates.ATTENDING,
+				"Twoja wyprawa już trwa. Zanieś komplet materiałów Krasnoludowi. Jeśli oddałeś je do kuźni, zapytaj go o #nagrodę.", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				null, ConversationStates.ATTENDING,
+				"Najpierw pomóż Krasnoludowi, osiągnij 250 poziom i 1000 karmy oraz pokonaj serafina.", null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES, null,
+			ConversationPhrases.YES_MESSAGES, canAcceptQuest(),
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Gniazda nad chmurami kipią buntem. Chcę, byś " + player.getGenderVerb("ścinał") + " każdego wichrzącego smoka, którego spotkasz."
-							+ " Zbieraj ich pazury i zanieś mojemu towarzyszowi Krasnoludowi w kuźni przy piaskach. Wystarczy, że wyszepczesz mu moje #imie."
-							+ " Niech łowy będą dla ciebie łaskawe.");
-					player.setQuest(QUEST_SLOT, "start");
+					raiser.say("Zbierz smocze pazury i zanieś je Krasnoludowi w kuźni przy piaskach."
+							+ " Zapytaj go o #ciupagę albo powiedz: #przypomnij. Poda ci pełną listę materiałów.");
+					final int completed = getCompletedCount(player);
+					player.setQuest(QUEST_SLOT, "start;;" + completed);
 					player.addKarma(10);
 
 				}
 			});
 
+		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES,
+				new QuestCompletedCondition(QUEST_SLOT), ConversationStates.ATTENDING,
+				"Dobrze. Wróć, gdy zechcesz przekuć kolejną ciupagę.", null);
+
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES, null,
+			ConversationPhrases.NO_MESSAGES, new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
 			"Jak chcesz, wiatr rozwieje tę rozmowę.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -50.0));
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, 0, "rejected", -50.0));
 
 	}
 
@@ -135,8 +125,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, 0, "forging"));
 		ciupagaactions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga", "ciupagę"),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								 new PlayerHasItemWithHimCondition("pazur zielonego smoka",1),
 								 new PlayerHasItemWithHimCondition("pazur czerwonego smoka",1),
 								 new PlayerHasItemWithHimCondition("złota ciupaga z wąsem",1),
@@ -147,8 +137,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 				ConversationStates.IDLE, "Widzę, że wciąż pachniesz wiatrem i żarem. Wracaj za dwanaście godzin, a ciupaga z dwoma wąsami zabłyśnie jak skrzydło smoka. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("przypomnij", "Władca Smoków", "władca", "smok"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("przypomnij", "ciupaga", "ciupagę", "przedmioty", "Władca Smoków", "władca", "smok"),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								 new NotCondition(
 								 new AndCondition(new PlayerHasItemWithHimCondition("pazur zielonego smoka",1),
 												  new PlayerHasItemWithHimCondition("pazur czerwonego smoka",1),
@@ -171,10 +161,10 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 
 	private void step_3() { 
 		final SpeakerNPC npc = npcs.get("Krasnolud");
-		final int delay = REQUIRED_HOURS * TimeUtil.SECONDS_IN_MINUTE;
+		final int delay = REQUIRED_HOURS * TimeUtil.MINUTES_IN_HOUR;
 
 		npc.add(ConversationStates.ATTENDING, 
-			Arrays.asList("złota", "ciupaga", "nagroda"),
+			Arrays.asList("złota", "ciupaga", "nagroda", "nagrodę"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
@@ -183,7 +173,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Młot jeszcze tańczy w rytmie wiatru. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("złota", "ciupaga", "nagroda"),
+			Arrays.asList("złota", "ciupaga", "nagroda", "nagrodę"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new TimePassedCondition(QUEST_SLOT, 1, delay)),
@@ -195,7 +185,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 					raiser.say("Żar ostygł. Oto ciupaga z dwoma wąsami, nasycona oddechem chmur.");
 					player.addXP(500000);
 					player.addKarma(100);
-					player.setQuest(QUEST_SLOT, "done");
+					player.setQuest(QUEST_SLOT, 2, Integer.toString(getCompletedCount(player) + 1));
+					player.setQuest(QUEST_SLOT, 0, "done");
 				}
 			});
 	}
@@ -206,6 +197,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			"Złota Ciupaga z Dwoma Wąsami",
 			"Krasnolud doda drugi wąs twojej złotej ciupadze, jeśli przyniesiesz mu smocze trofea.",
 			true);
+		questInfo.setCompletionsIndexes(2);
 		step_1();
 		step_2();
 		step_3();
@@ -225,12 +217,12 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			return res;
 		}
 		res.add(player.getGenderVerb("Udałem") + " się do kuźni Krasnoluda. Muszę przynieść mu wszystkie dary naraz i w razie potrzeby poprosić: przypomnij."); 
-		if ("start".equals(questState)) {
+		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
 			return res;
 		} 
 		res.add(player.getGenderVerb("Dostarczyłem") + " mu wszystko. Krasnolud zaczął wyginać metal.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_HOURS * TimeUtil.MINUTES_IN_HOUR).fire(player, null, null)) {
 				res.add("Kuźnia już ucichła. Hasło: nagroda.");
 			} else {
 				res.add("Mam wrócić po ciupagę za dwanaście godzin. Hasło: nagroda.");
@@ -239,6 +231,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 		} 
 		res.add("Ciupaga z dwoma wąsami błyszczy jak świeżo zbita łuska. Jest moja.");
 		if (isCompleted(player)) {
+			res.add("Mogę ponownie podjąć zadanie i przekuć kolejną ciupagę za pełny komplet materiałów.");
 			return res;
 		} 
 		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
@@ -246,6 +239,11 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 		debug.add("Stan zadania to: " + questState);
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
 		return debug;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return isCompleted(player);
 	}
 
 	@Override

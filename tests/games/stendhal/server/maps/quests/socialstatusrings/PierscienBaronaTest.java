@@ -53,6 +53,15 @@ public class PierscienBaronaTest {
 				player, edragon, quest, java.util.Collections.emptyList()));
 	}
 
+	@Test
+	public void repeatingTheSecondCiupagaKeepsTheBaronPrerequisiteUnlocked() {
+		final PierscienBarona quest = new PierscienBarona();
+		final Player player = eligiblePlayer("RepeatCiupagaBaron");
+		player.setQuest(PierscienBarona.CIUPAGA_DWA_WASY_QUEST_SLOT, "forging;123456;1");
+		assertEquals(QuestMarker.AVAILABLE, QuestMarkerService.getMarkerForQuest(
+				player, edragon, quest, java.util.Collections.emptyList()));
+	}
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		QuestHelper.setUpBeforeClass();

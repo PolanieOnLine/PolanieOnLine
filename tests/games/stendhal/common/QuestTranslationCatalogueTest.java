@@ -6,6 +6,15 @@ import games.stendhal.common.grammar.Grammar;
 
 /** Exercises current Polish quest text, not obsolete upstream quest states. */
 public class QuestTranslationCatalogueTest {
+	@Test public void repeatedCiupagaOffersAndJournalInstructionsTranslate() {
+		String source = "Dobrze. Wróć, gdy zechcesz przekuć kolejną ciupagę.";
+		assertEquals("All right. Return when you want to reforge another axe.", Translation.getText("en", source));
+		assertEquals("De acuerdo. Vuelve cuando quieras reforjar otra hacha.", Translation.getText("es", source));
+		String pending = "Już pracujemy nad twoją ciupagą. Przynieś komplet materiałów albo zapytaj o #nagrodę, jeśli już je oddałeś.";
+		String en = Translation.getText("en", pending);
+		assertEquals("We are already working on your axe. Bring all the materials, or ask about your #reward if you have already delivered them.", en);
+		assertEquals("nagrodę", Translation.getOriginalKeyword("en", "reward", en));
+	}
 
 	@Test public void translatesCurrentCustomQuestTitlesAndDescriptions() {
 		assertEquals("Highlander Collector III", Translation.getText("en", "Góralski Kolekcjoner III"));

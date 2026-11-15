@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -33,6 +34,13 @@ import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.KarmaLessThanCondition;
+import games.stendhal.server.entity.npc.condition.KilledCondition;
+import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
+import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
@@ -58,64 +66,32 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 
 	private static Logger logger = Logger.getLogger(ZlotaCiupagaTrzyWasy.class);
 
+	private ChatCondition canAcceptQuest() {
+		return new AndCondition(new QuestCompletedCondition(FRIEND_1), new QuestCompletedCondition(FRIEND_2),
+				new QuestCompletedCondition(FRIEND_3), new QuestCompletedCondition(FRIEND_4),
+				new LevelGreaterThanCondition(349), new NotCondition(new KarmaLessThanCondition(2000)),
+				new KilledCondition("azazel"),
+				new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestCompletedCondition(QUEST_SLOT)));
+	}
+
 	private void step_1() {
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, null,
-			ConversationStates.QUEST_OFFERED, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					if (player.isQuestCompleted(FRIEND_1)) {
-						if (player.isQuestCompleted(FRIEND_2)) {
-							if (player.isQuestCompleted(FRIEND_3)) {
-								if (player.isQuestCompleted(FRIEND_4)) {
-									if(player.getLevel() >= 350) {
-										if(player.getKarma() >= 2000) {
-											if(player.hasKilled("azazel")) {
-												if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-													raiser.say("Skoro " + player.getGenderVerb("dotarłeś") + " aż do mojej kuźni, żar i piach nie są ci obce. Mam dla ciebie dzieło, podejmiesz się?");
-												} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
-													raiser.say("Już pytałem, czy pragniesz nadać ciupadze trzeci wąs!");
-												} else if (player.isQuestCompleted(QUEST_SLOT)) {
-													raiser.say("Twoja ciupaga już lśni trzema wąsami. Nie mam tu dla ciebie kolejnej roboty.");
-													raiser.setCurrentState(ConversationStates.ATTENDING);
-												} else {
-													raiser.say("Nie wracaj, dopóki nie " + player.getGenderVerb("ukończyłeś") + " tego, o co cię prosiłem.");
-													raiser.setCurrentState(ConversationStates.ATTENDING);
-												}
-											} else {
-												npc.say("Wróć, gdy Azazel poczuje ostrze twojej ciupagi.");
-												raiser.setCurrentState(ConversationStates.ATTENDING);
-											}
-										} else {
-											npc.say("Twoje imię brzmi jeszcze zbyt lekko; niech twoja karma sięgnie dwóch tysięcy.");
-											raiser.setCurrentState(ConversationStates.ATTENDING);
-										}
-									} else {
-										npc.say("Najpierw osiągnij trzysta pięćdziesiąty krąg doświadczenia, potem pogadamy.");
-										raiser.setCurrentState(ConversationStates.ATTENDING);
-									}
-								} else {
-									npc.say("Dopóki Król Krak czeka na pomoc, moje kowadło nie ruszy dla ciebie.");
-									raiser.setCurrentState(ConversationStates.ATTENDING);
-								}
-							} else {
-								npc.say("Anastazja liczy na ciebie. Pomóż jej, a wtedy wróć.");
-								raiser.setCurrentState(ConversationStates.ATTENDING);
-							}
-						} else {
-							npc.say("Najpierw spełnij marzenie Eltefii.");
-							raiser.setCurrentState(ConversationStates.ATTENDING);
-						}
-					} else {
-						npc.say("Najpierw pomóż Gazdzie Bartkowi i pokaż, że serce masz po właściwej stronie.");
-						raiser.setCurrentState(ConversationStates.ATTENDING);
-					}
-				}
-			});
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(canAcceptQuest(), new QuestNotStartedCondition(QUEST_SLOT)),
+				ConversationStates.QUEST_OFFERED,
+				"Żar i piach nie są ci obce. Chcesz zebrać trofea potrzebne do dodania trzeciego wąsa twojej ciupadze?", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(canAcceptQuest(), new QuestCompletedCondition(QUEST_SLOT)),
+				ConversationStates.QUEST_OFFERED,
+				"Mogę dodać trzeci wąs kolejnej ciupadze. Ponownie przynieś wszystkie trofea i materiały. Podejmiesz się?", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				new QuestActiveCondition(QUEST_SLOT), ConversationStates.ATTENDING,
+				"Już pracujemy nad twoją ciupagą. Przynieś komplet materiałów albo zapytaj o #nagrodę, jeśli już je oddałeś.", null);
+		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
+				null, ConversationStates.ATTENDING,
+				"Najpierw pomóż góralskiemu kolekcjonerowi, kolekcjonerom pasów i rękawic oraz Królowi Krakowi. Potrzebujesz też 350 poziomu, 2000 karmy i zwycięstwa nad Azazelem.", null);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES, null,
+			ConversationPhrases.YES_MESSAGES, canAcceptQuest(),
 			ConversationStates.ATTENDING, null,
 			new ChatAction() {
 				@Override
@@ -137,17 +113,22 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
                                                         +"#'1 wywar wąsatych smoków'\n"
                                                         +"Wywar uwarz w kotle Draconii w kuźni Józka.\n"
                                                         +"Przynieś wszystko naraz. Jeśli zapomnisz, powiedz #'przypomnij'.");
-					player.setQuest(QUEST_SLOT, "start");
+					final int completed = getCompletedCount(player);
+					player.setQuest(QUEST_SLOT, "start;;" + completed);
 					player.addKarma(10);
 
 				}
 			});
 
+		npc.add(ConversationStates.QUEST_OFFERED, ConversationPhrases.NO_MESSAGES,
+				new QuestCompletedCondition(QUEST_SLOT), ConversationStates.ATTENDING,
+				"Dobrze. Wróć, gdy zechcesz przekuć kolejną ciupagę.", null);
+
 		npc.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES, null,
+			ConversationPhrases.NO_MESSAGES, new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.IDLE,
 			"Jak chcesz, moje kowadło poczeka na innego.",
-			new SetQuestAction(QUEST_SLOT, "rejected"));
+			new SetQuestAction(QUEST_SLOT, 0, "rejected"));
 
 	}
 
@@ -171,8 +152,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, 0, "forging"));
 		ciupagaactions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga"),
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga", "ciupagę"),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								 new PlayerHasItemWithHimCondition("pazur arktycznego smoka", 1),
 								 new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1),
 								 new PlayerHasItemWithHimCondition("pazur czarnego smoka", 1),
@@ -190,7 +171,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
+				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 								 new NotCondition(
 								 new AndCondition(
 										 new PlayerHasItemWithHimCondition("pazur arktycznego smoka", 1),
@@ -225,10 +206,10 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	}
 
 	private void step_3() { 
-		final int delay = REQUIRED_HOURS * TimeUtil.SECONDS_IN_MINUTE;
+		final int delay = REQUIRED_HOURS * TimeUtil.MINUTES_IN_HOUR;
 
 		npc.add(ConversationStates.ATTENDING, 
-			Arrays.asList("złota", "ciupaga", "nagroda"),
+			Arrays.asList("złota", "ciupaga", "nagroda", "nagrodę"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
@@ -237,7 +218,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Młoty nadal biją nad twoją ciupagą. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("złota", "ciupaga", "nagroda"),
+			Arrays.asList("złota", "ciupaga", "nagroda", "nagrodę"),
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "forging;"),
 					new TimePassedCondition(QUEST_SLOT, 1, delay)),
@@ -249,7 +230,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 					raiser.say("Żar ostygł. Oto ciupaga z trzema wąsami, nasiąknięta smoczym szeptem.");
 					player.addXP(1000000);
 					player.addKarma(200);
-					player.setQuest(QUEST_SLOT, "done");
+					player.setQuest(QUEST_SLOT, 2, Integer.toString(getCompletedCount(player) + 1));
+					player.setQuest(QUEST_SLOT, 0, "done");
 				}
 			});
 	}
@@ -260,6 +242,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			"Złota Ciupaga z Trzema Wąsami",
 			"Hadrin osadzi trzeci wąs w twojej złotej ciupadze, jeśli dostarczysz mu rzadkie trofea.",
 			true);
+		questInfo.setCompletionsIndexes(2);
 		step_1();
 		step_2();
 		step_3();
@@ -279,12 +262,12 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			return res;
 		}
 		res.add(player.getGenderVerb("Udałem") + " się do Hadrina z jego listą darów. Gdy zapomnę, mam powiedzieć: przypomnij."); 
-		if ("start".equals(questState)) {
+		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
 			return res;
 		} 
 		res.add(player.getGenderVerb("Dostarczyłem") + " wszystkie trofea. Hadrin rozżarzył miechy.");
 		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
+			if (new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_HOURS * TimeUtil.MINUTES_IN_HOUR).fire(player, null, null)) {
 				res.add("Kuźnia Hadrina już ucichła. Hasło: nagroda.");
 			} else {
 				res.add("Mam wrócić po ciupagę za dwadzieścia cztery godziny. Hasło: nagroda.");
@@ -293,6 +276,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		} 
 		res.add("Ciupaga z trzema wąsami błyszczy jak rozgrzane złoto. Jest moja.");
 		if (isCompleted(player)) {
+			res.add("Mogę ponownie podjąć zadanie i przekuć kolejną ciupagę za pełny komplet materiałów.");
 			return res;
 		}
 		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
@@ -300,6 +284,11 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		debug.add("Stan zadania to: " + questState);
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
 		return debug;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return isCompleted(player);
 	}
 
 	@Override

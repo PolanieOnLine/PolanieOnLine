@@ -23,6 +23,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 import games.stendhal.server.entity.slot.Slots;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -315,7 +316,8 @@ public final class ItemUpgradeService implements LogoutListener {
 				&& item.getMaxUpgradeLevel() == 1) {
 			fee = 5000000L;
 		}
-		if (player.isQuestCompleted(DISCOUNT_QUEST)) {
+		if (player.isQuestCompleted(DISCOUNT_QUEST)
+				|| new QuestStateGreaterThanCondition(DISCOUNT_QUEST, 2, 0).fire(player, null, null)) {
 			fee = Math.round(fee * 0.7);
 		}
 		return (int) Math.min(Integer.MAX_VALUE, Math.max(0L, fee));
