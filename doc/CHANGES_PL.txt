@@ -11,7 +11,7 @@
 * Dodano historię rozbitków i fałszywych świateł w Gdańsku od 200 poziomu oraz wyprawę do zalanych chodników Wieliczki od 250 poziomu
 * Dodano zadania o skradzionych smoczych jajach od 400 poziomu oraz Milczący dzwon na Kikareukin od 550 poziomu
 * Dodano osiągnięcie za ukończenie ostatniego rozdziału głównej historii
-* Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje poszukiwania zaginionego wędrowca, pomoc rannemu i naprawę starego kompasu. Nagrodą jest kompas wędrowca
+* Dodano poboczne zadanie Na manowcach u Sabały, dostępne od 15 poziomu. Obejmuje tropienie zaginionego wędrowca, ratunek przed wilkami, eskortę przez cztery mapy i naprawę starego kompasu. Ślady i miejsca strojenia igły są rozsiane po leśnej polanie. Nagrodą jest kompas wędrowca
 * Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie

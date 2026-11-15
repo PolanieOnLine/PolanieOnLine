@@ -101,14 +101,11 @@ public final class WanderersCompassQuest extends AbstractQuest {
 	public static NavigationGoal target(Player p) {
 		Stage s = CompassProgress.stage(p);
 		if (s == null) return null;
+		if (s == Stage.ESCORT) return CompassEscort.target(p);
 		int x = s.x, y = s.y;
 		if (s == Stage.JUNCTIONS && CompassProgress.detail(p) == 1) {
-			x = 60;
-			y = 84;
-		}
-		if (s == Stage.ESCORT && CompassProgress.detail(p) == 1) {
-			x = 51;
-			y = 86;
+			x = CompassScenes.Clue.STUMP.x;
+			y = CompassScenes.Clue.STUMP.y;
 		}
 		if (s == Stage.BANDAGE && CompassProgress.detail(p) == 1) {
 			x = 68;
@@ -149,7 +146,10 @@ public final class WanderersCompassQuest extends AbstractQuest {
 		StendhalRPZone forest = SingletonRepository.getRPWorld().getZone(CompassProgress.FOREST);
 		if (forest == null)
 			throw new IllegalStateException("Missing compass quest zone: " + CompassProgress.FOREST);
-		CompassScenes.register(forest);
+		for (String name : CompassEscort.ZONES) {
+			StendhalRPZone scene = SingletonRepository.getRPWorld().getZone(name);
+			if (scene != null) CompassScenes.register(scene);
+		}
 		npcs.get("Sabała")
 				.add(
 						ConversationStates.IDLE,
@@ -189,7 +189,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 					}
 					n.say(
 							"Wędrowiec Dobromir nie wrócił z Kościeliska. Świeże znaki prowadzą ludzi ze szlaku."
-									+ " Poszukasz go na południowej polanie we wschodnim Kościelisku? Boję się, że"
+									+ " Poszukasz go na leśnej polanie we wschodnim Kościelisku? Boję się, że"
 									+ " przytrafiło mu się coś złego.");
 					n.setCurrentState(ConversationStates.QUEST_3_OFFERED);
 				},
@@ -211,7 +211,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 						(p, s, n) -> {
 							CompassProgress.enter(p, Stage.MISSING);
 							n.say(
-									"Dziękuję. Ostatnio widziano go na południowej polanie we wschodnim Kościelisku."
+									"Dziękuję. Poszukaj śladów przy zachodnim wejściu na polanę we wschodnim Kościelisku."
 											+ " Rozejrzyj się za jego śladami. Miał ze sobą dużą skórzaną torbę.");
 						});
 		npcs.get("Sabała")
@@ -345,7 +345,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 			} else if (stage == Stage.MEAL) {
 				text = "Ciepło pomogło, ale z głodu nie przejdę ani kawałka. Ugotowałbyś mi trochę mięsa?";
 			} else {
-				text = "Daj mi chwilę. Spróbuję pójść z tobą na zachód, pod świerki.";
+				text = "Daj mi chwilę. Potem wyprowadzisz mnie na drogę do Zakopanego. Sam jeszcze nie dam rady.";
 			}
 		} else if ("Smolisław".equals(name)) {
 			text =
@@ -361,7 +361,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 			text = "Niech kompas dobrze ci służy. Dobrze wiedzieć, że można na ciebie liczyć.";
 		} else if (stage == null || stage.ordinal() <= Stage.JUNCTIONS.ordinal()) {
 			text =
-					"Szukaj Dobromira na południowej polanie we wschodnim Kościelisku. Jeśli znajdziesz"
+					"Szukaj Dobromira na leśnej polanie we wschodnim Kościelisku. Jeśli znajdziesz"
 							+ " go rannego, nie zostawiaj go samego.";
 		} else if (stage.ordinal() <= Stage.ESCORT.ordinal()) {
 			text =
@@ -389,7 +389,7 @@ public final class WanderersCompassQuest extends AbstractQuest {
 				case CASE:
 					text =
 							"Igła to nie wszystko, obudowę też trzeba odnaleźć. Rozejrzyj się jeszcze przy"
-									+ " świerkach na północny wschód od obozu, tam gdzie widziałeś ogniki.";
+									+ " wschodnim skraju polany w Kościelisku, tam gdzie widziałeś ogniki.";
 					break;
 				case ASSEMBLY:
 				case CROSSROADS:

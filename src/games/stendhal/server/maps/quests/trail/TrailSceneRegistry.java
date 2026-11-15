@@ -27,6 +27,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.PlayerPrivateSpeakerNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.compass.CompassEscort;
 import marauroa.common.game.RPObject;
 
 /** Reconstructs personal story actors from the player's saved quest checkpoints. */
@@ -201,6 +202,7 @@ public final class TrailSceneRegistry {
 		@Override
 		public void onExited(final RPObject object, final StendhalRPZone current) {
 			if (object instanceof Player) {
+				CompassEscort.exited((Player) object, current);
 				clear((Player) object);
 			}
 		}
@@ -240,6 +242,7 @@ public final class TrailSceneRegistry {
 					&& BellTrailEscort.group(player).size() != 2) {
 				BellTrailEscort.start(player);
 			}
+			CompassEscort.refresh(player);
 		}
 
 		void clear(final Player player) {
