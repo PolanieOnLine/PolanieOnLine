@@ -184,7 +184,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_PIZZA_DELIVERY, "Dostawca Pizzy",
-				"Rozwieziono pizze w krainie Faiumoni lub Prasłowiańskiej",
+				"Rozwieziono pizze w krainie Faiumonii lub Prasłowiańskiej",
 				Achievement.EASY_BASE_SCORE, true,
 				new OrCondition(
 						new QuestCompletedCondition("pizza_delivery"),

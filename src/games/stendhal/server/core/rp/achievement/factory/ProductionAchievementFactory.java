@@ -69,7 +69,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		// at time of writing, the other drinks are fierywater, tea, pina colada, and
 		// mega potion (which we may remove)
 		achievements.add(createAchievement("production.class.drink", "Spragniony Pracownik",
-				"Zlecono wszystkie rodzaje napoi dostępne u kucharzy", Achievement.MEDIUM_BASE_SCORE, true,
+				"Zlecono wszystkie rodzaje napojów dostępne u kucharzy", Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(new PlayerProducedNumberOfItemsCondition(1, drinks),
 						new QuestCompletedCondition("soup_maker"), new QuestCompletedCondition("fishsoup_maker"),
 						new QuestCompletedCondition("mushroomsoup_maker"),
@@ -79,7 +79,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		final String[] resources = resourcelist.toArray(new String[resourcelist.size()]);
 		// at time of writing: gold bar, mithril bar, flour, iron
 		achievements.add(createAchievement("production.class.resource", "Alchemik",
-				"Wyprodukowano po 50 rodzai każdego cennego metalu i zasobów", Achievement.HARD_BASE_SCORE, true,
+				"Wyprodukowano po 50 sztuk cennych metali i zasobów każdego rodzaju", Achievement.HARD_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(50, resources)));
 
 		achievements.add(createAchievement("production.flour.1000", "Asystent Jenny", "Wyprodukowano 1,000 mąk",
@@ -113,7 +113,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 				"Upieczono po 200 różnych słodkich przekąsek", Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(200, ITEMS_SNACKS)));
 
-		achievements.add(createAchievement("production.smokingfood.50", "Wędzarka", "Uwędzono po 50 różnego jedzenia",
+		achievements.add(createAchievement("production.smokingfood.50", "Wędzarka", "Uwędzono po 50 sztuk każdego rodzaju jedzenia",
 				Achievement.EASY_BASE_SCORE, true, new PlayerProducedNumberOfItemsCondition(50, ITEMS_SMOKINGFOOD)));
 
 		achievements.add(createAchievement("production.boiledpot.1000", "Ziemniaczany Kociołek",

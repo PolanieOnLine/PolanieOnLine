@@ -164,7 +164,7 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				"zone.special.afterlife", "Widziałem Światło",
-				"Poznał życie pozagrobowe",
+				"Poznano życie pozagrobowe",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerVisitedZonesCondition("int_afterlife")));
 

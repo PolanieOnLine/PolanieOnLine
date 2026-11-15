@@ -76,13 +76,13 @@ public class ItemUpgradesAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_DAGGERS, "Potężne i Szybkie",
-				"Ulepszono sztylecik z mithrilu oraz złotą klinge do ich maksymalnego poziomu",
+				"Ulepszono sztylecik z mithrilu oraz złotą klingę do ich maksymalnego poziomu",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerUpgradesNumberOfItemCondition("sztylecik z mithrilu", "złota klinga")));
 
 		achievements.add(createAchievement(
 				ID_MITHRILRING, "Światłość",
-				"Ulepszono pierścień z mithrilu do jej maksymalnego poziomu",
+				"Ulepszono pierścień z mithrilu do jego maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerUpgradesNumberOfItemCondition("pierścień z mithrilu")));
 

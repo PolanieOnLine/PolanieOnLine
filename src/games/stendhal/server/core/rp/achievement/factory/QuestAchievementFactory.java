@@ -41,7 +41,7 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 
 		// Elf Princess quest achievement
 		achievements.add(createAchievement(
-			"quest.special.elf_princess.0025", "Kasanowa Faiumoni",
+			"quest.special.elf_princess.0025", "Kasanowa Faiumonii",
 			"Ukończono zadanie u księżniczki elfów 25 razy", 
 			Achievement.MEDIUM_BASE_SCORE, true,
 			new QuestStateGreaterThanCondition("elf_princess", 2, 24)));
@@ -148,7 +148,7 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 		// deliver 5 hot pizzas
 		achievements.add(createAchievement(
 			"quest.pizza_delivery.hot.0025", "30 Minut lub Mniej",
-			"Dostarczył 25 jeszcze ciepłych pizz",
+			"Dostarczono 25 jeszcze ciepłych pizz",
 			Achievement.EASY_BASE_SCORE, true,
 			new QuestStateGreaterThanCondition("pizza_delivery", 3, 24)));
 

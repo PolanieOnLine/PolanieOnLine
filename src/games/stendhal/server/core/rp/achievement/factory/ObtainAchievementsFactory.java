@@ -52,7 +52,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// Vegetable harvest achievement
 		achievements.add(createAchievement(
 				"obtain.harvest.vegetable", "Farmer",
-				"Zebrano po 8 sztuk z pośród wszystkich warzyw rosnących w Faiumoni",
+				"Zebrano po 8 sztuk spośród wszystkich warzyw rosnących w Faiumonii",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(8,
 						"marchew", "sałata", "brokuł", "kalafior", "por",
@@ -61,7 +61,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// fruit harvest achievement
 		achievements.add(createAchievement(
 				"obtain.harvest.fruit", "Sałatka Owocowa",
-				"Zebrano po 3 sztuki wszystkich owoców rosnących w Faiumoni",
+				"Zebrano po 3 sztuki wszystkich owoców rosnących w Faiumonii",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(3,
 						"jabłko", "banan", "wisienka", "kokos", "kiść winogron", "oliwka", "gruszka",
@@ -159,7 +159,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// herb harvest
 		achievements.add(createAchievement(
 				"obtain.harvest.herb", "Ziołolecznik",
-				"Zebrano 20 każdego rodzaju rosnącego zioła w Faiumoni",
+				"Zebrano po 20 ziół każdego rodzaju rosnących w Faiumonii",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(20,
 						"arandula", "kekik", "mandragora", "sclaria")));
@@ -167,7 +167,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// loot or harvest apples
 		achievements.add(createAchievement(
 				ID_APPLES, "Kołysząc się na Jabłkach",
-				"Zebrano lub zdobył 1,000 jabłek",
+				"Zebrano lub zdobyto 1,000 jabłek",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -182,7 +182,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// find the lucky four-leaf clover
 		achievements.add(createAchievement(
 			"obtain.clover", "Powodzenia Irlandczycy",
-			"Znajdź szczęśliwą czterolistną koniczynę",
+			"Znaleziono szczęśliwą czterolistną koniczynę",
 			Achievement.MEDIUM_BASE_SCORE, true,
 			new PlayerHasHarvestedNumberOfItemsCondition(1, "czterolistna koniczyna")));
 

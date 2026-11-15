@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import games.stendhal.client.entity.User;
+import games.stendhal.client.ClientLanguage;
 
 /**
  * @author KarajuSs
@@ -80,7 +81,7 @@ public class AchievementLogController {
 	 */
 	private AchievementLog getAchievementLog() {
 		if (achievementLog == null) {
-			achievementLog = new AchievementLog(User.getCharacterName() + " dziennik osiągnięć");
+			achievementLog = new AchievementLog(ClientLanguage.getText(User.getCharacterName() + " dziennik osiągnięć"));
 		}
 		return achievementLog;
 	}

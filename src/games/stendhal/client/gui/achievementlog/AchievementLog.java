@@ -131,9 +131,14 @@ class AchievementLog {
 		return rval;
 	}
 
-	private String getAchievementDesc(String title, String desc) {
+	static String getAchievementDesc(String title, String desc) {
+		final String trimmed = desc.trim();
+		final String punctuation = trimmed.endsWith(".") || trimmed.endsWith("!")
+				|| trimmed.endsWith("?") || trimmed.endsWith("…") ? "" : ".";
+		// Keep punctuation outside the source text so dictionary keys still match.
+		// The renderer translates each fragment whenever the language changes.
 		String description = "<html><span style=\"font-weight: bold;\">" + title + "</span><br/>"
-				+ "<span style=\"font-weight: normal; font-style: italic;\">" + desc + ".</span></html>";
+				+ "<span style=\"font-weight: normal; font-style: italic;\">" + desc + "</span>" + punctuation + "</html>";
 
 		return description;
 	}

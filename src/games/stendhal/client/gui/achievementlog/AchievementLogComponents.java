@@ -14,6 +14,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import games.stendhal.client.gui.ScrolledViewport;
+import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.layout.SBoxLayout;
 
@@ -25,7 +26,7 @@ public class AchievementLogComponents {
 
 		JLabel header = new JLabel();
 		header.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
-		headerText.append("Liczba aktywnych osiągnięć: " + achievementCount);
+		headerText.append(ClientLanguage.getText("Liczba aktywnych osiągnięć: " + achievementCount));
 
 		header.setText("<html><div width=" + (width
 				- 10) + ">" + headerText.toString() + "</div></html>");
@@ -50,7 +51,7 @@ public class AchievementLogComponents {
 		buttonBox.setBorder(BorderFactory.createEmptyBorder(SBoxLayout.COMMON_PADDING,
 				0, SBoxLayout.COMMON_PADDING, SBoxLayout.COMMON_PADDING));
 
-		JButton closeButton = new JButton("Zamknij");
+		JButton closeButton = new JButton(ClientLanguage.getText("Zamknij"));
 		closeButton.setMnemonic(KeyEvent.VK_C);
 		closeButton.addActionListener(new ActionListener() {
 			@Override

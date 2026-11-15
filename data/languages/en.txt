@@ -241,3 +241,7 @@ Doświadczenie i napiwek zależą od odbiorcy oraz czasu dostawy.=Experience and
 Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.=A late delivery gives half the experience and no tip.
 
 Nagrody otrzymujesz w kolejnych etapach zadania.=Rewards are given during successive stages of the quest.
+Ikona=Icon
+Opis=Description
+{0} dziennik osiągnięć={0}'s achievement log
+Liczba aktywnych osiągnięć: {number:0}=Available achievements: {0}

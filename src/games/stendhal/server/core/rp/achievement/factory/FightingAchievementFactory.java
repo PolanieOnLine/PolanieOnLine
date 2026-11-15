@@ -196,7 +196,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_EXTERMINATOR, "Eksterminator",
-				"Pokonano po 10 szczurów z każdego rodzaju",
+				"Pokonano po 10 szczurów każdego rodzaju",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_EXTERMINATOR)));
 
@@ -238,7 +238,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_BEARS, "Łowca Niedźwiedzi",
-				"Pokonano po 10 niedźwiedzi grizli, niedźwiedzi i misi",
+				"Pokonano po 10 niedźwiedzi grizli, niedźwiedzi i misiów",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_BEARS)));
 
@@ -271,7 +271,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_LEGEND, "Legenda",
-				"Pokonano sam wszystkie potwory",
+				"Pokonano w pojedynkę wszystkie potwory",
 				Achievement.EXTREME_BASE_SCORE, true,
 				new KilledSoloAllCreaturesCondition()));
 
@@ -329,7 +329,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_MERMAIDS, "Serenada Syren",
-				"Pokonano 5,000 klejnotowych rodzai syren",
+				"Pokonano łącznie 5,000 syren klejnotowych różnych rodzajów",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -381,7 +381,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_NECROMANCER, "Nekromanta",
-				"Pokonano po 50 gashadokuro, książę szkieletów oraz szkielet anioła",
+				"Pokonano po 50 gashadokuro, książąt szkieletów oraz szkieletów anioła",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_NECROMANCER)));
 

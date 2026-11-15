@@ -3166,3 +3166,7 @@ Za spóźnioną dostawę otrzymasz połowę doświadczenia, bez napiwku.=Una ent
 Nagrody otrzymujesz w kolejnych etapach zadania.=Las recompensas se entregan en las distintas etapas de la misión.
 Tryb testowy administratora. {item:0}=Modo de prueba del administrador. {item:0}
 Możesz otworzyć dowolne okienko. Nagrody są przyznawane raz na konto.=Puedes abrir cualquier casilla. Los regalos solo se pueden recoger una vez por cuenta.
+Ikona=Icono
+Opis=Descripción
+{0} dziennik osiągnięć=Registro de logros de {0}
+Liczba aktywnych osiągnięć: {number:0}=Logros disponibles: {0}

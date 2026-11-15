@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 import games.stendhal.client.sprite.Sprite;
+import games.stendhal.client.ClientLanguage;
 
 public class AchievementLogRenderers {
 	private static AchievementLogRenderers instance;
@@ -53,7 +54,7 @@ public class AchievementLogRenderers {
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
-			header.setText(value.toString());
+			header.setText(ClientLanguage.getText(value.toString()));
 			return this;
 		}
 	}
