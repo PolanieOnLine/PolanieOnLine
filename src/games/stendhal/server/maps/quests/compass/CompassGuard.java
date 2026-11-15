@@ -204,8 +204,7 @@ final class CompassGuard extends Creature {
 			recorded = true;
 			for (Player owner : getZone().getPlayers())
 				if (PlayerPrivateScene.isOwnedBy(this, owner)
-						&& needed(owner, role)
-						&& owner.nextTo(this, 16)) {
+						&& needed(owner, role)) {
 					CompassProgress.set(
 							owner,
 							CompassProgress.stage(owner),

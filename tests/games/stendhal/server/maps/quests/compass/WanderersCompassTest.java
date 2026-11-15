@@ -450,6 +450,30 @@ public class WanderersCompassTest {
 	}
 
 	@Test
+	public void poisonFinishingBlowsStillCountAfterTheOwnerRetreats() {
+		move(forest);
+		for (int role = 0; role < 4; role++) {
+			if (role % 2 == 0) CompassProgress.enter(player, role < 2 ? Stage.WOLVES : Stage.CASE);
+			refresh();
+			CompassGuard guard = null;
+			for (Entity entity : forest.getEntitiesOfClass(CompassGuard.class))
+				if (PlayerPrivateScene.isOwnedBy(entity, player) && ((CompassGuard) entity).role() == role)
+					guard = (CompassGuard) entity;
+			assertNotNull(guard);
+			player.setPosition(guard.getX(), guard.getY() + 1);
+			int damage = guard.getHP();
+			assertTrue(guard.getStatusList().inflictStatus(new PoisonStatus(-damage, 1, -damage, player), player));
+			player.setPosition(1, 1);
+			assertFalse(player.nextTo(guard, 16));
+			new PoisonStatusTurnListener(guard.getStatusList()).onTurnReached(0);
+			assertEquals(role % 2 == 0 ? 1 : 3, CompassProgress.detail(player));
+			assertFalse(CompassGuard.needed(player, role));
+			refresh();
+			assertFalse(forest.has(guard.getID()));
+		}
+	}
+
+	@Test
 	public void sabalaGreetingAndTaskReminderFollowSavedQuestProgress() {
 		SpeakerNPC sabala = visit("Sabała");
 		assertTrue(SpeakerNPCTestHelper.getReply(sabala).contains("Martwię się o Dobromira"));
