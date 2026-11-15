@@ -127,7 +127,11 @@ public abstract class ActiveEntity extends Entity {
 	 */
 	private static double calcDeltaMovement(final double clientPos,
 			final double serverPos, final double delta) {
-		final double moveErr = clientPos - serverPos;
+		final double direction = Math.signum(delta);
+		final double progress = (clientPos - serverPos) * direction;
+		// The server reports whole tiles. Up to one tile of forward progress
+		// is the unreported fractional movement, not a synchronization error.
+		final double moveErr = (progress < 0 ? progress : Math.max(0, progress - 1)) * direction;
 		// Faster movement must not amplify the correction of a positional error.
 		return delta - moveErr * Math.min(1.0, Math.abs(delta)) / 2;
 	}
@@ -151,8 +155,7 @@ public abstract class ActiveEntity extends Entity {
 				|| (Direction.RIGHT == direction)) {
 			this.y = y;
 			if (compareDouble(this.x, x, Math.max(1.0, speed))) {
-				// make the movement look more nicely: + this.dx * 0.1
-				this.dx = calcDeltaMovement(this.x + this.dx * 0.1, x,
+				this.dx = calcDeltaMovement(this.x, x,
 						direction.getdx() * speed);
 			} else {
 				this.x = x;
@@ -163,8 +166,7 @@ public abstract class ActiveEntity extends Entity {
 			this.x = x;
 			this.dx = 0;
 			if (compareDouble(this.y, y, Math.max(1.0, speed))) {
-				// make the movement look more nicely: + this.dy * 0.1
-				this.dy = calcDeltaMovement(this.y + this.dy * 0.1, y,
+				this.dy = calcDeltaMovement(this.y, y,
 						direction.getdy() * speed);
 			} else {
 				this.y = y;

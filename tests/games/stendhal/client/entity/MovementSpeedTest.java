@@ -77,6 +77,68 @@ public class MovementSpeedTest {
 	}
 
 	@Test
+	public void genuineTimingErrorsAreStillCorrectedInBothDirections() throws Exception {
+		for (final Direction direction : new Direction[] {
+				Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN}) {
+			for (final double progress : new double[] {-0.4, 1.4}) {
+				final ActiveEntity entity = new ActiveEntity() { };
+				final RPObject object = movingObject();
+				object.put("dir", direction.get());
+				object.put("speed", 1.5);
+				entity.initialize(object);
+				entity.x = 5 + progress * direction.getdx();
+				entity.y = 5 + progress * direction.getdy();
+				final RPObject changes = new RPObject();
+				changes.put("x", 5);
+				changes.put("y", 5);
+				final double predictedX = entity.getX(), predictedY = entity.getY();
+				entity.processPositioning(object, changes);
+				assertEquals(predictedX, entity.getX(), 0.00001);
+				assertEquals(predictedY, entity.getY(), 0.00001);
+				final double forwardSpeed = velocity(entity, "dx") * direction.getdx()
+						+ velocity(entity, "dy") * direction.getdy();
+				assertTrue(forwardSpeed > 0);
+				if (progress < 0) assertTrue("Catch up when behind", forwardSpeed > 1.5);
+				else assertTrue("Slow down when ahead of fractional tile", forwardSpeed < 1.5);
+			}
+		}
+	}
+
+	@Test
+	public void fractionalTileProgressDoesNotMakeWalkingPulseAtEachServerTurn() throws Exception {
+		for (final Direction direction : new Direction[] {
+				Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN}) {
+			for (final double speed : new double[] {0.5, 1.1, 1.5, 2.0, 2.5, 4.5}) {
+				final ActiveEntity entity = new ActiveEntity() { };
+				final RPObject object = movingObject();
+				object.put("x", 100);
+				object.put("y", 100);
+				object.put("dir", direction.get());
+				object.put("speed", speed);
+				entity.initialize(object);
+				final String axis = direction.getdx() == 0 ? "y" : "x";
+				for (int turn = 1; turn <= 100; turn++) {
+					entity.x += velocity(entity, "dx");
+					entity.y += velocity(entity, "dy");
+					final int steps = (int) Math.floor(turn * speed + 1e-9);
+					final int serverPosition = 100 + steps * (direction.getdx() + direction.getdy());
+					if (object.getInt(axis) == serverPosition) continue;
+					final RPObject changes = new RPObject();
+					changes.put(axis, serverPosition);
+					final double predictedX = entity.getX(), predictedY = entity.getY();
+					entity.processPositioning(object, changes);
+					final String context = direction + " speed " + speed + " turn " + turn;
+					assertEquals(context, predictedX, entity.getX(), 0.00001);
+					assertEquals(context, predictedY, entity.getY(), 0.00001);
+					assertEquals(context, speed, velocity(entity, "dx") * direction.getdx()
+							+ velocity(entity, "dy") * direction.getdy(), 0.00001);
+					object.put(axis, serverPosition);
+				}
+			}
+		}
+	}
+
+	@Test
 	public void steadyFastMovementStaysSmoothInEveryDirection() throws Exception {
 		for (final Direction direction : new Direction[] {
 				Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN}) {

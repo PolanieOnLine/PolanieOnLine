@@ -67,7 +67,10 @@ test("continuous walking stays monotonic at fractional, normal and higher speeds
 			entity.set("hp", 100 - frame % 10);
 			entity.updatePosition(30);
 			assert.ok(entity._x >= previousX, `speed ${speed}, frame ${frame}: ${previousX} -> ${entity._x}`);
-			assert.ok(Math.abs(entity._x - serverX) < Math.max(2, speed), `speed ${speed} drifted from server`);
+			// Between packets, prediction includes the current turn and the
+			// fractional tile omitted from the last integer server position.
+			assert.ok(Math.abs(entity._x - serverX) < Math.max(2, speed + 1),
+				`speed ${speed}, frame ${frame}: client ${entity._x}, last server tile ${serverX}`);
 		}
 	}
 });
@@ -106,4 +109,47 @@ test("large relocations and stops still use the server position at high speed", 
 	entity.set("speed", 0);
 	assert.equal(entity._x, 40);
 	assert.ok(entity.stopped());
+});
+
+test("fractional tile progress does not make walking pulse at each server turn", () => {
+	for (const direction of [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]) {
+		for (const speed of [0.5, 1.1, 1.5, 2, 2.5, 4.5]) {
+			const entity = movingEntity();
+			Object.assign(entity, {x: 100, y: 100, _x: 100, _y: 100, direction});
+			entity.set("speed", speed);
+			const axis = direction.dx === 0 ? "y" : "x";
+			for (let frame = 1; frame <= 1000; frame++) {
+				entity.updatePosition(30);
+				if (frame % 10 !== 0) continue;
+				const steps = Math.floor(frame / 10 * speed + 1e-9);
+				const serverPosition = 100 + steps * (direction.dx + direction.dy);
+				if (Number(entity[axis]) === serverPosition) continue;
+				const predictedX = entity._x, predictedY = entity._y;
+				entity.set(axis, serverPosition);
+				const context = `direction ${direction.val}, speed ${speed}, frame ${frame}`;
+				assert.ok(Math.abs(entity._x - predictedX) < 0.00001, `${context}: horizontal snap`);
+				assert.ok(Math.abs(entity._y - predictedY) < 0.00001, `${context}: vertical snap`);
+				assert.ok(Math.abs(entity.dx * direction.dx + entity.dy * direction.dy - speed) < 0.00001,
+					`${context}: integer coordinates changed a steady walking speed`);
+			}
+		}
+	}
+});
+
+test("genuine timing errors are still corrected in both directions", () => {
+	for (const direction of [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]) {
+		for (const progress of [-0.4, 1.4]) {
+			const entity = movingEntity();
+			Object.assign(entity, {x: 5, y: 5, _x: 5 + progress * direction.dx,
+				_y: 5 + progress * direction.dy, direction});
+			entity.set("speed", 1.5);
+			const predictedX = entity._x, predictedY = entity._y;
+			entity.set(direction.dx === 0 ? "y" : "x", 5);
+			assert.equal(entity._x, predictedX);
+			assert.equal(entity._y, predictedY);
+			const forwardSpeed = entity.dx * direction.dx + entity.dy * direction.dy;
+			assert.ok(forwardSpeed > 0);
+			assert.ok(progress < 0 ? forwardSpeed > 1.5 : forwardSpeed < 1.5);
+		}
+	}
 });
