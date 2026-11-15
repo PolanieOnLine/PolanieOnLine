@@ -1,4 +1,6 @@
 # Messages shown when using, inspecting or receiving items.
+Nie możesz użyć pierścienia powrotu w tym miejscu.=You cannot use the ring of return here.
+Pierścień miał zapisane miejsce, do którego nie można już wrócić. Ten zapis został usunięty.=The ring held a destination you can no longer return to. This saved destination has been cleared.
 Nie możesz atakować, chyba że {0} zaakceptował twoje wyzwanie.=You cannot attack unless {0} has accepted your challenge.
 Twoje sumienie może mieć problem jeżeli stoisz za tym atakiem.=Your conscience may trouble you if you go through with this attack.
 Za bardzo żal ci {0}, by go zabić.=You feel too sorry for {0} to kill them.

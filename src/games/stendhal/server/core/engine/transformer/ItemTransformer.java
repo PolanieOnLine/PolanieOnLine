@@ -31,6 +31,7 @@ import games.stendhal.server.core.rule.rarity.LifestealMigrationService;
 import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
+import games.stendhal.server.entity.item.RingOfTeleportation;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.scroll.MarkedScroll;
 import games.stendhal.server.entity.player.UpdateConverter;
@@ -177,6 +178,14 @@ public class ItemTransformer {
 				}
 			}
 			UpdateConverter.updateItemAttributes(item);
+
+			if (item instanceof RingOfTeleportation) {
+				// On this ring frequency is the last use time, not an XML stat.
+				if (rpobject.has("frequency")) {
+					item.put("frequency", rpobject.get("frequency"));
+				}
+				((RingOfTeleportation) item).clearBlockedZakopaneDestination();
+			}
 
 			if (item instanceof MarkedScroll) {
 				((MarkedScroll) item).applyDestInfo();

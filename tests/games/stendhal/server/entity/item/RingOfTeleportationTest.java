@@ -42,6 +42,11 @@ import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class RingOfTeleportationTest {
+	private static final String[] BLOCKED_ZONES = {
+		"int_zakopane_mill_0", "int_zakopane_mill_1",
+		"6_zakopane_clouds", "alt_6_zakopane_clouds"
+	};
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		MockStendlRPWorld.get();
@@ -70,6 +75,74 @@ public class RingOfTeleportationTest {
 	@Test
 	public void leavesOrdinaryZonesAvailable() {
 		assertFalse(RingOfTeleportation.isForbiddenReturnZone(new StendhalRPZone("0_semos_plains_n")));
+		assertFalse(RingOfTeleportation.isForbiddenReturnZone(new StendhalRPZone("7_kikareukin_clouds")));
+		assertFalse(RingOfTeleportation.isForbiddenReturnZone(new StendhalRPZone("0_zakopane_se")));
+	}
+
+	@Test
+	public void blocksZakopaneMillAndCloudDestinations() {
+		for (final String name : BLOCKED_ZONES) {
+			assertTrue(name, RingOfTeleportation.isForbiddenReturnZone(new StendhalRPZone(name)));
+		}
+	}
+
+	@Test
+	public void cannotSaveOrActivateRingInZakopaneMillAndClouds() throws Exception {
+		for (final String name : BLOCKED_ZONES) {
+			final StendhalRPWorld world = MockStendlRPWorld.get();
+			final StendhalRPZone zone = new StendhalRPZone(name, 30, 30);
+			world.addRPZone(zone);
+			final Player player = PlayerTestHelper.createPlayer("blocked-ring-test");
+			final RingOfTeleportation ring = new RingOfTeleportation();
+			player.getSlot("bag").add(ring);
+			player.setPosition(2, 3);
+			zone.add(player);
+			try {
+				assertFalse("Must not save " + name, ring.onUsed(player));
+				assertTrue(ring.isUsed());
+				assertNull(ring.getItemData());
+				ring.setItemData("0_semos_plains_n 10 20");
+				ring.activeRing();
+				assertFalse("Must not return from " + name, ring.onUsed(player));
+				assertEquals("0_semos_plains_n 10 20", ring.getItemData());
+				assertFalse(ring.isUsed());
+				assertFalse(ring.has("frequency"));
+				assertEquals(zone, player.getZone());
+				assertEquals(2, player.getX());
+				assertEquals(3, player.getY());
+			} finally {
+				zone.remove(player);
+				world.removeRPZone(zone.getID());
+			}
+		}
+	}
+
+	@Test
+	public void staleBlockedDestinationIsClearedOnUseEvenDuringCooldown() throws Exception {
+		final StendhalRPWorld world = MockStendlRPWorld.get();
+		final StendhalRPZone zone = new StendhalRPZone("blocked-ring-source", 30, 30);
+		world.addRPZone(zone);
+		final Player player = PlayerTestHelper.createPlayer("stale-ring-test");
+		final RingOfTeleportation ring = new RingOfTeleportation();
+		player.getSlot("bag").add(ring);
+		player.setPosition(2, 3);
+		zone.add(player);
+		try {
+			for (final String name : BLOCKED_ZONES) {
+				ring.setItemData(name + " 10 20");
+				ring.activeRing();
+				ring.put("frequency", (int) (System.currentTimeMillis() / 1000));
+				assertFalse(ring.onUsed(player));
+				assertNull(name, ring.getItemData());
+				assertTrue(ring.isUsed());
+				assertEquals(0, ring.getInt("state"));
+				assertEquals("", ring.getSavedPositionForTooltip());
+				assertEquals(zone, player.getZone());
+			}
+		} finally {
+			zone.remove(player);
+			world.removeRPZone(zone.getID());
+		}
 	}
 
 	@Test

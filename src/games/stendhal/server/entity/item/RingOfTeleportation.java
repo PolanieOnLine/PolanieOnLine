@@ -163,6 +163,16 @@ public class RingOfTeleportation extends Item {
 			return false;
 		}
 
+		if (clearBlockedZakopaneDestination()) {
+			player.sendPrivateText("Pierścień miał zapisane miejsce, do którego nie można już wrócić. Ten zapis został usunięty.");
+			return false;
+		}
+		final StendhalRPZone currentZone = player.getZone();
+		if (currentZone != null && isBlockedZakopaneZone(currentZone.getName())) {
+			player.sendPrivateText("Nie możesz użyć pierścienia powrotu w tym miejscu.");
+			return false;
+		}
+
 		final int secondsNeeded = getLastUsed() + getCoolingPeriod() - (int) (System.currentTimeMillis() / 1000);
 		if (secondsNeeded > 0) {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. "
@@ -263,6 +273,24 @@ public class RingOfTeleportation extends Item {
 		player.sendPrivateText(message);
 	}
 
+	/** Clear obsolete targets after restoring all saved item attributes. */
+	public boolean clearBlockedZakopaneDestination() {
+		final SavedPosition saved = parseSavedPosition(getItemData());
+		if (saved == null || !isBlockedZakopaneZone(saved.zoneName)) {
+			return false;
+		}
+		setItemData(null);
+		usedRing();
+		return true;
+	}
+
+	private static boolean isBlockedZakopaneZone(final String zoneName) {
+		return "int_zakopane_mill_0".equals(zoneName)
+				|| "int_zakopane_mill_1".equals(zoneName)
+				|| "6_zakopane_clouds".equals(zoneName)
+				|| "alt_6_zakopane_clouds".equals(zoneName);
+	}
+
 	private static SavedPosition parseSavedPosition(final String itemdata) {
 		if (itemdata == null) {
 			return null;
@@ -285,7 +313,8 @@ public class RingOfTeleportation extends Item {
 		if (zone == null) {
 			return true;
 		}
-		if (OZO_MAZE.equals(zone.getName()) || zone.getName().endsWith("_maze")) {
+		if (isBlockedZakopaneZone(zone.getName())
+				|| OZO_MAZE.equals(zone.getName()) || zone.getName().endsWith("_maze")) {
 			return true;
 		}
 		if (zone.getAttributes() != null && HAIZEN_MAZE_NAME.equals(zone.getAttributes().get("readable_name"))) {

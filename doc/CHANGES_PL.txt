@@ -40,6 +40,7 @@
 
 *walka i wyposażenie*
 ---
+* Pierścień powrotu nie działa w młynie ani w chmurach nad Zakopanem. Zapisane tam wcześniej punkty powrotu są usuwane przy logowaniu
 * Dodano wybranym potworom dodatkową pulę opancerzenia, którą trzeba rozbić przed odebraniem im zdrowia. Otrzymali ją m.in. bossowie, smoki, anioły, archanioły, rycerze i uzbrojeni strażnicy. Opancerzenie nie zmniejsza dotychczasowej liczby PZ potwora
 * Dodano osobny szary pasek opancerzenia nad paskiem zdrowia przeciwnika i dźwięk jego rozbicia
 * Dodano afiks Kruszenie, który zwiększa obrażenia zadawane opancerzeniu przeciwnika o 10-15%, łącznie maksymalnie o 30%

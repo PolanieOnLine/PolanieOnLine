@@ -113,3 +113,5 @@ Oto przegniłe zwłoki {0}, została zabita przez {1}. Możesz je #przeszukać, 
 Pluszowy miś jest miękki i kojący.=El osito de peluche es suave y reconfortante.
 Oto skrzynia. Jest otwarta. Możesz nacisnąć prawy przycisk myszy, aby zobaczyć zawartość.=Ves un cofre. Está abierto. Haz clic derecho para ver su contenido.
 Oto skrzynia. Jest zamknięta.=Ves un cofre. Está cerrado.
+Nie możesz użyć pierścienia powrotu w tym miejscu.=No puedes usar el anillo de regreso aquí.
+Pierścień miał zapisane miejsce, do którego nie można już wrócić. Ten zapis został usunięty.=El anillo tenía guardado un destino al que ya no puedes volver. Ese destino se ha borrado.
