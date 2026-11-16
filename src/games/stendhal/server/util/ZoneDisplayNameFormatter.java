@@ -60,6 +60,9 @@ public final class ZoneDisplayNameFormatter {
 		if (zoneName == null || zoneName.trim().isEmpty()) {
 			return "Nieznana lokacja";
 		}
+		if ("int_tarnow_enchanter_workshop".equalsIgnoreCase(zoneName.trim())) {
+			return "Pracownia Przemira w Tarnowie";
+		}
 		if ("int_tarnow_challenge_arena".equalsIgnoreCase(zoneName.trim())) {
 			return "Arena Wyzwań";
 		}

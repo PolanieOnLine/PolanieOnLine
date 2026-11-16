@@ -269,6 +269,20 @@
 			<destination zone="int_tarnow_blacksmith" ref="blacksmith_exit"/>
 			<attribute name="move.continuous" />
 		</portal>
+
+		<entity x="58" y="88">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Pracownia Przemira
+Przemiana właściwości wyposażenia</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="resistance">0</attribute>
+		</entity>
+
+		<portal x="57" y="88" ref="enchanter_workshop_entrance">
+			<destination zone="int_tarnow_enchanter_workshop" ref="enchanter_workshop_exit"/>
+			<attribute name="offset">6</attribute>
+			<attribute name="face">down</attribute>
+		</portal>
 	</zone>
 
 	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains_n.tmx">
@@ -340,6 +354,23 @@
 	</zone>
 
 	<!-- interiors -->
+
+	<zone name="int_tarnow_enchanter_workshop" file="interiors/tarnow/enchanter_workshop.tmx">
+		<configurator class-name="games.stendhal.server.maps.tarnow.enchanter.EnchanterNPC"/>
+
+		<entity x="7" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
+			<attribute name="text">Stół zaklinacza, pełen narzędzi, kamieni i przyborów do przemiany właściwości wyposażenia.</attribute>
+			<attribute name="class">transparent</attribute>
+			<attribute name="width">2</attribute>
+		</entity>
+
+		<portal x="8" y="12" ref="enchanter_workshop_exit">
+			<destination zone="0_tarnow_city" ref="enchanter_workshop_entrance"/>
+			<attribute name="offset">1</attribute>
+			<attribute name="face">up</attribute>
+		</portal>
+	</zone>
 
 	<zone name="int_tarnow_tavern" file="interiors/tarnow/tavern.tmx">
 		<entity x="1" y="1">

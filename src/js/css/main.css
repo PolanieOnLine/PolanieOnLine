@@ -2784,7 +2784,7 @@ td.number {
 	.advent-calendar-door.is-open .advent-calendar-leaf { width: 7px; }
 }
 
-/* Zoryk: one paid affix roll, with a server-owned comparison offer. */
+/* Przemir: one paid affix roll, with a server-owned comparison offer. */
 .affix-reroll-dialog {
 	box-sizing: border-box; width: 660px; max-width: calc(100vw - 32px);
 	max-height: calc(100dvh - 88px); overflow: auto; padding: 12px;
@@ -2832,7 +2832,7 @@ td.number {
 	.affix-reroll-dialog .affix-reroll-comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* The same native-size marker is used in tooltips and Zoryk's workbench. */
+/* The same native-size marker is used in tooltips and Przemir's workbench. */
 .affix-rerolled-icon {
 	display: inline-block; width: 12px; height: 12px; margin-right: 4px;
 	vertical-align: -2px; background: url(/data/gui/affix_rerolled.png) no-repeat center;

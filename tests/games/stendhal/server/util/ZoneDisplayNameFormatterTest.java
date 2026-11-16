@@ -20,6 +20,11 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 
 public class ZoneDisplayNameFormatterTest {
 
+	@Test public void namesPrzemirsWorkshopWithoutTechnicalTokens() {
+		assertThat(ZoneDisplayNameFormatter.formatTechnicalName("int_tarnow_enchanter_workshop"),
+				equalTo("Pracownia Przemira w Tarnowie"));
+	}
+
 	@Test
 	public void formatsSimpleWorldDirectionAfterLocationName() {
 		assertThat(ZoneDisplayNameFormatter.formatTechnicalName("0_semos_plains_n"),

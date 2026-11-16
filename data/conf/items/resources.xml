@@ -1747,7 +1747,7 @@
 
 	<item name="kamień przemiany">
 		<type class="resource" subclass="transformation_stone" tileid="-1"/>
-		<description>Oto mieniący się kamień przemiany. Zoryk Runiczny w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.</description>
+		<description>Oto mieniący się kamień przemiany. Przemir Zaklinacz w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

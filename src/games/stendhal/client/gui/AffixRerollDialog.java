@@ -40,7 +40,7 @@ import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 
-/** Modeless Zoryk service. Only server-authorized items and affixes can be selected. */
+/** Modeless affix transformation service. Only server-authorized items and affixes can be selected. */
 public final class AffixRerollDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static final Set<String> openedWindows = new HashSet<>();
@@ -75,7 +75,7 @@ public final class AffixRerollDialog extends JDialog {
 	private long sentAt;
 
 	private AffixRerollDialog(final Frame parent, final RPObject owner, final RPEvent event) {
-		super(parent, text("Zoryk — przemiana afiksów"), false);
+		super(parent, text("Przemir — przemiana afiksów"), false);
 		this.owner = owner;
 		correlation = new Correlation(value(event, "window_id"), value(event, "npc_id"));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

@@ -108,7 +108,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 			seen.add(windowId);
 			this.active?.close();
 			const dialog = new AffixRerollDialog(windowId, String(data.npc_id));
-			const frame = new FloatingWindow(text("Zoryk — przemiana afiksów"), dialog, 24, 24);
+			const frame = new FloatingWindow(text("Przemir — przemiana afiksów"), dialog, 24, 24);
 			frame.setResponsiveWidth(true);
 			frame.setId("affix-reroll");
 			dialog.setFrame(frame);

@@ -2030,6 +2030,9 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @return human readable zone name
 	 */
 	private String createReadableName(String zoneName) {
+		if ("int_tarnow_enchanter_workshop".equals(zoneName)) {
+			return "Pracownia Przemira w Tarnowie";
+		}
 		StringBuilder result = new StringBuilder();
 		final Matcher m = ZONE_NAME_PATTERN.matcher(zoneName);
 		if (m.matches()) {

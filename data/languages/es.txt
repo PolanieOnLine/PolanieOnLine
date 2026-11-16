@@ -3173,7 +3173,7 @@ Liczba aktywnych osiągnięć: {number:0}=Logros disponibles: {0}
 
 
 kamień przemiany=piedra de transformación
-Zoryk — przemiana afiksów=Zoryk — transformación de afijos
+Przemir — przemiana afiksów=Przemir — transformación de afijos
 Przelosuj afiks=Cambiar afijo
 Zachowaj obecny=Conservar actual
 Wybierz nowy=Elegir nuevo
@@ -3210,7 +3210,7 @@ Wybierz nową właściwość albo zachowaj poprzednią. Kamień został zużyty.
 Przyjęto nową właściwość.=Se ha aplicado el nuevo afijo.
 Zachowano poprzednią właściwość.=Se ha conservado el afijo anterior.
 Potrzebujesz kamienia przemiany.=Necesitas una piedra de transformación.
-Podejdź do Zoryka Runicznego.=Acércate a Zoryk Runiczny.
+Podejdź do Przemira Zaklinacza.=Acércate a Przemir Zaklinacz.
 Przedmiot został przeniesiony lub zmieniony. Możesz tylko zachować poprzednią właściwość.=El objeto se ha movido o cambiado. Solo puedes conservar el afijo anterior.
 Wybierz własny przedmiot z losowymi właściwościami.=Elige uno de tus objetos con afijos aleatorios.
 Wybór wygasł. Wybierz przedmiot i właściwość ponownie.=Tu selección ha caducado. Vuelve a elegir el objeto y el afijo.
@@ -3223,8 +3223,7 @@ Obrażenia z dystansu=Daño a distancia
 Odporność na ociężałość=Resistencia a la lentitud
 Odporność na szok=Resistencia a la descarga
 Skuteczność kradzieży życia=Eficacia del robo de vida
-Oto mieniący się kamień przemiany. Zoryk Runiczny w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.=Ves una piedra de transformación iridiscente. Zoryk Runiczny en Tarnow puede consumirla para obtener un nuevo afijo de equipo. Puedes elegir el nuevo resultado o conservar el anterior.
-Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie. Jeśli masz kamień przemiany, zapytaj o #przemianę — pomogę ci zmienić jeden afiks wyposażenia.=Tráeme un fragmento de glifo limpio, un soporte restaurado de una antigua matriz, y los ingredientes necesarios, y podré darle un nuevo signo. Pide la #lista de glifos para ver los patrones que conozco. Mejora los glifos terminados en la #'mesa rúnica' junto a mí. Si tienes una piedra de transformación, pregunta por la #transformación — te ayudaré a cambiar un afijo de equipo.
+Oto mieniący się kamień przemiany. Przemir Zaklinacz w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.=Ves una piedra de transformación iridiscente. Przemir Zaklinacz en Tarnow puede consumirla para obtener un nuevo afijo de equipo. Puedes elegir el nuevo resultado o conservar el anterior.
 
 Afiks wybrany do przemiany=Afijo elegido para la transformación
 Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie.=Un afijo normal cuesta 1 piedra de transformación; uno legendario cuesta 3. Conservar el resultado actual también consume las piedras.
@@ -3234,3 +3233,19 @@ Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamien
 Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte.=Elige qué afijo quieres conservar. Las piedras ya se han consumido.
 Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę.=El sorteo consumirá 3 piedras de transformación, aunque conserves el afijo actual.
 Zużyj kamienie i losuj=Usar piedras y sortear
+
+Przemir Zaklinacz=Przemir el Encantador
+Pracownia Przemira w Tarnowie=Taller de Przemir en Tarnow
+Witaj w mojej pracowni. Szukasz innej mocy dla swojego wyposażenia? Zapytaj o #przemianę.=Bienvenido a mi taller. ¿Buscas un poder distinto para tu equipo? Pregunta por la #transformación.
+Jestem zaklinaczem. Odkrywam moc ukrytą w broni, pancerzach i ozdobach. Kamienie przemiany pozwalają mi nadać jednej z ich właściwości nową postać.=Soy encantador. Descubro el poder oculto en armas, armaduras y joyas. Las piedras de transformación me permiten cambiar una de sus propiedades.
+Przynieś wyposażenie z magicznymi właściwościami i kamienie przemiany. Powiedz #przemiana, a wspólnie obejrzymy, co można zmienić. Jeśli robisz to po raz pierwszy, zapytaj o #zasady.=Trae equipo con propiedades mágicas y piedras de transformación. Di #transformación y veremos qué se puede cambiar. Si es tu primera vez, pregunta por las #reglas.
+Mogę przeprowadzić #przemianę jednej właściwości twojego wyposażenia. Zwykły afiks wymaga jednego kamienia przemiany, a legendarny trzech. Przed próbą możesz poznać #zasady.=Puedo realizar la #transformación de una propiedad de tu equipo. Un afijo normal requiere una piedra de transformación y uno legendario, tres. Puedes conocer las #reglas antes de intentarlo.
+Niech twój oręż dobrze ci służy.=Que tus armas te sirvan bien.
+Najpierw wskażesz przedmiot i właściwość, którą chcesz zmienić. Potem zużyję kamienie, by wydobyć nową moc. Możesz ją przyjąć albo zachować dotychczasową, ale kamienie przepadną w obu przypadkach. Od pierwszej próby tylko ta jedna właściwość będzie mogła podlegać dalszym przemianom. Reszta pozostanie taka jak wcześniej.=Primero elige un objeto y la propiedad que quieres cambiar. Después consumiré las piedras para extraer un nuevo poder. Puedes aceptarlo o conservar el anterior, pero las piedras se gastan en ambos casos. Tras el primer intento, solo esa propiedad podrá volver a transformarse. El resto permanecerá igual.
+Kamienie przemiany bywają nagrodą podczas szczególnych wydarzeń w naszej krainie. Zwykły afiks zmienię za jeden kamień, a legendarny za trzy. Nawet jeśli zachowasz dawną moc, kamienie zostaną zużyte.=Las piedras de transformación pueden ser una recompensa durante los eventos especiales de nuestra tierra. Puedo cambiar un afijo normal por una piedra o uno legendario por tres. Las piedras se consumen aunque conserves el poder anterior.
+O glifach najlepiej porozmawiać z Zorykiem Runicznym. Znajdziesz go przy północnej świątyni w Tarnowie, obok stołu runicznego.=Pregunta a Zoryk Runiczny por los glifos. Lo encontrarás junto al templo del norte de Tarnow, al lado de la mesa rúnica.
+Oto Przemir Zaklinacz. Ogląda oręż pod światło, jakby szukał w nim czegoś ukrytego.=Ves a Przemir el Encantador. Examina un arma a contraluz, como si buscara algo oculto en ella.
+Przemianą właściwości wyposażenia zajmuje się Przemir Zaklinacz. Ma pracownię w małym domu z czerwonym dachem na południu Tarnowa. Szukaj szyldu i niebieskich kryształów przy wejściu.=Przemir el Encantador transforma las propiedades del equipo. Su taller está en una casita de tejado rojo al sur de Tarnow. Busca el letrero y los cristales azules junto a la entrada.
+Pracownia Przemira\nPrzemiana właściwości wyposażenia=Taller de Przemir\nTransformación de propiedades del equipo
+
+Stół zaklinacza, pełen narzędzi, kamieni i przyborów do przemiany właściwości wyposażenia.=La mesa del encantador, llena de herramientas, piedras y utensilios para transformar las propiedades del equipo.

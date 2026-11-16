@@ -43,7 +43,6 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.actions.AffixRerollAction;
 
 /**
  * @author KarajuSs
@@ -83,13 +82,13 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				add(ConversationStates.ATTENDING, Arrays.asList("przemiana", "przemianę", "przemiane", "kamień przemiany", "kamien przemiany", "zmiana afiksu", "affix", "reroll", "transformation", "transformación"),
 						null, ConversationStates.ATTENDING, null,
-						(player, sentence, raiser) -> AffixRerollAction.open(player, this));
+						(player, sentence, raiser) -> raiser.say(text(player, "Przemianą właściwości wyposażenia zajmuje się Przemir Zaklinacz. Ma pracownię w małym domu z czerwonym dachem na południu Tarnowa. Szukaj szyldu i niebieskich kryształów przy wejściu.")));
                 add(ConversationStates.ATTENDING, Arrays.asList("ulepsz", "ulepszenie", "ulepszanie", "upgrade", "mejorar", "stół", "stół runiczny", "stole runicznym", "runic workbench", "mesa rúnica"),
                         null, ConversationStates.ATTENDING, null, (player, sentence, raiser) ->
                         raiser.say(text(player, "Podejdź do stołu runicznego obok mnie i kliknij go. W oknie wybierzesz glif, zobaczysz zmianę jego mocy oraz koszt ulepszenia.")));
 				addGreeting("Witaj, poszukiwaczu starożytnej mocy! Czy szukasz tajemnicy run?");
 				addJob("Jestem strażnikiem starożytnej sztuki runicznej. Potrafię nasycać odzyskane matryce glifów nową mocą. Omar, pustynny poszukiwacz reliktów, bada miejsca, w których zachowały się takie nośniki. Możesz zapytać mnie o #listę glifów.");
-				addOffer("Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie. Jeśli masz kamień przemiany, zapytaj o #przemianę — pomogę ci zmienić jeden afiks wyposażenia.");
+				addOffer("Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie.");
 				addGoodbye("Powodzenia w zdobywaniu glifów, młody poszukiwaczu mocy!");
 
 				String allGlyphNames = glyphManager.getAllGlyphs().stream()

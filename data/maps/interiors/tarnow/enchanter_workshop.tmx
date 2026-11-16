@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="16" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="building/wall/int_wall_pale" tilewidth="32" tileheight="32" tilecount="16" columns="2">
+  <image source="../../tileset/building/wall/int_wall_pale.png" width="64" height="256" />
+ </tileset>
+ <tileset firstgid="17" name="building/wall/int_wall_purple" tilewidth="32" tileheight="32" tilecount="20" columns="2">
+  <image source="../../tileset/building/wall/int_wall_purple.png" width="64" height="320" />
+ </tileset>
+ <tileset firstgid="37" name="furniture/carpet/carpets_2" tilewidth="32" tileheight="32" tilecount="20" columns="4">
+  <image source="../../tileset/furniture/carpet/carpets_2.png" width="128" height="160" />
+ </tileset>
+ <tileset firstgid="57" name="building/entrance/pale_red_ns" tilewidth="32" tileheight="32" tilecount="36" columns="9">
+  <image source="../../tileset/building/entrance/pale_red_ns.png" width="288" height="128" />
+ </tileset>
+ <tileset firstgid="93" name="furniture/shelve/dark_bookshelf" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/furniture/shelve/dark_bookshelf.png" width="96" height="64" />
+ </tileset>
+ <tileset firstgid="99" name="furniture/shelve/dark_bottle_shelf" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/furniture/shelve/dark_bottle_shelf.png" width="96" height="64" />
+ </tileset>
+ <tileset firstgid="105" name="furniture/carpet/royalblue" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/carpet/royalblue.png" width="96" height="96" />
+ </tileset>
+ <tileset firstgid="114" name="furniture/table/rune_workbench" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/furniture/table/rune_workbench.png" width="64" height="32" />
+ </tileset>
+ <tileset firstgid="116" name="item/statue/blue_crystal" tilewidth="32" tileheight="32" tilecount="12" columns="4">
+  <image source="../../tileset/item/statue/blue_crystal.png" width="128" height="96" />
+ </tileset>
+ <tileset firstgid="128" name="furniture/light/lamp_blue" tilewidth="32" tileheight="32" tilecount="3" columns="1">
+  <image source="../../tileset/furniture/light/lamp_blue.png" width="32" height="96" />
+ </tileset>
+ <tileset firstgid="131" name="item/armor/suit_of_armor2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/armor/suit_of_armor2.png" width="64" height="64" />
+ </tileset>
+ <tileset firstgid="135" name="furniture/other/tools_rack" tilewidth="32" tileheight="32" tilecount="6" columns="3">
+  <image source="../../tileset/furniture/other/tools_rack.png" width="96" height="64" />
+ </tileset>
+ <tileset firstgid="141" name="furniture/table/wooden_rectangular" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/furniture/table/wooden_rectangular.png" width="96" height="96" />
+ </tileset>
+ <tileset firstgid="150" name="item/documents/books" tilewidth="32" tileheight="32" tilecount="4" columns="2">
+  <image source="../../tileset/item/documents/books.png" width="64" height="64" />
+ </tileset>
+ <tileset firstgid="154" name="item/weapon/wall_weapons" tilewidth="32" tileheight="32" tilecount="16" columns="8">
+  <image source="../../tileset/item/weapon/wall_weapons.png" width="256" height="64" />
+ </tileset>
+ <tileset firstgid="170" name="logic/collision" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32" />
+ </tileset>
+ <tileset firstgid="171" name="logic/protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32" />
+ </tileset>
+ <layer id="1" name="0_floor" width="16" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACCuNhYGBgIhNzAzELEMsAsQSJWBqImaH6xYBYg0QsOqp/VD+V9EsBsTgWbAnEVkBsjUVOEqqfC4gZcWAnIHYGYhcc8pxADADaGlTrgAMAAA==
+  </data>
+ </layer>
+ <layer id="2" name="1_terrain" width="16" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACCmNgGAXDEWQCcRYSziZRfw4Q5yLhvCGmPx+IC5Bw4SCNJwACF3ttgAMAAA==
+  </data>
+ </layer>
+ <layer id="3" name="2_object" width="16" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACCu3PTQuCQBSF4ftHze9yraCgUKmppYXhL+5dzGI2MyLlrgMPzGHmwh2R38TBAa7qA+54qB4iQmyY9+AjUH3EhKfqR5yQyD5pccPV8iZHYbjr0KO2zJeoVvZotHOKTOtnXHb6/wvzF/NvLPLP1nwA5qqAV4ADAAA=
+  </data>
+ </layer>
+ <layer id="4" name="3_roof" width="16" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACCmNgoC2YxTAKhgKYNhoEAwIA3te5w4ADAAA=
+  </data>
+ </layer>
+ <layer id="5" name="objects" width="16" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACCmNgGAWjYBQMFAAAv349UoADAAA=
+  </data>
+ </layer>
+ <layer id="6" name="collision" width="16" height="14" opacity="0.5" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACClvFwMCwapBhBhL5MDFSALX1E2MOMe5fhUM9A439T6o51NY/WOJvFRFpbRUV9QMAo+2XFoADAAA=
+  </data>
+ </layer>
+ <layer id="7" name="protection" width="16" height="14" opacity="0.5" visible="0">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAACClvNwMCwehSP4lE8IBgAGGEXHIADAAA=
+  </data>
+ </layer>
+</map>

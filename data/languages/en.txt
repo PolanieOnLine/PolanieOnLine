@@ -248,7 +248,7 @@ Liczba aktywnych osiągnięć: {number:0}=Available achievements: {0}
 
 
 kamień przemiany=transformation stone
-Zoryk — przemiana afiksów=Zoryk — affix transformation
+Przemir — przemiana afiksów=Przemir — affix transformation
 Przelosuj afiks=Reroll affix
 Zachowaj obecny=Keep current
 Wybierz nowy=Choose new
@@ -285,7 +285,7 @@ Wybierz nową właściwość albo zachowaj poprzednią. Kamień został zużyty.
 Przyjęto nową właściwość.=The new affix has been applied.
 Zachowano poprzednią właściwość.=The previous affix has been kept.
 Potrzebujesz kamienia przemiany.=You need a transformation stone.
-Podejdź do Zoryka Runicznego.=Move closer to Zoryk Runiczny.
+Podejdź do Przemira Zaklinacza.=Move closer to Przemir Zaklinacz.
 Przedmiot został przeniesiony lub zmieniony. Możesz tylko zachować poprzednią właściwość.=The item has been moved or changed. You can only keep the previous affix.
 Wybierz własny przedmiot z losowymi właściwościami.=Choose one of your own items with rolled affixes.
 Wybór wygasł. Wybierz przedmiot i właściwość ponownie.=Your selection has expired. Choose the item and affix again.
@@ -298,8 +298,7 @@ Obrażenia z dystansu=Ranged damage
 Odporność na ociężałość=Slow resistance
 Odporność na szok=Shock resistance
 Skuteczność kradzieży życia=Life steal effectiveness
-Oto mieniący się kamień przemiany. Zoryk Runiczny w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.=You see a shimmering transformation stone. Zoryk Runiczny in Tarnow can consume it to roll a new equipment affix. You can choose the new result or keep the previous one.
-Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie. Jeśli masz kamień przemiany, zapytaj o #przemianę — pomogę ci zmienić jeden afiks wyposażenia.=Bring a clean glyph fragment, a carrier restored from an ancient matrix, and the necessary ingredients, and I can give it a new sign. Ask for the #glyph list to see the patterns I know. Develop completed glyphs at the #'runic workbench' beside me. If you have a transformation stone, ask about #transformation — I can help you change one equipment affix.
+Oto mieniący się kamień przemiany. Przemir Zaklinacz w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.=You see a shimmering transformation stone. Przemir Zaklinacz in Tarnow can consume it to roll a new equipment affix. You can choose the new result or keep the previous one.
 
 Afiks wybrany do przemiany=Affix chosen for transformation
 Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie.=A regular affix costs 1 transformation stone; a legendary affix costs 3. Keeping the current result also consumes the stones.
@@ -309,3 +308,19 @@ Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamien
 Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte.=Choose which affix to keep. The stones have already been consumed.
 Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę.=Rolling will consume 3 transformation stones, even if you keep the current affix.
 Zużyj kamienie i losuj=Use stones and roll
+
+Przemir Zaklinacz=Przemir the Enchanter
+Pracownia Przemira w Tarnowie=Przemir’s Workshop in Tarnow
+Witaj w mojej pracowni. Szukasz innej mocy dla swojego wyposażenia? Zapytaj o #przemianę.=Welcome to my workshop. Looking for a different power for your equipment? Ask about #transformation.
+Jestem zaklinaczem. Odkrywam moc ukrytą w broni, pancerzach i ozdobach. Kamienie przemiany pozwalają mi nadać jednej z ich właściwości nową postać.=I am an enchanter. I uncover the power hidden in weapons, armour and jewellery. Transformation stones let me reshape one of their properties.
+Przynieś wyposażenie z magicznymi właściwościami i kamienie przemiany. Powiedz #przemiana, a wspólnie obejrzymy, co można zmienić. Jeśli robisz to po raz pierwszy, zapytaj o #zasady.=Bring equipment with magical properties and some transformation stones. Say #transformation and we will see what can be changed. If this is your first time, ask about the #rules.
+Mogę przeprowadzić #przemianę jednej właściwości twojego wyposażenia. Zwykły afiks wymaga jednego kamienia przemiany, a legendarny trzech. Przed próbą możesz poznać #zasady.=I can perform a #transformation on one property of your equipment. An ordinary affix requires one transformation stone; a legendary affix requires three. You can read the #rules before trying.
+Niech twój oręż dobrze ci służy.=May your weapons serve you well.
+Najpierw wskażesz przedmiot i właściwość, którą chcesz zmienić. Potem zużyję kamienie, by wydobyć nową moc. Możesz ją przyjąć albo zachować dotychczasową, ale kamienie przepadną w obu przypadkach. Od pierwszej próby tylko ta jedna właściwość będzie mogła podlegać dalszym przemianom. Reszta pozostanie taka jak wcześniej.=First, choose an item and the property you want to change. Then I will consume the stones to draw out a new power. You can accept it or keep the old one, but the stones are spent either way. After the first attempt, only that one property can be transformed again. Everything else stays as it was.
+Kamienie przemiany bywają nagrodą podczas szczególnych wydarzeń w naszej krainie. Zwykły afiks zmienię za jeden kamień, a legendarny za trzy. Nawet jeśli zachowasz dawną moc, kamienie zostaną zużyte.=Transformation stones are sometimes awarded during special events in our realm. I can change an ordinary affix for one stone, or a legendary affix for three. The stones are consumed even if you keep the old power.
+O glifach najlepiej porozmawiać z Zorykiem Runicznym. Znajdziesz go przy północnej świątyni w Tarnowie, obok stołu runicznego.=Ask Zoryk Runiczny about glyphs. You will find him by the northern temple in Tarnow, beside the runic workbench.
+Oto Przemir Zaklinacz. Ogląda oręż pod światło, jakby szukał w nim czegoś ukrytego.=You see Przemir the Enchanter. He holds a weapon up to the light, as though searching for something hidden within it.
+Przemianą właściwości wyposażenia zajmuje się Przemir Zaklinacz. Ma pracownię w małym domu z czerwonym dachem na południu Tarnowa. Szukaj szyldu i niebieskich kryształów przy wejściu.=Przemir the Enchanter transforms equipment properties. His workshop is in a small red-roofed house in southern Tarnow. Look for the sign and blue crystals by the entrance.
+Pracownia Przemira\nPrzemiana właściwości wyposażenia=Przemir’s Workshop\nEquipment property transformation
+
+Stół zaklinacza, pełen narzędzi, kamieni i przyborów do przemiany właściwości wyposażenia.=The enchanter's workbench, covered with tools, stones and implements for transforming equipment properties.

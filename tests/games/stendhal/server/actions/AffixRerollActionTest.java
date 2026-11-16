@@ -32,6 +32,7 @@ import games.stendhal.server.events.AffixRerollEvent;
 import games.stendhal.server.events.ItemUpgradeEvent;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.tarnow.city.RuneMasterNPC;
+import games.stendhal.server.maps.tarnow.enchanter.EnchanterNPC;
 import marauroa.common.game.DetailLevel;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPClass;
@@ -55,13 +56,13 @@ public class AffixRerollActionTest {
 	}
 
 	@Before public void setup() {
-		SingletonRepository.getNPCList().remove("Zoryk Runiczny");
+		SingletonRepository.getNPCList().remove(EnchanterNPC.NAME);
 		final StendhalRPZone zone = new StendhalRPZone("reroll_action_test", 128, 128);
 		MockStendlRPWorld.get().addRPZone(zone);
-		new RuneMasterNPC().configureZone(zone, Collections.emptyMap());
-		npc = SingletonRepository.getNPCList().get("Zoryk Runiczny");
-		player = PlayerTestHelper.createPlayer("zoryk_customer"); player.setLanguage("pl");
-		player.setPosition(60, 17); zone.add(player);
+		new EnchanterNPC().configureZone(zone, Collections.emptyMap());
+		npc = SingletonRepository.getNPCList().get(EnchanterNPC.NAME);
+		player = PlayerTestHelper.createPlayer("przemir_customer"); player.setLanguage("pl");
+		player.setPosition(8, 7); zone.add(player);
 		item = SingletonRepository.getEntityManager().getItem("ciupaga"); item.setRarity(ItemRarity.RARE);
 		final ItemAffixDefinition affix = ItemAffixRegistry.getInstance().get("accuracy_bonus");
 		assertTrue(affix.apply(item, new Random(4))); ItemAffixState.record(item, affix);
@@ -70,12 +71,15 @@ public class AffixRerollActionTest {
 		stone.setQuantity(2); assertTrue(player.equipToInventoryOnly(stone));
 	}
 
-	@After public void cleanup() { SingletonRepository.getNPCList().remove("Zoryk Runiczny"); }
+	@After public void cleanup() {
+		SingletonRepository.getNPCList().remove(EnchanterNPC.NAME);
+		SingletonRepository.getNPCList().remove("Zoryk Runiczny");
+	}
 
 	private RPEvent latest() {
 		RPEvent result = null;
 		for (final RPEvent event : player.events()) if (Events.AFFIX_REROLL.equals(event.getName())) result = event;
-		assertNotNull("Zoryk must send a calendar-independent service event", result);
+		assertNotNull("Przemir must send a calendar-independent service event", result);
 		return result;
 	}
 
@@ -94,13 +98,42 @@ public class AffixRerollActionTest {
 		return latest();
 	}
 
-	@Test public void zorykUnderstandsTheVisibleDialogueKeywordAndItsInflection() {
-		for (final String keyword : new String[] {"przemiana", "przemianę"}) {
-			npc.getEngine().stepTest(player, "hi"); npc.getEngine().stepTest(player, keyword);
+	@Test public void glyphMasterCannotOpenTheAffixService() {
+		final StendhalRPZone zone = player.getZone();
+		SingletonRepository.getNPCList().remove("Zoryk Runiczny");
+		new RuneMasterNPC().configureZone(zone, Collections.emptyMap());
+		final SpeakerNPC glyphMaster = SingletonRepository.getNPCList().get("Zoryk Runiczny");
+		player.setPosition(60, 17);
+		int before = 0;
+		for (final RPEvent event : player.events()) if (Events.AFFIX_REROLL.equals(event.getName())) before++;
+		AffixRerollAction.open(player, glyphMaster);
+		glyphMaster.getEngine().stepTest(player, "hi"); utilities.SpeakerNPCTestHelper.getReply(glyphMaster);
+		glyphMaster.getEngine().stepTest(player, "przemiana");
+		assertTrue(utilities.SpeakerNPCTestHelper.getReply(glyphMaster).contains("Przemir Zaklinacz"));
+		int after = 0;
+		for (final RPEvent event : player.events()) if (Events.AFFIX_REROLL.equals(event.getName())) after++;
+		assertEquals(before, after);
+	}
+
+	@Test public void przemirUnderstandsTheVisibleDialogueKeywordAndItsInflection() {
+		for (final String[] choice : new String[][] {{"pl", "przemiana"}, {"pl", "przemianę"}, {"en", "transformation"}, {"es", "transformación"}}) {
+			player.setLanguage(choice[0]);
+			npc.getEngine().stepTest(player, "hi"); npc.getEngine().stepTest(player, choice[1]);
 			assertEquals("open", latest().get("phase"));
 			assertEquals(npc.getID().getObjectID(), latest().getInt("npc_id"));
 			npc.getEngine().stepTest(player, "bye");
 		}
+	}
+
+	@Test public void enchanterExplainsPaymentAndThePermanentChoiceInPlainLanguage() {
+		npc.getEngine().stepTest(player, "hi"); utilities.SpeakerNPCTestHelper.getReply(npc);
+		npc.getEngine().stepTest(player, "kamień");
+		final String stones = utilities.SpeakerNPCTestHelper.getReply(npc);
+		assertTrue(stones, stones.contains("jeden kamień") && stones.contains("za trzy"));
+		npc.getEngine().stepTest(player, "zasady");
+		final String rules = utilities.SpeakerNPCTestHelper.getReply(npc);
+		assertTrue(rules, rules.contains("tylko ta jedna właściwość"));
+		assertTrue(rules, rules.contains("kamienie przepadną w obu przypadkach"));
 	}
 
 	@Test public void legendaryQuotesAndOffersPublishTheThreeStonePrice() {

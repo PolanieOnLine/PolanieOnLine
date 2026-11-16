@@ -98,7 +98,7 @@ public final class AffixRerollEvent extends RPEvent {
 		case "ACCEPTED": return "Przyjęto nową właściwość.";
 		case "KEPT": return "Zachowano poprzednią właściwość.";
 		case "MISSING_STONE": return "Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.";
-		case "NPC_TOO_FAR": return "Podejdź do Zoryka Runicznego.";
+		case "NPC_TOO_FAR": return "Podejdź do Przemira Zaklinacza.";
 		case "CHANGED_ITEM": return "Przedmiot został przeniesiony lub zmieniony. Możesz tylko zachować poprzednią właściwość.";
 		case "INVALID_ITEM": return "Wybierz własny przedmiot z losowymi właściwościami.";
 		case "INVALID_REQUEST": return "Wybór wygasł. Wybierz przedmiot i właściwość ponownie.";

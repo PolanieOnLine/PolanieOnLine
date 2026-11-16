@@ -14,9 +14,10 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.AffixRerollEvent;
 import games.stendhal.server.util.EntityHelper;
+import games.stendhal.server.maps.tarnow.enchanter.EnchanterNPC;
 import marauroa.common.game.RPAction;
 
-/** Correlates requests with the exact Zoryk instance which opened the window. */
+/** Correlates requests with the exact enchanter instance which opened the window. */
 public final class AffixRerollAction implements ActionListener {
 	private static final ItemAffixRerollService SERVICE = ItemAffixRerollService.getInstance();
 	private static final Map<Player, Window> WINDOWS = new WeakHashMap<Player, Window>();
@@ -24,7 +25,7 @@ public final class AffixRerollAction implements ActionListener {
 	public static void register() { CommandCenter.register("affix_reroll_action", new AffixRerollAction()); }
 
 	public static void open(final Player player, final SpeakerNPC npc) {
-		if (npc != NPCList.get().get("Zoryk Runiczny") || !near(player, npc)) return;
+		if (npc != NPCList.get().get(EnchanterNPC.NAME) || !near(player, npc)) return;
 		final Window window = new Window(npc);
 		WINDOWS.put(player, window);
 		SERVICE.clearSelection(player);
@@ -84,7 +85,7 @@ public final class AffixRerollAction implements ActionListener {
 	}
 
 	private static boolean resolve(final Player player, final RPAction action, final Window window) {
-		if (!near(player, window.npc) || window.npc != NPCList.get().get("Zoryk Runiczny")) return false;
+		if (!near(player, window.npc) || window.npc != NPCList.get().get(EnchanterNPC.NAME)) return false;
 		try {
 			final Entity entity = EntityHelper.entityFromZoneByID(action.getInt("npc_id"), player.getZone());
 			return entity == window.npc;
