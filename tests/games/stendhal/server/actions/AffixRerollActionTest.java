@@ -103,6 +103,26 @@ public class AffixRerollActionTest {
 		}
 	}
 
+	@Test public void legendaryQuotesAndOffersPublishTheThreeStonePrice() {
+		item.setRarity(ItemRarity.LEGENDARY);
+		final ItemAffixDefinition affix = LegendaryItemAffixRegistry.getInstance().get("legendary_deep_wounds");
+		assertTrue(affix.apply(item, new Random(3))); ItemAffixState.record(item, affix);
+		AffixRerollAction.open(player, npc);
+		RPAction select = command(latest(), "select"); select.put("affix_id", affix.getId());
+		action.onAction(player, select);
+		assertEquals("MISSING_STONE", latest().get("status"));
+		assertEquals(3, latest().getInt("stone_cost")); assertEquals(0, latest().getInt("can_roll"));
+		for (final marauroa.common.game.RPObject object : player.getSlot("bag")) {
+			if (object instanceof StackableItem) ((StackableItem) object).setQuantity(3);
+		}
+		select = command(latest(), "select"); select.put("affix_id", affix.getId()); action.onAction(player, select);
+		assertEquals("READY", latest().get("status")); assertEquals(1, latest().getInt("can_roll"));
+		final RPAction roll = command(latest(), "roll"); roll.put("affix_id", affix.getId());
+		roll.put("request_token", latest().get("request_token")); action.onAction(player, roll);
+		assertEquals("OFFER", latest().get("status")); assertEquals(3, latest().getInt("stone_cost"));
+		assertEquals(0, latest().getInt("stone_count")); assertEquals(affix.getId(), latest().get("rerolled_affix"));
+	}
+
 	@Test public void paidChoiceResumesAfterCloseAndAnOldWindowCannotChargeAgain() {
 		final RPEvent preview = quote(); final RPAction roll = command(preview, "roll");
 		roll.put("affix_id", "accuracy_bonus"); roll.put("request_token", preview.get("request_token"));

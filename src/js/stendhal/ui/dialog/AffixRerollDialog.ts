@@ -25,6 +25,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 	private readonly costCount = document.createElement("span");
 	private readonly status = document.createElement("div");
 	private readonly confirmation = document.createElement("div");
+	private readonly warning = document.createElement("p");
 	private readonly roll: HTMLButtonElement;
 	private readonly confirmRoll: HTMLButtonElement;
 	private readonly cancelRoll: HTMLButtonElement;
@@ -68,11 +69,10 @@ export class AffixRerollDialog extends DialogContentComponent {
 		cost.className = "affix-reroll-cost";
 		cost.append(this.sprite("resource", "transformation_stone"), this.costCount);
 		this.confirmation.className = "affix-reroll-confirmation";
-		const warning = document.createElement("p");
-		warning.textContent = text("Losowanie zużyje 1 kamień przemiany, nawet jeśli zachowasz obecną cechę.");
+		const warning = this.warning;
 		const confirmationButtons = document.createElement("div");
 		confirmationButtons.className = "affix-reroll-actions";
-		this.confirmRoll = this.button("Zużyj kamień i losuj", () => this.send("roll"));
+		this.confirmRoll = this.button("Zużyj kamienie i losuj", () => this.send("roll"));
 		this.cancelRoll = this.button("Wróć", () => { this.confirming = false; this.updateControls(); });
 		confirmationButtons.append(this.cancelRoll, this.confirmRoll);
 		this.confirmation.append(warning, confirmationButtons);
@@ -145,7 +145,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 		this.recoveryRequired = false;
 		this.confirming = false;
 		this.status.textContent = String(data.message || text(this.hasOffer()
-			? "Wybierz cechę, którą chcesz zachować. Kamień został już zużyty."
+			? "Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte."
 			: "Wybierz cechę, którą chcesz wylosować ponownie."));
 		this.draw();
 	}
@@ -189,14 +189,32 @@ export class AffixRerollDialog extends DialogContentComponent {
 		ids.forEach((id, index) => {
 			const button = this.button(labels[index] || id, () => this.send("select", this.data.selected_path, id));
 			button.className = "affix-reroll-affix";
+			if (id === this.data.rerolled_affix) this.markLabel(button, labels[index] || id);
 			button.setAttribute("aria-pressed", String(id === this.data.selected_affix));
 			this.affixes.appendChild(button);
 		});
 		if (!ids.length) this.affixes.textContent = text(this.data.selected_path ? "Brak cech do przemiany." : "Najpierw wybierz przedmiot.");
 		this.currentLabel.textContent = String(this.data.current_label || "");
+		if (this.data.rerolled_affix === this.data.selected_affix && this.data.rerolled_affix) this.markLabel(this.currentLabel, String(this.data.current_label || ""));
 		this.newLabel.textContent = String(this.data.new_label || "");
-		this.costCount.textContent = `${text("Koszt losowania")}: 1 × ${text("kamień przemiany")} · ${text("Posiadasz")}: ${Math.max(0, Number(this.data.stone_count) || 0)}`;
+		const price = Number(this.data.stone_cost) === 3 ? 3 : 1;
+		this.warning.textContent = text(price === 3
+				? "Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę."
+				: "Losowanie zużyje 1 kamień przemiany, nawet jeśli zachowasz obecną cechę.");
+		this.costCount.textContent = `${text("Koszt losowania")}: ${Number(this.data.stone_cost) ? price : "1 / 3"} × ${text("kamień przemiany")} · ${text("Posiadasz")}: ${Math.max(0, Number(this.data.stone_count) || 0)}`;
 		this.updateControls();
+	}
+
+	private markLabel(target: HTMLElement, label: string): void {
+		let split = label.indexOf(":");
+		if (split < 0) split = label.indexOf(" — ");
+		if (split < 0) split = label.length;
+		target.textContent = label.slice(0, split);
+		const icon = document.createElement("span");
+		icon.className = "affix-rerolled-icon";
+		icon.title = text("Afiks wybrany do przemiany");
+		const rest = document.createElement("span"); rest.textContent = label.slice(split);
+		target.append(icon, rest);
 	}
 
 	private hasOffer(): boolean { return !!this.data.offer_token && !!this.data.selected_path; }

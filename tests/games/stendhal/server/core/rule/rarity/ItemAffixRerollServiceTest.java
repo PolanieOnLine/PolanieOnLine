@@ -40,6 +40,37 @@ public class ItemAffixRerollServiceTest {
 		final StackableItem stone = new StackableItem(ItemAffixRerollService.STONE, "resource", "transformation_stone", null);
 		stone.setEquipableSlots(Collections.singletonList("bag")); stone.setQuantity(3); player.equipToInventoryOnly(stone);
 	}
+	@Test public void legendaryRollRequiresThreeStonesAndChargesOnlyOnce() {
+		final Player p = player(); final Item item = sword(); p.equipToInventoryOnly(item); stones(p);
+		StackableItem stack = null;
+		for (final marauroa.common.game.RPObject object : p.getSlot("bag")) {
+			if (object instanceof StackableItem) stack = (StackableItem) object;
+		}
+		assertNotNull(stack); stack.setQuantity(2);
+		final ItemAffixRerollService s = service(); final String quote = s.select(p, item, "legendary_deep_wounds");
+		assertEquals("MISSING_STONE", s.roll(p, item, "legendary_deep_wounds", quote));
+		assertEquals(2, s.stones(p)); assertFalse(s.hasPending(item));
+		stack.setQuantity(3);
+		assertEquals("OFFER", s.roll(p, item, "legendary_deep_wounds", quote));
+		assertEquals(0, s.stones(p));
+		assertEquals("OFFER", s.roll(p, item, "legendary_deep_wounds", quote));
+		assertEquals(0, s.stones(p));
+		assertEquals("legendary_deep_wounds", item.getMap("tooltip_stats").get("rerolled_affix"));
+		assertEquals("KEPT", s.finish(p, item, ItemAffixRerollService.state(item).get("token"), false));
+		assertEquals("legendary_deep_wounds", item.getMap("tooltip_stats").get("rerolled_affix"));
+	}
+
+	@Test public void legendaryPaymentCanUseSeveralStoneStacks() {
+		final Player p = player(); final Item item = sword(); p.equipToInventoryOnly(item);
+		for (int i = 0; i < 3; i++) {
+			final StackableItem stone = new StackableItem(ItemAffixRerollService.STONE, "resource", "transformation_stone", null);
+			stone.setQuantity(1); p.getSlot("bag").add(stone);
+		}
+		final ItemAffixRerollService s = service();
+		assertEquals("OFFER", s.roll(p, item, "legendary_deep_wounds", s.select(p, item, "legendary_deep_wounds")));
+		assertEquals(0, s.stones(p));
+	}
+
 	@Test public void paidOfferKeepsOldStatsUntilAcceptedAndCannotBeReplayed() {
 		final Player player = player(); final Item item = sword(); player.equipToInventoryOnly(item); stones(player);
 		final ItemAffixRerollService service = service(); final Map<String,String> before = ItemAffixState.getValues(item);
@@ -54,6 +85,7 @@ public class ItemAffixRerollServiceTest {
 		assertEquals(before.get("legendary_deep_wounds"),ItemAffixState.getValues(item).get("legendary_deep_wounds"));
 		assertEquals(12,item.getInt("atk")); assertEquals(2,item.getUpgradeLevel()); assertEquals("reroller",item.get("bound"));
 		assertEquals(ItemRarity.LEGENDARY,item.getRarity()); assertEquals(Double.valueOf(1.25),item.getRarityModifiers().get("atk"));
+		assertEquals(ItemAffixRerollService.state(item).get("locked"), item.getMap("tooltip_stats").get("rerolled_affix"));
 		assertEquals(3,ItemAffixState.getValues(item).size()); assertEquals(1,service.affixes(item).size());
 	}
 	@Test public void wrongTokenOrChangedItemCostsNothing() {

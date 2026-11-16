@@ -28,6 +28,8 @@ export interface ItemTooltipDelta {
 
 export interface ItemTooltipLine {
 	text: string;
+	affixId?: string;
+	rerolled?: boolean;
 	kind?: ItemTooltipLineKind;
 	branchContinues?: boolean;
 	deltas?: ItemTooltipDelta[];
@@ -161,7 +163,7 @@ export function buildStructuredItemTooltip(item: Item,
 		upgradeText: maxUpgrade > 0 || upgrade > 0
 				? GameLanguage.getText("Ulepszenie: +" + upgrade + (maxUpgrade > 0 ? " / +" + maxUpgrade : ""))
 				: undefined,
-		lines: lines.map(line => ({...line, text: GameLanguage.getText(line.text),
+		lines: lines.map(line => ({...line, rerolled: !!line.affixId && line.affixId === current.rerolled_affix, text: GameLanguage.getText(line.text),
 			deltas: line.deltas?.some(delta => delta.direction !== "equal") ? line.deltas : undefined}))
 	};
 }
@@ -331,7 +333,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	const lifeSteal = numberValue(current, hasValue(current, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
 	const previousLifeSteal = numberValue(equipped, hasValue(equipped, "base_lifesteal") ? "affix_lifesteal" : "lifesteal") * 100;
 	if (lifeSteal !== 0 || (equipped && previousLifeSteal !== 0)) {
-		special.push({kind: "bonus", text: signed(formatCompact(lifeSteal)) + "% " + GameLanguage.getText("kradzieży życia"),
+		special.push({kind: "bonus", affixId: "lifesteal", text: signed(formatCompact(lifeSteal)) + "% " + GameLanguage.getText("kradzieży życia"),
 			deltas: equipped ? [createDelta(lifeSteal - previousLifeSteal, 1)] : undefined});
 	}
 	const lifeStealBonuses: PercentageBonusDefinition[] = [
@@ -347,7 +349,7 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 				? bonus.label.replace("20 PW", formatCompact(numberValue(current, "out_of_combat_regen_cap") || 20) + " PW")
 				: bonus.label;
 		special.push({
-			kind: "bonus",
+			kind: "bonus", affixId: bonus.key,
 			text: signed(formatCompact(value)) + "% " + GameLanguage.getText(label),
 			deltas: equipped ? [createDelta(value - previous, bonus.key === "out_of_combat_regen" ? 2 : 1)] : undefined
 		});
@@ -356,11 +358,11 @@ function appendBonuses(lines: ItemTooltipLine[], current: Record<string, string>
 	appendIntegerBonus(special,
 			intValueWithFallback(current, "affix_flat_attack_bonus", "flat_attack_bonus"),
 			intValueWithFallback(equipped, "affix_flat_attack_bonus", "flat_attack_bonus"),
-			"dodatkowego ataku", !!equipped);
+			"dodatkowego ataku", !!equipped, "flat_attack_bonus");
 	appendIntegerBonus(special,
 			intValueWithFallback(current, "affix_flat_defense_bonus", "flat_defense_bonus"),
 			intValueWithFallback(equipped, "affix_flat_defense_bonus", "flat_defense_bonus"),
-			"dodatkowego pancerza", !!equipped);
+			"dodatkowego pancerza", !!equipped, "flat_defense_bonus");
 
 	appendSection(lines, core);
 	appendSection(lines, resistances);
@@ -429,36 +431,36 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 	]) {
 		const value = numberValue(current, key);
 		if (value > 0) {
-			affixes.push({kind: "bonus", text: GameLanguage.getText(title) + ": "
+			affixes.push({kind: "bonus", affixId: key, text: GameLanguage.getText(title) + ": "
 				+ GameLanguage.getText(template).replace("{0}", formatCompact(value * 100))});
 		}
 	}
 	const crushing = numberValue(current, "armor_crushing");
 	if (crushing > 0) {
-		affixes.push({kind: "bonus", text: GameLanguage.getText("Kruszenie") + ": "
+		affixes.push({kind: "bonus", affixId: "armor_crushing", text: GameLanguage.getText("Kruszenie") + ": "
 				+ GameLanguage.getText(formatCompact(crushing * 100)
 						+ "% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.")});
 	}
 	const hardening = numberValue(current, "critical_hardening");
 	if (hardening > 0) {
-		affixes.push({kind: "bonus", text: GameLanguage.getText("Hartowanie") + ": "
+		affixes.push({kind: "bonus", affixId: "critical_hardening", text: GameLanguage.getText("Hartowanie") + ": "
 				+ GameLanguage.getText(formatCompact(hardening * 100)
 						+ "% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.")});
 	}
 	const spiked = numberValue(current, "spiked_plating");
 	if (spiked > 0) {
-		affixes.push({kind: "bonus", text: "Kolczaste okucie: odbija "
+		affixes.push({kind: "bonus", affixId: "spiked_plating", text: "Kolczaste okucie: odbija "
 				+ formatNumber(spiked * 100, 1) + "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%."});
 	}
 	if (hasValue(current, "hunter_mark")) {
-		affixes.push({kind: "bonus", text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});
+		affixes.push({kind: "bonus", affixId: "hunter_mark", text: "Znak łowcy: trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza."});
 	}
 	if (hasValue(current, "giant_slayer")) {
-		affixes.push({kind: "bonus", text: "Łowca olbrzymów: za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%."});
+		affixes.push({kind: "bonus", affixId: "giant_slayer", text: "Łowca olbrzymów: za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%."});
 	}
 	for (const [key, title, description] of LEGENDARY_AFFIXES) {
 		if (hasValue(current, key)) {
-			affixes.push({kind: "affix", text: GameLanguage.getText(title) + ": " + GameLanguage.getText(description)});
+			affixes.push({kind: "affix", affixId: key, text: GameLanguage.getText(title) + ": " + GameLanguage.getText(description)});
 		}
 	}
 	appendRolledAffix(affixes, current, "legendary_bastion_bonus", "Niezłomny Bastion",
@@ -474,7 +476,7 @@ function appendRolledAffix(lines: ItemTooltipLine[], current: Record<string, str
 		return;
 	}
 	const value = intValue(current, key);
-	lines.push({kind: "affix", text: GameLanguage.getText(title) + ": " + prefix + value + GameLanguage.getText(suffix)});
+	lines.push({kind: "affix", affixId: key, text: GameLanguage.getText(title) + ": " + prefix + value + GameLanguage.getText(suffix)});
 }
 
 function appendFooter(lines: ItemTooltipLine[], current: Record<string, string>, item: Item) {
@@ -532,12 +534,12 @@ function appendDecimalBonus(lines: ItemTooltipLine[], current: number,
 }
 
 function appendIntegerBonus(lines: ItemTooltipLine[], current: number,
-		previous: number, label: string, comparing: boolean) {
+		previous: number, label: string, comparing: boolean, affixId?: string) {
 	if (current === 0 && (!comparing || previous === 0)) {
 		return;
 	}
 	lines.push({
-		kind: "bonus",
+		kind: "bonus", affixId,
 		text: signed(String(current)) + " " + label,
 		deltas: comparing ? [createDelta(current - previous, 0)] : undefined
 	});
@@ -743,11 +745,20 @@ export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTool
 		}
 		const value = document.createElement("span");
 		value.className = "item-rarity-tooltip__value";
-		if (line.kind === "affix") {
-			appendLegendaryFragments(value, line.text);
-		} else {
-			value.textContent = (line.kind === "bonus" ? "◆ " : "") + line.text;
+		const appendText = (part: string) => {
+			if (line.kind === "affix") appendLegendaryFragments(value, part);
+			else value.appendChild(document.createTextNode(part));
+		};
+		if (line.kind === "bonus") value.appendChild(document.createTextNode("◆ "));
+		const split = line.rerolled && line.text.includes(":") ? line.text.indexOf(":") : line.text.length;
+		appendText(line.text.slice(0, split));
+		if (line.rerolled) {
+			const icon = document.createElement("span");
+			icon.className = "affix-rerolled-icon";
+			icon.title = GameLanguage.getText("Afiks wybrany do przemiany");
+			value.appendChild(icon);
 		}
+		appendText(line.text.slice(split));
 		detail.appendChild(value);
 		if (line.deltas?.length) {
 			detail.classList.add("item-rarity-tooltip__stat-row");

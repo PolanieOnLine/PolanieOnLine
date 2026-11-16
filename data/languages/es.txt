@@ -3225,3 +3225,12 @@ Odporność na szok=Resistencia a la descarga
 Skuteczność kradzieży życia=Eficacia del robo de vida
 Oto mieniący się kamień przemiany. Zoryk Runiczny w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.=Ves una piedra de transformación iridiscente. Zoryk Runiczny en Tarnow puede consumirla para obtener un nuevo afijo de equipo. Puedes elegir el nuevo resultado o conservar el anterior.
 Jeżeli przyniesiesz czysty fragment glifu, czyli nośnik odtworzony z dawnej matrycy, oraz odpowiednie składniki, mogę nadać mu nowy znak. Zapytaj o #listę glifów, aby zobaczyć, jakie znam wzory. Gotowe glify rozwiniesz przy #'stole runicznym' obok mnie. Jeśli masz kamień przemiany, zapytaj o #przemianę — pomogę ci zmienić jeden afiks wyposażenia.=Tráeme un fragmento de glifo limpio, un soporte restaurado de una antigua matriz, y los ingredientes necesarios, y podré darle un nuevo signo. Pide la #lista de glifos para ver los patrones que conozco. Mejora los glifos terminados en la #'mesa rúnica' junto a mí. Si tienes una piedra de transformación, pregunta por la #transformación — te ayudaré a cambiar un afijo de equipo.
+
+Afiks wybrany do przemiany=Afijo elegido para la transformación
+Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie.=Un afijo normal cuesta 1 piedra de transformación; uno legendario cuesta 3. Conservar el resultado actual también consume las piedras.
+Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.=A partir de ahora, este será el único afijo que podrás transformar en este objeto. Un afijo normal cuesta 1 piedra y uno legendario, 3.
+Wybierz nową właściwość albo zachowaj poprzednią. Kamienie zostały już zużyte.=Elige el nuevo afijo o conserva el anterior. Las piedras ya se han consumido.
+Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.=No tienes suficientes piedras de transformación. Un afijo normal requiere 1 y uno legendario, 3.
+Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte.=Elige qué afijo quieres conservar. Las piedras ya se han consumido.
+Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę.=El sorteo consumirá 3 piedras de transformación, aunque conserves el afijo actual.
+Zużyj kamienie i losuj=Usar piedras y sortear

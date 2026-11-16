@@ -684,7 +684,7 @@ public final class ItemRarityPresentation {
 		}
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText(label),
 				equippedItem == null ? "" : delta(value, equippedValue,
-                        ItemTooltip.OUT_OF_COMBAT_REGEN.equals(attribute) ? 2 : 1));
+                        ItemTooltip.OUT_OF_COMBAT_REGEN.equals(attribute) ? 2 : 1), AffixRerollPresentation.icon(object, attribute));
 	}
 
 	private static void appendLifeStealAffix(final StringBuilder bonuses,
@@ -697,7 +697,7 @@ public final class ItemRarityPresentation {
 						? ItemTooltip.AFFIX_LIFESTEAL : ItemTooltip.LIFESTEAL) * 100.0;
 		if (value == 0.0 && (equippedItem == null || previous == 0.0)) return;
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + ClientLanguage.getText("kradzieży życia"),
-				equippedItem == null ? "" : delta(value, previous, 1));
+				equippedItem == null ? "" : delta(value, previous, 1), AffixRerollPresentation.icon(object, "lifesteal"));
 	}
 
 	private static int equipmentAttack(final RPObject object) {
@@ -742,8 +742,10 @@ public final class ItemRarityPresentation {
 				legacyAttribute);
 		final int equippedValue = tooltipIntWithFallback(equippedItem, attribute,
 				legacyAttribute);
-		appendComparableBonusLine(bonuses, value, equippedValue,
-				published ? label : legacyLabel, equippedItem != null);
+		if (value != 0 || (equippedItem != null && equippedValue != 0)) {
+			appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + ClientLanguage.getText(published ? label : legacyLabel),
+					equippedItem == null ? "" : delta(value, equippedValue, 0), AffixRerollPresentation.icon(object, legacyAttribute));
+		}
 	}
 
 	private static int tooltipIntWithFallback(final RPObject object,
@@ -784,7 +786,12 @@ public final class ItemRarityPresentation {
 
 	private static void appendBonusLine(final StringBuilder bonuses,
 			final String line, final String comparison) {
-		appendStatRow(bonuses, "&#9670; " + escapeHtml(line), comparison, false);
+		appendBonusLine(bonuses, line, comparison, "");
+	}
+
+	private static void appendBonusLine(final StringBuilder bonuses,
+			final String line, final String comparison, final String icon) {
+		appendStatRow(bonuses, "&#9670; " + escapeHtml(line) + icon, comparison, false);
 	}
 
 	private static Double getResistanceModifier(final RPObject object,
@@ -1057,7 +1064,7 @@ public final class ItemRarityPresentation {
 				new DecimalFormatSymbols(new Locale("pl", "PL")));
 	}
 
-	private static String escapeHtml(final String text) {
+	static String escapeHtml(final String text) {
 		if (text == null) {
 			return "";
 		}

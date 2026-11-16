@@ -36,88 +36,88 @@ final class LegendaryAffixPresentation {
 		appendSpikedPlating(result, object);
 		appendRegularCombatAffixes(result, object);
 		if (has(object, ItemTooltip.HUNTER_MARK)) {
-			appendRegularText(result, "Znak łowcy",
+			appendRegularText(result, object, ItemTooltip.HUNTER_MARK, "Znak łowcy",
 					"trafienie przez przeciwnika oznacza go na 6 s; przeciw oznaczonemu celowi redukujesz dodatkowe 5% niekorzystnej kary pancerza.");
 		}
 		if (has(object, ItemTooltip.GIANT_SLAYER)) {
-			appendRegularText(result, "Łowca olbrzymów",
+			appendRegularText(result, object, ItemTooltip.GIANT_SLAYER, "Łowca olbrzymów",
 					"za każde pełne 50 poziomów przewagi celu redukujesz 1% niekorzystnej kary pancerza, maksymalnie 10%.");
 		}
 		appendLegendaryCombatAffixes(result, object);
 
 		if (has(object, ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
-			appendFixed(result, "Głębokie Rany", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_DEEP_WOUNDS, "Głębokie Rany", new String[] {
 					"", "15%", " szansy na krwawienie; rana zadaje ", "35%",
 					" obrażeń trafienia."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_ARMOR_BREAKER)) {
-			appendFixed(result, "Łamacz Pancerzy", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_ARMOR_BREAKER, "Łamacz Pancerzy", new String[] {
 					"Redukuje ", "40%",
 					" niekorzystnej kary wynikającej z pancerza celu."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_LONGSHOT)) {
-			appendFixed(result, "Dalekosiężność", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_LONGSHOT, "Dalekosiężność", new String[] {
 					"Ataki wykonane z dystansu zadają ", "+25%", " obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_EXECUTIONER)) {
-			appendFixed(result, "Egzekutor", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_EXECUTIONER, "Egzekutor", new String[] {
 					"Przeciw celom poniżej ", "20%", " PW zadajesz ", "+35%",
 					" obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_DUEL_MASTER)) {
-			appendFixed(result, "Mistrz Pojedynku", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_DUEL_MASTER, "Mistrz Pojedynku", new String[] {
 					"Zyskujesz ", "+5 pkt proc.",
 					" szansy na parowanie; po udanym parowaniu następne trafienie zadaje ",
 					"+30%", " obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_CRUSHING_BLOW)) {
-			appendFixed(result, "Miażdżący Cios", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_CRUSHING_BLOW, "Miażdżący Cios", new String[] {
 					"Przeciw celom w średnim lub ciężkim pancerzu zadajesz ",
 					"+25%", " obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_STUNNING_FORCE)) {
-			appendFixed(result, "Ogłuszająca Siła", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_STUNNING_FORCE, "Ogłuszająca Siła", new String[] {
 					"", "15%", " szansy na ogłuszenie celu przez ", "3 s",
 					" (", "4 s", " przeciw graczom) po trafieniu zadającym obrażenia."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_BINDING_STRIKE)) {
-			appendFixed(result, "Pętający Cios", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_BINDING_STRIKE, "Pętający Cios", new String[] {
 					"", "15%", " szansy na nałożenie ociężałości przez ", "10 s",
 					" po trafieniu."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_MERCILESS_REACH)) {
-			appendFixed(result, "Bezlitosny Zasięg", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_MERCILESS_REACH, "Bezlitosny Zasięg", new String[] {
 					"Zyskujesz ", "+1 pole", " dodatkowego zasięgu ataku."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_FALCON_EYE)) {
-			appendFixed(result, "Sokole Oko", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_FALCON_EYE, "Sokole Oko", new String[] {
 					"Przy ataku z co najmniej ", "4 pól", " zyskujesz ",
 					"+10 pkt proc.", " szansy na trafienie krytyczne."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_FIRST_SALVO)) {
-			appendFixed(result, "Pierwsza Salwa", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_FIRST_SALVO, "Pierwsza Salwa", new String[] {
 					"Przeciw celom mającym co najmniej ", "80%", " PW ataki dystansowe zadają ",
 					"+30%", " obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_POWER_OVERLOAD)) {
-			appendFixed(result, "Przeciążenie Mocy", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_POWER_OVERLOAD, "Przeciążenie Mocy", new String[] {
 					"Atak dystansowy ma ", "15%", " szansy zadać ", "+50%",
 					" obrażeń."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_ARCANE_FOCUS)) {
-			appendFixed(result, "Skupienie Arkanów", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_ARCANE_FOCUS, "Skupienie Arkanów", new String[] {
 					"Ataki dystansowe przeciw celom z aktywnym negatywnym statusem zadają ",
 					"+25%", " obrażeń."
 			});
@@ -127,7 +127,7 @@ final class LegendaryAffixPresentation {
 		appendRolled(result, object, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				"Niezłomny Bastion", "+", " pkt. dodatkowego pancerza.");
 		if (has(object, ItemTooltip.LEGENDARY_WALL_OF_GORD)) {
-			appendFixed(result, "Wał grodu", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_WALL_OF_GORD, "Wał grodu", new String[] {
 					"Co ", "8 s",
 					", gdy pojedyncze bezpośrednie trafienie stworzenia zadałoby co najmniej ",
 					"10%", " maksymalnych PW, zmniejsza obrażenia tego trafienia o ",
@@ -135,13 +135,13 @@ final class LegendaryAffixPresentation {
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_IRON_WILL)) {
-			appendFixed(result, "Żelazna Wola", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_IRON_WILL, "Żelazna Wola", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
 					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION)) {
-			appendFixed(result, "Nieugięta Ochrona", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION, "Nieugięta Ochrona", new String[] {
 					"Poniżej ", "30%", " PW zyskujesz ", "+10 pkt proc.",
 					" szansy na pełne sparowanie ataku wręcz; końcowa szansa nie przekracza ",
 					"15%", "."
@@ -150,13 +150,13 @@ final class LegendaryAffixPresentation {
 		appendRolled(result, object, ItemTooltip.LEGENDARY_RELIC_POWER,
 				"Relikt Mocy", "+", " pkt. dodatkowego ataku.");
 		if (has(object, ItemTooltip.LEGENDARY_HERO_EYE)) {
-			appendFixed(result, "Oko Bohatera", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_HERO_EYE, "Oko Bohatera", new String[] {
 					"Zyskujesz ", "+8 pkt proc.",
 					" szansy na trafienie krytyczne."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL)) {
-			appendFixed(result, "Pieczęć Strażnika", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL, "Pieczęć Strażnika", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
 					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
 			});
@@ -184,57 +184,57 @@ final class LegendaryAffixPresentation {
 
 	private static void appendLegendaryCombatAffixes(final StringBuilder result, final RPObject object) {
 		if (has(object, ItemTooltip.LEGENDARY_INEVITABILITY)) {
-			appendFixed(result, "Nieuchronność", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_INEVITABILITY, "Nieuchronność", new String[] {
 					"Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_IRON_RESOLVE)) {
-			appendFixed(result, "Żelazny upór", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_IRON_RESOLVE, "Żelazny upór", new String[] {
 					"Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE)) {
-			appendFixed(result, "Krąg obrony", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "Krąg obrony", new String[] {
 					"Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_HUNTERS_PACE)) {
-			appendFixed(result, "Łowczy pęd", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_HUNTERS_PACE, "Łowczy pęd", new String[] {
 					"Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_LAST_STAND)) {
-			appendFixed(result, "Ostatni zryw", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_LAST_STAND, "Ostatni zryw", new String[] {
 					"Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_LIFE_TIDE)) {
-			appendFixed(result, "Przypływ życia", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_LIFE_TIDE, "Przypływ życia", new String[] {
 					"Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_CLEAVE)) {
-			appendFixed(result, "Rozmach", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_CLEAVE, "Rozmach", new String[] {
 					"Co ", "4", " celne trafienia wręcz zadaje ", "30%",
 					" obrażeń trafienia maksymalnie ", "2",
 					" pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_TENACITY)) {
-			appendFixed(result, "Zaciętość", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_TENACITY, "Zaciętość", new String[] {
 					"Każde celne trafienie tego samego celu zwiększa obrażenia następnych o ", "3%",
 					", maksymalnie ", "15%", ". Zmiana celu lub ", "5 s",
 					" bez trafienia zeruje bonus."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_BREACH)) {
-			appendFixed(result, "Przełamanie", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_BREACH, "Przełamanie", new String[] {
 					"Po rozbiciu opancerzenia celu zadajesz mu o ", "15%",
 					" więcej obrażeń zdrowiu przez ", "6 s", "."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY)) {
-			appendFixed(result, "Szybkie otrząśnięcie", new String[] {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_QUICK_RECOVERY, "Szybkie otrząśnięcie", new String[] {
 					"Skraca czas ogłuszenia, ociężałości i dezorientacji o ", "30%",
 					". Efekt nie kumuluje się."
 			});
@@ -246,7 +246,7 @@ final class LegendaryAffixPresentation {
 		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
 		final Double value = raw == null ? null : parseDouble(raw);
 		if (value != null && value.doubleValue() > 0.0) {
-			appendRegularText(result, title, ClientLanguage.getText(template)
+			appendRegularText(result, object, key, title, ClientLanguage.getText(template)
 					.replace("{0}", COMPACT_DECIMAL.format(value.doubleValue() * 100)));
 		}
 	}
@@ -259,7 +259,7 @@ final class LegendaryAffixPresentation {
 		}
 		Double value = parseDouble(raw);
 		if (value != null && value.doubleValue() > 0) {
-			appendRegularText(result, title, COMPACT_DECIMAL.format(value.doubleValue() * 100) + suffix);
+			appendRegularText(result, object, key, title, COMPACT_DECIMAL.format(value.doubleValue() * 100) + suffix);
 		}
 	}
 
@@ -296,15 +296,15 @@ final class LegendaryAffixPresentation {
 		if (value == null || value.doubleValue() <= 0.0) {
 			return;
 		}
-		appendRegularText(result, "Kolczaste okucie",
+		appendRegularText(result, object, ItemTooltip.SPIKED_PLATING, "Kolczaste okucie",
 				"odbija " + ONE_DECIMAL.format(value.doubleValue() * 100.0)
 						+ "% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%.");
 	}
 
 	private static void appendRegularText(final StringBuilder result,
-			final String title, final String text) {
+			final RPObject object, final String key, final String title, final String text) {
 		result.append("<tr><td valign='top'><font size='-1'>&#9670; <b>")
-				.append(ClientLanguage.getText(title)).append(":</b> ")
+				.append(ClientLanguage.getText(title)).append(AffixRerollPresentation.icon(object, key)).append(":</b> ")
 				.append(ClientLanguage.getText(text))
 				.append("</font></td></tr>");
 	}
@@ -314,8 +314,8 @@ final class LegendaryAffixPresentation {
 	 * orange text. Empty first text is allowed when the line starts with a number.
 	 */
 	private static void appendFixed(final StringBuilder result,
-			final String title, final String[] parts) {
-		beginLine(result, title);
+			final RPObject object, final String key, final String title, final String[] parts) {
+		beginLine(result, object, key, title);
 		for (int index = 0; index < parts.length; index++) {
 			appendColored(result, parts[index], index % 2 == 0
 					? LEGENDARY_TEXT_COLOR : LEGENDARY_NUMBER_COLOR);
@@ -334,7 +334,7 @@ final class LegendaryAffixPresentation {
 		if (value == null) {
 			return;
 		}
-		beginLine(result, title);
+		beginLine(result, object, key, title);
 		appendColored(result, prefix + value, LEGENDARY_NUMBER_COLOR);
 		appendColored(result, suffix, LEGENDARY_TEXT_COLOR);
 		endLine(result);
@@ -361,10 +361,10 @@ final class LegendaryAffixPresentation {
 				DecimalFormatSymbols.getInstance(Locale.forLanguageTag("pl-PL")));
 	}
 
-	private static void beginLine(final StringBuilder result, final String title) {
+	private static void beginLine(final StringBuilder result, final RPObject object, final String key, final String title) {
 		result.append("<tr><td valign='top' style='padding-top:4px'><b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
-				.append(ClientLanguage.getText(title)).append(": </font>");
+				.append(ClientLanguage.getText(title)).append(AffixRerollPresentation.icon(object, key)).append(": </font>");
 	}
 
 	private static void appendColored(final StringBuilder result,

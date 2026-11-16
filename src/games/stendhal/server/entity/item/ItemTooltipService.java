@@ -26,6 +26,7 @@ import games.stendhal.server.core.rule.glyph.GlyphExperienceService;
 import games.stendhal.server.core.rule.glyph.GlyphProgressionService;
 import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemAffixRerollService;
 import games.stendhal.server.core.rule.rarity.AdditionalCombatAffixDefinition;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
@@ -66,6 +67,10 @@ public final class ItemTooltipService {
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
+		final String rerolled = ItemAffixRerollService.state(item).get("locked");
+		if (rerolled != null && ItemAffixState.has(item, rerolled)) {
+			put(item, ItemTooltip.REROLLED_AFFIX, rerolled);
+		}
 		publishEquipmentSlots(item);
 		// Publish computed zero too, so clients do not fall back to raw penalties
 		// that have already been cancelled by upgrades or deterioration.

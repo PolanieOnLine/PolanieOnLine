@@ -65,7 +65,7 @@
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
 * Zmieniono zestaw ciemnomithrilowy na zestaw z hartowanego mithrilu. Wszystkie siedem części otrzymało nowe grafiki i opisy nawiązujące do mithrilu wzmocnionego ciemnolitem. Posiadane przedmioty zachowują swoje statystyki, rzadkość, afiksy i ulepszenia
-* Dodano kamień przemiany, rzadką nagrodę z wydarzeń. U Zoryka Runicznego w Tarnowie pozwala wylosować nowy afiks wyposażenia i wybrać między nim a dotychczasowym. Kamień zużywa się za samo losowanie. Po pierwszej próbie na danym przedmiocie można dalej zmieniać ten sam afiks; pozostałe afiksy, rzadkość i ulepszenia zostają zachowane
+* Dodano kamień przemiany, rzadką nagrodę z wydarzeń. U Zoryka Runicznego w Tarnowie pozwala wylosować nowy afiks wyposażenia i wybrać między nim a dotychczasowym. Losowanie zwykłego afiksu kosztuje 1 kamień, a legendarnego 3 kamienie, także przy zachowaniu poprzedniego wyniku. Niebieskie strzałki przy nazwie oznaczają afiks wybrany do przemiany. Po pierwszej próbie na danym przedmiocie można dalej zmieniać ten sam afiks; pozostałe afiksy, rzadkość i ulepszenia zostają zachowane
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości
 * Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
 * Poprawiono zachowanie dodatkowego zasięgu afiksa Bezlitosny Zasięg po ponownym zalogowaniu

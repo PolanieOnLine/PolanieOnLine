@@ -171,3 +171,17 @@ test("every new legendary uses orange words and cream numeric fragments without 
 		assert.deepEqual(numbers, expected, key);
 	}
 });
+
+
+test("rerolled ordinary and legendary affixes mark only their own tooltip line", () => {
+	for (const [id, name] of [["accuracy_bonus", "precyzji"], ["legendary_tenacity", "Zaciętość"], ["steady_hand", "Pewna ręka"], ["flat_attack_bonus", "dodatkowego ataku"], ["lifesteal", "kradzieży życia"]]) {
+		const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+			category: "weapon", accuracy_bonus: "7", legendary_tenacity: "1", steady_hand: "0.1", affix_flat_attack_bonus: "3", affix_lifesteal: "0.03", base_lifesteal: "0", rerolled_affix: id
+		}}, false).lines;
+		assert.equal(lines.filter(line => line.rerolled).length, 1, id);
+		assert.match(lines.find(line => line.rerolled).text, new RegExp(name));
+		const dom = new TooltipNode(); exportsObject.appendStructuredTooltipLine(dom, lines.find(line => line.rerolled));
+		const value = dom.children[0].children[0];
+		assert.ok(value.children.some(child => child.className === "affix-rerolled-icon"));
+	}
+});

@@ -27,11 +27,12 @@ public final class AffixRerollEvent extends RPEvent {
 
 	public static void generateRPClass() {
 		final RPClass type = new RPClass(NAME);
-		for (final String key : new String[] {"window_id", "phase", "request_id", "status", "selected_affix", "request_token", "offer_token", "item_name", "item_class", "item_subclass"}) type.addAttribute(key, Type.STRING, Definition.PRIVATE);
+		for (final String key : new String[] {"window_id", "phase", "request_id", "status", "selected_affix", "request_token", "offer_token", "item_name", "item_class", "item_subclass", "rerolled_affix"}) type.addAttribute(key, Type.STRING, Definition.PRIVATE);
 		for (final String key : new String[] {"message", "selected_path", "current_label", "new_label"}) type.addAttribute(key, Type.LONG_STRING, Definition.PRIVATE);
 		for (final String key : new String[] {"candidate_paths", "candidate_names", "candidate_classes", "candidate_subclasses", "candidate_rarities", "candidate_levels", "affix_ids", "affix_labels"}) type.addAttribute(key, Type.VERY_LONG_STRING, Definition.PRIVATE);
 		type.addAttribute("npc_id", Type.INT, Definition.PRIVATE);
 		type.addAttribute("stone_count", Type.INT, Definition.PRIVATE);
+		type.addAttribute("stone_cost", Type.INT, Definition.PRIVATE);
 		type.addAttribute("can_roll", Type.BYTE, Definition.PRIVATE);
 		type.addAttribute("can_accept", Type.BYTE, Definition.PRIVATE);
 	}
@@ -41,6 +42,7 @@ public final class AffixRerollEvent extends RPEvent {
 		super(NAME);
 		put("window_id", window); put("request_id", request); put("npc_id", npcId);
 		put("phase", phase); put("status", status); put("message", text(player, message(status)));
+		put("stone_cost", 0); put("rerolled_affix", "");
 		put("stone_count", SERVICE.stones(player)); put("can_roll", 0); put("can_accept", 0);
 		for (final String key : new String[] {"selected_path", "selected_affix", "current_label", "new_label", "request_token", "offer_token", "item_name", "item_class", "item_subclass"}) put(key, "");
 		final List<String> paths = new ArrayList<String>(), names = new ArrayList<String>(), classes = new ArrayList<String>(), subclasses = new ArrayList<String>(), rarities = new ArrayList<String>(), levels = new ArrayList<String>();
@@ -59,6 +61,10 @@ public final class AffixRerollEvent extends RPEvent {
 		put("selected_path", ItemUpgradeEvent.encodePath(item)); put("item_name", text(player, item.getName()));
 		put("item_class", item.getItemClass()); put("item_subclass", item.getItemSubclass());
 		final Map<String, String> pending = ItemAffixRerollService.state(item);
+		final String locked = pending.get("locked");
+		if (locked != null && ItemAffixState.has(item, locked)) put("rerolled_affix", locked);
+		final String pricedAffix = SERVICE.hasPending(item) ? pending.get("old_id") : affix;
+		if (pricedAffix != null && ids.contains(pricedAffix)) put("stone_cost", ItemAffixRerollService.cost(pricedAffix));
 		if (SERVICE.hasPending(item)) {
 			put("can_accept", SERVICE.validPending(player, item) ? 1 : 0);
 			put("selected_affix", pending.get("old_id")); put("offer_token", pending.get("token"));
@@ -67,7 +73,7 @@ public final class AffixRerollEvent extends RPEvent {
 		} else if (affix != null && ids.contains(affix)) {
 			put("selected_affix", affix); put("current_label", label(player, affix, ItemAffixState.getValues(item).get(affix)));
 			put("request_token", SERVICE.selectionToken(player));
-			put("can_roll", "READY".equals(status) && SERVICE.stones(player) > 0 ? 1 : 0);
+			put("can_roll", "READY".equals(status) && SERVICE.stones(player) >= ItemAffixRerollService.cost(affix) ? 1 : 0);
 		}
 	}
 
@@ -87,11 +93,11 @@ public final class AffixRerollEvent extends RPEvent {
 
 	private static String message(final String status) {
 		switch (status) {
-		case "READY": return "Wybrana właściwość zostanie przypisana do przemiany na stałe. Koszt losowania: 1 kamień przemiany.";
-		case "OFFER": return "Wybierz nową właściwość albo zachowaj poprzednią. Kamień został zużyty.";
+		case "READY": return "Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.";
+		case "OFFER": return "Wybierz nową właściwość albo zachowaj poprzednią. Kamienie zostały już zużyte.";
 		case "ACCEPTED": return "Przyjęto nową właściwość.";
 		case "KEPT": return "Zachowano poprzednią właściwość.";
-		case "MISSING_STONE": return "Potrzebujesz kamienia przemiany.";
+		case "MISSING_STONE": return "Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.";
 		case "NPC_TOO_FAR": return "Podejdź do Zoryka Runicznego.";
 		case "CHANGED_ITEM": return "Przedmiot został przeniesiony lub zmieniony. Możesz tylko zachować poprzednią właściwość.";
 		case "INVALID_ITEM": return "Wybierz własny przedmiot z losowymi właściwościami.";

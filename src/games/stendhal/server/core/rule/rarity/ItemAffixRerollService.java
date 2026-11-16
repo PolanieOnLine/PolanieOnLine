@@ -72,6 +72,10 @@ public final class ItemAffixRerollService {
 		return result;
 	}
 
+	public static int cost(final String id) {
+		return LegendaryItemAffixRegistry.getInstance().get(id) != null ? 3 : 1;
+	}
+
 	public int stones(final Player player) {
 		long count = 0;
 		for (final Item item : stoneStacks(player)) count += item.getQuantity();
@@ -114,7 +118,7 @@ public final class ItemAffixRerollService {
 				|| !selected.token.equals(token) || !selected.location.equals(location(item))
 				|| !selected.fingerprint.equals(fingerprint(item)) || !affixes(item).contains(id)) return "INVALID_REQUEST";
 		final List<Item> stones = stoneStacks(player);
-		if (stones.isEmpty()) return "MISSING_STONE";
+		if (stones(player) < cost(id)) return "MISSING_STONE";
 		final Item replacement = replacement(item, id);
 		if (replacement == null) return "NO_REPLACEMENT";
 		final Map<String, String> before = state(item);
@@ -135,10 +139,16 @@ public final class ItemAffixRerollService {
 		}
 		// Both changes are to the same owning player's persisted object tree.
 		// No callbacks, creation or random operation occur after payment.
-		final StackableItem stone = (StackableItem) stones.get(0);
-		if (stone.getQuantity() > 1) stone.setQuantity(stone.getQuantity() - 1);
-		else stone.getContainerSlot().remove(stone.getID());
+		int remaining = cost(id);
+		for (final Item stack : stones) {
+			final int used = Math.min(remaining, stack.getQuantity());
+			if (used < stack.getQuantity()) ((StackableItem) stack).setQuantity(stack.getQuantity() - used);
+			else stack.getContainerSlot().remove(stack.getID());
+			remaining -= used;
+			if (remaining == 0) break;
+		}
 		replaceState(item, offer);
+		ItemTooltipService.update(item);
 		selections.remove(player);
 		if (player.getZone() != null) player.notifyWorldAboutChanges();
 		return "OFFER";

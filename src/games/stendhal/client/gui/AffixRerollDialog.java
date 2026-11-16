@@ -66,6 +66,7 @@ public final class AffixRerollDialog extends JDialog {
 	private String selectedAffix = "";
 	private String requestToken = "";
 	private String offerToken = "";
+	private String rerolledAffix = "";
 	private boolean canRoll;
 	private boolean canAccept;
 	private boolean updating;
@@ -94,7 +95,7 @@ public final class AffixRerollDialog extends JDialog {
 					final int index, final boolean selected, final boolean focus) {
 				final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, selected, focus);
 				styleCell(label, selected);
-				label.setText(value instanceof Affix ? html(((Affix) value).label, 250) : "");
+				label.setText(value instanceof Affix ? AffixRerollPresentation.labelHtml(((Affix) value).label, ((Affix) value).id.equals(rerolledAffix), 250) : "");
 				label.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 				return label;
 			}
@@ -120,7 +121,7 @@ public final class AffixRerollDialog extends JDialog {
 		final JPanel payment = panel(new BorderLayout(0, 4));
 		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
 		payment.add(cost, BorderLayout.NORTH);
-		payment.add(new JLabel(html(text("Każde losowanie zużywa 1 kamień przemiany, także gdy zachowasz obecny afiks."), 570)), BorderLayout.SOUTH);
+		payment.add(new JLabel(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 570)), BorderLayout.SOUTH);
 		footer.add(payment, BorderLayout.NORTH);
 		footer.add(status, BorderLayout.CENTER);
 		final JPanel buttons = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
@@ -237,6 +238,7 @@ public final class AffixRerollDialog extends JDialog {
 		selectedAffix = value(event, "selected_affix");
 		requestToken = value(event, "request_token");
 		offerToken = value(event, "offer_token");
+		rerolledAffix = value(event, "rerolled_affix");
 		canRoll = "1".equals(value(event, "can_roll"));
 		canAccept = !event.has("can_accept") || "1".equals(value(event, "can_accept"));
 		updating = true;
@@ -257,9 +259,9 @@ public final class AffixRerollDialog extends JDialog {
 		} finally {
 			updating = false;
 		}
-		current.setText(html(text("Obecny afiks:") + " " + value(event, "current_label"), 550));
+		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), 550, text("Obecny afiks:") + " "));
 		replacement.setText(html(text("Nowy afiks:") + " " + (offerToken.isEmpty() ? "—" : value(event, "new_label")), 550));
-		cost.setText(text("Koszt:") + " 1 × " + text("kamień przemiany") + "   ·   "
+		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
 		final String message = value(event, "message");
 		status.setText(html(message.isEmpty() ? text(offerToken.isEmpty()

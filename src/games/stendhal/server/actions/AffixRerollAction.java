@@ -63,7 +63,7 @@ public final class AffixRerollAction implements ActionListener {
 			}
 			window.affix = value(action, "affix_id");
 			final String token = SERVICE.select(player, item, window.affix);
-			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX" : SERVICE.stones(player) > 0 ? "READY" : "MISSING_STONE"); return;
+			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX" : SERVICE.stones(player) >= ItemAffixRerollService.cost(window.affix) ? "READY" : "MISSING_STONE"); return;
 		}
 		if ("roll".equals(command)) {
 			window.affix = value(action, "affix_id");

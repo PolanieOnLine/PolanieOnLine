@@ -41,6 +41,16 @@ public class ItemRarityPresentationTest {
 	private static final String BETTER_COLOR_MARKER = "color='#62d26f'";
 	private static final String WORSE_COLOR_MARKER = "color='#ef6a62'";
 
+	@Test public void changedRegularAffixHasAnIconButOtherBonusesDoNot() {
+		final RPObject object = ItemTestHelper.createItem("rerolled");
+		putCategory(object, ItemTooltip.CATEGORY_WEAPON);
+		putStat(object, "accuracy_bonus", "7"); putStat(object, "critical_chance", "3");
+		putStat(object, "rerolled_affix", "accuracy_bonus");
+		final String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(object));
+		assertTrue(html, html.matches("(?s).*bonusu precyzji <img[^>]*affix_rerolled[^>]*>.*"));
+		assertFalse(html, html.contains("krytyczne <img"));
+	}
+
     @Test
     public void shopDetailsLeaveRarityToTheSeparateHeader() {
         final RPObject object = ItemTestHelper.createItem("test armour");

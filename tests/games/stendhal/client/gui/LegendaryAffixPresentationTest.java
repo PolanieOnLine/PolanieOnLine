@@ -5,6 +5,7 @@ package games.stendhal.client.gui;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -13,6 +14,16 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
+	@Test public void changedAffixHasOneSmallIconImmediatelyAfterItsName() {
+		final RPObject object = ItemTestHelper.createItem("rerolled");
+		put(object, ItemTooltip.LEGENDARY_TENACITY, "1");
+		put(object, ItemTooltip.LEGENDARY_CLEAVE, "1");
+		put(object, "rerolled_affix", "legendary_tenacity");
+		final String html = LegendaryAffixPresentation.build(object);
+		assertTrue(html, html.matches("(?s).*Zaciętość <img[^>]*affix_rerolled[^>]*>.*"));
+		assertEquals(1, html.split("affix_rerolled", -1).length - 1);
+	}
+
 	@Test
 	public void everyNewLegendaryFollowsAllOrdinaryAffixes() {
 		final String[][] legendaries = {

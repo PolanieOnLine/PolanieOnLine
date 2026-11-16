@@ -14,6 +14,7 @@ package games.stendhal.common.constants;
 /** Shared wire identifiers used by structured item tooltips. */
 public final class ItemTooltip {
 	public static final String ATTRIBUTE = "tooltip_stats";
+	public static final String REROLLED_AFFIX = "rerolled_affix";
 	public static final String CATEGORY_OVERRIDE = "tooltip_category_override";
 
 	public static final String CATEGORY = "category";
