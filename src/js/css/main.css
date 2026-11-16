@@ -2748,7 +2748,7 @@ td.number {
 	}
 	.advent-calendar-status { min-height: 14px; margin-top: 6px; }
 	.advent-calendar-dialog .dialogbuttons { margin-top: 4px; }
-	.advent-calendar-dialog .dialogbutton { min-height: 44px; }
+	.advent-calendar-dialog .dialogbutton { min-height: 28px; }
 	.advent-calendar-rewards { inset: 12px 3px 2px 9px; gap: 1px; }
 	.advent-calendar-door[data-day="24"] .advent-calendar-rewards { right: 9px; }
 	.advent-calendar-reward { width: 18px; height: 18px; }
