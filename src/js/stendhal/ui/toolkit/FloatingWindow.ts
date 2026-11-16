@@ -34,6 +34,17 @@ export class FloatingWindow extends Component {
 	private minimized = false;
 	private preferredWidth?: number;
 	private fixedWidth?: number;
+	private responsiveWidth = false;
+	private resizeObserver?: ResizeObserver;
+	private resizeScheduled = false;
+	private readonly onViewportResize = () => {
+		if (!this.opened || this.resizeScheduled) return;
+		this.resizeScheduled = true;
+		requestAnimationFrame(() => {
+			this.resizeScheduled = false;
+			if (this.opened) this.checkPos();
+		});
+	};
 
 	private windowId?: string;
 
@@ -106,6 +117,12 @@ export class FloatingWindow extends Component {
 		let popupcontainer = document.getElementById("popupcontainer")!;
 		popupcontainer.appendChild(this.componentElement);
 		GameLanguage.registerUI(this.componentElement);
+		window.addEventListener("resize", this.onViewportResize);
+		window.visualViewport?.addEventListener("resize", this.onViewportResize);
+		if (typeof ResizeObserver !== "undefined") {
+			this.resizeObserver = new ResizeObserver(this.onViewportResize);
+			this.resizeObserver.observe(this.componentElement);
+		}
 		requestAnimationFrame(() => this.checkPos());
 
 		this.deferPreferredWidthCapture();
@@ -113,6 +130,9 @@ export class FloatingWindow extends Component {
 
 
 	public close() {
+		window.removeEventListener("resize", this.onViewportResize);
+		window.visualViewport?.removeEventListener("resize", this.onViewportResize);
+		this.resizeObserver?.disconnect();
 		GameLanguage.unregisterUI(this.componentElement);
 		this.componentElement.remove();
 		this.contentComponent.onParentClose();
@@ -203,12 +223,8 @@ export class FloatingWindow extends Component {
 		const clientArea = document.documentElement.getBoundingClientRect();
 		const viewportWidth = window.visualViewport?.width || window.innerWidth || clientArea.width;
 
-		// clientArea.height is 0, if there are now child elements (e. g. on login / choose character dialogs)
-		let clientAreaHeight = clientArea.height;
-		if (clientAreaHeight == 0) {
-			clientAreaHeight = window.visualViewport?.height || window.innerHeight || 200;
-		}
-		const viewportHeight = clientAreaHeight;
+		// The document can be taller than the visible screen after rotation.
+		const viewportHeight = window.visualViewport?.height || window.innerHeight || clientArea.height || 200;
 
 		const offset = ui.getPageOffset();
 
@@ -358,6 +374,10 @@ export class FloatingWindow extends Component {
 	}
 
 	private capturePreferredWidth() {
+		if (this.responsiveWidth && this.fixedWidth === undefined && !this.minimized) {
+			this.applyPreferredWidth();
+			return;
+		}
 		if (this.fixedWidth !== undefined) {
 			this.preferredWidth = this.fixedWidth;
 			this.applyPreferredWidth();
@@ -379,6 +399,11 @@ export class FloatingWindow extends Component {
 	}
 
 	private applyPreferredWidth() {
+		if (this.responsiveWidth && this.fixedWidth === undefined && !this.minimized) {
+			this.componentElement.style.removeProperty("min-width");
+			this.componentElement.style.removeProperty("width");
+			return;
+		}
 		if (this.preferredWidth === undefined) {
 			return;
 		}
@@ -402,5 +427,17 @@ export class FloatingWindow extends Component {
 		this.fixedWidth = sanitized;
 		this.preferredWidth = sanitized;
 		this.applyPreferredWidth();
+	}
+
+	/** Let responsive content choose its width instead of retaining its opening size. */
+	public setResponsiveWidth(enabled = true) {
+		this.responsiveWidth = enabled;
+		if (enabled) {
+			this.preferredWidth = undefined;
+			this.applyPreferredWidth();
+		} else {
+			this.capturePreferredWidth();
+		}
+		this.onViewportResize();
 	}
 }

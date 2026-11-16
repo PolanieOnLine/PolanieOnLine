@@ -8,6 +8,13 @@ import { FloatingWindow } from "../toolkit/FloatingWindow";
 
 type CalendarData = {[key: string]: any};
 const text = (value: string): string => GameLanguage.getText(value);
+// Zero-based columns/rows; spans remain the server's original door sizes.
+const landscapePositions: Record<number, [number, number]> = {
+	1: [7, 0], 2: [5, 1], 3: [2, 0], 4: [2, 1], 5: [0, 1], 6: [0, 2],
+	7: [5, 0], 8: [2, 2], 9: [4, 0], 10: [6, 1], 11: [5, 2], 12: [0, 0],
+	13: [3, 1], 14: [3, 2], 15: [8, 0], 16: [1, 2], 17: [4, 2], 18: [1, 1],
+	19: [3, 0], 20: [6, 2], 21: [6, 0], 22: [9, 0], 23: [7, 1], 24: [8, 1]
+};
 
 /** Opened locally; asynchronous replies can only update the matching live window. */
 export class AdventCalendarDialog extends DialogContentComponent {
@@ -73,6 +80,7 @@ export class AdventCalendarDialog extends DialogContentComponent {
 		if (!this.active) {
 			const dialog = new AdventCalendarDialog();
 			const frame = new FloatingWindow(text("Kalendarz adwentowy"), dialog, 24, 24);
+			frame.setResponsiveWidth(true);
 			frame.setId("advent-calendar");
 			dialog.setFrame(frame);
 			this.active = dialog;
@@ -116,8 +124,11 @@ export class AdventCalendarDialog extends DialogContentComponent {
 			const door = document.createElement("button");
 			door.type = "button";
 			door.className = "advent-calendar-door";
-			door.style.gridColumn = `${column + 1} / span ${width}`;
-			door.style.gridRow = `${row + 1} / span ${height}`;
+			door.style.setProperty("--advent-column", `${column + 1} / span ${width}`);
+			door.style.setProperty("--advent-row", `${row + 1} / span ${height}`);
+			const [landscapeColumn, landscapeRow] = landscapePositions[day];
+			door.style.setProperty("--advent-landscape-column", `${landscapeColumn + 1} / span ${width}`);
+			door.style.setProperty("--advent-landscape-row", `${landscapeRow + 1} / span ${height}`);
 			door.dataset.day = String(day);
 			door.classList.toggle("tone-green", day % 3 === 0);
 			const preview = document.createElement("span");

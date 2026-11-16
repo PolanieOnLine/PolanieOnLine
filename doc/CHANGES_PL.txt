@@ -16,7 +16,7 @@
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
 * Uporządkowano oddawanie składników Carmen i Jadźce. Obie rozumieją hasło „składniki”, przyjmują przedmioty po podaniu ich nazw i informują, czego jeszcze brakuje
-* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty
+* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
 
 *dziennik zadań*
 ---
@@ -98,6 +98,7 @@
 * Poprawiono położenie dymków rozmów i wyświetlanie przezroczystości administratorów w trybie ducha w webkliencie
 * Poprawiono kolejność akcji na liście znajomych w webkliencie i dodano zapraszanie do grupy
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
+* Webklient dopasowuje mapę i otwarte okna po obróceniu telefonu, bez odświeżania strony
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
 * Poprawiono ruch przy zwiększonej i zmniejszonej prędkości postaci, usuwając przyczyny skoków i cofania w obu klientach
 * Uzupełniono angielskie i hiszpańskie tłumaczenia opisów przedmiotów, odporności, wariantów potworów, komunikatów walki, produkcji, osiągnięć i wybranych rozmów z NPC. Poprawiono też polskie opisy osiągnięć

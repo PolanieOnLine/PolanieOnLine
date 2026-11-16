@@ -20,6 +20,7 @@ export class UIUpdateObserver {
 
 	private vpRectObserver?: MutationObserver;
 	private vpScaleObserver?: ResizeObserver;
+	private browserResizeScheduled = false;
 
 	private static instance: UIUpdateObserver;
 
@@ -55,17 +56,17 @@ export class UIUpdateObserver {
 		});
 		this.vpRectObserver.observe(document.getElementById("viewport")!,
 				{attributes: true, attributeFilter: ["left", "right", "top", "bottom", "width", "height"]});
-		this.vpScaleObserver = new ResizeObserver((entries: ResizeObserverEntry[], observer: ResizeObserver) => {
-			this.onViewPortUpdate();
-		});
-		this.vpScaleObserver.observe(document.getElementById("viewport")!);
+		if (typeof ResizeObserver !== "undefined") {
+			this.vpScaleObserver = new ResizeObserver(() => this.onViewPortUpdate());
+			this.vpScaleObserver.observe(document.getElementById("viewport")!);
+		}
 
-		// listen for changes to screen orientation
-		screen.orientation.addEventListener("change", (e) => {
-			singletons.getViewPort().logViewportSize("orientation change", "before");
-			this.onOrientationUpdate();
-			requestAnimationFrame(() => singletons.getViewPort().logViewportSize("orientation change", "after"));
-		});
+		// Some mobile browsers expose rotation only as a viewport resize.
+		const resize = () => this.onBrowserResize();
+		window.addEventListener("resize", resize);
+		window.addEventListener("orientationchange", resize);
+		window.visualViewport?.addEventListener("resize", resize);
+		if (typeof screen !== "undefined") screen.orientation?.addEventListener("change", resize);
 	}
 
 	/**
@@ -105,12 +106,17 @@ export class UIUpdateObserver {
 	}
 
 	/**
-	 * Called when screen orientation changes.
+	 * Wait for the browser to apply its new dimensions, then refresh the UI.
 	 */
-	private onOrientationUpdate() {
+	private onBrowserResize() {
+		if (this.browserResizeScheduled) return;
+		this.browserResizeScheduled = true;
 		requestAnimationFrame(() => {
 			singletons.getViewPort().scheduleResize();
-			requestAnimationFrame(() => ui.onDisplayUpdate());
+			requestAnimationFrame(() => {
+				this.browserResizeScheduled = false;
+				ui.onDisplayUpdate();
+			});
 		});
 	}
 }

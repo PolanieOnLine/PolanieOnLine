@@ -146,6 +146,7 @@ export class ViewPort {
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
 	private readonly initialMaxHeight?: number;
+	private readonly initialCanvasHeight: number;
 	private chatFloating = false;
 
 	private preserveHeightForNextResize = false;
@@ -175,6 +176,7 @@ export class ViewPort {
 	private constructor() {
 		this.map = TileMap.get();
 		const element = this.getElement() as HTMLCanvasElement;
+		this.initialCanvasHeight = element.height;
 		element.style.touchAction = "none";
 		element.addEventListener("mouseleave", () => element.removeAttribute("title"));
 		this.ctx = element.getContext("2d")!;
@@ -321,7 +323,7 @@ export class ViewPort {
 		this.resizeScheduled = true;
 		requestAnimationFrame(() => {
 			this.resizeScheduled = false;
-			this.updateCanvasSize({ preserveHeight });
+			this.updateCanvasSize({ preserveHeight: this.preserveHeightForNextResize });
 		});
 	}
 
@@ -400,13 +402,13 @@ export class ViewPort {
 		variable: string,
 		defaultValue: string,
 	): string {
+		// Retain the authored responsive rule, not its initial pixel result.
+		if (this.normalizeCssValue(stylesheet.getPropertyValue(variable))) {
+			return `var(${variable})`;
+		}
 		const propertyValue = this.normalizeCssValue(stylesheet.getPropertyValue(property));
 		if (propertyValue) {
 			return propertyValue;
-		}
-		const variableValue = this.normalizeCssValue(stylesheet.getPropertyValue(variable));
-		if (variableValue) {
-			return variableValue;
 		}
 		return defaultValue;
 	}
@@ -428,8 +430,10 @@ export class ViewPort {
 	}
 
 	private getViewportDimensions(): { width: number; height: number } {
-		const width = Math.max(0, document.documentElement?.clientWidth || window.innerWidth || 0);
-		const height = Math.max(0, document.documentElement?.clientHeight || window.innerHeight || 0);
+		const layoutWidth = document.documentElement?.clientWidth || window.innerWidth || 0;
+		const layoutHeight = document.documentElement?.clientHeight || window.innerHeight || 0;
+		const width = Math.max(0, Math.min(layoutWidth, window.visualViewport?.width || layoutWidth));
+		const height = Math.max(0, Math.min(layoutHeight, window.visualViewport?.height || layoutHeight));
 		return { width, height };
 	}
 
@@ -477,7 +481,21 @@ export class ViewPort {
 
 	private applyResponsiveHeight(canvas: HTMLCanvasElement) {
 		const canvasStyles = getComputedStyle(canvas);
-		const maxHeight = this.resolveMaxHeight(canvasStyles);
+		const visibleHeight = this.getViewportDimensions().height;
+		const configuredMaxHeight = this.resolveMaxHeight(canvasStyles);
+		let maxHeight = visibleHeight > 0 ? Math.min(configuredMaxHeight || visibleHeight, visibleHeight) : configuredMaxHeight;
+		if (!this.chatFloating) {
+			const chat = document.getElementById("bottomPanel");
+			if (chat) {
+				const canvasTop = canvas.getBoundingClientRect().top || 0;
+				const columnBottom = document.getElementById("middleColumn")?.getBoundingClientRect().bottom || visibleHeight;
+				const available = Math.max(0, Math.min(columnBottom, visibleHeight) - canvasTop);
+				const controlsHeight = chat.querySelector(".horizontalgroup")?.getBoundingClientRect().height || 0;
+				const fontSize = this.parseCssPixels(getComputedStyle(document.documentElement).fontSize) || 12;
+				const chatSpace = Math.max(controlsHeight + 3 * fontSize, available / 4);
+				maxHeight = Math.min(maxHeight, Math.max(1, available - chatSpace));
+			}
+		}
 		const cssHeight = this.resolveCssHeight(canvasStyles, maxHeight);
 		const measuredHeight = cssHeight ?? this.lastCssHeight ?? canvas.getBoundingClientRect().height;
 		const targetHeight = this.clampHeight(measuredHeight, maxHeight);
@@ -498,12 +516,15 @@ export class ViewPort {
 	}
 
 	private resolveCssHeight(styles: CSSStyleDeclaration, maxHeight: number): number | undefined {
+		// Inline height contains our previous measurement, not the new mobile
+		// viewport size. Floating chat permits the full screen; docked chat
+		// retains the natural canvas height, bounded by space for its controls.
+		if (maxHeight > 0) {
+			return this.chatFloating ? maxHeight : Math.min(this.initialCanvasHeight || maxHeight, maxHeight);
+		}
 		const cssHeight = this.parseCssPixels(styles.height);
 		if (cssHeight > 0) {
 			return this.clampHeight(cssHeight, maxHeight);
-		}
-		if (maxHeight > 0) {
-			return maxHeight;
 		}
 		return undefined;
 	}
@@ -1257,6 +1278,7 @@ export class ViewPort {
 	 */
 	public onChatPanelRefresh(floating: boolean) {
 		const element = this.getElement();
+		if (this.chatFloating !== floating) this.heightNeedsMeasurement = true;
 		this.chatFloating = floating;
 		if (floating) {
 			element.style.setProperty("max-width", "100%");
