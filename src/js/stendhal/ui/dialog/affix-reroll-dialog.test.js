@@ -221,7 +221,7 @@ test("all untrusted labels are literal text, malformed sprite paths are inert, w
 test("legendary quotes show the server's three-stone cost and changed slot marker", () => {
 	const h = harness(), d = h.open({...quote({stone_cost: "3", rerolled_affix: "swift"}), phase: "open"});
 	assert.match(d.costCount.textContent, /3 ×/);
-	assert.ok(d.affixes.children[0].children.some(child => child.className === "affix-rerolled-icon"));
+	assert.equal(d.affixes.children[0].children[0].className, "affix-rerolled-icon");
 	assert.equal(d.affixes.children[1].children.length, 0);
 	d.roll.onclick();
 	assert.match(d.confirmation.children[0].textContent, /3/);

@@ -749,14 +749,14 @@ export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTool
 			if (line.kind === "affix") appendLegendaryFragments(value, part);
 			else value.appendChild(document.createTextNode(part));
 		};
-		if (line.kind === "bonus") value.appendChild(document.createTextNode("◆ "));
-		appendText(line.text);
+		if (line.kind === "bonus" && !line.rerolled) value.appendChild(document.createTextNode("◆ "));
 		if (line.rerolled) {
 			const icon = document.createElement("span");
 			icon.className = "affix-rerolled-icon";
 			icon.title = GameLanguage.getText("Afiks wybrany do przemiany");
 			value.appendChild(icon);
 		}
+		appendText(line.text);
 		detail.appendChild(value);
 		if (line.deltas?.length) {
 			detail.classList.add("item-rarity-tooltip__stat-row");

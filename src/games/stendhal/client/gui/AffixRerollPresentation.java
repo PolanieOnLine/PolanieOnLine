@@ -15,8 +15,8 @@ final class AffixRerollPresentation {
 	}
 
 	static String icon() {
-		return " <img src='" + DataLoader.getResource("data/gui/affix_rerolled.png")
-				+ "' width='12' height='12' alt='" + ClientLanguage.getText("Afiks wybrany do przemiany") + "'>";
+		return "<img src='" + DataLoader.getResource("data/gui/affix_rerolled.png")
+				+ "' width='12' height='12' alt='" + ClientLanguage.getText("Afiks wybrany do przemiany") + "'>&nbsp;";
 	}
 
 	static String labelHtml(final String label, final boolean marked, final int width) {
@@ -25,7 +25,7 @@ final class AffixRerollPresentation {
 
 	static String labelHtml(final String label, final boolean marked, final int width, final String caption) {
 		final String escaped = ItemRarityPresentation.escapeHtml(label);
-		return "<html><div style='width:" + width + "px'>" + ItemRarityPresentation.escapeHtml(caption) + escaped
-				+ (marked ? icon() : "") + "</div></html>";
+		return "<html><div style='width:" + width + "px'>" + ItemRarityPresentation.escapeHtml(caption)
+				+ (marked ? icon() : "") + escaped + "</div></html>";
 	}
 }

@@ -47,8 +47,9 @@ public class ItemRarityPresentationTest {
 		putStat(object, "accuracy_bonus", "7"); putStat(object, "critical_chance", "3");
 		putStat(object, "rerolled_affix", "accuracy_bonus");
 		final String html = ItemRarityPresentation.buildItemToolTip(EntityFactory.createEntity(object));
-		assertTrue(html, html.matches("(?s).*bonusu precyzji <img[^>]*affix_rerolled[^>]*>.*"));
+		assertTrue(html, html.matches("(?s).*<img[^>]*affix_rerolled[^>]*>&nbsp;\\+7% bonusu precyzji.*"));
 		assertFalse(html, html.contains("krytyczne <img"));
+		org.junit.Assert.assertEquals(1, html.split("&#9670;", -1).length - 1);
 	}
 
     @Test

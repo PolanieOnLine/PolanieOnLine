@@ -18,9 +18,9 @@ import marauroa.common.game.RPEvent;
 
 /** Headless checks for authoritative item lists and reply correlation. */
 public class AffixRerollDialogTest {
-	@Test public void changedAffixMarkerFollowsTheFullEscapedDescription() {
+	@Test public void changedAffixMarkerPrecedesTheEscapedName() {
 		final String html = AffixRerollPresentation.labelHtml("Zaciętość: pełny <opis> afiksu.", true, 250);
-		assertTrue(html, html.indexOf("affix_rerolled") > html.indexOf("pełny &lt;opis&gt; afiksu."));
+		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("Zaciętość:"));
 		assertEquals(1, html.split("affix_rerolled", -1).length - 1);
 	}
 

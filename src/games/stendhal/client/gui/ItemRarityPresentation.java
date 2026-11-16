@@ -791,7 +791,7 @@ public final class ItemRarityPresentation {
 
 	private static void appendBonusLine(final StringBuilder bonuses,
 			final String line, final String comparison, final String icon) {
-		appendStatRow(bonuses, "&#9670; " + escapeHtml(line) + icon, comparison, false);
+		appendStatRow(bonuses, (icon.isEmpty() ? "&#9670; " : icon) + escapeHtml(line), comparison, false);
 	}
 
 	private static Double getResistanceModifier(final RPObject object,

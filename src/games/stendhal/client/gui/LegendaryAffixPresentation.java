@@ -303,9 +303,10 @@ final class LegendaryAffixPresentation {
 
 	private static void appendRegularText(final StringBuilder result,
 			final RPObject object, final String key, final String title, final String text) {
-		result.append("<tr><td valign='top'><font size='-1'>&#9670; <b>")
+		final String icon = AffixRerollPresentation.icon(object, key);
+		result.append("<tr><td valign='top'><font size='-1'>").append(icon.isEmpty() ? "&#9670; " : icon).append("<b>")
 				.append(ClientLanguage.getText(title)).append(":</b> ")
-				.append(ClientLanguage.getText(text)).append(AffixRerollPresentation.icon(object, key))
+				.append(ClientLanguage.getText(text))
 				.append("</font></td></tr>");
 	}
 
@@ -315,12 +316,12 @@ final class LegendaryAffixPresentation {
 	 */
 	private static void appendFixed(final StringBuilder result,
 			final RPObject object, final String key, final String title, final String[] parts) {
-		beginLine(result, title);
+		beginLine(result, object, key, title);
 		for (int index = 0; index < parts.length; index++) {
 			appendColored(result, parts[index], index % 2 == 0
 					? LEGENDARY_TEXT_COLOR : LEGENDARY_NUMBER_COLOR);
 		}
-		endLine(result, object, key);
+		endLine(result);
 	}
 
 	private static void appendRolled(final StringBuilder result,
@@ -334,10 +335,10 @@ final class LegendaryAffixPresentation {
 		if (value == null) {
 			return;
 		}
-		beginLine(result, title);
+		beginLine(result, object, key, title);
 		appendColored(result, prefix + value, LEGENDARY_NUMBER_COLOR);
 		appendColored(result, suffix, LEGENDARY_TEXT_COLOR);
-		endLine(result, object, key);
+		endLine(result);
 	}
 
 	private static Integer parseInteger(final String value) {
@@ -361,8 +362,9 @@ final class LegendaryAffixPresentation {
 				DecimalFormatSymbols.getInstance(Locale.forLanguageTag("pl-PL")));
 	}
 
-	private static void beginLine(final StringBuilder result, final String title) {
-		result.append("<tr><td valign='top' style='padding-top:4px'><b><font size='-1' color='")
+	private static void beginLine(final StringBuilder result, final RPObject object, final String key, final String title) {
+		result.append("<tr><td valign='top' style='padding-top:4px'>")
+				.append(AffixRerollPresentation.icon(object, key)).append("<b><font size='-1' color='")
 				.append(LEGENDARY_TEXT_COLOR).append("'>")
 				.append(ClientLanguage.getText(title)).append(": </font>");
 	}
@@ -395,7 +397,7 @@ final class LegendaryAffixPresentation {
 		}
 	}
 
-	private static void endLine(final StringBuilder result, final RPObject object, final String key) {
-		result.append(AffixRerollPresentation.icon(object, key)).append("</b></td></tr>");
+	private static void endLine(final StringBuilder result) {
+		result.append("</b></td></tr>");
 	}
 }

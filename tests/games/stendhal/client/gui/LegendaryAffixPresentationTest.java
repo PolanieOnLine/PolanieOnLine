@@ -14,14 +14,23 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
-	@Test public void changedAffixHasOneSmallIconAfterItsFullDescription() {
+	@Test public void changedAffixHasOneSmallIconBeforeItsName() {
 		final RPObject object = ItemTestHelper.createItem("rerolled");
 		put(object, ItemTooltip.LEGENDARY_TENACITY, "1");
 		put(object, ItemTooltip.LEGENDARY_CLEAVE, "1");
 		put(object, "rerolled_affix", "legendary_tenacity");
 		final String html = LegendaryAffixPresentation.build(object);
-		assertTrue(html, html.indexOf("affix_rerolled") > html.indexOf("bez trafienia zeruje bonus."));
+		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("Zaciętość:"));
 		assertEquals(1, html.split("affix_rerolled", -1).length - 1);
+	}
+
+	@Test public void changedOrdinaryDescriptionUsesArrowsInsteadOfADiamond() {
+		final RPObject object = ItemTestHelper.createItem("rerolled");
+		put(object, ItemTooltip.STEADY_HAND, "0.1");
+		put(object, "rerolled_affix", "steady_hand");
+		final String html = LegendaryAffixPresentation.build(object);
+		assertFalse(html, html.contains("&#9670;"));
+		assertTrue(html, html.indexOf("affix_rerolled") >= 0 && html.indexOf("affix_rerolled") < html.indexOf("Pewna ręka:"));
 	}
 
 	@Test
