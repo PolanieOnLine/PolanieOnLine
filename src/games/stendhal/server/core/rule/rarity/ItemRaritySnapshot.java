@@ -39,7 +39,7 @@ import marauroa.common.game.RPObject;
  */
 public final class ItemRaritySnapshot {
 	private static final int LEGACY_VERSION = 1;
-	private static final int VERSION = 3;
+	private static final int VERSION = 4;
 	private static final int MAX_ENTRIES = 64;
 	private static final int MAX_STATISTICS = 64;
 	private static final int MAX_ENCODED_LENGTH = 32768;
@@ -105,6 +105,7 @@ public final class ItemRaritySnapshot {
 			writeMap(output, item.hasMap(ItemLifestealService.LEGACY_ATTRIBUTE)
 					? item.getMap(ItemLifestealService.LEGACY_ATTRIBUTE)
 					: Collections.<String, String>emptyMap());
+			writeMap(output, ItemAffixRerollService.state(item));
 			output.close();
 			return Base64.getUrlEncoder().withoutPadding()
 					.encodeToString(bytes.toByteArray());
@@ -225,6 +226,9 @@ public final class ItemRaritySnapshot {
 				for (final Map.Entry<String, String> entry : readMap(input).entrySet()) {
 					metadata.put(ItemLifestealService.LEGACY_ATTRIBUTE, entry.getKey(), entry.getValue());
 				}
+			}
+			if (version >= 4) {
+				for (final Map.Entry<String, String> entry : readMap(input).entrySet()) metadata.put(ItemAffixRerollService.ATTRIBUTE, entry.getKey(), entry.getValue());
 			}
 			if (input.available() != 0) {
 				throw new IllegalArgumentException("Trailing item rarity snapshot data");

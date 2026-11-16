@@ -98,6 +98,9 @@ public final class ItemAffixState {
 		if (item == null || saved == null) {
 			return;
 		}
+		if (saved.hasMap(ItemAffixRerollService.ATTRIBUTE)) {
+			ItemAffixRerollService.replaceState(item, saved.getMap(ItemAffixRerollService.ATTRIBUTE));
+		}
 
 		if (saved.has(SEED_ATTRIBUTE)) {
 			item.put(SEED_ATTRIBUTE, saved.get(SEED_ATTRIBUTE));

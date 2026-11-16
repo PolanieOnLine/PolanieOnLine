@@ -2750,6 +2750,7 @@ td.number {
 	.advent-calendar-reward .itemSlot { transform: scale(.4737); }
 	.advent-calendar-door.is-open .advent-calendar-leaf { width: 7px; }
 }
+
 @media (max-width: 360px) {
 	.advent-calendar-dialog { padding: 6px; }
 	.advent-calendar-board { grid-template-rows: repeat(5, 78px); gap: 4px; }
@@ -2781,4 +2782,52 @@ td.number {
 	.advent-calendar-reward { width: 18px; height: 18px; }
 	.advent-calendar-reward .itemSlot { transform: scale(.4737); }
 	.advent-calendar-door.is-open .advent-calendar-leaf { width: 7px; }
+}
+
+/* Zoryk: one paid affix roll, with a server-owned comparison offer. */
+.affix-reroll-dialog {
+	box-sizing: border-box; width: 660px; max-width: calc(100vw - 32px);
+	max-height: calc(100dvh - 88px); overflow: auto; padding: 12px;
+	color: var(--text-color); background: var(--background-url); font-size: 13px;
+	line-height: 1.4; overscroll-behavior: contain; scrollbar-width: thin;
+}
+.affix-reroll-dialog [hidden] { display: none !important; }
+.affix-reroll-dialog p { margin: 0 0 8px; }
+.affix-reroll-dialog .affix-reroll-intro { margin-bottom: 12px; }
+.affix-reroll-dialog fieldset { min-width: 0; margin: 0; padding: 8px; border: 1px solid var(--border-bottom-color); }
+.affix-reroll-dialog legend { padding: 0 5px; font-weight: bold; }
+.affix-reroll-dialog .affix-reroll-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 10px; }
+.affix-reroll-dialog .affix-reroll-items { display: grid; gap: 5px; max-height: 260px; overflow-y: auto; scrollbar-width: thin; }
+.affix-reroll-dialog .affix-reroll-item { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 0 8px; width: 100%; text-align: left; }
+.affix-reroll-dialog .affix-reroll-item-name { display: block; font-weight: bold; overflow-wrap: anywhere; }
+.affix-reroll-dialog .affix-reroll-item small { display: block; font-size: 11px; }
+.affix-reroll-dialog .affix-reroll-detail { display: grid; align-content: start; gap: 10px; min-width: 0; }
+.affix-reroll-dialog .affix-reroll-identity { display: flex; gap: 8px; align-items: center; overflow-wrap: anywhere; font-weight: bold; }
+.affix-reroll-dialog .affix-reroll-identity:empty { display: none; }
+.affix-reroll-dialog .affix-reroll-affixes { display: grid; gap: 6px; }
+.affix-reroll-dialog .affix-reroll-affixes button { text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.affix-reroll-dialog button { box-sizing: border-box; min-height: 44px; padding: 5px 9px; font: inherit; color: var(--text-color); background: var(--background-url); border: 2px solid; border-color: var(--border-top-color) var(--border-bottom-color) var(--border-bottom-color) var(--border-top-color); border-radius: 0; cursor: pointer; }
+.affix-reroll-dialog button[aria-pressed="true"] { outline: 2px solid #c8a866; outline-offset: -3px; background-color: #b8964830; }
+.affix-reroll-dialog button:focus-visible { outline: 2px solid #eed89c; outline-offset: -3px; }
+.affix-reroll-dialog button:disabled { opacity: .55; cursor: default; }
+.affix-reroll-dialog .affix-reroll-primary { font-weight: bold; }
+.affix-reroll-dialog .affix-reroll-cost { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.affix-reroll-dialog .affix-reroll-sprite { display: inline-block; flex-shrink: 0; width: 32px; height: 32px; overflow: hidden; background-repeat: no-repeat; image-rendering: pixelated; }
+.affix-reroll-dialog .affix-reroll-confirmation { margin-top: 8px; padding: 10px; border: 1px solid #b69556; background: #9b743317; }
+.affix-reroll-dialog .affix-reroll-comparison { display: grid; gap: 8px; overflow-wrap: anywhere; }
+.affix-reroll-dialog .affix-reroll-comparison fieldset:last-child { border-color: #b69556; }
+.affix-reroll-dialog .affix-reroll-comparison p { margin: 0; white-space: pre-line; }
+.affix-reroll-dialog .affix-reroll-status { margin: 8px 0; min-height: 18px; overflow-wrap: anywhere; }
+.affix-reroll-dialog .affix-reroll-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+@media (max-width: 540px) {
+	.affix-reroll-dialog { padding: 8px; }
+	.affix-reroll-dialog .affix-reroll-layout { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+	.affix-reroll-dialog .affix-reroll-items { max-height: 145px; }
+	.affix-reroll-dialog .affix-reroll-actions button { flex: 1 1 auto; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+	.affix-reroll-dialog { padding: 6px 8px; max-height: calc(100dvh - 72px); }
+	.affix-reroll-dialog .affix-reroll-items { max-height: 120px; }
+	.affix-reroll-dialog .affix-reroll-intro { margin-bottom: 6px; }
+	.affix-reroll-dialog .affix-reroll-comparison { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

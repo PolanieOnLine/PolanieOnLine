@@ -95,6 +95,7 @@ import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.events.ProductionEvent;
 import games.stendhal.server.events.AdventCalendarEvent;
+import games.stendhal.server.events.AffixRerollEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.ShowItemListEvent;
 import games.stendhal.server.events.ShowOutfitListEvent;
@@ -401,6 +402,9 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass(Events.PRODUCTION)) {
 			ProductionEvent.generateRPClass();
 			AdventCalendarEvent.generateRPClass();
+		}
+		if (!RPClass.hasRPClass(Events.AFFIX_REROLL)) {
+			AffixRerollEvent.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass("action")) {

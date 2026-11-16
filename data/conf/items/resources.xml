@@ -1744,4 +1744,24 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+	<item name="kamień przemiany">
+		<type class="resource" subclass="transformation_stone" tileid="-1"/>
+		<description>Oto mieniący się kamień przemiany. Zoryk Runiczny w Tarnowie zużywa go, by wylosować nowy afiks wyposażenia. Możesz przyjąć nowy wynik lub zachować poprzedni.</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 </items>

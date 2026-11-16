@@ -53,6 +53,7 @@ public class PlayerRPClass {
 
 		player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 		player.addRPEvent(Events.ITEM_UPGRADE, Definition.PRIVATE);
+		player.addRPEvent(Events.AFFIX_REROLL, Definition.PRIVATE);
 
 		player.addAttribute("dead", Type.FLAG, Definition.PRIVATE);
 		player.addAttribute(SurvivalAffixService.IRON_RESOLVE_COOLDOWN_ATTRIBUTE, Type.STRING, Definition.HIDDEN);

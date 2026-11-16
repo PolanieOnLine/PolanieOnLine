@@ -20,6 +20,7 @@ import { GroupChangeEvent } from "./GroupChangeEvent";
 import { GroupInviteEvent } from "./GroupInviteEvent";
 import { ImageEvent } from "event/ImageEvent";
 import { ItemUpgradeEvent } from "./ItemUpgradeEvent";
+import { AffixRerollEvent } from "./AffixRerollEvent";
 import { ProductionEvent } from "./ProductionEvent";
 import { AdventCalendarEvent } from "./AdventCalendarEvent";
 import { NpcShopEvent } from "./NpcShopEvent";
@@ -82,6 +83,7 @@ export class EventRegistry {
 		marauroa.rpeventFactory.register("group_invite_event", GroupInviteEvent);
 		marauroa.rpeventFactory.register("image_event", ImageEvent);
 		marauroa.rpeventFactory.register("item_upgrade_event", ItemUpgradeEvent);
+		marauroa.rpeventFactory.register("affix_reroll_event", AffixRerollEvent);
 		marauroa.rpeventFactory.register("production_event", ProductionEvent);
 		marauroa.rpeventFactory.register("advent_calendar_event", AdventCalendarEvent);
 		marauroa.rpeventFactory.register("npc_shop_event", NpcShopEvent);

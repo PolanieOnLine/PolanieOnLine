@@ -120,6 +120,7 @@ public class CommandCenter {
 		ItemUpgradeAction.register();
 		ProductionAction.register();
 		AdventCalendarAction.register();
+		AffixRerollAction.register();
 		NpcShopAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();

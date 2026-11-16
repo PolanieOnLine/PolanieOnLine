@@ -268,6 +268,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute(RARITY_ID, Type.STRING);
 		entity.addAttribute(RARITY_MODIFIERS, Type.MAP, Definition.HIDDEN);
 		entity.addAttribute(RARITY_PROFILE, Type.STRING, Definition.HIDDEN);
+		entity.addAttribute(games.stendhal.server.core.rule.rarity.ItemAffixRerollService.ATTRIBUTE, Type.MAP, Definition.HIDDEN);
 		entity.addAttribute(DEFINITION_DESCRIPTION, Type.STRING, Definition.HIDDEN);
 		entity.addAttribute(VALUE, Type.INT);
 

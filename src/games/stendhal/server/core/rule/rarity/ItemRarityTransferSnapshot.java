@@ -28,7 +28,7 @@ import games.stendhal.server.entity.item.ItemTooltipService;
  * to the target definition's base statistics instead of copying final values.
  */
 public final class ItemRarityTransferSnapshot {
-	private static final int VERSION = 1;
+	private static final int VERSION = 2;
 	private static final int MAX_ENTRIES = 64;
 	private static final int MAX_ENCODED_LENGTH = 32768;
 
@@ -66,6 +66,7 @@ public final class ItemRarityTransferSnapshot {
 			}
 			writeStringMap(output, ItemAffixState.getValues(item));
 			output.writeInt(item.getUpgradeLevel());
+			output.writeUTF(ItemAffixRerollService.state(item).getOrDefault("locked", ""));
 			output.close();
 			return Base64.getUrlEncoder().withoutPadding()
 					.encodeToString(bytes.toByteArray());
@@ -104,6 +105,13 @@ public final class ItemRarityTransferSnapshot {
 		}
 		service.initialize(target, context.build());
 		restoreCompatibleAffixes(target, data, minimumRarity != null && data.itemClass.equals(target.getItemClass()));
+		// A paid preview belongs to the original definition. Only its permanent
+		// slot restriction can transfer to another weapon.
+		if (!data.lockedAffix.isEmpty()) {
+			final Map<String, String> locked = new LinkedHashMap<String, String>();
+			locked.put("locked", ItemAffixState.has(target, data.lockedAffix) ? data.lockedAffix : "retired");
+			ItemAffixRerollService.replaceState(target, locked);
+		}
 		ItemDefinitionRefreshService.replayFlatBonuses(target, target);
 		if (minimumRarity != null) {
 			new ItemAffixGenerator(new java.util.Random(0L)).refillMissingAffixes(target,
@@ -177,7 +185,8 @@ public final class ItemRarityTransferSnapshot {
 		try {
 			final DataInputStream input = new DataInputStream(new ByteArrayInputStream(
 					Base64.getUrlDecoder().decode(encoded)));
-			if (input.readUnsignedByte() != VERSION) {
+			final int version = input.readUnsignedByte();
+			if (version < 1 || version > VERSION) {
 				throw new IllegalArgumentException(
 						"Unsupported item rarity transfer version");
 			}
@@ -198,11 +207,12 @@ public final class ItemRarityTransferSnapshot {
 					? Long.valueOf(input.readLong()) : null;
 			final Map<String, String> affixes = readStringMap(input);
 			final int upgradeLevel = input.readInt();
+			final String lockedAffix = version >= 2 ? input.readUTF() : "";
 			if (upgradeLevel < 0 || input.available() != 0) {
 				throw new IllegalArgumentException("Invalid item rarity transfer data");
 			}
 			return new TransferData(itemClass, rarity, profile, modifiers, seed, affixes,
-					upgradeLevel);
+					upgradeLevel, lockedAffix);
 		} catch (final IllegalArgumentException e) {
 			throw e;
 		} catch (final EOFException e) {
@@ -290,11 +300,12 @@ public final class ItemRarityTransferSnapshot {
 		private final Long affixSeed;
 		private final Map<String, String> affixes;
 		private final int upgradeLevel;
+		private final String lockedAffix;
 
 		private TransferData(final String itemClass, final ItemRarity rarity,
 				final String profile,
 				final Map<String, Double> modifiers, final Long affixSeed,
-				final Map<String, String> affixes, final int upgradeLevel) {
+				final Map<String, String> affixes, final int upgradeLevel, final String lockedAffix) {
 			this.itemClass = itemClass;
 			this.rarity = rarity;
 			this.profile = profile;
@@ -302,6 +313,7 @@ public final class ItemRarityTransferSnapshot {
 			this.affixSeed = affixSeed;
 			this.affixes = affixes;
 			this.upgradeLevel = upgradeLevel;
+			this.lockedAffix = lockedAffix;
 		}
 	}
 }
