@@ -61,14 +61,14 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 
 			@Override
 			public void createDialog() {
-				addGreeting("Witam zajmuję się usługami transportowymi do #Athor #island przy pomocy #promu! W czym mogę Ci #pomóc?");
+				addGreeting("Witaj! Obsługuję #prom na wyspę #Athor. W czym mogę #pomóc?");
 				addGoodbye();
 				addHelp("Możesz wejść na #prom za "
 						+ AthorFerry.PRICE
 						+ " złota tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom. Powiedz #wejdź, aby dostać się na prom.");
-				addJob("Jeżeli pasażerowie chcą wejść ( #board ) na #prom do #Athor #island to ja ich zabieram na statek.");
-				addReply(Arrays.asList("ferry", "prom", "promu"), "Prom żegluje regularnie pomiędzy tym wybrzeżem, a #Athor #island. Możesz wejść ( #board ) na statek tylko kiedy jest tutaj. Zapytaj mnie o #status jeżeli chcesz sprawdzić gdzie aktualnie się znajduje.");
-				addReply(Arrays.asList("Athor", "island"), "Athor Island jest miejscem wypoczynku, gdzie wiele osób spędza swoje wakacje.");
+				addJob("Pomagam pasażerom #wejść na #prom na wyspę #Athor.");
+				addReply(Arrays.asList("ferry", "prom", "promu"), "Prom kursuje regularnie między tym wybrzeżem a wyspą #Athor. Możesz #wejść na pokład, kiedy jest zacumowany przy przystani. Zapytaj o #status, aby sprawdzić, gdzie się znajduje.");
+				addReply(Arrays.asList("Athor", "island", "wyspa", "wyspę", "wyspie"), "Athor to wyspa wypoczynkowa, na której wielu podróżnych spędza wakacje.");
 				add(ConversationStates.ATTENDING, "status",
 						null,
 						ConversationStates.ATTENDING,
@@ -81,7 +81,7 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 						});
 		
 				add(ConversationStates.ATTENDING,
-						Arrays.asList("board", "wejdź"),
+						Arrays.asList("board", "wejdź", "wejść"),
 						null,
 						ConversationStates.ATTENDING,
 						null,

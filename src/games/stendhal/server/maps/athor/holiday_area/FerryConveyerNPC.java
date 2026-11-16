@@ -57,14 +57,14 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 			@Override
 			public void createDialog() {
 				addGoodbye("Do widzenia!");
-				addGreeting("Witam w Athor #ferry service! W czym mogę #pomóc?");
+				addGreeting("Witaj w przystani promowej na Athor! W czym mogę #pomóc?");
 				addHelp("Możesz #wejść na prom tylko za "
 						+ AthorFerry.PRICE
 						+ " złota, ale tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom.");
 				addJob("Jeżeli pasażerowie chcą #wejść na #prom do stałego lądu to ja ich zabieram na statek.");
 				addReply(
-						"ferry",
-				"Prom żegluje regularnie pomiędzy tą wyspą, a stałym lądem Faiumoni. Możesz #wejść na statek tylko kiedy jest tutaj zacumowany. Zapytaj mnie o #status jeżeli chcesz sprawdzić gdzie aktualnie się znajduje.");
+						Arrays.asList("ferry", "prom", "promu"),
+				"Prom kursuje regularnie między wyspą Athor a stałym lądem. Możesz #wejść na pokład, kiedy jest zacumowany przy przystani. Zapytaj o #status, aby sprawdzić, gdzie się znajduje.");
 				add(ConversationStates.ATTENDING, "status", null,
 						ConversationStates.ATTENDING, null, new ChatAction() {
 					@Override

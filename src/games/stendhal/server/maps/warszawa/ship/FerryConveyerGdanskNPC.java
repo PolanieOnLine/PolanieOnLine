@@ -64,7 +64,7 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGoodbye("Do widzenia!");
-				addGreeting("Witam w Warszawskim #ferry service! W czym mogę #pomóc?");
+				addGreeting("Witaj w warszawskiej przystani promowej! W czym mogę #pomóc?");
 				addHelp("Możesz wejść na #prom tylko za "
 						+ GdanskFerry.PRICE
 						+ " złota, ale tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom.");

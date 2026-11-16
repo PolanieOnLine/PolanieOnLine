@@ -64,7 +64,7 @@ public class FerryConveyerPirateIslandNPC implements ZoneConfigurator {
 			@Override
 			public void createDialog() {
 				addGoodbye("Do widzenia!");
-				addGreeting("Witam w Pirackim #ferry service! W czym mogę #pomóc?");
+				addGreeting("Witaj przy pirackim promie! W czym mogę #pomóc?");
 				addHelp("Możesz wejść na #prom tylko za "
 						+ PirateFerry.PRICE
 						+ " złota, ale tylko wtedy, kiedy jest zacumowany przy przystani. Zapytaj mnie o #status jeżeli chcesz wiedzieć gdzie jest prom.");
