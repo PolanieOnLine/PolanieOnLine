@@ -8,6 +8,7 @@ import java.time.ZoneId;
 public final class AdventCalendarRules {
 
 	public static final ZoneId TIME_ZONE = ZoneId.of("Europe/Warsaw");
+	static final int CATCH_UP_DAYS = 1;
 
 	private AdventCalendarRules() {
 	}
@@ -33,6 +34,6 @@ public final class AdventCalendarRules {
 		if (today.getMonthValue() != 12 || today.getDayOfMonth() < day) {
 			return "future";
 		}
-		return today.getDayOfMonth() - day <= 3 ? "available" : "expired";
+		return today.getDayOfMonth() - day <= CATCH_UP_DAYS ? "available" : "expired";
 	}
 }

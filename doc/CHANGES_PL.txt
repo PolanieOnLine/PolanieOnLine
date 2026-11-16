@@ -16,7 +16,7 @@
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
 * Uporządkowano oddawanie składników Carmen i Jadźce. Obie rozumieją hasło „składniki”, przyjmują przedmioty po podaniu ich nazw i informują, czego jeszcze brakuje
-* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, również do trzech dni po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
+* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, najpóźniej następnego dnia po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
 
 *dziennik zadań*
 ---

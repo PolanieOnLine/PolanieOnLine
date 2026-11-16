@@ -10,19 +10,21 @@ import org.junit.Test;
 public class AdventCalendarRulesTest {
 
 	@Test
-	public void allowsTodayAndExactlyThreePreviousDates() {
+	public void allowsOnlyTodayAndYesterday() {
 		final LocalDate today = LocalDate.of(2026, 12, 10);
-		for (int day = 7; day <= 10; day++) {
+		for (int day = 9; day <= 10; day++) {
 			assertEquals("available", AdventCalendarRules.state(today, day, 0));
 		}
-		assertEquals("expired", AdventCalendarRules.state(today, 6, 0));
+		for (int day = 1; day <= 8; day++) {
+			assertEquals("expired", AdventCalendarRules.state(today, day, 0));
+		}
 		assertEquals("future", AdventCalendarRules.state(today, 11, 0));
 	}
 
 	@Test
-	public void christmasEveGiftExpiresAfterDecember27() {
-		assertEquals("available", AdventCalendarRules.state(LocalDate.of(2026, 12, 27), 24, 0));
-		assertEquals("expired", AdventCalendarRules.state(LocalDate.of(2026, 12, 28), 24, 0));
+	public void christmasEveGiftCanBeCollectedUntilDecember25() {
+		assertEquals("available", AdventCalendarRules.state(LocalDate.of(2026, 12, 25), 24, 0));
+		assertEquals("expired", AdventCalendarRules.state(LocalDate.of(2026, 12, 26), 24, 0));
 	}
 
 	@Test

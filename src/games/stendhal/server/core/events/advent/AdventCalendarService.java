@@ -88,7 +88,8 @@ public final class AdventCalendarService {
 					? "Możesz otworzyć dowolne okienko. Nagrody są przyznawane raz na konto."
 					: date.getMonthValue() != 12
 					? "Kalendarz otwiera się 1 grudnia. Wróć wtedy po pierwszy prezent."
-					: date.getDayOfMonth() > 27 ? "Tegoroczny kalendarz dobiegł końca. Do zobaczenia za rok!"
+					: date.getDayOfMonth() > 24 + AdventCalendarRules.CATCH_UP_DAYS
+					? "Tegoroczny kalendarz dobiegł końca. Do zobaczenia za rok!"
 					: date.getDayOfMonth() > 24 ? "Możesz jeszcze odebrać zaległe prezenty."
 					: "Otwórz dzisiejsze okienko lub odbierz zaległy prezent.";
 			return new Result(date, mask, "ok", message, 0, Collections.emptyList(), debug);

@@ -30,6 +30,39 @@ public class AdventCalendarServiceTest {
 	private String previousChristmas;
 
 	@Test
+	public void clientsAndDirectClaimsAllowOnlyTodayAndYesterday() throws Exception {
+		final AdventCalendarService service = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-10T12:00:00Z"), ZoneOffset.UTC),
+				(owner, year) -> new AccountState(78, 0), day -> Collections.singletonList(coins(5000)));
+		final Player player = PlayerTestHelper.createPlayer("advent_one_day_late");
+		final Result opened = service.process(player, "open", 0);
+		assertEquals("expired", opened.stateForDay(8));
+		assertEquals("available", opened.stateForDay(9));
+		assertEquals("available", opened.stateForDay(10));
+		final Result expired = service.process(player, "claim", 8);
+		assertEquals("expired", expired.status);
+		assertTrue(expired.items.isEmpty());
+		assertFalse(player.hasQuest(AdventCalendarDAO.QUEST_SLOT));
+		assertEquals("received", service.process(player, "claim", 9).status);
+		assertEquals("received", service.process(player, "claim", 10).status);
+		assertEquals(10000, player.getNumberOfEquipped("money"));
+	}
+
+	@Test
+	public void endOfCalendarMessageFollowsTheLastAllowedCatchUpDate() throws Exception {
+		final Player player = PlayerTestHelper.createPlayer("advent_last_catch_up");
+		for (final int date : new int[] {25, 26}) {
+			final AdventCalendarService service = new AdventCalendarService(
+					Clock.fixed(Instant.parse("2026-12-" + date + "T12:00:00Z"), ZoneOffset.UTC),
+					(owner, year) -> new AccountState(79, 0), day -> Collections.singletonList(coins(5000)));
+			final Result opened = service.process(player, "open", 0);
+			assertEquals(date == 25 ? "Możesz jeszcze odebrać zaległe prezenty."
+					: "Tegoroczny kalendarz dobiegł końca. Do zobaczenia za rok!", opened.message);
+			assertEquals(date == 25 ? "available" : "expired", opened.stateForDay(24));
+		}
+	}
+
+	@Test
 	public void equipmentIsBoundToTheReceivingCharacterButSuppliesStayUnbound() throws Exception {
 		final Player player = PlayerTestHelper.createPlayer("advent_recipient");
 		final Item shield = SingletonRepository.getEntityManager().getItem("drewniana tarcza");
