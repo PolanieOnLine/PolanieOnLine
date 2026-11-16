@@ -32,14 +32,17 @@ public class EnchanterWorkshopTest {
 		}
 		SingletonRepository.getNPCList().remove(EnchanterNPC.NAME);
 		new EnchanterNPC().configureZone(room, Collections.emptyMap());
-		final Player player = PlayerTestHelper.createPlayer("workshop_visitor"); city.add(player); player.setPosition(57, 89);
+		final Player player = PlayerTestHelper.createPlayer("workshop_visitor"); city.add(player); player.setPosition(55, 87);
 		final Portal entrance = city.getPortal("enchanter_workshop_entrance");
 		final Portal exit = room.getPortal("enchanter_workshop_exit");
 		assertNotNull(entrance); assertNotNull(exit);
+		assertEquals(56, entrance.getX()); assertEquals(87, entrance.getY());
+		assertEquals(3, entrance.getOffset());
 		assertTrue(entrance.onUsed(player)); assertSame(room, player.getZone());
 		assertEquals(8, player.getX()); assertEquals(11, player.getY());
 		assertTrue(exit.onUsed(player)); assertSame(city, player.getZone());
-		assertEquals(57, player.getX()); assertEquals(89, player.getY());
+		assertEquals(55, player.getX()); assertEquals(87, player.getY());
+		assertEquals(games.stendhal.common.Direction.LEFT, player.getDirection());
 		SingletonRepository.getNPCList().remove(EnchanterNPC.NAME);
 	}
 

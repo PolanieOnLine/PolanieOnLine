@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="16" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="1">
- <tileset firstgid="1" name="building/wall/int_wall_pale" tilewidth="32" tileheight="32" tilecount="16" columns="2">
-  <image source="../../tileset/building/wall/int_wall_pale.png" width="64" height="256" />
- </tileset>
- <tileset firstgid="17" name="building/wall/int_wall_purple" tilewidth="32" tileheight="32" tilecount="20" columns="2">
-  <image source="../../tileset/building/wall/int_wall_purple.png" width="64" height="320" />
+ <tileset firstgid="1" name="pol/waly/int_plazy" tilewidth="32" tileheight="32" tilecount="27" columns="3">
+  <image source="../../tileset/pol/waly/int_plazy.png" width="96" height="288" />
  </tileset>
  <tileset firstgid="37" name="furniture/carpet/carpets_2" tilewidth="32" tileheight="32" tilecount="20" columns="4">
   <image source="../../tileset/furniture/carpet/carpets_2.png" width="128" height="160" />
- </tileset>
- <tileset firstgid="57" name="building/entrance/pale_red_ns" tilewidth="32" tileheight="32" tilecount="36" columns="9">
-  <image source="../../tileset/building/entrance/pale_red_ns.png" width="288" height="128" />
  </tileset>
  <tileset firstgid="93" name="furniture/shelve/dark_bookshelf" tilewidth="32" tileheight="32" tilecount="6" columns="3">
   <image source="../../tileset/furniture/shelve/dark_bookshelf.png" width="96" height="64" />
@@ -51,14 +45,17 @@
  <tileset firstgid="171" name="logic/protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
   <image source="../../tileset/logic/protection.png" width="64" height="32" />
  </tileset>
+ <tileset firstgid="200" name="pol/domki/drzwi/door_drewno_int" tilewidth="32" tileheight="32" tilecount="15" columns="5">
+  <image source="../../tileset/pol/domki/drzwi/door_drewno_int.png" width="160" height="96" />
+ </tileset>
  <layer id="1" name="0_floor" width="16" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAACCuNhYGBgIhNzAzELEMsAsQSJWBqImaH6xYBYg0QsOqp/VD+V9EsBsTgWbAnEVkBsjUVOEqqfC4gZcWAnIHYGYhcc8pxADADaGlTrgAMAAA==
+   H4sIAAAAAAACCmNkYGBgIhMzAzELEHMBMTeJmAeI2aD6eYFYg0TMP6p/VD+V9AsAsSAWjKweXU4Iqp8diDnwYA08cpxADAChajPEgAMAAA==
   </data>
  </layer>
  <layer id="2" name="1_terrain" width="16" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAACCmNgGAXDEWQCcRYSziZRfw4Q5yLhvCGmPx+IC5Bw4SCNJwACF3ttgAMAAA==
+   H4sIAAAAAAACCmNgGAXDEWQCcRYSziZRfw4Q5yLhvCGmPx+IC5BwIRlheAKITwLxKRrGEwASI317gAMAAA==
   </data>
  </layer>
  <layer id="3" name="2_object" width="16" height="14">
