@@ -182,6 +182,9 @@ test("rerolled ordinary and legendary affixes mark only their own tooltip line",
 		assert.match(lines.find(line => line.rerolled).text, new RegExp(name));
 		const dom = new TooltipNode(); exportsObject.appendStructuredTooltipLine(dom, lines.find(line => line.rerolled));
 		const value = dom.children[0].children[0];
-		assert.ok(value.children.some(child => child.className === "affix-rerolled-icon"));
+		const marker = value.children.findIndex(child => child.className === "affix-rerolled-icon");
+		assert.ok(marker >= 0);
+		assert.equal(value.children.slice(marker + 1).map(child => child.textContent).join(""), "");
+		assert.ok(value.children.slice(0, marker).map(child => child.textContent).join("").endsWith(lines.find(line => line.rerolled).text));
 	}
 });

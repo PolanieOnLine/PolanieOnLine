@@ -206,15 +206,11 @@ export class AffixRerollDialog extends DialogContentComponent {
 	}
 
 	private markLabel(target: HTMLElement, label: string): void {
-		let split = label.indexOf(":");
-		if (split < 0) split = label.indexOf(" — ");
-		if (split < 0) split = label.length;
-		target.textContent = label.slice(0, split);
+		target.textContent = label;
 		const icon = document.createElement("span");
 		icon.className = "affix-rerolled-icon";
 		icon.title = text("Afiks wybrany do przemiany");
-		const rest = document.createElement("span"); rest.textContent = label.slice(split);
-		target.append(icon, rest);
+		target.appendChild(icon);
 	}
 
 	private hasOffer(): boolean { return !!this.data.offer_token && !!this.data.selected_path; }

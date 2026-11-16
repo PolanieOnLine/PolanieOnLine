@@ -750,15 +750,13 @@ export function appendStructuredTooltipLine(toolTip: HTMLElement, line: ItemTool
 			else value.appendChild(document.createTextNode(part));
 		};
 		if (line.kind === "bonus") value.appendChild(document.createTextNode("◆ "));
-		const split = line.rerolled && line.text.includes(":") ? line.text.indexOf(":") : line.text.length;
-		appendText(line.text.slice(0, split));
+		appendText(line.text);
 		if (line.rerolled) {
 			const icon = document.createElement("span");
 			icon.className = "affix-rerolled-icon";
 			icon.title = GameLanguage.getText("Afiks wybrany do przemiany");
 			value.appendChild(icon);
 		}
-		appendText(line.text.slice(split));
 		detail.appendChild(value);
 		if (line.deltas?.length) {
 			detail.classList.add("item-rarity-tooltip__stat-row");

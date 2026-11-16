@@ -25,10 +25,7 @@ final class AffixRerollPresentation {
 
 	static String labelHtml(final String label, final boolean marked, final int width, final String caption) {
 		final String escaped = ItemRarityPresentation.escapeHtml(label);
-		int split = escaped.indexOf(':');
-		if (split < 0) split = escaped.indexOf(" — ");
-		if (split < 0) split = escaped.length();
-		return "<html><div style='width:" + width + "px'>" + ItemRarityPresentation.escapeHtml(caption) + escaped.substring(0, split)
-				+ (marked ? icon() : "") + escaped.substring(split) + "</div></html>";
+		return "<html><div style='width:" + width + "px'>" + ItemRarityPresentation.escapeHtml(caption) + escaped
+				+ (marked ? icon() : "") + "</div></html>";
 	}
 }

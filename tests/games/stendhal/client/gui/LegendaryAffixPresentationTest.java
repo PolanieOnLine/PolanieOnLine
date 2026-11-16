@@ -14,13 +14,13 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryAffixPresentationTest {
-	@Test public void changedAffixHasOneSmallIconImmediatelyAfterItsName() {
+	@Test public void changedAffixHasOneSmallIconAfterItsFullDescription() {
 		final RPObject object = ItemTestHelper.createItem("rerolled");
 		put(object, ItemTooltip.LEGENDARY_TENACITY, "1");
 		put(object, ItemTooltip.LEGENDARY_CLEAVE, "1");
 		put(object, "rerolled_affix", "legendary_tenacity");
 		final String html = LegendaryAffixPresentation.build(object);
-		assertTrue(html, html.matches("(?s).*Zaciętość <img[^>]*affix_rerolled[^>]*>.*"));
+		assertTrue(html, html.indexOf("affix_rerolled") > html.indexOf("bez trafienia zeruje bonus."));
 		assertEquals(1, html.split("affix_rerolled", -1).length - 1);
 	}
 
