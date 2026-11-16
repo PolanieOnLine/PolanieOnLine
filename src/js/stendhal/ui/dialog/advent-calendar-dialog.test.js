@@ -103,6 +103,42 @@ test("claim opens its door with inline sprites, other previews survive refresh a
 	assert.equal(h.dialog.sprites.size, 2);
 });
 
+test("only a successful new claim starts opening; refresh keeps it and viewing never replays it", () => {
+	const h = harness(); const door = h.dialog.doors.get(1);
+	door.onclick();
+	assert.ok(!door.classList.contains("is-opening"));
+	h.reply(gift(1, {status: "full"}));
+	assert.ok(!door.classList.contains("is-opening"));
+	assert.ok(!door.classList.contains("is-open"));
+	door.onclick(); h.states[0] = "claimed"; h.reply(gift(1));
+	assert.ok(door.classList.contains("is-opening"));
+	const reward = h.dialog.previews.get(1).children[0];
+	h.dialog.send("refresh"); h.reply();
+	assert.ok(door.classList.contains("is-opening"));
+	assert.equal(h.dialog.previews.get(1).children[0], reward);
+	door.onclick(); h.reply(gift(1, {status: "claimed"}));
+	assert.ok(door.classList.contains("is-open"));
+	assert.ok(!door.classList.contains("is-opening"));
+	h.frames[0].close(); h.Dialog.open(); h.reply();
+	const reopened = h.frames[1].content.doors.get(1);
+	assert.ok(reopened.classList.contains("is-open"));
+	assert.ok(!reopened.classList.contains("is-opening"));
+});
+
+test("unavailable numbers dim by calendar state while pending available doors stay bright", () => {
+	const h = harness();
+	h.states[0] = "future"; h.states[1] = "expired"; h.states[2] = "claimed";
+	h.dialog.send("refresh"); h.reply();
+	for (const day of [1, 2]) assert.ok(h.dialog.doors.get(day).classList.contains("is-unavailable"));
+	for (const day of [3, 4, 24]) assert.ok(!h.dialog.doors.get(day).classList.contains("is-unavailable"));
+	h.dialog.doors.get(4).onclick();
+	assert.ok(h.dialog.doors.get(4).disabled);
+	assert.ok(!h.dialog.doors.get(4).classList.contains("is-unavailable"));
+	h.reply({status: "inactive"});
+	for (const door of h.dialog.doors.values()) assert.ok(door.classList.contains("is-unavailable"));
+	assert.ok(h.dialog.doors.get(24).classList.contains("is-today"));
+});
+
 test("reopening keeps claimed doors open with a check and reveals icons only after view", () => {
 	const h = harness(); h.dialog.doors.get(24).onclick(); h.states[23] = "claimed"; h.reply(gift(24));
 	const stale = h.actions.at(-1).request_id;
@@ -165,10 +201,19 @@ test("a matching late claim reply is accepted once after the interface timeout",
 	assert.equal(h.dialog.waiting, false); assert.equal(door.disabled, false);
 	h.states[0] = "claimed"; h.reply(gift(1));
 	assert.ok(door.classList.contains("is-open")); assert.equal(h.dialog.sprites.size, 1);
+	assert.ok(door.classList.contains("is-opening"));
 	const slot = h.dialog.previews.get(1).children[0];
 	h.reply(gift(1, {reward_quantities: ["999"]}));
 	assert.equal(h.dialog.previews.get(1).children[0], slot);
 	assert.equal(slot.children[0].children[1].textContent, "250");
+});
+
+test("invalid claim replies never start the opening animation", () => {
+	for (const response of [gift(1, {status: "full"}), gift(1, {status: "inactive"}), gift(2), gift(1, {status: "claimed"})]) {
+		const h = harness(); h.dialog.doors.get(1).onclick(); h.states[0] = "claimed"; h.states[1] = "claimed";
+		h.reply(response);
+		for (const door of h.dialog.doors.values()) assert.ok(!door.classList.contains("is-opening"));
+	}
 });
 
 test("larger reward bundles remain accessible and can scroll inside their own door by keyboard", () => {
@@ -296,5 +341,76 @@ frame.srcdoc=${JSON.stringify(browserFixture()).replaceAll("<", "\\u003c")};
 		assert.match(output.match(/<pre id="result">([^<]*)<\/pre>/)?.[1] || "missing browser result", /^PASS portrait-landscape-portrait;/);
 	} finally {
 		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-rotation-"))) rmSync(directory, {recursive: true, force: true});
+	}
+});
+
+test("live CSS opens before revealing rewards and keeps larger Christmas Eve icons accessible at every size", {skip: !edge}, () => {
+	const directory = mkdtempSync(path.join(tmpdir(), "polanie-advent-opening-"));
+	try {
+		const filename = path.join(directory, "opening.html");
+		writeFileSync(filename, `<!doctype html><body><iframe id="calendar" style="border:0;width:390px;height:844px"></iframe><pre id="result">PENDING</pre><script>
+const frame=document.getElementById('calendar'),result=document.getElementById('result');
+const check=(condition,message)=>{if(!condition)throw new Error(message);};
+const settle=()=>new Promise(resolve=>setTimeout(resolve,60));
+frame.onload=async()=>{try{
+	const w=frame.contentWindow,f=w.fixture,d=f.dialog,door=d.doors.get(19),preview=d.previews.get(19);
+	f.states[18]='claimed';f.reply(${JSON.stringify(gift(19))});
+	const reduced=w.matchMedia('(prefers-reduced-motion: reduce)').matches,animations=door.getAnimations({subtree:true});
+	if(reduced){
+		check(animations.length===0&&w.getComputedStyle(preview).opacity==='1','reduced motion delays rewards');
+	}else{
+		check(animations.length>=2,'opening or reward animation missing');
+		for(const animation of animations){animation.pause();animation.currentTime=0;}
+		const leaf=door.querySelector('.advent-calendar-leaf-left'),closedWidth=leaf.getBoundingClientRect().width;
+		check(closedWidth>=door.clientWidth-1,'opening does not begin with a closed leaf');
+		for(const animation of animations){animation.pause();animation.currentTime=100;}
+		check(w.getComputedStyle(door.querySelector('.advent-calendar-leaf-left')).transform.startsWith('matrix3d('),'door does not hinge');
+		d.send('refresh');f.reply();
+		check(door.getAnimations({subtree:true}).every((animation,index)=>animation===animations[index]&&animation.currentTime===100),'refresh restarted the opening animation');
+		for(const animation of animations)animation.currentTime=199;
+		check(w.getComputedStyle(preview).opacity==='0','rewards appear before the door opens');
+		for(const animation of animations)animation.currentTime=201;
+		check(Number(w.getComputedStyle(preview).opacity)>0,'rewards do not emerge after opening');
+		for(const animation of animations)animation.currentTime=320;
+		check(w.getComputedStyle(preview).opacity==='1','rewards remain faded');
+		check(leaf.getBoundingClientRect().width<closedWidth/2,'opened leaf still covers the reward');
+	}
+	door.click();f.reply(${JSON.stringify(gift(19, {status: "claimed"}))});
+	check(door.getAnimations({subtree:true}).length===0,'viewing rewards replays opening');
+	d.doors.get(24).click();f.states[23]='claimed';f.reply(${JSON.stringify(gift(24, {
+			reward_names: ["money", "eliksir", "jabłko", "A", "B", "C", "D", "E", "F"],
+			reward_classes: ["money", "drink", "food", ...Array(6).fill("money")],
+			reward_subclasses: ["gold", "potion", "apple_red", ...Array(6).fill("gold")],
+			reward_quantities: ["25000", "3", "1", "2", "3", "4", "5", "6", "7"]
+		}))});
+	for(const animation of d.doors.get(24).getAnimations({subtree:true})){animation.pause();animation.currentTime=320;}
+	f.states[1]='future';f.states[2]='expired';d.send('refresh');f.reply();
+	check(w.getComputedStyle(d.doors.get(2).querySelector('.advent-calendar-number')).color!==w.getComputedStyle(d.doors.get(4).querySelector('.advent-calendar-number')).color,'unavailable number stays bright');
+	check(w.getComputedStyle(d.doors.get(24)).outlineColor==='rgb(255, 255, 255)','today outline changed');
+	for(const [width,height]of [[390,844],[320,568],[844,390],[640,360],[1024,768]]){
+		frame.style.width=width+'px';frame.style.height=height+'px';await settle();
+		const rewards=d.previews.get(24),reward=rewards.firstChild,slot=reward.firstChild,icon=slot.querySelector('.item-slot-icon');
+		check(Math.abs(icon.getBoundingClientRect().width-32)<.1,'Christmas Eve icon is not native size at '+width);
+		check(reward.getBoundingClientRect().width===38,'reward slot does not reserve full icon at '+width);
+		check(rewards.scrollWidth<=rewards.clientWidth,'reward spills horizontally at '+width);
+		if(width<1000)check(rewards.scrollHeight>rewards.clientHeight,'large bundle cannot scroll at '+width);
+		check(d.doors.get(24).getAttribute('aria-label').includes('monety × 25000'),'exact accessible quantity missing');
+		const label=slot.querySelector('.item-slot-quantity').getBoundingClientRect(),box=reward.getBoundingClientRect();
+		check(label.left>=box.left&&label.right<=box.right+.1,'quantity label clipped at '+width);
+		if(height<500)check(d.componentElement.querySelector('.dialogbutton').getBoundingClientRect().height===28,'landscape Close height changed');
+	}
+	result.textContent='PASS animation;reduced='+reduced+';native icons;quantity labels;scrolling;unavailable numbers;white outline;compact Close';
+}catch(error){result.textContent='FAIL '+error.stack;}};
+frame.srcdoc=${JSON.stringify(browserFixture()).replaceAll("<", "\\u003c")};
+</script>`);
+		for (const flags of [[], ["--force-prefers-reduced-motion"]]) {
+			const output = execFileSync(edge, ["--headless=new", "--disable-gpu", "--no-first-run", "--allow-file-access-from-files", ...flags,
+				`--user-data-dir=${path.join(directory, flags.length ? "reduced-profile" : "profile")}`, "--dump-dom", "--virtual-time-budget=2500", pathToFileURL(filename).href],
+				{encoding: "utf8", windowsHide: true, timeout: 20000, stdio: ["ignore", "pipe", "ignore"]});
+			assert.match(output.match(/<pre id="result">([^<]*)<\/pre>/)?.[1] || "missing browser result", /^PASS animation;/);
+			assert.ok(output.includes('PASS animation;reduced=' + Boolean(flags.length)), "browser did not apply the requested motion preference");
+		}
+	} finally {
+		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-opening-"))) rmSync(directory, {recursive: true, force: true});
 	}
 });

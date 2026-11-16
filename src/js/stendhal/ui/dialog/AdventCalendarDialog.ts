@@ -94,6 +94,9 @@ export class AdventCalendarDialog extends DialogContentComponent {
 				|| data.request_id === dialog.processedRequestId) return;
 		dialog.processedRequestId = dialog.requestId;
 		dialog.waiting = false;
+		const revealedDay = Number(data.revealed_day);
+		const animateClaim = data.status === "received" && dialog.requestCommand === "claim"
+			&& dialog.list(dialog.data?.states)[revealedDay - 1] !== "claimed";
 		if (data.status === "inactive" || (dialog.data && data.year !== dialog.data.year)) dialog.clearPreviews();
 		dialog.data = data;
 		const date = new Date(`${data.date}T12:00:00`);
@@ -103,11 +106,11 @@ export class AdventCalendarDialog extends DialogContentComponent {
 		if (!dialog.doors.size) dialog.buildDoors(dialog.list(data.layout));
 		dialog.status.textContent = text(data.message || "Otwórz dzisiejsze okienko lub odbierz zaległy prezent.");
 		dialog.updateDoors();
-		const revealedDay = Number(data.revealed_day);
 		if ((data.status === "received" || data.status === "claimed") && revealedDay === dialog.requestDay
 				&& (dialog.requestCommand === "claim" || dialog.requestCommand === "view")
 				&& dialog.list(data.states)[revealedDay - 1] === "claimed" && data.reward_names) {
 			dialog.showRewards(revealedDay, data);
+			if (animateClaim) dialog.doors.get(revealedDay)?.classList.add("is-opening");
 		}
 	}
 
@@ -174,6 +177,7 @@ export class AdventCalendarDialog extends DialogContentComponent {
 			door.classList.toggle("is-claimed", state === "claimed");
 			door.classList.toggle("is-open", state === "claimed");
 			door.classList.toggle("is-expired", state === "expired");
+			door.classList.toggle("is-unavailable", state !== "available" && state !== "claimed");
 			door.disabled = this.waiting || (state !== "available" && state !== "claimed");
 			const label = state === "claimed" ? "Prezent odebrany" : state === "available" ? "Odbierz prezent"
 				: state === "expired" ? "Termin odbioru minął" : "Prezent jeszcze niedostępny";
@@ -237,6 +241,7 @@ export class AdventCalendarDialog extends DialogContentComponent {
 		preview.replaceChildren();
 		preview.removeAttribute("aria-label");
 		this.doors.get(day)?.classList.toggle("has-preview", false);
+		this.doors.get(day)?.classList.toggle("is-opening", false);
 		this.doors.get(day)?.removeAttribute("title");
 	}
 

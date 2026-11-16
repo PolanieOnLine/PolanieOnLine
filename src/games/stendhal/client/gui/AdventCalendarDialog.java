@@ -185,6 +185,9 @@ public final class AdventCalendarDialog extends JDialog {
 		date.setText(calendarDate.format(DateTimeFormatter.ofPattern(
 				"d MMMM yyyy", Locale.forLanguageTag(ClientLanguage.getLanguage()))));
 		final int today = event.getInt("today");
+		final Door revealedDoor = doors.get(event.getInt("revealed_day"));
+		final boolean animateOpening = "received".equals(event.get("status"))
+				&& revealedDoor != null && !"claimed".equals(revealedDoor.state);
 		for (final Door door : doors.values()) {
 			door.updateState(states.get(door.day - 1), today == door.day);
 			door.setEnabled(!"inactive".equals(door.state));
@@ -208,7 +211,7 @@ public final class AdventCalendarDialog extends JDialog {
 				final String name = "money".equals(names.get(i)) ? "monety" : names.get(i);
 				icons.add(new RewardIcon(classes.get(i), subclasses.get(i), text(name), Integer.parseInt(quantities.get(i))));
 			}
-			door.reveal(icons);
+			door.reveal(icons, animateOpening);
 		}
 	}
 
@@ -233,6 +236,9 @@ public final class AdventCalendarDialog extends JDialog {
 		private boolean today;
 		private final List<RewardIcon> rewards = new ArrayList<>();
 		private final Sprite wood = SpriteStore.get().getSprite("data/gui/panel_wood.jpg");
+		private Timer openingAnimation;
+		private long openingStarted;
+		private double openingProgress = 1;
 
 		Door(final int day) {
 			this.day = day;
@@ -250,6 +256,10 @@ public final class AdventCalendarDialog extends JDialog {
 		}
 
 		void reveal(final List<RewardIcon> icons) {
+			reveal(icons, false);
+		}
+
+		void reveal(final List<RewardIcon> icons, final boolean animate) {
 			if (!"claimed".equals(state)) return;
 			rewards.clear();
 			rewards.addAll(icons);
@@ -259,7 +269,31 @@ public final class AdventCalendarDialog extends JDialog {
 			}
 			setToolTipText(hint.append("</html>").toString());
 			getAccessibleContext().setAccessibleDescription(text("Prezent odebrany") + ". " + rewardDescription());
+			if (animate && !icons.isEmpty()) {
+				stopOpening();
+				openingProgress = 0;
+				openingStarted = System.nanoTime();
+				openingAnimation = new Timer(16, event -> advanceOpening(System.nanoTime() - openingStarted));
+				openingAnimation.start();
+			}
 			repaint();
+		}
+
+		boolean isOpening() {
+			return openingAnimation != null && openingAnimation.isRunning();
+		}
+
+		void advanceOpening(final long elapsedNanos) {
+			if (!isOpening()) return;
+			openingProgress = Math.max(0, Math.min(1, elapsedNanos / 200_000_000.0));
+			if (openingProgress >= 1) stopOpening();
+			repaint();
+		}
+
+		private void stopOpening() {
+			if (openingAnimation != null) openingAnimation.stop();
+			openingAnimation = null;
+			openingProgress = 1;
 		}
 
 		private String rewardDescription() {
@@ -272,6 +306,7 @@ public final class AdventCalendarDialog extends JDialog {
 		}
 
 		void clearRewards() {
+			stopOpening();
 			rewards.clear();
 			setToolTipText(null);
 			repaint();
@@ -292,8 +327,8 @@ public final class AdventCalendarDialog extends JDialog {
 				}
 			}
 			final boolean claimed = "claimed".equals(state);
-			final boolean expired = "expired".equals(state);
-			g.setColor(claimed || expired ? new Color(20, 12, 7, 160)
+			final boolean unavailable = !claimed && !"available".equals(state);
+			g.setColor(claimed || unavailable ? new Color(20, 12, 7, 160)
 					: day % 3 == 0 ? new Color(30, 55, 36, 80) : new Color(65, 20, 18, 45));
 			g.fillRect(0, 0, width, height);
 			g.setColor(new Color(171, 129, 79));
@@ -307,7 +342,7 @@ public final class AdventCalendarDialog extends JDialog {
 				g.drawLine(width / 2 + 1, 3, width / 2 + 1, height - 4);
 			}
 			g.setFont(claimed ? getFont().deriveFont(14f) : new Font("Georgia", Font.BOLD, day == 24 ? 30 : 24));
-			g.setColor(expired ? new Color(157, 139, 113) : new Color(255, 223, 157));
+			g.setColor(unavailable ? new Color(151, 137, 116) : new Color(255, 223, 157));
 			final String number = Integer.toString(day);
 			final int x = claimed ? width - g.getFontMetrics().stringWidth(number) - 7
 					: (width - g.getFontMetrics().stringWidth(number)) / 2;
@@ -318,11 +353,11 @@ public final class AdventCalendarDialog extends JDialog {
 				g.fillRect((width - labelWidth) / 2, height / 2 - 20, labelWidth, 40);
 				g.setColor(new Color(185, 147, 85));
 				g.drawRect((width - labelWidth) / 2, height / 2 - 20, labelWidth, 40);
-				g.setColor(new Color(255, 223, 157));
+				g.setColor(unavailable ? new Color(151, 137, 116) : new Color(255, 223, 157));
 			}
 			g.drawString(number, x, y);
 			if (showingRewards()) {
-				paintRewards(g, width, height);
+				if (!isOpening()) paintRewards(g, width, height);
 			} else if (claimed) {
 				g.setFont(getFont().deriveFont(24f));
 				g.drawString("✓", width / 2 - 9, height / 2 + 9);
@@ -356,13 +391,20 @@ public final class AdventCalendarDialog extends JDialog {
 
 		private void paintLeaf(final Graphics2D g, final int width, final int height, final boolean right) {
 			final int hinge = right ? width - 4 : 4;
-			final int edge = right ? width - leafWidth(width) : leafWidth(width);
+			final double progress = 1 - Math.pow(1 - openingProgress, 3);
+			final int closedEdge = day == 24 ? width / 2 : width - 4;
+			final int openEdge = right ? width - leafWidth(width) : leafWidth(width);
+			final int edge = (int) Math.round(closedEdge + (openEdge - closedEdge) * progress);
+			final int skew = (int) Math.round(8 * progress);
 			final Polygon leaf = new Polygon(new int[] {hinge, edge, edge, hinge},
-					new int[] {4, 12, height - 12, height - 4}, 4);
+					new int[] {4, 4 + skew, height - 4 - skew, height - 4}, 4);
 			final Graphics2D panel = (Graphics2D) g.create();
 			panel.clip(leaf);
+			final int startX = right ? width % wood.getWidth() - wood.getWidth() : 0;
 			for (int y = 0; y < height; y += wood.getHeight()) {
-				wood.draw(panel, right ? width - wood.getWidth() : 0, y);
+				for (int x = startX; x < width; x += wood.getWidth()) {
+					wood.draw(panel, x, y);
+				}
 			}
 			panel.setColor(new Color(30, 16, 7, 80));
 			panel.fillRect(0, 0, width, height);
@@ -370,7 +412,7 @@ public final class AdventCalendarDialog extends JDialog {
 			g.setColor(new Color(182, 135, 76));
 			g.drawPolygon(leaf);
 			g.setColor(new Color(58, 35, 18));
-			g.drawLine(edge + (right ? 2 : -2), 14, edge + (right ? 2 : -2), height - 14);
+			g.drawLine(edge + (right ? 2 : -2), 6 + skew, edge + (right ? 2 : -2), height - 6 - skew);
 			g.setColor(new Color(162, 136, 90));
 			for (final int y : new int[] {height / 3, height * 2 / 3}) {
 				g.fillRect(right ? width - 7 : 2, y, 5, 4);
@@ -385,22 +427,23 @@ public final class AdventCalendarDialog extends JDialog {
 
 		private void paintRewards(final Graphics2D g, final int width, final int height) {
 			final Rectangle area = rewardArea(width, height);
-			int size = 36;
+			int size = day == 24 ? 42 : 36;
 			int columns;
 			int rows;
 			do {
 				columns = Math.max(1, area.width / size);
 				rows = (rewards.size() + columns - 1) / columns;
-				if (rows * size <= area.height) break;
-				size -= 4;
-			} while (size > 12);
-			final int gridWidth = Math.min(columns, rewards.size()) * size;
-			final int x = area.x + (area.width - gridWidth) / 2;
+				if (rows * size <= area.height || size <= 12) break;
+				size = Math.max(12, size - 4);
+			} while (true);
 			final int y = area.y + (area.height - rows * size) / 2;
 			final Graphics2D items = (Graphics2D) g.create();
 			items.clip(area);
 			for (int index = 0; index < rewards.size(); index++) {
-				rewards.get(index).draw(items, x + index % columns * size, y + index / columns * size, size);
+				final int row = index / columns;
+				final int rowItems = Math.min(columns, rewards.size() - row * columns);
+				final int x = area.x + (area.width - rowItems * size) / 2;
+				rewards.get(index).draw(items, x + index % columns * size, y + row * size, size);
 			}
 			items.dispose();
 		}
