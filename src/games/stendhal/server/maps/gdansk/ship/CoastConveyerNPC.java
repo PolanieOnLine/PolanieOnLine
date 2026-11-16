@@ -41,7 +41,7 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 
 	private StendhalRPZone getIslandDockZone() {
 		if (islandDocksZone == null) {
-			islandDocksZone = SingletonRepository.getRPWorld().getZone("0_warszawa_ne");
+			islandDocksZone = SingletonRepository.getRPWorld().getZone("0_warszawa_c");
 		}
 
 		return islandDocksZone;
