@@ -72,7 +72,7 @@ if game:setZone(zone) then
 				hair = Color.RED
 			}
 		},
-		pos = {24, 12},
+		pos = {10, 5},
 		path = {
 			nodes = {
 				{10, 5},
