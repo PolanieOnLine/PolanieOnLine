@@ -465,20 +465,57 @@
 	<!-- END: magowie -->
 
 	<!-- START: wiesniacy -->
+	<creature name="starzec">
+		<type class="human" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
+		<description/>
+		<attributes>
+			<atk value="33"/>
+			<def value="33"/>
+			<armor_type value="none"/>
+			<hp value="88"/>
+			<speed value="0.5"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="19"/>
+		<experience value="333"/>
+		<respawn value="1600"/>
+		<corpse name="human"/>
+		<drops>
+			<item value="money" quantity="[1,24]" probability="100.0"/>
+			<item value="kij" quantity="[1,1]" probability="1.0"/>
+			<item value="pas skórzany" quantity="[1,1]" probability="1.0"/>
+			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
+			<item value="mięta" quantity="[1,2]" probability="10.0"/>
+			<item value="ziemniaki" quantity="[2,6]" probability="20.0"/>
+			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
+		</drops>
+		<equips/>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Dejcies spokój! Za stary jestem do bitki!"/>
+				<sound value="pol-starzec"/>
+			</says>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
 	<creature name="wieśniak">
 		<type class="human" subclass="wiesniak" tileid="pol_wiesniacy.png:0"/>
 		<description/>
 		<attributes>
 			<atk value="66"/>
-			<def value="22"/>
+			<def value="34"/>
 			<armor_type value="none"/>
-			<hp value="133"/>
-			<speed value="1.0"/>
+			<hp value="100"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
-		<level value="19"/>
-		<experience value="333"/>
-		<respawn value="333"/>
+		<level value="24"/>
+		<experience value="444"/>
+		<respawn value="1400"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[1,3]" probability="100.0"/>
@@ -504,57 +541,20 @@
 		</ai>
 	</creature>
 
-	<creature name="starzec">
-		<type class="human" subclass="starzec" tileid="pol_wiesniacy.png:1"/>
-		<description/>
-		<attributes>
-			<atk value="33"/>
-			<def value="33"/>
-			<armor_type value="none"/>
-			<hp value="44"/>
-			<speed value="0.5"/>
-			<size value="1,1"/>
-		</attributes>
-		<level value="24"/>
-		<experience value="444"/>
-		<respawn value="444"/>
-		<corpse name="human"/>
-		<drops>
-			<item value="money" quantity="[1,24]" probability="100.0"/>
-			<item value="kij" quantity="[1,1]" probability="1.0"/>
-			<item value="pas skórzany" quantity="[1,1]" probability="1.0"/>
-			<item value="zielone jabłuszko" quantity="[1,1]" probability="1.0"/>
-			<item value="mięta" quantity="[1,1]" probability="10.0"/>
-			<item value="ziemniaki" quantity="[2,11]" probability="40.0"/>
-			<item value="buteleczka wody" quantity="[1,3]" probability="15.0"/>
-		</drops>
-		<equips/>
-		<ai>
-			<says>
-				<noise state="idle follow fight" value="Dejcies spokój! Za stary jestem do bitki!"/>
-				<sound value="pol-starzec"/>
-			</says>
-			<profile name="brave"/>
-			<profile name="offensive"/>
-			<profile name="human"/>
-			<profile name="patrolling"/>
-		</ai>
-	</creature>
-
 	<creature name="gajowy">
 		<type class="human" subclass="gajowy" tileid="pol_wiesniacy.png:2"/>
 		<description/>
 		<attributes>
 			<atk value="111"/>
-			<def value="22"/>
+			<def value="40"/>
 			<armor_type value="none"/>
-			<hp value="83"/>
-			<speed value="1.0"/>
+			<hp value="133"/>
+			<speed value="0.9"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="29"/>
 		<experience value="570"/>
-		<respawn value="1120"/>
+		<respawn value="1980"/>
 		<corpse name="human"/>
 		<drops>
 			<item value="money" quantity="[2,9]" probability="100.0"/>
