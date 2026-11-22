@@ -68,7 +68,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 		layout.append(catalogue, detail);
 		const cost = this.payment;
 		cost.className = "affix-reroll-cost";
-		cost.append(this.sprite("resource", "transformation_stone"), this.costCount);
+		cost.style.flexWrap = "wrap";
 		this.confirmation.className = "affix-reroll-confirmation";
 		const warning = this.warning;
 		const confirmationButtons = document.createElement("div");
@@ -152,8 +152,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 	}
 
 	private draw(): void {
-		// Remove detached item icons while keeping the permanent cost icon animated.
-		for (const icon of this.sprites.keys()) if (this.items.contains(icon) || this.identity.contains(icon)) this.sprites.delete(icon);
+		this.sprites.clear();
 		this.items.replaceChildren();
 		this.identity.replaceChildren();
 		this.affixes.replaceChildren();
@@ -198,12 +197,43 @@ export class AffixRerollDialog extends DialogContentComponent {
 		this.currentLabel.textContent = String(this.data.current_label || "");
 		if (this.data.rerolled_affix === this.data.selected_affix && this.data.rerolled_affix) this.markLabel(this.currentLabel, String(this.data.current_label || ""));
 		this.newLabel.textContent = String(this.data.new_label || "");
-		const price = Number(this.data.stone_cost) === 3 ? 3 : 1;
-		this.warning.textContent = text(price === 3
-				? "Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę."
-				: "Losowanie zużyje 1 kamień przemiany, nawet jeśli zachowasz obecną cechę.");
-		this.costCount.textContent = `${text("Koszt losowania")}: ${Number(this.data.stone_cost) ? price : "1 / 3"} × ${text("kamień przemiany")} · ${text("Posiadasz")}: ${Math.max(0, Number(this.data.stone_count) || 0)}`;
+		this.drawPayment();
 		this.updateControls();
+	}
+
+	private drawPayment(): void {
+		const materials = this.data.payment_mode === "materials";
+		const price = Number(this.data.stone_cost) === 3 ? 3 : 1;
+		this.warning.textContent = text(materials
+				? "Losowanie zużyje pokazane surowce i monety, nawet jeśli zachowasz obecną cechę."
+				: price === 3 ? "Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę."
+				: "Losowanie zużyje 1 kamień przemiany, nawet jeśli zachowasz obecną cechę.");
+		this.confirmRoll.textContent = text(materials ? "Zużyj surowce i losuj" : "Zużyj kamienie i losuj");
+		const heading = document.createElement("strong");
+		heading.textContent = text("Koszt losowania");
+		heading.style.flexBasis = "100%";
+		this.payment.replaceChildren(heading);
+		const names = this.list(this.data.cost_names);
+		const amounts = this.list(this.data.cost_amounts);
+		const owned = this.list(this.data.cost_owned);
+		const classes = this.list(this.data.cost_classes);
+		const subclasses = this.list(this.data.cost_subclasses);
+		if (!names.length && !materials) {
+			names.push(text("kamień przemiany"));
+			amounts.push(Number(this.data.stone_cost) ? String(price) : "1 / 3");
+			owned.push(String(Math.max(0, Number(this.data.stone_count) || 0)));
+			classes.push("resource"); subclasses.push("transformation_stone");
+		}
+		names.forEach((name, index) => {
+			const row = document.createElement("div");
+			row.className = "affix-reroll-identity";
+			row.style.flex = "1 1 180px";
+			row.style.minWidth = "0";
+			const label = index === 0 ? this.costCount : document.createElement("span");
+			label.textContent = `${amounts[index] || "0"} × ${name} · ${text("Posiadasz")}: ${owned[index] || "0"}`;
+			row.append(this.sprite(classes[index], subclasses[index]), label);
+			this.payment.appendChild(row);
+		});
 	}
 
 	private markLabel(target: HTMLElement, label: string): void {

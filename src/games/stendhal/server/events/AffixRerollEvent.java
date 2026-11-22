@@ -12,6 +12,8 @@ import java.util.Map;
 import games.stendhal.common.Translation;
 import games.stendhal.server.core.rule.rarity.ItemAffixRerollService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
@@ -28,9 +30,9 @@ public final class AffixRerollEvent extends RPEvent {
 
 	public static void generateRPClass() {
 		final RPClass type = new RPClass(NAME);
-		for (final String key : new String[] {"window_id", "phase", "request_id", "status", "selected_affix", "request_token", "offer_token", "item_name", "item_class", "item_subclass", "rerolled_affix"}) type.addAttribute(key, Type.STRING, Definition.PRIVATE);
+		for (final String key : new String[] {"window_id", "phase", "request_id", "status", "selected_affix", "request_token", "offer_token", "item_name", "item_class", "item_subclass", "rerolled_affix", "payment_mode"}) type.addAttribute(key, Type.STRING, Definition.PRIVATE);
 		for (final String key : new String[] {"message", "selected_path", "current_label", "new_label"}) type.addAttribute(key, Type.LONG_STRING, Definition.PRIVATE);
-		for (final String key : new String[] {"candidate_paths", "candidate_names", "candidate_classes", "candidate_subclasses", "candidate_rarities", "candidate_levels", "affix_ids", "affix_labels"}) type.addAttribute(key, Type.VERY_LONG_STRING, Definition.PRIVATE);
+		for (final String key : new String[] {"candidate_paths", "candidate_names", "candidate_classes", "candidate_subclasses", "candidate_rarities", "candidate_levels", "candidate_locked_affixes", "preview_paths", "preview_affix_ids", "preview_affix_labels", "affix_ids", "affix_labels", "cost_names", "cost_amounts", "cost_owned", "cost_classes", "cost_subclasses"}) type.addAttribute(key, Type.VERY_LONG_STRING, Definition.PRIVATE);
 		type.addAttribute("npc_id", Type.INT, Definition.PRIVATE);
 		type.addAttribute("stone_count", Type.INT, Definition.PRIVATE);
 		type.addAttribute("stone_cost", Type.INT, Definition.PRIVATE);
@@ -44,16 +46,30 @@ public final class AffixRerollEvent extends RPEvent {
 		put("window_id", window); put("request_id", request); put("npc_id", npcId);
 		put("phase", phase); put("status", status); put("message", text(player, message(status)));
 		put("stone_cost", 0); put("rerolled_affix", "");
+		put("payment_mode", "stones");
 		put("stone_count", SERVICE.stones(player)); put("can_roll", 0); put("can_accept", 0);
 		for (final String key : new String[] {"selected_path", "selected_affix", "current_label", "new_label", "request_token", "offer_token", "item_name", "item_class", "item_subclass"}) put(key, "");
 		final List<String> paths = new ArrayList<String>(), names = new ArrayList<String>(), classes = new ArrayList<String>(), subclasses = new ArrayList<String>(), rarities = new ArrayList<String>(), levels = new ArrayList<String>();
+		final List<String> lockedAffixes = new ArrayList<>(), previewPaths = new ArrayList<>(), previewIds = new ArrayList<>(), previewLabels = new ArrayList<>();
 		for (final Item candidate : SERVICE.candidates(player)) {
-			paths.add(ItemUpgradeEvent.encodePath(candidate)); names.add(text(player, candidate.getName()));
+			final String path = ItemUpgradeEvent.encodePath(candidate);
+			paths.add(path); names.add(text(player, candidate.getName()));
 			classes.add(candidate.getItemClass()); subclasses.add(candidate.getItemSubclass());
 			rarities.add(candidate.getRarityOrCommon().getId()); levels.add(Integer.toString(candidate.getUpgradeLevel()));
+			lockedAffixes.add(ItemAffixRerollService.state(candidate).getOrDefault("locked", "-"));
+			if ("open".equals(phase)) {
+				for (final String id : SERVICE.affixes(candidate)) {
+					previewPaths.add(path); previewIds.add(id);
+					previewLabels.add(label(player, id, ItemAffixState.getValues(candidate).get(id)));
+				}
+			}
 		}
 		put("candidate_paths", paths); put("candidate_names", names); put("candidate_classes", classes);
 		put("candidate_subclasses", subclasses); put("candidate_rarities", rarities); put("candidate_levels", levels);
+		put("candidate_locked_affixes", lockedAffixes);
+		if ("open".equals(phase)) {
+			put("preview_paths", previewPaths); put("preview_affix_ids", previewIds); put("preview_affix_labels", previewLabels);
+		}
 		final List<String> ids = item == null ? Collections.<String>emptyList() : SERVICE.affixes(item);
 		final List<String> labels = new ArrayList<String>();
 		for (final String id : ids) labels.add(label(player, id, ItemAffixState.getValues(item).get(id)));
@@ -65,7 +81,24 @@ public final class AffixRerollEvent extends RPEvent {
 		final String locked = pending.get("locked");
 		if (locked != null && ItemAffixState.has(item, locked)) put("rerolled_affix", locked);
 		final String pricedAffix = SERVICE.hasPending(item) ? pending.get("old_id") : affix;
-		if (pricedAffix != null && ids.contains(pricedAffix)) put("stone_cost", ItemAffixRerollService.cost(pricedAffix));
+		if (pricedAffix != null && ids.contains(pricedAffix)) {
+			final Map<String, Integer> price = ItemAffixRerollService.quotedCost(item, pricedAffix);
+			put("stone_cost", price.getOrDefault(ItemAffixRerollService.STONE, 0));
+			put("payment_mode", price.containsKey(ItemAffixRerollService.STONE) ? "stones" : "materials");
+			final List<String> costNames = new ArrayList<>(), amounts = new ArrayList<>(), owned = new ArrayList<>(), costClasses = new ArrayList<>(), costSubclasses = new ArrayList<>();
+			for (final Map.Entry<String, Integer> entry : price.entrySet()) {
+				final Item resource = SingletonRepository.getEntityManager().getItem(entry.getKey(), ItemCreationContext.restore());
+				costNames.add(text(player, "money".equals(entry.getKey()) ? "monety" : entry.getKey()));
+				amounts.add(Integer.toString(entry.getValue()));
+				owned.add(Integer.toString(SERVICE.count(player, entry.getKey())));
+				costClasses.add(resource.getItemClass()); costSubclasses.add(resource.getItemSubclass());
+			}
+			put("cost_names", costNames); put("cost_amounts", amounts); put("cost_owned", owned);
+			put("cost_classes", costClasses); put("cost_subclasses", costSubclasses);
+			if ("READY".equals(status) && "materials".equals(get("payment_mode"))) {
+				put("message", text(player, "Możesz ponownie przemienić tę właściwość."));
+			}
+		}
 		if (SERVICE.hasPending(item)) {
 			put("can_accept", SERVICE.validPending(player, item) ? 1 : 0);
 			put("selected_affix", pending.get("old_id")); put("offer_token", pending.get("token"));
@@ -74,7 +107,7 @@ public final class AffixRerollEvent extends RPEvent {
 		} else if (affix != null && ids.contains(affix)) {
 			put("selected_affix", affix); put("current_label", label(player, affix, ItemAffixState.getValues(item).get(affix)));
 			put("request_token", SERVICE.selectionToken(player));
-			put("can_roll", "READY".equals(status) && SERVICE.stones(player) >= ItemAffixRerollService.cost(affix) ? 1 : 0);
+			put("can_roll", "READY".equals(status) && SERVICE.canPay(player, item, affix) ? 1 : 0);
 		}
 	}
 
@@ -113,11 +146,12 @@ public final class AffixRerollEvent extends RPEvent {
 
 	private static String message(final String status) {
 		switch (status) {
-		case "READY": return "Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.";
+		case "READY": return "Od pierwszej próby tylko ta właściwość będzie mogła podlegać dalszym przemianom.";
 		case "OFFER": return "Wybierz nową właściwość albo zachowaj poprzednią.";
 		case "ACCEPTED": return "Przyjęto nową właściwość.";
 		case "KEPT": return "Zachowano poprzednią właściwość.";
 		case "MISSING_STONE": return "Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.";
+		case "MISSING_MATERIALS": return "Brakuje surowców lub monet do kolejnej przemiany. Sprawdź koszt wybranej właściwości.";
 		case "NPC_TOO_FAR": return "Podejdź do Przemira Zaklinacza.";
 		case "CHANGED_ITEM": return "Przedmiot został przeniesiony lub zmieniony. Możesz tylko zachować poprzednią właściwość.";
 		case "INVALID_ITEM": return "Wybierz własny przedmiot z losowymi właściwościami.";

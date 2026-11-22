@@ -62,7 +62,7 @@ public final class AffixRerollAction implements ActionListener {
 			}
 			final String token = SERVICE.select(player, selected, window.affix);
 			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX"
-					: SERVICE.stones(player) >= ItemAffixRerollService.cost(window.affix) ? "READY" : "MISSING_STONE");
+					: SERVICE.priceStatus(player, selected, window.affix));
 			return;
 		}
 		final Item item = ItemUpgradeAction.resolveOwnedItem(player, action);
@@ -76,7 +76,7 @@ public final class AffixRerollAction implements ActionListener {
 			}
 			window.affix = value(action, "affix_id");
 			final String token = SERVICE.select(player, item, window.affix);
-			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX" : SERVICE.stones(player) >= ItemAffixRerollService.cost(window.affix) ? "READY" : "MISSING_STONE"); return;
+			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX" : SERVICE.priceStatus(player, item, window.affix)); return;
 		}
 		if ("roll".equals(command)) {
 			window.affix = value(action, "affix_id");

@@ -47,18 +47,18 @@ public final class ItemAffixRerollService {
 	/** Only carried equipment with genuine, known rolled affixes is offered. */
 	public List<Item> candidates(final Player player) {
 		final List<Item> result = new ArrayList<Item>();
-		for (final RPSlot slot : player.slots(Slots.CARRYING)) collect(slot, result, false);
+		for (final RPSlot slot : player.slots(Slots.CARRYING)) collect(slot, result, null);
 		result.removeIf(item -> !owned(player, item));
 		Collections.sort(result, (a, b) -> a.getName().compareToIgnoreCase(b.getName()));
 		return result;
 	}
 
-	private void collect(final RPSlot slot, final List<Item> result, final boolean stones) {
+	private void collect(final RPSlot slot, final List<Item> result, final String resource) {
 		for (final RPObject object : slot) {
 			if (!(object instanceof Item)) continue;
 			final Item item = (Item) object;
-			if (stones ? isStone(item) : !affixes(item).isEmpty()) result.add(item);
-			for (final RPSlot nested : item.slots()) collect(nested, result, stones);
+			if (resource == null ? !affixes(item).isEmpty() : isResource(item, resource)) result.add(item);
+			for (final RPSlot nested : item.slots()) collect(nested, result, resource);
 		}
 	}
 
@@ -79,22 +79,99 @@ public final class ItemAffixRerollService {
 		return LegendaryItemAffixRegistry.getInstance().get(id) != null ? 3 : 1;
 	}
 
+	/** Stones unlock the permanent slot once; later rolls use the equipment's rarity. */
+	public static Map<String, Integer> cost(final Item item, final String id) {
+		if (!state(item).containsKey("locked")) return Collections.singletonMap(STONE, cost(id));
+		final Map<String, Integer> result = new LinkedHashMap<String, Integer>();
+		final int multiplier = cost(id);
+		switch (item.getRarityOrCommon()) {
+		case RARE:
+			result.put("sztabka srebra", 5 * multiplier);
+			result.put("kieł tygrysi", 5 * multiplier);
+			result.put("money", 20000 * multiplier);
+			break;
+		case EPIC:
+			result.put("sztabka złota", 3 * multiplier);
+			result.put("pióro anioła", 3 * multiplier);
+			result.put("money", 50000 * multiplier);
+			break;
+		case LEGENDARY:
+			result.put("sztabka mithrilu", 2 * multiplier);
+			result.put("pióro serafina", 2 * multiplier);
+			result.put("money", 100000 * multiplier);
+			break;
+		default:
+			result.put("sztabka żelaza", 10 * multiplier);
+			result.put("kieł wilczy", 10 * multiplier);
+			result.put("money", 5000 * multiplier);
+			break;
+		}
+		return Collections.unmodifiableMap(result);
+	}
+
+	/** A pending offer displays the completed payment, even though its slot is now unlocked. */
+	public static Map<String, Integer> quotedCost(final Item item, final String id) {
+		final Map<String, String> offer = state(item);
+		if (!offer.containsKey("token")) return cost(item, id);
+		final Map<String, Integer> result = new LinkedHashMap<String, Integer>();
+		for (final Map.Entry<String, String> entry : offer.entrySet()) {
+			if (entry.getKey().startsWith("paid.")) result.put(entry.getKey().substring(5), Integer.valueOf(entry.getValue()));
+		}
+		// Older pending offers were always paid with transformation stones.
+		return result.isEmpty() ? Collections.singletonMap(STONE, cost(offer.containsKey("old_id") ? offer.get("old_id") : id))
+				: Collections.unmodifiableMap(result);
+	}
+
 	public int stones(final Player player) {
+		return count(player, STONE);
+	}
+
+	public int count(final Player player, final String resource) {
 		long count = 0;
-		for (final Item item : stoneStacks(player)) count += item.getQuantity();
+		for (final Item item : resourceStacks(player, resource)) count += item.getQuantity();
 		return (int) Math.min(Integer.MAX_VALUE, count);
 	}
 
-	private List<Item> stoneStacks(final Player player) {
+	public boolean canPay(final Player player, final Item item, final String id) {
+		for (final Map.Entry<String, Integer> entry : cost(item, id).entrySet()) {
+			if (count(player, entry.getKey()) < entry.getValue()) return false;
+		}
+		return true;
+	}
+
+	public String priceStatus(final Player player, final Item item, final String id) {
+		return canPay(player, item, id) ? "READY"
+				: state(item).containsKey("locked") ? "MISSING_MATERIALS" : "MISSING_STONE";
+	}
+
+	private List<Item> resourceStacks(final Player player, final String resource) {
 		final List<Item> result = new ArrayList<Item>();
-		for (final RPSlot slot : player.slots(Slots.CARRYING)) collect(slot, result, true);
+		if (resource == null || resource.isEmpty()) return result;
+		for (final RPSlot slot : player.slots(Slots.CARRYING)) collect(slot, result, resource);
 		result.removeIf(item -> !owned(player, item));
 		return result;
 	}
 
-	private boolean isStone(final Item item) {
-		return item instanceof StackableItem && STONE.equals(item.getName())
-				&& "resource".equals(item.getItemClass()) && "transformation_stone".equals(item.getItemSubclass());
+	private boolean isResource(final Item item, final String resource) {
+		return item instanceof StackableItem && item.getQuantity() > 0 && resource.equals(item.getName())
+				&& ("money".equals(resource) ? "money" : "resource").equals(item.getItemClass())
+				&& (!STONE.equals(resource) || "transformation_stone".equals(item.getItemSubclass()));
+	}
+
+	/** Snapshot every deduction before touching any stack, including the last required resource. */
+	private List<Charge> payment(final Player player, final Map<String, Integer> price) {
+		final List<Charge> result = new ArrayList<Charge>();
+		for (final Map.Entry<String, Integer> entry : price.entrySet()) {
+			int remaining = entry.getValue();
+			for (final Item stack : resourceStacks(player, entry.getKey())) {
+				final int used = Math.min(remaining, stack.getQuantity());
+				result.add(new Charge((StackableItem) stack, used));
+				remaining -= used;
+				if (remaining == 0) break;
+			}
+			if (remaining > 0) return null;
+		}
+		return result;
 	}
 
 	public synchronized void clearSelection(final Player player) { selections.remove(player); }
@@ -121,12 +198,14 @@ public final class ItemAffixRerollService {
 		if (selected == null || selected.item.get() != item || !selected.id.equals(id)
 				|| !selected.token.equals(token) || !selected.location.equals(location(item))
 				|| !selected.fingerprint.equals(fingerprint(item)) || !affixes(item).contains(id)) return "INVALID_REQUEST";
-		final List<Item> stones = stoneStacks(player);
-		if (stones(player) < cost(id)) return "MISSING_STONE";
+		final Map<String, Integer> price = cost(item, id);
+		final List<Charge> payment = payment(player, price);
+		if (payment == null) return state(item).containsKey("locked") ? "MISSING_MATERIALS" : "MISSING_STONE";
 		final Item replacement = replacement(item, id);
 		if (replacement == null) return "NO_REPLACEMENT";
 		final Map<String, String> before = state(item);
 		final Map<String, String> offer = new LinkedHashMap<String, String>(before);
+		for (final Map.Entry<String, Integer> entry : price.entrySet()) offer.put("paid." + entry.getKey(), entry.getValue().toString());
 		final String newId = changedId(item, replacement, id);
 		offer.put("locked", id);
 		offer.put("owner", player.getName());
@@ -143,13 +222,9 @@ public final class ItemAffixRerollService {
 		}
 		// Both changes are to the same owning player's persisted object tree.
 		// No callbacks, creation or random operation occur after payment.
-		int remaining = cost(id);
-		for (final Item stack : stones) {
-			final int used = Math.min(remaining, stack.getQuantity());
-			if (used < stack.getQuantity()) ((StackableItem) stack).setQuantity(stack.getQuantity() - used);
-			else stack.getContainerSlot().remove(stack.getID());
-			remaining -= used;
-			if (remaining == 0) break;
+		for (final Charge charge : payment) {
+			if (charge.quantity < charge.stack.getQuantity()) charge.stack.setQuantity(charge.stack.getQuantity() - charge.quantity);
+			else charge.stack.getContainerSlot().remove(charge.stack.getID());
 		}
 		replaceState(item, offer);
 		ItemTooltipService.update(item);
@@ -317,6 +392,15 @@ public final class ItemAffixRerollService {
 		final String id, location, fingerprint, token = UUID.randomUUID().toString();
 		Selection(final Item item, final String id, final String location, final String fingerprint) {
 			this.item = new WeakReference<Item>(item); this.id = id; this.location = location; this.fingerprint = fingerprint;
+		}
+	}
+
+	private static final class Charge {
+		final StackableItem stack;
+		final int quantity;
+		Charge(final StackableItem stack, final int quantity) {
+			this.stack = stack;
+			this.quantity = quantity;
 		}
 	}
 }

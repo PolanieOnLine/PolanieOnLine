@@ -116,13 +116,13 @@ test("selection distinguishes duplicate names, displays sprites/rarity/upgrades 
 
 test("payment stays hidden until an affix is selected", () => {
 	const h = harness(), d = h.open(snapshot());
-	assert.equal(d.costCount.parentElement.hidden, true);
+	assert.equal(d.payment.hidden, true);
 	d.items.children[0].onclick(); h.reply(selected());
-	assert.equal(d.costCount.parentElement.hidden, true);
+	assert.equal(d.payment.hidden, true);
 	d.affixes.children[0].onclick(); h.reply(quote());
-	assert.equal(d.costCount.parentElement.hidden, false);
+	assert.equal(d.payment.hidden, false);
 	d.refreshButton.onclick(); h.reply(selected());
-	assert.equal(d.costCount.parentElement.hidden, true);
+	assert.equal(d.payment.hidden, true);
 });
 
 test("roll requires the server quote and explicit cost confirmation; replay and double click cannot roll twice", () => {
@@ -238,6 +238,63 @@ test("legendary quotes show the server's three-stone cost and changed slot marke
 	assert.match(d.confirmation.children[0].textContent, /3/);
 });
 
+test("repeat transformation displays every material and money cost with owned counts and matching icons", () => {
+	const h = harness(), d = h.open({...quote(), phase: "open", payment_mode: "materials", stone_cost: "0",
+		cost_names: ["ruda żelaza", "węgiel", "monety"], cost_amounts: ["12", "6", "900"], cost_owned: ["20", "4", "1200"],
+		cost_classes: ["resource", "resource", "money"], cost_subclasses: ["iron_ore", "coal", "money"]});
+	const rows = d.payment.children.filter(child => child.className === "affix-reroll-identity");
+	assert.equal(rows.length, 3);
+	for (const [index, expected] of ["12 × ruda żelaza · Posiadasz: 20", "6 × węgiel · Posiadasz: 4", "900 × monety · Posiadasz: 1200"].entries()) {
+		assert.equal(rows[index].children[1].textContent, expected);
+	}
+	assert.match(rows[0].children[0].style.backgroundImage, /resource\/iron_ore.png/);
+	assert.match(rows[1].children[0].style.backgroundImage, /resource\/coal.png/);
+	assert.match(rows[2].children[0].style.backgroundImage, /money\/money.png/);
+	d.roll.onclick();
+	assert.equal(d.confirmRoll.textContent, "Zużyj surowce i losuj");
+	assert.match(d.warning.textContent, /surowce i monety/);
+	assert.doesNotMatch(d.warning.textContent, /kamie/);
+	d.confirmRoll.onclick();
+	assert.equal(h.actions.at(-1).request_token, "quote-1");
+	assert.equal(h.actions.at(-1).command, "roll");
+});
+
+test("material costs preserve literal server names and reject malformed icon identifiers", () => {
+	const attack = '<img src=x onerror="alert(1)">';
+	const h = harness(), d = h.open({...quote(), phase: "open", payment_mode: "materials", can_roll: "0",
+		cost_names: [attack, "monety"], cost_amounts: "[7\t250]", cost_owned: "[3\t900]",
+		cost_classes: ['x")},body{color:red}', "money"], cost_subclasses: ["../../secret", "money"]});
+	const rows = d.payment.children.filter(child => child.className === "affix-reroll-identity");
+	assert.equal(rows.length, 2);
+	assert.equal(rows[0].children[1].textContent, `7 × ${attack} · Posiadasz: 3`);
+	assert.equal(rows[0].children[0].style.backgroundImage, undefined);
+	assert.equal(rows[1].children[1].textContent, "250 × monety · Posiadasz: 900");
+	d.roll.onclick(); d.confirmRoll.onclick();
+	assert.equal(d.roll.disabled, true);
+	assert.equal(h.actions.length, 0);
+});
+
+test("repeated refreshes release replaced payment sprites and only animate the current display", () => {
+	const h = harness();
+	const costs = count => ({payment_mode: "materials", stone_cost: "0",
+		cost_names: ["sztabka mithrilu", "pióro serafina", "monety"].slice(0, count),
+		cost_amounts: ["6", "6", "300000"].slice(0, count), cost_owned: ["8", "7", "400000"].slice(0, count),
+		cost_classes: ["resource", "resource", "money"].slice(0, count),
+		cost_subclasses: ["mithril_bar", "pioro_serafina", "gold"].slice(0, count)});
+	const d = h.open({...quote(costs(3)), phase: "open"});
+	assert.equal(d.sprites.size, 6);
+	for (let index = 0; index < 40; index++) {
+		const previous = Array.from(d.sprites.keys());
+		const count = index % 3 + 1;
+		d.refreshButton.onclick();
+		h.reply(quote(costs(count)));
+		assert.equal(d.sprites.size, 3 + count, "only two catalogue icons, one identity icon and the current costs remain");
+		for (const icon of previous) assert.equal(d.sprites.has(icon), false, "replaced icons must stop animating");
+		for (const icon of d.sprites.keys()) assert.equal(d.componentElement.contains(icon), true, "animated icons must stay attached");
+		h.advance(100);
+	}
+});
+
 test("server can_roll is authoritative even with enough stones and a token", () => {
 	for (const changed of [{can_roll: "0"}, {request_token: ""}, {selected_affix: ""}]) {
 		const h = harness(), d = h.open({...quote(changed), phase: "open"});
@@ -259,7 +316,9 @@ const dependencies={marauroa:{marauroa},'../../data/Paths':{Paths:{sprites:${JSO
 function load(code){const exports={};new Function('exports','require',code)(exports,name=>dependencies[name]);return exports;}
 dependencies['../../data/ItemRarity']=load(${JSON.stringify(source("../../data/ItemRarity.ts"))});
 const Dialog=load(${JSON.stringify(source("AffixRerollDialog.ts"))}).AffixRerollDialog;
-const data=${JSON.stringify(offer({phase: "open"}))};Dialog.show(data);const dialog=frames[0].content;
+const data=${JSON.stringify(offer({phase: "open", payment_mode: "materials", stone_cost: "0",
+		cost_names: ["sztabka mithrilu", "pióro serafina", "monety"], cost_amounts: ["6", "6", "300000"], cost_owned: ["8", "7", "400000"],
+		cost_classes: ["resource", "resource", "money"], cost_subclasses: ["mithril_bar", "pioro_serafina", "gold"]}))};Dialog.show(data);const dialog=frames[0].content;
 function reply(extra={}){Dialog.show({...data,phase:'offer',...extra,request_id:actions.at(-1).request_id});}
 window.fixture={Dialog,dialog,actions,reply,data};
 </script>`;

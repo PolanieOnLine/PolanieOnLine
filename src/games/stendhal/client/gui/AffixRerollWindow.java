@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.function.BiPredicate;
 
@@ -57,6 +59,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private final Correlation correlation;
 	private final DefaultListModel<Candidate> items = new DefaultListModel<>();
 	private final DefaultListModel<Affix> affixes = new DefaultListModel<>();
+	private final Map<String, List<Affix>> previews = new HashMap<>();
+	private final Map<String, String> previewMarks = new HashMap<>();
 	private final JList<Candidate> itemList = new JList<>(items);
 	private final JList<Affix> affixList = new JList<>(affixes);
 	private final JLabel current = new JLabel();
@@ -142,7 +146,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final JPanel payment = panel(new BorderLayout(0, 3));
 		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
 		payment.add(cost, BorderLayout.NORTH);
-		cost.setToolTipText(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 300));
+		cost.setToolTipText(html(text("Pierwsza przemiana zwykłego afiksu wymaga 1 kamienia, a legendarnego 3. Kolejne próby kosztują surowce i monety, zależnie od rzadkości przedmiotu i rodzaju afiksu."), 300));
 		payment.add(paymentHint, BorderLayout.CENTER);
 		payment.add(status, BorderLayout.SOUTH);
 		footer.add(payment, BorderLayout.CENTER);
@@ -168,7 +172,13 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 			selectedPath = item.path;
 			selectedAffix = "";
 			requestToken = "";
-			affixes.clear();
+			rerolledAffix = previewMarks.getOrDefault(selectedPath, "");
+			updating = true;
+			try {
+				updateModel(affixes, previews.getOrDefault(selectedPath, Collections.emptyList()), Affix::sameAs);
+				affixList.clearSelection();
+			} finally { updating = false; }
+			showSelectedItem();
 			select();
 		});
 		affixList.addListSelectionListener(change -> {
@@ -262,6 +272,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 
 	/** Serialize requests, keeping the latest click while an earlier selection is in flight. */
 	private void select() {
+		status.setText(html(text(selectedAffix.isEmpty() ? "Wybierz afiks do przemiany." : "Oczekiwanie na odpowiedź…"), 470));
 		if (waiting) {
 			selectionQueued = true;
 			updateControls();
@@ -309,6 +320,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		updating = true;
 		try {
 			final List<Candidate> nextItems = candidates(event);
+			readPreviews(event, nextItems);
 			updateModel(items, nextItems, Candidate::sameAs);
 			int selectedItemIndex = -1;
 			for (int index = 0; index < nextItems.size(); index++) {
@@ -323,6 +335,10 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				if (!ids.get(index).isEmpty()) nextAffixes.add(new Affix(ids.get(index), labels.get(index)));
 			}
 			updateModel(affixes, nextAffixes, Affix::sameAs);
+			if (!selectedPath.isEmpty()) {
+				previews.put(selectedPath, nextAffixes);
+				previewMarks.put(selectedPath, rerolledAffix);
+			}
 			int selectedAffixIndex = -1;
 			for (int index = 0; index < nextAffixes.size(); index++) {
 				if (nextAffixes.get(index).id.equals(selectedAffix)) selectedAffixIndex = index;
@@ -332,11 +348,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		} finally {
 			updating = false;
 		}
-		final Candidate selected = itemList.getSelectedValue();
-		itemName.setText(selected == null ? text("Wybierz przedmiot z listy.") : html(selected.caption(), 230));
-		itemRarity.setText(selected == null ? "" : text(selected.rarity.getPolishDisplayName()));
-		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
-		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
+		showSelectedItem();
 		// The service replaces affixes within the same ordinary or legendary pool.
 		final boolean legendary = selectedAffix.startsWith("legendary_");
 		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"),
@@ -344,8 +356,14 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				text("Obecny afiks:") + " ", legendary));
 		replacement.setText(offerToken.isEmpty() ? ""
 				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12, legendary));
-		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
+		final boolean materials = "materials".equals(value(event, "payment_mode"));
+		cost.setIcon(materials ? null : new ItemIcon("resource", "transformation_stone"));
+		cost.setText(materials ? materialPriceHtml(event) : text("Koszt:") + " "
+				+ ("3".equals(value(event, "stone_cost")) ? "3" : "1") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
+		paymentHint.setText(text(materials
+				? "Surowce i monety są zużywane także przy zachowaniu obecnego afiksu."
+				: "Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
 		final String message = value(event, "message");
 		status.setText(html(message.isEmpty() ? text(offerToken.isEmpty()
 				? "Wybierz przedmiot i jeden afiks do przemiany." : "Wybierz, który afiks zachować." ) : message, 470));
@@ -353,6 +371,51 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		setSize(getPreferredSize());
 		revalidate();
 		repaint();
+	}
+
+	private void showSelectedItem() {
+		final Candidate selected = itemList.getSelectedValue();
+		itemName.setText(selected == null ? text("Wybierz przedmiot z listy.") : html(selected.caption(), 230));
+		itemRarity.setText(selected == null ? "" : text(selected.rarity.getPolishDisplayName()));
+		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
+		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
+	}
+
+	private static String materialPriceHtml(final RPEvent event) {
+		final List<String> names = list(event, "cost_names"), amounts = list(event, "cost_amounts"), owned = list(event, "cost_owned");
+		if (names.size() != amounts.size() || names.size() != owned.size()) return "";
+		final StringBuilder result = new StringBuilder("<html><table cellspacing='0' cellpadding='0'>");
+		for (int index = 0; index < names.size(); index++) {
+			result.append("<tr><td style='padding-right:12px'>").append(index == 0 ? escape(text("Koszt:")) : "")
+					.append("</td><td style='padding-right:20px'>").append(escape(amounts.get(index))).append(" × ")
+					.append(escape(names.get(index))).append("</td><td>").append(escape(text("Posiadasz:"))).append(" ")
+					.append(escape(owned.get(index))).append("</td></tr>");
+		}
+		return result.append("</table></html>").toString();
+	}
+
+	private void readPreviews(final RPEvent event, final List<Candidate> candidates) {
+		final Set<String> paths = new HashSet<>();
+		for (final Candidate item : candidates) paths.add(item.path);
+		previews.keySet().retainAll(paths);
+		previewMarks.keySet().retainAll(paths);
+		final List<String> marks = list(event, "candidate_locked_affixes");
+		if (marks.size() == candidates.size()) {
+			for (int index = 0; index < marks.size(); index++) {
+				previewMarks.put(candidates.get(index).path, "-".equals(marks.get(index)) ? "" : marks.get(index));
+			}
+		}
+		if (!event.has("preview_paths")) return;
+		final List<String> owners = list(event, "preview_paths");
+		final List<String> ids = list(event, "preview_affix_ids");
+		final List<String> labels = list(event, "preview_affix_labels");
+		if (owners.size() != ids.size() || owners.size() != labels.size()) return;
+		for (final String path : paths) previews.put(path, new ArrayList<>());
+		for (int index = 0; index < owners.size(); index++) {
+			if (paths.contains(owners.get(index)) && !ids.get(index).isEmpty()) {
+				previews.get(owners.get(index)).add(new Affix(ids.get(index), labels.get(index)));
+			}
+		}
 	}
 
 	/** Preserve list geometry and scrolling when a reply repeats the same catalogue. */
@@ -392,6 +455,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		correlation.close();
 		items.clear();
 		affixes.clear();
+		previews.clear();
+		previewMarks.clear();
 		requestToken = "";
 		offerToken = "";
 		if (active == this) active = null;

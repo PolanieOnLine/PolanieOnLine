@@ -135,6 +135,25 @@ public class AffixRerollWindowLayoutTest {
 		});
 	}
 
+	@Test public void repeatedRollsDisplayEachMaterialAndOwnedCountWithoutTheStonePrice() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("selected_path", "bag/7"); event.put("selected_affix", "accuracy_bonus");
+			event.put("payment_mode", "materials");
+			event.put("cost_names", Arrays.asList("sztabka srebra", "kieł tygrysi", "monety"));
+			event.put("cost_amounts", Arrays.asList("5", "5", "20000"));
+			event.put("cost_owned", Arrays.asList("4", "10", "30000"));
+			apply(event);
+			final javax.swing.JLabel label = (javax.swing.JLabel) field("cost");
+			assertTrue(label.getText(), label.getText().contains("5 × sztabka srebra"));
+			assertTrue(label.getText(), label.getText().contains("5 × kieł tygrysi"));
+			assertTrue(label.getText(), label.getText().contains("20000 × monety"));
+			assertFalse(label.getText(), label.getText().contains("kamień przemiany"));
+			assertNull(label.getIcon());
+			assertTrue(((javax.swing.JLabel) field("paymentHint")).getText().contains("Surowce i monety"));
+		});
+	}
+
 	@Test public void aLaterItemClickIsQueuedInsteadOfRevertedByThePreviousReply() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			final List<RPAction> actions = new ArrayList<>();
@@ -187,6 +206,43 @@ public class AffixRerollWindowLayoutTest {
 				assertEquals("An existing paid choice takes precedence over queued selection", 0, properties.getSelectedIndex());
 				assertEquals(requests, actions.size());
 				assertFalse(properties.isEnabled());
+			} finally { StendhalClient.resetClient(); }
+		});
+	}
+
+	@Test public void aClickImmediatelyShowsTheServerProvidedItemAndAffixesWithoutWaitingForAQuote() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final List<RPAction> actions = new ArrayList<>();
+			final RPObject owner = (RPObject) field("owner");
+			new MockStendhalClient() {
+				@Override public RPObject getPlayer() { return owner; }
+				@Override public void send(final RPAction action) { actions.add(action); }
+			};
+			try {
+				final RPEvent event = new RPEvent("affix_reroll_event");
+				event.put("candidate_paths", Arrays.asList("bag/1", "bag/2"));
+				event.put("candidate_names", Arrays.asList("miecz chaosu", "ciupaga"));
+				event.put("candidate_classes", Arrays.asList("sword", "axe"));
+				event.put("candidate_subclasses", Arrays.asList("chaos_sword", "ciupaga"));
+				event.put("candidate_rarities", Arrays.asList("rare", "legendary"));
+				event.put("candidate_levels", Arrays.asList("0", "3"));
+				event.put("candidate_locked_affixes", Arrays.asList("-", "legendary_tenacity"));
+				event.put("preview_paths", Arrays.asList("bag/1", "bag/2"));
+				event.put("preview_affix_ids", Arrays.asList("accuracy_bonus", "legendary_tenacity"));
+				event.put("preview_affix_labels", Arrays.asList("Celność: +7%", "Zaciętość: pełny opis."));
+				apply(event);
+				final JList<?> list = (JList<?>) field("itemList");
+				final JList<?> properties = (JList<?>) field("affixList");
+				list.setSelectedIndex(1);
+				assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("ciupaga +3"));
+				assertEquals(1, properties.getModel().getSize());
+				assertEquals("legendary_tenacity", field("rerolledAffix"));
+				assertFalse(((JButton) field("roll")).isEnabled());
+				list.setSelectedIndex(0);
+				assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
+				assertEquals(1, properties.getModel().getSize());
+				assertEquals("", field("rerolledAffix"));
+				assertEquals("Only one request may be in flight", 1, actions.size());
 			} finally { StendhalClient.resetClient(); }
 		});
 	}

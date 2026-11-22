@@ -98,6 +98,39 @@ public class AffixRerollActionTest {
 		return latest();
 	}
 
+	@Test public void openingIncludesPrivateAffixPreviewsForImmediateClientSelection() {
+		AffixRerollAction.open(player, npc);
+		final RPEvent event = latest();
+		assertTrue(event.has("preview_paths"));
+		final int index = event.getList("preview_paths").indexOf(ItemUpgradeEvent.encodePath(item));
+		assertTrue(index >= 0);
+		assertEquals("accuracy_bonus", event.getList("preview_affix_ids").get(index));
+		assertTrue(event.getList("preview_affix_labels").get(index).contains("Celność:"));
+		assertEquals(event.getList("candidate_paths").size(), event.getList("candidate_locked_affixes").size());
+	}
+
+	@Test public void afterUnlockingTheServerPublishesTheMaterialPriceAndItsActualAvailability() {
+		final RPEvent preview = quote();
+		final RPAction roll = command(preview, "roll");
+		roll.put("affix_id", "accuracy_bonus"); roll.put("request_token", preview.get("request_token"));
+		action.onAction(player, roll);
+		assertEquals("stones", latest().get("payment_mode"));
+		assertEquals(Collections.singletonList("kamień przemiany"), latest().getList("cost_names"));
+		final RPAction keep = command(latest(), "keep"); keep.put("offer_token", latest().get("offer_token"));
+		action.onAction(player, keep);
+		AffixRerollAction.open(player, npc);
+		final RPAction select = command(latest(), "select"); select.put("affix_id", "accuracy_bonus");
+		action.onAction(player, select);
+		final RPEvent next = latest();
+		assertEquals("MISSING_MATERIALS", next.get("status"));
+		assertEquals("materials", next.get("payment_mode"));
+		assertEquals(0, next.getInt("stone_cost"));
+		assertEquals(0, next.getInt("can_roll"));
+		assertEquals(java.util.Arrays.asList("sztabka srebra", "kieł tygrysi", "monety"), next.getList("cost_names"));
+		assertEquals(java.util.Arrays.asList("5", "5", "20000"), next.getList("cost_amounts"));
+		assertEquals(3, next.getList("cost_owned").size());
+	}
+
 	@Test public void refreshKeepsTheSelectedItemAndAffixAfterAnInventoryMove() {
 		final RPEvent selected = quote();
 		final RPAction refresh = command(selected, "refresh");
