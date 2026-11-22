@@ -5,15 +5,20 @@ import static org.junit.Assert.*;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -93,8 +98,54 @@ public class AffixRerollWindowLayoutTest {
 	}
 
 	@Test
+	public void idleStateIsCompactAndOnlyShowsTheRollAction() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			assertTrue(window.getWidth() <= 700);
+			assertTrue(window.getHeight() <= 560);
+			assertFalse(((JButton) field("keep")).isVisible());
+			assertFalse(((JButton) field("accept")).isVisible());
+			assertTrue(((JButton) field("roll")).isVisible());
+			layout((Container) window);
+			assertTrue(((JList<?>) field("itemList")).getWidth()
+					< ((JList<?>) field("affixList")).getWidth());
+		});
+	}
+
+	@Test
+	public void catalogueRowsFitWhenInventoryRequiresAScrollbar() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			final List<String> paths = new ArrayList<>();
+			for (int i = 0; i < 24; i++) paths.add("bag/" + i);
+			event.put("candidate_paths", paths);
+			event.put("candidate_names", Collections.nCopies(24, "płaszcz z hartowanego mithrilu"));
+			event.put("candidate_classes", Collections.nCopies(24, "cloak"));
+			event.put("candidate_subclasses", Collections.nCopies(24, "hardened_mithril_cloak"));
+			event.put("candidate_rarities", Collections.nCopies(24, "epic"));
+			event.put("candidate_levels", Collections.nCopies(24, "3"));
+			try {
+				final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
+				apply.setAccessible(true);
+				apply.invoke(window, event);
+			} catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+			layout((Container) window);
+			@SuppressWarnings("unchecked")
+			final JList<AffixRerollWindow.Candidate> list = (JList<AffixRerollWindow.Candidate>) field("itemList");
+			final JScrollPane scroll = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, list);
+			assertTrue(scroll.getVerticalScrollBar().isVisible());
+			final Component cell = list.getCellRenderer().getListCellRendererComponent(list,
+					list.getModel().getElementAt(0), 0, true, false);
+			assertTrue(cell.getPreferredSize() + " / " + scroll.getViewport().getExtentSize(),
+					cell.getPreferredSize().width <= scroll.getViewport().getExtentSize().width);
+		});
+	}
+
+	@Test
 	public void paidOfferKeepsTheSelectedItemAndOnlyEnablesTheChoiceButtons() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
+			final Dimension initialSize = window.getSize();
 			final RPEvent event = new RPEvent("affix_reroll_event");
 			event.put("selected_path", "bag/7");
 			event.put("selected_affix", "legendary_tenacity");
@@ -124,6 +175,25 @@ public class AffixRerollWindowLayoutTest {
 			assertFalse(((JButton) field("roll")).isEnabled());
 			assertTrue(((JButton) field("keep")).isEnabled());
 			assertTrue(((JButton) field("accept")).isEnabled());
+			assertEquals(initialSize, window.getSize());
+			assertFalse(((JButton) field("roll")).isVisible());
+			assertTrue(((JButton) field("keep")).isVisible());
+			assertTrue(((JButton) field("accept")).isVisible());
+			assertTrue(((Component) field("comparisonSection")).isVisible());
+			assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
+			assertNotNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
+			try {
+				final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
+				apply.setAccessible(true);
+				apply.invoke(window, new RPEvent("affix_reroll_event"));
+			} catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+			assertEquals(initialSize, window.getSize());
+			assertTrue(((JButton) field("roll")).isVisible());
+			assertFalse(((JButton) field("keep")).isVisible());
+			assertFalse(((Component) field("comparisonSection")).isVisible());
+			assertNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
 		});
 	}
 
@@ -138,6 +208,13 @@ public class AffixRerollWindowLayoutTest {
 			assertFalse(((JButton) field("roll")).isEnabled());
 			assertFalse(((JButton) field("accept")).isEnabled());
 		});
+	}
+
+	private static void layout(final Container container) {
+		container.doLayout();
+		for (Component child : container.getComponents()) {
+			if (child instanceof Container) layout((Container) child);
+		}
 	}
 
 	private int countSections(final Container parent) {

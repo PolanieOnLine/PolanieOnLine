@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -24,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -41,6 +43,7 @@ import marauroa.common.game.RPObject;
 /** In-game affix service. Only server-authorized items and affixes can be selected. */
 public final class AffixRerollWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
+	private static final int DETAIL_TEXT_WIDTH = 280;
 	private static final Set<String> openedWindows = new HashSet<>();
 	private static RPObject sessionOwner;
 	private static AffixRerollWindow active;
@@ -55,6 +58,10 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private final JLabel replacement = new JLabel();
 	private final JLabel cost = new JLabel();
 	private final JLabel status = new JLabel();
+	private final JLabel itemIcon = new JLabel();
+	private final JLabel itemName = new JLabel();
+	private final JLabel itemRarity = new JLabel();
+	private final JPanel comparisonSection;
 	private final JButton roll = new JButton(text("Przelosuj afiks"));
 	private final JButton keep = new JButton(text("Zachowaj obecny"));
 	private final JButton accept = new JButton(text("Wybierz nowy"));
@@ -80,10 +87,9 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		setMinimizable(false);
 		final JPanel content = panel(new BorderLayout(0, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.add(new JLabel(text("Wybierz przedmiot i jeden afiks do przemiany.")), BorderLayout.NORTH);
+		content.setPreferredSize(new Dimension(660, 530));
 
-		final JPanel center = panel(new BorderLayout(0, 10));
-		final JPanel lists = panel(new GridLayout(1, 2, 10, 0));
+		final JPanel center = panel(new BorderLayout(8, 0));
 		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		affixList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		itemList.setCellRenderer(new CandidateRenderer());
@@ -94,36 +100,54 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 					final int index, final boolean selected, final boolean focus) {
 				final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, selected, focus);
 				styleCell(label, selected);
-				label.setText(value instanceof Affix ? AffixRerollPresentation.labelHtml(((Affix) value).label, ((Affix) value).id.equals(rerolledAffix), 250) : "");
+				label.setText(value instanceof Affix ? AffixRerollPresentation.labelHtml(((Affix) value).label, ((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH) : "");
 				label.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 				return label;
 			}
 		});
-		lists.add(listPanel(text("Przedmioty"), itemList));
-		lists.add(listPanel(text("Afiksy przedmiotu"), affixList));
-		center.add(lists, BorderLayout.CENTER);
+		final JPanel catalog = listPanel(text("Przedmioty"), itemList);
+		catalog.setPreferredSize(new Dimension(210, 1));
+		center.add(catalog, BorderLayout.WEST);
+		final JPanel details = panel(new BorderLayout(0, 8));
+		final JPanel identity = panel(new BorderLayout(8, 0));
+		itemIcon.setPreferredSize(new Dimension(48, 48));
+		identity.add(itemIcon, BorderLayout.WEST);
+		final JPanel names = panel(new GridLayout(0, 1, 0, 3));
+		itemName.setFont(itemName.getFont().deriveFont(Font.BOLD));
+		names.add(itemName);
+		names.add(itemRarity);
+		identity.add(names, BorderLayout.CENTER);
+		details.add(DialogPanel.section(text("Wybrany przedmiot"), identity), BorderLayout.NORTH);
+		final JPanel properties = panel(new BorderLayout(0, 8));
+		properties.add(listPanel(text("Afiksy przedmiotu"), affixList), BorderLayout.CENTER);
 
 		final JPanel comparison = panel(new BorderLayout(0, 6));
-		final JPanel labels = panel(new GridLayout(2, 1, 0, 6));
-		labels.add(current);
-		labels.add(replacement);
-		comparison.add(labels, BorderLayout.CENTER);
-		final JPanel choices = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
-		choices.add(keep);
-		choices.add(accept);
-		comparison.add(choices, BorderLayout.SOUTH);
-		center.add(DialogPanel.section(text("Porównanie afiksów"), comparison), BorderLayout.SOUTH);
+		final JPanel labels = panel(new BorderLayout(0, 8));
+		current.setVerticalAlignment(JLabel.TOP);
+		replacement.setVerticalAlignment(JLabel.TOP);
+		labels.add(current, BorderLayout.NORTH);
+		labels.add(replacement, BorderLayout.CENTER);
+		comparison.add(scrollPane(labels), BorderLayout.CENTER);
+		comparisonSection = DialogPanel.section(text("Porównanie afiksów"), comparison);
+		comparisonSection.setPreferredSize(new Dimension(1, 150));
+		properties.add(comparisonSection, BorderLayout.SOUTH);
+		details.add(properties, BorderLayout.CENTER);
+		center.add(details, BorderLayout.CENTER);
 		content.add(center, BorderLayout.CENTER);
 
-		final JPanel footer = panel(new BorderLayout(0, 7));
-		final JPanel payment = panel(new BorderLayout(0, 4));
+		final JPanel footer = panel(new BorderLayout(0, 6));
+		footer.add(new JSeparator(), BorderLayout.NORTH);
+		final JPanel payment = panel(new BorderLayout(0, 3));
 		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
 		payment.add(cost, BorderLayout.NORTH);
-		payment.add(new JLabel(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 570)), BorderLayout.SOUTH);
-		footer.add(DialogPanel.section(text("Koszt:"), payment), BorderLayout.NORTH);
-		footer.add(status, BorderLayout.CENTER);
+		cost.setToolTipText(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 300));
+		payment.add(new JLabel(text("Kamienie są zużywane także przy zachowaniu obecnego afiksu.")), BorderLayout.CENTER);
+		payment.add(status, BorderLayout.SOUTH);
+		footer.add(payment, BorderLayout.CENTER);
 		final JPanel buttons = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
 		buttons.add(roll);
+		buttons.add(keep);
+		buttons.add(accept);
 		buttons.add(refresh);
 		final JButton close = new JButton(text("Zamknij"));
 		buttons.add(close);
@@ -163,12 +187,15 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				close();
 			} else if (waiting && System.currentTimeMillis() - sentAt >= 8000) {
 				waiting = false;
-				status.setText(html(text("Oczekiwanie na odpowiedź. Odświeżanie stanu przemiany…"), 570));
+				status.setText(html(text("Oczekiwanie na odpowiedź. Odświeżanie stanu przemiany…"), 470));
 				send("refresh");
 			} else if (!waiting && System.currentTimeMillis() - sentAt >= 30000) {
 				send("refresh");
 			}
-			if (isShowing()) itemList.repaint();
+			if (isShowing()) {
+				itemList.repaint();
+				itemIcon.repaint();
+			}
 		});
 		apply(event);
 	}
@@ -270,13 +297,18 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		} finally {
 			updating = false;
 		}
-		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), 550, text("Obecny afiks:") + " "));
-		replacement.setText(html(text("Nowy afiks:") + " " + (offerToken.isEmpty() ? "—" : value(event, "new_label")), 550));
+		final Candidate selected = itemList.getSelectedValue();
+		itemName.setText(selected == null ? text("Wybierz przedmiot z listy.") : html(selected.caption(), 230));
+		itemRarity.setText(selected == null ? "" : text(selected.rarity.getPolishDisplayName()));
+		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
+		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
+		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), DETAIL_TEXT_WIDTH, text("Obecny afiks:") + " "));
+		replacement.setText(html(text("Nowy afiks:") + " " + (offerToken.isEmpty() ? "—" : value(event, "new_label")), DETAIL_TEXT_WIDTH));
 		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
 		final String message = value(event, "message");
 		status.setText(html(message.isEmpty() ? text(offerToken.isEmpty()
-				? "Wybierz przedmiot i jeden afiks do przemiany." : "Wybierz, który afiks zachować." ) : message, 570));
+				? "Wybierz przedmiot i jeden afiks do przemiany." : "Wybierz, który afiks zachować." ) : message, 470));
 		updateControls();
 		setSize(getPreferredSize());
 		revalidate();
@@ -285,6 +317,10 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 
 	private void updateControls() {
 		final boolean offer = !offerToken.isEmpty();
+		comparisonSection.setVisible(offer);
+		roll.setVisible(!offer);
+		keep.setVisible(offer);
+		accept.setVisible(offer);
 		itemList.setEnabled(!waiting && !offer);
 		affixList.setEnabled(!waiting && !offer);
 		roll.setEnabled(!waiting && !offer && canRoll && !requestToken.isEmpty()
@@ -316,13 +352,18 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 
 	private static JPanel listPanel(final String title, final JList<?> list) {
 		list.setOpaque(false);
-		final JScrollPane scroll = new JScrollPane(list);
+		return DialogPanel.section(title, scrollPane(list));
+	}
+
+	private static JScrollPane scrollPane(final javax.swing.JComponent body) {
+		final JScrollPane scroll = new JScrollPane(body);
 		scroll.setOpaque(false);
 		scroll.getViewport().setOpaque(false);
-		scroll.setPreferredSize(new Dimension(280, 180));
+		scroll.setPreferredSize(new Dimension(1, 120));
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setBorder(BorderFactory.createEmptyBorder());
 		scroll.getVerticalScrollBar().setUnitIncrement(16);
-		return DialogPanel.section(title, scroll);
+		return scroll;
 	}
 
 	private static void styleCell(final JLabel label, final boolean selected) {
@@ -436,9 +477,9 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 			styleCell(label, selected);
 			if (value instanceof Candidate) {
 				final Candidate candidate = (Candidate) value;
-				label.setText("<html><font color='" + candidate.rarity.getColorHex() + "'>"
+				label.setText("<html><div style='width:90px'><font color='" + candidate.rarity.getColorHex() + "'>"
 						+ escape(candidate.caption()) + "</font><br>"
-						+ escape(text(candidate.rarity.getPolishDisplayName())) + " · #" + (index + 1) + "</html>");
+						+ escape(text(candidate.rarity.getPolishDisplayName())) + "</div></html>");
 				label.setIcon(new ItemIcon(candidate.itemClass, candidate.subclass));
 				label.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 			}

@@ -1,5 +1,8 @@
 # Java and web client presentation. User names, input, option IDs and chat are not translated.
 Ekwipunek=Equipment
+Wybrany przedmiot=Selected item
+Wybierz przedmiot z listy.=Choose an item from the list.
+Kamienie są zużywane także przy zachowaniu obecnego afiksu.=Stones are also consumed when you keep the current affix.
 Plecak=Backpack
 Skrzynia=Chest
 Zwłoki=Corpse
