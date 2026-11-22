@@ -25,10 +25,38 @@ public class AffixRerollWindowTest {
 	}
 
 	@Test public void listEntriesEscapeBothNamesAndDescriptions() {
-		final String html = AffixRerollPresentation.listLabelHtml("<moc>: +5% & <opis>", true, 280, true);
+		final String html = AffixRerollPresentation.listLabelHtml("<moc>: +5% & <opis>", true, 280, true, false);
 		assertTrue(html, html.contains("<b>&lt;moc&gt;:</b> +5% &amp; &lt;opis&gt;"));
 		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("&lt;moc&gt;"));
 		assertTrue(html, html.contains(ItemRarityPresentation.dividerHtml()));
+		assertFalse(html, html.contains("<moc>") || html.contains("<opis>"));
+	}
+
+	@Test public void ordinaryComparisonsUseTheSameNameAndDescriptionAsTheList() {
+		final String label = "Celność: +7%";
+		final String name = "<b>Celność:</b> +7%";
+		assertTrue(AffixRerollPresentation.labelHtml(label, false, 280, "Obecny afiks: ", false).contains(name));
+		assertTrue(AffixRerollPresentation.offerLabelHtml(label, 268, false).contains(name));
+		assertFalse(AffixRerollPresentation.labelHtml(label, false, 280, "", false).contains("#f28c28"));
+	}
+
+	@Test public void legendaryLabelsShareTheTooltipNumberHighlightingAcrossTheService() {
+		final String label = "Zaciętość: trafienia zwiększają obrażenia o 3%, maksymalnie 15%, przez 5 s.";
+		final String tooltipStyle = LegendaryAffixPresentation.labelHtml(label);
+		assertTrue(tooltipStyle, tooltipStyle.lastIndexOf("</b>") < tooltipStyle.indexOf("trafienia"));
+		assertTrue(AffixRerollPresentation.listLabelHtml(label, true, 280, true, true).contains(tooltipStyle));
+		assertTrue(AffixRerollPresentation.labelHtml(label, true, 280, "Obecny afiks: ", true).contains(tooltipStyle));
+		assertTrue(AffixRerollPresentation.offerLabelHtml(label, 268, true).contains(tooltipStyle));
+		for (String value : Arrays.asList("3%", "15%", "5 s")) {
+			assertTrue(tooltipStyle, tooltipStyle.contains("color='#f3e2b8'>" + value + "</font>"));
+		}
+	}
+
+	@Test public void legendaryDescriptionsAreEscapedBeforeNumericHighlighting() {
+		final String html = AffixRerollPresentation.offerLabelHtml("<moc>: +5% & <opis>", 268, true);
+		assertTrue(html, html.contains("&lt;moc&gt;"));
+		assertTrue(html, html.contains("&amp; &lt;opis&gt;"));
+		assertTrue(html, html.contains("color='#f3e2b8'>+5%</font>"));
 		assertFalse(html, html.contains("<moc>") || html.contains("<opis>"));
 	}
 

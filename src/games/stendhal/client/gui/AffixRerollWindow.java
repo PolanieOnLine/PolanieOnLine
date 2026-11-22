@@ -104,7 +104,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				styleCell(label, selected);
 				label.setFont(label.getFont().deriveFont(Font.PLAIN));
 				label.setText(value instanceof Affix ? AffixRerollPresentation.listLabelHtml(((Affix) value).label,
-						((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH, index < affixes.size() - 1) : "");
+						((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH, index < affixes.size() - 1,
+						((Affix) value).id.startsWith("legendary_")) : "");
 				final Style style = StyleUtil.getStyle();
 				final Color accent = style == null ? new Color(163, 120, 97) : style.getHighLightColor();
 				label.setBorder(BorderFactory.createCompoundBorder(selected
@@ -132,6 +133,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final JPanel comparison = panel(new BorderLayout(0, 6));
 		final JPanel labels = panel(new BorderLayout(0, 8));
 		current.setVerticalAlignment(JLabel.TOP);
+		current.setFont(current.getFont().deriveFont(Font.PLAIN));
 		replacement.setVerticalAlignment(JLabel.TOP);
 		replacement.setFont(replacement.getFont().deriveFont(Font.PLAIN));
 		replacement.setBorder(BorderFactory.createCompoundBorder(
@@ -314,9 +316,13 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		itemRarity.setText(selected == null ? "" : text(selected.rarity.getPolishDisplayName()));
 		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
 		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
-		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), DETAIL_TEXT_WIDTH, text("Obecny afiks:") + " "));
+		// The service replaces affixes within the same ordinary or legendary pool.
+		final boolean legendary = selectedAffix.startsWith("legendary_");
+		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"),
+				!rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), DETAIL_TEXT_WIDTH,
+				text("Obecny afiks:") + " ", legendary));
 		replacement.setText(offerToken.isEmpty() ? ""
-				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12));
+				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12, legendary));
 		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
 		final String message = value(event, "message");

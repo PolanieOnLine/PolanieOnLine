@@ -374,7 +374,24 @@ final class LegendaryAffixPresentation {
 		if (text == null || text.length() == 0) {
 			return;
 		}
-		final String translated = ClientLanguage.getText(text);
+		appendHighlighted(result, ClientLanguage.getText(text), color);
+	}
+
+	/** Apply the tooltip palette to a complete, already translated service label. */
+	static String labelHtml(final String label) {
+		final StringBuilder result = new StringBuilder();
+		final int split = label.indexOf(": ");
+		if (split >= 0) {
+			result.append("<b>");
+			appendHighlighted(result, ItemRarityPresentation.escapeHtml(label.substring(0, split + 1)), LEGENDARY_TEXT_COLOR);
+			result.append("</b> ");
+		}
+		appendHighlighted(result, ItemRarityPresentation.escapeHtml(split < 0 ? label : label.substring(split + 2)), LEGENDARY_TEXT_COLOR);
+		return result.toString();
+	}
+
+	private static void appendHighlighted(final StringBuilder result,
+			final String translated, final String color) {
 		if (LEGENDARY_TEXT_COLOR.equals(color)) {
 			final Matcher numbers = NUMERIC_FRAGMENT.matcher(translated);
 			int start = 0;

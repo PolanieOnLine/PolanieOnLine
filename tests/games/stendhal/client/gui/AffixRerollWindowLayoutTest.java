@@ -116,7 +116,7 @@ public class AffixRerollWindowLayoutTest {
 		SwingUtilities.invokeAndWait(() -> {
 			final RPEvent event = new RPEvent("affix_reroll_event");
 			event.put("affix_ids", Arrays.asList("accuracy_bonus", "legendary_tenacity"));
-			event.put("affix_labels", Arrays.asList("Celność: +7%", "Zaciętość: każde celne trafienie wzmacnia kolejne."));
+			event.put("affix_labels", Arrays.asList("Celność: +7%", "Zaciętość: każde trafienie zwiększa obrażenia o 3% przez 5 s."));
 			try {
 				final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
 				apply.setAccessible(true);
@@ -137,6 +137,8 @@ public class AffixRerollWindowLayoutTest {
 			final javax.swing.JLabel last = (javax.swing.JLabel) list.getCellRenderer()
 					.getListCellRendererComponent(list, list.getModel().getElementAt(1), 1, true, false);
 			assertFalse(last.getText(), last.getText().contains("&#9671;&#9671;"));
+			assertTrue(last.getText(), last.getText().contains("color='#f28c28'"));
+			assertTrue(last.getText(), last.getText().contains("color='#f3e2b8'>3%</font>"));
 			assertEquals(normalInsets, last.getBorder().getBorderInsets(last));
 			assertFalse(((InternalWindow) window).titleLabel.getText().contains("\u2014"));
 		});
@@ -190,7 +192,8 @@ public class AffixRerollWindowLayoutTest {
 			event.put("affix_ids", Arrays.asList("legendary_tenacity"));
 			event.put("affix_labels", Arrays.asList("Zaciętość: każde celne trafienie wzmacnia kolejne."));
 			event.put("offer_token", "paid-offer");
-			event.put("new_label", "Zaciętość: każde celne trafienie wzmacnia kolejne.");
+			event.put("current_label", "Zaciętość: każde trafienie zwiększa obrażenia o 3% przez 5 s.");
+			event.put("new_label", "Przełamanie: zadajesz o 15% więcej obrażeń przez 6 s.");
 			event.put("stone_cost", "3");
 			event.put("stone_count", "12");
 			try {
@@ -213,6 +216,13 @@ public class AffixRerollWindowLayoutTest {
 			assertTrue(((JButton) field("accept")).isVisible());
 			assertTrue(((Component) field("comparisonSection")).isVisible());
 			assertTrue(((javax.swing.JLabel) field("replacement")).getText().contains("<b>NOWY</b>"));
+			final javax.swing.JLabel currentLabel = (javax.swing.JLabel) field("current");
+			assertFalse(currentLabel.getFont().isBold());
+			assertTrue(currentLabel.getText(), currentLabel.getText().contains("color='#f28c28'"));
+			assertTrue(currentLabel.getText(), currentLabel.getText().contains("color='#f3e2b8'>3%</font>"));
+			final String offered = ((javax.swing.JLabel) field("replacement")).getText();
+			assertTrue(offered, offered.contains("color='#f28c28'"));
+			assertTrue(offered, offered.contains("color='#f3e2b8'>15%</font>"));
 			assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
 			assertNotNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
 			try {
