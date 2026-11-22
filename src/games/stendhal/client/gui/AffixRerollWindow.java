@@ -109,7 +109,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				final Color accent = style == null ? new Color(163, 120, 97) : style.getHighLightColor();
 				label.setBorder(BorderFactory.createCompoundBorder(selected
 						? BorderFactory.createLineBorder(accent) : BorderFactory.createEmptyBorder(1, 1, 1, 1),
-						BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+						BorderFactory.createEmptyBorder(0, 6, 0, 6)));
 				return label;
 			}
 		});
@@ -133,6 +133,10 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final JPanel labels = panel(new BorderLayout(0, 8));
 		current.setVerticalAlignment(JLabel.TOP);
 		replacement.setVerticalAlignment(JLabel.TOP);
+		replacement.setFont(replacement.getFont().deriveFont(Font.PLAIN));
+		replacement.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(105, 154, 176)),
+				BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 		labels.add(current, BorderLayout.NORTH);
 		labels.add(replacement, BorderLayout.CENTER);
 		comparison.add(scrollPane(labels), BorderLayout.CENTER);
@@ -311,7 +315,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
 		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
 		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), DETAIL_TEXT_WIDTH, text("Obecny afiks:") + " "));
-		replacement.setText(html(text("Nowy afiks:") + " " + value(event, "new_label"), DETAIL_TEXT_WIDTH));
+		replacement.setText(offerToken.isEmpty() ? ""
+				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12));
 		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
 		final String message = value(event, "message");

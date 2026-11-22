@@ -3228,9 +3228,9 @@ Oto mieniący się kamień przemiany. Przemir Zaklinacz w Tarnowie zużywa go, b
 Afiks wybrany do przemiany=Afijo elegido para la transformación
 Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie.=Un afijo normal cuesta 1 piedra de transformación; uno legendario cuesta 3. Conservar el resultado actual también consume las piedras.
 Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.=A partir de ahora, este será el único afijo que podrás transformar en este objeto. Un afijo normal cuesta 1 piedra y uno legendario, 3.
-Wybierz nową właściwość albo zachowaj poprzednią. Kamienie zostały już zużyte.=Elige el nuevo afijo o conserva el anterior. Las piedras ya se han consumido.
+Wybierz nową właściwość albo zachowaj poprzednią.=Elige el nuevo afijo o conserva el anterior.
 Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.=No tienes suficientes piedras de transformación. Un afijo normal requiere 1 y uno legendario, 3.
-Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte.=Elige qué afijo quieres conservar. Las piedras ya se han consumido.
+Wybierz cechę, którą chcesz zachować.=Elige qué afijo quieres conservar.
 Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę.=El sorteo consumirá 3 piedras de transformación, aunque conserves el afijo actual.
 Zużyj kamienie i losuj=Usar piedras y sortear
 

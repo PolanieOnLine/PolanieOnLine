@@ -303,9 +303,9 @@ Oto mieniący się kamień przemiany. Przemir Zaklinacz w Tarnowie zużywa go, b
 Afiks wybrany do przemiany=Affix chosen for transformation
 Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie.=A regular affix costs 1 transformation stone; a legendary affix costs 3. Keeping the current result also consumes the stones.
 Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.=Only this affix can be transformed on this item from now on. A regular affix costs 1 stone; a legendary affix costs 3.
-Wybierz nową właściwość albo zachowaj poprzednią. Kamienie zostały już zużyte.=Choose the new affix or keep the previous one. The stones have already been consumed.
+Wybierz nową właściwość albo zachowaj poprzednią.=Choose the new affix or keep the previous one.
 Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.=You do not have enough transformation stones. A regular affix requires 1; a legendary affix requires 3.
-Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte.=Choose which affix to keep. The stones have already been consumed.
+Wybierz cechę, którą chcesz zachować.=Choose which affix to keep.
 Losowanie zużyje 3 kamienie przemiany, nawet jeśli zachowasz obecną cechę.=Rolling will consume 3 transformation stones, even if you keep the current affix.
 Zużyj kamienie i losuj=Use stones and roll
 

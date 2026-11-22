@@ -131,6 +131,8 @@ public class AffixRerollWindowLayoutTest {
 			assertTrue(first.getText(), first.getText().contains("&#9671;&#9671;"));
 			assertTrue(first.getText(), first.getText().contains("<b>Celność:</b>"));
 			assertFalse(first.getFont().isBold());
+			assertTrue("Short affix rows should remain compact: " + first.getPreferredSize(),
+					first.getPreferredSize().height <= 34);
 			final java.awt.Insets normalInsets = first.getBorder().getBorderInsets(first);
 			final javax.swing.JLabel last = (javax.swing.JLabel) list.getCellRenderer()
 					.getListCellRendererComponent(list, list.getModel().getElementAt(1), 1, true, false);
@@ -188,6 +190,7 @@ public class AffixRerollWindowLayoutTest {
 			event.put("affix_ids", Arrays.asList("legendary_tenacity"));
 			event.put("affix_labels", Arrays.asList("Zaciętość: każde celne trafienie wzmacnia kolejne."));
 			event.put("offer_token", "paid-offer");
+			event.put("new_label", "Zaciętość: każde celne trafienie wzmacnia kolejne.");
 			event.put("stone_cost", "3");
 			event.put("stone_count", "12");
 			try {
@@ -209,6 +212,7 @@ public class AffixRerollWindowLayoutTest {
 			assertTrue(((JButton) field("keep")).isVisible());
 			assertTrue(((JButton) field("accept")).isVisible());
 			assertTrue(((Component) field("comparisonSection")).isVisible());
+			assertTrue(((javax.swing.JLabel) field("replacement")).getText().contains("<b>NOWY</b>"));
 			assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
 			assertNotNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
 			try {
@@ -222,6 +226,7 @@ public class AffixRerollWindowLayoutTest {
 			assertTrue(((JButton) field("roll")).isVisible());
 			assertFalse(((JButton) field("keep")).isVisible());
 			assertFalse(((Component) field("comparisonSection")).isVisible());
+			assertFalse(((javax.swing.JLabel) field("replacement")).getText().contains("NOWY"));
 			assertNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
 		});
 	}

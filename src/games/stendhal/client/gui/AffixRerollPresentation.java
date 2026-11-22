@@ -31,11 +31,20 @@ final class AffixRerollPresentation {
 
 	static String listLabelHtml(final String label, final boolean marked, final int width,
 			final boolean separator) {
+		return "<html><div style='width:" + width + "px'>" + (marked ? icon() : "") + content(label)
+				+ (separator ? ItemRarityPresentation.dividerHtml() : "") + "</div></html>";
+	}
+
+	static String offerLabelHtml(final String label, final int width) {
+		return "<html><div style='width:" + width + "px'><font color='#9bd9f4'><b>"
+				+ ItemRarityPresentation.escapeHtml(ClientLanguage.getText("NOWY"))
+				+ "</b></font>&nbsp; " + content(label) + "</div></html>";
+	}
+
+	private static String content(final String label) {
 		final int split = label.indexOf(": ");
-		final String content = split < 0 ? ItemRarityPresentation.escapeHtml(label)
+		return split < 0 ? ItemRarityPresentation.escapeHtml(label)
 				: "<b>" + ItemRarityPresentation.escapeHtml(label.substring(0, split + 1))
 						+ "</b> " + ItemRarityPresentation.escapeHtml(label.substring(split + 2));
-		return "<html><div style='width:" + width + "px'>" + (marked ? icon() : "") + content
-				+ (separator ? ItemRarityPresentation.dividerHtml() : "") + "</div></html>";
 	}
 }

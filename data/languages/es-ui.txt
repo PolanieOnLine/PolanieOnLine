@@ -171,6 +171,7 @@ Nikt teraz nie walczy na arenie. Spróbuj ponownie za chwilę.=Ahora no hay nadi
 Podejdź bliżej, aby porozmawiać.=Acércate para hablar.
 Ekwipunek=Equipo
 Wybrany przedmiot=Objeto seleccionado
+NOWY=NUEVO
 Wybierz przedmiot z listy.=Elige un objeto de la lista.
 Kamienie są zużywane także przy zachowaniu obecnego afiksu.=Las piedras también se consumen si conservas el afijo actual.
 Plecak=Mochila

@@ -145,7 +145,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 		this.recoveryRequired = false;
 		this.confirming = false;
 		this.status.textContent = String(data.message || text(this.hasOffer()
-			? "Wybierz cechę, którą chcesz zachować. Kamienie zostały już zużyte."
+			? "Wybierz cechę, którą chcesz zachować."
 			: "Wybierz cechę, którą chcesz wylosować ponownie."));
 		this.draw();
 	}

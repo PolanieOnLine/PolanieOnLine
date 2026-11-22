@@ -94,7 +94,7 @@ public final class AffixRerollEvent extends RPEvent {
 	private static String message(final String status) {
 		switch (status) {
 		case "READY": return "Wybraną właściwość przypiszesz do przemiany na stałe. Zwykły afiks kosztuje 1 kamień, a legendarny 3 kamienie.";
-		case "OFFER": return "Wybierz nową właściwość albo zachowaj poprzednią. Kamienie zostały już zużyte.";
+		case "OFFER": return "Wybierz nową właściwość albo zachowaj poprzednią.";
 		case "ACCEPTED": return "Przyjęto nową właściwość.";
 		case "KEPT": return "Zachowano poprzednią właściwość.";
 		case "MISSING_STONE": return "Nie masz dość kamieni przemiany. Zwykły afiks wymaga 1, a legendarny 3 kamieni.";
