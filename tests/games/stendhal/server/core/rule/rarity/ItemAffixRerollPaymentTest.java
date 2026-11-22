@@ -74,7 +74,7 @@ public class ItemAffixRerollPaymentTest {
 		case EPIC:
 			return price("sztabka złota", 64, "sztabka platyny", 32, "pióro anioła", 24, "pióro archanioła", 16, "kieł smoka", 16, "pazur czerwonego smoka", 12, "money", 200000);
 		case LEGENDARY:
-			return price("sztabka mithrilu", 48, "sztabka czarnego żelaza", 32, "pióro serafina", 24, "pióro cherubina", 16, "pióro lilith", 16, "kieł złotej kostuchy", 12, "money", 400000);
+			return price("sztabka mithrilu", 48, "sztabka czarnego żelaza", 32, "pióro serafina", 24, "pióro cherubina", 16, "pióro lilith", 16, "kieł złotej kostuchy", 1, "money", 400000);
 		default:
 			return price("sztabka żelaza", 80, "kieł wilczy", 32, "pazury wilcze", 32, "skóra zwierzęca", 24, "money", 20000);
 		}
@@ -103,13 +103,13 @@ public class ItemAffixRerollPaymentTest {
 		}
 	}
 
-	@Test public void legendaryAffixRepeatsChargeTripleMaterialsAndMoneyWithoutStones() {
+	@Test public void legendaryAffixRepeatsChargeTripleMaterialsButOnlyOneRareFang() {
 		final Player player = PlayerTestHelper.createPlayer("legendary_payment");
 		final Item item = item(player, ItemRarity.LEGENDARY, "legendary_deep_wounds");
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 		resource(player, ItemAffixRerollService.STONE, 3);
 		keep(service, player, item, "legendary_deep_wounds");
-		final Map<String, Integer> price = price("sztabka mithrilu", 144, "sztabka czarnego żelaza", 96, "pióro serafina", 72, "pióro cherubina", 48, "pióro lilith", 48, "kieł złotej kostuchy", 36, "money", 1200000);
+		final Map<String, Integer> price = price("sztabka mithrilu", 144, "sztabka czarnego żelaza", 96, "pióro serafina", 72, "pióro cherubina", 48, "pióro lilith", 48, "kieł złotej kostuchy", 1, "money", 1200000);
 		assertEquals(price, ItemAffixRerollService.cost(item, "legendary_deep_wounds"));
 		final Map<String, StackableItem> materials = fund(player, price, 1);
 		keep(service, player, item, "legendary_deep_wounds");

@@ -318,7 +318,7 @@ dependencies['../../data/ItemRarity']=load(${JSON.stringify(source("../../data/I
 const Dialog=load(${JSON.stringify(source("AffixRerollDialog.ts"))}).AffixRerollDialog;
 const data=${JSON.stringify(offer({phase: "open", payment_mode: "materials", stone_cost: "0",
 		cost_names: ["sztabka mithrilu", "sztabka czarnego żelaza", "pióro serafina", "pióro cherubina", "pióro lilith", "kieł złotej kostuchy", "monety"],
-		cost_amounts: ["144", "96", "72", "48", "48", "36", "1200000"], cost_owned: ["400", "300", "200", "100", "100", "100", "97689300"],
+		cost_amounts: ["144", "96", "72", "48", "48", "1", "1200000"], cost_owned: ["400", "300", "200", "100", "100", "100", "97689300"],
 		cost_classes: ["resource", "resource", "resource", "resource", "resource", "resource", "money"],
 		cost_subclasses: ["mithril_bar", "black_iron_bar", "pioro_serafina", "pioro_cherubina", "pioro_lilith", "golden_scythe_fang", "gold"]}))};Dialog.show(data);const dialog=frames[0].content;
 function reply(extra={}){Dialog.show({...data,phase:'offer',...extra,request_id:actions.at(-1).request_id});}

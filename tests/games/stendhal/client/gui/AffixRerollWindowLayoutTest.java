@@ -170,7 +170,7 @@ public class AffixRerollWindowLayoutTest {
 			event.put("new_label", "Przełamanie: zadajesz o 15% więcej obrażeń przez 6 s.");
 			event.put("offer_token", "paid"); event.put("payment_mode", "materials");
 			event.put("cost_names", Arrays.asList("sztabka mithrilu", "sztabka czarnego żelaza", "pióro serafina", "pióro cherubina", "pióro lilith", "kieł złotej kostuchy", "monety"));
-			event.put("cost_amounts", Arrays.asList("144", "96", "72", "48", "48", "36", "1200000"));
+			event.put("cost_amounts", Arrays.asList("144", "96", "72", "48", "48", "1", "1200000"));
 			event.put("cost_owned", Arrays.asList("400", "300", "200", "100", "100", "100", "97689300"));
 			apply(event);
 			layout((Container) window);

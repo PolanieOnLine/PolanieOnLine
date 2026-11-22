@@ -108,7 +108,7 @@ public final class ItemAffixRerollService {
 			result.put("pióro serafina", 24 * multiplier);
 			result.put("pióro cherubina", 16 * multiplier);
 			result.put("pióro lilith", 16 * multiplier);
-			result.put("kieł złotej kostuchy", 12 * multiplier);
+			result.put("kieł złotej kostuchy", 1);
 			result.put("money", 400000 * multiplier);
 			break;
 		default:
