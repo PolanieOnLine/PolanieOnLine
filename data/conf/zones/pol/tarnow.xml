@@ -359,10 +359,7 @@ Przemiana właściwości wyposażenia</attribute>
 		<configurator class-name="games.stendhal.server.maps.tarnow.enchanter.EnchanterNPC"/>
 
 		<entity x="7" y="6">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Description" />
-			<attribute name="text">Stół zaklinacza, pełen narzędzi, kamieni i przyborów do przemiany właściwości wyposażenia.</attribute>
-			<attribute name="class">transparent</attribute>
-			<attribute name="width">2</attribute>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.useable.AffixWorkbench" />
 		</entity>
 
 		<portal x="8" y="12" ref="enchanter_workshop_exit">

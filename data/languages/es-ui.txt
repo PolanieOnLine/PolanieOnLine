@@ -991,6 +991,8 @@ maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymy
 
 Rozwijanie glifów=Desarrollo de glifos
 Stół runiczny=Mesa rúnica
+Stół zaklinacza=Mesa del encantador
+Oto stół zaklinacza. Leżą na nim narzędzia i kamienie do przemiany właściwości wyposażenia. Użyj go, aby skorzystać z pomocy Przemira.=Ves una mesa de encantamiento. Sobre ella hay herramientas y piedras para transformar las propiedades del equipo. Úsala para solicitar la ayuda de Przemir.
 Przeciągnij tutaj glif=Arrastra un glifo aquí
 Przeciągnij tutaj glif z ekwipunku.=Arrastra aquí un glifo de tu inventario.
 Glif pozostanie w ekwipunku.=El glifo permanecerá en tu inventario.

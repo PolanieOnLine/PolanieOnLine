@@ -821,6 +821,8 @@ maksymalnych PW regeneracji co 5 s (limit 20 PW; po 10 s bez zadawania i otrzymy
 
 Rozwijanie glifów=Glyph development
 Stół runiczny=Runic workbench
+Stół zaklinacza=Enchanter's workbench
+Oto stół zaklinacza. Leżą na nim narzędzia i kamienie do przemiany właściwości wyposażenia. Użyj go, aby skorzystać z pomocy Przemira.=You see an enchanter's workbench. Tools and stones for transforming equipment properties lie on it. Use it to seek Przemir's help.
 Przeciągnij tutaj glif=Drag a glyph here
 Przeciągnij tutaj glif z ekwipunku.=Drag a glyph here from your inventory.
 Glif pozostanie w ekwipunku.=The glyph will remain in your inventory.
