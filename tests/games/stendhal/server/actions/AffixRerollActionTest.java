@@ -244,6 +244,22 @@ public class AffixRerollActionTest {
 		assertTrue(AffixRerollEvent.label(player, "accuracy_bonus", "7").contains("+7%"));
 	}
 
+	@Test public void ordinaryCombatAffixesExplainTheirEffectAndKeepTheActualRolledValue() {
+		for (final String[] effect : new String[][] {
+			{"steady_hand", "minimalne obrażenia"}, {"poison_potency", "obrażenia trucizny"},
+			{"bleed_potency", "obrażenia krwawienia"}, {"vigilance", "Pierwsze trafienie"},
+			{"ammo_conservation", "nie zużyje amunicji"}, {"armor_crushing", "opancerzeniu przeciwnika"},
+			{"critical_hardening", "otrzymywanych obrażeń krytycznych"}, {"spiked_plating", "ciosów wręcz"}
+		}) {
+			final String label = AffixRerollEvent.label(player, effect[0], "0.075");
+			assertTrue(label, label.contains(effect[1]));
+			assertTrue(label, label.contains("7.5%"));
+			assertFalse(label, label.contains("{0}") || label.contains("{number"));
+		}
+		player.setLanguage("en");
+		assertTrue(AffixRerollEvent.label(player, "steady_hand", "0.075").contains("minimum weapon damage by 7.5%"));
+	}
+
 	@Test public void privateServiceEventIsExcludedFromOtherPlayersPerceptions() throws Exception {
 		quote();
 		for (final DetailLevel level : new DetailLevel[] {DetailLevel.PRIVATE, DetailLevel.NORMAL}) {

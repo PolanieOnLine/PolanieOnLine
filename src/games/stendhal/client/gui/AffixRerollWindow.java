@@ -62,6 +62,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private final JLabel current = new JLabel();
 	private final JLabel replacement = new JLabel();
 	private final JLabel cost = new JLabel();
+	private final JLabel paymentHint = new JLabel(text("Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
 	private final JLabel status = new JLabel();
 	private final JLabel itemIcon = new JLabel();
 	private final JLabel itemName = new JLabel();
@@ -81,6 +82,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private boolean canAccept;
 	private boolean updating;
 	private boolean waiting;
+	private boolean selectionQueued;
+	private String waitingCommand = "";
 	private boolean closed;
 	private long sentAt;
 
@@ -140,7 +143,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
 		payment.add(cost, BorderLayout.NORTH);
 		cost.setToolTipText(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 300));
-		payment.add(new JLabel(text("Kamienie są zużywane także przy zachowaniu obecnego afiksu.")), BorderLayout.CENTER);
+		payment.add(paymentHint, BorderLayout.CENTER);
 		payment.add(status, BorderLayout.SOUTH);
 		footer.add(payment, BorderLayout.CENTER);
 		final JPanel buttons = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
@@ -159,21 +162,22 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		setContent(content);
 
 		itemList.addListSelectionListener(change -> {
-			if (change.getValueIsAdjusting() || updating || waiting || !offerToken.isEmpty()) return;
+			if (updating || !canSelect()) return;
 			final Candidate item = itemList.getSelectedValue();
 			if (item == null || item.path.equals(selectedPath)) return;
 			selectedPath = item.path;
 			selectedAffix = "";
 			requestToken = "";
-			send("select");
+			affixes.clear();
+			select();
 		});
 		affixList.addListSelectionListener(change -> {
-			if (change.getValueIsAdjusting() || updating || waiting || !offerToken.isEmpty()) return;
+			if (updating || !canSelect()) return;
 			final Affix affix = affixList.getSelectedValue();
 			if (affix == null || affix.id.equals(selectedAffix)) return;
 			selectedAffix = affix.id;
 			requestToken = "";
-			send("select");
+			select();
 		});
 		roll.addActionListener(change -> { if (roll.isEnabled()) send("roll"); });
 		keep.addActionListener(change -> { if (keep.isEnabled()) send("keep"); });
@@ -245,9 +249,25 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		if (closed || waiting || StendhalClient.get().getPlayer() != owner) return;
 		final RPAction action = action(command);
 		waiting = true;
+		waitingCommand = command;
 		sentAt = System.currentTimeMillis();
 		updateControls();
 		StendhalClient.get().send(action);
+	}
+
+	private boolean canSelect() {
+		return !closed && offerToken.isEmpty()
+				&& (!waiting || "select".equals(waitingCommand) || "refresh".equals(waitingCommand));
+	}
+
+	/** Serialize requests, keeping the latest click while an earlier selection is in flight. */
+	private void select() {
+		if (waiting) {
+			selectionQueued = true;
+			updateControls();
+		} else {
+			send("select");
+		}
 	}
 
 	private RPAction action(final String command) {
@@ -271,6 +291,14 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private void apply(final RPEvent event) {
 		waiting = false;
 		sentAt = System.currentTimeMillis();
+		if (selectionQueued) {
+			selectionQueued = false;
+			// A paid offer always takes precedence. Unpaid replies must not undo a later click.
+			if (value(event, "offer_token").isEmpty()) {
+				send("select");
+				return;
+			}
+		}
 		selectedPath = value(event, "selected_path");
 		selectedAffix = value(event, "selected_affix");
 		requestToken = value(event, "request_token");
@@ -339,12 +367,14 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 
 	private void updateControls() {
 		final boolean offer = !offerToken.isEmpty();
+		cost.setVisible(!selectedAffix.isEmpty() && !waiting);
+		paymentHint.setVisible(!selectedAffix.isEmpty() && !waiting);
 		comparisonSection.setVisible(offer);
 		roll.setVisible(!offer);
 		keep.setVisible(offer);
 		accept.setVisible(offer);
-		itemList.setEnabled(!waiting && !offer);
-		affixList.setEnabled(!waiting && !offer);
+		itemList.setEnabled(canSelect());
+		affixList.setEnabled(canSelect());
 		roll.setEnabled(!waiting && !offer && canRoll && !requestToken.isEmpty()
 				&& !selectedPath.isEmpty() && !selectedAffix.isEmpty());
 		keep.setEnabled(!waiting && offer);

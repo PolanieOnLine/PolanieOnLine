@@ -34,10 +34,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import games.stendhal.client.gui.styled.StyleUtil;
+import games.stendhal.client.MockStendhalClient;
+import games.stendhal.client.StendhalClient;
 import games.stendhal.client.gui.styled.StyledLookAndFeel;
 import games.stendhal.client.gui.styled.styles.StyleFactory;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.RPAction;
 
 /** The service must share the game window manager and its current theme. */
 public class AffixRerollWindowLayoutTest {
@@ -110,6 +113,81 @@ public class AffixRerollWindowLayoutTest {
 			layout((Container) window);
 			assertTrue(((JList<?>) field("itemList")).getWidth()
 					< ((JList<?>) field("affixList")).getWidth());
+		});
+	}
+
+	@Test public void paymentDetailsAppearOnlyAfterChoosingAnAffix() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			assertFalse(((Component) field("cost")).isVisible());
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("selected_path", "bag/7");
+			event.put("stone_cost", 3);
+			apply(event);
+			assertFalse(((Component) field("cost")).isVisible());
+			event.put("selected_affix", "legendary_tenacity");
+			apply(event);
+			assertTrue(((Component) field("cost")).isVisible());
+			assertTrue(((Component) field("paymentHint")).isVisible());
+			event.put("selected_affix", "");
+			apply(event);
+			assertFalse(((Component) field("cost")).isVisible());
+			assertFalse(((Component) field("paymentHint")).isVisible());
+		});
+	}
+
+	@Test public void aLaterItemClickIsQueuedInsteadOfRevertedByThePreviousReply() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final List<RPAction> actions = new ArrayList<>();
+			final RPObject owner = (RPObject) field("owner");
+			new MockStendhalClient() {
+				@Override public RPObject getPlayer() { return owner; }
+				@Override public void send(final RPAction action) { actions.add(action); }
+			};
+			try {
+				final RPEvent event = new RPEvent("affix_reroll_event");
+				event.put("candidate_paths", Arrays.asList("bag/1", "bag/2", "bag/3"));
+				event.put("candidate_names", Collections.nCopies(3, "miecz chaosu"));
+				event.put("candidate_classes", Collections.nCopies(3, "sword"));
+				event.put("candidate_subclasses", Collections.nCopies(3, "chaos_sword"));
+				event.put("candidate_rarities", Collections.nCopies(3, "rare"));
+				event.put("candidate_levels", Collections.nCopies(3, "0"));
+				apply(event);
+				final JList<?> list = (JList<?>) field("itemList");
+				list.setSelectedIndex(1);
+				assertEquals(1, actions.size());
+				list.setSelectedIndex(2);
+				assertEquals("Do not issue parallel selections", 1, actions.size());
+				event.put("selected_path", "bag/2");
+				apply(event);
+				assertEquals("Old replies must not undo the latest click", 2, list.getSelectedIndex());
+				assertTrue("A pending selection must not block the next click", list.isEnabled());
+				assertEquals(2, actions.size());
+				assertEquals(Arrays.asList("bag", "3"), actions.get(1).getList("target_path"));
+				event.put("selected_path", "bag/3");
+				event.put("affix_ids", Arrays.asList("accuracy_bonus", "critical_chance"));
+				event.put("affix_labels", Arrays.asList("Celność: +7%", "Szansa na trafienie krytyczne: +3%"));
+				apply(event);
+				assertEquals(2, list.getSelectedIndex());
+				final JList<?> properties = (JList<?>) field("affixList");
+				properties.setSelectedIndex(0);
+				properties.setSelectedIndex(1);
+				event.put("selected_affix", "accuracy_bonus");
+				apply(event);
+				assertEquals("Old replies must not undo the latest affix click", 1, properties.getSelectedIndex());
+				assertEquals("critical_chance", actions.get(actions.size() - 1).get("affix_id"));
+				event.put("selected_affix", "critical_chance");
+				apply(event);
+				assertEquals(1, properties.getSelectedIndex());
+				properties.setSelectedIndex(0);
+				properties.setSelectedIndex(1);
+				final int requests = actions.size();
+				event.put("offer_token", "existing-paid-offer");
+				event.put("selected_affix", "accuracy_bonus");
+				apply(event);
+				assertEquals("An existing paid choice takes precedence over queued selection", 0, properties.getSelectedIndex());
+				assertEquals(requests, actions.size());
+				assertFalse(properties.isEnabled());
+			} finally { StendhalClient.resetClient(); }
 		});
 	}
 

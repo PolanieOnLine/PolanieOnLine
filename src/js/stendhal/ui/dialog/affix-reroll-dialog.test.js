@@ -114,6 +114,17 @@ test("selection distinguishes duplicate names, displays sprites/rarity/upgrades 
 	assert.equal(d.roll.disabled, true);
 });
 
+test("payment stays hidden until an affix is selected", () => {
+	const h = harness(), d = h.open(snapshot());
+	assert.equal(d.costCount.parentElement.hidden, true);
+	d.items.children[0].onclick(); h.reply(selected());
+	assert.equal(d.costCount.parentElement.hidden, true);
+	d.affixes.children[0].onclick(); h.reply(quote());
+	assert.equal(d.costCount.parentElement.hidden, false);
+	d.refreshButton.onclick(); h.reply(selected());
+	assert.equal(d.costCount.parentElement.hidden, true);
+});
+
 test("roll requires the server quote and explicit cost confirmation; replay and double click cannot roll twice", () => {
 	const h = harness(), d = choose(h);
 	assert.equal(d.roll.disabled, false);

@@ -90,7 +90,25 @@ public final class AffixRerollEvent extends RPEvent {
 		final boolean points = id.equals("accuracy_bonus") || id.equals("critical_chance") || id.equals("lifesteal_effectiveness");
 		final String number = (flat || points ? value : value.multiply(BigDecimal.valueOf(100)))
 				.setScale(1, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
+		final String description = regularEffect(id);
+		if (description != null) return text(player, name) + ": " + text(player, description)
+				.replace("{0}", number).replace("{number:0}", number);
 		return text(player, name) + ": +" + number + (flat ? "" : "%");
+	}
+
+	/** Use the same effect descriptions and translation keys as the item tooltip. */
+	private static String regularEffect(final String id) {
+		switch (id) {
+		case "steady_hand": return "Zwiększa minimalne obrażenia broni o {0}%, bez zmiany maksymalnych obrażeń.";
+		case "poison_potency": return "Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%.";
+		case "bleed_potency": return "Zwiększa obrażenia krwawienia nakładanego bronią o {0}%, łącznie maksymalnie o 50%.";
+		case "vigilance": return "Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%.";
+		case "ammo_conservation": return "{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej.";
+		case "armor_crushing": return "{number:0}% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.";
+		case "critical_hardening": return "{number:0}% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.";
+		case "spiked_plating": return "odbija {0}% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%.";
+		default: return null;
+		}
 	}
 
 	private static String message(final String status) {

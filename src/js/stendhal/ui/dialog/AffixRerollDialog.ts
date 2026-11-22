@@ -23,6 +23,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 	private readonly currentLabel = document.createElement("p");
 	private readonly newLabel = document.createElement("p");
 	private readonly costCount = document.createElement("span");
+	private readonly payment = document.createElement("div");
 	private readonly status = document.createElement("div");
 	private readonly confirmation = document.createElement("div");
 	private readonly warning = document.createElement("p");
@@ -65,7 +66,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 		this.comparison.append(this.section("Obecna cecha", this.currentLabel), this.section("Nowa cecha", this.newLabel));
 		detail.appendChild(this.comparison);
 		layout.append(catalogue, detail);
-		const cost = document.createElement("div");
+		const cost = this.payment;
 		cost.className = "affix-reroll-cost";
 		cost.append(this.sprite("resource", "transformation_stone"), this.costCount);
 		this.confirmation.className = "affix-reroll-confirmation";
@@ -223,6 +224,7 @@ export class AffixRerollDialog extends DialogContentComponent {
 
 	private updateControls(): void {
 		const blocked = this.closed || this.waiting || this.recoveryRequired;
+		this.payment.hidden = !this.data.selected_affix || this.waiting;
 		this.componentElement.setAttribute("aria-busy", String(this.waiting));
 		for (const button of Array.from(this.items.children) as HTMLButtonElement[]) button.disabled = blocked || this.hasOffer() || this.confirming;
 		for (const button of Array.from(this.affixes.children) as HTMLButtonElement[]) button.disabled = blocked || this.hasOffer() || this.confirming;
