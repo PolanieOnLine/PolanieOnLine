@@ -417,10 +417,14 @@ public final class ItemRarityPresentation {
 	}
 
 	private static void appendDivider(final StringBuilder tooltip) {
-		tooltip.append("<div style='text-align:center'><font size='-1' color='")
-				.append(getAccentColor())
-				.append("'>&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;")
-				.append("&#9472;&#9472;&#9472;&#9472;</font></div>");
+		tooltip.append(dividerHtml());
+	}
+
+	/** Shared ornament for item details and the affix selection list. */
+	static String dividerHtml() {
+		return "<div style='text-align:center'><font size='-1' color='" + getAccentColor()
+				+ "'>&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;"
+				+ "&#9472;&#9472;&#9472;&#9472;</font></div>";
 	}
 
 	private static String getWeaponSpeedLabel(final double attacksPerSecond) {

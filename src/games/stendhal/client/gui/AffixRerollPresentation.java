@@ -28,4 +28,14 @@ final class AffixRerollPresentation {
 		return "<html><div style='width:" + width + "px'>" + ItemRarityPresentation.escapeHtml(caption)
 				+ (marked ? icon() : "") + escaped + "</div></html>";
 	}
+
+	static String listLabelHtml(final String label, final boolean marked, final int width,
+			final boolean separator) {
+		final int split = label.indexOf(": ");
+		final String content = split < 0 ? ItemRarityPresentation.escapeHtml(label)
+				: "<b>" + ItemRarityPresentation.escapeHtml(label.substring(0, split + 1))
+						+ "</b> " + ItemRarityPresentation.escapeHtml(label.substring(split + 2));
+		return "<html><div style='width:" + width + "px'>" + (marked ? icon() : "") + content
+				+ (separator ? ItemRarityPresentation.dividerHtml() : "") + "</div></html>";
+	}
 }

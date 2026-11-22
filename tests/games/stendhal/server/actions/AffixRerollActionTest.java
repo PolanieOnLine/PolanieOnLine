@@ -190,7 +190,9 @@ public class AffixRerollActionTest {
 		final List<ItemAffixDefinition> definitions = new ArrayList<>(ItemAffixRegistry.getInstance().getDefinitions());
 		definitions.addAll(LegendaryItemAffixRegistry.getInstance().getDefinitions());
 		for (final ItemAffixDefinition definition : definitions) {
-			assertFalse(definition.getId(), AffixRerollEvent.label(player, definition.getId(), "1").startsWith("Właściwość przedmiotu"));
+			final String label = AffixRerollEvent.label(player, definition.getId(), "1");
+			assertFalse(definition.getId(), label.startsWith("Właściwość przedmiotu"));
+			assertFalse(definition.getId(), label.contains("\u2014") || label.contains("\u2013"));
 		}
 		assertTrue(AffixRerollEvent.label(player, "legendary_tenacity", "1").startsWith("Zaciętość"));
 		assertFalse(AffixRerollEvent.label(player, "legendary_deep_wounds", "1").contains("100%"));

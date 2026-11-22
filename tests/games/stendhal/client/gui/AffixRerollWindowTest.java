@@ -24,6 +24,14 @@ public class AffixRerollWindowTest {
 		assertEquals(1, html.split("affix_rerolled", -1).length - 1);
 	}
 
+	@Test public void listEntriesEscapeBothNamesAndDescriptions() {
+		final String html = AffixRerollPresentation.listLabelHtml("<moc>: +5% & <opis>", true, 280, true);
+		assertTrue(html, html.contains("<b>&lt;moc&gt;:</b> +5% &amp; &lt;opis&gt;"));
+		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("&lt;moc&gt;"));
+		assertTrue(html, html.contains(ItemRarityPresentation.dividerHtml()));
+		assertFalse(html, html.contains("<moc>") || html.contains("<opis>"));
+	}
+
 	@Test
 	public void repliesRequireTheCurrentRequestWindowAndNpc() {
 		final Correlation state = new Correlation("window-a", "42");

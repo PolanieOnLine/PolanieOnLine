@@ -32,6 +32,8 @@ import javax.swing.Timer;
 
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.gui.styled.Style;
+import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.constants.Actions;
@@ -80,7 +82,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private long sentAt;
 
 	private AffixRerollWindow(final RPObject owner, final RPEvent event) {
-		super("affix-reroll", text("Przemir — przemiana afiksów"));
+		super("affix-reroll", text("Przemiana afiksów u Przemira"));
 		this.owner = owner;
 		correlation = new Correlation(value(event, "window_id"), value(event, "npc_id"));
 		setCloseable(true);
@@ -100,8 +102,14 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 					final int index, final boolean selected, final boolean focus) {
 				final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, selected, focus);
 				styleCell(label, selected);
-				label.setText(value instanceof Affix ? AffixRerollPresentation.labelHtml(((Affix) value).label, ((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH) : "");
-				label.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+				label.setFont(label.getFont().deriveFont(Font.PLAIN));
+				label.setText(value instanceof Affix ? AffixRerollPresentation.listLabelHtml(((Affix) value).label,
+						((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH, index < affixes.size() - 1) : "");
+				final Style style = StyleUtil.getStyle();
+				final Color accent = style == null ? new Color(163, 120, 97) : style.getHighLightColor();
+				label.setBorder(BorderFactory.createCompoundBorder(selected
+						? BorderFactory.createLineBorder(accent) : BorderFactory.createEmptyBorder(1, 1, 1, 1),
+						BorderFactory.createEmptyBorder(6, 6, 6, 6)));
 				return label;
 			}
 		});
@@ -303,7 +311,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
 		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
 		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"), !rerolledAffix.isEmpty() && rerolledAffix.equals(selectedAffix), DETAIL_TEXT_WIDTH, text("Obecny afiks:") + " "));
-		replacement.setText(html(text("Nowy afiks:") + " " + (offerToken.isEmpty() ? "—" : value(event, "new_label")), DETAIL_TEXT_WIDTH));
+		replacement.setText(html(text("Nowy afiks:") + " " + value(event, "new_label"), DETAIL_TEXT_WIDTH));
 		cost.setText(text("Koszt:") + " " + ("3".equals(value(event, "stone_cost")) ? "3" : "1".equals(value(event, "stone_cost")) ? "1" : "1 / 3") + " × " + text("kamień przemiany") + "   ·   "
 				+ text("Posiadasz:") + " " + value(event, "stone_count"));
 		final String message = value(event, "message");

@@ -112,6 +112,35 @@ public class AffixRerollWindowLayoutTest {
 	}
 
 	@Test
+	public void affixRowsSeparateEntriesAndEmphasizeTheirNames() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("affix_ids", Arrays.asList("accuracy_bonus", "legendary_tenacity"));
+			event.put("affix_labels", Arrays.asList("Celność: +7%", "Zaciętość: każde celne trafienie wzmacnia kolejne."));
+			try {
+				final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
+				apply.setAccessible(true);
+				apply.invoke(window, event);
+			} catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+			@SuppressWarnings("unchecked")
+			final JList<Object> list = (JList<Object>) field("affixList");
+			final javax.swing.JLabel first = (javax.swing.JLabel) list.getCellRenderer()
+					.getListCellRendererComponent(list, list.getModel().getElementAt(0), 0, false, false);
+			assertTrue(first.getText(), first.getText().contains("&#9671;&#9671;"));
+			assertTrue(first.getText(), first.getText().contains("<b>Celność:</b>"));
+			assertFalse(first.getFont().isBold());
+			final java.awt.Insets normalInsets = first.getBorder().getBorderInsets(first);
+			final javax.swing.JLabel last = (javax.swing.JLabel) list.getCellRenderer()
+					.getListCellRendererComponent(list, list.getModel().getElementAt(1), 1, true, false);
+			assertFalse(last.getText(), last.getText().contains("&#9671;&#9671;"));
+			assertEquals(normalInsets, last.getBorder().getBorderInsets(last));
+			assertFalse(((InternalWindow) window).titleLabel.getText().contains("\u2014"));
+		});
+	}
+
+	@Test
 	public void catalogueRowsFitWhenInventoryRequiresAScrollbar() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			final RPEvent event = new RPEvent("affix_reroll_event");
@@ -157,7 +186,7 @@ public class AffixRerollWindowLayoutTest {
 			event.put("candidate_rarities", Arrays.asList("legendary"));
 			event.put("candidate_levels", Arrays.asList("3"));
 			event.put("affix_ids", Arrays.asList("legendary_tenacity"));
-			event.put("affix_labels", Arrays.asList("Zaciętość — każde celne trafienie wzmacnia kolejne."));
+			event.put("affix_labels", Arrays.asList("Zaciętość: każde celne trafienie wzmacnia kolejne."));
 			event.put("offer_token", "paid-offer");
 			event.put("stone_cost", "3");
 			event.put("stone_count", "12");

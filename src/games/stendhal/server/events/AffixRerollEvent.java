@@ -83,7 +83,7 @@ public final class AffixRerollEvent extends RPEvent {
 		final String name = NAMES.get(id);
 		if (name == null) return text(player, "Właściwość przedmiotu") + ": " + raw;
 		final String effect = FIXED_EFFECTS.get(id);
-		if (effect != null) return text(player, name) + " — " + text(player, effect);
+		if (effect != null) return text(player, name) + ": " + text(player, effect);
 		final double value = Double.parseDouble(raw);
 		final boolean flat = id.equals("flat_attack_bonus") || id.equals("flat_defense_bonus") || id.equals("legendary_relic_power") || id.equals("legendary_bastion_bonus");
 		final boolean points = id.equals("accuracy_bonus") || id.equals("critical_chance") || id.equals("lifesteal_effectiveness");

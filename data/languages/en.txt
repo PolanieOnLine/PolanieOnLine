@@ -248,7 +248,7 @@ Liczba aktywnych osiągnięć: {number:0}=Available achievements: {0}
 
 
 kamień przemiany=transformation stone
-Przemir — przemiana afiksów=Przemir — affix transformation
+Przemiana afiksów u Przemira=Affix transformation with Przemir
 Przelosuj afiks=Reroll affix
 Zachowaj obecny=Keep current
 Wybierz nowy=Choose new

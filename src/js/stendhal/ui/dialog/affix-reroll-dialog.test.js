@@ -98,7 +98,7 @@ function choose(h) {
 test("selection distinguishes duplicate names, displays sprites/rarity/upgrades and only uses server affixes", () => {
 	const h = harness(), d = h.open();
 	assert.equal(h.frames[0].responsiveWidth, true);
-	assert.equal(h.frames[0].title, "Przemir — przemiana afiksów");
+	assert.equal(h.frames[0].title, "Przemiana afiksów u Przemira");
 	assert.equal(d.items.children[0].children[1].children[0].textContent, "miecz +2");
 	assert.equal(d.items.children[1].children[1].children[1].textContent, "Epicki · #2");
 	assert.match(d.items.children[0].children[0].style.backgroundImage, /items\/sword\/broadsword.png/);

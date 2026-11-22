@@ -3173,7 +3173,7 @@ Liczba aktywnych osiągnięć: {number:0}=Logros disponibles: {0}
 
 
 kamień przemiany=piedra de transformación
-Przemir — przemiana afiksów=Przemir — transformación de afijos
+Przemiana afiksów u Przemira=Transformación de afijos con Przemir
 Przelosuj afiks=Cambiar afijo
 Zachowaj obecny=Conservar actual
 Wybierz nowy=Elegir nuevo
