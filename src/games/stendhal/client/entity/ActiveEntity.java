@@ -43,6 +43,10 @@ public abstract class ActiveEntity extends Entity {
 	/** The current speed of this entity vertically (tiles?/sec) . */
 	private double dy;
 
+	/** Briefly reconcile a predicted final step without teleporting the sprite. */
+	private int stopCorrectionTime;
+	private double stopX, stopY;
+
 	/** If <code>true</code>, this entity is not blocked by FlyOverArea */
 	private boolean flying = false;
 
@@ -205,6 +209,7 @@ public abstract class ActiveEntity extends Entity {
 	@Override
 	public void initialize(final RPObject base) {
 		double speed;
+		stopCorrectionTime = 0;
 
 		super.initialize(base);
 
@@ -235,6 +240,15 @@ public abstract class ActiveEntity extends Entity {
 	@Override
 	public void update(final int delta) {
 		super.update(delta);
+		if (stopCorrectionTime > 0) {
+			final int elapsed = Math.min(Math.max(0, delta), stopCorrectionTime);
+			final double fraction = (double) elapsed / stopCorrectionTime;
+			x += (stopX - x) * fraction;
+			y += (stopY - y) * fraction;
+			stopCorrectionTime -= elapsed;
+			onPosition(x, y);
+			return;
+		}
 
 		if (!stopped()) {
 			final double step = (delta / 300.0);
@@ -321,6 +335,20 @@ public abstract class ActiveEntity extends Entity {
 			speed = 0;
 		}
 
+		if ((Direction.STOP == tempDirection || speed == 0)
+				&& (!stopped() || stopCorrectionTime > 0)
+				&& Math.abs(x - newX) <= 1.5 && Math.abs(y - newY) <= 1.5
+				&& (compareDouble(x, newX, EPSILON) || compareDouble(y, newY, EPSILON))) {
+			setSpeed(0.0, 0.0);
+			if (stopCorrectionTime == 0 || stopX != newX || stopY != newY) {
+				stopX = newX;
+				stopY = newY;
+				stopCorrectionTime = 120;
+			}
+			if (speedChanged) fireChange(PROP_SPEED);
+			return;
+		}
+		stopCorrectionTime = 0;
 		onMove(newX, newY, tempDirection, speed);
 
 		if (speedChanged) {
@@ -361,6 +389,7 @@ public abstract class ActiveEntity extends Entity {
 	 * @param dy vertical speed
 	 */
 	final void setSpeed(double dx, double dy) {
+		if (dx != 0.0 || dy != 0.0) stopCorrectionTime = 0;
 		this.dx = dx;
 		this.dy = dy;
 	}

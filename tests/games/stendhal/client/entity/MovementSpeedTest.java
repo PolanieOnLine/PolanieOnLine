@@ -56,7 +56,7 @@ public class MovementSpeedTest {
 	}
 
 	@Test
-	public void largeRelocationsAndStopsStillUseTheServerPositionAtHighSpeed() throws Exception {
+	public void largeRelocationsUseTheServerPositionAndStopsSettleWithoutSnapping() throws Exception {
 		final ActiveEntity entity = new ActiveEntity() { };
 		final RPObject object = movingObject();
 		object.put("speed", 4.5);
@@ -72,8 +72,75 @@ public class MovementSpeedTest {
 		final RPObject stop = new RPObject();
 		stop.put("speed", 0.0);
 		entity.processPositioning(object, stop);
-		assertEquals(40, entity.getX(), 0.00001);
+		assertEquals(40.7, entity.getX(), 0.00001);
 		assertTrue(entity.stopped());
+		entity.update(120);
+		assertEquals(40, entity.getX(), 0.00001);
+	}
+
+	@Test
+	public void stoppingAfterOneTileDoesNotJumpInEitherAxis() {
+		for (final Direction direction : new Direction[] {
+				Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN}) {
+			final ActiveEntity entity = new ActiveEntity() { };
+			final RPObject object = movingObject();
+			object.put("dir", direction.get());
+			entity.initialize(object);
+			entity.x = 5 + 1.8 * direction.getdx();
+			entity.y = 5 + 1.8 * direction.getdy();
+			final double beforeX = entity.x, beforeY = entity.y;
+			final RPObject stop = new RPObject();
+			stop.put("x", 5 + direction.getdx());
+			stop.put("y", 5 + direction.getdy());
+			stop.put("speed", 0.0);
+			entity.processPositioning(object, stop);
+			assertEquals(beforeX, entity.getX(), 0.00001);
+			assertEquals(beforeY, entity.getY(), 0.00001);
+			assertTrue(entity.stopped());
+			entity.update(30);
+			assertEquals(beforeX - .2 * direction.getdx(), entity.getX(), 0.00001);
+			assertEquals(beforeY - .2 * direction.getdy(), entity.getY(), 0.00001);
+			entity.update(90);
+			assertEquals(stop.getInt("x"), entity.getX(), 0.00001);
+			assertEquals(stop.getInt("y"), entity.getY(), 0.00001);
+			entity.update(300);
+			assertEquals(stop.getInt("x"), entity.getX(), 0.00001);
+		}
+	}
+
+	@Test
+	public void aStoppedTeleportIsNotInterpolatedAcrossTheMap() {
+		final ActiveEntity entity = new ActiveEntity() { };
+		final RPObject object = movingObject();
+		entity.initialize(object);
+		entity.x = 6.8;
+		final RPObject teleport = new RPObject();
+		teleport.put("x", 40);
+		teleport.put("y", 25);
+		teleport.put("speed", 0.0);
+		entity.processPositioning(object, teleport);
+		assertEquals(40, entity.getX(), 0.00001);
+		assertEquals(25, entity.getY(), 0.00001);
+		entity.update(120);
+		assertEquals(40, entity.getX(), 0.00001);
+	}
+
+	@Test
+	public void startingAnotherStepCancelsThePreviousStopCorrection() {
+		final ActiveEntity entity = new ActiveEntity() { };
+		final RPObject object = movingObject();
+		entity.initialize(object);
+		entity.x = 6.8;
+		final RPObject stop = new RPObject();
+		stop.put("x", 6);
+		stop.put("speed", 0.0);
+		entity.processPositioning(object, stop);
+		entity.update(30);
+		assertEquals(6.6, entity.getX(), 0.00001);
+		entity.setSpeed(0, 1);
+		entity.setSpeed(0, 0);
+		entity.update(120);
+		assertEquals("New movement must not pull the player back to the previous tile", 6.6, entity.getX(), 0.00001);
 	}
 
 	@Test
