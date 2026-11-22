@@ -52,6 +52,40 @@ public class ItemAffixRerollServiceTest {
 		final StackableItem stone = new StackableItem(ItemAffixRerollService.STONE, "resource", "transformation_stone", null);
 		stone.setEquipableSlots(Collections.singletonList("bag")); stone.setQuantity(3); player.equipToInventoryOnly(stone);
 	}
+	@Test public void paidLegendaryRollNeverOffersTheSameFixedEffect() {
+		for (int seed = 0; seed < 100; seed++) {
+			final Player player = player();
+			final Item item = sword();
+			// Legacy saves may spell the same numeric value differently.
+			item.put(ItemAffixState.ATTRIBUTE, "legendary_deep_wounds", seed % 2 == 0 ? "1" : "1.0");
+			player.equipToInventoryOnly(item);
+			stones(player);
+			final ItemAffixRerollService service = new ItemAffixRerollService(new Random(seed));
+			assertEquals("OFFER", service.roll(player, item, "legendary_deep_wounds",
+					service.select(player, item, "legendary_deep_wounds")));
+			final Map<String, String> offer = ItemAffixRerollService.state(item);
+			assertNotEquals("Seed " + seed, "legendary_deep_wounds", offer.get("new_id"));
+			assertEquals(0, service.stones(player));
+		}
+	}
+	@Test public void ordinaryRerollsCanRetainTheAffixOnlyWithADifferentValue() {
+		for (final String id : new String[] {"accuracy_bonus", "steady_hand"}) {
+			final Item item = sword();
+			if (!ItemAffixState.has(item, id)) apply(item, id);
+			final double original = Double.parseDouble(ItemAffixState.getValues(item).get(id));
+			boolean changedValue = false;
+			for (int seed = 0; seed < 200; seed++) {
+				final Item result = new ItemAffixRerollService(new Random(seed)).replacement(item, id);
+				assertNotNull(result);
+				if (ItemAffixState.has(result, id)) {
+					assertNotEquals(id + " seed=" + seed, original,
+							Double.parseDouble(ItemAffixState.getValues(result).get(id)), 0.0000001);
+					changedValue = true;
+				}
+			}
+			assertTrue("A different value of " + id + " must remain eligible", changedValue);
+		}
+	}
 	@Test public void legendaryRollRequiresThreeStonesAndChargesOnlyOnce() {
 		final Player p = player(); final Item item = sword(); p.equipToInventoryOnly(item); stones(p);
 		StackableItem stack = null;

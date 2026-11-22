@@ -26,6 +26,7 @@ import games.stendhal.server.core.rule.item.ItemValueService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemAffixBalanceService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.core.rule.rarity.LifestealMigrationService;
 import games.stendhal.server.entity.item.Glyph;
@@ -171,7 +172,8 @@ public class ItemTransformer {
 			// make sure saved individual information is restored
 			final String[] individualAttributes = { "itemdata",
 					"bound", "undroppableondeath", "owner",
-					"uses", "improve", "persistent", "logid", "state"};
+					"uses", "improve", "persistent", "logid", "state",
+					ItemLifestealService.VERSION_ATTRIBUTE};
 			for (final String attribute : individualAttributes) {
 				if (rpobject.has(attribute)) {
 					item.put(attribute, rpobject.get(attribute));

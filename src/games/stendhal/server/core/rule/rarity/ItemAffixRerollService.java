@@ -319,6 +319,9 @@ public final class ItemAffixRerollService {
 			final Item result = copy(stripped);
 			if (!candidate.apply(result, random)) continue;
 			ItemAffixState.record(result, candidate);
+			// The same affix is useful only if its numeric value actually changes.
+			if (id.equals(candidate.getId()) && Double.parseDouble(ItemAffixState.getValues(item).get(id))
+					== Double.parseDouble(ItemAffixState.getValues(result).get(id))) continue;
 			return result;
 		}
 		return null;
