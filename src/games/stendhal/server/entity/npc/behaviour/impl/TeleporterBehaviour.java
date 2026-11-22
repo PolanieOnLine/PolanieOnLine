@@ -29,6 +29,10 @@ import marauroa.common.game.IRPZone;
 public class TeleporterBehaviour implements TurnListener {
 
 	private static Logger logger = Logger.getLogger(TeleporterBehaviour.class);
+	private static final int MAX_PLACEMENT_ATTEMPTS = 64;
+	private static final int MAX_PATH_ATTEMPTS = 3;
+	private static final int WALK_RADIUS = 12;
+	private static final int MAX_PATH_DISTANCE = 48;
 
 	private StendhalRPZone zone;
 
@@ -184,39 +188,42 @@ public class TeleporterBehaviour implements TurnListener {
 			speakerNPC.say("Do widzenia.");
 			speakerNPC.setCurrentState(ConversationStates.IDLE);
 		}
-		// remove NPC from old zone
-		zone = speakerNPC.getZone();
-		if (zone != null) {
-			zone.remove(speakerNPC);
-		}
-
-		// Teleport to another random place
-		boolean found = false;
+		// Find a destination before removing the NPC, with bounded work per turn.
+		StendhalRPZone destination = null;
 		int x = -1;
 		int y = -1;
-		while (!found) {
-			zone = zones.get(Rand.rand(zones.size()));
-			x = Rand.rand(zone.getWidth() - 4) + 2;
-			y = Rand.rand(zone.getHeight() - 5) + 2;
-			if (!zone.collides(x, y) && !zone.collides(x, y + 1)) {
-				speakerNPC.setPosition(x, y);
-				speakerNPC.setDirection(Direction.RIGHT);
-
-				zone.add(speakerNPC);
-				found = true;
-				logger.debug("Placing teleporting NPC at " + zone.getName()
-						+ " " + x + " " + y);
-			} else {
-				logger.info("Cannot place teleporting NPC " + speakerNPC.getName() + " at " + zone.getName()
-						+ " " + x + " " + y);
+		for (int attempt = 0; attempt < MAX_PLACEMENT_ATTEMPTS && !zones.isEmpty(); attempt++) {
+			final StendhalRPZone candidate = zones.get(Rand.rand(zones.size()));
+			if (candidate == null || candidate.getWidth() <= 4 || candidate.getHeight() <= 5) continue;
+			x = Rand.rand(candidate.getWidth() - 4) + 2;
+			y = Rand.rand(candidate.getHeight() - 5) + 2;
+			if (!candidate.collides(x, y) && !candidate.collides(x, y + 1)) {
+				destination = candidate;
+				break;
 			}
 		}
+		if (destination == null) {
+			logger.warn("No free destination for teleporting NPC " + speakerNPC.getName() + "; retrying in one minute");
+			SingletonRepository.getTurnNotifier().notifyInSeconds(60, this);
+			return;
+		}
 
-		// try to build a path (but give up after 10 failed tries)
-		for (int i = 0; i < 10; i++) {
-			final int tx = Rand.rand(zone.getWidth() - 4) + 2;
-			final int ty = Rand.rand(zone.getHeight() - 5) + 2;
-			final List<Node> path = Path.searchPath(speakerNPC, tx, ty);
+		zone = speakerNPC.getZone();
+		if (zone != null) zone.remove(speakerNPC);
+		zone = destination;
+		speakerNPC.clearPath();
+		speakerNPC.stop();
+		speakerNPC.setPosition(x, y);
+		speakerNPC.setDirection(Direction.RIGHT);
+		zone.add(speakerNPC);
+		logger.debug("Placing teleporting NPC at " + zone.getName() + " " + x + " " + y);
+
+		// A short stroll needs no repeated searches across an entire map.
+		for (int i = 0; i < MAX_PATH_ATTEMPTS; i++) {
+			final int tx = Rand.randUniform(Math.max(2, x - WALK_RADIUS), Math.min(zone.getWidth() - 3, x + WALK_RADIUS));
+			final int ty = Rand.randUniform(Math.max(2, y - WALK_RADIUS), Math.min(zone.getHeight() - 4, y + WALK_RADIUS));
+			if (tx == x && ty == y) continue;
+			final List<Node> path = Path.searchPath(speakerNPC, x, y, speakerNPC.getArea(tx, ty), MAX_PATH_DISTANCE);
 			if ((path != null) && (path.size() > 1)) {
 				// create path back
 				for (int j = path.size() - 1; j > 0; j--) {
