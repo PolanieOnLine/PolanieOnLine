@@ -13,6 +13,7 @@ import { marauroa, Deserializer, RPObject } from "marauroa"
 import { stendhal } from "./stendhal";
 
 import { StendhalPerceptionListener } from "./PerceptionListener";
+import { StendhalPerceptionHandler } from "./PerceptionHandler";
 import { singletons } from "./SingletonRepo";
 
 import { Paths } from "./data/Paths";
@@ -399,6 +400,7 @@ export class Client {
 
 		// update user interface on perceptions
 		if (document.getElementById("viewport")) {
+			marauroa.perceptionHandler = new StendhalPerceptionHandler();
 			// override perception listener
 			marauroa.perceptionListener = new StendhalPerceptionListener();
 		}

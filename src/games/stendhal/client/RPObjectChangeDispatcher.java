@@ -129,7 +129,7 @@ class RPObjectChangeDispatcher {
 				logger.debug("Original(" + object + ") modified in client");
 
 				fireChangedRemoved(object, changes);
-				object.applyDifferences(null, changes);
+				applyRemovedDifferences(object, changes);
 
 				logger.debug("Modified(" + object + ") modified in client");
 				logger.debug("Changes(" + changes + ") modified in client");
@@ -140,6 +140,33 @@ class RPObjectChangeDispatcher {
 			logger.error("dispatchModifyRemoved failed, object is null, changes is " + changes);
 		}
 
+	}
+
+	/** Maps do not contribute to RPObject.size(), even when they carry deletions. */
+	private static boolean removesObject(final RPObject changes) {
+		return changes.size() <= 1 && changes.maps().isEmpty();
+	}
+
+	/** Apply slot removals here because Marauroa also mistakes map-only deltas for item deletion. */
+	private static void applyRemovedDifferences(final RPObject object, final RPObject changes) {
+		final RPObject ownChanges = new RPObject(changes);
+		for (final RPSlot changesSlot : changes.slots()) {
+			ownChanges.removeSlot(changesSlot.getName());
+			if (changesSlot.size() == 0) {
+				object.removeSlot(changesSlot.getName());
+				continue;
+			}
+			final RPSlot slot = object.getSlot(changesSlot.getName());
+			for (final RPObject childChanges : changesSlot) {
+				if (removesObject(childChanges)) {
+					slot.remove(childChanges.getID());
+				} else {
+					final RPObject child = slot.get(childChanges.getID());
+					if (child != null) applyRemovedDifferences(child, childChanges);
+				}
+			}
+		}
+		object.applyDifferences(null, ownChanges);
 	}
 
 	/**
@@ -329,7 +356,7 @@ class RPObjectChangeDispatcher {
 			/*
 			 * Remove attrs vs. object [see applyDifferences()]
 			 */
-			if (schanges.size() > 1) {
+			if (!removesObject(schanges)) {
 				listener.onSlotChangedRemoved(object, slotName, sobject,
 						schanges);
 
