@@ -25,10 +25,9 @@ public class AffixRerollWindowTest {
 	}
 
 	@Test public void listEntriesEscapeBothNamesAndDescriptions() {
-		final String html = AffixRerollPresentation.listLabelHtml("<moc>: +5% & <opis>", true, 280, true, false);
+		final String html = AffixRerollPresentation.listLabelHtml("<moc>: +5% & <opis>", true, 280, false);
 		assertTrue(html, html.contains("<b>&lt;moc&gt;:</b> +5% &amp; &lt;opis&gt;"));
 		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("&lt;moc&gt;"));
-		assertTrue(html, html.contains(ItemRarityPresentation.dividerHtml()));
 		assertFalse(html, html.contains("<moc>") || html.contains("<opis>"));
 	}
 
@@ -44,7 +43,7 @@ public class AffixRerollWindowTest {
 		final String label = "Zaciętość: trafienia zwiększają obrażenia o 3%, maksymalnie 15%, przez 5 s.";
 		final String tooltipStyle = LegendaryAffixPresentation.labelHtml(label);
 		assertTrue(tooltipStyle, tooltipStyle.lastIndexOf("</b>") < tooltipStyle.indexOf("trafienia"));
-		assertTrue(AffixRerollPresentation.listLabelHtml(label, true, 280, true, true).contains(tooltipStyle));
+		assertTrue(AffixRerollPresentation.listLabelHtml(label, true, 280, true).contains(tooltipStyle));
 		assertTrue(AffixRerollPresentation.labelHtml(label, true, 280, "Obecny afiks: ", true).contains(tooltipStyle));
 		assertTrue(AffixRerollPresentation.offerLabelHtml(label, 268, true).contains(tooltipStyle));
 		for (String value : Arrays.asList("3%", "15%", "5 s")) {
@@ -104,6 +103,11 @@ public class AffixRerollWindowTest {
 		assertTrue(AffixRerollWindow.candidates(new RPEvent("affix_reroll_event")).isEmpty());
 		final RPEvent event = catalog();
 		event.put("candidate_names", Collections.singletonList("miecz"));
+		assertTrue(AffixRerollWindow.candidates(event).isEmpty());
+		for (String key : Arrays.asList("candidate_paths", "candidate_names", "candidate_classes",
+				"candidate_subclasses", "candidate_rarities", "candidate_levels")) {
+			event.put(key, Collections.singletonList(""));
+		}
 		assertTrue(AffixRerollWindow.candidates(event).isEmpty());
 	}
 

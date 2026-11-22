@@ -2,6 +2,7 @@
 package games.stendhal.server.events;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -84,10 +85,11 @@ public final class AffixRerollEvent extends RPEvent {
 		if (name == null) return text(player, "Właściwość przedmiotu") + ": " + raw;
 		final String effect = FIXED_EFFECTS.get(id);
 		if (effect != null) return text(player, name) + ": " + text(player, effect);
-		final double value = Double.parseDouble(raw);
+		final BigDecimal value = new BigDecimal(raw);
 		final boolean flat = id.equals("flat_attack_bonus") || id.equals("flat_defense_bonus") || id.equals("legendary_relic_power") || id.equals("legendary_bastion_bonus");
 		final boolean points = id.equals("accuracy_bonus") || id.equals("critical_chance") || id.equals("lifesteal_effectiveness");
-		final String number = BigDecimal.valueOf(flat || points ? value : value * 100).stripTrailingZeros().toPlainString();
+		final String number = (flat || points ? value : value.multiply(BigDecimal.valueOf(100)))
+				.setScale(1, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
 		return text(player, name) + ": +" + number + (flat ? "" : "%");
 	}
 

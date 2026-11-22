@@ -49,9 +49,21 @@ public final class AffixRerollAction implements ActionListener {
 		if ("refresh".equals(command)) {
 			SERVICE.clearSelection(player);
 			final Item pending = SERVICE.pending(player);
-			window.item = new WeakReference<Item>(pending); window.affix = "";
-			send(player, window, request, pending == null ? "select" : "offer", pending == null ? "SELECT_ITEM"
-					: SERVICE.validPending(player, pending) ? "OFFER" : "CHANGED_ITEM"); return;
+			if (pending != null) {
+				window.item = new WeakReference<Item>(pending);
+				send(player, window, request, "offer", SERVICE.validPending(player, pending) ? "OFFER" : "CHANGED_ITEM");
+				return;
+			}
+			final Item selected = window.item.get();
+			if (selected == null || !SERVICE.candidates(player).contains(selected)) {
+				window.item = new WeakReference<Item>(null); window.affix = "";
+				send(player, window, request, "select", "SELECT_ITEM");
+				return;
+			}
+			final String token = SERVICE.select(player, selected, window.affix);
+			send(player, window, request, "select", token.isEmpty() ? "SELECT_AFFIX"
+					: SERVICE.stones(player) >= ItemAffixRerollService.cost(window.affix) ? "READY" : "MISSING_STONE");
+			return;
 		}
 		final Item item = ItemUpgradeAction.resolveOwnedItem(player, action);
 		if (item == null || !SERVICE.candidates(player).contains(item)) {

@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -126,22 +128,86 @@ public class AffixRerollWindowLayoutTest {
 			}
 			@SuppressWarnings("unchecked")
 			final JList<Object> list = (JList<Object>) field("affixList");
-			final javax.swing.JLabel first = (javax.swing.JLabel) list.getCellRenderer()
+			final Component row = list.getCellRenderer()
 					.getListCellRendererComponent(list, list.getModel().getElementAt(0), 0, false, false);
-			assertTrue(first.getText(), first.getText().contains("&#9671;&#9671;"));
+			assertTrue("Separators must be outside the selected label", row instanceof javax.swing.JPanel);
+			final javax.swing.JPanel panel = (javax.swing.JPanel) row;
+			final BorderLayout rowLayout = (BorderLayout) panel.getLayout();
+			final javax.swing.JLabel first = (javax.swing.JLabel) rowLayout.getLayoutComponent(BorderLayout.CENTER);
+			final javax.swing.JLabel separator = (javax.swing.JLabel) rowLayout.getLayoutComponent(BorderLayout.SOUTH);
+			assertTrue(separator.getText(), separator.getText().contains("&#9671;&#9671;"));
+			assertTrue(separator.isVisible());
+			assertFalse(separator.isOpaque());
+			assertFalse(panel.isOpaque());
 			assertTrue(first.getText(), first.getText().contains("<b>Celność:</b>"));
 			assertFalse(first.getFont().isBold());
-			assertTrue("Short affix rows should remain compact: " + first.getPreferredSize(),
-					first.getPreferredSize().height <= 34);
+			assertTrue("Short affix rows should remain compact: " + row.getPreferredSize(),
+					row.getPreferredSize().height <= 34);
 			final java.awt.Insets normalInsets = first.getBorder().getBorderInsets(first);
-			final javax.swing.JLabel last = (javax.swing.JLabel) list.getCellRenderer()
-					.getListCellRendererComponent(list, list.getModel().getElementAt(1), 1, true, false);
-			assertFalse(last.getText(), last.getText().contains("&#9671;&#9671;"));
+			list.getCellRenderer().getListCellRendererComponent(list, list.getModel().getElementAt(1), 1, true, false);
+			final javax.swing.JLabel last = first;
+			assertFalse(separator.isVisible());
+			assertTrue(last.isOpaque());
+			assertFalse(separator.isOpaque());
 			assertTrue(last.getText(), last.getText().contains("color='#f28c28'"));
 			assertTrue(last.getText(), last.getText().contains("color='#f3e2b8'>3%</font>"));
 			assertEquals(normalInsets, last.getBorder().getBorderInsets(last));
 			assertFalse(((InternalWindow) window).titleLabel.getText().contains("\u2014"));
 		});
+	}
+
+	@Test public void emptyWireAffixListsNeverCreateAnEmptySelectedRow() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("affix_ids", Collections.singletonList(""));
+			event.put("affix_labels", Collections.singletonList(""));
+			apply(event);
+			assertEquals(0, ((JList<?>) field("affixList")).getModel().getSize());
+		});
+	}
+
+	@Test public void unchangedRepliesPreserveWindowLocationAndBothScrollPositions() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			final List<String> paths = new ArrayList<>();
+			final List<String> ids = new ArrayList<>();
+			for (int i = 0; i < 24; i++) {
+				paths.add("bag/" + i);
+				ids.add("affix_" + i);
+			}
+			event.put("candidate_paths", paths);
+			event.put("candidate_names", Collections.nCopies(24, "płaszcz z hartowanego mithrilu"));
+			event.put("candidate_classes", Collections.nCopies(24, "cloak"));
+			event.put("candidate_subclasses", Collections.nCopies(24, "hardened_mithril_cloak"));
+			event.put("candidate_rarities", Collections.nCopies(24, "epic"));
+			event.put("candidate_levels", Collections.nCopies(24, "3"));
+			event.put("selected_path", paths.get(0));
+			event.put("affix_ids", ids);
+			event.put("affix_labels", Collections.nCopies(24, "Celność: +7%"));
+			event.put("selected_affix", ids.get(0));
+			apply(event);
+			layout((Container) window);
+			window.setLocation(100, 80);
+			final JScrollPane items = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) field("itemList"));
+			final JScrollPane affixes = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) field("affixList"));
+			items.getViewport().setViewPosition(new Point(0, 100));
+			affixes.getViewport().setViewPosition(new Point(0, 100));
+			apply(event);
+			layout((Container) window);
+			assertEquals(new Point(100, 80), window.getLocation());
+			assertEquals(new Point(0, 100), items.getViewport().getViewPosition());
+			assertEquals(new Point(0, 100), affixes.getViewport().getViewPosition());
+		});
+	}
+
+	private void apply(final RPEvent event) {
+		try {
+			final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
+			apply.setAccessible(true);
+			apply.invoke(window, event);
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	@Test
@@ -225,6 +291,12 @@ public class AffixRerollWindowLayoutTest {
 			assertTrue(offered, offered.contains("color='#f3e2b8'>15%</font>"));
 			assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
 			assertNotNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
+			event.remove("offer_token");
+			event.put("selected_affix", "");
+			apply(event);
+			assertEquals(1, ((JList<?>) field("affixList")).getModel().getSize());
+			assertEquals("An unquoted affix must be clickable again after resolving an offer",
+					-1, ((JList<?>) field("affixList")).getSelectedIndex());
 			try {
 				final Method apply = AffixRerollWindow.class.getDeclaredMethod("apply", RPEvent.class);
 				apply.setAccessible(true);

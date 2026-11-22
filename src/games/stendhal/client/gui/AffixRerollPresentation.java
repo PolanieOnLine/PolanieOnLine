@@ -30,9 +30,9 @@ final class AffixRerollPresentation {
 	}
 
 	static String listLabelHtml(final String label, final boolean marked, final int width,
-			final boolean separator, final boolean legendary) {
+			final boolean legendary) {
 		return "<html><div style='width:" + width + "px'>" + (marked ? icon() : "") + content(label, legendary)
-				+ (separator ? ItemRarityPresentation.dividerHtml() : "") + "</div></html>";
+				+ "</div></html>";
 	}
 
 	static String offerLabelHtml(final String label, final int width, final boolean legendary) {

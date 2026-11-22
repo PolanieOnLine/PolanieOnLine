@@ -69,6 +69,9 @@ public final class ItemAffixRerollService {
 		for (final String id : ItemAffixState.getValues(item).keySet()) {
 			if (definition(id) != null && (locked == null || locked.equals(id))) result.add(id);
 		}
+		result.sort((left, right) -> Boolean.compare(
+				LegendaryItemAffixRegistry.getInstance().get(left) != null,
+				LegendaryItemAffixRegistry.getInstance().get(right) != null));
 		return result;
 	}
 

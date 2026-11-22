@@ -98,6 +98,51 @@ public class AffixRerollActionTest {
 		return latest();
 	}
 
+	@Test public void refreshKeepsTheSelectedItemAndAffixAfterAnInventoryMove() {
+		final RPEvent selected = quote();
+		final RPAction refresh = command(selected, "refresh");
+		refresh.put("affix_id", "accuracy_bonus");
+		player.getSlot("bag").remove(item.getID());
+		player.getSlot("rhand").add(item);
+		action.onAction(player, refresh);
+		assertEquals("READY", latest().get("status"));
+		assertEquals(ItemUpgradeEvent.encodePath(item), latest().get("selected_path"));
+		assertEquals("accuracy_bonus", latest().get("selected_affix"));
+		assertFalse(latest().get("request_token").isEmpty());
+	}
+
+	@Test public void percentageLabelsDoNotExposeFloatingPointTails() {
+		assertEquals("Odporność na zatrucie: +7%", AffixRerollEvent.label(player, "resist_poisoned", "0.07000000000000001"));
+		assertTrue(AffixRerollEvent.label(player, "critical_damage_bonus", "0.10000000000000002").endsWith("+10%"));
+		assertTrue(AffixRerollEvent.label(player, "resist_poisoned", "0.075").endsWith("+7.5%"));
+		assertTrue(AffixRerollEvent.label(player, "accuracy_bonus", "7.5").endsWith("+7.5%"));
+		assertFalse(AffixRerollEvent.label(player, "flat_attack_bonus", "3").contains("%"));
+	}
+
+	@Test public void refreshDropsTheSelectionWhenTheItemIsNoLongerCarried() {
+		final RPAction refresh = command(quote(), "refresh");
+		player.getSlot("bag").remove(item.getID());
+		action.onAction(player, refresh);
+		assertEquals("SELECT_ITEM", latest().get("status"));
+		assertEquals("", latest().get("selected_path"));
+		assertEquals("", latest().get("request_token"));
+	}
+
+	@Test public void refreshAfterAPaidRollResumesTheSameOfferWithoutChargingAgain() {
+		final RPEvent selected = quote();
+		final RPAction roll = command(selected, "roll");
+		roll.put("affix_id", "accuracy_bonus");
+		roll.put("request_token", selected.get("request_token"));
+		action.onAction(player, roll);
+		assertEquals("OFFER", latest().get("status"));
+		final String offer = latest().get("offer_token");
+		final int remaining = latest().getInt("stone_count");
+		action.onAction(player, command(latest(), "refresh"));
+		assertEquals("OFFER", latest().get("status"));
+		assertEquals(offer, latest().get("offer_token"));
+		assertEquals(remaining, latest().getInt("stone_count"));
+	}
+
 	@Test public void glyphMasterCannotOpenTheAffixService() {
 		final StendhalRPZone zone = player.getZone();
 		SingletonRepository.getNPCList().remove("Zoryk Runiczny");

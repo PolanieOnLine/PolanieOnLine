@@ -11,10 +11,12 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiPredicate;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
@@ -27,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.ListSelectionModel;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -95,25 +98,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		affixList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		itemList.setCellRenderer(new CandidateRenderer());
-		affixList.setCellRenderer(new DefaultListCellRenderer() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Component getListCellRendererComponent(final JList<?> list, final Object value,
-					final int index, final boolean selected, final boolean focus) {
-				final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, selected, focus);
-				styleCell(label, selected);
-				label.setFont(label.getFont().deriveFont(Font.PLAIN));
-				label.setText(value instanceof Affix ? AffixRerollPresentation.listLabelHtml(((Affix) value).label,
-						((Affix) value).id.equals(rerolledAffix), DETAIL_TEXT_WIDTH, index < affixes.size() - 1,
-						((Affix) value).id.startsWith("legendary_")) : "");
-				final Style style = StyleUtil.getStyle();
-				final Color accent = style == null ? new Color(163, 120, 97) : style.getHighLightColor();
-				label.setBorder(BorderFactory.createCompoundBorder(selected
-						? BorderFactory.createLineBorder(accent) : BorderFactory.createEmptyBorder(1, 1, 1, 1),
-						BorderFactory.createEmptyBorder(0, 6, 0, 6)));
-				return label;
-			}
-		});
+		affixList.setCellRenderer(new AffixRenderer());
 		final JPanel catalog = listPanel(text("Przedmioty"), itemList);
 		catalog.setPreferredSize(new Dimension(210, 1));
 		center.add(catalog, BorderLayout.WEST);
@@ -295,19 +280,27 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		canAccept = !event.has("can_accept") || "1".equals(value(event, "can_accept"));
 		updating = true;
 		try {
-			items.clear();
-			for (final Candidate candidate : candidates(event)) {
-				items.addElement(candidate);
-				if (candidate.path.equals(selectedPath)) itemList.setSelectedValue(candidate, true);
+			final List<Candidate> nextItems = candidates(event);
+			updateModel(items, nextItems, Candidate::sameAs);
+			int selectedItemIndex = -1;
+			for (int index = 0; index < nextItems.size(); index++) {
+				if (nextItems.get(index).path.equals(selectedPath)) selectedItemIndex = index;
 			}
-			affixes.clear();
+			if (selectedItemIndex < 0) itemList.clearSelection();
+			else itemList.setSelectedIndex(selectedItemIndex);
+			final List<Affix> nextAffixes = new ArrayList<>();
 			final List<String> ids = list(event, "affix_ids");
 			final List<String> labels = list(event, "affix_labels");
 			for (int index = 0; index < Math.min(ids.size(), labels.size()); index++) {
-				final Affix affix = new Affix(ids.get(index), labels.get(index));
-				affixes.addElement(affix);
-				if (affix.id.equals(selectedAffix)) affixList.setSelectedValue(affix, true);
+				if (!ids.get(index).isEmpty()) nextAffixes.add(new Affix(ids.get(index), labels.get(index)));
 			}
+			updateModel(affixes, nextAffixes, Affix::sameAs);
+			int selectedAffixIndex = -1;
+			for (int index = 0; index < nextAffixes.size(); index++) {
+				if (nextAffixes.get(index).id.equals(selectedAffix)) selectedAffixIndex = index;
+			}
+			if (selectedAffixIndex < 0) affixList.clearSelection();
+			else affixList.setSelectedIndex(selectedAffixIndex);
 		} finally {
 			updating = false;
 		}
@@ -332,6 +325,16 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		setSize(getPreferredSize());
 		revalidate();
 		repaint();
+	}
+
+	/** Preserve list geometry and scrolling when a reply repeats the same catalogue. */
+	private static <T> void updateModel(final DefaultListModel<T> model, final List<T> values,
+			final BiPredicate<T, T> same) {
+		for (int index = 0; index < values.size(); index++) {
+			if (index >= model.size()) model.addElement(values.get(index));
+			else if (!same.test(model.get(index), values.get(index))) model.set(index, values.get(index));
+		}
+		while (model.size() > values.size()) model.remove(model.size() - 1);
 	}
 
 	private void updateControls() {
@@ -426,6 +429,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		}
 		final List<Candidate> result = new java.util.ArrayList<>();
 		for (int index = 0; index < paths.size(); index++) {
+			if (paths.get(index).isEmpty()) continue;
 			result.add(new Candidate(paths.get(index), names.get(index), classes.get(index), subclasses.get(index),
 					rarities.get(index), levels.get(index)));
 		}
@@ -479,12 +483,55 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		String caption() {
 			return name + (level.isEmpty() || "0".equals(level) ? "" : " +" + level);
 		}
+		boolean sameAs(final Candidate other) {
+			return path.equals(other.path) && name.equals(other.name) && itemClass.equals(other.itemClass)
+					&& subclass.equals(other.subclass) && rarity == other.rarity && level.equals(other.level);
+		}
 	}
 
 	private static final class Affix {
 		private final String id;
 		private final String label;
 		Affix(final String id, final String label) { this.id = id; this.label = label; }
+		boolean sameAs(final Affix other) { return id.equals(other.id) && label.equals(other.label); }
+	}
+
+	/** Only the content label is highlighted; its separator remains on the window background. */
+	private final class AffixRenderer extends JPanel implements ListCellRenderer<Affix> {
+		private static final long serialVersionUID = 1L;
+		private final JLabel label = new JLabel();
+		private final JLabel separator = new JLabel();
+
+		AffixRenderer() {
+			super(new BorderLayout());
+			setOpaque(false);
+			setBorder(BorderFactory.createEmptyBorder());
+			label.setFont(label.getFont().deriveFont(Font.PLAIN));
+			separator.setFont(label.getFont());
+			separator.setHorizontalAlignment(JLabel.CENTER);
+			separator.setOpaque(false);
+			separator.setBorder(BorderFactory.createEmptyBorder());
+			add(label, BorderLayout.CENTER);
+			add(separator, BorderLayout.SOUTH);
+		}
+
+		@Override protected void paintComponent(final Graphics graphics) { }
+
+		@Override public Component getListCellRendererComponent(final JList<? extends Affix> list,
+				final Affix value, final int index, final boolean selected, final boolean focus) {
+			styleCell(label, selected);
+			label.setText(value == null ? "" : AffixRerollPresentation.listLabelHtml(value.label,
+					!rerolledAffix.isEmpty() && value.id.equals(rerolledAffix), DETAIL_TEXT_WIDTH,
+					value.id.startsWith("legendary_")));
+			final Style style = StyleUtil.getStyle();
+			final Color accent = style == null ? new Color(163, 120, 97) : style.getHighLightColor();
+			label.setBorder(BorderFactory.createCompoundBorder(selected
+					? BorderFactory.createLineBorder(accent) : BorderFactory.createEmptyBorder(1, 1, 1, 1),
+					BorderFactory.createEmptyBorder(0, 6, 0, 6)));
+			separator.setText("<html>" + ItemRarityPresentation.dividerHtml() + "</html>");
+			separator.setVisible(value != null && index >= 0 && index < affixes.size() - 1);
+			return this;
+		}
 	}
 
 	private static final class CandidateRenderer extends DefaultListCellRenderer {

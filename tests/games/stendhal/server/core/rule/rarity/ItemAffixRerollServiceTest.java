@@ -22,6 +22,18 @@ import utilities.RPClass.ItemTestHelper;
 public class ItemAffixRerollServiceTest {
 	@BeforeClass public static void setup() { MockStendlRPWorld.get(); ItemTestHelper.generateRPClasses(); }
 	private ItemAffixRerollService service() { return new ItemAffixRerollService(new Random(42)); }
+	@Test public void legendaryAffixesAlwaysFollowOrdinaryAffixes() {
+		final Item item = new Item("test affix order", "armor", "test", Collections.emptyMap());
+		final Map<String, String> values = new LinkedHashMap<>();
+		values.put("resist_poisoned", "0.08");
+		values.put("resist_shocked", "0.12");
+		values.put("legendary_life_tide", "1");
+		values.put("giant_slayer", "1");
+		for (Map.Entry<String, String> value : values.entrySet()) item.put(ItemAffixState.ATTRIBUTE, value.getKey(), value.getValue());
+		final java.util.List<String> ids = service().affixes(item);
+		assertEquals(4, ids.size());
+		assertEquals("legendary_life_tide", ids.get(ids.size() - 1));
+	}
 	private Player player() { return PlayerTestHelper.createPlayer("reroller"); }
 	private Item sword() {
 		final Item item = new Item("test reroll", "sword", "test", Collections.singletonMap("atk", "12"));
