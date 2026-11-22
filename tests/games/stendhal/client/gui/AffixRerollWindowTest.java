@@ -11,13 +11,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import games.stendhal.client.gui.AffixRerollDialog.Candidate;
-import games.stendhal.client.gui.AffixRerollDialog.Correlation;
+import games.stendhal.client.gui.AffixRerollWindow.Candidate;
+import games.stendhal.client.gui.AffixRerollWindow.Correlation;
 import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPEvent;
 
 /** Headless checks for authoritative item lists and reply correlation. */
-public class AffixRerollDialogTest {
+public class AffixRerollWindowTest {
 	@Test public void changedAffixMarkerPrecedesTheEscapedName() {
 		final String html = AffixRerollPresentation.labelHtml("Zaciętość: pełny <opis> afiksu.", true, 250);
 		assertTrue(html, html.indexOf("affix_rerolled") < html.indexOf("Zaciętość:"));
@@ -53,7 +53,7 @@ public class AffixRerollDialogTest {
 	@Test
 	public void candidatesKeepTheirDistinctServerPathsRarityAndUpgradeLevels() {
 		final RPEvent event = catalog();
-		final List<Candidate> candidates = AffixRerollDialog.candidates(event);
+		final List<Candidate> candidates = AffixRerollWindow.candidates(event);
 		assertEquals(2, candidates.size());
 		assertEquals("bag/7", candidates.get(0).path);
 		assertEquals("bag/9", candidates.get(1).path);
@@ -65,17 +65,17 @@ public class AffixRerollDialogTest {
 
 	@Test
 	public void missingOrMismatchedServerListsNeverInventCandidates() {
-		assertTrue(AffixRerollDialog.candidates(new RPEvent("affix_reroll_event")).isEmpty());
+		assertTrue(AffixRerollWindow.candidates(new RPEvent("affix_reroll_event")).isEmpty());
 		final RPEvent event = catalog();
 		event.put("candidate_names", Collections.singletonList("miecz"));
-		assertTrue(AffixRerollDialog.candidates(event).isEmpty());
+		assertTrue(AffixRerollWindow.candidates(event).isEmpty());
 	}
 
 	@Test
 	public void serverLabelsAreEscapedForSwingHtml() {
 		assertEquals("<html><div style='width:250px'>&lt;b&gt;Moc &amp; " +
 				"&quot;ogień&quot;&lt;/b&gt;</div></html>",
-				AffixRerollDialog.html("<b>Moc & \"ogień\"</b>", 250));
+				AffixRerollWindow.html("<b>Moc & \"ogień\"</b>", 250));
 	}
 
 	private static RPEvent reply(final String window, final String npc, final String request, final String phase) {

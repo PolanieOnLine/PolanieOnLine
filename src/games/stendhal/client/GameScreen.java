@@ -49,7 +49,7 @@ import games.stendhal.client.gui.CompassOverlay;
 import games.stendhal.client.gui.EffectLayer;
 import games.stendhal.client.gui.GroundContainer;
 import games.stendhal.client.gui.ItemUpgradeWindow;
-import games.stendhal.client.gui.AffixRerollDialog;
+import games.stendhal.client.gui.AffixRerollWindow;
 import games.stendhal.client.gui.ProductionWindow;
 import games.stendhal.client.gui.NpcShopWindow;
 import games.stendhal.client.gui.j2d.AchievementBoxFactory;
@@ -1001,7 +1001,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	public void onZoneChange(Zone zone) {
 		removeAllObjects();
 		ItemUpgradeWindow.closeOnZoneChange();
-		AffixRerollDialog.closeOnZoneChange();
+		AffixRerollWindow.closeOnZoneChange();
 		ProductionWindow.closeOnZoneChange();
         NpcShopWindow.closeOnZoneChange();
 		SwingUtilities.invokeLater(globalEffects::clear);

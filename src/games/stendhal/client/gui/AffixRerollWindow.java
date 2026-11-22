@@ -6,9 +6,9 @@ import java.awt.Component;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -20,7 +20,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -28,7 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.ClientLanguage;
 import games.stendhal.client.StendhalClient;
@@ -40,12 +38,12 @@ import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 
-/** Modeless affix transformation service. Only server-authorized items and affixes can be selected. */
-public final class AffixRerollDialog extends JDialog {
+/** In-game affix service. Only server-authorized items and affixes can be selected. */
+public final class AffixRerollWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 	private static final Set<String> openedWindows = new HashSet<>();
 	private static RPObject sessionOwner;
-	private static AffixRerollDialog active;
+	private static AffixRerollWindow active;
 
 	private final RPObject owner;
 	private final Correlation correlation;
@@ -74,13 +72,14 @@ public final class AffixRerollDialog extends JDialog {
 	private boolean closed;
 	private long sentAt;
 
-	private AffixRerollDialog(final Frame parent, final RPObject owner, final RPEvent event) {
-		super(parent, text("Przemir — przemiana afiksów"), false);
+	private AffixRerollWindow(final RPObject owner, final RPEvent event) {
+		super("affix-reroll", text("Przemir — przemiana afiksów"));
 		this.owner = owner;
 		correlation = new Correlation(value(event, "window_id"), value(event, "npc_id"));
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		final JPanel content = panel(new BorderLayout(0, 10));
-		content.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+		setCloseable(true);
+		setMinimizable(false);
+		final JPanel content = panel(new BorderLayout(0, 8));
+		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		content.add(new JLabel(text("Wybierz przedmiot i jeden afiks do przemiany.")), BorderLayout.NORTH);
 
 		final JPanel center = panel(new BorderLayout(0, 10));
@@ -105,7 +104,6 @@ public final class AffixRerollDialog extends JDialog {
 		center.add(lists, BorderLayout.CENTER);
 
 		final JPanel comparison = panel(new BorderLayout(0, 6));
-		comparison.setBorder(sectionBorder(text("Porównanie afiksów")));
 		final JPanel labels = panel(new GridLayout(2, 1, 0, 6));
 		labels.add(current);
 		labels.add(replacement);
@@ -114,7 +112,7 @@ public final class AffixRerollDialog extends JDialog {
 		choices.add(keep);
 		choices.add(accept);
 		comparison.add(choices, BorderLayout.SOUTH);
-		center.add(comparison, BorderLayout.SOUTH);
+		center.add(DialogPanel.section(text("Porównanie afiksów"), comparison), BorderLayout.SOUTH);
 		content.add(center, BorderLayout.CENTER);
 
 		final JPanel footer = panel(new BorderLayout(0, 7));
@@ -122,17 +120,20 @@ public final class AffixRerollDialog extends JDialog {
 		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
 		payment.add(cost, BorderLayout.NORTH);
 		payment.add(new JLabel(html(text("Zwykły afiks kosztuje 1 kamień przemiany, a legendarny 3 kamienie. Zachowanie obecnego wyniku również zużywa kamienie."), 570)), BorderLayout.SOUTH);
-		footer.add(payment, BorderLayout.NORTH);
+		footer.add(DialogPanel.section(text("Koszt:"), payment), BorderLayout.NORTH);
 		footer.add(status, BorderLayout.CENTER);
 		final JPanel buttons = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
 		buttons.add(roll);
 		buttons.add(refresh);
 		final JButton close = new JButton(text("Zamknij"));
 		buttons.add(close);
+		for (final JButton button : Arrays.asList(roll, keep, accept, refresh, close)) {
+			button.setFocusable(false);
+			button.setMargin(new Insets(4, 12, 4, 12));
+		}
 		footer.add(buttons, BorderLayout.SOUTH);
 		content.add(footer, BorderLayout.SOUTH);
-		setContentPane(content);
-		WindowUtils.closeOnEscape(this);
+		setContent(content);
 
 		itemList.addListSelectionListener(change -> {
 			if (change.getValueIsAdjusting() || updating || waiting || !offerToken.isEmpty()) return;
@@ -155,10 +156,11 @@ public final class AffixRerollDialog extends JDialog {
 		keep.addActionListener(change -> { if (keep.isEnabled()) send("keep"); });
 		accept.addActionListener(change -> { if (accept.isEnabled()) send("accept"); });
 		refresh.addActionListener(change -> send("refresh"));
-		close.addActionListener(change -> dispose());
-		timer = new Timer(1000, tick -> {
-			if (StendhalClient.get().getPlayer() != this.owner) {
-				dispose();
+		close.addActionListener(change -> close());
+		timer = new Timer(100, tick -> {
+			final StendhalClient client = StendhalClient.get();
+			if (client == null || client.getPlayer() != this.owner) {
+				close();
 			} else if (waiting && System.currentTimeMillis() - sentAt >= 8000) {
 				waiting = false;
 				status.setText(html(text("Oczekiwanie na odpowiedź. Odświeżanie stanu przemiany…"), 570));
@@ -166,13 +168,21 @@ public final class AffixRerollDialog extends JDialog {
 			} else if (!waiting && System.currentTimeMillis() - sentAt >= 30000) {
 				send("refresh");
 			}
-			itemList.repaint();
+			if (isShowing()) itemList.repaint();
 		});
 		apply(event);
-		pack();
-		setMinimumSize(getSize());
-		setLocationRelativeTo(parent);
-		timer.start();
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if (!closed) timer.start();
+	}
+
+	@Override
+	public void removeNotify() {
+		timer.stop();
+		super.removeNotify();
 	}
 
 	/** Events belong to the current player; later replies never create a window. */
@@ -182,18 +192,19 @@ public final class AffixRerollDialog extends JDialog {
 		SwingUtilities.invokeLater(() -> {
 			if (StendhalClient.get().getPlayer() != player) return;
 			if (sessionOwner != player) {
-				if (active != null) active.dispose();
+				if (active != null) active.close();
 				sessionOwner = player;
 				openedWindows.clear();
 			}
 			if ("open".equals(value(event, "phase"))) {
 				final String window = value(event, "window_id");
 				if (window.isEmpty() || value(event, "npc_id").isEmpty() || !openedWindows.add(window)) return;
-				if (active != null) active.dispose();
-				active = new AffixRerollDialog(j2DClient.get().getMainFrame(), player, event);
+				if (active != null) active.close();
+				active = new AffixRerollWindow(player, event);
+				j2DClient.get().addWindow(active);
 				active.setVisible(true);
-				active.toFront();
-			} else if (active != null && active.isDisplayable() && active.owner == player
+				active.raise();
+			} else if (active != null && !active.closed && active.owner == player
 					&& active.correlation.accepts(event)) {
 				active.apply(event);
 			}
@@ -201,7 +212,7 @@ public final class AffixRerollDialog extends JDialog {
 	}
 
 	public static void closeOnZoneChange() {
-		SwingUtilities.invokeLater(() -> { if (active != null) active.dispose(); });
+		SwingUtilities.invokeLater(() -> { if (active != null) active.close(); });
 	}
 
 	private void send(final String command) {
@@ -267,6 +278,9 @@ public final class AffixRerollDialog extends JDialog {
 		status.setText(html(message.isEmpty() ? text(offerToken.isEmpty()
 				? "Wybierz przedmiot i jeden afiks do przemiany." : "Wybierz, który afiks zachować." ) : message, 570));
 		updateControls();
+		setSize(getPreferredSize());
+		revalidate();
+		repaint();
 	}
 
 	private void updateControls() {
@@ -281,43 +295,34 @@ public final class AffixRerollDialog extends JDialog {
 	}
 
 	@Override
-	public void dispose() {
-		if (!closed) {
-			closed = true;
-			timer.stop();
-			if (StendhalClient.get().getPlayer() == owner) StendhalClient.get().send(action("close"));
-			correlation.close();
-			items.clear();
-			affixes.clear();
-			requestToken = "";
-			offerToken = "";
-			if (active == this) active = null;
-		}
-		super.dispose();
+	public void close() {
+		if (closed) return;
+		closed = true;
+		timer.stop();
+		final StendhalClient client = StendhalClient.get();
+		if (client != null && client.getPlayer() == owner) client.send(action("close"));
+		correlation.close();
+		items.clear();
+		affixes.clear();
+		requestToken = "";
+		offerToken = "";
+		if (active == this) active = null;
+		super.close();
 	}
 
 	private static JPanel panel(final java.awt.LayoutManager layout) {
-		final JPanel panel = new JPanel(layout);
-		panel.setBorder(BorderFactory.createEmptyBorder());
-		return panel;
+		return new DialogPanel(layout);
 	}
 
 	private static JPanel listPanel(final String title, final JList<?> list) {
-		final JPanel panel = panel(new BorderLayout());
-		panel.setBorder(sectionBorder(title));
 		list.setOpaque(false);
 		final JScrollPane scroll = new JScrollPane(list);
 		scroll.setOpaque(false);
 		scroll.getViewport().setOpaque(false);
 		scroll.setPreferredSize(new Dimension(280, 180));
-		panel.add(scroll, BorderLayout.CENTER);
-		return panel;
-	}
-
-	private static TitledBorder sectionBorder(final String title) {
-		final TitledBorder border = BorderFactory.createTitledBorder(title);
-		border.setTitleColor(new JLabel().getForeground());
-		return border;
+		scroll.setBorder(BorderFactory.createEmptyBorder());
+		scroll.getVerticalScrollBar().setUnitIncrement(16);
+		return DialogPanel.section(title, scroll);
 	}
 
 	private static void styleCell(final JLabel label, final boolean selected) {

@@ -2,12 +2,12 @@
 package games.stendhal.client.events;
 
 import games.stendhal.client.entity.Entity;
-import games.stendhal.client.gui.AffixRerollDialog;
+import games.stendhal.client.gui.AffixRerollWindow;
 
-/** Receives private Zoryk service state for the current player. */
+/** Receives private Przemir service state for the current player. */
 final class AffixRerollEvent extends Event<Entity> {
 	@Override
 	public void execute() {
-		AffixRerollDialog.show(event, entity.getRPObject());
+		AffixRerollWindow.show(event, entity.getRPObject());
 	}
 }
