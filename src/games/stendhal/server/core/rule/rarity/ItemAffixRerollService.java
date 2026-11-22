@@ -85,6 +85,7 @@ public final class ItemAffixRerollService {
 	private List<Item> stoneStacks(final Player player) {
 		final List<Item> result = new ArrayList<Item>();
 		for (final RPSlot slot : player.slots(Slots.CARRYING)) collect(slot, result, true);
+		result.removeIf(item -> !owned(player, item));
 		return result;
 	}
 

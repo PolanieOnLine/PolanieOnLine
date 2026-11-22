@@ -63,7 +63,7 @@ public class AdventCalendarServiceTest {
 	}
 
 	@Test
-	public void equipmentIsBoundToTheReceivingCharacterButSuppliesStayUnbound() throws Exception {
+	public void equipmentAndTransformationStonesAreBoundButOrdinarySuppliesStayUnbound() throws Exception {
 		final Player player = PlayerTestHelper.createPlayer("advent_recipient");
 		final Item shield = SingletonRepository.getEntityManager().getItem("drewniana tarcza");
 		final Item ring = SingletonRepository.getEntityManager().getItem("złoty pierścień");
@@ -71,11 +71,12 @@ public class AdventCalendarServiceTest {
 		final Item potion = SingletonRepository.getEntityManager().getItem("duży eliksir");
 		final Item chest = SingletonRepository.getEntityManager().getItem("srebrna skrzynia");
 		final Item money = coins(5000);
+		final StackableItem stone = transformationStone(3, null);
 		final AdventCalendarService service = new AdventCalendarService(
 				Clock.fixed(Instant.parse("2026-12-10T12:00:00Z"), ZoneOffset.UTC),
-				(owner, year) -> new AccountState(77, 0), day -> Arrays.asList(shield, ring, material, money, potion, chest));
+				(owner, year) -> new AccountState(77, 0), day -> Arrays.asList(shield, ring, stone, material, money, potion, chest));
 		assertEquals("received", service.process(player, "claim", 10).status);
-		for (final Item equipment : new Item[] {shield, ring}) {
+		for (final Item equipment : new Item[] {shield, ring, stone}) {
 			assertEquals(player.getName(), equipment.getBoundTo());
 			assertTrue(player.isBoundTo(equipment));
 			assertFalse(PlayerTestHelper.createPlayer("other_advent_character").isBoundTo(equipment));
@@ -85,6 +86,35 @@ public class AdventCalendarServiceTest {
 		assertFalse(money.isBound());
 		assertFalse(potion.isBound());
 		assertFalse(chest.isBound());
+	}
+
+	@Test
+	public void calendarStonesMergeOnlyWithTheReceivingCharactersBoundStack() throws Exception {
+		final Player player = PlayerTestHelper.createPlayer("advent_stone_recipient");
+		final StackableItem unbound = transformationStone(2, null);
+		final StackableItem foreign = transformationStone(2, "other_character");
+		final StackableItem own = transformationStone(1, player.getName());
+		player.getSlot("bag").add(unbound);
+		player.getSlot("bag").add(foreign);
+		player.getSlot("bag").add(own);
+		final AdventCalendarService service = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-12T12:00:00Z"), ZoneOffset.UTC),
+				(owner, year) -> new AccountState(88, 0), day -> Collections.singletonList(transformationStone(1, null)));
+		assertEquals("received", service.process(player, "claim", 12).status);
+		assertEquals(2, own.getQuantity());
+		assertEquals(2, unbound.getQuantity());
+		assertFalse(unbound.isBound());
+		assertEquals(2, foreign.getQuantity());
+		assertEquals("other_character", foreign.getBoundTo());
+		assertEquals(3, player.getSlot("bag").size());
+	}
+
+	private StackableItem transformationStone(final int quantity, final String owner) {
+		ItemTestHelper.generateRPClasses();
+		final StackableItem stone = new StackableItem("kamień przemiany", "resource", "transformation_stone", Collections.emptyMap());
+		stone.setQuantity(quantity);
+		stone.setBoundTo(owner);
+		return stone;
 	}
 
 	@Before

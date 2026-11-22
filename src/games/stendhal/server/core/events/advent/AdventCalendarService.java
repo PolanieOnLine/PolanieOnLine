@@ -13,6 +13,7 @@ import games.stendhal.common.Constants;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO.Account;
 import games.stendhal.server.core.events.seasonal.SeasonalEventType;
+import games.stendhal.server.core.rule.rarity.ItemAffixRerollService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
@@ -109,6 +110,9 @@ public final class AdventCalendarService {
 		final int ownMask = ownMask(player, date.getYear());
 		final List<Item> items = rewards.apply(day);
 		for (final Item item : items) {
+			if (ItemAffixRerollService.STONE.equals(item.getName())) {
+				item.setBoundTo(player.getName());
+			}
 			if (item instanceof StackableItem) {
 				continue;
 			}

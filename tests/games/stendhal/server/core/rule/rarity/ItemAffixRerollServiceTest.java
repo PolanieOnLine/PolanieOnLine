@@ -71,6 +71,28 @@ public class ItemAffixRerollServiceTest {
 		assertEquals(0, s.stones(p));
 	}
 
+	@Test public void onlyTheBoundOwnerCanSpendTransformationStones() {
+		final Player player = player();
+		final Item item = sword();
+		player.equipToInventoryOnly(item);
+		final StackableItem foreign = new StackableItem(ItemAffixRerollService.STONE, "resource", "transformation_stone", null);
+		foreign.setQuantity(3);
+		foreign.setBoundTo("other_character");
+		player.getSlot("bag").add(foreign);
+		final ItemAffixRerollService service = service();
+		final String quote = service.select(player, item, "legendary_deep_wounds");
+		assertEquals(0, service.stones(player));
+		assertEquals("MISSING_STONE", service.roll(player, item, "legendary_deep_wounds", quote));
+		final StackableItem own = new StackableItem(ItemAffixRerollService.STONE, "resource", "transformation_stone", null);
+		own.setQuantity(3);
+		own.setBoundTo(player.getName());
+		player.getSlot("bag").add(own);
+		assertEquals(3, service.stones(player));
+		assertEquals("OFFER", service.roll(player, item, "legendary_deep_wounds", quote));
+		assertEquals(0, service.stones(player));
+		assertEquals(3, foreign.getQuantity());
+	}
+
 	@Test public void paidOfferKeepsOldStatsUntilAcceptedAndCannotBeReplayed() {
 		final Player player = player(); final Item item = sword(); player.equipToInventoryOnly(item); stones(player);
 		final ItemAffixRerollService service = service(); final Map<String,String> before = ItemAffixState.getValues(item);
