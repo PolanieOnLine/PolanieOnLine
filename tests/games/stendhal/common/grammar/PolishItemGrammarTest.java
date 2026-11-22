@@ -63,4 +63,15 @@ public class PolishItemGrammarTest {
 		assertEquals("parę spodni kolczych +3", Grammar.itemQuantityAccusative(1, "spodnie kolcze +3"));
 		assertEquals("przedmiot", Grammar.itemQuantityAccusative(1, null));
 	}
+	@Test
+	public void herbAmountsUseNaturalPolishForms() {
+		assertEquals("miętę", Grammar.quantityplnoun(1, "mięta"));
+		assertEquals("2 mięty", Grammar.quantityplnoun(2, "mięta"));
+		assertEquals("5 mięt", Grammar.quantityplnoun(5, "mięta"));
+		assertEquals("2 babki lekarskie", Grammar.quantityplnoun(2, "babka lekarska"));
+		assertEquals("5 babek lekarskich", Grammar.quantityplnoun(5, "babka lekarska"));
+		assertEquals("4 pokrzywy", Grammar.quantityplnoun(4, "pokrzywa"));
+		assertEquals("6 arandul", Grammar.quantityplnoun(6, "arandula"));
+	}
+
 }

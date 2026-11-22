@@ -855,6 +855,11 @@ public class Grammar {
 	 */
 	public static String plnoun(final int quantity, final String noun) {
 		final String enoun = fullForm(noun);
+		if ("mięta".equals(enoun) || "babka lekarska".equals(enoun)
+				|| "pokrzywa".equals(enoun) || "arandula".equals(enoun)) {
+			final String words = PolishItemGrammar.accusativeQuantity(quantity, enoun);
+			return quantity == 1 ? words : words.substring(Integer.toString(quantity).length() + 1);
+		}
 		if ("węgiel".equals(enoun) || "węgiel drzewny".equals(enoun)) {
 			final String material = "węgiel".equals(enoun) ? "węgla" : "węgla drzewnego";
 			if (quantity == 1) return "kawałek " + material;

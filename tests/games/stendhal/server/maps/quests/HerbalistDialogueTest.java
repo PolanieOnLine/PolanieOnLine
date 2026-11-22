@@ -181,6 +181,12 @@ public class HerbalistDialogueTest {
 		say("tak");
 		assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
 		assertFalse(player.hasQuest(slot));
+		if ("Gaździna Jadźka".equals(name)) {
+			say("składniki");
+			assertEquals(ConversationStates.ATTENDING, engine.getCurrentState());
+			assertFalse("Retired ingredient quest must not be offered to new players", player.hasQuest(slot));
+			return;
+		}
 		assertNotNull(say("składniki"));
 		assertEquals(ConversationStates.QUEST_OFFERED, engine.getCurrentState());
 		String reply = say("tak");

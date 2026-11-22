@@ -23,52 +23,20 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.CollectRequestedItemsAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
-import games.stendhal.server.entity.npc.action.ExamineChatAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayRequiredItemsFromCollectionAction;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.util.ItemCollection;
 
-/**
- * QUEST: Herbs For Jadzka
- * 
- * PARTICIPANTS:
- * <ul>
- * <li>Carmen (the healer in Zakopane)</li>
- * </ul>
- * 
- * STEPS:
- * <ul>
- * <li>Jadzka introduces herself and asks for some items to help her heal people.</li>
- * <li>You collect the items.</li>
- * <li>Jadzka sees yours items, asks for them then thanks you.</li>
- * </ul>
- * 
- * REWARD:
- * <ul>
- * <li>500 XP</li>
- * <li>4 antidote</li>
- * <li>Karma: 10</li>
- * </ul>
- * 
- * REPETITIONS:
- * <ul>
- * <li>None</li>
- * </ul>
- */
+/** Compatibility for unfinished ingredient lists accepted before herbal orders were introduced. */
 public class HerbsForJadzka extends AbstractQuest {
 	public static final String QUEST_SLOT = "herbs_for_jadzka";
 	private final SpeakerNPC npc = npcs.get("Gaździna Jadźka");
@@ -79,97 +47,6 @@ public class HerbsForJadzka extends AbstractQuest {
 	protected static final String NEEDED_ITEMS = "arandula=5;borowik=1;jabłko=3;polano=2;pieczarka=1";
 	private static final List<String> INGREDIENT_MESSAGES = Arrays.asList(
 			"składniki", "skladniki", "zapasy", "ingredients");
-
-	private void prepareRequestingStep() {
-		npc.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.QUEST_MESSAGES,
-			new AndCondition(
-					new LevelGreaterThanCondition(2),
-					new QuestNotStartedCondition(QUEST_SLOT),
-					new NotCondition(new QuestInStateCondition(QUEST_SLOT,"rejected"))),
-			ConversationStates.QUESTION_1, 
-			"Hej ty! Tak, do ciebie mówię! Znasz mnie?", null);
-
-		npc.add(ConversationStates.ATTENDING, 
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestInStateCondition(QUEST_SLOT,"rejected"),
-			ConversationStates.QUEST_OFFERED, 
-			"Hej, chcesz mi jakoś pomóc?", null);
-
-		npc.add(
-			ConversationStates.QUESTION_1,
-			ConversationPhrases.YES_MESSAGES,
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Świetnie, wiesz co robię. Moje zapasy ziół #leczniczych się wyczerpują.",
-			null);
-
-		npc.add(
-			ConversationStates.QUESTION_1,
-			ConversationPhrases.NO_MESSAGES,
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Jestem Gaździna Jadźka. Mogę uleczyć cię za darmo, dopóki twoje wymagania nie będą zbyt duże. Wielu wojowników prosi o moją pomoc. Dlatego moje zapasy ziół #leczniczych powoli się kończą i potrzebuję je uzupełnić.",
-			null);
-
-		npc.add(
-			ConversationStates.ATTENDING,
-			ConversationPhrases.combine(INGREDIENT_MESSAGES, "leczniczych", "lecznicze"),
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED,
-			"Tak wielu wojowników prosi mnie o pomoc. Do leczenia potrzebne jest wiele składników a moje zapasy są na wyczerpaniu. Możesz mi przynieść brakujące zioła?",
-			null);
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			null,
-			new MultipleActions(new SetQuestAndModifyKarmaAction(QUEST_SLOT, NEEDED_ITEMS, 5.0),
-								new SayRequiredItemsFromCollectionAction(QUEST_SLOT,
-										"Dziękuję! Potrzebuję [items]. Gdy wrócisz, powiedz #składniki albo od razu podaj nazwę tego, co przyniesiesz.")));
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Ech... Cóż, niedobrze... Taka twoja wola. Pamiętaj jednak, że wkrótce zacznę odmawiać potrzebującym leczenia. Będę musiała im powiedzieć, że to przez TWOJE lenistwo.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-
-		npc.add(
-			ConversationStates.ATTENDING,
-			"jabłko",
-			null,
-			ConversationStates.ATTENDING,
-			"Jabłka mają wiele witamin. Rosną na wschód od Semos, ale ich pełen talerz jest także w Matinternecie.",
-			null);
-
-		npc.add(
-			ConversationStates.ATTENDING,
-			"polano",
-			null,
-			ConversationStates.ATTENDING,
-			"Drewno przydaje się do wielu rzeczy. Polana zdobędziesz, ścinając drzewa w lesie.",
-			null);
-
-		npc.add(
-			ConversationStates.ATTENDING,
-			Arrays.asList("pieczarka","borowik"),
-			null,
-			ConversationStates.ATTENDING,
-			"Na własne oczy widziałam całe polany grzybów w Zakopanem.",
-			null);
-
-		npc.add(
-			ConversationStates.ATTENDING,
-			"arandula",
-			null,
-			ConversationStates.ATTENDING,
-			"Na północ od Semos, niedaleko młodniaka rośnie ponoć zioło arandula. Oto rycina, na której zobaczysz jak wygląda.",
-			new ExamineChatAction("arandula.png", "Rysunek Jadźki", "Arandula"));
-	}
 
 	private void prepareBringingStep() {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
@@ -249,13 +126,7 @@ public class HerbsForJadzka extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Ok, i daj mi znać jeśli mogę #pomóc w czymkolwiek innym.", null);
 
-		/* says quest and quest can't be started nor is active*/
-		npc.add(ConversationStates.ATTENDING, 
-				ConversationPhrases.combine(ConversationPhrases.QUEST_FINISH_MESSAGES, INGREDIENT_MESSAGES),
-				null,
-				ConversationStates.ATTENDING, 
-				"Nic nie potrzebuję teraz, dziękuję.",
-				null);
+
 	}
 
 	@Override
@@ -263,8 +134,7 @@ public class HerbsForJadzka extends AbstractQuest {
 		fillQuestInfo(
 				"Zioła dla Jadźki",
 				"Gaździna Jadźka, uzdrowicielka z Zakopanego, potrzebuje składników do eliksirów i lekarstw. Pomóż jej uzupełnić zapasy.",
-				true);
-		prepareRequestingStep();
+				false);
 		prepareBringingStep();
 	}
 
@@ -313,4 +183,21 @@ public class HerbsForJadzka extends AbstractQuest {
 	public String getNPCName() {
 		return "Gaździna Jadźka";
 	}
+	/** Existing ingredient lists remain finishable; new players receive the herbal order. */
+	@Override
+	public boolean isVisibleOnQuestStatus(final Player player) {
+		return player.hasQuest(QUEST_SLOT) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+	}
+
+	@Override
+	public games.stendhal.common.QuestMarker getNPCQuestMarker(final Player player, final SpeakerNPC speaker) {
+		if (!getNPCName().equals(speaker.getName()) || !HerbalOrdersForJadzka.hasLegacyOrder(player)) return games.stendhal.common.QuestMarker.NONE;
+		final ItemCollection items = new ItemCollection();
+		items.addFromQuestStateString(player.getQuest(QUEST_SLOT));
+		for (Map.Entry<String, Integer> item : items.entrySet()) {
+			if (!player.isEquipped(item.getKey(), item.getValue())) return games.stendhal.common.QuestMarker.IN_PROGRESS;
+		}
+		return games.stendhal.common.QuestMarker.READY;
+	}
+
 }

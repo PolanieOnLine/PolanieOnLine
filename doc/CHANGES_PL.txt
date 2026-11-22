@@ -18,6 +18,8 @@
 * Uporządkowano oddawanie składników Carmen i Jadźce. Obie rozumieją hasło „składniki”, przyjmują przedmioty po podaniu ich nazw i informują, czego jeszcze brakuje
 * Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, najpóźniej następnego dnia po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
 
+* Jadźka przyjmuje nowe zamówienia zielarskie co 24 godziny. Pierwsza dostawa odblokowuje u niej warzenie antidotum z mięty, babki lekarskiej i wody
+
 *dziennik zadań*
 ---
 * Dodano osobne zakładki z zadaniami głównymi i pobocznymi oraz opis aktualnego celu głównej historii

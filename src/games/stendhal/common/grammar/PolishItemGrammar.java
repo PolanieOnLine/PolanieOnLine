@@ -136,6 +136,7 @@ final class PolishItemGrammar {
 			+ "święcony uspokajający zaczarowany zagubiony zaklęty prążkowany egipski cukierkowy cudowny kolorowy "
 			+ "bukowy cesarski cukrowy grzybowy jedwabny klejony pitny pluszowy rybny skromny startowy "
 			+ "turystyczny wypchany włoski zbójnicki");
+		pluralForms("mięta=mięty:mięt;babka=babki:babek;pokrzywa=pokrzywy:pokrzyw;arandula=arandule:arandul");
 		pluralForms("miecz=miecze:mieczy;sztylet=sztylety:sztyletów;sztylecik=sztyleciki:sztylecików;"
 			+ "hełm=hełmy:hełmów;pas=pasy:pasów;płaszcz=płaszcze:płaszczy;pierścień=pierścienie:pierścieni;"
 			+ "topór=topory:toporów;toporek=toporki:toporków;łuk=łuki:łuków;kilof=kilofy:kilofów;"

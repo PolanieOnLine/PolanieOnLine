@@ -235,6 +235,7 @@ public class StendhalQuestSystem {
 		loadQuest(new Gornictwo());
 		loadQuest(new HelpKrasnolud());
 		loadQuest(new HerbsForJadzka());
+		loadQuest(new HerbalOrdersForJadzka());
 		loadQuest(new Hunting());
 		loadQuest(new Janosik());
 		loadQuest(new KillDragons());
