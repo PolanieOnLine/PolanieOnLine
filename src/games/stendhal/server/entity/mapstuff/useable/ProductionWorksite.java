@@ -48,6 +48,18 @@ public final class ProductionWorksite extends UseableEntity {
 
     public static ProductionWorksite placeFor(SpeakerNPC npc) {
         BitSet customerArea = customerArea(npc.getZone());
+		if ("Gaździna Jadźka".equals(npc.getName()) && "int_zakopane_hospital".equals(npc.getZone().getName())) {
+			ProductionWorksite worksite = new ProductionWorksite(npc, "herbal_hospital", 2);
+			worksite.put("title", "Stolik zielarski Jadźki");
+			worksite.setDescription("Oto stolik zielarski Jadźki. Użyj go, aby zamówić antidotum lub odebrać gotowe lekarstwo.");
+			if (canPlace(npc, worksite, 17, 8, customerArea)) {
+				worksite.setPosition(17, 8);
+				npc.getZone().add(worksite);
+				return worksite;
+			}
+			Logger.getLogger(ProductionWorksite.class).warn("Jadźka's herbal table cannot be placed by the hospital screen");
+			return null;
+		}
         String product = ProductionRecipe.forNPC(npc).get(0).getProductName();
         Item template = SingletonRepository.getEntityManager().getItem(product, ItemCreationContext.restore());
         if (template == null) return null;

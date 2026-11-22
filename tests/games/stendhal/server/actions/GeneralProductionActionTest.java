@@ -28,6 +28,7 @@ import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.maps.zakopane.blacksmith.DwojakiElwirkaNPC;
+import games.stendhal.server.maps.zakopane.hospital.GazdzinaJadzkaNPC;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
 import utilities.PlayerTestHelper;
@@ -203,4 +204,28 @@ public class GeneralProductionActionTest {
         assertEquals(0, player.getNumberOfEquipped("sztabka żelaza"));
         assertEquals("done", player.getQuest("window_multi"));
     }
+
+	@Test public void jadzkasHerbalTableStaysByTheScreenAndLeavesTheWardPassable() throws Exception {
+		StendhalRPZone zone = new StendhalRPZone("int_zakopane_hospital", 40, 19);
+		StendhalMapStructure map = TMXLoader.load("data/maps/interiors/zakopane/hospital.tmx");
+		zone.addCollisionLayer(zone.getName() + ".collision", map.getLayer("collision"));
+		MockStendlRPWorld.get().addRPZone(zone);
+		Portal entrance = new Portal(); entrance.setPosition(6, 18); zone.add(entrance);
+		NPCList.get().remove("Gaździna Jadźka");
+		new GazdzinaJadzkaNPC().configureZone(zone, null);
+		SpeakerNPC jadzka = NPCList.get().get("Gaździna Jadźka");
+		try {
+			ProductionRecipe.ensureWorksite(jadzka);
+			ProductionWorksite table = null;
+			for (Object object : zone) if (object instanceof ProductionWorksite) table = (ProductionWorksite) object;
+			assertNotNull(table);
+			assertEquals("production_table_herbal_hospital", table.get("name"));
+			assertEquals(17, table.getX());
+			assertEquals(8, table.getY());
+			assertEquals(2, (int) table.getWidth());
+			assertFalse(table.getArea().intersects(20, 10, 15, 1));
+			player.getZone().remove(player); player.setPosition(17, 9); zone.add(player);
+			assertTrue(table.onUsed(player));
+		} finally { NPCList.get().remove("Gaździna Jadźka"); }
+	}
 }
