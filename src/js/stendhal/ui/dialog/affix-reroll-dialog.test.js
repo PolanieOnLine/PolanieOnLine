@@ -317,8 +317,10 @@ function load(code){const exports={};new Function('exports','require',code)(expo
 dependencies['../../data/ItemRarity']=load(${JSON.stringify(source("../../data/ItemRarity.ts"))});
 const Dialog=load(${JSON.stringify(source("AffixRerollDialog.ts"))}).AffixRerollDialog;
 const data=${JSON.stringify(offer({phase: "open", payment_mode: "materials", stone_cost: "0",
-		cost_names: ["sztabka mithrilu", "pióro serafina", "monety"], cost_amounts: ["6", "6", "300000"], cost_owned: ["8", "7", "400000"],
-		cost_classes: ["resource", "resource", "money"], cost_subclasses: ["mithril_bar", "pioro_serafina", "gold"]}))};Dialog.show(data);const dialog=frames[0].content;
+		cost_names: ["sztabka mithrilu", "sztabka czarnego żelaza", "pióro serafina", "pióro cherubina", "pióro lilith", "kieł złotej kostuchy", "monety"],
+		cost_amounts: ["144", "96", "72", "48", "48", "36", "1200000"], cost_owned: ["400", "300", "200", "100", "100", "100", "97689300"],
+		cost_classes: ["resource", "resource", "resource", "resource", "resource", "resource", "money"],
+		cost_subclasses: ["mithril_bar", "black_iron_bar", "pioro_serafina", "pioro_cherubina", "pioro_lilith", "golden_scythe_fang", "gold"]}))};Dialog.show(data);const dialog=frames[0].content;
 function reply(extra={}){Dialog.show({...data,phase:'offer',...extra,request_id:actions.at(-1).request_id});}
 window.fixture={Dialog,dialog,actions,reply,data};
 </script>`;
@@ -339,6 +341,7 @@ for(const [width,height]of [[390,844],[320,568],[844,390],[640,360],[1024,768],[
 frame.style.width=width+'px';frame.style.height=height+'px';await settle();const w=frame.contentWindow,el=d.componentElement,box=el.getBoundingClientRect();
 check(el.scrollWidth<=el.clientWidth,'horizontal overflow '+width);check(box.bottom<=height,'dialog exceeds viewport '+width);
 check(w.document.documentElement.scrollWidth<=width,'page horizontal overflow '+width);
+check(d.payment.children.length===8,'missing cost rows '+width);
 for(const button of [d.keep,d.accept,d.refreshButton]){check(!button.disabled&&!button.hidden,'offer control unavailable');check(button.getBoundingClientRect().height>=44,'touch control too small');}
 check(d.newLabel.textContent==='Maksymalne zdrowie +12','offer lost on rotation');}
 d.refreshButton.click();const request=f.actions.at(-1).request_id;frame.style.width='844px';frame.style.height='390px';await settle();

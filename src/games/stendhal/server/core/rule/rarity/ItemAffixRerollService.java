@@ -86,24 +86,37 @@ public final class ItemAffixRerollService {
 		final int multiplier = cost(id);
 		switch (item.getRarityOrCommon()) {
 		case RARE:
-			result.put("sztabka srebra", 5 * multiplier);
-			result.put("kieł tygrysi", 5 * multiplier);
-			result.put("money", 20000 * multiplier);
+			result.put("sztabka srebra", 64 * multiplier);
+			result.put("sztabka złota", 32 * multiplier);
+			result.put("kieł tygrysi", 24 * multiplier);
+			result.put("pazury tygrysie", 24 * multiplier);
+			result.put("skóra tygrysa", 16 * multiplier);
+			result.put("money", 80000 * multiplier);
 			break;
 		case EPIC:
-			result.put("sztabka złota", 3 * multiplier);
-			result.put("pióro anioła", 3 * multiplier);
-			result.put("money", 50000 * multiplier);
+			result.put("sztabka złota", 64 * multiplier);
+			result.put("sztabka platyny", 32 * multiplier);
+			result.put("pióro anioła", 24 * multiplier);
+			result.put("pióro archanioła", 16 * multiplier);
+			result.put("kieł smoka", 16 * multiplier);
+			result.put("pazur czerwonego smoka", 12 * multiplier);
+			result.put("money", 200000 * multiplier);
 			break;
 		case LEGENDARY:
-			result.put("sztabka mithrilu", 2 * multiplier);
-			result.put("pióro serafina", 2 * multiplier);
-			result.put("money", 100000 * multiplier);
+			result.put("sztabka mithrilu", 48 * multiplier);
+			result.put("sztabka czarnego żelaza", 32 * multiplier);
+			result.put("pióro serafina", 24 * multiplier);
+			result.put("pióro cherubina", 16 * multiplier);
+			result.put("pióro lilith", 16 * multiplier);
+			result.put("kieł złotej kostuchy", 12 * multiplier);
+			result.put("money", 400000 * multiplier);
 			break;
 		default:
-			result.put("sztabka żelaza", 10 * multiplier);
-			result.put("kieł wilczy", 10 * multiplier);
-			result.put("money", 5000 * multiplier);
+			result.put("sztabka żelaza", 80 * multiplier);
+			result.put("kieł wilczy", 32 * multiplier);
+			result.put("pazury wilcze", 32 * multiplier);
+			result.put("skóra zwierzęca", 24 * multiplier);
+			result.put("money", 20000 * multiplier);
 			break;
 		}
 		return Collections.unmodifiableMap(result);

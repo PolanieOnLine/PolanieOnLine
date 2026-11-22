@@ -4,6 +4,7 @@ package games.stendhal.server.core.rule.rarity;
 import static org.junit.Assert.*;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -26,6 +27,7 @@ public class ItemAffixRerollPaymentTest {
 	}
 
 	private Item item(final Player player, final ItemRarity rarity, final String id) {
+		player.getSlot("bag").setCapacity(30);
 		final Item item = new Item("payment test sword", "sword", "test", Collections.singletonMap("atk", "12"));
 		item.setEquipableSlots(Collections.singletonList("bag"));
 		item.setRarity(rarity);
@@ -49,26 +51,55 @@ public class ItemAffixRerollPaymentTest {
 		assertEquals("KEPT", service.finish(player, item, ItemAffixRerollService.state(item).get("token"), false));
 	}
 
+	private Map<String, Integer> price(final Object... resources) {
+		final Map<String, Integer> result = new LinkedHashMap<String, Integer>();
+		for (int index = 0; index < resources.length; index += 2) result.put((String) resources[index], (Integer) resources[index + 1]);
+		return result;
+	}
+
+	private Map<String, StackableItem> fund(final Player player, final Map<String, Integer> price, final int surplus) {
+		final Map<String, StackableItem> result = new LinkedHashMap<String, StackableItem>();
+		for (final Map.Entry<String, Integer> entry : price.entrySet()) result.put(entry.getKey(), resource(player, entry.getKey(), entry.getValue() + surplus));
+		return result;
+	}
+
+	private void assertUntouched(final Map<String, StackableItem> stacks, final Map<String, Integer> price) {
+		for (final Map.Entry<String, StackableItem> entry : stacks.entrySet()) assertEquals(entry.getKey(), (int) price.get(entry.getKey()), entry.getValue().getQuantity());
+	}
+
+	private Map<String, Integer> ordinaryPrice(final ItemRarity rarity) {
+		switch (rarity) {
+		case RARE:
+			return price("sztabka srebra", 64, "sztabka złota", 32, "kieł tygrysi", 24, "pazury tygrysie", 24, "skóra tygrysa", 16, "money", 80000);
+		case EPIC:
+			return price("sztabka złota", 64, "sztabka platyny", 32, "pióro anioła", 24, "pióro archanioła", 16, "kieł smoka", 16, "pazur czerwonego smoka", 12, "money", 200000);
+		case LEGENDARY:
+			return price("sztabka mithrilu", 48, "sztabka czarnego żelaza", 32, "pióro serafina", 24, "pióro cherubina", 16, "pióro lilith", 16, "kieł złotej kostuchy", 12, "money", 400000);
+		default:
+			return price("sztabka żelaza", 80, "kieł wilczy", 32, "pazury wilcze", 32, "skóra zwierzęca", 24, "money", 20000);
+		}
+	}
+
+	@Test public void repeatPricesRequireTheFullRaritySpecificIngotsAndMonsterMaterials() {
+		for (final ItemRarity rarity : ItemRarity.values()) {
+			final Player player = PlayerTestHelper.createPlayer("price_balance");
+			final Item item = item(player, rarity, "accuracy_bonus");
+			item.put(ItemAffixRerollService.ATTRIBUTE, "locked", "accuracy_bonus");
+			assertEquals(rarity.toString(), ordinaryPrice(rarity), ItemAffixRerollService.cost(item, "accuracy_bonus"));
+		}
+	}
+
 	@Test public void keepingFirstRollUnlocksMaterialPaymentForEveryItemRarity() {
-		final String[] ingots = {"sztabka żelaza", "sztabka srebra", "sztabka złota", "sztabka mithrilu"};
-		final String[] loot = {"kieł wilczy", "kieł tygrysi", "pióro anioła", "pióro serafina"};
-		final int[] quantities = {10, 5, 3, 2};
-		final int[] money = {5000, 20000, 50000, 100000};
 		for (final ItemRarity rarity : ItemRarity.values()) {
 			final Player player = PlayerTestHelper.createPlayer("payment_reroller");
 			final Item item = item(player, rarity, "accuracy_bonus");
 			final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 			final StackableItem stones = resource(player, ItemAffixRerollService.STONE, 4);
 			keep(service, player, item, "accuracy_bonus");
-			final int index = rarity.ordinal();
-			final StackableItem ingot = resource(player, ingots[index], quantities[index] + 1);
-			final StackableItem monster = resource(player, loot[index], quantities[index] + 1);
-			final StackableItem coins = resource(player, "money", money[index] + 1);
+			final Map<String, StackableItem> materials = fund(player, ordinaryPrice(rarity), 1);
 			keep(service, player, item, "accuracy_bonus");
 			assertEquals(rarity.toString(), 3, stones.getQuantity());
-			assertEquals(rarity.toString(), 1, ingot.getQuantity());
-			assertEquals(rarity.toString(), 1, monster.getQuantity());
-			assertEquals(rarity.toString(), 1, coins.getQuantity());
+			for (final StackableItem stack : materials.values()) assertEquals(rarity.toString(), 1, stack.getQuantity());
 		}
 	}
 
@@ -78,14 +109,12 @@ public class ItemAffixRerollPaymentTest {
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 		resource(player, ItemAffixRerollService.STONE, 3);
 		keep(service, player, item, "legendary_deep_wounds");
-		final StackableItem ingot = resource(player, "sztabka mithrilu", 7);
-		final StackableItem feather = resource(player, "pióro serafina", 7);
-		final StackableItem coins = resource(player, "money", 300001);
+		final Map<String, Integer> price = price("sztabka mithrilu", 144, "sztabka czarnego żelaza", 96, "pióro serafina", 72, "pióro cherubina", 48, "pióro lilith", 48, "kieł złotej kostuchy", 36, "money", 1200000);
+		assertEquals(price, ItemAffixRerollService.cost(item, "legendary_deep_wounds"));
+		final Map<String, StackableItem> materials = fund(player, price, 1);
 		keep(service, player, item, "legendary_deep_wounds");
 		assertEquals(0, service.stones(player));
-		assertEquals(1, ingot.getQuantity());
-		assertEquals(1, feather.getQuantity());
-		assertEquals(1, coins.getQuantity());
+		for (final StackableItem stack : materials.values()) assertEquals(1, stack.getQuantity());
 	}
 
 	@Test public void missingLastResourceDoesNotPartiallyConsumeAnything() {
@@ -94,14 +123,12 @@ public class ItemAffixRerollPaymentTest {
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 		resource(player, ItemAffixRerollService.STONE, 1);
 		keep(service, player, item, "accuracy_bonus");
-		final StackableItem ingot = resource(player, "sztabka srebra", 5);
-		final StackableItem tooth = resource(player, "kieł tygrysi", 5);
-		final StackableItem coins = resource(player, "money", 19999);
+		final Map<String, Integer> price = new LinkedHashMap<String, Integer>(ItemAffixRerollService.cost(item, "accuracy_bonus"));
+		price.put("money", price.get("money") - 1);
+		final Map<String, StackableItem> materials = fund(player, price, 0);
 		final String token = service.select(player, item, "accuracy_bonus");
 		assertEquals("MISSING_MATERIALS", service.roll(player, item, "accuracy_bonus", token));
-		assertEquals(5, ingot.getQuantity());
-		assertEquals(5, tooth.getQuantity());
-		assertEquals(19999, coins.getQuantity());
+		assertUntouched(materials, price);
 		assertFalse(service.hasPending(item));
 	}
 
@@ -115,7 +142,9 @@ public class ItemAffixRerollPaymentTest {
 		final Item bag = new Item("payment bag", "container", "test", Collections.emptyMap());
 		bag.addSlot(new RPSlot("content"));
 		player.getSlot("bag").add(bag);
-		final StackableItem nestedIron = resource(player, "sztabka żelaza", 6);
+		final Map<String, Integer> otherMaterials = new LinkedHashMap<String, Integer>(ItemAffixRerollService.cost(item, "accuracy_bonus"));
+		final int ironCost = otherMaterials.remove("sztabka żelaza");
+		final StackableItem nestedIron = resource(player, "sztabka żelaza", ironCost - 4);
 		player.getSlot("bag").remove(nestedIron.getID());
 		bag.getSlot("content").add(nestedIron);
 		final StackableItem boundIron = resource(player, "sztabka żelaza", 4);
@@ -130,15 +159,13 @@ public class ItemAffixRerollPaymentTest {
 		final StackableItem wrongClass = new StackableItem("sztabka żelaza", "food", "test", null);
 		wrongClass.setQuantity(80);
 		player.getSlot("bag").add(wrongClass);
-		resource(player, "kieł wilczy", 10);
-		resource(player, "money", 5000);
-		assertEquals(10, service.count(player, "sztabka żelaza"));
+		fund(player, otherMaterials, 0);
+		assertEquals(ironCost, service.count(player, "sztabka żelaza"));
 		assertTrue(service.canPay(player, item, "accuracy_bonus"));
 		assertEquals("READY", service.priceStatus(player, item, "accuracy_bonus"));
 		keep(service, player, item, "accuracy_bonus");
 		assertEquals(0, service.count(player, "sztabka żelaza"));
-		assertEquals(0, service.count(player, "kieł wilczy"));
-		assertEquals(0, service.count(player, "money"));
+		for (final String name : otherMaterials.keySet()) assertEquals(name, 0, service.count(player, name));
 		assertEquals(90, foreignIron.getQuantity());
 		assertEquals(70, bankIron.getQuantity());
 		assertEquals(80, wrongClass.getQuantity());
@@ -167,16 +194,13 @@ public class ItemAffixRerollPaymentTest {
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 		resource(player, ItemAffixRerollService.STONE, 1);
 		keep(service, player, item, "accuracy_bonus");
-		final StackableItem ingot = resource(player, "sztabka złota", 3);
-		final StackableItem feather = resource(player, "pióro anioła", 3);
-		final StackableItem coins = resource(player, "money", 50000);
+		final Map<String, Integer> price = ItemAffixRerollService.cost(item, "accuracy_bonus");
+		final Map<String, StackableItem> materials = fund(player, price, 0);
 		final String token = service.select(player, item, "accuracy_bonus");
 		assertEquals("INVALID_REQUEST", service.roll(player, item, "accuracy_bonus", "old-token"));
 		item.put("atk", 50);
 		assertEquals("INVALID_REQUEST", service.roll(player, item, "accuracy_bonus", token));
-		assertEquals(3, ingot.getQuantity());
-		assertEquals(3, feather.getQuantity());
-		assertEquals(50000, coins.getQuantity());
+		assertUntouched(materials, price);
 		assertFalse(service.hasPending(item));
 	}
 
@@ -186,9 +210,7 @@ public class ItemAffixRerollPaymentTest {
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
 		resource(player, ItemAffixRerollService.STONE, 1);
 		keep(service, player, item, "accuracy_bonus");
-		resource(player, "sztabka żelaza", 10);
-		resource(player, "kieł wilczy", 10);
-		resource(player, "money", 5000);
+		fund(player, ItemAffixRerollService.cost(item, "accuracy_bonus"), 0);
 		assertEquals("OFFER", service.roll(player, item, "accuracy_bonus", service.select(player, item, "accuracy_bonus")));
 		final Map<String, String> paid = ItemAffixRerollService.state(item);
 		final Item restored = new Item(item);
@@ -218,9 +240,7 @@ public class ItemAffixRerollPaymentTest {
 		assertEquals("accuracy_bonus", ItemAffixRerollService.state(upgraded).get("locked"));
 		assertEquals("", service.select(player, upgraded, "critical_chance"));
 		assertEquals("MISSING_MATERIALS", service.priceStatus(player, upgraded, "accuracy_bonus"));
-		resource(player, "sztabka złota", 3);
-		resource(player, "pióro anioła", 3);
-		resource(player, "money", 50000);
+		fund(player, ItemAffixRerollService.cost(upgraded, "accuracy_bonus"), 0);
 		keep(service, player, upgraded, "accuracy_bonus");
 		assertEquals(3, service.stones(player));
 		assertEquals(0, service.count(player, "money"));
@@ -233,13 +253,10 @@ public class ItemAffixRerollPaymentTest {
 		item.put(ItemAffixRerollService.ATTRIBUTE, "locked", "accuracy_bonus");
 		player.getSlot("bag").add(item);
 		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
-		final StackableItem iron = resource(player, "sztabka żelaza", 10);
-		final StackableItem tooth = resource(player, "kieł wilczy", 10);
-		final StackableItem coins = resource(player, "money", 5000);
+		final Map<String, Integer> price = ItemAffixRerollService.cost(item, "accuracy_bonus");
+		final Map<String, StackableItem> materials = fund(player, price, 0);
 		assertEquals("NO_REPLACEMENT", service.roll(player, item, "accuracy_bonus", service.select(player, item, "accuracy_bonus")));
-		assertEquals(10, iron.getQuantity());
-		assertEquals(10, tooth.getQuantity());
-		assertEquals(5000, coins.getQuantity());
+		assertUntouched(materials, price);
 		assertFalse(service.hasPending(item));
 	}
 
@@ -254,16 +271,37 @@ public class ItemAffixRerollPaymentTest {
 		assertEquals("KEPT", service.finish(player, item, ItemAffixRerollService.state(item).get("token"), false));
 		assertEquals(Collections.singletonMap("locked", "accuracy_bonus"), ItemAffixRerollService.state(item));
 		assertFalse(ItemAffixRerollService.quotedCost(item, "accuracy_bonus").containsKey(ItemAffixRerollService.STONE));
-		resource(player, "sztabka żelaza", 10);
-		resource(player, "kieł wilczy", 10);
-		resource(player, "money", 5000);
+		final Map<String, Integer> price = ItemAffixRerollService.cost(item, "accuracy_bonus");
+		fund(player, price, 0);
 		assertEquals("OFFER", service.roll(player, item, "accuracy_bonus", service.select(player, item, "accuracy_bonus")));
-		assertEquals("10", ItemAffixRerollService.state(item).get("paid.sztabka żelaza"));
-		assertEquals("10", ItemAffixRerollService.state(item).get("paid.kieł wilczy"));
-		assertEquals("5000", ItemAffixRerollService.state(item).get("paid.money"));
+		for (final Map.Entry<String, Integer> entry : price.entrySet()) {
+			assertEquals(entry.getValue().toString(), ItemAffixRerollService.state(item).get("paid." + entry.getKey()));
+		}
 		assertFalse(ItemAffixRerollService.state(item).containsKey("paid." + ItemAffixRerollService.STONE));
-		assertEquals(Integer.valueOf(5000), ItemAffixRerollService.quotedCost(item, "accuracy_bonus").get("money"));
-		assertEquals(3, ItemAffixRerollService.quotedCost(item, "accuracy_bonus").size());
+		assertEquals(ordinaryPrice(ItemRarity.COMMON), ItemAffixRerollService.quotedCost(item, "accuracy_bonus"));
+	}
+
+	@Test public void savedOfferKeepsItsPreviouslyPaidPriceAfterBalanceChanges() {
+		final Player player = PlayerTestHelper.createPlayer("previous_balance_payment");
+		final Item item = item(player, ItemRarity.COMMON, "accuracy_bonus");
+		final ItemAffixRerollService service = new ItemAffixRerollService(new Random(42));
+		resource(player, ItemAffixRerollService.STONE, 1);
+		assertEquals("OFFER", service.roll(player, item, "accuracy_bonus", service.select(player, item, "accuracy_bonus")));
+		final Map<String, String> saved = ItemAffixRerollService.state(item);
+		saved.remove("paid." + ItemAffixRerollService.STONE);
+		saved.put("paid.sztabka żelaza", "10");
+		saved.put("paid.kieł wilczy", "10");
+		saved.put("paid.money", "5000");
+		ItemAffixRerollService.replaceState(item, saved);
+		final Item restored = new Item(item);
+		item.getContainerSlot().remove(item.getID());
+		player.getSlot("bag").add(restored);
+		final ItemAffixRerollService restarted = new ItemAffixRerollService(new Random(17));
+		assertEquals("OFFER", restarted.roll(player, restored, "accuracy_bonus", ""));
+		assertEquals(price("sztabka żelaza", 10, "kieł wilczy", 10, "money", 5000), ItemAffixRerollService.quotedCost(restored, "accuracy_bonus"));
+		assertEquals(ordinaryPrice(ItemRarity.COMMON), ItemAffixRerollService.cost(restored, "accuracy_bonus"));
+		assertEquals(0, restarted.stones(player));
+		assertEquals(0, restarted.count(player, "money"));
 	}
 
 	@Test public void legacyPendingOfferQuotesOriginalStonePayment() {

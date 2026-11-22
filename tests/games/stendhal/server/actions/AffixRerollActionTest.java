@@ -126,9 +126,9 @@ public class AffixRerollActionTest {
 		assertEquals("materials", next.get("payment_mode"));
 		assertEquals(0, next.getInt("stone_cost"));
 		assertEquals(0, next.getInt("can_roll"));
-		assertEquals(java.util.Arrays.asList("sztabka srebra", "kieł tygrysi", "monety"), next.getList("cost_names"));
-		assertEquals(java.util.Arrays.asList("5", "5", "20000"), next.getList("cost_amounts"));
-		assertEquals(3, next.getList("cost_owned").size());
+		assertEquals(java.util.Arrays.asList("sztabka srebra", "sztabka złota", "kieł tygrysi", "pazury tygrysie", "skóra tygrysa", "monety"), next.getList("cost_names"));
+		assertEquals(java.util.Arrays.asList("64", "32", "24", "24", "16", "80000"), next.getList("cost_amounts"));
+		assertEquals(6, next.getList("cost_owned").size());
 	}
 
 	@Test public void refreshKeepsTheSelectedItemAndAffixAfterAnInventoryMove() {

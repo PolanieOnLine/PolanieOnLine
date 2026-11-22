@@ -154,6 +154,40 @@ public class AffixRerollWindowLayoutTest {
 		});
 	}
 
+	@Test public void sevenCostRowsKeepThePaidComparisonAndActionsInsideTheCompactWindow() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("selected_path", "bag/7"); event.put("selected_affix", "legendary_tenacity");
+			event.put("candidate_paths", Arrays.asList("bag/7"));
+			event.put("candidate_names", Arrays.asList("miecz chaosu"));
+			event.put("candidate_classes", Arrays.asList("sword"));
+			event.put("candidate_subclasses", Arrays.asList("chaos_sword"));
+			event.put("candidate_rarities", Arrays.asList("legendary"));
+			event.put("candidate_levels", Arrays.asList("3"));
+			event.put("affix_ids", Arrays.asList("legendary_tenacity"));
+			event.put("affix_labels", Arrays.asList("Zaciętość: Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."));
+			event.put("current_label", "Zaciętość: Każde celne trafienie wzmacnia następne o 3%.");
+			event.put("new_label", "Przełamanie: zadajesz o 15% więcej obrażeń przez 6 s.");
+			event.put("offer_token", "paid"); event.put("payment_mode", "materials");
+			event.put("cost_names", Arrays.asList("sztabka mithrilu", "sztabka czarnego żelaza", "pióro serafina", "pióro cherubina", "pióro lilith", "kieł złotej kostuchy", "monety"));
+			event.put("cost_amounts", Arrays.asList("144", "96", "72", "48", "48", "36", "1200000"));
+			event.put("cost_owned", Arrays.asList("400", "300", "200", "100", "100", "100", "97689300"));
+			apply(event);
+			layout((Container) window);
+			assertTrue(window.getWidth() <= 664 && window.getHeight() <= 552);
+			final JList<?> list = (JList<?>) field("affixList");
+			assertTrue("The selected affix must retain usable space: " + list.getVisibleRect(), list.getVisibleRect().height >= 32);
+			final javax.swing.JLabel price = (javax.swing.JLabel) field("cost");
+			assertTrue("All seven payment rows must fit", price.getHeight() >= price.getPreferredSize().height);
+			assertTrue(price.getText().contains("1200000 × monety"));
+			for (final String name : Arrays.asList("keep", "accept", "refresh")) {
+				final JButton button = (JButton) field(name);
+				final Point bottom = SwingUtilities.convertPoint(button, 0, button.getHeight(), window);
+				assertTrue(name + " extends below the game window", bottom.y <= window.getHeight());
+			}
+		});
+	}
+
 	@Test public void aLaterItemClickIsQueuedInsteadOfRevertedByThePreviousReply() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			final List<RPAction> actions = new ArrayList<>();
