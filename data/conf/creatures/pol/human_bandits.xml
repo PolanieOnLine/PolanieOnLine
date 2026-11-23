@@ -9,7 +9,7 @@
 		<description/>
 		<attributes>
 			<atk value="185"/>
-			<def value="35"/>
+			<def value="29"/>
 			<armor_type value="light"/>
 			<hp value="233"/>
 			<speed value="0.9"/>
@@ -47,7 +47,7 @@
 		<description/>
 		<attributes>
 			<atk value="299"/>
-			<def value="41"/>
+			<def value="32"/>
 			<armor_type value="light"/>
 			<hp value="233"/>
 			<speed value="0.9"/>
@@ -82,7 +82,7 @@
 		<description/>
 		<attributes>
 			<atk value="205"/>
-			<def value="47"/>
+			<def value="36"/>
 			<armor_type value="light"/>
 			<hp value="233"/>
 			<speed value="0.4"/>
@@ -120,7 +120,7 @@
 		<description/>
 		<attributes>
 			<atk value="225"/>
-			<def value="52"/>
+			<def value="43"/>
 			<armor_type value="light"/>
 			<hp value="233"/>
 			<armor_hp value="58"/>
@@ -245,7 +245,7 @@
 		<description/>
 		<attributes>
 			<atk value="131"/>
-			<def value="45"/>
+			<def value="39"/>
 			<armor_type value="light"/>
 			<hp value="83"/>
 			<speed value="0.9"/>
@@ -283,7 +283,7 @@
 		<description/>
 		<attributes>
 			<atk value="121"/>
-			<def value="45"/>
+			<def value="37"/>
 			<armor_type value="light"/>
 			<hp value="89"/>
 			<speed value="0.9"/>
@@ -326,7 +326,7 @@
 		<description>Oto zbójnik górski, który kryje się w jaskiniach.</description>
 		<attributes>
 			<atk value="250"/>
-			<def value="60"/>
+			<def value="56"/>
 			<armor_type value="light"/>
 			<hp value="290"/>
 			<speed value="0.8"/>
@@ -356,7 +356,7 @@
 		<description>Oto zbójnik górski goniec, który donosi o wszystkim hersztowi.</description>
 		<attributes>
 			<atk value="290"/>
-			<def value="62"/>
+			<def value="58"/>
 			<armor_type value="light"/>
 			<hp value="333"/>
 			<speed value="1.0"/>
@@ -385,7 +385,7 @@
 		<description>Oto zbójnik górski złośliwy, który chociaż gruby atakuje zwinnie.</description>
 		<attributes>
 			<atk value="390"/>
-			<def value="59"/>
+			<def value="57"/>
 			<armor_type value="light"/>
 			<hp value="309"/>
 			<speed value="0.7"/>
@@ -415,7 +415,7 @@
 		<description>Oto zbójnik górski zwiadowca, który atakuje cicho i nagle.</description>
 		<attributes>
 			<atk value="330"/>
-			<def value="61"/>
+			<def value="58"/>
 			<armor_type value="light"/>
 			<hp value="345"/>
 			<speed value="0.9"/>
@@ -447,7 +447,7 @@
 		<description>Oto zbójnik górski starszy, który chociaż brodę ma siwą zręcznie włada maczugą.</description>
 		<attributes>
 			<atk value="410"/>
-			<def value="64"/>
+			<def value="59"/>
 			<armor_type value="light"/>
 			<hp value="290"/>
 			<speed value="0.5"/>
@@ -478,7 +478,7 @@
 		<description>Oto herszt zbójników górskich, którego zła sława dotarła daleko poza granice tej krainy.</description>
 		<attributes>
 			<atk value="440"/>
-			<def value="70"/>
+			<def value="65"/>
 			<armor_type value="light"/>
 			<hp value="490"/>
 			<armor_hp value="123"/>
