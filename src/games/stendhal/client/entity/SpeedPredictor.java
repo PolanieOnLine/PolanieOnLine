@@ -120,6 +120,11 @@ class SpeedPredictor {
 		timeStamp = System.currentTimeMillis();
 	}
 
+	/** Stop waiting for a movement acknowledgement when a start is cancelled. */
+	void cancelPrediction() {
+		timeStamp = 0;
+	}
+
 	/**
 	 * Called when the user moves. Marks the end of a timing instance.
 	 */

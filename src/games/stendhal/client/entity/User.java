@@ -430,6 +430,9 @@ public class User extends Player {
 	 * @param facing <code>true</code> if the player should just turn
 	 */
 	public void predictMovement(Direction direction, boolean facing) {
+		if (facing) {
+			speedPredictor.cancelPrediction();
+		}
 		// Only handle the case of starting movement. Prediction when already
 		// moving looks odd.
 		if (stopped()) {
@@ -449,7 +452,20 @@ public class User extends Player {
 
 	@Override
 	protected void processPositioning(final RPObject base, final RPObject diff) {
-		if (speedPredictor.isActive() && (diff.has("direction") || diff.has("x") || diff.has("y"))) {
+		if (speedPredictor.isActive() && !stopped()
+				&& (!base.has("speed") || base.getDouble("speed") == 0.0)
+				&& diff.has("dir") && !diff.has("speed")
+				&& !diff.has("x") && !diff.has("y")
+				&& (!diff.has("zoneid") || (base.has("zoneid")
+						&& diff.get("zoneid").equals(base.get("zoneid"))))) {
+			// Facing an already stopped player produces only a direction update.
+			// It can still be in flight when a newer local move starts; applying
+			// the old stationary state here would reverse that predicted start.
+			return;
+		}
+		if (diff.has("speed") && diff.getDouble("speed") == 0.0) {
+			speedPredictor.cancelPrediction();
+		} else if (speedPredictor.isActive() && (diff.has("direction") || diff.has("x") || diff.has("y"))) {
 			speedPredictor.onMoved();
 		}
 		super.processPositioning(base, diff);
