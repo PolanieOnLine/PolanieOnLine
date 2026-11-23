@@ -127,11 +127,9 @@ public class AffixRerollWindowLayoutTest {
 			event.put("selected_affix", "legendary_tenacity");
 			apply(event);
 			assertTrue(((Component) field("cost")).isVisible());
-			assertTrue(((Component) field("paymentHint")).isVisible());
 			event.put("selected_affix", "");
 			apply(event);
 			assertFalse(((Component) field("cost")).isVisible());
-			assertFalse(((Component) field("paymentHint")).isVisible());
 		});
 	}
 
@@ -156,7 +154,53 @@ public class AffixRerollWindowLayoutTest {
 			final javax.swing.JLabel money = (javax.swing.JLabel) field("moneyCost");
 			assertTrue(money.getText().contains("30000 / 20000"));
 			assertTrue(money.isVisible());
-			assertTrue(((javax.swing.JLabel) field("paymentHint")).getText().contains("Surowce i monety"));
+		});
+	}
+
+	@Test public void itemCatalogueExtendsBesideTheRightHandIngredients() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("selected_path", "bag/7");
+			event.put("selected_affix", "accuracy_bonus");
+			event.put("stone_cost", 1);
+			event.put("stone_count", 197);
+			apply(event);
+			layout((Container) window);
+			final JList<?> items = (JList<?>) field("itemList");
+			final Container catalog = SwingUtilities.getAncestorOfClass(JScrollPane.class, items).getParent();
+			final Component price = (Component) field("cost");
+			final Point catalogEdge = SwingUtilities.convertPoint(catalog, catalog.getWidth(), catalog.getHeight(), window);
+			final Point priceTop = SwingUtilities.convertPoint(price, 0, 0, window);
+			final Point priceBottom = SwingUtilities.convertPoint(price, 0, price.getHeight(), window);
+			final Container affixSection = SwingUtilities.getAncestorOfClass(JScrollPane.class, (Component) field("affixList")).getParent();
+			final Point affixTop = SwingUtilities.convertPoint(affixSection, 0, 0, window);
+			assertTrue("Ingredients belong beside the catalogue", priceTop.x >= catalogEdge.x);
+			assertEquals(affixTop.x, priceTop.x);
+			assertEquals(affixSection.getWidth(), price.getWidth());
+			assertEquals("Catalogue continues down to the ingredients' bottom", priceBottom.y, catalogEdge.y);
+			assertTrue("The catalogue should use the freed vertical space", catalog.getHeight() >= 450);
+			assertTrue(window.getWidth() <= 664 && window.getHeight() <= 552);
+		});
+	}
+
+	@Test public void footerOmitsInstructionsButStillExplainsErrors() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final javax.swing.JLabel status = (javax.swing.JLabel) field("status");
+			assertFalse(status.isVisible());
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("status", "READY");
+			event.put("message", "Od pierwszej próby tylko ta właściwość będzie mogła podlegać dalszym przemianom.");
+			apply(event);
+			assertFalse(status.isVisible());
+			event.put("status", "MISSING_MATERIALS");
+			event.put("message", "Brakuje surowców lub monet do kolejnej przemiany.");
+			apply(event);
+			assertTrue(status.isVisible());
+			assertTrue(status.getText().contains("Brakuje surowców"));
+			event.put("status", "OFFER");
+			event.put("message", "Wybierz nową właściwość albo zachowaj poprzednią.");
+			apply(event);
+			assertFalse(status.isVisible());
 		});
 	}
 
@@ -295,12 +339,12 @@ public class AffixRerollWindowLayoutTest {
 				final JList<?> list = (JList<?>) field("itemList");
 				final JList<?> properties = (JList<?>) field("affixList");
 				list.setSelectedIndex(1);
-				assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("ciupaga +3"));
+				assertTrue(((AffixRerollWindow.Candidate) list.getSelectedValue()).caption().contains("ciupaga +3"));
 				assertEquals(1, properties.getModel().getSize());
 				assertEquals("legendary_tenacity", field("rerolledAffix"));
 				assertFalse(((JButton) field("roll")).isEnabled());
 				list.setSelectedIndex(0);
-				assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
+				assertTrue(((AffixRerollWindow.Candidate) ((JList<?>) field("itemList")).getSelectedValue()).caption().contains("miecz chaosu"));
 				assertEquals(1, properties.getModel().getSize());
 				assertEquals("", field("rerolledAffix"));
 				assertEquals("Only one request may be in flight", 1, actions.size());
@@ -484,8 +528,7 @@ public class AffixRerollWindowLayoutTest {
 			final String offered = ((javax.swing.JLabel) field("replacement")).getText();
 			assertTrue(offered, offered.contains("color='#f28c28'"));
 			assertTrue(offered, offered.contains("color='#f3e2b8'>15%</font>"));
-			assertTrue(((javax.swing.JLabel) field("itemName")).getText().contains("miecz chaosu"));
-			assertNotNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
+			assertTrue(((AffixRerollWindow.Candidate) ((JList<?>) field("itemList")).getSelectedValue()).caption().contains("miecz chaosu"));
 			event.remove("offer_token");
 			event.put("selected_affix", "");
 			apply(event);
@@ -504,7 +547,6 @@ public class AffixRerollWindowLayoutTest {
 			assertFalse(((JButton) field("keep")).isVisible());
 			assertFalse(((Component) field("comparisonSection")).isVisible());
 			assertFalse(((javax.swing.JLabel) field("replacement")).getText().contains("NOWY"));
-			assertNull(((javax.swing.JLabel) field("itemIcon")).getIcon());
 		});
 	}
 
@@ -512,7 +554,7 @@ public class AffixRerollWindowLayoutTest {
 	public void sectionBordersAndButtonsMatchTheGameTheme() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			assertTrue(window instanceof InternalManagedWindow);
-			assertEquals(5, countSections((Container) window));
+			assertEquals(4, countSections((Container) window));
 			for (String name : new String[] {"roll", "keep", "accept", "refresh"}) {
 				assertFalse(((JButton) field(name)).isFocusable());
 			}

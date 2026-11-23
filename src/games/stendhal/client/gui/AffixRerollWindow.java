@@ -67,11 +67,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private final JPanel costMaterials = panel(new GridLayout(0, 6, 6, 0));
 	private final JLabel moneyCost = new JLabel();
 	private final JPanel cost = DialogPanel.section(text("Składniki (masz / potrzeba)"), costMaterials);
-	private final JLabel paymentHint = new JLabel(text("Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
 	private final JLabel status = new JLabel();
-	private final JLabel itemIcon = new JLabel();
-	private final JLabel itemName = new JLabel();
-	private final JLabel itemRarity = new JLabel();
 	private final JPanel comparisonSection;
 	private final JButton roll = new JButton(text("Przelosuj afiks"));
 	private final JButton keep = new JButton(text("Zachowaj obecny"));
@@ -110,17 +106,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final JPanel catalog = listPanel(text("Przedmioty"), itemList);
 		catalog.setPreferredSize(new Dimension(210, 1));
 		center.add(catalog, BorderLayout.WEST);
-		final JPanel details = panel(new BorderLayout(0, 8));
-		final JPanel identity = panel(new BorderLayout(8, 0));
-		itemIcon.setPreferredSize(new Dimension(48, 48));
-		identity.add(itemIcon, BorderLayout.WEST);
-		final JPanel names = panel(new GridLayout(0, 1, 0, 3));
-		itemName.setFont(itemName.getFont().deriveFont(Font.BOLD));
-		names.add(itemName);
-		names.add(itemRarity);
-		identity.add(names, BorderLayout.CENTER);
-		details.add(DialogPanel.section(text("Wybrany przedmiot"), identity), BorderLayout.NORTH);
-		final JPanel properties = panel(new BorderLayout(0, 8));
+		final JPanel details = panel(new BorderLayout(0, 4));
+		final JPanel properties = panel(new BorderLayout(0, 4));
 		properties.add(listPanel(text("Afiksy przedmiotu"), affixList), BorderLayout.CENTER);
 
 		final JPanel comparison = panel(new BorderLayout(0, 6));
@@ -136,9 +123,10 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		labels.add(replacement, BorderLayout.CENTER);
 		comparison.add(scrollPane(labels), BorderLayout.CENTER);
 		comparisonSection = DialogPanel.section(text("Porównanie afiksów"), comparison);
-		comparisonSection.setPreferredSize(new Dimension(1, 100));
+		comparisonSection.setPreferredSize(new Dimension(1, 150));
 		properties.add(comparisonSection, BorderLayout.SOUTH);
 		details.add(properties, BorderLayout.CENTER);
+		details.add(cost, BorderLayout.SOUTH);
 		center.add(details, BorderLayout.CENTER);
 		content.add(center, BorderLayout.CENTER);
 
@@ -146,9 +134,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		footer.add(new JSeparator(), BorderLayout.NORTH);
 		final JPanel payment = panel(new BorderLayout(0, 3));
 		cost.add(moneyCost, BorderLayout.SOUTH);
-		payment.add(cost, BorderLayout.NORTH);
 		cost.setToolTipText(html(text("Pierwsza przemiana zwykłego afiksu wymaga 1 kamienia, a legendarnego 3. Kolejne próby kosztują surowce i monety, zależnie od rzadkości przedmiotu i rodzaju afiksu."), 300));
-		payment.add(paymentHint, BorderLayout.CENTER);
 		payment.add(status, BorderLayout.SOUTH);
 		footer.add(payment, BorderLayout.CENTER);
 		final JPanel buttons = panel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
@@ -179,7 +165,6 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				updateModel(affixes, previews.getOrDefault(selectedPath, Collections.emptyList()), Affix::sameAs);
 				affixList.clearSelection();
 			} finally { updating = false; }
-			showSelectedItem();
 			select();
 		});
 		affixList.addListSelectionListener(change -> {
@@ -202,13 +187,13 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 			} else if (waiting && System.currentTimeMillis() - sentAt >= 8000) {
 				waiting = false;
 				status.setText(html(text("Oczekiwanie na odpowiedź. Odświeżanie stanu przemiany…"), 470));
+				status.setVisible(true);
 				send("refresh");
 			} else if (!waiting && System.currentTimeMillis() - sentAt >= 30000) {
 				send("refresh");
 			}
 			if (isShowing()) {
 				itemList.repaint();
-				itemIcon.repaint();
 				costMaterials.repaint();
 			}
 		});
@@ -274,7 +259,8 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 
 	/** Serialize requests, keeping the latest click while an earlier selection is in flight. */
 	private void select() {
-		status.setText(html(text(selectedAffix.isEmpty() ? "Wybierz afiks do przemiany." : "Oczekiwanie na odpowiedź…"), 470));
+		status.setText("");
+		status.setVisible(false);
 		if (waiting) {
 			selectionQueued = true;
 			updateControls();
@@ -350,7 +336,6 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		} finally {
 			updating = false;
 		}
-		showSelectedItem();
 		// The service replaces affixes within the same ordinary or legendary pool.
 		final boolean legendary = selectedAffix.startsWith("legendary_");
 		current.setText(AffixRerollPresentation.labelHtml(value(event, "current_label"),
@@ -360,24 +345,15 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12, legendary));
 		final boolean materials = "materials".equals(value(event, "payment_mode"));
 		updateCost(event, materials);
-		paymentHint.setText(text(materials
-				? "Surowce i monety są zużywane także przy zachowaniu obecnego afiksu."
-				: "Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
 		final String message = value(event, "message");
-		status.setText(html(message.isEmpty() ? text(offerToken.isEmpty()
-				? "Wybierz przedmiot i jeden afiks do przemiany." : "Wybierz, który afiks zachować." ) : message, 470));
+		final String result = value(event, "status");
+		status.setText(html(message, 470));
+		status.setVisible(!message.isEmpty() && !Arrays.asList("", "READY", "OFFER", "ACCEPTED", "KEPT",
+				"SELECT_ITEM", "SELECT_AFFIX").contains(result));
 		updateControls();
 		setSize(getPreferredSize());
 		revalidate();
 		repaint();
-	}
-
-	private void showSelectedItem() {
-		final Candidate selected = itemList.getSelectedValue();
-		itemName.setText(selected == null ? text("Wybierz przedmiot z listy.") : html(selected.caption(), 230));
-		itemRarity.setText(selected == null ? "" : text(selected.rarity.getPolishDisplayName()));
-		itemName.setForeground(selected == null ? new JLabel().getForeground() : Color.decode(selected.rarity.getColorHex()));
-		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
 	}
 
 	private void updateCost(final RPEvent event, final boolean materials) {
@@ -386,10 +362,17 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final List<String> names = list(event, "cost_names");
 		final List<String> amounts = list(event, "cost_amounts"), owned = list(event, "cost_owned");
 		final List<String> classes = list(event, "cost_classes"), subclasses = list(event, "cost_subclasses");
+		int count = names.size();
+		for (int index = 0; index < names.size(); index++) {
+			if ((index < classes.size() && "money".equals(classes.get(index))) || names.get(index).equals(text("monety"))) count--;
+		}
+		final int columns = Math.min(6, Math.max(1, count));
+		costMaterials.setLayout(new GridLayout(0, columns, 6, 0));
+		final int cardWidth = Math.min(98, (402 - 6 * (columns - 1)) / columns);
 		if (!materials && names.isEmpty()) {
 			costMaterials.add(new ItemMaterialCard(text("kamień przemiany"),
 					new ItemIcon("resource", "transformation_stone").sprite, number(value(event, "stone_count")),
-					"3".equals(value(event, "stone_cost")) ? 3 : 1, 98, true));
+					"3".equals(value(event, "stone_cost")) ? 3 : 1, cardWidth, true));
 			return;
 		}
 		if (names.size() != amounts.size() || names.size() != owned.size()) return;
@@ -399,14 +382,14 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 			final String subclass = index < subclasses.size() ? subclasses.get(index) : "";
 			if ("money".equals(itemClass) || names.get(index).equals(text("monety"))) {
 				final Color color = have >= need ? ItemMaterialCard.AVAILABLE : ItemMaterialCard.UNAVAILABLE;
-				moneyCost.setText("<html><table width='610'><tr><td>" + escape(text("Koszt przemiany"))
+				moneyCost.setText("<html><table width='390'><tr><td>" + escape(text("Koszt przemiany"))
 						+ "</td><td align='right'><font color='" + String.format("#%02x%02x%02x",
 								color.getRed(), color.getGreen(), color.getBlue()) + "'>"
 						+ have + " / " + need + " " + escape(text("monet")) + "</font></td></tr></table></html>");
 				moneyCost.setVisible(true);
 			} else {
 				final Sprite sprite = itemClass.isEmpty() || subclass.isEmpty() ? null : new ItemIcon(itemClass, subclass).sprite;
-				costMaterials.add(new ItemMaterialCard(names.get(index), sprite, have, need, 98, true));
+				costMaterials.add(new ItemMaterialCard(names.get(index), sprite, have, need, cardWidth, true));
 			}
 		}
 	}
@@ -452,7 +435,6 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private void updateControls() {
 		final boolean offer = !offerToken.isEmpty();
 		cost.setVisible(!selectedAffix.isEmpty() && !waiting);
-		paymentHint.setVisible(!selectedAffix.isEmpty() && !waiting);
 		comparisonSection.setVisible(offer);
 		roll.setVisible(!offer);
 		keep.setVisible(offer);
