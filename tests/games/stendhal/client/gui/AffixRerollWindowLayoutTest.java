@@ -144,12 +144,18 @@ public class AffixRerollWindowLayoutTest {
 			event.put("cost_amounts", Arrays.asList("5", "5", "20000"));
 			event.put("cost_owned", Arrays.asList("4", "10", "30000"));
 			apply(event);
-			final javax.swing.JLabel label = (javax.swing.JLabel) field("cost");
-			assertTrue(label.getText(), label.getText().contains("5 × sztabka srebra"));
-			assertTrue(label.getText(), label.getText().contains("5 × kieł tygrysi"));
-			assertTrue(label.getText(), label.getText().contains("20000 × monety"));
-			assertFalse(label.getText(), label.getText().contains("kamień przemiany"));
-			assertNull(label.getIcon());
+			event.put("cost_classes", Arrays.asList("resource", "resource", "money"));
+			event.put("cost_subclasses", Arrays.asList("silver_bar", "kiel_tygrysi", "money"));
+			apply(event);
+			final Container materials = (Container) field("costMaterials");
+			assertEquals(2, materials.getComponentCount());
+			assertTrue(allText(materials).contains("sztabka srebra"));
+			assertTrue(allText(materials).contains("4 / 5"));
+			assertTrue(allText(materials).contains("10 / 5"));
+			assertFalse(allText(materials).contains("monety"));
+			final javax.swing.JLabel money = (javax.swing.JLabel) field("moneyCost");
+			assertTrue(money.getText().contains("30000 / 20000"));
+			assertTrue(money.isVisible());
 			assertTrue(((javax.swing.JLabel) field("paymentHint")).getText().contains("Surowce i monety"));
 		});
 	}
@@ -172,19 +178,40 @@ public class AffixRerollWindowLayoutTest {
 			event.put("cost_names", Arrays.asList("sztabka mithrilu", "sztabka czarnego żelaza", "pióro serafina", "pióro cherubina", "pióro lilith", "kieł złotej kostuchy", "monety"));
 			event.put("cost_amounts", Arrays.asList("144", "96", "72", "48", "48", "1", "1200000"));
 			event.put("cost_owned", Arrays.asList("400", "300", "200", "100", "100", "100", "97689300"));
+			event.put("cost_classes", Arrays.asList("resource", "resource", "resource", "resource", "resource", "resource", "money"));
+			event.put("cost_subclasses", Arrays.asList("mithril_bar", "shadow_bar", "pioro_serafina", "pioro_cherubina", "pioro_lilith", "kiel_zlotej_kostuchy", "money"));
 			apply(event);
 			layout((Container) window);
 			assertTrue(window.getWidth() <= 664 && window.getHeight() <= 552);
 			final JList<?> list = (JList<?>) field("affixList");
 			assertTrue("The selected affix must retain usable space: " + list.getVisibleRect(), list.getVisibleRect().height >= 32);
-			final javax.swing.JLabel price = (javax.swing.JLabel) field("cost");
-			assertTrue("All seven payment rows must fit", price.getHeight() >= price.getPreferredSize().height);
-			assertTrue(price.getText().contains("1200000 × monety"));
+			final Container price = (Container) field("cost");
+			assertTrue("All payment cards must fit", price.getHeight() >= price.getPreferredSize().height);
+			assertTrue(((javax.swing.JLabel) field("moneyCost")).getText().contains("97689300 / 1200000"));
 			for (final String name : Arrays.asList("keep", "accept", "refresh")) {
 				final JButton button = (JButton) field(name);
 				final Point bottom = SwingUtilities.convertPoint(button, 0, button.getHeight(), window);
 				assertTrue(name + " extends below the game window", bottom.y <= window.getHeight());
 			}
+		});
+	}
+
+	@Test public void firstRollShowsAStoneSlotWithTheSameAvailabilityColorsAsGlyphIngredients() throws Exception {
+		SwingUtilities.invokeAndWait(() -> {
+			final RPEvent event = new RPEvent("affix_reroll_event");
+			event.put("selected_path", "bag/7");
+			event.put("selected_affix", "legendary_tenacity");
+			event.put("stone_cost", 3);
+			event.put("stone_count", 2);
+			apply(event);
+			final Container materials = (Container) field("costMaterials");
+			assertEquals(1, materials.getComponentCount());
+			assertTrue(materials.getComponent(0) instanceof ItemMaterialCard);
+			assertEquals(ItemMaterialCard.UNAVAILABLE, findLabel(materials, "2 / 3").getForeground());
+			assertFalse(((Component) field("moneyCost")).isVisible());
+			event.put("stone_count", 5);
+			apply(event);
+			assertEquals(ItemMaterialCard.AVAILABLE, findLabel(materials, "5 / 3").getForeground());
 		});
 	}
 
@@ -485,7 +512,7 @@ public class AffixRerollWindowLayoutTest {
 	public void sectionBordersAndButtonsMatchTheGameTheme() throws Exception {
 		SwingUtilities.invokeAndWait(() -> {
 			assertTrue(window instanceof InternalManagedWindow);
-			assertEquals(4, countSections((Container) window));
+			assertEquals(5, countSections((Container) window));
 			for (String name : new String[] {"roll", "keep", "accept", "refresh"}) {
 				assertFalse(((JButton) field(name)).isFocusable());
 			}
@@ -526,5 +553,26 @@ public class AffixRerollWindowLayoutTest {
 		} catch (Exception exception) {
 			throw new RuntimeException(exception);
 		}
+	}
+	private static String allText(final Container parent) {
+		final StringBuilder result = new StringBuilder();
+		for (final Component child : parent.getComponents()) {
+			if (child instanceof javax.swing.JLabel) result.append(((javax.swing.JLabel) child).getText()).append(" ");
+			if (child instanceof Container) result.append(allText((Container) child));
+		}
+		return result.toString();
+	}
+
+	private static javax.swing.JLabel findLabel(final Container parent, final String text) {
+		for (final Component child : parent.getComponents()) {
+			if (child instanceof javax.swing.JLabel && text.equals(((javax.swing.JLabel) child).getText())) {
+				return (javax.swing.JLabel) child;
+			}
+			if (child instanceof Container) {
+				final javax.swing.JLabel found = findLabel((Container) child, text);
+				if (found != null) return found;
+			}
+		}
+		return null;
 	}
 }

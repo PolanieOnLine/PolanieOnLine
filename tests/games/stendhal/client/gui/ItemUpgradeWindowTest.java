@@ -78,6 +78,30 @@ public class ItemUpgradeWindowTest {
 	}
 
 	@Test
+	public void glyphWorkbenchHasACloseButtonThatStopsItsTimers() throws Exception {
+		onEdt(() -> {
+			final RPEvent open = empty();
+			open.put("phase", "open");
+			open.put("service", "glyph");
+			apply(open);
+			final JButton close = button("close");
+			assertEquals("Zamknij", close.getText());
+			assertTrue(close.isVisible());
+			final JPanel parent = new JPanel();
+			parent.add(window);
+			final Field npc = ItemUpgradeWindow.class.getDeclaredField("npcId");
+			npc.setAccessible(true);
+			npc.set(window, 0);
+			((Timer) field("inventoryRefresh")).start();
+			((Timer) field("animationTimer")).start();
+			close.doClick();
+			assertNull(window.getParent());
+			assertFalse(((Timer) field("inventoryRefresh")).isRunning());
+			assertFalse(((Timer) field("animationTimer")).isRunning());
+		});
+	}
+
+	@Test
 	public void emptyWindowFitsItsContentsAndDoesNotEnableUpgrade() throws Exception {
 		onEdt(() -> {
 			apply(empty());

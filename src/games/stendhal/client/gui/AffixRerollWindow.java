@@ -64,7 +64,9 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 	private final JList<Affix> affixList = new JList<>(affixes);
 	private final JLabel current = new JLabel();
 	private final JLabel replacement = new JLabel();
-	private final JLabel cost = new JLabel();
+	private final JPanel costMaterials = panel(new GridLayout(0, 6, 6, 0));
+	private final JLabel moneyCost = new JLabel();
+	private final JPanel cost = DialogPanel.section(text("Składniki (masz / potrzeba)"), costMaterials);
 	private final JLabel paymentHint = new JLabel(text("Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
 	private final JLabel status = new JLabel();
 	private final JLabel itemIcon = new JLabel();
@@ -134,7 +136,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		labels.add(replacement, BorderLayout.CENTER);
 		comparison.add(scrollPane(labels), BorderLayout.CENTER);
 		comparisonSection = DialogPanel.section(text("Porównanie afiksów"), comparison);
-		comparisonSection.setPreferredSize(new Dimension(1, 150));
+		comparisonSection.setPreferredSize(new Dimension(1, 100));
 		properties.add(comparisonSection, BorderLayout.SOUTH);
 		details.add(properties, BorderLayout.CENTER);
 		center.add(details, BorderLayout.CENTER);
@@ -143,7 +145,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		final JPanel footer = panel(new BorderLayout(0, 6));
 		footer.add(new JSeparator(), BorderLayout.NORTH);
 		final JPanel payment = panel(new BorderLayout(0, 3));
-		cost.setIcon(new ItemIcon("resource", "transformation_stone"));
+		cost.add(moneyCost, BorderLayout.SOUTH);
 		payment.add(cost, BorderLayout.NORTH);
 		cost.setToolTipText(html(text("Pierwsza przemiana zwykłego afiksu wymaga 1 kamienia, a legendarnego 3. Kolejne próby kosztują surowce i monety, zależnie od rzadkości przedmiotu i rodzaju afiksu."), 300));
 		payment.add(paymentHint, BorderLayout.CENTER);
@@ -207,6 +209,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 			if (isShowing()) {
 				itemList.repaint();
 				itemIcon.repaint();
+				costMaterials.repaint();
 			}
 		});
 		apply(event);
@@ -356,10 +359,7 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		replacement.setText(offerToken.isEmpty() ? ""
 				: AffixRerollPresentation.offerLabelHtml(value(event, "new_label"), DETAIL_TEXT_WIDTH - 12, legendary));
 		final boolean materials = "materials".equals(value(event, "payment_mode"));
-		cost.setIcon(materials ? null : new ItemIcon("resource", "transformation_stone"));
-		cost.setText(materials ? materialPriceHtml(event) : text("Koszt:") + " "
-				+ ("3".equals(value(event, "stone_cost")) ? "3" : "1") + " × " + text("kamień przemiany") + "   ·   "
-				+ text("Posiadasz:") + " " + value(event, "stone_count"));
+		updateCost(event, materials);
 		paymentHint.setText(text(materials
 				? "Surowce i monety są zużywane także przy zachowaniu obecnego afiksu."
 				: "Kamienie są zużywane także przy zachowaniu obecnego afiksu."));
@@ -380,17 +380,39 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		itemIcon.setIcon(selected == null ? null : new ItemIcon(selected.itemClass, selected.subclass));
 	}
 
-	private static String materialPriceHtml(final RPEvent event) {
-		final List<String> names = list(event, "cost_names"), amounts = list(event, "cost_amounts"), owned = list(event, "cost_owned");
-		if (names.size() != amounts.size() || names.size() != owned.size()) return "";
-		final StringBuilder result = new StringBuilder("<html><table cellspacing='0' cellpadding='0'>");
-		for (int index = 0; index < names.size(); index++) {
-			result.append("<tr><td style='padding-right:12px'>").append(index == 0 ? escape(text("Koszt:")) : "")
-					.append("</td><td style='padding-right:20px'>").append(escape(amounts.get(index))).append(" × ")
-					.append(escape(names.get(index))).append("</td><td>").append(escape(text("Posiadasz:"))).append(" ")
-					.append(escape(owned.get(index))).append("</td></tr>");
+	private void updateCost(final RPEvent event, final boolean materials) {
+		costMaterials.removeAll();
+		moneyCost.setVisible(false);
+		final List<String> names = list(event, "cost_names");
+		final List<String> amounts = list(event, "cost_amounts"), owned = list(event, "cost_owned");
+		final List<String> classes = list(event, "cost_classes"), subclasses = list(event, "cost_subclasses");
+		if (!materials && names.isEmpty()) {
+			costMaterials.add(new ItemMaterialCard(text("kamień przemiany"),
+					new ItemIcon("resource", "transformation_stone").sprite, number(value(event, "stone_count")),
+					"3".equals(value(event, "stone_cost")) ? 3 : 1, 98, true));
+			return;
 		}
-		return result.append("</table></html>").toString();
+		if (names.size() != amounts.size() || names.size() != owned.size()) return;
+		for (int index = 0; index < names.size(); index++) {
+			final int have = number(owned.get(index)), need = number(amounts.get(index));
+			final String itemClass = index < classes.size() ? classes.get(index) : "";
+			final String subclass = index < subclasses.size() ? subclasses.get(index) : "";
+			if ("money".equals(itemClass) || names.get(index).equals(text("monety"))) {
+				final Color color = have >= need ? ItemMaterialCard.AVAILABLE : ItemMaterialCard.UNAVAILABLE;
+				moneyCost.setText("<html><table width='610'><tr><td>" + escape(text("Koszt przemiany"))
+						+ "</td><td align='right'><font color='" + String.format("#%02x%02x%02x",
+								color.getRed(), color.getGreen(), color.getBlue()) + "'>"
+						+ have + " / " + need + " " + escape(text("monet")) + "</font></td></tr></table></html>");
+				moneyCost.setVisible(true);
+			} else {
+				final Sprite sprite = itemClass.isEmpty() || subclass.isEmpty() ? null : new ItemIcon(itemClass, subclass).sprite;
+				costMaterials.add(new ItemMaterialCard(names.get(index), sprite, have, need, 98, true));
+			}
+		}
+	}
+
+	private static int number(final String value) {
+		try { return Integer.parseInt(value); } catch (final NumberFormatException exception) { return 0; }
 	}
 
 	private void readPreviews(final RPEvent event, final List<Candidate> candidates) {

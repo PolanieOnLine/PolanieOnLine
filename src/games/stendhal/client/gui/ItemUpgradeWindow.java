@@ -65,7 +65,6 @@ import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.GlyphSprite;
 import games.stendhal.client.sprite.SpriteStore;
-import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.constants.Actions;
 import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPAction;
@@ -100,6 +99,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private final JLabel status = centered("Rozmawiaj z kowalem, aby odświeżyć okno.");
 	private final JButton upgrade = new JButton("Ulepsz");
 	private final JButton refresh = new JButton("Odśwież");
+	private final JButton close = new JButton(ClientLanguage.getText("Zamknij"));
 
 	private int npcId;
 	private boolean glyphMode;
@@ -374,6 +374,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		});
 		buttons.add(refresh);
 		buttons.add(upgrade);
+		close.setFocusable(false);
+		close.setMargin(new Insets(4, 12, 4, 12));
+		close.addActionListener(event -> close());
+		buttons.add(close);
 		bottom.add(buttons, BorderLayout.SOUTH);
 		content.add(bottom, BorderLayout.SOUTH);
 		return content;
@@ -638,30 +642,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private JComponent materialCard(final String name,
 			final String itemClass, final String subclass, final int owned,
 			final int required, final int cardWidth, final int glyphLevel) {
-		final boolean available = owned >= required;
-		final Color stateColor = available ? AVAILABLE : UNAVAILABLE;
-		final JPanel card = plainPanel(new BorderLayout(0, 3));
-		final JPanel slot = plainPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		slot.add(new MaterialIcon(itemClass, subclass, required, glyphLevel));
-		card.add(slot, BorderLayout.NORTH);
-
-		final JPanel description = plainPanel(new BorderLayout(0, 2));
-		JLabel materialName = centered(wrappedText(name, cardWidth));
-        if (glyphMode) materialName.setFont(materialName.getFont().deriveFont(Font.PLAIN));
-        description.add(materialName, BorderLayout.CENTER);
-		final JLabel count = centered(owned + " / " + required);
-		count.setForeground(stateColor);
-		description.add(count, BorderLayout.SOUTH);
-		card.add(description, BorderLayout.CENTER);
-		final String tooltip = name + ": posiadasz " + owned
-				+ ", wymagane " + required;
-		card.setToolTipText(tooltip);
-		final Dimension naturalSize = card.getPreferredSize();
-		final Dimension cardSize = new Dimension(cardWidth,
-				naturalSize.height);
-		card.setMinimumSize(cardSize);
-		card.setPreferredSize(cardSize);
-		return card;
+		final Sprite sprite = itemClass == null || itemClass.isEmpty() || subclass == null || subclass.isEmpty()
+				? null : itemSprite(itemClass, subclass, glyphLevel);
+		return new ItemMaterialCard(name, sprite, owned, required, cardWidth, glyphMode);
 	}
 
 	private void send(final String command, final String path, final String token) {
@@ -1021,38 +1004,4 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 	}
 
-	private final class MaterialIcon extends JComponent {
-		private static final long serialVersionUID = 1L;
-		private final Sprite sprite;
-		private final Sprite quantity;
-
-		private MaterialIcon(final String itemClass, final String subclass,
-				final int required, final int glyphLevel) {
-			setPreferredSize(new Dimension(40, 40));
-			setMinimumSize(new Dimension(40, 40));
-            sprite = itemClass == null || itemClass.isEmpty() || subclass == null || subclass.isEmpty()
-                    ? null : itemSprite(itemClass, subclass, glyphLevel);
-			quantity = required > 1 ? TextSprite.createTextSprite(
-					Integer.toString(required), Color.WHITE) : null;
-		}
-
-		@Override
-		protected void paintComponent(final Graphics graphics) {
-			super.paintComponent(graphics);
-			final int x = (getWidth() - SLOT_BACKGROUND.getWidth()) / 2;
-			final int y = (getHeight() - SLOT_BACKGROUND.getHeight()) / 2;
-			SLOT_BACKGROUND.draw(graphics, x, y);
-			if (sprite != null) {
-				final int spriteX = x
-						+ (SLOT_BACKGROUND.getWidth() - sprite.getWidth()) / 2;
-				final int spriteY = y
-						+ (SLOT_BACKGROUND.getHeight() - sprite.getHeight()) / 2;
-				sprite.draw(graphics, spriteX, spriteY);
-			}
-			if (quantity != null) {
-				quantity.draw(graphics,
-						x + SLOT_BACKGROUND.getWidth() - quantity.getWidth(), y);
-			}
-		}
-	}
 }
