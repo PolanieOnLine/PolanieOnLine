@@ -72,7 +72,7 @@ public class ItemAffixRerollPaymentTest {
 		case RARE:
 			return price("sztabka srebra", 64, "sztabka złota", 32, "kieł tygrysi", 24, "pazury tygrysie", 24, "skóra tygrysa", 16, "money", 80000);
 		case EPIC:
-			return price("sztabka złota", 64, "sztabka platyny", 32, "pióro anioła", 24, "pióro archanioła", 16, "kieł smoka", 16, "pazur czerwonego smoka", 12, "money", 200000);
+			return price("sztabka złota", 64, "sztabka platyny", 32, "pióro anioła", 24, "pióro archanioła", 16, "kieł smoka", 16, "money", 200000);
 		case LEGENDARY:
 			return price("sztabka mithrilu", 48, "sztabka czarnego żelaza", 32, "pióro serafina", 24, "pióro cherubina", 16, "pióro lilith", 16, "kieł złotej kostuchy", 1, "money", 400000);
 		default:

@@ -99,7 +99,6 @@ public final class ItemAffixRerollService {
 			result.put("pióro anioła", 24 * multiplier);
 			result.put("pióro archanioła", 16 * multiplier);
 			result.put("kieł smoka", 16 * multiplier);
-			result.put("pazur czerwonego smoka", 12 * multiplier);
 			result.put("money", 200000 * multiplier);
 			break;
 		case LEGENDARY:
