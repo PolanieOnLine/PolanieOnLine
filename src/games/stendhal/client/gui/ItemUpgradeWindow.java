@@ -39,7 +39,6 @@ import javax.swing.JButton;
 import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.DefaultListModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
@@ -769,14 +768,14 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
             panel.add(header, BorderLayout.NORTH); panel.add(scroll, BorderLayout.CENTER);
         }
     }
-    private final class RecipeRenderer extends DefaultListCellRenderer {
+	private final class RecipeRenderer extends ItemListSelection.Renderer {
         private static final long serialVersionUID = 1L;
         @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index,
                 boolean selected, boolean focus) {
             super.getListCellRendererComponent(list, value, index, selected, focus);
             RecipeRow recipe = (RecipeRow)value;
             setText(recipe.toString()); setIcon(new RecipeIcon(recipe, selected)); setIconTextGap(6);
-            setEnabled(true); setOpaque(selected); setBackground(new Color(105, 72, 34));
+			setEnabled(true);
             setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 4));
             setFont(list.getFont().deriveFont(selected ? Font.BOLD : Font.PLAIN));
             setForeground(recipe.ready || selected ? new Color(243, 235, 217) : new Color(210, 194, 170, 120));

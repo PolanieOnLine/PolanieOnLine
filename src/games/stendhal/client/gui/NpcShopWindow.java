@@ -168,12 +168,7 @@ public final class NpcShopWindow extends InternalManagedWindow {
 
                 @Override
                 protected void paintComponent(final Graphics graphics) {
-                    if (selected || hovered) {
-                        graphics.setColor(selected
-                                ? new Color(255, 255, 255, 31)
-                                : new Color(255, 255, 255, 15));
-                        graphics.fillRect(0, 0, getWidth(), getHeight());
-                    }
+					ItemListSelection.paint(graphics, getWidth(), getHeight(), selected, hovered);
                 }
             };
             row.setOpaque(false);

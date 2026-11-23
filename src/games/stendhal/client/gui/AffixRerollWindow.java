@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.function.BiPredicate;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -629,13 +628,15 @@ public final class AffixRerollWindow extends InternalManagedWindow {
 		}
 	}
 
-	private static final class CandidateRenderer extends DefaultListCellRenderer {
+	private static final class CandidateRenderer extends ItemListSelection.Renderer {
 		private static final long serialVersionUID = 1L;
 		@Override
 		public Component getListCellRendererComponent(final JList<?> list, final Object value,
 				final int index, final boolean selected, final boolean focus) {
 			final JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, selected, focus);
-			styleCell(label, selected);
+			// Paid offers lock input without dimming the item or its selection.
+			label.setEnabled(true);
+			label.setForeground(new JLabel().getForeground());
 			if (value instanceof Candidate) {
 				final Candidate candidate = (Candidate) value;
 				label.setText("<html><div style='width:90px'><font color='" + candidate.rarity.getColorHex() + "'>"
