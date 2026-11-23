@@ -230,6 +230,32 @@ public class PlayerFrameSynchronizationTest {
 		}
 	}
 
+	@Test
+	public void cameraBodyAndAttachmentsUseReconciledCoordinatesInsteadOfCollisionCoordinates() {
+		final TestEntity entity = new TestEntity() {
+			@Override
+			public double getRenderX() { return getX() + 0.75; }
+			@Override
+			public double getRenderY() { return getY() - 0.25; }
+		};
+		entity.move(10, 12);
+		final ProbeView view = new ProbeView();
+		view.initialize(entity);
+		final EntityRenderPosition position = view.beginRenderFrame();
+		assertEquals(10.75 * 32, position.getPixelX(), 0.000001);
+		assertEquals(11.75 * 32, position.getPixelY(), 0.000001);
+		final CameraSmoother camera = new CameraSmoother();
+		camera.reset(0, 0);
+		camera.followTarget(position.getPixelX(), position.getPixelY());
+		assertEquals(10.75 * 32, camera.getX(), 0.000001);
+		assertEquals(11.75 * 32, camera.getY(), 0.000001);
+		GameScreenSpriteHelper.setScale(1);
+		// Attachments drawn outside a frozen frame must use the same visual position.
+		assertEquals(10.75 * 32, GameScreenSpriteHelper.getEntityScreenX(entity, false), 0.000001);
+		assertEquals(11.75 * 32, GameScreenSpriteHelper.getEntityScreenY(entity), 0.000001);
+		view.endRenderFrame();
+	}
+
 	private static class TestEntity extends Entity {
 		private final boolean ownPlayer;
 		TestEntity() { this(true); }

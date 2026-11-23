@@ -138,6 +138,23 @@ public interface IEntity {
 	double getY();
 
 	/**
+	 * Get the displayed X coordinate, including visual movement reconciliation.
+	 * Collision detection continues to use {@link #getX()}.
+	 * @return The displayed X coordinate.
+	 */
+	default double getRenderX() {
+		return getX();
+	}
+
+	/**
+	 * Get the displayed Y coordinate, including visual movement reconciliation.
+	 * @return The displayed Y coordinate.
+	 */
+	default double getRenderY() {
+		return getY();
+	}
+
+	/**
 	 * Get the RPObject this represents.
 	 *
 	 * @return The RPObject.

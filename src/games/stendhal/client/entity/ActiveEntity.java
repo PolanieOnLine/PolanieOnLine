@@ -47,6 +47,12 @@ public abstract class ActiveEntity extends Entity {
 	private int stopCorrectionTime;
 	private double stopX, stopY;
 
+	/** Short visual correction; physical coordinates remain authoritative for collisions. */
+	private int renderCorrectionTime;
+	private double renderOffsetX, renderOffsetY;
+	private boolean processingPosition, positionEventPending;
+	private double previousRenderX, previousRenderY;
+
 	/** If <code>true</code>, this entity is not blocked by FlyOverArea */
 	private boolean flying = false;
 
@@ -98,6 +104,16 @@ public abstract class ActiveEntity extends Entity {
 	 */
 	public boolean stopped() {
 		return (dx == 0.0) && (dy == 0.0);
+	}
+
+	@Override
+	public synchronized double getRenderX() {
+		return processingPosition ? previousRenderX : x + renderOffsetX;
+	}
+
+	@Override
+	public synchronized double getRenderY() {
+		return processingPosition ? previousRenderY : y + renderOffsetY;
 	}
 
 	/**
@@ -207,9 +223,10 @@ public abstract class ActiveEntity extends Entity {
 	 * @see #release()
 	 */
 	@Override
-	public void initialize(final RPObject base) {
+	public synchronized void initialize(final RPObject base) {
 		double speed;
 		stopCorrectionTime = 0;
+		clearRenderCorrection();
 
 		super.initialize(base);
 
@@ -238,8 +255,16 @@ public abstract class ActiveEntity extends Entity {
 	 *            The time (in ms) since last call.
 	 */
 	@Override
-	public void update(final int delta) {
+	public synchronized void update(final int delta) {
 		super.update(delta);
+		boolean positionChanged = renderCorrectionTime > 0;
+		if (renderCorrectionTime > 0) {
+			final int elapsed = Math.min(Math.max(0, delta), renderCorrectionTime);
+			final double remaining = (double) (renderCorrectionTime - elapsed) / renderCorrectionTime;
+			renderOffsetX *= remaining;
+			renderOffsetY *= remaining;
+			renderCorrectionTime -= elapsed;
+		}
 		if (stopCorrectionTime > 0) {
 			final int elapsed = Math.min(Math.max(0, delta), stopCorrectionTime);
 			final double fraction = (double) elapsed / stopCorrectionTime;
@@ -264,9 +289,10 @@ public abstract class ActiveEntity extends Entity {
 				x = oldX;
 				y = oldY;
 			} else {
-				onPosition(x, y);
+				positionChanged = true;
 			}
 		}
+		if (positionChanged) onPosition(x, y);
 	}
 
 	/**
@@ -280,7 +306,61 @@ public abstract class ActiveEntity extends Entity {
 	 *            The changes.
 	 */
 	@Override
-	protected void processPositioning(final RPObject base, final RPObject diff) {
+	protected synchronized void processPositioning(final RPObject base, final RPObject diff) {
+		previousRenderX = getRenderX();
+		previousRenderY = getRenderY();
+		processingPosition = true;
+		positionEventPending = false;
+		try {
+			final double oldX = x, oldY = y;
+			final double displayedX = previousRenderX, displayedY = previousRenderY;
+			final boolean zoneChanged = diff.has("zoneid")
+					&& (!base.has("zoneid") || !diff.get("zoneid").equals(base.get("zoneid")));
+			processMovement(base, diff);
+			final double correction = Math.hypot(x - oldX, y - oldY);
+			if (zoneChanged || correction > 1.5) {
+				clearRenderCorrection();
+			} else if (correction > EPSILON) {
+				if (!stopped()) {
+					// Server turns can discard a fractional step on the perpendicular
+					// axis. Keep the sprite continuous while accepting the new path now.
+					renderOffsetX = displayedX - x;
+					renderOffsetY = displayedY - y;
+					renderCorrectionTime = 120;
+				} else {
+					clearRenderCorrection();
+				}
+			}
+			if (zoneChanged || correction > EPSILON) {
+				onPosition(x, y);
+			}
+		} finally {
+			processingPosition = false;
+			if (positionEventPending) {
+				positionEventPending = false;
+				super.fireChange(PROP_POSITION);
+			}
+		}
+	}
+
+	@Override
+	public synchronized void fireChange(final Property property) {
+		if (processingPosition && property == PROP_POSITION) {
+			// Rendering may start on another thread as soon as listeners are
+			// notified. Publish only after the visual correction is complete.
+			positionEventPending = true;
+		} else {
+			super.fireChange(property);
+		}
+	}
+
+	private void clearRenderCorrection() {
+		renderCorrectionTime = 0;
+		renderOffsetX = 0;
+		renderOffsetY = 0;
+	}
+
+	private void processMovement(final RPObject base, final RPObject diff) {
 		if (!diff.has("x") && !diff.has("y") && !diff.has("dir") && !diff.has("speed")) {
 			return;
 		}
