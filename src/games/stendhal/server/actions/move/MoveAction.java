@@ -38,6 +38,7 @@ public class MoveAction implements ActionListener {
 	public void onAction(final Player player, final RPAction action) {
 		if (action.has(DIR)) {
 			final int dirval = action.getInt(DIR);
+			final boolean startStep = dirval > 0 && action.has("start_step") && player.stopped();
 
 			if (dirval < 0) {
 				player.removeClientDirection(Direction.build(-dirval));
@@ -47,6 +48,15 @@ public class MoveAction implements ActionListener {
 			}
 
 			player.applyClientDirection(true);
+			if (startStep) {
+				player.beginKeyboardStep();
+				if (player.stopped()) {
+					// An unchanged zero speed still needs to acknowledge a rejected preview.
+					player.put("x", player.getX());
+					player.put("y", player.getY());
+					player.put("speed", 0.0);
+				}
+			}
 		}
 
 		TutorialNotifier.move(player);

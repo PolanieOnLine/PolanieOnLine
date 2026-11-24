@@ -56,6 +56,9 @@ public class User extends Player {
 	private double serverMovementSpeed;
 	private Direction confirmedDirection = Direction.DOWN;
 	private boolean startingConfirmedMovement = true;
+	private Direction keyboardStartup = Direction.STOP;
+	private double keyboardStartupTime;
+	private double lastWalkingSpeed = 1;
 
 	/**
 	 * creates a User object
@@ -424,14 +427,53 @@ public class User extends Player {
 		}
 	}
 
+	/** Begin a bounded first-step preview while the server commits the same tile. */
+	public synchronized void prepareKeyboardMove(final Direction direction, final RPAction action) {
+		if (getRPObject() == null || !getRPObject().has("zoneid")
+				|| !stopped() || !confirmedSteps.isEmpty() || keyboardStartup != Direction.STOP
+				|| serverMovementSpeed > 0 || direction == Direction.STOP || getRPObject().has("autowalk")
+				|| Math.abs(x - confirmedX) > 0.000001 || Math.abs(y - confirmedY) > 0.000001) return;
+		final Direction movement = isConfused() ? direction.oppositeDirection() : direction;
+		final double oldX = x, oldY = y;
+		x += movement.getdx(); y += movement.getdy();
+		final boolean blocked;
+		try {
+			blocked = GameObjects.getInstance().collides(this);
+		} finally {
+			x = oldX; y = oldY;
+		}
+		if (blocked) return;
+		action.put("start_step", "");
+		keyboardStartup = movement;
+		keyboardStartupTime = 0;
+		setDirection(movement);
+		setSpeed(movement.getdx() * lastWalkingSpeed, movement.getdy() * lastWalkingSpeed);
+		fireChange(PROP_SPEED);
+	}
+
+	/** A different input source explicitly replaces the unconfirmed first step. */
+	public synchronized void cancelKeyboardStart() {
+		if (keyboardStartup == Direction.STOP) return;
+		keyboardStartup = Direction.STOP;
+		if (Math.abs(x - confirmedX) + Math.abs(y - confirmedY) > 0.000001) {
+			confirmedSteps.addLast(new ConfirmedStep(confirmedX, confirmedY, 120));
+			applyConfirmedStep();
+		} else {
+			setSpeed(0, 0);
+		}
+		fireChange(PROP_SPEED);
+	}
+
 	/** Face the requested direction, but never invent an unconfirmed walking step. */
 	public synchronized void predictMovement(final Direction direction, final boolean facing) {
+		if (facing) cancelKeyboardStart();
 		if (stopped()) setDirection(isConfused() ? direction.oppositeDirection() : direction);
 	}
 
 	@Override
 	public synchronized void initialize(final RPObject object) {
 		confirmedSteps.clear();
+		keyboardStartup = Direction.STOP;
 		startingConfirmedMovement = true;
 		super.initialize(object);
 		confirmedX = object.getInt("x");
@@ -457,6 +499,7 @@ public class User extends Player {
 		final int distance = Math.abs(nextX - confirmedX) + Math.abs(nextY - confirmedY);
 		if (newZone || relocated || distance > Math.max(4, Math.ceil(travelSpeed * 2)) || confirmedSteps.size() > 24) {
 			confirmedSteps.clear();
+			keyboardStartup = Direction.STOP;
 			startingConfirmedMovement = true;
 			x = nextX;
 			y = nextY;
@@ -476,18 +519,27 @@ public class User extends Player {
 			appendConfirmedStep(nextX, nextY, speed, startingConfirmedMovement);
 			startingConfirmedMovement = false;
 		}
+		if (keyboardStartup != Direction.STOP && distance == 0 && diff.has("speed") && nextSpeed == 0) {
+			keyboardStartup = Direction.STOP;
+			confirmedSteps.clear();
+			if (Math.abs(x - confirmedX) + Math.abs(y - confirmedY) > 0.000001)
+				confirmedSteps.addLast(new ConfirmedStep(confirmedX, confirmedY, 120));
+		}
 		final boolean stopping = nextSpeed <= 0 && (serverMovementSpeed > 0 || distance > 0);
 		confirmedX = nextX;
 		confirmedY = nextY;
 		confirmedDirection = nextDirection;
 		serverMovementSpeed = Double.isFinite(nextSpeed) && nextSpeed > 0 ? nextSpeed : 0;
+		if (serverMovementSpeed > 0) lastWalkingSpeed = serverMovementSpeed;
 		if (serverMovementSpeed == 0) {
 			startingConfirmedMovement = true;
 			if (stopping) finishConfirmedMovement(travelSpeed);
 		}
 		if (confirmedSteps.isEmpty()) {
-			setSpeed(0, 0);
-			setDirection(confirmedDirection);
+			if (keyboardStartup == Direction.STOP) {
+				setSpeed(0, 0);
+				setDirection(confirmedDirection);
+			}
 		} else {
 			applyConfirmedStep();
 		}
@@ -523,16 +575,25 @@ public class User extends Player {
 	}
 
 	private void appendConfirmedStep(final int targetX, final int targetY, final double speed, final boolean starting) {
+		if (keyboardStartup != Direction.STOP && confirmedSteps.isEmpty()
+				&& (targetX != confirmedX + keyboardStartup.getdx() || targetY != confirmedY + keyboardStartup.getdy()))
+			cancelKeyboardStart();
 		final ConfirmedStep previous = confirmedSteps.peekLast();
 		final double fromX = previous == null ? x : previous.x;
 		final double fromY = previous == null ? y : previous.y;
 		final double distance = Math.abs(targetX - fromX) + Math.abs(targetY - fromY);
 		if (distance < 0.000001) return;
+		final boolean previewed = keyboardStartup != Direction.STOP && previous == null
+				&& targetX == confirmedX + keyboardStartup.getdx() && targetY == confirmedY + keyboardStartup.getdy();
+		// Retain the confirmed sample's full time budget. Starting from the
+		// previewed fraction must not consume the history needed for a smooth run.
+		final double timedDistance = previewed ? 1 : distance;
+		if (keyboardStartup != Direction.STOP) keyboardStartup = Direction.STOP;
 		// Keep one tile of confirmed history for fractional speeds. Otherwise
 		// 1.1 would repeatedly catch the integer endpoint before the next tick.
 		final boolean fractionalSpeed = Math.abs(speed - Math.rint(speed)) > 0.000001;
 		final double startupBuffer = starting && previous == null && speed >= 1 && fractionalSpeed ? 300 / speed : 0;
-		final double duration = distance * 300 / speed + startupBuffer;
+		final double duration = timedDistance * 300 / speed + startupBuffer;
 		confirmedSteps.addLast(new ConfirmedStep(targetX, targetY, duration));
 	}
 
@@ -568,6 +629,16 @@ public class User extends Player {
 
 	@Override
 	protected synchronized void updateMovement(final int delta) {
+		if (keyboardStartup != Direction.STOP && confirmedSteps.isEmpty()) {
+			keyboardStartupTime = Math.min(10000, keyboardStartupTime + Math.max(0, delta) * lastWalkingSpeed);
+			// React in the first frame, then ease toward half a tile while waiting.
+			// This never predicts a second step or crosses the first tile boundary.
+			final double fraction = -0.5 * Math.expm1(-keyboardStartupTime / 150.0);
+			x = confirmedX + keyboardStartup.getdx() * fraction;
+			y = confirmedY + keyboardStartup.getdy() * fraction;
+			onPosition(x, y);
+			return;
+		}
 		double remaining = Math.max(0, delta);
 		while (remaining > 0 && !confirmedSteps.isEmpty()) {
 			final ConfirmedStep step = confirmedSteps.peekFirst();
@@ -602,6 +673,7 @@ public class User extends Player {
 	 * Stop the user's movement.
 	 */
 	public void stopMovement() {
+		cancelKeyboardStart();
 		final RPAction stopAction = new RPAction();
 
 		stopAction.put(TYPE, WALK);

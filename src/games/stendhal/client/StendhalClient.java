@@ -507,6 +507,8 @@ public class StendhalClient extends ClientFramework {
 			action = new FaceRPAction(dir);
 		} else {
 			action = new MoveRPAction(dir);
+			final User user = User.get();
+			if (user != null) user.prepareKeyboardMove(dir, action);
 		}
 
 		send(action);
@@ -551,6 +553,8 @@ public class StendhalClient extends ClientFramework {
 				action = new FaceRPAction(directions.get(size - 1));
 			} else {
 				action = new MoveRPAction(directions.get(size - 1));
+				final User user = User.get();
+				if (user != null) user.prepareKeyboardMove(directions.get(size - 1), action);
 			}
 		}
 

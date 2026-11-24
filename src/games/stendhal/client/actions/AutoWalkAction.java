@@ -16,6 +16,7 @@ import static games.stendhal.common.constants.Actions.TYPE;
 import static games.stendhal.common.constants.Actions.WALK;
 
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.entity.User;
 import games.stendhal.common.StringHelper;
 import marauroa.common.game.RPAction;
 
@@ -39,6 +40,8 @@ public class AutoWalkAction implements SlashAction {
 	 */
 	@Override
 	public boolean execute(String[] params, String remainder) {
+		final User user = User.get();
+		if (user != null) user.cancelKeyboardStart();
 		final RPAction walk = new RPAction();
 
 		walk.put(TYPE, WALK);

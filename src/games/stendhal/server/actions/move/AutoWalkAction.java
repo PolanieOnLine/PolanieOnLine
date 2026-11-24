@@ -57,6 +57,7 @@ public class AutoWalkAction implements ActionListener {
 	@Override
 	public void onAction(final Player player, final RPAction action) {
 
+		player.cancelStartingKeyboardStep();
 		/* Clear player's path if set. */
 		if (player.hasPath()) {
 			player.clearPath();

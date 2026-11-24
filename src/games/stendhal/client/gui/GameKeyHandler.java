@@ -417,6 +417,7 @@ class GameKeyHandler implements KeyListener {
 	 */
 	private synchronized void processAutoWalk(final Direction direction,
 			final User user) {
+		user.cancelKeyboardStart();
 		RPAction walkAction = new RPAction();
 		final boolean facing = direction == user.getDirection();
 

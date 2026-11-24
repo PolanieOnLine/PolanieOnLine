@@ -114,6 +114,69 @@ public class KeyboardMovementStreamTest {
 		assertNotEquals(first, player.get("movement_reset"));
 	}
 
+	@Test public void anImmediateStartCompletesItsFirstTileBeforeANewerDirection() {
+		final Player player = player("immediate_start");
+		player.setBaseSpeed(1.0);
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start);
+		move(player, Direction.UP);
+		player.applyMovement();
+		assertEquals("the client has already begun the eastward step", 21, player.getX());
+		assertEquals(20, player.getY());
+		player.applyMovement();
+		assertEquals(21, player.getX()); assertEquals(19, player.getY());
+	}
+
+	@Test public void releasingAnImmediateStartFinishesExactlyOneTile() {
+		final Player player = player("immediate_release");
+		player.setBaseSpeed(1.5);
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start);
+		final RPAction release = new RPAction(); release.put("dir", -Direction.RIGHT.get());
+		new MoveAction().onAction(player, release);
+		new StopAction().onAction(player, new RPAction());
+		for (int i = 0; i < 4; i++) player.applyMovement();
+		assertEquals(21, player.getX()); assertEquals(20, player.getY()); assertTrue(player.stopped());
+	}
+
+	@Test public void aZeroSpeedStartStillAcknowledgesTheStationaryTile() {
+		final Player player = player("zero_speed_start");
+		player.setBaseSpeed(0); player.resetAddedAndDeleted();
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start);
+		final marauroa.common.game.RPObject changes = new marauroa.common.game.RPObject();
+		player.getDifferences(changes, new marauroa.common.game.RPObject());
+		assertTrue("otherwise the client waits for a first step that cannot happen", changes.has("speed"));
+		assertEquals(0, changes.getDouble("speed"), 0.000001);
+		assertEquals(20, changes.getInt("x"));
+	}
+
+	@Test public void heldImmediateStartsContinueAcrossZoneBordersButReleasedTapsStop() {
+		for (final boolean released : new boolean[] {false, true}) {
+			final StendhalRPZone west = new StendhalRPZone("immediate_border_w_" + released, 4, 4);
+			final StendhalRPZone east = new StendhalRPZone("immediate_border_e_" + released, 4, 4);
+			west.setPosition(released ? 778 : 777, 5000000, 5000000);
+			east.setPosition(released ? 778 : 777, 5000004, 5000000);
+			MockStendlRPWorld.get().addRPZone(west); MockStendlRPWorld.get().addRPZone(east);
+			final Player player = PlayerTestHelper.createPlayer("border-player");
+			west.add(player); player.setPosition(3, 1); player.stop(); player.setBaseSpeed(1);
+			player.put(games.stendhal.common.constants.Actions.MOVE_CONTINUOUS, "");
+			final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+			new MoveAction().onAction(player, start);
+			if (released) {
+				final RPAction release = new RPAction(); release.put("dir", -Direction.RIGHT.get());
+				new MoveAction().onAction(player, release);
+				new StopAction().onAction(player, new RPAction());
+			}
+			player.applyMovement();
+			assertSame(east, player.getZone());
+			assertEquals(0, player.getX());
+			assertEquals(released, player.stopped());
+			player.applyMovement();
+			assertEquals(released ? 0 : 1, player.getX());
+		}
+	}
+
 	private Player player(final String zone) {
 		final Player player = PlayerTestHelper.createPlayer("keyboard-player");
 		new StendhalRPZone(zone, 60, 60).add(player);

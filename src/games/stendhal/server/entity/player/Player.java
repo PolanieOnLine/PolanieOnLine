@@ -176,6 +176,8 @@ public class Player extends DressedEntity implements UseListener {
 	private int turnOfLastPush;
 	/** Position at the latest keyboard input, used to finish a short tap. */
 	private int keyboardStartX, keyboardStartY;
+	private boolean startingKeyboardStep;
+	private int startingKeyboardX, startingKeyboardY;
 	private StringBuilder movementSteps;
 	private StendhalRPZone movementStepsZone;
 	private int movementStepsCount;
@@ -350,7 +352,7 @@ public class Player extends DressedEntity implements UseListener {
 	 *			direction
 	 */
 	public void addClientDirection(final Direction direction) {
-		if (hasPath()) {
+		if (hasPath() && !startingKeyboardStep) {
 			setPath(null);
 		}
 
@@ -368,6 +370,24 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public void removeClientDirection(final Direction direction) {
 		directions.remove(direction);
+	}
+
+	/** Commit the first previewed tile; newer held directions apply after it. */
+	public void beginKeyboardStep() {
+		if (getZone() == null || stopped() || getDirection() == Direction.STOP || has(AUTOWALK)) return;
+		startingKeyboardX = getX() + getDirection().getdx();
+		startingKeyboardY = getY() + getDirection().getdy();
+		startingKeyboardStep = true;
+		setPath(new FixedPath(Arrays.asList(new Node(getX(), getY()),
+				new Node(startingKeyboardX, startingKeyboardY)), false));
+		if (has(PATHSET)) remove(PATHSET);
+	}
+
+	public void cancelStartingKeyboardStep() {
+		if (startingKeyboardStep) {
+			startingKeyboardStep = false;
+			setPath(null);
+		}
 	}
 
 	@Override
@@ -403,6 +423,11 @@ public class Player extends DressedEntity implements UseListener {
 			}
 		}
 		super.onMoved(oldX, oldY, newX, newY);
+		if (startingKeyboardStep && getX() == startingKeyboardX && getY() == startingKeyboardY) {
+			cancelStartingKeyboardStep();
+			if (directions.isEmpty()) stop();
+			else applyClientDirection(false);
+		}
 	}
 
 	@Override
@@ -416,6 +441,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * @param stopOnNone stop movement if no valid directions are active
 	 */
 	public void applyClientDirection(final boolean stopOnNone) {
+		if (startingKeyboardStep) return;
 		int size;
 		Direction direction;
 
@@ -453,6 +479,10 @@ public class Player extends DressedEntity implements UseListener {
 
 	/** Finish a short tap through the same collision-checked path used by mouse movement. */
 	public void requestStop() {
+		if (startingKeyboardStep) {
+			directions.clear();
+			return;
+		}
 		if (!stopped() && !has(AUTOWALK) && getZone() != null
 				&& getX() == keyboardStartX && getY() == keyboardStartY) {
 			final Direction direction = getDirection();
@@ -475,6 +505,7 @@ public class Player extends DressedEntity implements UseListener {
 	public void stop() {
 		/* Bypass stopping the player if autoWalkState is <b>true</b>. */
 		if (!this.has(AUTOWALK)) {
+			cancelStartingKeyboardStep();
 			directions.clear();
 			super.stop();
 		}
@@ -484,6 +515,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Forces player to stop moving, bypassing auto-walk
 	 */
 	public void forceStop() {
+		cancelStartingKeyboardStep();
 		this.remove(AUTOWALK);
 		directions.clear();
 		super.stop();
@@ -1888,6 +1920,7 @@ public class Player extends DressedEntity implements UseListener {
 			return false;
 		}
 		if (StendhalRPAction.placeat(zone, this, x, y)) {
+			cancelStartingKeyboardStep();
 			movementSteps = null;
 			put("movement_steps", "");
 			put("movement_reset", java.util.UUID.randomUUID().toString());
@@ -3322,8 +3355,13 @@ public class Player extends DressedEntity implements UseListener {
 	protected void handleLeaveZone(int nx, final int ny) {
 		// Players using continuous movement should stop if they cross
 		// the zone border when using mouse for movement
-		boolean stopAfter = hasPath();
+		final boolean keyboardStart = startingKeyboardStep;
+		final boolean stopAfter = hasPath() && (!keyboardStart || directions.isEmpty());
 		super.handleLeaveZone(nx, ny);
+		if (keyboardStart) {
+			cancelStartingKeyboardStep();
+			if (!stopped() && !directions.isEmpty()) applyClientDirection(false);
+		}
 		if (stopAfter) {
 			stop();
 		}

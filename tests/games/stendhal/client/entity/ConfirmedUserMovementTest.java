@@ -239,6 +239,102 @@ public class ConfirmedUserMovementTest {
 		assertEquals(22, session.user.getRenderX(), 0.000001);
 	}
 
+	@Test public void keyboardStartsMovingInTheFirstFrameBeforeTheNetworkReply() {
+		final Session session = new Session();
+		final marauroa.common.game.RPAction action = new marauroa.common.game.RPAction();
+		session.user.prepareKeyboardMove(Direction.RIGHT, action);
+		session.user.update(16);
+		assertTrue("a key press must move immediately", session.user.getRenderX() > 20.02);
+		assertEquals(20, session.user.getRenderY(), 0.000001);
+		assertTrue(action.has("start_step"));
+		session.user.update(3000);
+		assertTrue("a lost reply must not extrapolate another tile", session.user.getRenderX() < 20.501);
+	}
+
+	@Test public void confirmingAnImmediateStartNeverReplaysOrRewindsItsFirstStep() {
+		for (final Direction direction : new Direction[] {Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN}) {
+			final Session session = new Session();
+			session.user.prepareKeyboardMove(direction, new marauroa.common.game.RPAction());
+			session.user.update(120);
+			double previous = (session.user.getRenderX() - 20) * direction.getdx() + (session.user.getRenderY() - 20) * direction.getdy();
+			assertTrue(previous > 0);
+			session.packet(20 + direction.getdx(), 20 + direction.getdy(), direction, 1.1);
+			for (int frame = 0; frame < 60; frame++) {
+				session.user.update(15);
+				final double current = (session.user.getRenderX() - 20) * direction.getdx() + (session.user.getRenderY() - 20) * direction.getdy();
+				assertTrue("first-step acknowledgement must not rewind", current >= previous - 0.000001);
+				assertTrue(current <= 1.000001);
+				previous = current;
+			}
+		}
+	}
+
+	@Test public void facingOnlyDoesNotStartAPreviewedWalk() {
+		final Session session = new Session();
+		session.user.predictMovement(Direction.UP, true);
+		session.user.update(300);
+		assertEquals(20, session.user.getRenderX(), 0.000001);
+		assertEquals(20, session.user.getRenderY(), 0.000001);
+	}
+
+	@Test public void immediateKeyboardInputStaysSmoothThroughTheRealClientAndServerPipeline() {
+		games.stendhal.server.maps.MockStendlRPWorld.get();
+		games.stendhal.server.maps.MockStendhalRPRuleProcessor.get();
+		for (final double speed : new double[] {0.5, 1.0, 1.1, 1.5, 2.0, 4.5}) {
+			final Session session = new Session();
+			final String zone = "immediate_stream_" + Double.toString(speed).replace('.', '_');
+			session.base.put("zoneid", zone);
+			final games.stendhal.server.entity.player.Player player = utilities.PlayerTestHelper.createPlayer("immediate-player");
+			new games.stendhal.server.core.engine.StendhalRPZone(zone, 200, 60).add(player);
+			player.setPosition(20, 20); player.stop(); player.setBaseSpeed(speed); player.resetAddedAndDeleted();
+			final java.util.List<marauroa.common.game.RPAction> sent = new java.util.ArrayList<>();
+			final games.stendhal.client.MockStendhalClient client = new games.stendhal.client.MockStendhalClient() {
+				@Override public RPObject getPlayer() { return session.base; }
+				@Override public void send(final marauroa.common.game.RPAction action) { sent.add(action); }
+			};
+			try {
+				client.addDirection(Direction.RIGHT, false);
+				session.user.update(60);
+				double previous = session.user.getRenderX();
+				assertTrue("the actual keyboard path must react before sending a perception", previous > 20);
+				assertTrue(sent.get(0).has("start_step"));
+				new games.stendhal.server.actions.move.MoveAction().onAction(player, sent.remove(0));
+				for (int turn = 0; turn < 24; turn++) {
+					player.applyMovement();
+					final RPObject added = new RPObject(), removed = new RPObject();
+					player.getDifferences(added, removed);
+					session.user.processPositioning(session.base, added);
+					session.base.applyDifferences(added, removed);
+					player.resetAddedAndDeleted();
+					for (int frame = 0; frame < 20; frame++) {
+						session.user.update(15);
+						final double current = session.user.getRenderX();
+						assertTrue("acknowledgement recoiled at " + speed, current >= previous - 0.000001);
+						assertTrue(current <= Math.max(20.5, player.getX()) + 0.000001);
+						if (turn >= 4) assertTrue("held keyboard input paused at " + speed, current > previous + 0.000001);
+						previous = current;
+					}
+				}
+			} finally {
+				games.stendhal.client.StendhalClient.resetClient();
+			}
+		}
+	}
+
+	@Test public void aServerRejectedFirstStepSettlesAtTheRealTile() {
+		final Session session = new Session();
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction());
+		session.user.update(60);
+		assertTrue(session.user.getRenderX() > 20);
+		final RPObject blocked = new RPObject(); blocked.put("speed", 0);
+		session.user.processPositioning(session.base, blocked);
+		session.user.update(120);
+		assertEquals(20, session.user.getRenderX(), 0.000001);
+		session.user.update(900);
+		assertEquals(20, session.user.getRenderX(), 0.000001);
+		assertTrue(session.user.stopped());
+	}
+
 	private static class Session {
 		final RPObject base = new RPObject();
 		final User user;
