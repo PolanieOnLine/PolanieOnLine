@@ -343,6 +343,7 @@ public class Player extends DressedEntity implements UseListener {
 		InevitabilityService.reset(this);
 
 		updateModifiedAttributes();
+		put("movement_speed", getMovementSpeed());
 	}
 
 	/**
@@ -372,12 +373,20 @@ public class Player extends DressedEntity implements UseListener {
 		directions.remove(direction);
 	}
 
-	/** Commit the first previewed tile; newer held directions apply after it. */
+	/** Commit one keyboard tile; the next held direction applies at its endpoint. */
 	public void beginKeyboardStep() {
 		if (getZone() == null || stopped() || getDirection() == Direction.STOP || has(AUTOWALK)) return;
 		startingKeyboardX = getX() + getDirection().getdx();
 		startingKeyboardY = getY() + getDirection().getdy();
+		final boolean leavesZone = getZone().leavesZone(this, startingKeyboardX, startingKeyboardY);
+		if (!leavesZone && !isGhost() && ((!ignoresCollision() && getZone().simpleCollides(this,
+				startingKeyboardX, startingKeyboardY, getWidth(), getHeight()))
+				|| getZone().collidesObjects(this, getArea(startingKeyboardX, startingKeyboardY)))) {
+			stop();
+			return;
+		}
 		startingKeyboardStep = true;
+		put("movement_goal", leavesZone ? "" : startingKeyboardX + "," + startingKeyboardY);
 		setPath(new FixedPath(Arrays.asList(new Node(getX(), getY()),
 				new Node(startingKeyboardX, startingKeyboardY)), false));
 		if (has(PATHSET)) remove(PATHSET);
@@ -386,12 +395,19 @@ public class Player extends DressedEntity implements UseListener {
 	public void cancelStartingKeyboardStep() {
 		if (startingKeyboardStep) {
 			startingKeyboardStep = false;
+			put("movement_goal", "");
 			setPath(null);
 		}
 	}
 
 	@Override
 	public void applyMovement() {
+		final double walkingSpeed = getMovementSpeed();
+		if (startingKeyboardStep && (!Double.isFinite(walkingSpeed) || walkingSpeed <= 0)) stop();
+		if (!has("movement_speed") || getDouble("movement_speed") != walkingSpeed) {
+			put("movement_speed", walkingSpeed);
+			notifyWorldAboutChanges();
+		}
 		if (stopped() && !hasPath()) {
 			super.applyMovement();
 			return;
@@ -426,7 +442,12 @@ public class Player extends DressedEntity implements UseListener {
 		if (startingKeyboardStep && getX() == startingKeyboardX && getY() == startingKeyboardY) {
 			cancelStartingKeyboardStep();
 			if (directions.isEmpty()) stop();
-			else applyClientDirection(false);
+			else {
+				final double effectiveSpeed = getSpeed();
+				applyClientDirection(false);
+				beginKeyboardStep();
+				if (!stopped()) setSpeed(effectiveSpeed);
+			}
 		}
 	}
 
@@ -3360,7 +3381,10 @@ public class Player extends DressedEntity implements UseListener {
 		super.handleLeaveZone(nx, ny);
 		if (keyboardStart) {
 			cancelStartingKeyboardStep();
-			if (!stopped() && !directions.isEmpty()) applyClientDirection(false);
+			if (!stopped() && !directions.isEmpty()) {
+				applyClientDirection(false);
+				beginKeyboardStep();
+			}
 		}
 		if (stopAfter) {
 			stop();

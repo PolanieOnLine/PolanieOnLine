@@ -62,6 +62,8 @@ public class PlayerRPClass {
 		player.addAttribute("grumpy", Type.LONG_STRING, Definition.VOLATILE);
 
 		/* Player movement. */
+		player.addAttribute("movement_goal", Type.STRING, (byte) (Definition.PRIVATE | Definition.VOLATILE));
+		player.addAttribute("movement_speed", Type.FLOAT, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("movement_steps", Type.LONG_STRING, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("movement_reset", Type.STRING, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute(AUTOWALK, Type.FLAG, Definition.VOLATILE);

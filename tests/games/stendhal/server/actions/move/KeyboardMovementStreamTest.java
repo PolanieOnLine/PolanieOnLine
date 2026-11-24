@@ -177,6 +177,65 @@ public class KeyboardMovementStreamTest {
 		}
 	}
 
+	@Test public void heldKeysCommitTheNextTileAndReleaseFinishesThatCommittedGoal() {
+		final Player player = player("committed_stream");
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start);
+		player.applyMovement();
+		assertEquals(21, player.getX());
+		assertTrue(player.has("movement_goal"));
+		assertEquals("22,20", player.get("movement_goal"));
+		final RPAction release = new RPAction(); release.put("dir", -Direction.RIGHT.get());
+		new MoveAction().onAction(player, release); new StopAction().onAction(player, new RPAction());
+		player.applyMovement();
+		assertEquals(22, player.getX()); assertTrue(player.stopped());
+		assertEquals("", player.get("movement_goal"));
+	}
+
+	@Test public void aNewKeyboardGoalIsNotPublishedThroughAWall() {
+		final Player player = PlayerTestHelper.createPlayer("goal-wall");
+		new StendhalRPZone("goal_wall", 60, 60) {
+			@Override public boolean simpleCollides(final Entity entity, final double x, final double y,
+					final double width, final double height) {
+				return x == 22 || super.simpleCollides(entity, x, y, width, height);
+			}
+		}.add(player);
+		player.setPosition(20, 20); player.stop(); player.setBaseSpeed(1);
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start); player.applyMovement();
+		assertEquals(21, player.getX()); assertTrue(player.stopped());
+		assertEquals("", player.get("movement_goal"));
+	}
+
+	@Test public void equipmentSpeedChangesAreAdvertisedWhileStandingStill() {
+		final Player player = player("idle_speed");
+		player.setBaseSpeed(1.5); player.applyMovement();
+		assertTrue(player.stopped());
+		assertEquals(1.5, player.getDouble("movement_speed"), 0.000001);
+		player.setBaseSpeed(2); player.applyMovement();
+		assertEquals(2, player.getDouble("movement_speed"), 0.000001);
+	}
+
+	@Test public void becomingImmobileClearsTheUnfinishedCommittedGoal() {
+		final Player player = player("immobile_goal");
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start); player.applyMovement();
+		player.setBaseSpeed(0); player.applyMovement();
+		assertEquals("", player.get("movement_goal"));
+		assertTrue(player.stopped()); assertFalse(player.hasPath());
+	}
+
+	@Test public void committingTheNextTilePreservesLocalMovementResistance() {
+		final Player player = player("goal_resistance");
+		final Entity rubble = new Entity() { };
+		rubble.setSize(1, 1); rubble.setPosition(21, 20); rubble.setResistance(50);
+		player.getZone().add(rubble);
+		final RPAction start = new RPAction(); start.put("dir", Direction.RIGHT.get()); start.put("start_step", "");
+		new MoveAction().onAction(player, start); player.applyMovement();
+		assertEquals(21, player.getX());
+		assertEquals("committing the next tile must not discard a legitimate slowdown", 0.5, player.getSpeed(), 0.000001);
+	}
+
 	private Player player(final String zone) {
 		final Player player = PlayerTestHelper.createPlayer("keyboard-player");
 		new StendhalRPZone(zone, 60, 60).add(player);

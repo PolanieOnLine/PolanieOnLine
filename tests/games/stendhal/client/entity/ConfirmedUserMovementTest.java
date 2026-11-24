@@ -248,7 +248,7 @@ public class ConfirmedUserMovementTest {
 		assertEquals(20, session.user.getRenderY(), 0.000001);
 		assertTrue(action.has("start_step"));
 		session.user.update(3000);
-		assertTrue("a lost reply must not extrapolate another tile", session.user.getRenderX() < 20.501);
+		assertTrue("a lost reply must not extrapolate another tile", session.user.getRenderX() <= 21.000001);
 	}
 
 	@Test public void confirmingAnImmediateStartNeverReplaysOrRewindsItsFirstStep() {
@@ -287,6 +287,8 @@ public class ConfirmedUserMovementTest {
 			final games.stendhal.server.entity.player.Player player = utilities.PlayerTestHelper.createPlayer("immediate-player");
 			new games.stendhal.server.core.engine.StendhalRPZone(zone, 200, 60).add(player);
 			player.setPosition(20, 20); player.stop(); player.setBaseSpeed(speed); player.resetAddedAndDeleted();
+			session.base.put("movement_speed", speed);
+			session.user.initialize(session.base);
 			final java.util.List<marauroa.common.game.RPAction> sent = new java.util.ArrayList<>();
 			final games.stendhal.client.MockStendhalClient client = new games.stendhal.client.MockStendhalClient() {
 				@Override public RPObject getPlayer() { return session.base; }
@@ -310,11 +312,35 @@ public class ConfirmedUserMovementTest {
 						session.user.update(15);
 						final double current = session.user.getRenderX();
 						assertTrue("acknowledgement recoiled at " + speed, current >= previous - 0.000001);
-						assertTrue(current <= Math.max(20.5, player.getX()) + 0.000001);
-						if (turn >= 4) assertTrue("held keyboard input paused at " + speed, current > previous + 0.000001);
+						final int committedX = player.has("movement_goal") && !player.get("movement_goal").isEmpty()
+								? Integer.parseInt(player.get("movement_goal").split(",")[0]) : player.getX();
+						assertTrue("no travel beyond a committed server tile", current <= committedX + 0.000001);
+						if (turn >= 4) assertTrue("held keyboard input paused at " + speed + " turn=" + turn + " frame=" + frame + " current=" + current + " server=" + player.getX() + " goal=" + player.get("movement_goal") + " packet=" + added, current > previous + 0.000001);
 						previous = current;
 					}
 				}
+				final int endpoint = Integer.parseInt(player.get("movement_goal").split(",")[0]);
+				client.removeDirection(Direction.RIGHT, false);
+				for (final marauroa.common.game.RPAction action : sent) {
+					if ("move".equals(action.get("type"))) new games.stendhal.server.actions.move.MoveAction().onAction(player, action);
+					if ("stop".equals(action.get("type"))) new games.stendhal.server.actions.attack.StopAction().onAction(player, action);
+				}
+				for (int turn = 0; turn < 8; turn++) {
+					player.applyMovement();
+					final RPObject added = new RPObject(), removed = new RPObject();
+					player.getDifferences(added, removed);
+					session.user.processPositioning(session.base, added); session.base.applyDifferences(added, removed);
+					player.resetAddedAndDeleted();
+					for (int frame = 0; frame < 20; frame++) {
+						session.user.update(15);
+						assertTrue("release must not rewind the last step", session.user.getRenderX() >= previous - 0.000001);
+						assertTrue(session.user.getRenderX() <= endpoint + 0.000001);
+						previous = session.user.getRenderX();
+					}
+				}
+				assertEquals(endpoint, player.getX()); assertTrue(player.stopped());
+				assertEquals(endpoint, session.user.getRenderX(), 0.000001); assertTrue(session.user.stopped());
+
 			} finally {
 				games.stendhal.client.StendhalClient.resetClient();
 			}
@@ -333,6 +359,105 @@ public class ConfirmedUserMovementTest {
 		session.user.update(900);
 		assertEquals(20, session.user.getRenderX(), 0.000001);
 		assertTrue(session.user.stopped());
+	}
+
+	@Test public void keyboardUsesItsActualSpeedFromTheFirstFrame() {
+		for (final double speed : new double[] {0.5, 1, 1.1, 1.5, 2}) {
+			final Session session = new Session();
+			final RPObject speedUpdate = new RPObject(); speedUpdate.put("movement_speed", speed);
+			session.user.processPositioning(session.base, speedUpdate);
+			session.base.applyDifferences(speedUpdate, null);
+			session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction());
+			session.user.update(30);
+			assertEquals("no startup easing at speed " + speed, 20 + speed / 10, session.user.getRenderX(), 0.000001);
+			session.user.update(30);
+			assertEquals("the second frame keeps the same speed", 20 + speed / 5, session.user.getRenderX(), 0.000001);
+		}
+	}
+
+	@Test public void acknowledgementDoesNotSlowOrReplayTheAlreadyStartedTile() {
+		final Session session = new Session();
+		final RPObject speedUpdate = new RPObject(); speedUpdate.put("movement_speed", 1.5);
+		session.user.processPositioning(session.base, speedUpdate); session.base.applyDifferences(speedUpdate, null);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction());
+		session.user.update(60);
+		final RPObject diff = new RPObject();
+		diff.put("x", 21); diff.put("speed", 1.5); diff.put("movement_steps", "20,20;21,20");
+		diff.put("movement_goal", "22,20");
+		session.user.processPositioning(session.base, diff); session.base.applyDifferences(diff, null);
+		session.user.update(60);
+		assertEquals(20.6, session.user.getRenderX(), 0.000001);
+		session.user.update(120);
+		assertEquals("continue into the committed next tile without stopping", 21.2, session.user.getRenderX(), 0.000001);
+	}
+
+	@Test public void aFastReversalConsumesTheCommittedTileOnceEvenWhenTheTraceRevisitsItsOrigin() {
+		final Session session = new Session();
+		final RPObject advertised = new RPObject(); advertised.put("movement_speed", 2);
+		session.user.processPositioning(session.base, advertised); session.base.applyDifferences(advertised, null);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction()); session.user.update(60);
+		final RPObject reversed = new RPObject();
+		reversed.put("dir", Direction.LEFT.get()); reversed.put("speed", 2);
+		reversed.put("movement_steps", "20,20;21,20;20,20"); reversed.put("movement_goal", "19,20");
+		session.user.processPositioning(session.base, reversed); session.base.applyDifferences(reversed, null);
+		double previous = session.user.getRenderX(); boolean turned = false;
+		for (int frame = 0; frame < 60; frame++) {
+			session.user.update(10);
+			final double current = session.user.getRenderX();
+			assertTrue(Math.abs(current - previous) <= 0.067);
+			assertTrue(current <= 21.000001 && current >= 18.999999);
+			if (current < previous - 0.000001) turned = true;
+			if (turned) assertTrue("do not replay the eastward prefix", current <= previous + 0.000001);
+			previous = current;
+		}
+		assertTrue(turned);
+		assertEquals(19, session.user.getRenderX(), 0.000001);
+	}
+
+	@Test public void theLoginSnapshotSuppliesTheFirstKeyboardStepsSpeed() {
+		final Session session = new Session();
+		session.base.put("movement_speed", 1.5); session.user.initialize(session.base);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction());
+		session.user.update(60);
+		assertEquals(20.3, session.user.getRenderX(), 0.000001);
+	}
+
+	@Test public void anEarlyStartAcknowledgementDoesNotApplyFrontierBrakingToTheFirstTile() {
+		final Session session = new Session();
+		final RPObject speed = new RPObject(); speed.put("movement_speed", 1.5);
+		session.user.processPositioning(session.base, speed); session.base.applyDifferences(speed, null);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction()); session.user.update(60);
+		final RPObject startAck = new RPObject(); startAck.put("speed", 1.5); startAck.put("movement_goal", "21,20");
+		session.user.processPositioning(session.base, startAck); session.base.applyDifferences(startAck, null);
+		session.user.update(60);
+		assertEquals(20.6, session.user.getRenderX(), 0.000001);
+	}
+
+	@Test public void aWallAfterSeveralFastStepsDoesNotRevokeAlreadyCompletedTiles() {
+		final Session session = new Session();
+		final RPObject speed = new RPObject(); speed.put("movement_speed", 4.5);
+		session.user.processPositioning(session.base, speed); session.base.applyDifferences(speed, null);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction()); session.user.update(30);
+		double previous = session.user.getRenderX();
+		final RPObject wall = new RPObject(); wall.put("x", 23); wall.put("speed", 0);
+		wall.put("movement_steps", "20,20;21,20;22,20;23,20"); wall.put("movement_goal", "");
+		session.user.processPositioning(session.base, wall); session.base.applyDifferences(wall, null);
+		for (int i = 0; i < 80; i++) {
+			session.user.update(10);
+			final double current = session.user.getRenderX();
+			assertTrue("a blocked future goal must not revoke completed movement", current >= previous - 0.000001);
+			assertTrue(current <= 23.000001);
+			previous = current;
+		}
+		assertEquals(23, session.user.getRenderX(), 0.000001);
+	}
+
+	@Test public void anAdvertisedZeroSpeedDoesNotStartAFalseKeyboardStep() {
+		final Session session = new Session();
+		session.base.put("movement_speed", 0); session.user.initialize(session.base);
+		session.user.prepareKeyboardMove(Direction.RIGHT, new marauroa.common.game.RPAction());
+		session.user.update(60);
+		assertEquals(20, session.user.getRenderX(), 0.000001);
 	}
 
 	private static class Session {
