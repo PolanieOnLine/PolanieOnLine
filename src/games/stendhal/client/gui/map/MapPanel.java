@@ -26,7 +26,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
 import games.stendhal.client.StendhalClient;
-import games.stendhal.client.entity.User;
 import games.stendhal.common.CollisionDetection;
 import marauroa.common.game.RPAction;
 
@@ -382,7 +381,6 @@ class MapPanel extends JComponent {
 	private void movePlayer(final Point p, boolean doubleClick) {
 		// Ignore clicks to the title area
 		if (p.y <= height) {
-			if (User.get() != null) User.get().cancelKeyboardStopPrediction();
 			final RPAction action = new RPAction();
 			action.put("type", "moveto");
 			action.put("x", (p.x + xOffset) / scale);

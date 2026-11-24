@@ -507,8 +507,6 @@ public class StendhalClient extends ClientFramework {
 			action = new FaceRPAction(dir);
 		} else {
 			action = new MoveRPAction(dir);
-			final User user = User.get();
-			if (user != null) user.prepareKeyboardMove(dir, action);
 		}
 
 		send(action);
@@ -526,7 +524,6 @@ public class StendhalClient extends ClientFramework {
 	 *            If to face direction only.
 	 */
 	public void removeDirection(final Direction dir, final boolean face) {
-		prepareDirectionRelease(dir, face);
 		RPAction action;
 		int size;
 
@@ -549,33 +546,21 @@ public class StendhalClient extends ClientFramework {
 		if (size == 0) {
 			action = new RPAction();
 			action.put("type", "stop");
-			final User user = User.get();
-			if (!face && user != null) user.appendKeyboardStop(action);
 		} else {
 			if (face) {
 				action = new FaceRPAction(directions.get(size - 1));
 			} else {
 				action = new MoveRPAction(directions.get(size - 1));
-				final User user = User.get();
-				if (user != null) user.prepareKeyboardMove(directions.get(size - 1), action);
 			}
 		}
 
 		send(action);
 	}
 
-	/** Bound the last released key immediately; the network release may be delayed for repeat filtering. */
-	public void prepareDirectionRelease(final Direction dir, final boolean face) {
-		final User user = User.get();
-		if (!face && user != null && directions.size() == 1 && directions.contains(dir)) user.prepareKeyboardStop();
-	}
-
 	/**
 	 * Stop the player.
 	 */
 	public void stop() {
-		final User user = User.get();
-		if (user != null) user.cancelKeyboardStopPrediction();
 		directions.clear();
 
 		final RPAction rpaction = new RPAction();

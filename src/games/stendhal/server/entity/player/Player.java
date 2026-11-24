@@ -11,10 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
+import static games.stendhal.common.constants.General.PATHSET;
 
 import games.stendhal.common.Translation;
 import games.stendhal.common.constants.GameTiming;
-import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.rule.damage.CombatStatsService;
 import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
@@ -62,9 +62,9 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.events.TurnListener;
-import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -174,14 +174,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * The turn when the player last time pushed something.
 	 */
 	private int turnOfLastPush;
-	/**
-	 * The turn the player started moving using the keyboard. Used for detecting
-	 * quick presses ment to move one tile.
-	 */
-	private int startMoveTurn;
-	private boolean keyboardTurnQueued;
-	private int keyboardTurnX, keyboardTurnY;
-	private String keyboardTurnZone;
+	/** Position at the latest keyboard input, used to finish a short tap. */
+	private int keyboardStartX, keyboardStartY;
+	private StringBuilder movementSteps;
+	private StendhalRPZone movementStepsZone;
+	private int movementStepsCount;
 
 	/**
 	 * last client action timestamp
@@ -353,12 +350,12 @@ public class Player extends DressedEntity implements UseListener {
 	 *			direction
 	 */
 	public void addClientDirection(final Direction direction) {
-		cancelKeyboardTurn();
 		if (hasPath()) {
 			setPath(null);
 		}
 
-		startMoveTurn = SingletonRepository.getRuleProcessor().getTurn();
+		keyboardStartX = getX();
+		keyboardStartY = getY();
 		directions.remove(direction);
 		directions.add(direction);
 	}
@@ -373,40 +370,39 @@ public class Player extends DressedEntity implements UseListener {
 		directions.remove(direction);
 	}
 
-	public boolean hasQueuedKeyboardTurn() {
-		return keyboardTurnQueued;
-	}
-
-	public void queueKeyboardTurn(final FixedPath path, final int x, final int y) {
-		keyboardTurnQueued = true;
-		keyboardTurnX = x;
-		keyboardTurnY = y;
-		keyboardTurnZone = getZone().getName();
-		setPath(path);
-		// This remains keyboard-controlled; focus loss must still release held keys.
-		if (has("pathset")) remove("pathset");
-	}
-
-	public void cancelKeyboardTurn() {
-		if (keyboardTurnQueued) {
-			keyboardTurnQueued = false;
-			setPath(null);
+	@Override
+	public void applyMovement() {
+		if (stopped() && !hasPath()) {
+			super.applyMovement();
+			return;
+		}
+		movementSteps = new StringBuilder().append(getX()).append(',').append(getY());
+		movementStepsZone = getZone();
+		movementStepsCount = 0;
+		try {
+			super.applyMovement();
+		} finally {
+			if (movementSteps != null && movementStepsCount > 0) {
+				put("movement_steps", movementSteps.toString());
+				notifyWorldAboutChanges();
+			}
+			movementSteps = null;
+			movementStepsZone = null;
 		}
 	}
 
 	@Override
 	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
-		super.onMoved(oldX, oldY, newX, newY);
-		if (keyboardTurnQueued) {
-			if (getZone() == null || !keyboardTurnZone.equals(getZone().getName())) {
-				cancelKeyboardTurn();
-			} else if (getX() == keyboardTurnX && getY() == keyboardTurnY) {
-				keyboardTurnQueued = false;
-				setPath(null);
-				if (directions.isEmpty()) stop();
-				else applyClientDirection(false);
+		if (movementSteps != null) {
+			if (getZone() == movementStepsZone && movementStepsCount < 64
+					&& Math.abs(newX - oldX) + Math.abs(newY - oldY) == 1) {
+				movementSteps.append(';').append(newX).append(',').append(newY);
+				movementStepsCount++;
+			} else {
+				movementSteps = null;
 			}
 		}
+		super.onMoved(oldX, oldY, newX, newY);
 	}
 
 	@Override
@@ -455,30 +451,21 @@ public class Player extends DressedEntity implements UseListener {
 		return super.isObstacle(entity);
 	}
 
-	/**
-	 * Request stopping the player, unless the player started moving the same
-	 * turn. Intended for client initiated stops, that should not prevent the
-	 * player moving one tile with a quick key press.
-	 */
+	/** Finish a short tap through the same collision-checked path used by mouse movement. */
 	public void requestStop() {
-		int turn = SingletonRepository.getRuleProcessor().getTurn();
-
-		if (turn != startMoveTurn) {
-			stop();
-		} else {
-			TurnNotifier.get().notifyInTurns(1, new TurnListener() {
-				@Override
-				public void onTurnReached(int currentTurn) {
-					/*
-					 * Check the turn again. The player may have sent yet
-					 * another move command, and we do not want to cancel that.
-					 */
-					if (currentTurn != startMoveTurn) {
-						stop();
-					}
-				}
-			});
+		if (!stopped() && !has(AUTOWALK) && getZone() != null
+				&& getX() == keyboardStartX && getY() == keyboardStartY) {
+			final Direction direction = getDirection();
+			if (direction != Direction.STOP) {
+				directions.clear();
+				setPath(new FixedPath(Arrays.asList(new Node(getX(), getY()),
+						new Node(getX() + direction.getdx(), getY() + direction.getdy())), false));
+				// A keyboard path must not suppress key release on focus loss.
+				if (has(PATHSET)) remove(PATHSET);
+				return;
+			}
 		}
+		stop();
 	}
 
 	/**
@@ -488,7 +475,6 @@ public class Player extends DressedEntity implements UseListener {
 	public void stop() {
 		/* Bypass stopping the player if autoWalkState is <b>true</b>. */
 		if (!this.has(AUTOWALK)) {
-			cancelKeyboardTurn();
 			directions.clear();
 			super.stop();
 		}
@@ -498,7 +484,6 @@ public class Player extends DressedEntity implements UseListener {
 	 * Forces player to stop moving, bypassing auto-walk
 	 */
 	public void forceStop() {
-		cancelKeyboardTurn();
 		this.remove(AUTOWALK);
 		directions.clear();
 		super.stop();
@@ -1903,6 +1888,9 @@ public class Player extends DressedEntity implements UseListener {
 			return false;
 		}
 		if (StendhalRPAction.placeat(zone, this, x, y)) {
+			movementSteps = null;
+			put("movement_steps", "");
+			put("movement_reset", java.util.UUID.randomUUID().toString());
 			CompassService.onTeleport(this);
 			nextQuestMarkerTurn = 0;
 			if (dir != null) {

@@ -385,11 +385,6 @@ class GameKeyHandler implements KeyListener {
 			final boolean facing) {
 		if (directionRelease != null) {
 			if (directionRelease.check(direction, facing)) {
-				final User user = User.get();
-				if (user != null) {
-					if (facing) user.cancelKeyboardStopPrediction();
-					else user.resumeKeyboardPrediction(direction);
-				}
 				directionRelease = null;
 				return;
 			} else {
@@ -422,7 +417,6 @@ class GameKeyHandler implements KeyListener {
 	 */
 	private synchronized void processAutoWalk(final Direction direction,
 			final User user) {
-		user.cancelKeyboardStopPrediction();
 		RPAction walkAction = new RPAction();
 		final boolean facing = direction == user.getDirection();
 
@@ -476,7 +470,6 @@ class GameKeyHandler implements KeyListener {
 			}
 		}
 
-		client.prepareDirectionRelease(direction, facing);
 		directionRelease = new DelayedDirectionRelease(direction, facing);
 	}
 

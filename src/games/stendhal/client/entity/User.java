@@ -17,8 +17,12 @@ import static games.stendhal.common.constants.Actions.MODE;
 import static games.stendhal.common.constants.Actions.TYPE;
 import static games.stendhal.common.constants.Actions.WALK;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,25 +51,16 @@ public class User extends Player {
 	private static StaticUserProxy userProxy = NO_USER;
 
 	private final Set<String> ignore = new HashSet<String>();
-	private final SpeedPredictor speedPredictor;
-	private Direction keyboardStopDirection = Direction.STOP;
-	private int keyboardStopX, keyboardStopY;
-	private String keyboardStopZone;
-	private boolean keyboardStopAcknowledged;
-	private String expectedMovementReply;
-	private String pendingKeyboardStop;
-	private Direction preparedKeyboardMove = Direction.STOP;
-	private Direction keyboardTurnNext = Direction.STOP;
+	private final Deque<ConfirmedStep> confirmedSteps = new ArrayDeque<>();
+	private int confirmedX, confirmedY;
+	private double serverMovementSpeed;
+	private Direction confirmedDirection = Direction.DOWN;
+	private boolean startingConfirmedMovement = true;
 
 	/**
 	 * creates a User object
 	 */
 	public User() {
-		if (isNull()) {
-			speedPredictor = new SpeedPredictor();
-		} else {
-			speedPredictor = new SpeedPredictor(userProxy.getUser().speedPredictor);
-		}
 		userProxy = new NormalUserProxy(this);
 	}
 
@@ -429,220 +424,184 @@ public class User extends Player {
 		}
 	}
 
-	/**
-	 * Start movement towards a direction. This is for
-	 * the client side movement prediction to start moving before the server
-	 * responds to the move action.
-	 *
-	 * @param direction new direction
-	 * @param facing <code>true</code> if the player should just turn
-	 */
-	public synchronized void predictMovement(Direction direction, boolean facing) {
-		final String preparedReply = !facing && preparedKeyboardMove == direction ? expectedMovementReply : null;
-		preparedKeyboardMove = Direction.STOP;
-		if (!facing && keyboardTurnNext == direction) return;
-		final boolean nextStep = keyboardStopDirection != Direction.STOP && !facing;
-		cancelKeyboardStopPrediction();
-		if (preparedReply != null) expectedMovementReply = preparedReply;
-		if (facing) {
-			speedPredictor.cancelPrediction();
-		}
-		// Predict a new step after key-up as well as a start from rest.
-		// Direction changes during a continuously held move remain server-driven.
-		if (stopped() || nextStep) {
-			if (isConfused()) {
-				direction = direction.oppositeDirection();
-			}
-			if (!facing) {
-				double speed = speedPredictor.getSpeed();
-				setSpeed(direction.getdx() * speed, direction.getdy() * speed);
-				fireChange(PROP_SPEED);
-				speedPredictor.startPrediction();
-			}
-			// setDirection fires the appropriate property for itself
-			setDirection(direction);
-		}
-	}
-
-	@Override
-	protected synchronized void processPositioning(final RPObject base, final RPObject diff) {
-		final boolean newZone = diff.has("zoneid") && (!base.has("zoneid") || !diff.get("zoneid").equals(base.get("zoneid")));
-		if (newZone) {
-			clearKeyboardStopLimit();
-			expectedMovementReply = null;
-		}
-		final String movementReply = diff.has("movement_request") ? diff.get("movement_request")
-				: base.has("movement_request") ? base.get("movement_request") : "";
-		// Only discard identified older input replies. Unsequenced server corrections remain authoritative.
-		if (!newZone && expectedMovementReply != null && !movementReply.isEmpty()
-				&& !movementReply.equals(expectedMovementReply)) return;
-		if ((speedPredictor.isActive() || (keyboardStopDirection != Direction.STOP && !keyboardStopAcknowledged))
-				&& !stopped()
-				&& (!base.has("speed") || base.getDouble("speed") == 0.0)
-				&& diff.has("dir") && !diff.has("speed")
-				&& !diff.has("x") && !diff.has("y")
-				&& (!diff.has("zoneid") || (base.has("zoneid")
-						&& diff.get("zoneid").equals(base.get("zoneid"))))) {
-			// Facing an already stopped player produces only a direction update.
-			// It can still be in flight when a newer local move starts; applying
-			// the old stationary state here would reverse that predicted start.
-			return;
-		}
-		if (keyboardStopDirection != Direction.STOP) {
-			final boolean zoneChanged = diff.has("zoneid") && !diff.get("zoneid").equals(keyboardStopZone);
-			final boolean turned = diff.has("dir") && Direction.build(diff.getInt("dir")) != keyboardStopDirection;
-			if (zoneChanged || turned || diff.has("autowalk")) {
-				clearKeyboardStopLimit();
-			} else {
-				final int targetX = diff.has("x") ? diff.getInt("x") : base.getInt("x");
-				final int targetY = diff.has("y") ? diff.getInt("y") : base.getInt("y");
-				final double progress = (targetX - keyboardStopX) * keyboardStopDirection.getdx()
-						+ (targetY - keyboardStopY) * keyboardStopDirection.getdy();
-				if (diff.has("speed") && diff.getDouble("speed") == 0.0 && progress < 0) {
-					// A blocked step remains authoritative, even if local collision data differed.
-					clearKeyboardStopLimit();
-				} else {
-					if (progress > 0) {
-						keyboardStopX = targetX;
-						keyboardStopY = targetY;
-					}
-					if (diff.has("speed") && diff.getDouble("speed") == 0.0) keyboardStopAcknowledged = true;
-				}
-			}
-		}
-
-		if (diff.has("speed") && diff.getDouble("speed") == 0.0) {
-			speedPredictor.cancelPrediction();
-		} else if (speedPredictor.isActive() && (diff.has("direction") || diff.has("x") || diff.has("y"))) {
-			speedPredictor.onMoved();
-		}
-		super.processPositioning(base, diff);
-	}
-
-	/** Finish the current keyboard step rather than predicting another one after key-up. */
-	public synchronized void prepareKeyboardStop() {
-		final RPObject object = getRPObject();
-		if (keyboardTurnNext != Direction.STOP) {
-			keyboardTurnNext = Direction.STOP;
-			pendingKeyboardStop = null;
-			keyboardStopAcknowledged = false;
-			return;
-		}
-		if (keyboardStopDirection != Direction.STOP || object == null || !object.has("zoneid")
-				|| object.has("autowalk") || getDirection() == Direction.STOP) return;
-		final Direction direction = getDirection();
-		final double displayX = getRenderX(), displayY = getRenderY();
-		keyboardStopX = direction.getdx() > 0 ? (int) Math.ceil(Math.max(x, displayX) - 0.000001)
-				: direction.getdx() < 0 ? (int) Math.floor(Math.min(x, displayX) + 0.000001) : (int) Math.round(x);
-		keyboardStopY = direction.getdy() > 0 ? (int) Math.ceil(Math.max(y, displayY) - 0.000001)
-				: direction.getdy() < 0 ? (int) Math.floor(Math.min(y, displayY) + 0.000001) : (int) Math.round(y);
-		if (speedPredictor.isActive()) {
-			// A tap before the first acknowledgement must still request its first tile.
-			if (direction.getdx() > 0) keyboardStopX = Math.max(keyboardStopX, object.getInt("x") + 1);
-			if (direction.getdx() < 0) keyboardStopX = Math.min(keyboardStopX, object.getInt("x") - 1);
-			if (direction.getdy() > 0) keyboardStopY = Math.max(keyboardStopY, object.getInt("y") + 1);
-			if (direction.getdy() < 0) keyboardStopY = Math.min(keyboardStopY, object.getInt("y") - 1);
-		}
-		keyboardStopZone = object.get("zoneid");
-		keyboardStopDirection = direction;
-		keyboardStopAcknowledged = false;
-		pendingKeyboardStop = null;
-		speedPredictor.cancelPrediction();
-	}
-
-	/** Keep the old step bounded until the server confirms its agreed turning corner. */
-	public synchronized void prepareKeyboardMove(final Direction next, final RPAction action) {
-		if (stopped() || next == getDirection() || getRPObject() == null || getRPObject().has("autowalk")) {
-			cancelKeyboardStopPrediction();
-		} else {
-			prepareKeyboardStop();
-			if (keyboardStopDirection != Direction.STOP) {
-				keyboardTurnNext = next;
-				action.put("turn_x", keyboardStopX);
-				action.put("turn_y", keyboardStopY);
-				action.put("turn_from", keyboardStopDirection.get());
-				action.put("turn_zone", keyboardStopZone);
-			}
-		}
-		expectedMovementReply = java.util.UUID.randomUUID().toString();
-		preparedKeyboardMove = next;
-		action.put("input_id", expectedMovementReply);
-	}
-
-	/** Synthetic repeat pairs do not send another server command. */
-	public synchronized void resumeKeyboardPrediction(final Direction direction) {
-		final String reply = expectedMovementReply;
-		prepareKeyboardMove(direction, new RPAction());
-		expectedMovementReply = reply;
-		preparedKeyboardMove = Direction.STOP;
-	}
-
-	public synchronized void appendKeyboardStop(final RPAction action) {
-		if (keyboardStopDirection == Direction.STOP) return;
-		if (pendingKeyboardStop == null) pendingKeyboardStop = java.util.UUID.randomUUID().toString();
-		expectedMovementReply = pendingKeyboardStop;
-		action.put("finish_id", expectedMovementReply);
-		action.put("finish_x", keyboardStopX);
-		action.put("finish_y", keyboardStopY);
-		action.put("finish_dir", keyboardStopDirection.get());
-		action.put("finish_zone", keyboardStopZone);
-	}
-
-	public synchronized void cancelKeyboardStopPrediction() {
-		expectedMovementReply = "";
-		clearKeyboardStopLimit();
-	}
-
-	private void clearKeyboardStopLimit() {
-		keyboardStopDirection = Direction.STOP;
-		keyboardTurnNext = Direction.STOP;
-		pendingKeyboardStop = null;
-		keyboardStopAcknowledged = false;
+	/** Face the requested direction, but never invent an unconfirmed walking step. */
+	public synchronized void predictMovement(final Direction direction, final boolean facing) {
+		if (stopped()) setDirection(isConfused() ? direction.oppositeDirection() : direction);
 	}
 
 	@Override
 	public synchronized void initialize(final RPObject object) {
-		clearKeyboardStopLimit();
-		expectedMovementReply = null;
-		preparedKeyboardMove = Direction.STOP;
+		confirmedSteps.clear();
+		startingConfirmedMovement = true;
 		super.initialize(object);
+		confirmedX = object.getInt("x");
+		confirmedY = object.getInt("y");
+		confirmedDirection = getDirection();
+		serverMovementSpeed = object.has("speed") ? object.getDouble("speed") : 0;
+		setSpeed(0, 0);
 	}
 
 	@Override
-	public synchronized void update(final int delta) {
-		super.update(delta);
-		if (keyboardStopAcknowledged && Math.abs(x - keyboardStopX) < 0.000001
-				&& Math.abs(y - keyboardStopY) < 0.000001 && Math.abs(super.getRenderX() - x) < 0.000001
-				&& Math.abs(super.getRenderY() - y) < 0.000001) clearKeyboardStopLimit();
+	protected synchronized void processPositioning(final RPObject base, final RPObject diff) {
+		final boolean newZone = diff.has("zoneid")
+				&& (!base.has("zoneid") || !diff.get("zoneid").equals(base.get("zoneid")));
+		final boolean relocated = diff.has("movement_reset")
+				&& (!base.has("movement_reset") || !diff.get("movement_reset").equals(base.get("movement_reset")));
+		if (!diff.has("x") && !diff.has("y") && !diff.has("dir") && !diff.has("speed")
+				&& !diff.has("movement_steps") && !newZone && !relocated) return;
+		final int nextX = diff.has("x") ? diff.getInt("x") : confirmedX;
+		final int nextY = diff.has("y") ? diff.getInt("y") : confirmedY;
+		final Direction nextDirection = diff.has("dir") ? Direction.build(diff.getInt("dir")) : confirmedDirection;
+		final double nextSpeed = diff.has("speed") ? diff.getDouble("speed") : serverMovementSpeed;
+		final double travelSpeed = nextSpeed > 0 ? nextSpeed : serverMovementSpeed;
+		final int distance = Math.abs(nextX - confirmedX) + Math.abs(nextY - confirmedY);
+		if (newZone || relocated || distance > Math.max(4, Math.ceil(travelSpeed * 2)) || confirmedSteps.size() > 24) {
+			confirmedSteps.clear();
+			startingConfirmedMovement = true;
+			x = nextX;
+			y = nextY;
+			onPosition(x, y);
+		} else if (diff.has("movement_steps") && appendConfirmedRoute(diff.get("movement_steps"), nextX, nextY,
+				Double.isFinite(travelSpeed) && travelSpeed > 0 ? travelSpeed : 1)) {
+			startingConfirmedMovement = false;
+		} else if (distance > 0) {
+			// Compatibility with servers predating confirmed movement routes.
+			// A perception may contain both legs of a fast mouse route. The last
+			// direction identifies the final leg; keep the actual grid corner.
+			final double speed = Double.isFinite(travelSpeed) && travelSpeed > 0 ? travelSpeed : distance;
+			if (nextX != confirmedX && nextY != confirmedY) {
+				if (nextDirection.getdx() != 0) appendConfirmedStep(confirmedX, nextY, speed, false);
+				else appendConfirmedStep(nextX, confirmedY, speed, false);
+			}
+			appendConfirmedStep(nextX, nextY, speed, startingConfirmedMovement);
+			startingConfirmedMovement = false;
+		}
+		final boolean stopping = nextSpeed <= 0 && (serverMovementSpeed > 0 || distance > 0);
+		confirmedX = nextX;
+		confirmedY = nextY;
+		confirmedDirection = nextDirection;
+		serverMovementSpeed = Double.isFinite(nextSpeed) && nextSpeed > 0 ? nextSpeed : 0;
+		if (serverMovementSpeed == 0) {
+			startingConfirmedMovement = true;
+			if (stopping) finishConfirmedMovement(travelSpeed);
+		}
+		if (confirmedSteps.isEmpty()) {
+			setSpeed(0, 0);
+			setDirection(confirmedDirection);
+		} else {
+			applyConfirmedStep();
+		}
+		fireChange(PROP_SPEED);
+	}
+
+	/** Validate the complete route before adding any of its confirmed tiles. */
+	private boolean appendConfirmedRoute(final String route, final int targetX, final int targetY, final double speed) {
+		if (route.length() > 4096) return false;
+		final String[] nodes = route.split(";");
+		if (nodes.length < 2 || nodes.length > 65) return false;
+		final List<int[]> points = new ArrayList<>();
+		try {
+			for (final String node : nodes) {
+				final String[] coordinates = node.split(",");
+				if (coordinates.length != 2) return false;
+				points.add(new int[] {Integer.parseInt(coordinates[0]), Integer.parseInt(coordinates[1])});
+			}
+		} catch (final NumberFormatException invalid) {
+			return false;
+		}
+		final int[] first = points.get(0), last = points.get(points.size() - 1);
+		if (first[0] != confirmedX || first[1] != confirmedY || last[0] != targetX || last[1] != targetY) return false;
+		for (int i = 1; i < points.size(); i++) {
+			final int[] from = points.get(i - 1), to = points.get(i);
+			if (Math.abs((long) to[0] - from[0]) + Math.abs((long) to[1] - from[1]) != 1) return false;
+		}
+		for (int i = 1; i < points.size(); i++) {
+			final int[] point = points.get(i);
+			appendConfirmedStep(point[0], point[1], speed, startingConfirmedMovement && i == 1);
+		}
+		return true;
+	}
+
+	private void appendConfirmedStep(final int targetX, final int targetY, final double speed, final boolean starting) {
+		final ConfirmedStep previous = confirmedSteps.peekLast();
+		final double fromX = previous == null ? x : previous.x;
+		final double fromY = previous == null ? y : previous.y;
+		final double distance = Math.abs(targetX - fromX) + Math.abs(targetY - fromY);
+		if (distance < 0.000001) return;
+		// Keep one tile of confirmed history for fractional speeds. Otherwise
+		// 1.1 would repeatedly catch the integer endpoint before the next tick.
+		final boolean fractionalSpeed = Math.abs(speed - Math.rint(speed)) > 0.000001;
+		final double startupBuffer = starting && previous == null && speed >= 1 && fractionalSpeed ? 300 / speed : 0;
+		final double duration = distance * 300 / speed + startupBuffer;
+		confirmedSteps.addLast(new ConfirmedStep(targetX, targetY, duration));
+	}
+
+	/** Once stopped, no jitter reserve is needed; finish the confirmed tail promptly. */
+	private void finishConfirmedMovement(final double speed) {
+		double distance = 0, duration = 0, fromX = x, fromY = y;
+		for (final ConfirmedStep step : confirmedSteps) {
+			distance += Math.abs(step.x - fromX) + Math.abs(step.y - fromY);
+			duration += step.remaining;
+			fromX = step.x;
+			fromY = step.y;
+		}
+		final double completionTime = speed > 0 ? distance * 300 / speed : 120;
+		if (duration > completionTime && completionTime > 0) {
+			final double scale = completionTime / duration;
+			for (final ConfirmedStep step : confirmedSteps) step.remaining *= scale;
+		}
+	}
+
+	private void applyConfirmedStep() {
+		final ConfirmedStep step = confirmedSteps.peekFirst();
+		if (step == null) {
+			setSpeed(0, 0);
+			setDirection(confirmedDirection);
+			return;
+		}
+		final double remaining = Math.max(0.000001, step.remaining);
+		setSpeed((step.x - x) * 300 / remaining, (step.y - y) * 300 / remaining);
+		setDirection(Math.abs(step.x - x) > 0.000001
+				? step.x > x ? Direction.RIGHT : Direction.LEFT
+				: step.y > y ? Direction.DOWN : Direction.UP);
 	}
 
 	@Override
-	protected void constrainPredictedMovement(final double oldX, final double oldY) {
-		if (keyboardStopDirection.getdx() > 0) x = Math.max(oldX, Math.min(x, keyboardStopX));
-		if (keyboardStopDirection.getdx() < 0) x = Math.min(oldX, Math.max(x, keyboardStopX));
-		if (keyboardStopDirection.getdy() > 0) y = Math.max(oldY, Math.min(y, keyboardStopY));
-		if (keyboardStopDirection.getdy() < 0) y = Math.min(oldY, Math.max(y, keyboardStopY));
+	protected synchronized void updateMovement(final int delta) {
+		double remaining = Math.max(0, delta);
+		while (remaining > 0 && !confirmedSteps.isEmpty()) {
+			final ConfirmedStep step = confirmedSteps.peekFirst();
+			final double elapsed = Math.min(remaining, step.remaining);
+			final double fraction = elapsed / step.remaining;
+			x += (step.x - x) * fraction;
+			y += (step.y - y) * fraction;
+			step.remaining -= elapsed;
+			remaining -= elapsed;
+			if (step.remaining < 0.000001) {
+				x = step.x;
+				y = step.y;
+				confirmedSteps.removeFirst();
+			}
+			applyConfirmedStep();
+			if (confirmedSteps.isEmpty()) fireChange(PROP_SPEED);
+			onPosition(x, y);
+		}
 	}
 
-	@Override
-	public synchronized double getRenderX() {
-		final double position = super.getRenderX();
-		return keyboardStopDirection.getdx() > 0 ? Math.min(position, keyboardStopX)
-				: keyboardStopDirection.getdx() < 0 ? Math.max(position, keyboardStopX) : position;
-	}
-
-	@Override
-	public synchronized double getRenderY() {
-		final double position = super.getRenderY();
-		return keyboardStopDirection.getdy() > 0 ? Math.min(position, keyboardStopY)
-				: keyboardStopDirection.getdy() < 0 ? Math.max(position, keyboardStopY) : position;
+	private static final class ConfirmedStep {
+		final int x, y;
+		double remaining;
+		ConfirmedStep(final int x, final int y, final double duration) {
+			this.x = x;
+			this.y = y;
+			remaining = duration;
+		}
 	}
 
 	/**
 	 * Stop the user's movement.
 	 */
 	public void stopMovement() {
-		cancelKeyboardStopPrediction();
 		final RPAction stopAction = new RPAction();
 
 		stopAction.put(TYPE, WALK);

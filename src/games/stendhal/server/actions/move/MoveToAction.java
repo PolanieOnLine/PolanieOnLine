@@ -54,7 +54,6 @@ public class MoveToAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-		if (player.has("movement_request")) player.put("movement_request", "");
 		if (!player.getZone().isMoveToAllowed()) {
 			player.sendPrivateText("Poruszanie się myszką jest tutaj niemożliwe. Użyj klawiatury.");
 			return;
@@ -71,7 +70,6 @@ public class MoveToAction implements ActionListener {
 		}
 
 		if (player.hasPath()) {
-			player.cancelKeyboardTurn();
 			player.clearPath();
 		}
 

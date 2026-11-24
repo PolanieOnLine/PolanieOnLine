@@ -257,6 +257,11 @@ public abstract class ActiveEntity extends Entity {
 	@Override
 	public synchronized void update(final int delta) {
 		super.update(delta);
+		updateMovement(delta);
+	}
+
+	/** Advance the visual movement for this frame. */
+	protected void updateMovement(final int delta) {
 		boolean positionChanged = renderCorrectionTime > 0;
 		if (renderCorrectionTime > 0) {
 			final int elapsed = Math.min(Math.max(0, delta), renderCorrectionTime);
@@ -284,7 +289,6 @@ public abstract class ActiveEntity extends Entity {
 			// update the location of the entity based on speeds
 			x += (dx * step);
 			y += (dy * step);
-			constrainPredictedMovement(oldX, oldY);
 
 			if (GameObjects.getInstance().collides(this)) {
 				x = oldX;
@@ -294,11 +298,6 @@ public abstract class ActiveEntity extends Entity {
 			}
 		}
 		if (positionChanged) onPosition(x, y);
-	}
-
-	/** Allow local input to bound prediction before collision checks and rendering. */
-	protected void constrainPredictedMovement(final double oldX, final double oldY) {
-		// Most entities continue extrapolating until the next server update.
 	}
 
 	/**
