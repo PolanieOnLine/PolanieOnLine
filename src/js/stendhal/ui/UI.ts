@@ -166,6 +166,7 @@ class UI {
 		}
 		this.get(UIComponentEnum.BottomPanel)!.refresh();
 		QuickMenu.refresh();
+		SoftwareJoystickController.get().update();
 	}
 
 	/**

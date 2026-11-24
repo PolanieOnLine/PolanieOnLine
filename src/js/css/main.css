@@ -971,6 +971,48 @@ div.quickPickup div.itemSlot {
 	font-weight: bold;
 }
 
+.chat-channel-select {
+	display: none;
+}
+
+#client.mobile-floating-ui #chat .tabpanel-tabs {
+	display: none;
+}
+
+#client.mobile-floating-ui #bottomPanel > .horizontalgroup {
+	flex-shrink: 0;
+	min-width: 0;
+}
+
+#client.mobile-floating-ui .chat-channel-select {
+	display: block;
+	flex: 0 0 auto;
+	max-width: 105px;
+	min-height: 32px;
+	padding: 2px 4px;
+	color: var(--text-color);
+	background: var(--background-url) rgb(60, 30, 0);
+	border: 1px solid var(--border-top-color);
+	font: inherit;
+}
+
+#client.mobile-floating-ui .chat-channel-select.chat-unread {
+	color: #ffd76a;
+}
+
+#client.mobile-floating-ui #chatinput {
+	flex: 1 1 0;
+	width: 0;
+	min-width: 0;
+	min-height: 32px;
+	box-sizing: border-box;
+}
+
+#client.mobile-floating-ui #bottomPanel > .horizontalgroup > button {
+	min-height: 32px;
+	flex-shrink: 0;
+}
+
 ::-webkit-scrollbar {
 	width: 16px;
 	background: transparent;

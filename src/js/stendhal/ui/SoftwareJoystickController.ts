@@ -55,11 +55,7 @@ export class SoftwareJoystickController {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		window.addEventListener("resize", () => {
-			if (this.joystick) {
-				this.joystick.update();
-			}
-		});
+		// Display updates reposition the joystick after the viewport has been resized.
 		this.subscribeToUiState();
 	}
 

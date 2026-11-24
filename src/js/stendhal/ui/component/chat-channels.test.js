@@ -22,18 +22,21 @@ function harness() {
 				contains: value => classes.has(value), toggle(value, enabled) {enabled ? classes.add(value) : classes.delete(value);}};
 		}
 		get scrollHeight() {return this.children.length * 20;}
+		get textContent() {return (this._text || "") + this.children.map(child => child.textContent || "").join("");}
+		set textContent(value) {this._text = value; this.children = [];}
 		get innerHTML() {return this._html + this.children.map(child => child.innerHTML || child.textContent || "").join("");}
 		set innerHTML(value) {this._html = value; this.children = [];}
 		appendChild(child) {this.children.push(child); return child;}
+		before(child) {this.previous = child;}
 		append(child) {this.appendChild(child);}
 		setAttribute(key, value) {this.attributes[key] = value;}
 		addEventListener(type, listener) {this.listeners.set(type, listener);}
 		removeEventListener(type) {this.listeners.delete(type);}
-		emit(type) {this.listeners.get(type)?.({currentTarget: this});}
+		emit(type, event = {}) {this.listeners.get(type)?.({currentTarget: this, ...event});}
 		cloneNode(deep) {
 			const clone = new Element();
 			clone._html = this._html;
-			clone.textContent = this.textContent;
+			clone._text = this._text;
 			clone.className = this.className;
 			if (deep) clone.children = this.children.map(child => child.cloneNode ? child.cloneNode(true) : {...child});
 			return clone;
@@ -68,7 +71,9 @@ function harness() {
 		setCurrentTab(index) {this.current = index; this.onTabChanged?.();}
 	}
 	let clipboard;
-	const document = {createElement: () => new Element(), createTextNode: text => ({textContent: text})};
+	const input = new Element();
+	const document = {getElementById: id => id === "chatinput" ? input : null,
+		createElement: () => new Element(), createTextNode: text => ({textContent: text})};
 	const dependencies = {
 		"../toolkit/Component": {Component}, "../toolkit/Panel": {Panel: Component},
 		"../toolkit/TabPanelComponent": {TabPanelComponent}, "../../data/enum/Layout": {Layout: {BOTTOM: "bottom"}},
@@ -84,7 +89,7 @@ function harness() {
 		navigator: {clipboard: {writeText: text => {clipboard = text;}}},
 		require: name => dependencies[name] || {}});
 	const log = new exports.ChatLogComponent();
-	return {log, get tabs() {return tabs;}, get clipboard() {return clipboard;},
+	return {log, input, get tabs() {return tabs;}, get clipboard() {return clipboard;},
 		pane(index) {return tabs.children[index].componentElement;},
 		rows(index) {return this.pane(index).children.map(row => row.innerHTML);}};
 }
@@ -110,6 +115,22 @@ test("private channel mirrors Java filtering while main retains every message ty
 	h.log.addLine("client", "local response");
 	assert.equal(h.rows(0).length, 7);
 	assert.equal(h.rows(1).length, 5);
+});
+
+test("compact channel selector shares selection and unread markers with the desktop tabs", () => {
+	const h = harness(), selector = h.input.previous;
+	assert.ok(selector, "mobile selector should sit beside the chat input");
+	assert.deepEqual(selector.children.map(option => option.textContent), ["Główny", "Prywatny"]);
+	h.log.addLine("privmsg", "private message");
+	assert.equal(selector.children[1].textContent, "Prywatny •");
+	selector.value = "1"; selector.emit("change");
+	assert.equal(h.tabs.getCurrentIndex(), 1);
+	assert.equal(selector.children[1].textContent, "Prywatny");
+	h.tabs.setCurrentTab(0);
+	assert.equal(selector.value, "0", "desktop tabs and mobile control must stay in sync after rotation");
+	let stopped = 0;
+	for (const type of ["keydown", "keyup"]) selector.emit(type, {stopPropagation() {stopped++;}});
+	assert.equal(stopped, 2, "using the selector must not trigger game shortcuts or walking");
 });
 
 test("channel switches and hidden incoming messages preserve the reader's scroll position", () => {

@@ -63,6 +63,23 @@ test("resize, visual viewport and orientation events coalesce into one display u
 	assert.deepEqual(h.calls, ["resize", "display", "resize", "display"]);
 });
 
+test("display refresh positions the joystick after the game and chat have changed size", () => {
+	let bottom = 700, joystickBottom = bottom;
+	const calls = [];
+	const {ui} = load("UI.ts", {
+		"./UIComponentEnum": {UIComponentEnum: {BottomPanel: 3}},
+		"./SoftwareJoystickController": {SoftwareJoystickController: {get: () => ({update() {
+			joystickBottom = bottom; calls.push("joystick");
+		}})}},
+		"./quickmenu/QuickMenu": {QuickMenu: {refresh: () => calls.push("menu")}}
+	});
+	ui.constructor.displayReady = true;
+	ui.wellKnownComponents.set(3, {refresh() {bottom = 300; calls.push("chat");}});
+	ui.onDisplayUpdate();
+	assert.equal(joystickBottom, 300, "joystick must use the final viewport, not its old portrait size");
+	assert.deepEqual(calls, ["chat", "menu", "joystick"]);
+});
+
 function viewportHarness() {
 	const raf = frames();
 	const size = {width: 390, height: 844};

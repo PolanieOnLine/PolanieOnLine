@@ -28,6 +28,9 @@ import { stendhal } from "../../stendhal";
 export class ChatLogComponent extends Component {
 	private readonly tabs: TabPanelComponent;
 	private readonly tabButtons: HTMLElement;
+	private readonly channelSelect: HTMLSelectElement;
+	private readonly channelLabels = ["Główny", "Prywatny"];
+	private readonly channelUnreadMarkers: Text[] = [];
 	private readonly logs: HTMLElement[] = [];
 	private readonly scrollStateBottom = [true, true];
 	private readonly scrollPositions = [0, 0];
@@ -39,7 +42,24 @@ export class ChatLogComponent extends Component {
 		super("chat");
 		this.tabs = new TabPanelComponent(Layout.BOTTOM);
 		this.tabs.componentElement.classList.add("chat-tabs-panel");
-		for (const [index, label] of ["Główny", "Prywatny"].entries()) {
+		this.channelSelect = document.createElement("select");
+		this.channelSelect.className = "chat-channel-select";
+		this.channelSelect.setAttribute("aria-label", "Kanał czatu");
+		this.channelSelect.addEventListener("change", () => {
+			this.tabs.setCurrentTab(Number(this.channelSelect.value));
+		});
+		for (const type of ["keydown", "keyup"]) {
+			this.channelSelect.addEventListener(type, event => event.stopPropagation());
+		}
+		document.getElementById("chatinput")?.before(this.channelSelect);
+		for (const [index, label] of this.channelLabels.entries()) {
+			const option = document.createElement("option");
+			option.value = String(index);
+			option.appendChild(document.createTextNode(label));
+			const marker = document.createTextNode("");
+			this.channelUnreadMarkers.push(marker);
+			option.appendChild(marker);
+			this.channelSelect.appendChild(option);
 			const log = document.createElement("div");
 			log.className = "chat-log-pane";
 			log.id = "chat-channel-" + index;
@@ -60,6 +80,7 @@ export class ChatLogComponent extends Component {
 		this.updateTabMarkers();
 		this.componentElement.appendChild(this.tabs.componentElement);
 		GameLanguage.registerUI(buttons as HTMLElement);
+		GameLanguage.registerUI(this.channelSelect);
 		this.refresh();
 
 		for (const log of this.logs) {
@@ -95,6 +116,8 @@ export class ChatLogComponent extends Component {
 	public override refresh() {
 		this.componentElement.style.setProperty("font-family", stendhal.config.get("font.chat"));
 		GameLanguage.translateUI(this.tabButtons);
+		GameLanguage.translateUI(this.channelSelect);
+		this.updateTabMarkers();
 	}
 
 	/**
@@ -159,9 +182,13 @@ export class ChatLogComponent extends Component {
 
 	private updateTabMarkers() {
 		const buttons = this.tabButtons.children;
+		const selected = this.tabs.getCurrentIndex();
+		this.channelSelect.value = String(selected);
+		this.channelSelect.classList.toggle("chat-unread", this.unreadChannels.size > 0);
 		for (let index = 0; index < buttons.length; index++) {
 			buttons[index].classList.toggle("chat-unread", this.unreadChannels.has(index));
-			buttons[index].setAttribute("aria-selected", String(index === this.tabs.getCurrentIndex()));
+			buttons[index].setAttribute("aria-selected", String(index === selected));
+			this.channelUnreadMarkers[index].textContent = this.unreadChannels.has(index) ? " •" : "";
 		}
 	}
 
