@@ -198,9 +198,9 @@ final class LegendaryAffixPresentation {
 					"Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."
 			});
 		}
-		if (has(object, ItemTooltip.LEGENDARY_HUNTERS_PACE)) {
-			appendFixed(result, object, ItemTooltip.LEGENDARY_HUNTERS_PACE, "Łowczy pęd", new String[] {
-					"Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."
+		if (has(object, ItemTooltip.LEGENDARY_HUNTERS_RESOLVE)) {
+			appendFixed(result, object, ItemTooltip.LEGENDARY_HUNTERS_RESOLVE, "Hart łowcy", new String[] {
+					"Po zabiciu potwora przez 4 s otrzymujesz o 10% mniej obrażeń od potworów. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa ochronę. Efekt nie kumuluje się."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_LAST_STAND)) {

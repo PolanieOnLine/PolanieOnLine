@@ -100,11 +100,9 @@ public class GameScreenSpriteHelper {
 
 	private static EntityRenderPosition getEntityPosition(final IEntity entity) {
 		final EntityRenderPosition cached = renderedViewport == null ? null : renderedPositions.get(entity);
-		if (cached != null) return cached;
-		synchronized (entity) {
-			return new EntityRenderPosition(entity.getRenderX() * IGameScreen.SIZE_UNIT_PIXELS,
-					entity.getRenderY() * IGameScreen.SIZE_UNIT_PIXELS, entity.getWidth());
-		}
+		return cached != null ? cached : new EntityRenderPosition(
+				entity.getX() * IGameScreen.SIZE_UNIT_PIXELS,
+				entity.getY() * IGameScreen.SIZE_UNIT_PIXELS, entity.getWidth());
 	}
 
 	private static Point2D getEntityScreenAnchor(final IEntity entity, final EntityRenderPosition position) {

@@ -78,17 +78,13 @@ export class ActiveEntity extends Entity {
 	 * @param serverPos
 	 *            the position the server has reported
 	 * @param delta
-	 *            the signed movement speed in tiles per turn
+	 *            the movement based on direction
 	 * @return the new delta to correct the movement error
 	 */
 	private calcDeltaMovement(clientPos: number, serverPos: number, delta: number) {
-		const direction = Math.sign(delta);
-		const progress = (clientPos - serverPos) * direction;
-		// The server reports whole tiles. Up to one tile of forward progress
-		// is the unreported fractional movement, not a synchronization error.
-		const moveErr = (progress < 0 ? progress : Math.max(0, progress - 1)) * direction;
-		// Faster movement must not amplify the correction of a positional error.
-		return delta - moveErr * Math.min(1.0, Math.abs(delta)) / 2;
+		let moveErr = clientPos - serverPos;
+		let moveCorrection = (delta - moveErr) / delta;
+		return (delta + delta * moveCorrection) / 2;
 	}
 
 	/**
@@ -109,16 +105,20 @@ export class ActiveEntity extends Entity {
 
 		if ((Direction.LEFT == direction) || (Direction.RIGHT == direction)) {
 			this["_y"] = y;
-			if (MathUtil.compareDouble(this["_x"], x, Math.max(1.0, speed))) {
-				this.dx = this.calcDeltaMovement(this["_x"], x, direction.dx * speed) || 0;
+			if (MathUtil.compareDouble(this["_x"], x, 1.0)) {
+				// make the movement look more nicely: + this.dx * 0.1
+				this.dx = this.calcDeltaMovement(this["_x"] + this.dx * 0.1, x, direction.dx)
+						* speed || 0;
 			} else {
 				this["_x"] = x;
 			}
 			this.dy = 0;
 		} else if ((Direction.UP == direction) || (Direction.DOWN == direction)) {
 			this["_x"] = x;
-			if (MathUtil.compareDouble(this["_y"], y, Math.max(1.0, speed))) {
-				this.dy = this.calcDeltaMovement(this["_y"], y, direction.dy * speed) || 0;
+			if (MathUtil.compareDouble(this["_y"], y, 1.0)) {
+				// make the movement look more nicely: + this.dy * 0.1
+				this.dy = this.calcDeltaMovement(this["_y"] + this.dy * 0.1, y, direction.dy)
+						* speed || 0;
 			} else {
 				this["_y"] = y;
 			}
@@ -204,12 +204,6 @@ export class ActiveEntity extends Entity {
 		let speed = this["speed"];
 		if (key == "speed") {
 			speed =  value;
-			if (speed > 0) {
-				// Changing velocity must not replay an old integer position.
-				this.dx = this.direction.dx * speed;
-				this.dy = this.direction.dy * speed;
-				return;
-			}
 		}
 
 

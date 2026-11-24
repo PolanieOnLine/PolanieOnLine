@@ -16,7 +16,7 @@ public enum AdditionalCombatAffixDefinition implements ItemAffixDefinition {
 	INEVITABILITY(ItemTooltip.LEGENDARY_INEVITABILITY),
 	IRON_RESOLVE(ItemTooltip.LEGENDARY_IRON_RESOLVE),
 	DEFENSE_CIRCLE(ItemTooltip.LEGENDARY_DEFENSE_CIRCLE),
-	HUNTERS_PACE(ItemTooltip.LEGENDARY_HUNTERS_PACE),
+	HUNTERS_RESOLVE(ItemTooltip.LEGENDARY_HUNTERS_RESOLVE),
 	LAST_STAND(ItemTooltip.LEGENDARY_LAST_STAND);
 
 	private final String attribute;
@@ -70,7 +70,7 @@ public enum AdditionalCombatAffixDefinition implements ItemAffixDefinition {
 			return "armor".equals(type) || "belt".equals(type) || "belts".equals(type);
 		case DEFENSE_CIRCLE:
 			return "armor".equals(type) || "shield".equals(type);
-		case HUNTERS_PACE:
+		case HUNTERS_RESOLVE:
 			return "boots".equals(type);
 		case LAST_STAND:
 			return "belt".equals(type) || "belts".equals(type)

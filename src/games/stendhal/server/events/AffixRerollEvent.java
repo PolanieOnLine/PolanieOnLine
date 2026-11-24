@@ -171,7 +171,7 @@ public final class AffixRerollEvent extends RPEvent {
 			{"steady_hand", "Pewna ręka"}, {"poison_potency", "Zjadliwość"}, {"bleed_potency", "Rozdarcie"}, {"vigilance", "Czujność"}, {"ammo_conservation", "Oszczędny strzał"},
 			{"legendary_cleave", "Rozmach"}, {"legendary_tenacity", "Zaciętość"}, {"legendary_breach", "Przełamanie"}, {"legendary_quick_recovery", "Szybkie otrząśnięcie"}, {"legendary_deep_wounds", "Głębokie Rany"}, {"legendary_armor_breaker", "Łamacz Pancerzy"}, {"legendary_longshot", "Dalekosiężność"}, {"legendary_executioner", "Egzekutor"}, {"legendary_duel_master", "Mistrz Pojedynku"}, {"legendary_crushing_blow", "Miażdżący Cios"}, {"legendary_stunning_force", "Ogłuszająca Siła"}, {"legendary_binding_strike", "Pętający Cios"}, {"legendary_merciless_reach", "Bezlitosny Zasięg"}, {"legendary_falcon_eye", "Sokole Oko"}, {"legendary_first_salvo", "Pierwsza Salwa"}, {"legendary_power_overload", "Przeciążenie Mocy"}, {"legendary_arcane_focus", "Skupienie Arkanów"},
 			{"legendary_bastion_bonus", "Bastion"}, {"legendary_wall_of_gord", "Wał grodu"}, {"legendary_life_tide", "Przypływ życia"}, {"legendary_iron_will", "Żelazna Wola"}, {"legendary_unyielding_protection", "Nieugięta Ochrona"}, {"legendary_relic_power", "Relikt Mocy"}, {"legendary_hero_eye", "Oko Bohatera"}, {"legendary_guardian_seal", "Pieczęć Strażnika"},
-			{"legendary_defense_circle", "Krąg obrony"}, {"legendary_hunters_pace", "Łowczy pęd"}, {"legendary_last_stand", "Ostatni zryw"}, {"legendary_inevitability", "Nieuchronność"}, {"legendary_iron_resolve", "Żelazny upór"}
+			{"legendary_defense_circle", "Krąg obrony"}, {"legendary_hunters_pace", "Hart łowcy"}, {"legendary_last_stand", "Ostatni zryw"}, {"legendary_inevitability", "Nieuchronność"}, {"legendary_iron_resolve", "Żelazny upór"}
 		};
 		for (final String[] value : values) result.put(value[0], value[1]);
 		return result;
@@ -201,7 +201,7 @@ public final class AffixRerollEvent extends RPEvent {
 		result.put("legendary_inevitability", "Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się.");
 		result.put("legendary_iron_resolve", "Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się.");
 		result.put("legendary_defense_circle", "Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się.");
-		result.put("legendary_hunters_pace", "Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się.");
+		result.put("legendary_hunters_pace", "Po zabiciu potwora przez 4 s otrzymujesz o 10% mniej obrażeń od potworów. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa ochronę. Efekt nie kumuluje się.");
 		result.put("legendary_last_stand", "Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się.");
 		result.put("legendary_life_tide", "Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się.");
 		result.put("legendary_cleave", "Co 4 celne trafienia wręcz zadaje 30% obrażeń trafienia maksymalnie 2 pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni.");

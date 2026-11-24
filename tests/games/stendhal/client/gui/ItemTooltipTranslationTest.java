@@ -88,7 +88,7 @@ public class ItemTooltipTranslationTest {
 	public void fullLegendaryDescriptionsStayTranslatedAroundCreamNumbers() {
 		final RPObject item = ItemTestHelper.createItem("translated legendary descriptions");
 		stat(item, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "1");
-		stat(item, ItemTooltip.LEGENDARY_HUNTERS_PACE, "1");
+		stat(item, ItemTooltip.LEGENDARY_HUNTERS_RESOLVE, "1");
 		stat(item, ItemTooltip.LEGENDARY_LAST_STAND, "1");
 		stat(item, ItemTooltip.LEGENDARY_LIFE_TIDE, "1");
 		for (final String language : new String[] {"en", "es"}) {

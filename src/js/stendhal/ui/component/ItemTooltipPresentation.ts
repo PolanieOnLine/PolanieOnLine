@@ -99,7 +99,7 @@ const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
 	["legendary_inevitability", "Nieuchronność", "Po 2 kolejnych chybieniach następny atak nie chybi, a przez 4 s zadajesz o 20% więcej obrażeń. Zmiana celu lub broni zeruje efekt. Efekt nie kumuluje się."],
 	["legendary_iron_resolve", "Żelazny upór", "Śmiertelne trafienie pozostawia 1 PZ. Odnowienie: 120 s. Nie chroni przed trucizną i krwawieniem. Efekt nie kumuluje się."],
 	["legendary_defense_circle", "Krąg obrony", "Przy walce z kilkoma potworami każdy kolejny zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%. Efekt nie kumuluje się."],
-	["legendary_hunters_pace", "Łowczy pęd", "Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 s. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa bonus. Efekt nie kumuluje się."],
+	["legendary_hunters_pace", "Hart łowcy", "Po zabiciu potwora przez 4 s otrzymujesz o 10% mniej obrażeń od potworów. Kolejne zabójstwo odświeża czas. Zdjęcie butów usuwa ochronę. Efekt nie kumuluje się."],
 	["legendary_last_stand", "Ostatni zryw", "Poniżej 30% maksymalnych PZ zadajesz o 20% więcej obrażeń trafieniami. Efekt nie kumuluje się."],
 	["legendary_cleave", "Rozmach", "Co 4 celne trafienia wręcz zadaje 30% obrażeń trafienia maksymalnie 2 pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."],
 	["legendary_tenacity", "Zaciętość", "Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."],

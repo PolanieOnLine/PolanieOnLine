@@ -149,71 +149,54 @@ public class HuntingAffixServiceTest {
 		assertSame(player, applied.getSource());
 		victim.setHP(0);
 		HuntingAffixService.onKilled(applied, victim);
-		assertEquals(1.1, player.getSpeed(), 0.00001);
+		assertEquals(1.0, player.getSpeed(), 0.00001);
+		assertEquals(90, HuntingAffixService.reduceCreatureHit(player, creature(player, 100), 100));
 		HuntingAffixService.reset(player);
 	}
 
 	@Test
-	public void killRefreshesPaceWithoutStackingAndExpiryKeepsTheOriginalBaseSpeed() {
-		final Player player = runner("pace-refresh");
+	public void killingACreatureGrantsProtectionWithoutChangingMovement() {
+		final Player player = runner("resolve-kill");
+		HuntingAffixService.onKill(player, creature(player, 0), System.currentTimeMillis());
+		assertEquals(1, player.getSpeed(), 0.000001);
+		assertEquals(1, player.getBaseSpeed(), 0.000001);
+		assertEquals(90, HuntingAffixService.reduceCreatureHit(player, creature(player, 100), 100));
+		assertEquals(100, HuntingAffixService.reduceCreatureHit(player, player, 100));
+	}
+
+	@Test
+	public void anotherKillRefreshesProtectionWithoutStacking() {
+		final Player player = runner("resolve-refresh");
 		final long now = System.currentTimeMillis();
 		HuntingAffixService.onKill(player, creature(player, 0), now);
-		assertEquals(1.1, player.getSpeed(), 0.00001);
-		assertEquals(1.0, player.getBaseSpeed(), 0.00001);
 		HuntingAffixService.onKill(player, creature(player, 0), now + 3000);
-		assertEquals(1.1, player.getSpeed(), 0.00001);
 		HuntingAffixService.tick(player, now + 4000);
-		assertEquals(1.1, player.getSpeed(), 0.00001);
+		assertEquals(90, HuntingAffixService.reduceCreatureHit(player, creature(player, 100), 100));
 		HuntingAffixService.tick(player, now + 7000);
-		assertEquals(1.0, player.getSpeed(), 0.00001);
+		assertEquals(100, HuntingAffixService.reduceCreatureHit(player, creature(player, 100), 100));
+		assertEquals(1, player.getSpeed(), 0.000001);
 	}
 
 	@Test
-	public void movementCanStartDuringPaceAndUnequippingBootsRemovesItImmediately() {
-		final Player player = runner("pace-start");
-		player.stop();
+	public void unequippingTheBootsRemovesProtectionImmediately() {
+		final Player player = runner("resolve-unequip");
 		HuntingAffixService.onKill(player, creature(player, 0), System.currentTimeMillis());
-		assertTrue(player.stopped());
-		assertEquals(1.1, player.getMovementSpeed(), 0.00001);
-		player.setSpeed(player.getMovementSpeed());
 		player.getBoots().onUnequipped();
-		assertEquals(1.0, player.getSpeed(), 0.00001);
+		assertEquals(100, HuntingAffixService.reduceCreatureHit(player, creature(player, 100), 100));
+		assertEquals(1, player.getSpeed(), 0.000001);
 	}
 
 	@Test
-	public void slowAndPaceCanExpireInEitherOrderWithoutLeavingASpeedBonusBehind() {
-		for (final boolean paceFirst : new boolean[] {true, false}) {
-			final Player player = runner("pace-slow-" + paceFirst);
-			final long now = System.currentTimeMillis();
-			final HeavyStatus slow = new HeavyStatus(10);
-			HuntingAffixService.onKill(player, creature(player, 0), now);
-			player.getStatusList().inflictStatus(slow, null);
-			assertEquals(0.55, player.getSpeed(), 0.00001);
-			if (paceFirst) {
-				HuntingAffixService.tick(player, now + 4000);
-				assertEquals(0.5, player.getSpeed(), 0.00001);
-				player.getStatusList().remove(slow);
-			} else {
-				player.getStatusList().remove(slow);
-				assertEquals(1.1, player.getSpeed(), 0.00001);
-				HuntingAffixService.tick(player, now + 4000);
-			}
-			assertEquals(1.0, player.getSpeed(), 0.00001);
-		}
-	}
-
-	@Test
-	public void sameNameSessionsAndInventoryBootsDoNotShareTheRunningBonus() {
-		final Player first = runner("pace-session");
-		final Player second = runner("pace-session");
+	public void protectionIsPersonalAndInventoryBootsDoNotActivateIt() {
+		final Player first = runner("resolve-session");
+		final Player second = runner("resolve-session");
 		HuntingAffixService.onKill(first, creature(first, 0), System.currentTimeMillis());
-		assertEquals(1.0, second.getMovementSpeed(), 0.00001);
-		HuntingAffixService.reset(first);
-		assertEquals(1.0, first.getSpeed(), 0.00001);
-		final Player inventory = player("pace-bag");
+		assertEquals(90, HuntingAffixService.reduceCreatureHit(first, creature(first, 100), 100));
+		assertEquals(100, HuntingAffixService.reduceCreatureHit(second, creature(second, 100), 100));
+		final Player inventory = player("resolve-bag");
 		inventory.getSlot("bag").add(affix("boots", "legendary_hunters_pace", 1));
 		HuntingAffixService.onKill(inventory, creature(inventory, 0), System.currentTimeMillis());
-		assertEquals(1.0, inventory.getMovementSpeed(), 0.00001);
+		assertEquals(100, HuntingAffixService.reduceCreatureHit(inventory, creature(inventory, 100), 100));
 	}
 
 	private Player runner(final String name) {

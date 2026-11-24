@@ -150,7 +150,7 @@ test("all legendary descriptions follow ordinary affixes", () => {
 
 test("every new legendary uses orange words and cream numeric fragments without diamonds", () => {
 	const values = {
-		legendary_defense_circle: ["3%", "12%"], legendary_hunters_pace: ["10%", "4 s"],
+		legendary_defense_circle: ["3%", "12%"], legendary_hunters_pace: ["4 s", "10%"],
 		legendary_last_stand: ["30%", "20%"], legendary_life_tide: ["20%", "10 s", "20 PZ", "2 s"],
 		legendary_cleave: ["4", "30%", "2"], legendary_tenacity: ["3%", "15%", "5 s"],
 		legendary_breach: ["15%", "6 s"], legendary_quick_recovery: ["30%"],

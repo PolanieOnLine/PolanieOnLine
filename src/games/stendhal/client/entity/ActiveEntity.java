@@ -43,16 +43,6 @@ public abstract class ActiveEntity extends Entity {
 	/** The current speed of this entity vertically (tiles?/sec) . */
 	private double dy;
 
-	/** Briefly reconcile a predicted final step without teleporting the sprite. */
-	private int stopCorrectionTime;
-	private double stopX, stopY;
-
-	/** Short visual correction; physical coordinates remain authoritative for collisions. */
-	private int renderCorrectionTime;
-	private double renderOffsetX, renderOffsetY;
-	private boolean processingPosition, positionEventPending;
-	private double previousRenderX, previousRenderY;
-
 	/** If <code>true</code>, this entity is not blocked by FlyOverArea */
 	private boolean flying = false;
 
@@ -106,16 +96,6 @@ public abstract class ActiveEntity extends Entity {
 		return (dx == 0.0) && (dy == 0.0);
 	}
 
-	@Override
-	public synchronized double getRenderX() {
-		return processingPosition ? previousRenderX : x + renderOffsetX;
-	}
-
-	@Override
-	public synchronized double getRenderY() {
-		return processingPosition ? previousRenderY : y + renderOffsetY;
-	}
-
 	/**
 	 * Compares to floating point values.
 	 *
@@ -142,18 +122,14 @@ public abstract class ActiveEntity extends Entity {
 	 * @param serverPos
 	 *            the position the server has reported
 	 * @param delta
-	 *            the signed movement speed in tiles per turn
+	 *            the movement based on direction
 	 * @return the new delta to correct the movement error
 	 */
 	private static double calcDeltaMovement(final double clientPos,
 			final double serverPos, final double delta) {
-		final double direction = Math.signum(delta);
-		final double progress = (clientPos - serverPos) * direction;
-		// The server reports whole tiles. Up to one tile of forward progress
-		// is the unreported fractional movement, not a synchronization error.
-		final double moveErr = (progress < 0 ? progress : Math.max(0, progress - 1)) * direction;
-		// Faster movement must not amplify the correction of a positional error.
-		return delta - moveErr * Math.min(1.0, Math.abs(delta)) / 2;
+		final double moveErr = clientPos - serverPos;
+		final double moveCorrection = (delta - moveErr) / delta;
+		return (delta + delta * moveCorrection) / 2;
 	}
 
 	/**
@@ -174,9 +150,11 @@ public abstract class ActiveEntity extends Entity {
 		if ((Direction.LEFT == direction)
 				|| (Direction.RIGHT == direction)) {
 			this.y = y;
-			if (compareDouble(this.x, x, Math.max(1.0, speed))) {
-				this.dx = calcDeltaMovement(this.x, x,
-						direction.getdx() * speed);
+			if (compareDouble(this.x, x, 1.0)) {
+				// make the movement look more nicely: + this.dx * 0.1
+				this.dx = calcDeltaMovement(this.x + this.dx * 0.1, x,
+						direction.getdx())
+						* speed;
 			} else {
 				this.x = x;
 			}
@@ -185,9 +163,11 @@ public abstract class ActiveEntity extends Entity {
 				|| (Direction.DOWN == direction)) {
 			this.x = x;
 			this.dx = 0;
-			if (compareDouble(this.y, y, Math.max(1.0, speed))) {
-				this.dy = calcDeltaMovement(this.y, y,
-						direction.getdy() * speed);
+			if (compareDouble(this.y, y, 1.0)) {
+				// make the movement look more nicely: + this.dy * 0.1
+				this.dy = calcDeltaMovement(this.y + this.dy * 0.1, y,
+						direction.getdy())
+						* speed;
 			} else {
 				this.y = y;
 			}
@@ -223,10 +203,8 @@ public abstract class ActiveEntity extends Entity {
 	 * @see #release()
 	 */
 	@Override
-	public synchronized void initialize(final RPObject base) {
+	public void initialize(final RPObject base) {
 		double speed;
-		stopCorrectionTime = 0;
-		clearRenderCorrection();
 
 		super.initialize(base);
 
@@ -255,30 +233,8 @@ public abstract class ActiveEntity extends Entity {
 	 *            The time (in ms) since last call.
 	 */
 	@Override
-	public synchronized void update(final int delta) {
+	public void update(final int delta) {
 		super.update(delta);
-		updateMovement(delta);
-	}
-
-	/** Advance the visual movement for this frame. */
-	protected void updateMovement(final int delta) {
-		boolean positionChanged = renderCorrectionTime > 0;
-		if (renderCorrectionTime > 0) {
-			final int elapsed = Math.min(Math.max(0, delta), renderCorrectionTime);
-			final double remaining = (double) (renderCorrectionTime - elapsed) / renderCorrectionTime;
-			renderOffsetX *= remaining;
-			renderOffsetY *= remaining;
-			renderCorrectionTime -= elapsed;
-		}
-		if (stopCorrectionTime > 0) {
-			final int elapsed = Math.min(Math.max(0, delta), stopCorrectionTime);
-			final double fraction = (double) elapsed / stopCorrectionTime;
-			x += (stopX - x) * fraction;
-			y += (stopY - y) * fraction;
-			stopCorrectionTime -= elapsed;
-			onPosition(x, y);
-			return;
-		}
 
 		if (!stopped()) {
 			final double step = (delta / 300.0);
@@ -294,10 +250,9 @@ public abstract class ActiveEntity extends Entity {
 				x = oldX;
 				y = oldY;
 			} else {
-				positionChanged = true;
+				onPosition(x, y);
 			}
 		}
-		if (positionChanged) onPosition(x, y);
 	}
 
 	/**
@@ -311,72 +266,7 @@ public abstract class ActiveEntity extends Entity {
 	 *            The changes.
 	 */
 	@Override
-	protected synchronized void processPositioning(final RPObject base, final RPObject diff) {
-		previousRenderX = getRenderX();
-		previousRenderY = getRenderY();
-		processingPosition = true;
-		positionEventPending = false;
-		try {
-			final double oldX = x, oldY = y;
-			final double displayedX = previousRenderX, displayedY = previousRenderY;
-			final boolean zoneChanged = diff.has("zoneid")
-					&& (!base.has("zoneid") || !diff.get("zoneid").equals(base.get("zoneid")));
-			processMovement(base, diff);
-			final double correction = Math.hypot(x - oldX, y - oldY);
-			if (zoneChanged || correction > 1.5) {
-				clearRenderCorrection();
-			} else if (correction > EPSILON) {
-				if (!stopped()) {
-					// Server turns can discard a fractional step on the perpendicular
-					// axis. Keep the sprite continuous while accepting the new path now.
-					renderOffsetX = displayedX - x;
-					renderOffsetY = displayedY - y;
-					renderCorrectionTime = 120;
-				} else {
-					clearRenderCorrection();
-				}
-			}
-			if (zoneChanged || correction > EPSILON) {
-				onPosition(x, y);
-			}
-		} finally {
-			processingPosition = false;
-			if (positionEventPending) {
-				positionEventPending = false;
-				super.fireChange(PROP_POSITION);
-			}
-		}
-	}
-
-	@Override
-	public synchronized void fireChange(final Property property) {
-		if (processingPosition && property == PROP_POSITION) {
-			// Rendering may start on another thread as soon as listeners are
-			// notified. Publish only after the visual correction is complete.
-			positionEventPending = true;
-		} else {
-			super.fireChange(property);
-		}
-	}
-
-	private void clearRenderCorrection() {
-		renderCorrectionTime = 0;
-		renderOffsetX = 0;
-		renderOffsetY = 0;
-	}
-
-	private void processMovement(final RPObject base, final RPObject diff) {
-		if (!diff.has("x") && !diff.has("y") && !diff.has("dir") && !diff.has("speed")) {
-			return;
-		}
-		if (diff.has("speed") && diff.getDouble("speed") > 0.0
-				&& !diff.has("x") && !diff.has("y") && !diff.has("dir")) {
-			// A speed change is not a correction to the last reported integer tile.
-			final double speed = diff.getDouble("speed");
-			setSpeed(direction.getdx() * speed, direction.getdy() * speed);
-			fireChange(PROP_SPEED);
-			return;
-		}
+	protected void processPositioning(final RPObject base, final RPObject diff) {
 		// Real movement case
 		final int oldx = base.getInt("x");
 		final int oldy = base.getInt("y");
@@ -420,20 +310,6 @@ public abstract class ActiveEntity extends Entity {
 			speed = 0;
 		}
 
-		if ((Direction.STOP == tempDirection || speed == 0)
-				&& (!stopped() || stopCorrectionTime > 0)
-				&& Math.abs(x - newX) <= 1.5 && Math.abs(y - newY) <= 1.5
-				&& (compareDouble(x, newX, EPSILON) || compareDouble(y, newY, EPSILON))) {
-			setSpeed(0.0, 0.0);
-			if (stopCorrectionTime == 0 || stopX != newX || stopY != newY) {
-				stopX = newX;
-				stopY = newY;
-				stopCorrectionTime = 120;
-			}
-			if (speedChanged) fireChange(PROP_SPEED);
-			return;
-		}
-		stopCorrectionTime = 0;
 		onMove(newX, newY, tempDirection, speed);
 
 		if (speedChanged) {
@@ -474,7 +350,6 @@ public abstract class ActiveEntity extends Entity {
 	 * @param dy vertical speed
 	 */
 	final void setSpeed(double dx, double dy) {
-		if (dx != 0.0 || dy != 0.0) stopCorrectionTime = 0;
 		this.dx = dx;
 		this.dy = dy;
 	}

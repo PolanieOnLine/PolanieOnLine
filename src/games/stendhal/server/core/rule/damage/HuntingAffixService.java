@@ -19,11 +19,11 @@ import games.stendhal.server.entity.status.BleedingStatus;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.StatusList;
 
-/** Conditional equipped affixes and a transient movement bonus separate from base speed. */
+/** Conditional equipped affixes and brief creature-damage protection after a kill. */
 public final class HuntingAffixService {
-	private static final double PACE_MULTIPLIER = 1.10;
-	private static final long PACE_DURATION = 4000L;
-	private static final Map<StatusList, Pace> PACES = new WeakHashMap<>();
+	private static final double RESOLVE_REDUCTION = 0.10;
+	private static final long RESOLVE_DURATION = 4000L;
+	private static final Map<StatusList, Protection> PROTECTIONS = new WeakHashMap<>();
 
 	private HuntingAffixService() { }
 
@@ -38,10 +38,13 @@ public final class HuntingAffixService {
 
 	public static int reduceCreatureHit(final Player player, final RPEntity attacker, final int damage) {
 		if (damage <= 0 || !(attacker instanceof Creature) || player.getZone() == null
-				|| attacker.getZone() != player.getZone()
-				|| !equipped(player, AdditionalCombatAffixDefinition.DEFENSE_CIRCLE)) {
+				|| attacker.getZone() != player.getZone()) {
 			return damage;
 		}
+		tick(player);
+		final int protectedDamage = PROTECTIONS.containsKey(player.getStatusList())
+				? Math.max(1, (int) Math.round(damage * (1.0 - RESOLVE_REDUCTION))) : damage;
+		if (!equipped(player, AdditionalCombatAffixDefinition.DEFENSE_CIRCLE)) return protectedDamage;
 		int attackers = 0;
 		for (final Entity source : player.getAttackSources()) {
 			if (!(source instanceof Creature)) {
@@ -59,7 +62,7 @@ public final class HuntingAffixService {
 			}
 		}
 		final double reduction = Math.min(0.12, Math.max(0, attackers - 1) * 0.03);
-		return Math.max(1, (int) Math.round(damage * (1.0 - reduction)));
+		return Math.max(1, (int) Math.round(protectedDamage * (1.0 - reduction)));
 	}
 
 	/** Snapshot equipped potency when weapon poison is inflicted, preserving its total damage. */
@@ -125,19 +128,10 @@ public final class HuntingAffixService {
 			return;
 		}
 		final Item boots = player.getBoots();
-		if (AdditionalCombatAffixDefinition.HUNTERS_PACE.value(boots) <= 0.0) {
+		if (AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.value(boots) <= 0.0) {
 			return;
 		}
-		final Pace previous = PACES.get(player.getStatusList());
-		PACES.put(player.getStatusList(), new Pace(boots, now + PACE_DURATION));
-		if (previous == null && !player.stopped()) {
-			player.setSpeed(player.getSpeed() * PACE_MULTIPLIER);
-		}
-	}
-
-	public static double movementMultiplier(final Player player) {
-		tick(player);
-		return PACES.containsKey(player.getStatusList()) ? PACE_MULTIPLIER : 1.0;
+		PROTECTIONS.put(player.getStatusList(), new Protection(boots, now + RESOLVE_DURATION));
 	}
 
 	public static void tick(final Player player) {
@@ -145,25 +139,23 @@ public final class HuntingAffixService {
 	}
 
 	static void tick(final Player player, final long now) {
-		final Pace pace = PACES.get(player.getStatusList());
-		if (pace != null && (now >= pace.expires || player.getHP() <= 0 || player.has("dead")
-				|| player.isDisconnected() || player.getBoots() != pace.boots.get()
-				|| AdditionalCombatAffixDefinition.HUNTERS_PACE.value(player.getBoots()) <= 0.0)) {
+		final Protection protection = PROTECTIONS.get(player.getStatusList());
+		if (protection != null && (now >= protection.expires || player.getHP() <= 0 || player.has("dead")
+				|| player.isDisconnected() || player.getBoots() != protection.boots.get()
+				|| AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.value(player.getBoots()) <= 0.0)) {
 			reset(player);
 		}
 	}
 
 	public static void onUnequipped(final Player player, final Item item) {
-		final Pace pace = PACES.get(player.getStatusList());
-		if (pace != null && pace.boots.get() == item) {
+		final Protection protection = PROTECTIONS.get(player.getStatusList());
+		if (protection != null && protection.boots.get() == item) {
 			reset(player);
 		}
 	}
 
 	public static void reset(final Player player) {
-		if (PACES.remove(player.getStatusList()) != null && !player.stopped()) {
-			player.setSpeed(player.getSpeed() / PACE_MULTIPLIER);
-		}
+		PROTECTIONS.remove(player.getStatusList());
 	}
 
 	private static boolean equipped(final Player player, final AdditionalCombatAffixDefinition affix) {
@@ -175,11 +167,11 @@ public final class HuntingAffixService {
 		return false;
 	}
 
-	private static final class Pace {
+	private static final class Protection {
 		final WeakReference<Item> boots;
 		final long expires;
 
-		Pace(final Item boots, final long expires) {
+		Protection(final Item boots, final long expires) {
 			this.boots = new WeakReference<>(boots);
 			this.expires = expires;
 		}

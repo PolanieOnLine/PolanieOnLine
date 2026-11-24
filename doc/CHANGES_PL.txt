@@ -55,7 +55,7 @@
 * Dodano legendarny afiks Nieuchronność na broni. Po dwóch kolejnych chybieniach następny atak nie chybi, a przez 4 sekundy obrażenia rosną o 20%
 * Dodano legendarny afiks Żelazny upór na zbrojach i pasach. Raz na 120 sekund śmiertelne trafienie pozostawia 1 PZ. Nie chroni przed trucizną i krwawieniem
 * Dodano legendarny afiks Krąg obrony na zbrojach i tarczach. Przy walce z kilkoma potworami każdy dodatkowy przeciwnik zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%
-* Dodano legendarny afiks Łowczy pęd na butach. Zabicie potwora zwiększa prędkość poruszania się o 10% na 4 sekundy. Kolejne zabójstwa odświeżają czas działania, bez zwiększania bonusu
+* Dodano legendarny afiks Hart łowcy na butach. Po zabiciu potwora przez 4 sekundy otrzymujesz o 10% mniej obrażeń od potworów. Kolejne zabójstwa odświeżają czas działania, bez zwiększania ochrony
 * Dodano legendarny afiks Ostatni zryw na pasach i rękawicach. Poniżej 30% maksymalnego zdrowia zwiększa obrażenia trafień o 20%. Bonus z kilku przedmiotów nie sumuje się
 * Dodano legendarny afiks Rozmach. Co czwarte celne trafienie wręcz zadaje 30% obrażeń tego ciosu maksymalnie dwóm pobliskim potworom walczącym z graczem
 * Dodano legendarny afiks Zaciętość. Każde celne trafienie tego samego przeciwnika zwiększa obrażenia kolejnych ciosów o 3%, maksymalnie o 15%. Zmiana celu lub 5 sekund bez trafienia zeruje bonus
@@ -103,7 +103,6 @@
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
 * Webklient dopasowuje mapę i otwarte okna po obróceniu telefonu, bez odświeżania strony
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
-* Poprawiono ruch przy zwiększonej i zmniejszonej prędkości postaci, usuwając przyczyny skoków i cofania w obu klientach
 * Uzupełniono angielskie i hiszpańskie tłumaczenia opisów przedmiotów, odporności, wariantów potworów, komunikatów walki, produkcji, osiągnięć i wybranych rozmów z NPC. Poprawiono też polskie opisy osiągnięć
 * Poprawiono sortowanie zadań i bestiariusza według nazw w wybranym języku oraz tłumaczenia nazw regionów i podziemi
 * Poprawiono wyświetlanie wiadomości na czacie webklienta, aby wpisany tekst nie był odczytywany jako kod strony

@@ -78,9 +78,9 @@ test("consumable poison retains exact values in Polish, English and Spanish", as
 test("the five new affixes have descriptions in Polish, English and Spanish", async () => {
 	const h = await harness();
 	for (const [language, names] of [
-		["pl", ["Pewna ręka", "Zjadliwość", "Krąg obrony", "Łowczy pęd", "Ostatni zryw"]],
-		["en", ["Steady Hand", "Virulence", "Circle of Defense", "Hunter's Pace", "Last Stand"]],
-		["es", ["Mano firme", "Virulencia", "Círculo defensivo", "Paso del cazador", "Último esfuerzo"]]
+		["pl", ["Pewna ręka", "Zjadliwość", "Krąg obrony", "Hart łowcy", "Ostatni zryw"]],
+		["en", ["Steady Hand", "Virulence", "Circle of Defense", "Hunter's Resolve", "Last Stand"]],
+		["es", ["Mano firme", "Virulencia", "Círculo defensivo", "Temple del cazador", "Último esfuerzo"]]
 	]) {
 		h.language.synchronize(language);
 		const text = h.build(new h.Item({category: "weapon", steady_hand: "0.1", poison_potency: "0.25",

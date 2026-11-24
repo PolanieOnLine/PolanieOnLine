@@ -70,9 +70,9 @@ public class HuntingAffixDefinitionTest {
 		assertTrue(AdditionalCombatAffixDefinition.DEFENSE_CIRCLE.isEligible(item("shield")));
 		assertFalse(AdditionalCombatAffixDefinition.DEFENSE_CIRCLE.isEligible(item("ring")));
 		final Item boots = item("boots");
-		assertTrue(AdditionalCombatAffixDefinition.HUNTERS_PACE.apply(boots, new Random(1)));
-		assertFalse(AdditionalCombatAffixDefinition.HUNTERS_PACE.isEligible(boots));
-		assertFalse(AdditionalCombatAffixDefinition.HUNTERS_PACE.isEligible(item("cloak")));
+		assertTrue(AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.apply(boots, new Random(1)));
+		assertFalse(AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.isEligible(boots));
+		assertFalse(AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.isEligible(item("cloak")));
 		assertTrue(AdditionalCombatAffixDefinition.LAST_STAND.isEligible(item("belt")));
 		assertTrue(AdditionalCombatAffixDefinition.LAST_STAND.isEligible(item("gloves")));
 		assertFalse(AdditionalCombatAffixDefinition.LAST_STAND.isEligible(item("helmet")));

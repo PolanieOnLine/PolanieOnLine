@@ -143,7 +143,8 @@ public final class ItemTooltip {
 	public static final String LEGENDARY_INEVITABILITY = "legendary_inevitability";
 	public static final String LEGENDARY_IRON_RESOLVE = "legendary_iron_resolve";
 	public static final String LEGENDARY_DEFENSE_CIRCLE = "legendary_defense_circle";
-	public static final String LEGENDARY_HUNTERS_PACE = "legendary_hunters_pace";
+	// Retain the persisted key for existing items and their locked reroll slots.
+	public static final String LEGENDARY_HUNTERS_RESOLVE = "legendary_hunters_pace";
 	public static final String LEGENDARY_LAST_STAND = "legendary_last_stand";
 
 	private ItemTooltip() {

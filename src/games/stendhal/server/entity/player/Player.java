@@ -11,8 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
-import static games.stendhal.common.constants.General.PATHSET;
-
 import games.stendhal.common.Translation;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.server.core.rule.damage.CombatStatsService;
@@ -62,9 +60,9 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
@@ -174,13 +172,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * The turn when the player last time pushed something.
 	 */
 	private int turnOfLastPush;
-	/** Position at the latest keyboard input, used to finish a short tap. */
-	private int keyboardStartX, keyboardStartY;
-	private boolean startingKeyboardStep;
-	private int startingKeyboardX, startingKeyboardY;
-	private StringBuilder movementSteps;
-	private StendhalRPZone movementStepsZone;
-	private int movementStepsCount;
+	/**
+	 * The turn the player started moving using the keyboard. Used for detecting
+	 * quick presses ment to move one tile.
+	 */
+	private int startMoveTurn;
 
 	/**
 	 * last client action timestamp
@@ -343,7 +339,6 @@ public class Player extends DressedEntity implements UseListener {
 		InevitabilityService.reset(this);
 
 		updateModifiedAttributes();
-		put("movement_speed", getMovementSpeed());
 	}
 
 	/**
@@ -353,12 +348,11 @@ public class Player extends DressedEntity implements UseListener {
 	 *			direction
 	 */
 	public void addClientDirection(final Direction direction) {
-		if (hasPath() && !startingKeyboardStep) {
-			setPath(null);
+		if (hasPath()) {
+			clearPath();
 		}
 
-		keyboardStartX = getX();
-		keyboardStartY = getY();
+		startMoveTurn = SingletonRepository.getRuleProcessor().getTurn();
 		directions.remove(direction);
 		directions.add(direction);
 	}
@@ -373,96 +367,14 @@ public class Player extends DressedEntity implements UseListener {
 		directions.remove(direction);
 	}
 
-	/** Commit one keyboard tile; the next held direction applies at its endpoint. */
-	public void beginKeyboardStep() {
-		if (getZone() == null || stopped() || getDirection() == Direction.STOP || has(AUTOWALK)) return;
-		startingKeyboardX = getX() + getDirection().getdx();
-		startingKeyboardY = getY() + getDirection().getdy();
-		final boolean leavesZone = getZone().leavesZone(this, startingKeyboardX, startingKeyboardY);
-		if (!leavesZone && !isGhost() && ((!ignoresCollision() && getZone().simpleCollides(this,
-				startingKeyboardX, startingKeyboardY, getWidth(), getHeight()))
-				|| getZone().collidesObjects(this, getArea(startingKeyboardX, startingKeyboardY)))) {
-			stop();
-			return;
-		}
-		startingKeyboardStep = true;
-		put("movement_goal", leavesZone ? "" : startingKeyboardX + "," + startingKeyboardY);
-		setPath(new FixedPath(Arrays.asList(new Node(getX(), getY()),
-				new Node(startingKeyboardX, startingKeyboardY)), false));
-		if (has(PATHSET)) remove(PATHSET);
-	}
-
-	public void cancelStartingKeyboardStep() {
-		if (startingKeyboardStep) {
-			startingKeyboardStep = false;
-			put("movement_goal", "");
-			setPath(null);
-		}
-	}
-
-	@Override
-	public void applyMovement() {
-		final double walkingSpeed = getMovementSpeed();
-		if (startingKeyboardStep && (!Double.isFinite(walkingSpeed) || walkingSpeed <= 0)) stop();
-		if (!has("movement_speed") || getDouble("movement_speed") != walkingSpeed) {
-			put("movement_speed", walkingSpeed);
-			notifyWorldAboutChanges();
-		}
-		if (stopped() && !hasPath()) {
-			super.applyMovement();
-			return;
-		}
-		movementSteps = new StringBuilder().append(getX()).append(',').append(getY());
-		movementStepsZone = getZone();
-		movementStepsCount = 0;
-		try {
-			super.applyMovement();
-		} finally {
-			if (movementSteps != null && movementStepsCount > 0) {
-				put("movement_steps", movementSteps.toString());
-				notifyWorldAboutChanges();
-			}
-			movementSteps = null;
-			movementStepsZone = null;
-		}
-	}
-
-	@Override
-	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
-		if (movementSteps != null) {
-			if (getZone() == movementStepsZone && movementStepsCount < 64
-					&& Math.abs(newX - oldX) + Math.abs(newY - oldY) == 1) {
-				movementSteps.append(';').append(newX).append(',').append(newY);
-				movementStepsCount++;
-			} else {
-				movementSteps = null;
-			}
-		}
-		super.onMoved(oldX, oldY, newX, newY);
-		if (startingKeyboardStep && getX() == startingKeyboardX && getY() == startingKeyboardY) {
-			cancelStartingKeyboardStep();
-			if (directions.isEmpty()) stop();
-			else {
-				final double effectiveSpeed = getSpeed();
-				applyClientDirection(false);
-				beginKeyboardStep();
-				if (!stopped()) setSpeed(effectiveSpeed);
-			}
-		}
-	}
-
-	@Override
-	public double getMovementSpeed() {
-		return getBaseSpeed() * HuntingAffixService.movementMultiplier(this);
-	}
-
 	/**
 	 * Apply the most recent active client direction.
 	 *
-	 * @param stopOnNone stop movement if no valid directions are active
+	 * @param stopOnNone
+	 *			Stop movement if no (valid) directions are active if
+	 *			<code>true</code>.
 	 */
 	public void applyClientDirection(final boolean stopOnNone) {
-		if (startingKeyboardStep) return;
 		int size;
 		Direction direction;
 
@@ -483,7 +395,7 @@ public class Player extends DressedEntity implements UseListener {
 			}
 
 			setDirection(direction);
-			setSpeed(getMovementSpeed());
+			setSpeed(getBaseSpeed());
 		}
 	}
 
@@ -498,25 +410,30 @@ public class Player extends DressedEntity implements UseListener {
 		return super.isObstacle(entity);
 	}
 
-	/** Finish a short tap through the same collision-checked path used by mouse movement. */
+	/**
+	 * Request stopping the player, unless the player started moving the same
+	 * turn. Intended for client initiated stops, that should not prevent the
+	 * player moving one tile with a quick key press.
+	 */
 	public void requestStop() {
-		if (startingKeyboardStep) {
-			directions.clear();
-			return;
+		int turn = SingletonRepository.getRuleProcessor().getTurn();
+
+		if (turn != startMoveTurn) {
+			stop();
+		} else {
+			TurnNotifier.get().notifyInTurns(1, new TurnListener() {
+				@Override
+				public void onTurnReached(int currentTurn) {
+					/*
+					 * Check the turn again. The player may have sent yet
+					 * another move command, and we do not want to cancel that.
+					 */
+					if (currentTurn != startMoveTurn) {
+						stop();
+					}
+				}
+			});
 		}
-		if (!stopped() && !has(AUTOWALK) && getZone() != null
-				&& getX() == keyboardStartX && getY() == keyboardStartY) {
-			final Direction direction = getDirection();
-			if (direction != Direction.STOP) {
-				directions.clear();
-				setPath(new FixedPath(Arrays.asList(new Node(getX(), getY()),
-						new Node(getX() + direction.getdx(), getY() + direction.getdy())), false));
-				// A keyboard path must not suppress key release on focus loss.
-				if (has(PATHSET)) remove(PATHSET);
-				return;
-			}
-		}
-		stop();
 	}
 
 	/**
@@ -526,7 +443,6 @@ public class Player extends DressedEntity implements UseListener {
 	public void stop() {
 		/* Bypass stopping the player if autoWalkState is <b>true</b>. */
 		if (!this.has(AUTOWALK)) {
-			cancelStartingKeyboardStep();
 			directions.clear();
 			super.stop();
 		}
@@ -536,7 +452,6 @@ public class Player extends DressedEntity implements UseListener {
 	 * Forces player to stop moving, bypassing auto-walk
 	 */
 	public void forceStop() {
-		cancelStartingKeyboardStep();
 		this.remove(AUTOWALK);
 		directions.clear();
 		super.stop();
@@ -1941,10 +1856,6 @@ public class Player extends DressedEntity implements UseListener {
 			return false;
 		}
 		if (StendhalRPAction.placeat(zone, this, x, y)) {
-			cancelStartingKeyboardStep();
-			movementSteps = null;
-			put("movement_steps", "");
-			put("movement_reset", java.util.UUID.randomUUID().toString());
 			CompassService.onTeleport(this);
 			nextQuestMarkerTurn = 0;
 			if (dir != null) {
@@ -3376,16 +3287,8 @@ public class Player extends DressedEntity implements UseListener {
 	protected void handleLeaveZone(int nx, final int ny) {
 		// Players using continuous movement should stop if they cross
 		// the zone border when using mouse for movement
-		final boolean keyboardStart = startingKeyboardStep;
-		final boolean stopAfter = hasPath() && (!keyboardStart || directions.isEmpty());
+		boolean stopAfter = hasPath();
 		super.handleLeaveZone(nx, ny);
-		if (keyboardStart) {
-			cancelStartingKeyboardStep();
-			if (!stopped() && !directions.isEmpty()) {
-				applyClientDirection(false);
-				beginKeyboardStep();
-			}
-		}
 		if (stopAfter) {
 			stop();
 		}

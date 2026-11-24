@@ -37,7 +37,7 @@ public class LegendaryAffixPresentationTest {
 	public void everyNewLegendaryFollowsAllOrdinaryAffixes() {
 		final String[][] legendaries = {
 				{ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "Krąg obrony"},
-				{ItemTooltip.LEGENDARY_HUNTERS_PACE, "Łowczy pęd"},
+				{ItemTooltip.LEGENDARY_HUNTERS_RESOLVE, "Hart łowcy"},
 				{ItemTooltip.LEGENDARY_LAST_STAND, "Ostatni zryw"},
 				{ItemTooltip.LEGENDARY_LIFE_TIDE, "Przypływ życia"},
 				{ItemTooltip.LEGENDARY_CLEAVE, "Rozmach"},
@@ -73,10 +73,10 @@ public class LegendaryAffixPresentationTest {
 		put(object, ItemTooltip.STEADY_HAND, "0.1");
 		put(object, ItemTooltip.POISON_POTENCY, "0.25");
 		put(object, ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "1");
-		put(object, ItemTooltip.LEGENDARY_HUNTERS_PACE, "1");
+		put(object, ItemTooltip.LEGENDARY_HUNTERS_RESOLVE, "1");
 		put(object, ItemTooltip.LEGENDARY_LAST_STAND, "1");
 		final String text = LegendaryAffixPresentation.build(object);
-		for (final String name : new String[] {"Pewna ręka", "Zjadliwość", "Krąg obrony", "Łowczy pęd", "Ostatni zryw"}) {
+		for (final String name : new String[] {"Pewna ręka", "Zjadliwość", "Krąg obrony", "Hart łowcy", "Ostatni zryw"}) {
 			assertTrue(text, text.contains(name));
 		}
 		assertTrue(text.contains("10%"));
@@ -88,7 +88,7 @@ public class LegendaryAffixPresentationTest {
 	public void completeLegendaryDescriptionsKeepNumbersCream() {
 		final String[][] affixes = {
 				{ItemTooltip.LEGENDARY_DEFENSE_CIRCLE, "3%", "12%"},
-				{ItemTooltip.LEGENDARY_HUNTERS_PACE, "10%", "4 s"},
+				{ItemTooltip.LEGENDARY_HUNTERS_RESOLVE, "10%", "4 s"},
 				{ItemTooltip.LEGENDARY_LAST_STAND, "30%", "20%"},
 				{ItemTooltip.LEGENDARY_LIFE_TIDE, "20%", "10 s", "20 PZ", "2 s"},
 				{ItemTooltip.LEGENDARY_CLEAVE, "4", "30%", "2"},

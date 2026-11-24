@@ -69,7 +69,6 @@ public class MoveToAction implements ActionListener {
 			return;
 		}
 
-		player.cancelStartingKeyboardStep();
 		if (player.hasPath()) {
 			player.clearPath();
 		}

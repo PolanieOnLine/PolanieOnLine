@@ -36,7 +36,6 @@ public class FaceAction implements ActionListener {
 	public void onAction(final Player player, final RPAction action) {
 
 		if (action.has(DIR)) {
-			player.setPath(null);
 			player.stop();
 			player.setDirection(Direction.build(action.getInt(DIR)));
 			player.notifyWorldAboutChanges();

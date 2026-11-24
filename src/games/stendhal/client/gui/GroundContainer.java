@@ -169,8 +169,6 @@ public class GroundContainer implements Inspector, MouseListener, MouseMotionLis
 	 * 	double click, <code>false</code> otherwise
 	 */
 	public void createAndSendMoveToAction(final Point2D point, boolean doubleClick) {
-		final User user = User.get();
-		if (user != null) user.cancelKeyboardStart();
 		final RPAction action = new RPAction();
 		action.put("type", "moveto");
 		action.put("x", (int) point.getX());

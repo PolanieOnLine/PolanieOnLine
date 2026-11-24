@@ -93,7 +93,7 @@ public final class LegendaryItemAffixRegistry {
 					new EquipmentAffixDefinition(
 							LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE),
 					AdditionalCombatAffixDefinition.DEFENSE_CIRCLE,
-					AdditionalCombatAffixDefinition.HUNTERS_PACE,
+					AdditionalCombatAffixDefinition.HUNTERS_RESOLVE,
 					AdditionalCombatAffixDefinition.LAST_STAND,
 					AdditionalCombatAffixDefinition.INEVITABILITY,
 					AdditionalCombatAffixDefinition.IRON_RESOLVE));

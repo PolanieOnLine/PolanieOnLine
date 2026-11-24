@@ -819,11 +819,8 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 
 		if (positionChanged) {
 			positionChanged = false;
-			final double pixelX, pixelY;
-			synchronized (entity) {
-				pixelX = IGameScreen.SIZE_UNIT_PIXELS * entity.getRenderX();
-				pixelY = IGameScreen.SIZE_UNIT_PIXELS * entity.getRenderY();
-			}
+			final double pixelX = IGameScreen.SIZE_UNIT_PIXELS * entity.getX();
+			final double pixelY = IGameScreen.SIZE_UNIT_PIXELS * entity.getY();
 			x = (int) pixelX;
 			y = (int) pixelY;
 			renderOffsetX = pixelX - x;

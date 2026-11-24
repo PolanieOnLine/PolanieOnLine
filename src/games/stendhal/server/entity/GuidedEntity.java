@@ -96,25 +96,13 @@ public abstract class GuidedEntity extends ActiveEntity {
 		return this.baseSpeed;
 	}
 
-	/** Effective walking speed; temporary bonuses leave base speed and statuses intact. */
-	public double getMovementSpeed() {
-		return getBaseSpeed();
-	}
-
 	/**
 	 * Set the normal movement speed.
 	 *
 	 * @param bs - New normal speed for moving.
 	 */
 	public final void setBaseSpeed(final double bs) {
-		final double previousSpeed = this.baseSpeed;
 		this.baseSpeed = bs;
-		if (has("base_speed")) {
-			put("base_speed", bs);
-		}
-		if (!stopped() && previousSpeed > 0.0) {
-			setSpeed(getSpeed() * bs / previousSpeed);
-		}
 	}
 
 	//
@@ -132,7 +120,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public final void setPath(final FixedPath path) {
 		if ((path != null) && !path.isFinished()) {
-			setSpeed(getMovementSpeed());
+			setSpeed(getBaseSpeed());
 
 			if (!this.has(PATHSET)) {
 				this.put(PATHSET, "");
@@ -202,7 +190,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 */
 	public final void setPath(final FixedPath path, final int position) {
 		if ((path != null) && !path.isFinished()) {
-			setSpeed(getMovementSpeed());
+			setSpeed(getBaseSpeed());
 
 			if (!this.has(PATHSET)) {
 				this.put(PATHSET, "");
@@ -338,14 +326,6 @@ public abstract class GuidedEntity extends ActiveEntity {
 		}
 	}
 
-	@Override
-	protected void prepareNextMovementStep() {
-		if (hasPath()) {
-			faceNext();
-			followPath();
-		}
-	}
-
 	/**
 	 * Set facing to next <code>Node</code>, if any
 	 */
@@ -371,8 +351,8 @@ public abstract class GuidedEntity extends ActiveEntity {
 		if (getSpeed() > 0) {
 			int resistance = getLocalResistance();
 
-			if ((getSpeed() < getMovementSpeed()) || (resistance != 0)) {
-				setSpeed(getMovementSpeed() * (100 - resistance) / 100.0);
+			if ((getSpeed() < getBaseSpeed()) || (resistance != 0)) {
+				setSpeed(getBaseSpeed() * (100 - resistance) / 100.0);
 			}
 		}
 	}
@@ -408,7 +388,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 							}
 						}
 
-						setSpeed(getMovementSpeed());
+						setSpeed(getBaseSpeed());
 					}
 				});
 			}
