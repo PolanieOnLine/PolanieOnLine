@@ -56,6 +56,8 @@ public class AutoWalkAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		player.cancelKeyboardTurn();
+		if (player.has("movement_request")) player.put("movement_request", "");
 
 		/* Clear player's path if set. */
 		if (player.hasPath()) {

@@ -284,6 +284,7 @@ public abstract class ActiveEntity extends Entity {
 			// update the location of the entity based on speeds
 			x += (dx * step);
 			y += (dy * step);
+			constrainPredictedMovement(oldX, oldY);
 
 			if (GameObjects.getInstance().collides(this)) {
 				x = oldX;
@@ -293,6 +294,11 @@ public abstract class ActiveEntity extends Entity {
 			}
 		}
 		if (positionChanged) onPosition(x, y);
+	}
+
+	/** Allow local input to bound prediction before collision checks and rendering. */
+	protected void constrainPredictedMovement(final double oldX, final double oldY) {
+		// Most entities continue extrapolating until the next server update.
 	}
 
 	/**

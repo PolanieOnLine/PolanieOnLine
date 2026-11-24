@@ -36,6 +36,8 @@ public class FaceAction implements ActionListener {
 	public void onAction(final Player player, final RPAction action) {
 
 		if (action.has(DIR)) {
+			player.cancelKeyboardTurn();
+			if (player.has("movement_request")) player.put("movement_request", "");
 			player.stop();
 			player.setDirection(Direction.build(action.getInt(DIR)));
 			player.notifyWorldAboutChanges();

@@ -48,6 +48,14 @@ public class User extends Player {
 
 	private final Set<String> ignore = new HashSet<String>();
 	private final SpeedPredictor speedPredictor;
+	private Direction keyboardStopDirection = Direction.STOP;
+	private int keyboardStopX, keyboardStopY;
+	private String keyboardStopZone;
+	private boolean keyboardStopAcknowledged;
+	private String expectedMovementReply;
+	private String pendingKeyboardStop;
+	private Direction preparedKeyboardMove = Direction.STOP;
+	private Direction keyboardTurnNext = Direction.STOP;
 
 	/**
 	 * creates a User object
@@ -429,13 +437,19 @@ public class User extends Player {
 	 * @param direction new direction
 	 * @param facing <code>true</code> if the player should just turn
 	 */
-	public void predictMovement(Direction direction, boolean facing) {
+	public synchronized void predictMovement(Direction direction, boolean facing) {
+		final String preparedReply = !facing && preparedKeyboardMove == direction ? expectedMovementReply : null;
+		preparedKeyboardMove = Direction.STOP;
+		if (!facing && keyboardTurnNext == direction) return;
+		final boolean nextStep = keyboardStopDirection != Direction.STOP && !facing;
+		cancelKeyboardStopPrediction();
+		if (preparedReply != null) expectedMovementReply = preparedReply;
 		if (facing) {
 			speedPredictor.cancelPrediction();
 		}
-		// Only handle the case of starting movement. Prediction when already
-		// moving looks odd.
-		if (stopped()) {
+		// Predict a new step after key-up as well as a start from rest.
+		// Direction changes during a continuously held move remain server-driven.
+		if (stopped() || nextStep) {
 			if (isConfused()) {
 				direction = direction.oppositeDirection();
 			}
@@ -451,8 +465,19 @@ public class User extends Player {
 	}
 
 	@Override
-	protected void processPositioning(final RPObject base, final RPObject diff) {
-		if (speedPredictor.isActive() && !stopped()
+	protected synchronized void processPositioning(final RPObject base, final RPObject diff) {
+		final boolean newZone = diff.has("zoneid") && (!base.has("zoneid") || !diff.get("zoneid").equals(base.get("zoneid")));
+		if (newZone) {
+			clearKeyboardStopLimit();
+			expectedMovementReply = null;
+		}
+		final String movementReply = diff.has("movement_request") ? diff.get("movement_request")
+				: base.has("movement_request") ? base.get("movement_request") : "";
+		// Only discard identified older input replies. Unsequenced server corrections remain authoritative.
+		if (!newZone && expectedMovementReply != null && !movementReply.isEmpty()
+				&& !movementReply.equals(expectedMovementReply)) return;
+		if ((speedPredictor.isActive() || (keyboardStopDirection != Direction.STOP && !keyboardStopAcknowledged))
+				&& !stopped()
 				&& (!base.has("speed") || base.getDouble("speed") == 0.0)
 				&& diff.has("dir") && !diff.has("speed")
 				&& !diff.has("x") && !diff.has("y")
@@ -463,6 +488,29 @@ public class User extends Player {
 			// the old stationary state here would reverse that predicted start.
 			return;
 		}
+		if (keyboardStopDirection != Direction.STOP) {
+			final boolean zoneChanged = diff.has("zoneid") && !diff.get("zoneid").equals(keyboardStopZone);
+			final boolean turned = diff.has("dir") && Direction.build(diff.getInt("dir")) != keyboardStopDirection;
+			if (zoneChanged || turned || diff.has("autowalk")) {
+				clearKeyboardStopLimit();
+			} else {
+				final int targetX = diff.has("x") ? diff.getInt("x") : base.getInt("x");
+				final int targetY = diff.has("y") ? diff.getInt("y") : base.getInt("y");
+				final double progress = (targetX - keyboardStopX) * keyboardStopDirection.getdx()
+						+ (targetY - keyboardStopY) * keyboardStopDirection.getdy();
+				if (diff.has("speed") && diff.getDouble("speed") == 0.0 && progress < 0) {
+					// A blocked step remains authoritative, even if local collision data differed.
+					clearKeyboardStopLimit();
+				} else {
+					if (progress > 0) {
+						keyboardStopX = targetX;
+						keyboardStopY = targetY;
+					}
+					if (diff.has("speed") && diff.getDouble("speed") == 0.0) keyboardStopAcknowledged = true;
+				}
+			}
+		}
+
 		if (diff.has("speed") && diff.getDouble("speed") == 0.0) {
 			speedPredictor.cancelPrediction();
 		} else if (speedPredictor.isActive() && (diff.has("direction") || diff.has("x") || diff.has("y"))) {
@@ -471,10 +519,130 @@ public class User extends Player {
 		super.processPositioning(base, diff);
 	}
 
+	/** Finish the current keyboard step rather than predicting another one after key-up. */
+	public synchronized void prepareKeyboardStop() {
+		final RPObject object = getRPObject();
+		if (keyboardTurnNext != Direction.STOP) {
+			keyboardTurnNext = Direction.STOP;
+			pendingKeyboardStop = null;
+			keyboardStopAcknowledged = false;
+			return;
+		}
+		if (keyboardStopDirection != Direction.STOP || object == null || !object.has("zoneid")
+				|| object.has("autowalk") || getDirection() == Direction.STOP) return;
+		final Direction direction = getDirection();
+		final double displayX = getRenderX(), displayY = getRenderY();
+		keyboardStopX = direction.getdx() > 0 ? (int) Math.ceil(Math.max(x, displayX) - 0.000001)
+				: direction.getdx() < 0 ? (int) Math.floor(Math.min(x, displayX) + 0.000001) : (int) Math.round(x);
+		keyboardStopY = direction.getdy() > 0 ? (int) Math.ceil(Math.max(y, displayY) - 0.000001)
+				: direction.getdy() < 0 ? (int) Math.floor(Math.min(y, displayY) + 0.000001) : (int) Math.round(y);
+		if (speedPredictor.isActive()) {
+			// A tap before the first acknowledgement must still request its first tile.
+			if (direction.getdx() > 0) keyboardStopX = Math.max(keyboardStopX, object.getInt("x") + 1);
+			if (direction.getdx() < 0) keyboardStopX = Math.min(keyboardStopX, object.getInt("x") - 1);
+			if (direction.getdy() > 0) keyboardStopY = Math.max(keyboardStopY, object.getInt("y") + 1);
+			if (direction.getdy() < 0) keyboardStopY = Math.min(keyboardStopY, object.getInt("y") - 1);
+		}
+		keyboardStopZone = object.get("zoneid");
+		keyboardStopDirection = direction;
+		keyboardStopAcknowledged = false;
+		pendingKeyboardStop = null;
+		speedPredictor.cancelPrediction();
+	}
+
+	/** Keep the old step bounded until the server confirms its agreed turning corner. */
+	public synchronized void prepareKeyboardMove(final Direction next, final RPAction action) {
+		if (stopped() || next == getDirection() || getRPObject() == null || getRPObject().has("autowalk")) {
+			cancelKeyboardStopPrediction();
+		} else {
+			prepareKeyboardStop();
+			if (keyboardStopDirection != Direction.STOP) {
+				keyboardTurnNext = next;
+				action.put("turn_x", keyboardStopX);
+				action.put("turn_y", keyboardStopY);
+				action.put("turn_from", keyboardStopDirection.get());
+				action.put("turn_zone", keyboardStopZone);
+			}
+		}
+		expectedMovementReply = java.util.UUID.randomUUID().toString();
+		preparedKeyboardMove = next;
+		action.put("input_id", expectedMovementReply);
+	}
+
+	/** Synthetic repeat pairs do not send another server command. */
+	public synchronized void resumeKeyboardPrediction(final Direction direction) {
+		final String reply = expectedMovementReply;
+		prepareKeyboardMove(direction, new RPAction());
+		expectedMovementReply = reply;
+		preparedKeyboardMove = Direction.STOP;
+	}
+
+	public synchronized void appendKeyboardStop(final RPAction action) {
+		if (keyboardStopDirection == Direction.STOP) return;
+		if (pendingKeyboardStop == null) pendingKeyboardStop = java.util.UUID.randomUUID().toString();
+		expectedMovementReply = pendingKeyboardStop;
+		action.put("finish_id", expectedMovementReply);
+		action.put("finish_x", keyboardStopX);
+		action.put("finish_y", keyboardStopY);
+		action.put("finish_dir", keyboardStopDirection.get());
+		action.put("finish_zone", keyboardStopZone);
+	}
+
+	public synchronized void cancelKeyboardStopPrediction() {
+		expectedMovementReply = "";
+		clearKeyboardStopLimit();
+	}
+
+	private void clearKeyboardStopLimit() {
+		keyboardStopDirection = Direction.STOP;
+		keyboardTurnNext = Direction.STOP;
+		pendingKeyboardStop = null;
+		keyboardStopAcknowledged = false;
+	}
+
+	@Override
+	public synchronized void initialize(final RPObject object) {
+		clearKeyboardStopLimit();
+		expectedMovementReply = null;
+		preparedKeyboardMove = Direction.STOP;
+		super.initialize(object);
+	}
+
+	@Override
+	public synchronized void update(final int delta) {
+		super.update(delta);
+		if (keyboardStopAcknowledged && Math.abs(x - keyboardStopX) < 0.000001
+				&& Math.abs(y - keyboardStopY) < 0.000001 && Math.abs(super.getRenderX() - x) < 0.000001
+				&& Math.abs(super.getRenderY() - y) < 0.000001) clearKeyboardStopLimit();
+	}
+
+	@Override
+	protected void constrainPredictedMovement(final double oldX, final double oldY) {
+		if (keyboardStopDirection.getdx() > 0) x = Math.max(oldX, Math.min(x, keyboardStopX));
+		if (keyboardStopDirection.getdx() < 0) x = Math.min(oldX, Math.max(x, keyboardStopX));
+		if (keyboardStopDirection.getdy() > 0) y = Math.max(oldY, Math.min(y, keyboardStopY));
+		if (keyboardStopDirection.getdy() < 0) y = Math.min(oldY, Math.max(y, keyboardStopY));
+	}
+
+	@Override
+	public synchronized double getRenderX() {
+		final double position = super.getRenderX();
+		return keyboardStopDirection.getdx() > 0 ? Math.min(position, keyboardStopX)
+				: keyboardStopDirection.getdx() < 0 ? Math.max(position, keyboardStopX) : position;
+	}
+
+	@Override
+	public synchronized double getRenderY() {
+		final double position = super.getRenderY();
+		return keyboardStopDirection.getdy() > 0 ? Math.min(position, keyboardStopY)
+				: keyboardStopDirection.getdy() < 0 ? Math.max(position, keyboardStopY) : position;
+	}
+
 	/**
 	 * Stop the user's movement.
 	 */
 	public void stopMovement() {
+		cancelKeyboardStopPrediction();
 		final RPAction stopAction = new RPAction();
 
 		stopAction.put(TYPE, WALK);

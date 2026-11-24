@@ -11,8 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
+
 import games.stendhal.common.Translation;
 import games.stendhal.common.constants.GameTiming;
+import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.rule.damage.CombatStatsService;
 import games.stendhal.server.actions.NpcShopAction;
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
@@ -177,6 +179,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * quick presses ment to move one tile.
 	 */
 	private int startMoveTurn;
+	private boolean keyboardTurnQueued;
+	private int keyboardTurnX, keyboardTurnY;
+	private String keyboardTurnZone;
 
 	/**
 	 * last client action timestamp
@@ -348,8 +353,9 @@ public class Player extends DressedEntity implements UseListener {
 	 *			direction
 	 */
 	public void addClientDirection(final Direction direction) {
+		cancelKeyboardTurn();
 		if (hasPath()) {
-			clearPath();
+			setPath(null);
 		}
 
 		startMoveTurn = SingletonRepository.getRuleProcessor().getTurn();
@@ -365,6 +371,42 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public void removeClientDirection(final Direction direction) {
 		directions.remove(direction);
+	}
+
+	public boolean hasQueuedKeyboardTurn() {
+		return keyboardTurnQueued;
+	}
+
+	public void queueKeyboardTurn(final FixedPath path, final int x, final int y) {
+		keyboardTurnQueued = true;
+		keyboardTurnX = x;
+		keyboardTurnY = y;
+		keyboardTurnZone = getZone().getName();
+		setPath(path);
+		// This remains keyboard-controlled; focus loss must still release held keys.
+		if (has("pathset")) remove("pathset");
+	}
+
+	public void cancelKeyboardTurn() {
+		if (keyboardTurnQueued) {
+			keyboardTurnQueued = false;
+			setPath(null);
+		}
+	}
+
+	@Override
+	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
+		super.onMoved(oldX, oldY, newX, newY);
+		if (keyboardTurnQueued) {
+			if (getZone() == null || !keyboardTurnZone.equals(getZone().getName())) {
+				cancelKeyboardTurn();
+			} else if (getX() == keyboardTurnX && getY() == keyboardTurnY) {
+				keyboardTurnQueued = false;
+				setPath(null);
+				if (directions.isEmpty()) stop();
+				else applyClientDirection(false);
+			}
+		}
 	}
 
 	@Override
@@ -446,6 +488,7 @@ public class Player extends DressedEntity implements UseListener {
 	public void stop() {
 		/* Bypass stopping the player if autoWalkState is <b>true</b>. */
 		if (!this.has(AUTOWALK)) {
+			cancelKeyboardTurn();
 			directions.clear();
 			super.stop();
 		}
@@ -455,6 +498,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Forces player to stop moving, bypassing auto-walk
 	 */
 	public void forceStop() {
+		cancelKeyboardTurn();
 		this.remove(AUTOWALK);
 		directions.clear();
 		super.stop();
