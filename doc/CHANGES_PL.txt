@@ -15,10 +15,10 @@
 * Dodano prywatne sceny głównej historii. Związane z nimi postacie, przeciwnicy i ślady pojawiają się dla gracza na odpowiednim etapie zadania i znikają, gdy nie są już potrzebne
 * Dodano podpowiedzi dla początkujących dotyczące kupców, leczenia i kolejnych zadań
 * Dostarczenie wózka podczas Pomocy w Żniwach nie cofa już drugiego wózka, który inny gracz prowadzi do stodoły
-* Uporządkowano oddawanie składników Carmen i Jadźce. Obie rozumieją hasło „składniki”, przyjmują przedmioty po podaniu ich nazw i informują, czego jeszcze brakuje
-* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w menu obu klientów podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, najpóźniej następnego dnia po jego terminie. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
-
-* Jadźka przyjmuje nowe zamówienia zielarskie co 24 godziny. Pierwsza dostawa odblokowuje u niej warzenie antidotum z mięty, babki lekarskiej i wody
+* Uporządkowano oddawanie składników Carmen. Rozumie hasło „składniki”, przyjmuje przedmioty po podaniu ich nazw i informuje, czego jeszcze brakuje
+* Dotychczasowe zadanie Jadźki zastąpiono Zamówieniem zielarskim, dostępnym co 24 godziny. Pierwsza dostawa odblokowuje u niej warzenie antidotum z mięty, babki lekarskiej i wody
+* Dodano kalendarz adwentowy z 24 niespodziankami, dostępny w obu klientach w grudniu podczas wydarzenia świątecznego. Każdy prezent można odebrać raz na konto, najpóźniej następnego dnia po jego terminie. Wyposażenie i kamienie przemiany z prezentów są przypisane do postaci, która je odebrała. Po otwarciu drzwiczek widać w nich otrzymane przedmioty. Na telefonie układ dopasowuje się do pionowego i poziomego ekranu
+* Poprawiono wygląd wybranych budynków i dekoracji Zakopanego, także w świątecznym wystroju
 
 *dziennik zadań*
 ---
@@ -66,8 +66,10 @@
 * Zmieniono antidotum i mocne antidotum: usuwają odpowiednio do 400 i 800 PZ pozostałych obrażeń od trucizny, zamiast zapewniać czasową niewrażliwość. Nie zużywają się, gdy postać nie jest zatruta
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
+* Zwiększono obronę wybranych przeciwników, m.in. piratów, bandytów i zbójników. Zmieniono też tempo poruszania części potworów oraz wydłużono czas odrodzenia starców, wieśniaków i gajowych
 * Zmieniono zestaw ciemnomithrilowy na zestaw z hartowanego mithrilu. Wszystkie siedem części otrzymało nowe grafiki i opisy nawiązujące do mithrilu wzmocnionego ciemnolitem. Posiadane przedmioty zachowują swoje statystyki, rzadkość, afiksy i ulepszenia
-* Dodano kamień przemiany, rzadką nagrodę z wydarzeń. W pracowni Przemira Zaklinacza na południu Tarnowa pozwala wylosować nowy afiks wyposażenia i wybrać między nim a dotychczasowym. Losowanie zwykłego afiksu kosztuje 1 kamień, a legendarnego 3 kamienie, także przy zachowaniu poprzedniego wyniku. Niebieskie strzałki przed nazwą oznaczają afiks wybrany do przemiany; przy zwykłych afiksach zastępują romb. Po pierwszej próbie na danym przedmiocie można dalej zmieniać ten sam afiks; pozostałe afiksy, rzadkość i ulepszenia zostają zachowane
+* Dodano kamień przemiany, rzadką nagrodę z wydarzeń, oraz pracownię Przemira Zaklinacza na południu Tarnowa. Można tam wylosować nowy afiks wyposażenia i wybrać między nim a dotychczasowym. Pierwsza próba kosztuje 1 kamień dla zwykłego afiksu lub 3 kamienie dla legendarnego. Kolejne losowania tego samego afiksu wymagają surowców i monet, zależnie od rzadkości przedmiotu i rodzaju afiksu. Koszt jest pobierany również przy zachowaniu poprzedniego wyniku
+* Po pierwszej przemianie przedmiotu można dalej zmieniać tylko ten sam afiks, oznaczony niebieskimi strzałkami. Pozostałe afiksy, rzadkość i ulepszenia zostają zachowane
 * Poprawiono nagrody z kości w Semos i bilardu w Gdańsku. Wygrane wyposażenie otrzymuje afiksy odpowiednie do swojej rzadkości
 * Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
 * Poprawiono zachowanie dodatkowego zasięgu afiksa Bezlitosny Zasięg po ponownym zalogowaniu
@@ -94,14 +96,14 @@
 * Dodano w obu klientach niewielki, półprzezroczysty pasek kompasu w górnej części ekranu gry. Pokazuje kierunki świata, kierunek marszu do celu zadania oraz pozostałą drogę przez kolejne mapy. Wskazania zmieniają się podczas poruszania postaci
 * Kompas wędrowca jest nagrodą za zadanie Na manowcach. Działa, gdy gracz ma go w plecaku. Prowadzi do celów zadań głównych lub jednego zadania pobocznego wybranego w dzienniku
 * Użycie kompasu pokazuje lub chowa jego pasek na ekranie. Wybór jest zapamiętywany dla postaci, a po zdobyciu kompas jest domyślnie widoczny. Jego wskazówka delikatnie się porusza
-* Dodano zakładki Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości
+* Dodano kanały Główny i Prywatny na czacie webklienta, z osobnym przewijaniem i wyróżnianiem nowych wiadomości. Na komputerze wybiera się je zakładkami, a na telefonie przełącznikiem obok pola pisania
 * Dodano fioletową, pulsującą nakładkę pokazującą nadwyżkę PZ z Przypływu życia. Ukośne prześwity odsłaniają zwykły pasek zdrowia, a zanik nadwyżki jest pokazywany fioletowymi liczbami
 * Zmieniono podpowiedzi przedmiotów w webkliencie, aby pokazywały statystyki i zapisane miejsca zwojów tak jak klient Java
 * Poprawiono animacje kafelków w webkliencie, m.in. ognia, pochodni i wody
 * Poprawiono położenie dymków rozmów i wyświetlanie przezroczystości administratorów w trybie ducha w webkliencie
 * Poprawiono kolejność akcji na liście znajomych w webkliencie i dodano zapraszanie do grupy
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
-* Webklient dopasowuje mapę i otwarte okna po obróceniu telefonu, bez odświeżania strony
+* Webklient dopasowuje mapę, otwarte okna i położenie joysticka po obróceniu telefonu, bez odświeżania strony
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
 * Uzupełniono angielskie i hiszpańskie tłumaczenia opisów przedmiotów, odporności, wariantów potworów, komunikatów walki, produkcji, osiągnięć i wybranych rozmów z NPC. Poprawiono też polskie opisy osiągnięć
 * Poprawiono sortowanie zadań i bestiariusza według nazw w wybranym języku oraz tłumaczenia nazw regionów i podziemi
@@ -112,6 +114,7 @@
 * Zmieniono kolejność słów w nazwach lazurowego i szmaragdowego wyposażenia, umieszczając rodzaj przedmiotu na początku nazwy
 * Poprawiono zaliczanie osiągnięcia Przyjaciel Dzieci
 * Poprawiono przechodzenie zwierząt na piętro banku w Krakowie
+* Prom z Krakowa dowozi gracza do przystani w centrum Warszawy. Uporządkowano też polskie opisy i hasła rozmów z przewoźnikami
 * Poprawiono rozpoznawanie właścicieli zwierząt i usuwanie nieaktualnych powiązań z towarzyszami, które mogły blokować zdobycie nowego zwierzątka
 * Poprawiono błędy przy sprawdzaniu osiągnięć związanych z wagą zwierząt
 * Poprawiono odpowiedzi kupców na prośby o handel przedmiotami spoza ich oferty
