@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 
 import games.stendhal.common.Constants;
+import games.stendhal.common.AdventCalendarAccess;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO;
 import games.stendhal.server.core.engine.db.AdventCalendarDAO.Account;
 import games.stendhal.server.core.events.seasonal.SeasonalEventType;
@@ -58,6 +59,18 @@ public final class AdventCalendarService {
 		this.rewards = rewards;
 	}
 
+	public void updateAvailability(final Player player) {
+		final int value = isAvailable(player, AdventCalendarRules.dateAt(clock.instant())) ? 1 : 0;
+		if (!player.has(AdventCalendarAccess.ATTRIBUTE) || player.getInt(AdventCalendarAccess.ATTRIBUTE) != value) {
+			player.put(AdventCalendarAccess.ATTRIBUTE, value);
+		}
+	}
+
+	private boolean isAvailable(final Player player, final LocalDate date) {
+		return (date.getMonthValue() == 12 && SeasonalEventType.CHRISTMAS.isEnabled())
+				|| (Boolean.getBoolean(DEBUG_PROPERTY) && player.getAdminLevel() >= DEBUG_ADMIN_LEVEL);
+	}
+
 	private static AccountState loadAccount(final Player player, final int year) throws SQLException {
 		final TransactionPool pool = TransactionPool.get();
 		final DBTransaction transaction = pool.beginWork();
@@ -76,9 +89,9 @@ public final class AdventCalendarService {
 	public Result process(final Player player, final String command, final int day) throws SQLException {
 		final LocalDate date = AdventCalendarRules.dateAt(clock.instant());
 		final boolean debug = Boolean.getBoolean(DEBUG_PROPERTY) && player.getAdminLevel() >= DEBUG_ADMIN_LEVEL;
-		if (!SeasonalEventType.CHRISTMAS.isEnabled() && !debug) {
+		if (!isAvailable(player, date)) {
 			return new Result(date, 0, "inactive",
-					"Kalendarz jest dostępny tylko podczas wydarzenia świątecznego.",
+					"Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.",
 					0, Collections.emptyList(), false);
 		}
 		final AccountState account = accounts.load(player, date.getYear());

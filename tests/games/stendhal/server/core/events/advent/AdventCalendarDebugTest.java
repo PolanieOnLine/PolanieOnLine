@@ -97,7 +97,7 @@ public class AdventCalendarDebugTest {
 			System.clearProperty(CHRISTMAS);
 			assertEquals("inactive", service.process(admin, "claim", 24).status);
 			System.setProperty(CHRISTMAS, "true");
-			assertEquals("future", service.process(admin, "claim", 24).status);
+			assertEquals("inactive", service.process(admin, "claim", 24).status);
 		}
 		assertEquals(0, admin.getNumberOfEquipped("money"));
 	}
@@ -113,8 +113,8 @@ public class AdventCalendarDebugTest {
 			System.setProperty(CHRISTMAS, "true");
 			final Result opened = november.process(player, "open", 0);
 			assertFalse(opened.message.contains("Tryb testowy"));
-			assertEquals(Collections.nCopies(24, "future"), new AdventCalendarEvent(opened, "normal-open").getList("states"));
-			assertEquals("future", november.process(player, "claim", 24).status);
+			assertEquals(Collections.nCopies(24, "inactive"), new AdventCalendarEvent(opened, "normal-open").getList("states"));
+			assertEquals("inactive", november.process(player, "claim", 24).status);
 			final AdventCalendarService december = calendar("2026-12-10T12:00:00Z");
 			assertEquals("expired", december.process(player, "claim", 6).status);
 			assertEquals("future", december.process(player, "claim", 11).status);

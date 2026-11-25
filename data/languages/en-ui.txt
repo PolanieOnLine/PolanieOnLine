@@ -985,3 +985,4 @@ Czas zatrucia: {0} s=Poison duration: {0} s
 Koszt przemiany=Transformation cost
 Wymagane:=Required:
 Kanał czatu=Chat channel
+Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=The calendar is available in December during the Christmas event.

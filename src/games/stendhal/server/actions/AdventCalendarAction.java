@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Actions;
 import games.stendhal.server.core.events.advent.AdventCalendarService;
+import games.stendhal.server.core.events.advent.AdventCalendarAvailability;
 import games.stendhal.server.core.events.advent.AdventCalendarService.Result;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.AdventCalendarEvent;
@@ -16,7 +17,9 @@ public final class AdventCalendarAction implements ActionListener {
 	private final AdventCalendarService calendar = new AdventCalendarService();
 
 	public static void register() {
-		CommandCenter.register(Actions.ADVENT_CALENDAR, new AdventCalendarAction());
+		final AdventCalendarAction action = new AdventCalendarAction();
+		CommandCenter.register(Actions.ADVENT_CALENDAR, action);
+		new AdventCalendarAvailability(action.calendar).start();
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public final class AdventCalendarAction implements ActionListener {
 			final int day = action.has("day") ? Integer.parseInt(action.get("day")) : 0;
 			final Result result = calendar.process(player, command, day);
 			player.addEvent(new AdventCalendarEvent(result, request));
-			if ("no_space".equals(result.status)) {
+			if ("no_space".equals(result.status) || "inactive".equals(result.status)) {
 				player.sendPrivateText(result.message);
 			}
 		} catch (final Exception exception) {

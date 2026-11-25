@@ -54,7 +54,7 @@ export class AdventCalendarDialog extends DialogContentComponent {
 		this.componentElement.append(heading, this.board, this.status);
 		this.addCloseButton();
 		this.timer = setInterval(() => {
-			if (marauroa.me !== this.owner) {
+			if (marauroa.me !== this.owner || !AdventCalendarDialog.isAvailable()) {
 				this.close();
 				return;
 			}
@@ -74,8 +74,12 @@ export class AdventCalendarDialog extends DialogContentComponent {
 		}, 100);
 	}
 
+	public static isAvailable(): boolean {
+		return !!marauroa.me && Number(marauroa.me.advent_calendar_available) === 1;
+	}
+
 	public static open(): void {
-		if (!marauroa.me) return;
+		if (!this.isAvailable()) return;
 		if (this.active?.owner !== marauroa.me) this.active?.close();
 		if (!this.active) {
 			const dialog = new AdventCalendarDialog();

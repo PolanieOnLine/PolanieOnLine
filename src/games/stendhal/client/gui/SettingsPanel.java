@@ -33,6 +33,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import games.stendhal.client.actions.SlashAction;
 import games.stendhal.client.actions.SlashActionRepository;
@@ -47,6 +50,7 @@ class SettingsPanel extends JButton {
 	/** Extra padding for
 	/** Empty space above and below the separators in the popup menu */
 	private static final int SEPARATOR_MARGIN = 8;
+	private JMenuItem adventCalendarItem;
 
 	/**
 	 * Creates a new instance of SettingsPanel.
@@ -93,11 +97,33 @@ class SettingsPanel extends JButton {
 		// Help
 		column = new Column(menu, c);
 		createHelpMenu(column);
+		final Timer availability = new Timer(500, event -> {
+			final boolean visible = AdventCalendarDialog.isAvailable();
+			if (adventCalendarItem.isVisible() != visible) {
+				adventCalendarItem.setVisible(visible);
+				menu.pack();
+			}
+		});
+		menu.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(final PopupMenuEvent event) {
+				availability.start();
+			}
+			@Override
+			public void popupMenuWillBecomeInvisible(final PopupMenuEvent event) {
+				availability.stop();
+			}
+			@Override
+			public void popupMenuCanceled(final PopupMenuEvent event) {
+				availability.stop();
+			}
+		});
 
 		addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Place the menu right justified to the button
+				adventCalendarItem.setVisible(AdventCalendarDialog.isAvailable());
 				menu.show(SettingsPanel.this, getWidth() - menu.getPreferredSize().width, getHeight());
 			}
 		});
@@ -219,6 +245,8 @@ class SettingsPanel extends JButton {
 		item = createMenuItem("Ołtarz Runiczny", "runicaltar");
 		column.addComponent(item);
 		item = createMenuItem("Kalendarz adwentowy", "adventcalendar");
+		adventCalendarItem = item;
+		item.setVisible(AdventCalendarDialog.isAvailable());
 		column.addComponent(item);
 	}
 

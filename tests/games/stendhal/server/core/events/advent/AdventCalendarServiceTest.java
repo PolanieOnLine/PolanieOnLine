@@ -30,6 +30,36 @@ public class AdventCalendarServiceTest {
 	private String previousChristmas;
 
 	@Test
+	public void januaryBlocksEveryCommandBeforeLoadingTheAccountEvenWhenChristmasIsStillEnabled() throws Exception {
+		final AdventCalendarService service = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-31T23:00:00Z"), ZoneOffset.UTC),
+				(owner, year) -> { throw new AssertionError("Inactive calendar must not load accounts"); },
+				day -> { throw new AssertionError("Inactive calendar must not create rewards"); });
+		final Player player = PlayerTestHelper.createPlayer("advent_january");
+		for (final String command : new String[] {"open", "refresh", "view", "claim"}) {
+			assertEquals("inactive", service.process(player, command, 24).status);
+		}
+	}
+
+	@Test
+	public void menuAvailabilityFollowsWarsawMidnightAndEventChangesWithoutLoggingOut() {
+		final Player player = PlayerTestHelper.createPlayer("advent_menu_year_boundary");
+		final AdventCalendarService december = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-31T22:59:59Z"), ZoneOffset.UTC), null, null);
+		final AdventCalendarService january = new AdventCalendarService(
+				Clock.fixed(Instant.parse("2026-12-31T23:00:00Z"), ZoneOffset.UTC), null, null);
+		december.updateAvailability(player);
+		assertTrue(games.stendhal.common.AdventCalendarAccess.isAvailable(player));
+		january.updateAvailability(player);
+		assertFalse(games.stendhal.common.AdventCalendarAccess.isAvailable(player));
+		december.updateAvailability(player);
+		assertTrue(games.stendhal.common.AdventCalendarAccess.isAvailable(player));
+		System.clearProperty(SeasonalEventType.CHRISTMAS.getProperty());
+		december.updateAvailability(player);
+		assertFalse(games.stendhal.common.AdventCalendarAccess.isAvailable(player));
+	}
+
+	@Test
 	public void clientsAndDirectClaimsAllowOnlyTodayAndYesterday() throws Exception {
 		final AdventCalendarService service = new AdventCalendarService(
 				Clock.fixed(Instant.parse("2026-12-10T12:00:00Z"), ZoneOffset.UTC),

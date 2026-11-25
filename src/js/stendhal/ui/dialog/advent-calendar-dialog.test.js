@@ -52,7 +52,7 @@ function harness() {
 		setResponsiveWidth(enabled) { this.responsiveWidth = enabled; }
 		close() { this.content.onParentClose(); }
 	}
-	const marauroa = {me: {}, clientFramework: {sendAction: action => actions.push(action)}};
+	const marauroa = {me: {advent_calendar_available: 1}, clientFramework: {sendAction: action => actions.push(action)}};
 	const dependencies = {
 		marauroa: {marauroa}, "../../data/Paths": {Paths: {sprites: "/data/sprites", gui: "/data/gui"}},
 		"../../SingletonRepo": {singletons: {getSpriteStore: () => ({checkPath: value => value, get: () => ({width: 64})})}},
@@ -84,6 +84,47 @@ function gift(day, overrides = {}) {
 	return {status: "received", revealed_day: day, reward_names: ["money"], reward_classes: ["money"],
 		reward_subclasses: ["gold"], reward_quantities: ["250"], ...overrides};
 }
+
+test("server availability closes the calendar and prevents reopening it through the command", () => {
+	const h = harness();
+	h.marauroa.me.advent_calendar_available = 0;
+	const sent = h.actions.length, windows = h.frames.length;
+	[...h.timers.values()][0]();
+	assert.equal(h.timers.size, 0);
+	h.Dialog.open();
+	assert.equal(h.actions.length, sent);
+	assert.equal(h.frames.length, windows);
+	assert.equal(h.Dialog.isAvailable(), false);
+});
+
+test("an application menu already open follows calendar availability and releases its timer on close", () => {
+	let available = false;
+	const timers = new Map(), buttons = new Map();
+	class DialogContentComponent {
+		constructor() {
+			this.componentElement = {addEventListener() {}, querySelector: selector => buttons.get(selector.match(/menubutton\.([^']+)/)[1]),
+				set innerHTML(value) {for (const match of value.matchAll(/id="menubutton\.([^"]+)"/g)) buttons.set(match[1], {style: {}});}};
+		}
+	}
+	const exports = {}, dependencies = {
+		"../toolkit/DialogContentComponent": {DialogContentComponent},
+		"./AdventCalendarDialog": {AdventCalendarDialog: {isAvailable: () => available}},
+		"../../util/Debug": {Debug: {isActive: () => false}},
+		"../../stendhal": {stendhal: {ui: {html: {esc: text => text}}}}
+	};
+	vm.runInNewContext(ts.transpileModule(readFileSync(path.join(__dirname, "ApplicationMenuDialog.ts"), "utf8"), {
+		compilerOptions: {module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022}
+	}).outputText, {exports, setInterval: fn => {timers.set(1, fn); return 1;}, clearInterval: id => timers.delete(id),
+		require: name => dependencies[name] || {}});
+	const menu = new exports.ApplicationMenuDialog();
+	assert.equal(buttons.get("adventcalendar")?.style.display, "none");
+	available = true; timers.get(1)();
+	assert.equal(buttons.get("adventcalendar").style.display, "");
+	available = false; timers.get(1)();
+	assert.equal(buttons.get("adventcalendar").style.display, "none");
+	menu.onParentClose();
+	assert.equal(timers.size, 0);
+});
 
 test("claim opens its door with inline sprites, other previews survive refresh and subsequent claims", () => {
 	const h = harness(); const first = h.dialog.doors.get(1);
@@ -271,7 +312,7 @@ function browserFixture() {
 <style>${css}\nbody{margin:8px;background:#211b14;color:#eee;} .advent-calendar-dialog{background:var(--background-url);border:2px solid #b48954;}</style>
 <body><script>
 const actions=[],frames=[];
-const marauroa={me:{},clientFramework:{sendAction:action=>actions.push(action)}};
+const marauroa={me:{advent_calendar_available:1},clientFramework:{sendAction:action=>actions.push(action)}};
 class DialogContentComponent {
 	constructor(){this.componentElement=document.createElement('div');document.body.append(this.componentElement);}
 	setFrame(frame){this.frame=frame;}
@@ -340,7 +381,7 @@ frame.srcdoc=${JSON.stringify(browserFixture()).replaceAll("<", "\\u003c")};
 			{encoding: "utf8", windowsHide: true, timeout: 20000, stdio: ["ignore", "pipe", "ignore"]});
 		assert.match(output.match(/<pre id="result">([^<]*)<\/pre>/)?.[1] || "missing browser result", /^PASS portrait-landscape-portrait;/);
 	} finally {
-		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-rotation-"))) rmSync(directory, {recursive: true, force: true});
+		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-rotation-"))) rmSync(directory, {recursive: true, force: true, maxRetries: 5, retryDelay: 100});
 	}
 });
 
@@ -411,6 +452,6 @@ frame.srcdoc=${JSON.stringify(browserFixture()).replaceAll("<", "\\u003c")};
 			assert.ok(output.includes('PASS animation;reduced=' + Boolean(flags.length)), "browser did not apply the requested motion preference");
 		}
 	} finally {
-		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-opening-"))) rmSync(directory, {recursive: true, force: true});
+		if (directory.startsWith(path.join(tmpdir(), "polanie-advent-opening-"))) rmSync(directory, {recursive: true, force: true, maxRetries: 5, retryDelay: 100});
 	}
 });

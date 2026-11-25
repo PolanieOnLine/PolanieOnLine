@@ -16,6 +16,7 @@ import { singletons } from "../../SingletonRepo";
 
 import { Debug } from "../../util/Debug";
 import { ScreenCapture } from "../../util/ScreenCapture";
+import { AdventCalendarDialog } from "./AdventCalendarDialog";
 
 
 interface MenuAction {
@@ -23,9 +24,11 @@ interface MenuAction {
 	action: string,
 	alt?: string,
 	condition?: Function
+	available?: () => boolean
 }
 
 export class ApplicationMenuDialog extends DialogContentComponent {
+	private readonly availabilityTimer: ReturnType<typeof setInterval>;
 
 	private actions = [
 			{
@@ -96,6 +99,7 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 					{
 						title: "Kalendarz adwentowy",
 						action: "adventcalendar",
+						available: AdventCalendarDialog.isAvailable,
 					}
 				] as MenuAction[]
 			},
@@ -154,10 +158,24 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 		}
 		content += '</div>';
 		this.componentElement.innerHTML = content;
+		this.updateAvailability();
+		this.availabilityTimer = setInterval(() => this.updateAvailability(), 500);
 
 		this.componentElement.addEventListener("click", (event) => {
 			this.onClick(event);
 		});
+	}
+
+	private updateAvailability(): void {
+		for (const group of this.actions) for (const action of group.children) {
+			if (!action.available) continue;
+			const button = this.componentElement.querySelector<HTMLButtonElement>(`[id='menubutton.${action.action}']`);
+			if (button) button.style.display = action.available() ? "" : "none";
+		}
+	}
+
+	public override onParentClose(): void {
+		clearInterval(this.availabilityTimer);
 	}
 
 	public override getConfigId(): string {

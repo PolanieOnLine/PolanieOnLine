@@ -37,6 +37,7 @@ import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
 import games.stendhal.common.AdventCalendarLayout;
+import games.stendhal.common.AdventCalendarAccess;
 import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPEvent;
@@ -116,7 +117,7 @@ public final class AdventCalendarDialog extends JDialog {
 			for (final Door door : doors.values()) {
 				if (door.showingRewards()) door.repaint();
 			}
-			if (StendhalClient.get().getPlayer() != owner) {
+			if (StendhalClient.get().getPlayer() != owner || !isAvailable()) {
 				dispose();
 			} else if (waiting && System.currentTimeMillis() - sentAt > 8000) {
 				waiting = false;
@@ -129,9 +130,13 @@ public final class AdventCalendarDialog extends JDialog {
 		refresh.start();
 	}
 
+	public static boolean isAvailable() {
+		return AdventCalendarAccess.isAvailable(StendhalClient.get().getPlayer());
+	}
+
 	public static void open() {
 		SwingUtilities.invokeLater(() -> {
-			if (StendhalClient.get().getPlayer() == null) {
+			if (!isAvailable()) {
 				return;
 			}
 			if (active == null || active.owner != StendhalClient.get().getPlayer()) {

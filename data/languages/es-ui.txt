@@ -1157,3 +1157,4 @@ Zatrucie po spożyciu: -{0} PW co {1} s=Envenenamiento al consumir: -{0} PV cada
 Łączna utrata PW: {0}=Pérdida total de PV: {0}
 Czas zatrucia: {0} s=Duración del veneno: {0} s
 Kanał czatu=Canal de chat
+Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=El calendario está disponible en diciembre durante el evento de Navidad.

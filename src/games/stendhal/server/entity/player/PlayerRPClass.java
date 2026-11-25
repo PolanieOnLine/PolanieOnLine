@@ -139,6 +139,8 @@ public class PlayerRPClass {
 		player.addAttribute(QuestMarker.ATTRIBUTE, Type.MAP,
 				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("compass_unlocked", Type.INT, Definition.PRIVATE);
+		player.addAttribute(games.stendhal.common.AdventCalendarAccess.ATTRIBUTE, Type.INT,
+				(byte) (Definition.PRIVATE | Definition.VOLATILE));
 		player.addAttribute("compass_hidden", Type.INT, Definition.PRIVATE);
 		player.addAttribute("compass_tracked", Type.STRING, Definition.PRIVATE);
 		player.addAttribute("compass_tracked_title", Type.STRING,
