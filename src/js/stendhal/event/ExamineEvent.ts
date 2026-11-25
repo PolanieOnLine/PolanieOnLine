@@ -11,6 +11,7 @@
 
 import { ImageViewerDialog } from "../ui/dialog/ImageViewerDialog";
 import { ui } from "../ui/UI";
+import { GameLanguage } from "../util/GameLanguage";
 import { RPEvent } from "marauroa"
 
 import { marauroa } from "marauroa"
@@ -29,8 +30,8 @@ export class ExamineEvent extends RPEvent {
 			return;
 		}
 		ui.createSingletonFloatingWindow(
-			this["title"],
-			new ImageViewerDialog(this["caption"], this["path"]),
+			GameLanguage.getText(this.title || ""),
+			new ImageViewerDialog(GameLanguage.getText(this.caption || ""), this.path),
 			100, 50)
 	}
 

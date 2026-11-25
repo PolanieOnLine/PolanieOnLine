@@ -17,6 +17,7 @@ import java.net.URL;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.client.ClientLanguage;
 import marauroa.common.game.RPEvent;
 
 /**
@@ -37,10 +38,10 @@ public final class RPEventImageViewer {
 			path = e.get("path");
 		}
 		if (e.has("caption")) {
-			caption = e.get("caption");
+			caption = ClientLanguage.getText(e.get("caption"));
 		}
 		if (e.has("title")) {
-			title = e.get("title");
+			title = ClientLanguage.getText(e.get("title"));
 		}
 		view();
 	}

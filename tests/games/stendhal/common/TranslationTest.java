@@ -5,6 +5,21 @@ import org.junit.Test;
 
 public class TranslationTest {
 	@Test
+	public void semosLibraryMapTitlesUseTheSelectedLanguage() {
+		final String[][] maps = {
+				{"Zamek Or'ril", "Or'ril Castle", "Castillo de Or'ril"},
+				{"Droga do miasta Ados", "Road to Ados", "Camino a Ados"},
+				{"Kopalnie Semos i miasto koboldów Wofol", "Semos Mines and the kobold city of Wofol",
+						"Minas de Semos y ciudad kobold de Wofol"}
+		};
+		for (final String[] map : maps) {
+			assertEquals(map[1], Translation.getText("en", map[0]));
+			assertEquals(map[2], Translation.getText("es", map[0]));
+			assertEquals(map[0], Translation.getText("pl", map[0]));
+		}
+	}
+
+	@Test
 	public void herbalistInstructionsAndRemainingIngredientsTranslateTheirLinks() {
 		String greeting = "Witaj ponownie! Mogę cię #uleczyć. Jeśli masz dla mnie #składniki, podaj ich nazwy, a je przyjmę.";
 		String en = Translation.getText("en", greeting);

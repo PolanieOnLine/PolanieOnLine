@@ -1158,3 +1158,6 @@ Zatrucie po spożyciu: -{0} PW co {1} s=Envenenamiento al consumir: -{0} PV cada
 Czas zatrucia: {0} s=Duración del veneno: {0} s
 Kanał czatu=Canal de chat
 Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=El calendario está disponible en diciembre durante el evento de Navidad.
+Zamek Or'ril=Castillo de Or'ril
+Droga do miasta Ados=Camino a Ados
+Kopalnie Semos i miasto koboldów Wofol=Minas de Semos y ciudad kobold de Wofol

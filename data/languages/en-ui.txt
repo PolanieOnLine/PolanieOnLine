@@ -986,3 +986,6 @@ Koszt przemiany=Transformation cost
 Wymagane:=Required:
 Kanał czatu=Chat channel
 Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=The calendar is available in December during the Christmas event.
+Zamek Or'ril=Or'ril Castle
+Droga do miasta Ados=Road to Ados
+Kopalnie Semos i miasto koboldów Wofol=Semos Mines and the kobold city of Wofol

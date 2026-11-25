@@ -32,6 +32,35 @@ class Element {
  matches() { return this.attrs.size > 0; }
  querySelectorAll() { return []; }
 }
+test("library map previews translate titles and captions without changing image paths or event data", async () => {
+ const g = await language(), me = {}, frames = [];
+ class ImageViewerDialog { constructor(caption, path) {this.caption=caption;this.path=path;} }
+ const {ExamineEvent} = load("../event/ExamineEvent.ts", {
+  marauroa: {RPEvent: class {}, marauroa: {me}},
+  "../ui/dialog/ImageViewerDialog": {ImageViewerDialog},
+  "../ui/UI": {ui: {createSingletonFloatingWindow: (title, content) => frames.push({title,content})}},
+  "../util/GameLanguage": {GameLanguage: g}
+ });
+ const maps = [
+  ["Zamek Or'ril", "Or'ril Castle", "Castillo de Or'ril", "examine/map-orril-castle.png"],
+  ["Droga do miasta Ados", "Road to Ados", "Camino a Ados", "examine/map-semos-ados.png"],
+  ["Kopalnie Semos i miasto koboldów Wofol", "Semos Mines and the kobold city of Wofol", "Minas de Semos y ciudad kobold de Wofol", "examine/map-wofol.png"]
+ ];
+ for (const [language, index, caption] of [["en",1,"Guide"],["es",2,"Guía"],["pl",0,"Przewodnik"]]) {
+  g.synchronize(language);
+  for (const row of maps) {
+   const data={title:row[0],caption:"Przewodnik",path:row[3]}, event=Object.assign(new ExamineEvent(),data);
+   event.execute(me);
+   assert.equal(frames.at(-1).title,row[index]);
+   assert.equal(frames.at(-1).content.caption,caption);
+   assert.equal(frames.at(-1).content.path,row[3]);
+   assert.deepEqual({...event},data);
+  }
+ }
+ const count=frames.length;
+ new ExamineEvent().execute({});
+ assert.equal(frames.length,count,"other entities must not open an image preview");
+});
 test("registered UI translates its root attributes and can restore Polish, including excluded roots", async () => {
  const document = {querySelectorAll: () => [], createTreeWalker: () => ({nextNode: () => null})};
  const g = await language({document, NodeFilter: {SHOW_TEXT: 4}});
