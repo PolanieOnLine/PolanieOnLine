@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures>
+	<creature name="default first"><type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/></creature>
+	<creature name="partly transparent"><type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/><attributes><visibility value="25"/></attributes></creature>
+	<creature name="default after transparent"><type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/></creature>
+	<creature name="explicitly invisible"><type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/><attributes><visibility value="0"/></attributes></creature>
+	<creature name="default after invisible"><type class="elemental" subclass="ice_elemental" tileid="elemental.png:5"/></creature>
+</creatures>

@@ -80,6 +80,7 @@
 * Poprawiono ociężałość: zmniejsza prędkość postaci o połowę i przywraca jej własne tempo po zakończeniu efektu
 * Poprawiono zachowanie dodatkowego zasięgu afiksa Bezlitosny Zasięg po ponownym zalogowaniu
 * Poprawiono parowanie ciosów wręcz w walkach między graczami, również z uruchamianiem riposty Mistrza Pojedynku
+* Poprawiono błąd, przez który niektóre przywołane potwory mogły być niewidoczne, mimo że atakowały gracza
 
 *sklepy i produkcja*
 ---

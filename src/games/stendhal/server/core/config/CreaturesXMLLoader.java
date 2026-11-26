@@ -151,6 +151,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 		text = "";
 		if (qName.equals("creature")) {
 			name = attrs.getValue("name");
+			visibility = 100;
 			condition = attrs.getValue("condition");
 			drops = false;
 			ai = false;
