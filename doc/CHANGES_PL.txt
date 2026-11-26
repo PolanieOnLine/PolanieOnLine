@@ -72,6 +72,7 @@
 * Zmieniono antidotum i mocne antidotum: usuwają odpowiednio do 400 i 800 PZ pozostałych obrażeń od trucizny, zamiast zapewniać czasową niewrażliwość. Nie zużywają się, gdy postać nie jest zatruta
 * Zmieniono ataki wszystkich syren, obu krakenów, żywiołu wody, demona wody i żabiczłeków na obrażenia od wody
 * Zmieniono dobór przeciwników na Arenie Wyzwań. Grupy obejmują więcej gatunków, a postacie od 400 poziomu mogą spotkać różne smoki, nieumarłych i szaraków
+* Na Arenie Wyzwań w Tarnowie można poruszać się myszką również podczas walki
 * Zwiększono obronę wybranych przeciwników, m.in. piratów, bandytów i zbójników. Zmieniono też tempo poruszania części potworów oraz wydłużono czas odrodzenia starców, wieśniaków i gajowych
 * Zmieniono zestaw ciemnomithrilowy na zestaw z hartowanego mithrilu. Wszystkie siedem części otrzymało nowe grafiki i opisy nawiązujące do mithrilu wzmocnionego ciemnolitem. Posiadane przedmioty zachowują swoje statystyki, rzadkość, afiksy i ulepszenia
 * Dodano kamień przemiany, rzadką nagrodę z wydarzeń, oraz pracownię Przemira Zaklinacza na południu Tarnowa. Można tam wylosować nowy afiks wyposażenia i wybrać między nim a dotychczasowym. Pierwsza próba kosztuje 1 kamień dla zwykłego afiksu lub 3 kamienie dla legendarnego. Kolejne losowania tego samego afiksu wymagają surowców i monet, zależnie od rzadkości przedmiotu i rodzaju afiksu. Koszt jest pobierany również przy zachowaniu poprzedniego wyniku
