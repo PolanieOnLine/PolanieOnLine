@@ -16,7 +16,7 @@ compiled.set("ui/Inventory.ts", ts.transpileModule(readFileSync(path.join(stendh
 compiled.set("entity/Chest.ts", ts.transpileModule(readFileSync(path.join(stendhalRoot, "entity/Chest.ts"), "utf8"), {
 	compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 }).outputText);
-for (const name of ["util/GameLanguage.ts", "data/ItemRarity.ts", "data/GlyphAppearance.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
+for (const name of ["util/Point.ts", "ui/TouchHandler.ts", "util/GameLanguage.ts", "data/ItemRarity.ts", "data/GlyphAppearance.ts", "entity/ItemMap.ts", "entity/Item.ts", "ui/component/ItemSlotPresentation.ts", "ui/component/ItemSlotAnimation.ts", "ui/component/ItemTooltipPresentation.ts", "ui/component/ItemContainerImplementation.ts", "ui/dialog/ActionContextMenu.ts"]) {
 	compiled.set(name, ts.transpileModule(readFileSync(path.join(stendhalRoot, name), "utf8"), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 }
 	}).outputText);
@@ -58,6 +58,7 @@ function createHarness() {
 	};
 	let now = 1000;
 	class Clock extends Date {
+		constructor(...args) { super(...(args.length ? args : [now])); }
 		static now() { return now; }
 	}
 	class Element {
@@ -147,6 +148,18 @@ function createHarness() {
 		}
 		preventDefault() {}
 	}
+	class TouchEvent {
+		constructor(type, target, options = {}) {
+			Object.assign(this, {type, target, currentTarget: target, pageX: 10, pageY: 10,
+				cancelable: true, defaultPrevented: false}, options);
+			const touch = {target, pageX: this.pageX, pageY: this.pageY};
+			this.touches = type === "touchend" ? [] : [touch];
+			this.targetTouches = this.touches;
+			this.changedTouches = [touch];
+		}
+		preventDefault() { if (this.cancelable) this.defaultPrevented = true; }
+		stopPropagation() {}
+	}
 	class DragEvent {
 		constructor(target) {
 			this.type = "dragstart";
@@ -167,7 +180,9 @@ function createHarness() {
 		}
 	};
 	const singletons = { getSpriteStore: () => spriteStore, getConfigManager: () => stendhal.config,
-		getJoystickController: () => ({isEngaged: () => false}), getHeldObjectManager: () => ({onRelease() {}}) };
+		getJoystickController: () => ({isEngaged: () => false}), getHeldObjectManager: () => ({
+			onRelease() {}, set(heldObject) { stendhal.ui.heldObject = heldObject; }
+		}) };
 	const raritySlotCalls = [], groundCalls = [];
 	const rarityEffects = { ItemRarityEffects: {
 		updateSlot(target, item) {
@@ -181,9 +196,9 @@ function createHarness() {
 	function load(name, dependencies) {
 		const exports = {};
 		vm.runInNewContext(compiled.get(name), {
-			exports, Date: Clock, document, console, window: {innerWidth: 1024, innerHeight: 768},
+			exports, Date: Clock, document, console, window: {innerWidth: 1024, innerHeight: 768, TouchEvent},
 			fetch: async url => ({ok: true, text: async () => readFileSync(path.resolve(stendhalRoot, "../../../data/languages", path.basename(url)), "utf8")}),
-			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent, MouseEvent,
+			HTMLElement: Element, IntersectionObserver: VisibilityObserver, DragEvent, MouseEvent, TouchEvent,
 			getComputedStyle: element => ({ visibility: element.visible ? "visible" : "hidden" }),
 			require: name => {
 				assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency: ${name}`);
@@ -192,6 +207,9 @@ function createHarness() {
 		}, { filename: name.replace(/\.ts$/, ".js") });
 		return exports;
 	}
+	const { Point } = load("util/Point.ts", {});
+	const { TouchHandler } = load("ui/TouchHandler.ts", {"../stendhal": {stendhal}, "../util/Point": {Point}});
+	stendhal.ui.touch = TouchHandler.get();
 	const { ItemRarity } = load("data/ItemRarity.ts", {});
     const glyphAppearance = load("data/GlyphAppearance.ts", {});
 	const { GameLanguage } = load("util/GameLanguage.ts", {});
@@ -227,7 +245,7 @@ function createHarness() {
 		marauroa: { marauroa }, "../../stendhal": { stendhal }, "../UI": { ui: {createSingletonFloatingWindow() {}} },
 		"../dialog/ActionContextMenu": {ActionContextMenu: class {}}, "../dialog/DropQuantitySelectorDialog": {},
 		"../dialog/ItemUpgradeDialog": {ItemUpgradeDialog: {canSelectItem: () => false}}, "../../entity/Item": { Item },
-		"../../SingletonRepo": { singletons }, "../../util/Point": {},
+		"../../SingletonRepo": { singletons }, "../../util/Point": {Point},
 		"../../data/Paths": { Paths: { sprites: "/sprites", gui: "/gui" } },
 		"../../data/ItemRarity": { ItemRarity }, "./ItemTooltipPresentation": tooltipPresentation,
 		"../../sprite/ItemRarityEffects": rarityEffects,
@@ -300,7 +318,7 @@ function createHarness() {
 	return {
 		metrics, document, marauroa, images, observers, Container, Chest, ItemRarity, GameLanguage, raritySlotCalls, groundCalls, stendhal, MouseEvent,
 		diagnostics, diagnosticCounts,
-		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent,
+		makeItem, makeOwner, makeParent, makeContainer, resetMetrics, ActionContextMenu, sentActions, dragFrames, DragEvent, TouchEvent,
 		setNow: value => { now = value; }
 	};
 }
@@ -328,6 +346,89 @@ function quickTransferFixture() {
 	function up(options) { source.container.onMouseUp(new h.MouseEvent(source.parent.elements[0], options)); }
 	return {...h, chest, destination, item, source, down, up};
 }
+
+function dispatchSlotEvent(target, type, event) {
+	for (const listener of target.listeners.get(type) || []) listener(event);
+}
+
+// Browsers send compatibility mouse events after an uncancelled touchend.
+function finishTouch(h, target, options) {
+	const end = new h.TouchEvent("touchend", target, options);
+	dispatchSlotEvent(target, "touchend", end);
+	if (!end.defaultPrevented) {
+		dispatchSlotEvent(target, "mousedown", new h.MouseEvent(target));
+		dispatchSlotEvent(target, "mouseup", new h.MouseEvent(target));
+	}
+	return end;
+}
+
+function tapSlot(h, target, start = 1000, duration = 30) {
+	h.setNow(start);
+	dispatchSlotEvent(target, "touchstart", new h.TouchEvent("touchstart", target));
+	h.setNow(start + duration);
+	return finishTouch(h, target);
+}
+
+test("one inventory tap emits one use despite browser compatibility mouse events", () => {
+	const h = createHarness(), item = h.makeItem(1);
+	const {parent} = h.makeContainer([item]);
+	tapSlot(h, parent.elements[0]);
+	assert.equal(h.sentActions.length, 1);
+	assert.equal(h.sentActions[0].type, "use");
+	assert.equal(h.sentActions[0].target_path, "[7\tbag\t1]");
+	assert.equal(h.stendhal.ui.touch.isTouchEngaged(), false);
+});
+
+test("two deliberate rapid taps each use once without a cooldown", () => {
+	const h = createHarness(), {parent} = h.makeContainer([h.makeItem(1)]);
+	tapSlot(h, parent.elements[0], 1000);
+	tapSlot(h, parent.elements[0], 1100);
+	assert.deepEqual(h.sentActions.map(action => action.type), ["use", "use"]);
+});
+
+test("double-click preference requires two actual taps and resets after the pair", () => {
+	const h = createHarness(), {parent} = h.makeContainer([h.makeItem(1)]);
+	h.stendhal.config.getBoolean = key => key === "inventory.double-click";
+	tapSlot(h, parent.elements[0], 1000);
+	assert.equal(h.sentActions.length, 0, "Compatibility mouse events must not complete a double tap");
+	tapSlot(h, parent.elements[0], 1100);
+	assert.equal(h.sentActions.length, 1);
+	tapSlot(h, parent.elements[0], 1200);
+	assert.equal(h.sentActions.length, 1, "The next gesture needs its own second tap");
+});
+
+test("a long inventory touch opens only the context menu without using or transferring", () => {
+	const h = quickTransferFixture(), menus = [];
+	h.stendhal.ui.actionContextMenu.set = menu => menus.push(menu);
+	tapSlot(h, h.source.parent.elements[0], 1000, 400);
+	assert.equal(menus.length, 1);
+	assert.equal(h.sentActions.length, 0);
+	assert.equal(h.stendhal.ui.touch.holding(), false);
+});
+
+test("a touch tap with a chest open keeps its use action without a compatibility transfer", () => {
+	const h = quickTransferFixture();
+	tapSlot(h, h.source.parent.elements[0]);
+	assert.deepEqual(h.sentActions.map(action => action.type), ["use"]);
+	h.down(); h.up();
+	assert.deepEqual(h.sentActions.map(action => action.type), ["use", "equip"], "A real mouse click still transfers immediately");
+});
+
+test("touch drag to a chest emits one equip and no compatibility use", () => {
+	const h = quickTransferFixture(), target = h.source.parent.elements[0];
+	h.item.set("quantity", "1");
+	h.stendhal.ui.html.parseSlotName = () => "content";
+	h.stendhal.ui.html.extractTarget = () => h.destination.container.getParentElement();
+	h.stendhal.ui.equip.getByElement = () => h.destination.container;
+	dispatchSlotEvent(target, "touchstart", new h.TouchEvent("touchstart", target));
+	dispatchSlotEvent(target, "touchmove", new h.TouchEvent("touchmove", target, {pageX: 60}));
+	assert.equal(h.stendhal.ui.touch.holding(), true);
+	finishTouch(h, target, {pageX: 60});
+	assert.equal(h.sentActions.length, 1);
+	assert.equal(h.sentActions[0].type, "equip");
+	assert.equal(h.sentActions[0].target_path, "[42\tcontent]");
+	assert.equal(h.stendhal.ui.touch.holding(), false);
+});
 
 test("a short left click sends the full stack to the open chest before use", () => {
 	const h = quickTransferFixture();

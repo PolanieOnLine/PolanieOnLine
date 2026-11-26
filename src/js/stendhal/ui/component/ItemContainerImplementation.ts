@@ -148,7 +148,7 @@ export class ItemContainerImplementation {
 			}, {passive: true});
 			e.addEventListener("touchend", (event: TouchEvent) => {
 				this.onTouchEnd(event)
-			});
+			}, {passive: false});
 			e.addEventListener("contextmenu", (event: MouseEvent) => {
 				this.onContextMenu(event);
 			});
@@ -684,16 +684,18 @@ export class ItemContainerImplementation {
 	}
 
 	private onTouchStart(evt: TouchEvent) {
+		this.onMouseDown(evt);
 		const pos = stendhal.ui.html.extractPosition(evt);
 		stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
 	}
 
 	private onTouchEnd(evt: TouchEvent) {
+		// The touch is handled below; do not also dispatch its compatibility mouse click.
+		if (evt.cancelable) {
+			evt.preventDefault();
+		}
 		stendhal.ui.touch.onTouchEnd();
 		if (stendhal.ui.touch.holding()) {
-			if (evt.cancelable) {
-				evt.preventDefault();
-			}
 			this.onDrop(evt);
 			stendhal.ui.touch.setHolding(false);
 		} else {
