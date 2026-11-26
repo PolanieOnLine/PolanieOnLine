@@ -41,7 +41,7 @@ final class ChallengeArenaInstanceFactory implements InstanceZoneFactory {
 		// Tile layers keep the template name; identify the private zone separately.
 		zone.getAttributes().put("runtime_zone", zone.getName());
 		zone.setPublicAccessible(false);
-		zone.setMoveToAllowed(false);
+		zone.setMoveToAllowed(true);
 		zone.disallowIn();
 		info = template.forInstance(zone);
 		final ChallengeArenaPlayerGate gate = new ChallengeArenaPlayerGate(

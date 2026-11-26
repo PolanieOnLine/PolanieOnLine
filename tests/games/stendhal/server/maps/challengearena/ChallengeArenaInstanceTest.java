@@ -17,10 +17,12 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.actions.CommandCenter;
+import games.stendhal.server.actions.move.MoveToAction;
 import marauroa.common.game.RPAction;
 import games.stendhal.server.core.config.zone.TMXLoader;
 import games.stendhal.common.tiled.StendhalMapStructure;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -41,6 +43,8 @@ public class ChallengeArenaInstanceTest {
 
 	@Before public void setup() throws Exception {
 		ChallengeArenaManager.clearForTests();
+		// Real maps populate the arena's creature cache; this fixture loads only the arena map.
+		SingletonRepository.getEntityManager().getCreature("szczur");
 		lobby = new StendhalRPZone("arena_private_test_lobby", 64, 64);
 		final StendhalMapStructure map = TMXLoader.load("data/maps/interiors/tarnow/challenge_arena.tmx");
 		lobby.addCollisionLayer(lobby.getName() + ".collision", map.getLayer("collision"));
@@ -109,6 +113,25 @@ public class ChallengeArenaInstanceTest {
 		assertNotNull(second.getEngine());
 		assertEquals(initialInstances + 1,
 				SingletonRepository.getRPWorld().getInstanceZoneManager().getInstanceCount());
+	}
+
+	@Test public void fighterCanClickAWalkableTileDuringCombatWithoutLosingTarget() {
+		final Player fighter = player("MouseArenaFighter");
+		final ChallengeArenaInfo info = start(fighter);
+		final Creature opponent = SingletonRepository.getEntityManager().getCreature("szczur");
+		opponent.setPosition(31, 19);
+		info.getZone().add(opponent);
+		fighter.setTarget(opponent);
+		opponent.setTarget(fighter);
+		final RPAction click = new RPAction();
+		click.put("type", "moveto");
+		click.put("x", 34);
+		click.put("y", 19);
+		new MoveToAction().onAction(fighter, click);
+		assertTrue("A mouse click during combat must start the path", fighter.hasPath());
+		assertSame(opponent, fighter.getAttackTarget());
+		assertSame(info.getZone(), fighter.getZone());
+		assertSame(info, ChallengeArenaManager.getArenaInfo(fighter.getName()));
 	}
 
 	@Test public void cannotTeleportAnotherPlayerAnywhereIntoPrivateMap() {
