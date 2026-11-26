@@ -319,7 +319,7 @@ test("all legendary affix descriptions and regular item bonuses have readable En
 		legendary_life_tide: "1",
 		hunter_mark: "1", giant_slayer: "1", affix_flat_attack_bonus: "3", accuracy_bonus: "7"};
 	for (const key of ["deep_wounds", "armor_breaker", "longshot", "executioner", "duel_master", "crushing_blow",
-		"stunning_force", "binding_strike", "merciless_reach", "falcon_eye", "first_salvo", "power_overload",
+		"stunning_force", "merciless_reach", "falcon_eye", "first_salvo", "power_overload",
 		"arcane_focus", "wall_of_gord", "iron_will", "unyielding_protection", "hero_eye", "guardian_seal"])
 		stats["legendary_" + key] = "1";
 	const text = h.build(new h.Item(stats)).lines.map(line => line.text).join("\n");
@@ -373,5 +373,26 @@ test("translated legendary numeric units retain their full cream fragments", asy
 				.map(child => child.textContent);
 			assert.deepEqual(cream, expected, language + " " + key);
 		}
+	}
+});
+
+
+test("remaining status affixes describe only supported statuses in every language", async () => {
+	const h = await harness();
+	for (const [language, protection, recovery, retired] of [
+		["pl", "zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie", "ogłuszenia i dezorientacji o 30%", /ociężało|spowolnienie|Pętający Cios/],
+		["en", "poison, bleeding, shock, confusion and stun", "stun and confusion duration by 30%", /slow|Binding Strike|ociężało/],
+		["es", "veneno, sangrado, descarga, confusión y aturdimiento", "aturdimiento y la confusión un 30%", /ralentiza|Golpe inmovilizador|ociężało/]
+	]) {
+		h.language.synchronize(language);
+		for (const key of ["legendary_iron_will", "legendary_guardian_seal"]) {
+			const text = h.build(new h.Item({category: "armour", [key]: "1"})).lines.map(line => line.text).join("\n");
+			assert.ok(text.includes(protection), language + ": " + text);
+			assert.doesNotMatch(text, retired);
+		}
+		const text = h.build(new h.Item({category: "armour", legendary_quick_recovery: "1",
+			legendary_binding_strike: "1", resist_heavy: "0.25"})).lines.map(line => line.text).join("\n");
+		assert.ok(text.includes(recovery), language + ": " + text);
+		assert.doesNotMatch(text, retired);
 	}
 });

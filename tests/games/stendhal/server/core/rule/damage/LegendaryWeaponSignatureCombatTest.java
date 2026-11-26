@@ -14,21 +14,31 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.Random;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.Rand;
+import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.HeavyStatus;
 import games.stendhal.server.entity.status.StunnedStatus;
+import games.stendhal.server.entity.status.StatusType;
+import games.stendhal.server.maps.MockStendlRPWorld;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class LegendaryWeaponSignatureCombatTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
+		MockStendlRPWorld.get();
 		ItemTestHelper.generateRPClasses();
 	}
 
@@ -103,7 +113,7 @@ public class LegendaryWeaponSignatureCombatTest {
 	}
 
 	@Test
-	public void stunningForceAndBindingStrikeKeepSeparateStatusProcSources() {
+	public void stunningForceKeepsItsStatusProcBoundary() {
 		final Item club = weapon("club", 20);
 		final Item whip = weapon("whip", 20);
 		club.put(WeaponAffixCombatService.LEGENDARY_STUNNING_FORCE_ATTRIBUTE, 1.0);
@@ -112,16 +122,51 @@ public class LegendaryWeaponSignatureCombatTest {
 		final double stunning = WeaponAffixCombatService.combinedFixedProcChance(
 				Arrays.asList(club, whip),
 				WeaponAffixCombatService.LEGENDARY_STUNNING_FORCE_ATTRIBUTE, 0.15);
-		final double binding = WeaponAffixCombatService.combinedFixedProcChance(
-				Arrays.asList(club, whip),
-				WeaponAffixCombatService.LEGENDARY_BINDING_STRIKE_ATTRIBUTE, 0.15);
-
 		assertEquals(0.15, stunning, 0.0000001);
-		assertEquals(0.15, binding, 0.0000001);
 		assertTrue(WeaponAffixCombatService.rollChance(stunning, 1500));
 		assertFalse(WeaponAffixCombatService.rollChance(stunning, 1501));
-		assertTrue(WeaponAffixCombatService.rollChance(binding, 1500));
-		assertFalse(WeaponAffixCombatService.rollChance(binding, 1501));
+	}
+
+	@Test
+	public void legacyBindingStrikeCannotSlowWhileStunningForceStillStuns() throws Exception {
+		final Item weapon = weapon("club", 20);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_BINDING_STRIKE_ATTRIBUTE, 1.0);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_STUNNING_FORCE_ATTRIBUTE, 1.0);
+		final Player attacker = target(100, 100);
+		final Player defender = target(100, 100);
+		final double speed = defender.getBaseSpeed();
+		final Field randomField = Rand.class.getDeclaredField("rand");
+		randomField.setAccessible(true);
+		final Random previous = (Random) randomField.get(null);
+		final TurnNotifier notifier = TurnNotifier.get();
+		final Set<TurnListener> before = new HashSet<TurnListener>();
+		for (Set<TurnListener> listeners : notifier.getEventListForDebugging().values()) {
+			before.addAll(listeners);
+		}
+		try {
+			randomField.set(null, new Random() {
+				@Override
+				public int nextInt(final int bound) {
+					return 0;
+				}
+			});
+			WeaponAffixCombatService.applyOnHitProcs(attacker, defender,
+					Arrays.asList(weapon), 10);
+			assertTrue(defender.getStatusList().hasStatus(StatusType.STUNNED));
+			assertFalse(defender.getStatusList().hasStatus(StatusType.HEAVY));
+			assertEquals(speed, defender.getBaseSpeed(), 0.0);
+		} finally {
+			randomField.set(null, previous);
+			defender.getStatusList().removeAll();
+			final Set<TurnListener> added = new HashSet<TurnListener>();
+			for (Set<TurnListener> listeners : notifier.getEventListForDebugging().values()) {
+				added.addAll(listeners);
+			}
+			added.removeAll(before);
+			for (TurnListener listener : added) {
+				notifier.dontNotify(listener);
+			}
+		}
 	}
 
 	private Creature creatureWithArmor(final String armorType) {

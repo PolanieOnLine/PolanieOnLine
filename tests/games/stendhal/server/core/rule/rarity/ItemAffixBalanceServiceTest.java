@@ -47,7 +47,7 @@ public class ItemAffixBalanceServiceTest {
 		record(item, "critical_chance", 7);
 		record(item, "critical_damage_bonus", 0.15);
 		final String[] resistances = {"resist_poisoned", "resist_bleeding", "resist_shocked",
-				"resist_confused", "resist_heavy", "resist_stunned"};
+				"resist_confused", "resist_stunned"};
 		for (final String resistance : resistances) record(item, resistance, 0.25);
 		ItemAffixBalanceService.enforce(item);
 		assertEquals(7, item.getDouble("accuracy_bonus"), 0);

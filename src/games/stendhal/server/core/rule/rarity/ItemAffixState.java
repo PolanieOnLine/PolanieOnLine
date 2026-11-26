@@ -119,6 +119,8 @@ public final class ItemAffixState {
 					copyLegacyAttribute(item, saved, definition);
 				}
 			}
+			copyLegacyAttribute(item, saved, ItemAffixRegistry.getInstance().get(RetiredSlowAffixMigration.RESISTANCE));
+			copyLegacyAttribute(item, saved, LegendaryItemAffixRegistry.getInstance().get(RetiredSlowAffixMigration.BINDING));
 			return;
 		}
 

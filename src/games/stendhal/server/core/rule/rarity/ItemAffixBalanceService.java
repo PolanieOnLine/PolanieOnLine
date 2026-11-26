@@ -9,7 +9,7 @@ import games.stendhal.server.entity.item.Glyph;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.status.StatusType;
 
-/** Applies current per-item limits without rerolling saved affixes or upgrades. */
+/** Retires obsolete slow affixes and applies current per-item limits. */
 public final class ItemAffixBalanceService {
 	private ItemAffixBalanceService() { }
 
@@ -21,6 +21,7 @@ public final class ItemAffixBalanceService {
 	 */
 	public static void enforce(final Item item) {
 		if (item == null || item instanceof Glyph) return;
+		RetiredSlowAffixMigration.migrate(item);
 		final boolean weapon = WeaponAffixService.isWeapon(item);
 		final boolean accessory = EquipmentAffixService.isAccessory(item);
 		if (!weapon && !EquipmentAffixService.isEquipment(item)) return;

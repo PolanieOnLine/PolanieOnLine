@@ -989,3 +989,7 @@ Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=The calend
 Zamek Or'ril=Or'ril Castle
 Droga do miasta Ados=Road to Ados
 Kopalnie Semos i miasto koboldów Wofol=Semos Mines and the kobold city of Wofol
+Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.=Gain +20 percentage points of resistance to poison, bleeding, shock, confusion and stun.
+ odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.= resistance to poison, bleeding, shock, confusion and stun.
+Skraca czas ogłuszenia i dezorientacji o 30%. Efekt nie kumuluje się.=Reduces stun and confusion duration by 30%. This effect does not stack.
+Skraca czas ogłuszenia i dezorientacji o=Reduces stun and confusion duration by

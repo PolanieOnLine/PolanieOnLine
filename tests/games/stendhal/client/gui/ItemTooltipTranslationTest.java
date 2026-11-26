@@ -173,12 +173,14 @@ public class ItemTooltipTranslationTest {
 		stat(item, ItemTooltip.ARMOR_CRUSHING, "0.15");
 		stat(item, ItemTooltip.CRITICAL_HARDENING, "0.08");
 		for (String marker : new String[] {ItemTooltip.LEGENDARY_CLEAVE, ItemTooltip.LEGENDARY_TENACITY,
-				ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_QUICK_RECOVERY}) {
+				ItemTooltip.LEGENDARY_BREACH, ItemTooltip.LEGENDARY_QUICK_RECOVERY,
+				ItemTooltip.LEGENDARY_IRON_WILL, ItemTooltip.LEGENDARY_GUARDIAN_SEAL}) {
 			stat(item, marker, "1.0");
 		}
 		String html = LegendaryAffixPresentation.build(item);
 		for (String expected : new String[] {"Crushing", "Hardening", "Cleave", "Tenacity", "Breach",
-				"Quick Recovery", "enemy armor durability", "stun, slow and confusion duration"}) {
+				"Quick Recovery", "enemy armor durability", "stun and confusion duration",
+				"poison, bleeding, shock, confusion and stun"}) {
 			assertTrue(expected, html.contains(expected));
 		}
 	}

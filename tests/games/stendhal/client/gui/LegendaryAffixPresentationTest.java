@@ -168,7 +168,7 @@ public class LegendaryAffixPresentationTest {
 		assertTrue(html.contains("Mistrz Pojedynku:"));
 		assertTrue(html.contains("Miażdżący Cios:"));
 		assertTrue(html.contains("Ogłuszająca Siła:"));
-		assertTrue(html.contains("Pętający Cios:"));
+		assertFalse(html.contains("Pętający Cios:"));
 		assertTrue(html.contains("Bezlitosny Zasięg:"));
 		assertTrue(html.contains("Sokole Oko:"));
 		assertTrue(html.contains("Pierwsza Salwa:"));
@@ -205,8 +205,7 @@ public class LegendaryAffixPresentationTest {
 		assertTrue(html.contains("3 s"));
 		assertTrue(html.contains("4 s"));
 		assertTrue(html.contains("przeciw graczom"));
-		assertTrue(html.contains("ociężałości"));
-		assertTrue(html.contains("10 s"));
+		assertFalse(html.contains("ociężałości"));
 		assertTrue(html.contains("+1 pole"));
 		assertTrue(html.contains("4 pól"));
 		assertTrue(html.contains("+10 pkt proc."));
@@ -215,6 +214,30 @@ public class LegendaryAffixPresentationTest {
 		assertTrue(html.contains("30%"));
 		assertTrue(html.contains("15%"));
 		assertTrue(html.contains("+8 pkt proc."));
+	}
+
+	@Test
+	public void retiredBindingStrikeAloneHasNoDescription() {
+		final RPObject object = ItemTestHelper.createItem("legacy slowing sword");
+		put(object, ItemTooltip.LEGENDARY_BINDING_STRIKE, "1");
+		assertEquals("", LegendaryAffixPresentation.build(object));
+	}
+
+	@Test
+	public void retainedStatusAffixesExcludeSlowAndKeepTheirOtherStatuses() {
+		for (final String key : new String[] {ItemTooltip.LEGENDARY_IRON_WILL, ItemTooltip.LEGENDARY_GUARDIAN_SEAL}) {
+			final RPObject object = ItemTestHelper.createItem("status protection");
+			put(object, key, "1");
+			final String html = LegendaryAffixPresentation.build(object);
+			assertTrue(html, html.contains("zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie"));
+			assertFalse(html, html.contains("ociężało"));
+		}
+		final RPObject object = ItemTestHelper.createItem("quick recovery");
+		put(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY, "1");
+		final String html = LegendaryAffixPresentation.build(object);
+		assertTrue(html, html.contains("ogłuszenia i dezorientacji o"));
+		assertTrue(html, html.contains("30%"));
+		assertFalse(html, html.contains("ociężało"));
 	}
 
 	private void put(final RPObject object, final String key, final String value) {

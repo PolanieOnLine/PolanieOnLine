@@ -618,9 +618,6 @@ public final class ItemRarityPresentation {
 				ItemTooltip.RESIST_CONFUSED,
 				"odporności na dezorientację", true);
 		appendPercentageBonus(specialBonuses, object, equippedItem,
-				ItemTooltip.RESIST_HEAVY,
-				"odporności na spowolnienie", true);
-		appendPercentageBonus(specialBonuses, object, equippedItem,
 				ItemTooltip.RESIST_STUNNED,
 				"odporności na ogłuszenie", true);
 		appendPercentageBonus(specialBonuses, object, equippedItem,

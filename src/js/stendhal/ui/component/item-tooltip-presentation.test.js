@@ -188,3 +188,33 @@ test("rerolled ordinary and legendary affixes mark only their own tooltip line",
 		assert.ok(!value.textContent.includes("◆"));
 	}
 });
+
+
+test("legacy slowing affixes stay hidden while retained status protection remains", () => {
+	for (const rerolled of ["resist_heavy", "legendary_binding_strike"]) {
+		const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+			category: "armour", resist_heavy: "0.25", legendary_binding_strike: "1",
+			resist_confused: "0.18", resist_stunned: "0.3", rerolled_affix: rerolled
+		}}, false).lines;
+		const text = lines.map(line => line.text).join("\n");
+		assert.doesNotMatch(text, /spowolnienie|ociężało|Pętający Cios/);
+		assert.match(text, /18% odporności na dezorientację/);
+		assert.match(text, /30% odporności na ogłuszenie/);
+		assert.equal(lines.filter(line => line.rerolled).length, 0);
+	}
+});
+
+test("compound status protection and quick recovery exclude slowing", () => {
+	for (const key of ["legendary_iron_will", "legendary_guardian_seal"]) {
+		const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+			category: "armour", [key]: "1"
+		}}, false).lines.map(line => line.text).join("\n");
+		assert.match(text, /zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie/);
+		assert.doesNotMatch(text, /ociężało/);
+	}
+	const text = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "armour", legendary_quick_recovery: "1"
+	}}, false).lines.map(line => line.text).join("\n");
+	assert.match(text, /ogłuszenia i dezorientacji o 30%/);
+	assert.doesNotMatch(text, /ociężało/);
+});

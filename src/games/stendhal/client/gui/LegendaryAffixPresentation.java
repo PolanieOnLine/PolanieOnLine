@@ -87,12 +87,6 @@ final class LegendaryAffixPresentation {
 					" (", "4 s", " przeciw graczom) po trafieniu zadającym obrażenia."
 			});
 		}
-		if (has(object, ItemTooltip.LEGENDARY_BINDING_STRIKE)) {
-			appendFixed(result, object, ItemTooltip.LEGENDARY_BINDING_STRIKE, "Pętający Cios", new String[] {
-					"", "15%", " szansy na nałożenie ociężałości przez ", "10 s",
-					" po trafieniu."
-			});
-		}
 		if (has(object, ItemTooltip.LEGENDARY_MERCILESS_REACH)) {
 			appendFixed(result, object, ItemTooltip.LEGENDARY_MERCILESS_REACH, "Bezlitosny Zasięg", new String[] {
 					"Zyskujesz ", "+1 pole", " dodatkowego zasięgu ataku."
@@ -137,7 +131,7 @@ final class LegendaryAffixPresentation {
 		if (has(object, ItemTooltip.LEGENDARY_IRON_WILL)) {
 			appendFixed(result, object, ItemTooltip.LEGENDARY_IRON_WILL, "Żelazna Wola", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
-					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION)) {
@@ -158,7 +152,7 @@ final class LegendaryAffixPresentation {
 		if (has(object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL)) {
 			appendFixed(result, object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL, "Pieczęć Strażnika", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
-					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie."
 			});
 		}
 		return result.length() == 0 ? ""
@@ -235,7 +229,7 @@ final class LegendaryAffixPresentation {
 		}
 		if (has(object, ItemTooltip.LEGENDARY_QUICK_RECOVERY)) {
 			appendFixed(result, object, ItemTooltip.LEGENDARY_QUICK_RECOVERY, "Szybkie otrząśnięcie", new String[] {
-					"Skraca czas ogłuszenia, ociężałości i dezorientacji o ", "30%",
+					"Skraca czas ogłuszenia i dezorientacji o ", "30%",
 					". Efekt nie kumuluje się."
 			});
 		}

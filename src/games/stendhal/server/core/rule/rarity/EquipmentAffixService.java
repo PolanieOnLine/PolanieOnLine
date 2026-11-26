@@ -84,6 +84,7 @@ public final class EquipmentAffixService {
 
 	public static boolean isStatusResistanceEligible(final Item item,
 			final StatusType statusType) {
+		if (statusType == StatusType.HEAVY) return false;
 		final String attribute = EquipmentStatusResistanceService.getResistanceAttribute(statusType);
 		if (!isEquipment(item) || attribute == null || item.has(attribute)) {
 			return false;

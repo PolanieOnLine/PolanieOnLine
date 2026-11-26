@@ -56,7 +56,7 @@ public final class EquipmentStatusResistanceService {
 	/** Final cap after combining the equipment ceiling with intrinsic resistance. */
 	public static double getMaximumResistance(final RPEntity target, final StatusType statusType) {
 		return 1.0 - (1.0 - intrinsicResistance(target, getResistanceAttribute(statusType)))
-				* (1.0 - MAX_AFFIX_RESISTANCE);
+				* (1.0 - (statusType == StatusType.HEAVY ? 0.0 : MAX_AFFIX_RESISTANCE));
 	}
 
 	private static double intrinsicResistance(final RPEntity target, final String attribute) {
@@ -71,7 +71,9 @@ public final class EquipmentStatusResistanceService {
 	 */
 	public static double getEquipmentResistance(final List<Item> equipment,
 			final String attribute) {
-		if (equipment == null || equipment.isEmpty() || attribute == null) {
+		// Slowing remains an authored entity status; old equipment markers are inert.
+		if (equipment == null || equipment.isEmpty() || attribute == null
+				|| getResistanceAttribute(StatusType.HEAVY).equals(attribute)) {
 			return 0.0;
 		}
 		double failure = 1.0;
@@ -126,7 +128,6 @@ public final class EquipmentStatusResistanceService {
 				|| getResistanceAttribute(StatusType.BLEEDING).equals(attribute)
 				|| getResistanceAttribute(StatusType.SHOCKED).equals(attribute)
 				|| getResistanceAttribute(StatusType.CONFUSED).equals(attribute)
-				|| getResistanceAttribute(StatusType.HEAVY).equals(attribute)
 				|| getResistanceAttribute(StatusType.STUNNED).equals(attribute);
 	}
 

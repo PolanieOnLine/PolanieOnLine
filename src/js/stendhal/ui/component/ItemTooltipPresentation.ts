@@ -69,7 +69,6 @@ const SPECIAL_BONUSES: PercentageBonusDefinition[] = [
 	{key: "resist_bleeding", label: "odporności na krwawienie", fraction: true},
 	{key: "resist_shocked", label: "odporności na szok", fraction: true},
 	{key: "resist_confused", label: "odporności na dezorientację", fraction: true},
-	{key: "resist_heavy", label: "odporności na spowolnienie", fraction: true},
 	{key: "resist_stunned", label: "odporności na ogłuszenie", fraction: true},
 	{key: "critical_additional_bonus", label: "obrażeń krytycznych", fraction: false},
 	{key: "lifesteal_increase", label: "zwiększonej kradzieży życia", fraction: false},
@@ -104,7 +103,7 @@ const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
 	["legendary_cleave", "Rozmach", "Co 4 celne trafienia wręcz zadaje 30% obrażeń trafienia maksymalnie 2 pobliskim potworom walczącym z tobą. Dodatkowe trafienia nie kradną życia ani nie uruchamiają efektów broni."],
 	["legendary_tenacity", "Zaciętość", "Każde celne trafienie tego samego celu zwiększa obrażenia następnych o 3%, maksymalnie 15%. Zmiana celu lub 5 s bez trafienia zeruje bonus."],
 	["legendary_breach", "Przełamanie", "Po rozbiciu opancerzenia celu zadajesz mu o 15% więcej obrażeń zdrowiu przez 6 s."],
-	["legendary_quick_recovery", "Szybkie otrząśnięcie", "Skraca czas ogłuszenia, ociężałości i dezorientacji o 30%. Efekt nie kumuluje się."],
+	["legendary_quick_recovery", "Szybkie otrząśnięcie", "Skraca czas ogłuszenia i dezorientacji o 30%. Efekt nie kumuluje się."],
 	["legendary_life_tide", "Przypływ życia", "Eliksiry mogą uleczyć cię do 20% ponad maksymalne PZ. Po 10 s nadwyżka zanika po 20 PZ co 2 s. Zdjęcie przedmiotu usuwa nadwyżkę. Efekt nie kumuluje się."],
 	["legendary_deep_wounds", "Głębokie Rany", "15% szansy na krwawienie; rana zadaje 35% obrażeń trafienia."],
 	["legendary_armor_breaker", "Łamacz Pancerzy", "Redukuje 40% niekorzystnej kary wynikającej z pancerza celu."],
@@ -113,17 +112,16 @@ const LEGENDARY_AFFIXES: Array<[string, string, string]> = [
 	["legendary_duel_master", "Mistrz Pojedynku", "Zyskujesz +5 pkt proc. szansy na parowanie; po udanym parowaniu następne trafienie zadaje +30% obrażeń."],
 	["legendary_crushing_blow", "Miażdżący Cios", "Przeciw celom w średnim lub ciężkim pancerzu zadajesz +25% obrażeń."],
 	["legendary_stunning_force", "Ogłuszająca Siła", "15% szansy na ogłuszenie celu przez 3 s (4 s przeciw graczom) po trafieniu zadającym obrażenia."],
-	["legendary_binding_strike", "Pętający Cios", "15% szansy na nałożenie ociężałości przez 10 s po trafieniu."],
 	["legendary_merciless_reach", "Bezlitosny Zasięg", "Zyskujesz +1 pole dodatkowego zasięgu ataku."],
 	["legendary_falcon_eye", "Sokole Oko", "Przy ataku z co najmniej 4 pól zyskujesz +10 pkt proc. szansy na trafienie krytyczne."],
 	["legendary_first_salvo", "Pierwsza Salwa", "Przeciw celom mającym co najmniej 80% PW ataki dystansowe zadają +30% obrażeń."],
 	["legendary_power_overload", "Przeciążenie Mocy", "Atak dystansowy ma 15% szansy zadać +50% obrażeń."],
 	["legendary_arcane_focus", "Skupienie Arkanów", "Ataki dystansowe przeciw celom z aktywnym negatywnym statusem zadają +25% obrażeń."],
 	["legendary_wall_of_gord", "Wał grodu", "Co 8 s, gdy pojedyncze bezpośrednie trafienie stworzenia zadałoby co najmniej 10% maksymalnych PW, zmniejsza obrażenia tego trafienia o 35%."],
-	["legendary_iron_will", "Żelazna Wola", "Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."],
+	["legendary_iron_will", "Żelazna Wola", "Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie."],
 	["legendary_unyielding_protection", "Nieugięta Ochrona", "Poniżej 30% PW zyskujesz +10 pkt proc. szansy na pełne sparowanie ataku wręcz; końcowa szansa nie przekracza 15%."],
 	["legendary_hero_eye", "Oko Bohatera", "Zyskujesz +8 pkt proc. szansy na trafienie krytyczne."],
-	["legendary_guardian_seal", "Pieczęć Strażnika", "Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."]
+	["legendary_guardian_seal", "Pieczęć Strażnika", "Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie."]
 ];
 
 export function hasStructuredItemTooltip(item: Item): boolean {

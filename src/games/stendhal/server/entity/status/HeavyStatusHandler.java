@@ -16,8 +16,8 @@ import java.util.WeakHashMap;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnNotifier;
-import games.stendhal.server.core.rule.damage.TacticalAffixCombatService;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 
@@ -55,7 +55,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 				/* slow the entity down to half walking speed */
 				entity.setBaseSpeed(originalSpeed / 2);
 
-				/* Legendary combat procs may request a short fixed duration. */
+				/* Use the authored duration or the legacy random timing. */
 				final int duration = duration(status);
 
 				/* status was not inflicted by another entity */
@@ -71,7 +71,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 				active.put(statusList, new SlowState(originalSpeed, duration));
 				statusList.addInternal(status);
 				statusList.activateStatusAttribute("status_" + status.getName());
-				TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, duration),
+				TurnNotifier.get().notifyInTurns(SingletonRepository.getRPWorld().getTurnsInSeconds(duration),
 						new StatusRemover(statusList, status));
 			}
 		}
@@ -107,7 +107,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 			} else {
 				nextDuration = duration(nextHeavy);
 			}
-			TurnNotifier.get().notifyInTurns(TacticalAffixCombatService.statusDurationTurns(entity, nextDuration),
+			TurnNotifier.get().notifyInTurns(SingletonRepository.getRPWorld().getTurnsInSeconds(nextDuration),
 					new StatusRemover(statusList, nextStatus));
 		} else {
 			active.remove(statusList);

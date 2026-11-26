@@ -198,7 +198,7 @@ public class ItemAffixTooltipPresentationTest {
 		assertTrue(tooltip.contains("+15% odporności na krwawienie"));
 		assertTrue(tooltip.contains("+12% odporności na szok"));
 		assertTrue(tooltip.contains("+18% odporności na dezorientację"));
-		assertTrue(tooltip.contains("+25% odporności na spowolnienie"));
+		assertFalse(tooltip.contains("odporności na spowolnienie"));
 		assertTrue(tooltip.contains("+30% odporności na ogłuszenie"));
 	}
 

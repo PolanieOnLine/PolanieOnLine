@@ -17,6 +17,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import utilities.PlayerTestHelper;
 
 public class TacticalAffixCombatServiceTest {
@@ -27,6 +28,7 @@ public class TacticalAffixCombatServiceTest {
 	@BeforeClass
 	public static void setupWorld() {
 		MockStendlRPWorld.get();
+		MockStendhalRPRuleProcessor.get();
 	}
 
 	@Before

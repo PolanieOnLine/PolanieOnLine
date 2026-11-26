@@ -11,7 +11,6 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.BleedingAttacker;
-import games.stendhal.server.entity.status.HeavyStatus;
 import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.entity.status.StunnedStatus;
@@ -32,6 +31,8 @@ public final class WeaponAffixCombatService {
 			"legendary_crushing_blow";
 	public static final String LEGENDARY_STUNNING_FORCE_ATTRIBUTE =
 			"legendary_stunning_force";
+	/** Legacy persisted attribute; no longer grants an on-hit effect. */
+	@Deprecated
 	public static final String LEGENDARY_BINDING_STRIKE_ATTRIBUTE =
 			"legendary_binding_strike";
 	public static final String LEGENDARY_MERCILESS_REACH_ATTRIBUTE =
@@ -57,8 +58,6 @@ public final class WeaponAffixCombatService {
 	private static final double LEGENDARY_POWER_OVERLOAD_DAMAGE_BONUS = 0.50;
 	private static final double LEGENDARY_ARCANE_FOCUS_DAMAGE_BONUS = 0.25;
 	private static final double LEGENDARY_STUN_PROC_CHANCE = 0.15;
-	private static final double LEGENDARY_HEAVY_PROC_CHANCE = 0.15;
-	private static final int LEGENDARY_HEAVY_DURATION_SECONDS = 10;
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
 	private static final double BLEED_TOTAL_DAMAGE_FACTOR = 0.25;
 	private static final double DEEP_WOUNDS_PROC_CHANCE = 0.15;
@@ -255,18 +254,6 @@ public final class WeaponAffixCombatService {
 							Rand.randUniform(1, PROC_ROLL_SCALE))) {
 				defender.getStatusList().inflictStatus(new StunnedStatus(), attacker);
 			}
-		}
-
-		// Binding Strike remains a movement-control HEAVY effect; it is intentionally
-		// separate from stun so both status families keep independent resistance.
-		final double heavyChance = effectiveStatusChance(defender,
-				StatusType.HEAVY, combinedFixedProcChance(weapons,
-						LEGENDARY_BINDING_STRIKE_ATTRIBUTE,
-						LEGENDARY_HEAVY_PROC_CHANCE));
-		if (heavyChance > 0.0
-				&& rollChance(heavyChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
-			defender.getStatusList().inflictStatus(
-					new HeavyStatus(LEGENDARY_HEAVY_DURATION_SECONDS), attacker);
 		}
 	}
 

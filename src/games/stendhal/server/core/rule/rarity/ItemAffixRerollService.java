@@ -263,8 +263,9 @@ public final class ItemAffixRerollService {
 		final Map<String, String> completed = new LinkedHashMap<String, String>();
 		completed.put("locked", accept ? offer.get("new_id") : offer.get("locked"));
 		replaceState(item, completed);
+		ItemAffixBalanceService.enforce(item);
 		ItemTooltipService.update(item);
-		if (accept) player.updateItemAtkDef();
+		player.updateItemAtkDef();
 		if (player.getZone() != null) player.notifyWorldAboutChanges();
 		return accept ? "ACCEPTED" : "KEPT";
 	}
@@ -298,6 +299,62 @@ public final class ItemAffixRerollService {
 		final Map<String, String> values = new HashMap<String, String>();
 		if (locked != null && !locked.isEmpty()) values.put("locked", ItemAffixState.has(target, locked) ? locked : "retired");
 		replaceState(target, values);
+	}
+
+	/** Retiring a slot neither charges again nor discards an already paid choice. */
+	static void rebaseRetiredOffer(final Item item, final Map<String, String> replacements,
+			final Random random, final boolean validBeforeMigration) {
+		final Map<String, String> offer = state(item);
+		final String locked = offer.get("locked");
+		if (replacements.containsKey(locked)) offer.put("locked", replacements.get(locked));
+		if (!offer.containsKey("token")) {
+			replaceState(item, offer);
+			return;
+		}
+		final String selected = replacements.getOrDefault(offer.get("old_id"), offer.get("old_id"));
+		if (!ItemAffixState.has(item, selected)) throw new IllegalStateException("Missing migrated paid slot");
+		final Item proposed;
+		if (RetiredSlowAffixMigration.isRetired(offer.get("new_id"))) {
+			proposed = new ItemAffixRerollService(random).replacement(item, selected);
+			if (proposed == null) throw new IllegalStateException("No replacement for retired paid offer");
+		} else {
+			proposed = copy(item);
+			remove(proposed, selected);
+			final ItemAffixDefinition next = definition(offer.get("new_id"));
+			if (next == null || !next.isEligible(proposed)) throw new IllegalStateException("Ineligible paid replacement");
+			applyRecorded(proposed, next, offer.get("new_value"));
+		}
+		final String nextId = new ItemAffixRerollService(random).changedId(item, proposed, selected);
+		offer.keySet().removeIf(key -> key.startsWith("patch."));
+		offer.put("old_id", selected);
+		offer.put("old_value", ItemAffixState.getValues(item).get(selected));
+		offer.put("new_id", nextId);
+		offer.put("new_value", ItemAffixState.getValues(proposed).get(nextId));
+		for (final String key : scalarKeys(item, proposed)) {
+			if (!sameAttribute(item, proposed, key)) offer.put("patch." + key, proposed.has(key) ? proposed.get(key) : "");
+		}
+		// Never turn a previously modified/invalid offer into an acceptable one.
+		if (validBeforeMigration) offer.put("fingerprint", fingerprint(item));
+		replaceState(item, offer);
+	}
+
+	private static void applyRecorded(final Item item, final ItemAffixDefinition definition, final String value) {
+		final String id = definition.getId();
+		if (definition.hasMaterializedAttribute()) {
+			ItemAffixState.materialize(item, definition, value);
+			if (id.equals(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE)
+					|| id.equals(LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE)) addRecordedStatistic(item, "atk", Double.parseDouble(value));
+			if (id.equals(EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE)
+					|| id.equals(LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE)) addRecordedStatistic(item, "def", Double.parseDouble(value));
+			if (id.equals(WeaponAffixCombatService.LEGENDARY_MERCILESS_REACH_ATTRIBUTE))
+				addRecordedStatistic(item, "range", LegendaryWeaponAffixService.MERCILESS_REACH_RANGE_BONUS);
+		}
+		item.put(ItemAffixState.ATTRIBUTE, id, value);
+	}
+
+	private static void addRecordedStatistic(final Item item, final String attribute, final double bonus) {
+		final double base = item.has(attribute) ? item.getDouble(attribute) : 0.0;
+		item.put(attribute, (int) Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, Math.round(base + bonus))));
 	}
 
 	public static ItemAffixDefinition definition(final String id) {

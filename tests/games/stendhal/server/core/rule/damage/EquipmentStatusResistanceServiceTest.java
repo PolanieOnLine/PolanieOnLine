@@ -62,10 +62,42 @@ public class EquipmentStatusResistanceServiceTest {
 				Arrays.asList(armour), "resist_poisoned"), 0.0000001);
 		assertEquals(0.20, EquipmentStatusResistanceService.getEquipmentResistance(
 				Arrays.asList(armour), "resist_bleeding"), 0.0000001);
-		assertEquals(0.20, EquipmentStatusResistanceService.getEquipmentResistance(
+		assertEquals(0.0, EquipmentStatusResistanceService.getEquipmentResistance(
 				Arrays.asList(armour), "resist_heavy"), 0.0000001);
 		assertEquals(0.20, EquipmentStatusResistanceService.getEquipmentResistance(
 				Arrays.asList(armour), "resist_stunned"), 0.0000001);
+	}
+
+	@Test
+	public void legacySlowResistanceAndUniversalEquipmentDoNotProtectAgainstSlow() {
+		final Item armour = legendaryResistanceItem("armor",
+				LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE);
+		final Item ring = legendaryResistanceItem("ring",
+				LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE);
+		armour.put("resist_heavy", 1.0);
+		ring.put("resist_heavy", 1.0);
+		final List<Item> equipment = Arrays.asList(armour, ring);
+		final TestEntity target = new TestEntity(equipment);
+
+		assertEquals(0.0, EquipmentStatusResistanceService.getEquipmentResistance(
+				equipment, "resist_heavy"), 0.0);
+		assertEquals(0.0, EquipmentStatusResistanceService.getResistance(target,
+				StatusType.HEAVY), 0.0);
+		assertEquals(0.0, EquipmentStatusResistanceService.getMaximumResistance(target,
+				StatusType.HEAVY), 0.0);
+	}
+
+	@Test
+	public void authoredIntrinsicSlowResistanceRemainsAuthoritative() {
+		final TestEntity target = new TestEntity(Arrays.asList(
+				resistanceItem("resist_heavy", 1.0)));
+		for (double intrinsic : new double[] {0.25, 1.0}) {
+			target.put("resist_heavy", intrinsic);
+			assertEquals(intrinsic, EquipmentStatusResistanceService.getResistance(
+					target, StatusType.HEAVY), 0.0);
+			assertEquals(intrinsic, EquipmentStatusResistanceService.getMaximumResistance(
+					target, StatusType.HEAVY), 0.0);
+		}
 	}
 
 	@Test

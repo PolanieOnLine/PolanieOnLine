@@ -1161,3 +1161,7 @@ Kalendarz jest dostępny w grudniu podczas wydarzenia świątecznego.=El calenda
 Zamek Or'ril=Castillo de Or'ril
 Droga do miasta Ados=Camino a Ados
 Kopalnie Semos i miasto koboldów Wofol=Minas de Semos y ciudad kobold de Wofol
+Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.=Obtienes +20 puntos porcentuales de resistencia al veneno, sangrado, descarga, confusión y aturdimiento.
+ odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.= de resistencia al veneno, sangrado, descarga, confusión y aturdimiento.
+Skraca czas ogłuszenia i dezorientacji o 30%. Efekt nie kumuluje się.=Reduce la duración del aturdimiento y la confusión un 30%. Este efecto no se acumula.
+Skraca czas ogłuszenia i dezorientacji o=Reduce la duración del aturdimiento y la confusión un

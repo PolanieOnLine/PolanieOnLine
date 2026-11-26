@@ -21,6 +21,8 @@ import games.stendhal.server.entity.status.StatusType;
 
 /** Registry of stable random affix definitions. */
 public final class ItemAffixRegistry {
+	// Kept for reading old saves, never included in the random pool.
+	private static final ItemAffixDefinition RETIRED_HEAVY = new StatusResistanceAffixDefinition(StatusType.HEAVY);
 	private static final ItemAffixRegistry INSTANCE = new ItemAffixRegistry(
 			Arrays.<ItemAffixDefinition>asList(
 					CombatAffixDefinition.CRUSHING,
@@ -33,7 +35,6 @@ public final class ItemAffixRegistry {
 					new StatusResistanceAffixDefinition(StatusType.BLEEDING),
 					new StatusResistanceAffixDefinition(StatusType.SHOCKED),
 					new StatusResistanceAffixDefinition(StatusType.CONFUSED),
-					new StatusResistanceAffixDefinition(StatusType.HEAVY),
 					new StatusResistanceAffixDefinition(StatusType.STUNNED),
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
@@ -84,6 +85,7 @@ public final class ItemAffixRegistry {
 	}
 
 	public ItemAffixDefinition get(final String id) {
+		if (RETIRED_HEAVY.getId().equals(id)) return RETIRED_HEAVY;
 		return byId.get(id);
 	}
 

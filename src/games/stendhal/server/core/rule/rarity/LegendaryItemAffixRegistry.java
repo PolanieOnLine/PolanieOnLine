@@ -35,6 +35,9 @@ public final class LegendaryItemAffixRegistry {
 	private static final Set<String> WHIP_CLASSES = classes("whip");
 	private static final Set<String> RANGED_CLASSES = classes("ranged");
 	private static final Set<String> WAND_CLASSES = classes("wand");
+	// Old item maps and pending paid offers still need a readable definition.
+	private static final ItemAffixDefinition RETIRED_BINDING = new MarkerAffixDefinition(
+			WeaponAffixCombatService.LEGENDARY_BINDING_STRIKE_ATTRIBUTE, WHIP_CLASSES);
 
 	private static final LegendaryItemAffixRegistry INSTANCE =
 			new LegendaryItemAffixRegistry(Arrays.<ItemAffixDefinition>asList(
@@ -62,9 +65,6 @@ public final class LegendaryItemAffixRegistry {
 					new MarkerAffixDefinition(
 							WeaponAffixCombatService.LEGENDARY_STUNNING_FORCE_ATTRIBUTE,
 							CLUB_CLASSES),
-					new MarkerAffixDefinition(
-							WeaponAffixCombatService.LEGENDARY_BINDING_STRIKE_ATTRIBUTE,
-							WHIP_CLASSES),
 					new MercilessReachAffixDefinition(),
 					new MarkerAffixDefinition(
 							WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE,
@@ -132,6 +132,7 @@ public final class LegendaryItemAffixRegistry {
 	}
 
 	public ItemAffixDefinition get(final String id) {
+		if (RETIRED_BINDING.getId().equals(id)) return RETIRED_BINDING;
 		return byId.get(id);
 	}
 

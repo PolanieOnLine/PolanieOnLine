@@ -91,7 +91,7 @@ public class EquipmentAffixServiceTest {
 	public void allCombatStatusResistanceRollsUseFiveToTwelvePercent() {
 		final StatusType[] statuses = {
 				StatusType.POISONED, StatusType.BLEEDING, StatusType.SHOCKED,
-				StatusType.CONFUSED, StatusType.HEAVY };
+				StatusType.CONFUSED, StatusType.STUNNED };
 		for (int i = 0; i < statuses.length; i++) {
 			final Item item = item("helmet", 20);
 			final StatusType status = statuses[i];
@@ -101,6 +101,7 @@ public class EquipmentAffixServiceTest {
 					.getResistanceAttribute(status);
 			assertBetween(item.getDouble(attribute), 0.05, 0.12);
 		}
+		assertFalse(EquipmentAffixService.applyStatusResistance(item("helmet", 20), StatusType.HEAVY, new Random(1)));
 	}
 
 	@Test
