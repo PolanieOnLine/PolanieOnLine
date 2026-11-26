@@ -993,3 +993,13 @@ Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorie
  odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.= resistance to poison, bleeding, shock, confusion and stun.
 Skraca czas ogłuszenia i dezorientacji o 30%. Efekt nie kumuluje się.=Reduces stun and confusion duration by 30%. This effect does not stack.
 Skraca czas ogłuszenia i dezorientacji o=Reduces stun and confusion duration by
+Zawziętość=Determination
+Przezorność=Prudence
+Przewaga=Advantage
+Łupieżca=Plunderer
+Dbałość=Care
+Po zabiciu potwora odzyskujesz {0} PZ; łącznie maksymalnie 200 PZ.=Restore {0} HP after killing a creature; up to 200 HP in total.
+{0}% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.={0}% chance that using a healing potion does not consume it; up to 20% in total.
+Podczas walki z dokładnie jednym potworem zadajesz o {0}% więcej obrażeń; łącznie maksymalnie 10%.=Deal {0}% more damage while fighting exactly one creature; up to 10% in total.
+Zyskujesz o {0}% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.=Gain {0}% more money from defeated creatures; up to 15% in total.
+{0}% szansy na uniknięcie zużycia wytrzymałości broni.={0}% chance to prevent weapon durability loss.

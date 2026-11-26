@@ -1165,3 +1165,13 @@ Zyskujesz +20 pkt proc. odporności na zatrucie, krwawienie, porażenie, dezorie
  odporności na zatrucie, krwawienie, porażenie, dezorientację i ogłuszenie.= de resistencia al veneno, sangrado, descarga, confusión y aturdimiento.
 Skraca czas ogłuszenia i dezorientacji o 30%. Efekt nie kumuluje się.=Reduce la duración del aturdimiento y la confusión un 30%. Este efecto no se acumula.
 Skraca czas ogłuszenia i dezorientacji o=Reduce la duración del aturdimiento y la confusión un
+Zawziętość=Determinación
+Przezorność=Prudencia
+Przewaga=Ventaja
+Łupieżca=Saqueador
+Dbałość=Cuidado
+Po zabiciu potwora odzyskujesz {0} PZ; łącznie maksymalnie 200 PZ.=Recuperas {0} PV al matar a una criatura; hasta 200 PV en total.
+{0}% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.={0}% de probabilidad de que usar una poción curativa no la consuma; hasta un 20% en total.
+Podczas walki z dokładnie jednym potworem zadajesz o {0}% więcej obrażeń; łącznie maksymalnie 10%.=Infliges un {0}% más de daño mientras luchas contra exactamente una criatura; hasta un 10% en total.
+Zyskujesz o {0}% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.=Obtienes un {0}% más de dinero de las criaturas derrotadas; hasta un 15% en total.
+{0}% szansy na uniknięcie zużycia wytrzymałości broni.={0}% de probabilidad de evitar la pérdida de durabilidad del arma.

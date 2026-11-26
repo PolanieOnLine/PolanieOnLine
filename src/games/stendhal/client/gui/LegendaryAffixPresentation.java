@@ -170,6 +170,16 @@ final class LegendaryAffixPresentation {
 				"Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%.");
 		appendNewPercentage(result, object, ItemTooltip.AMMO_CONSERVATION, "Oszczędny strzał",
 				"{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej.");
+		appendRegularValue(result, object, ItemTooltip.KILL_RECOVERY, "Zawziętość",
+				"Po zabiciu potwora odzyskujesz {0} PZ; łącznie maksymalnie 200 PZ.", false);
+		appendNewPercentage(result, object, ItemTooltip.POTION_CONSERVATION, "Przezorność",
+				"{0}% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.");
+		appendNewPercentage(result, object, ItemTooltip.SINGLE_COMBAT_BONUS, "Przewaga",
+				"Podczas walki z dokładnie jednym potworem zadajesz o {0}% więcej obrażeń; łącznie maksymalnie 10%.");
+		appendNewPercentage(result, object, ItemTooltip.COIN_BONUS, "Łupieżca",
+				"Zyskujesz o {0}% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.");
+		appendNewPercentage(result, object, ItemTooltip.DURABILITY_CONSERVATION, "Dbałość",
+				"{0}% szansy na uniknięcie zużycia wytrzymałości broni.");
 		appendRegularPercentage(result, object, ItemTooltip.ARMOR_CRUSHING, "Kruszenie",
 				"% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.");
 		appendRegularPercentage(result, object, ItemTooltip.CRITICAL_HARDENING, "Hartowanie",
@@ -237,11 +247,16 @@ final class LegendaryAffixPresentation {
 
 	private static void appendNewPercentage(final StringBuilder result, final RPObject object,
 			final String key, final String title, final String template) {
+		appendRegularValue(result, object, key, title, template, true);
+	}
+
+	private static void appendRegularValue(final StringBuilder result, final RPObject object,
+			final String key, final String title, final String template, final boolean percentage) {
 		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
 		final Double value = raw == null ? null : parseDouble(raw);
-		if (value != null && value.doubleValue() > 0.0) {
+		if (value != null && Double.isFinite(value.doubleValue()) && value.doubleValue() > 0.0) {
 			appendRegularText(result, object, key, title, ClientLanguage.getText(template)
-					.replace("{0}", COMPACT_DECIMAL.format(value.doubleValue() * 100)));
+					.replace("{0}", COMPACT_DECIMAL.format(value.doubleValue() * (percentage ? 100 : 1))));
 		}
 	}
 

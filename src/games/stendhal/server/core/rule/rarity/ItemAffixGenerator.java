@@ -171,8 +171,7 @@ public final class ItemAffixGenerator {
 		if (slots <= 0) {
 			return;
 		}
-		final List<ItemAffixDefinition> eligible = registry.getEligible(item);
-		Collections.shuffle(eligible, rollRandom);
+		final List<ItemAffixDefinition> eligible = OrdinaryAffixSelection.order(registry.getEligible(item), rollRandom);
 		int regularApplied = 0;
 		for (final ItemAffixDefinition definition : eligible) {
 			if (regularApplied >= slots) {

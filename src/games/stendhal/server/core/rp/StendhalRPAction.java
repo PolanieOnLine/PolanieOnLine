@@ -428,7 +428,7 @@ public class StendhalRPAction {
 			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
 					damage, weapons, defender, isRanged);
 			if (!usesTrainingDummy) {
-				damage = HuntingAffixService.outgoingDamage(player, damage);
+				damage = HuntingAffixService.outgoingDamage(player, defender, damage);
 				damage = TacticalAffixCombatService.prepareHit(player, defender, damage);
 				damage = InevitabilityService.boostDamage(player, defender, damage);
 			}

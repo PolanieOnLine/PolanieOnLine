@@ -362,14 +362,17 @@ public final class ItemAffixRerollService {
 		return value != null ? value : LegendaryItemAffixRegistry.getInstance().get(id);
 	}
 
-	/** Uniform weighting matches the existing affix generator. Eligibility is rechecked on the stripped copy. */
+	/** Uses the same ordinary family weights as fresh drops and upgrades. */
 	Item replacement(final Item item, final String id) {
 		final Item stripped = copy(item);
 		remove(stripped, id);
-		final List<ItemAffixDefinition> pool = new ArrayList<ItemAffixDefinition>(
-				ItemAffixRegistry.getInstance().get(id) != null ? ItemAffixRegistry.getInstance().getDefinitions()
+		final boolean ordinary = ItemAffixRegistry.getInstance().get(id) != null;
+		List<ItemAffixDefinition> pool = new ArrayList<ItemAffixDefinition>(
+				ordinary ? ItemAffixRegistry.getInstance().getDefinitions()
 						: LegendaryItemAffixRegistry.getInstance().getDefinitions());
-		Collections.shuffle(pool, random);
+		pool.removeIf(candidate -> ItemAffixState.has(stripped, candidate.getId()) || !candidate.isEligible(stripped));
+		if (ordinary) pool = OrdinaryAffixSelection.order(pool, random);
+		else Collections.shuffle(pool, random);
 		for (final ItemAffixDefinition candidate : pool) {
 			if (ItemAffixState.has(stripped, candidate.getId()) || !candidate.isEligible(stripped)) continue;
 			final Item result = copy(stripped);

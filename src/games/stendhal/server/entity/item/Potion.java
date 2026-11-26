@@ -51,7 +51,9 @@ public class Potion extends Drink {
 				}
 			}
 
-			feeder.feed(this, player);
+			if (!feeder.feed(this, player)) {
+				return false;
+			}
 			player.getStatusList().removeAll(BleedingStatus.class);
 			player.notifyWorldAboutChanges();
 			return true;

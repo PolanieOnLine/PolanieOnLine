@@ -28,6 +28,7 @@ import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemAffixRerollService;
 import games.stendhal.server.core.rule.rarity.AdditionalCombatAffixDefinition;
+import games.stendhal.server.core.rule.rarity.EquipmentUtilityAffixDefinition;
 import games.stendhal.server.core.rule.rarity.ItemLifestealService;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusType;
@@ -193,6 +194,12 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.LEGENDARY_QUICK_RECOVERY, ItemTooltip.LEGENDARY_QUICK_RECOVERY);
 		copyDouble(item, ItemTooltip.LEGENDARY_LIFE_TIDE, ItemTooltip.LEGENDARY_LIFE_TIDE);
 		for (final AdditionalCombatAffixDefinition affix : AdditionalCombatAffixDefinition.values()) {
+			final double value = affix.value(item);
+			if (value > 0.0) {
+				put(item, affix.getId(), Double.toString(value));
+			}
+		}
+		for (final EquipmentUtilityAffixDefinition affix : EquipmentUtilityAffixDefinition.values()) {
 			final double value = affix.value(item);
 			if (value > 0.0) {
 				put(item, affix.getId(), Double.toString(value));

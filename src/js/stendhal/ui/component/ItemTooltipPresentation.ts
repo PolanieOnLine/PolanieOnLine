@@ -425,12 +425,17 @@ function appendAffixes(lines: ItemTooltipLine[], current: Record<string, string>
 		["poison_potency", "Zjadliwość", "Zwiększa obrażenia trucizny nakładanej bronią o {0}%, łącznie maksymalnie o 50%."],
 		["bleed_potency", "Rozdarcie", "Zwiększa obrażenia krwawienia nakładanego bronią o {0}%, łącznie maksymalnie o 50%."],
 		["vigilance", "Czujność", "Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%."],
-		["ammo_conservation", "Oszczędny strzał", "{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej."]
+		["ammo_conservation", "Oszczędny strzał", "{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej."],
+		["kill_recovery", "Zawziętość", "Po zabiciu potwora odzyskujesz {0} PZ; łącznie maksymalnie 200 PZ."],
+		["potion_conservation", "Przezorność", "{0}% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%."],
+		["single_combat_bonus", "Przewaga", "Podczas walki z dokładnie jednym potworem zadajesz o {0}% więcej obrażeń; łącznie maksymalnie 10%."],
+		["coin_bonus", "Łupieżca", "Zyskujesz o {0}% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%."],
+		["durability_conservation", "Dbałość", "{0}% szansy na uniknięcie zużycia wytrzymałości broni."]
 	]) {
 		const value = numberValue(current, key);
 		if (value > 0) {
 			affixes.push({kind: "bonus", affixId: key, text: GameLanguage.getText(title) + ": "
-				+ GameLanguage.getText(template).replace("{0}", formatCompact(value * 100))});
+				+ GameLanguage.getText(template).replace("{0}", formatCompact(value * (key === "kill_recovery" ? 1 : 100)))});
 		}
 	}
 	const crushing = numberValue(current, "armor_crushing");

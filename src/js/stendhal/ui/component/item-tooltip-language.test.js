@@ -93,6 +93,33 @@ test("the five new affixes have descriptions in Polish, English and Spanish", as
 	}
 });
 
+test("utility affixes preserve units and full descriptions in Polish, English and Spanish", async () => {
+	const h = await harness();
+	const item = new h.Item({category: "accessory", kill_recovery: "75", potion_conservation: "0.07",
+		single_combat_bonus: "0.04", coin_bonus: "0.06", durability_conservation: "0.15"});
+	for (const [language, expected] of [
+		["pl", ["Zawziętość: Po zabiciu potwora odzyskujesz 75 PZ; łącznie maksymalnie 200 PZ.",
+			"Przezorność: 7% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.",
+			"Przewaga: Podczas walki z dokładnie jednym potworem zadajesz o 4% więcej obrażeń; łącznie maksymalnie 10%.",
+			"Łupieżca: Zyskujesz o 6% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.",
+			"Dbałość: 15% szansy na uniknięcie zużycia wytrzymałości broni."]],
+		["en", ["Determination: Restore 75 HP after killing a creature; up to 200 HP in total.",
+			"Prudence: 7% chance that using a healing potion does not consume it; up to 20% in total.",
+			"Advantage: Deal 4% more damage while fighting exactly one creature; up to 10% in total.",
+			"Plunderer: Gain 6% more money from defeated creatures; up to 15% in total.",
+			"Care: 15% chance to prevent weapon durability loss."]],
+		["es", ["Determinación: Recuperas 75 PV al matar a una criatura; hasta 200 PV en total.",
+			"Prudencia: 7% de probabilidad de que usar una poción curativa no la consuma; hasta un 20% en total.",
+			"Ventaja: Infliges un 4% más de daño mientras luchas contra exactamente una criatura; hasta un 10% en total.",
+			"Saqueador: Obtienes un 6% más de dinero de las criaturas derrotadas; hasta un 15% en total.",
+			"Cuidado: 15% de probabilidad de evitar la pérdida de durabilidad del arma."]]
+	]) {
+		h.language.synchronize(language);
+		const lines = h.build(item).lines.filter(line => line.affixId);
+		assert.deepEqual(Array.from(lines, line => line.text), expected);
+	}
+});
+
 test("wound and survival affixes retain ordinary and legendary formatting in every language", async () => {
 	const h = await harness();
 	for (const [language, ordinary, legendary] of [

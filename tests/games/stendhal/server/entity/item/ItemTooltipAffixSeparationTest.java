@@ -13,12 +13,26 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.EquipmentUtilityAffixDefinition;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipAffixSeparationTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		ItemTestHelper.generateRPClasses();
+	}
+
+	@Test
+	public void utilityRollsReachTheTooltipWithTheirOriginalUnits() {
+		for (final EquipmentUtilityAffixDefinition affix : EquipmentUtilityAffixDefinition.values()) {
+			final Item item = new Item("test", "armor", "test", null);
+			final String roll = affix == EquipmentUtilityAffixDefinition.KILL_RECOVERY ? "75.0" : "0.05";
+			item.put(ItemAffixState.ATTRIBUTE, affix.getId(), roll);
+			ItemTooltipService.update(item);
+			assertEquals(roll, stat(item, affix.getId()));
+			assertEquals(roll, ItemAffixState.getValues(item).get(affix.getId()));
+		}
 	}
 
 	@Test

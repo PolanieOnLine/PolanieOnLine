@@ -131,6 +131,45 @@ test("ordinary descriptive affixes use the standard diamond bonus rows", () => {
 	}
 });
 
+test("utility affixes show health and percentages before legendary rows and preserve reroll markers", () => {
+	const values = {kill_recovery: "75", potion_conservation: "0.07", single_combat_bonus: "0.04",
+		coin_bonus: "0.06", durability_conservation: "0.15"};
+	const expected = {
+		kill_recovery: "Zawziętość: Po zabiciu potwora odzyskujesz 75 PZ; łącznie maksymalnie 200 PZ.",
+		potion_conservation: "Przezorność: 7% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.",
+		single_combat_bonus: "Przewaga: Podczas walki z dokładnie jednym potworem zadajesz o 4% więcej obrażeń; łącznie maksymalnie 10%.",
+		coin_bonus: "Łupieżca: Zyskujesz o 6% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.",
+		durability_conservation: "Dbałość: 15% szansy na uniknięcie zużycia wytrzymałości broni."
+	};
+	for (const id of Object.keys(values)) {
+		const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+			category: "accessory", ...values, legendary_tenacity: "1", rerolled_affix: id
+		}}, false).lines;
+		const firstLegendary = lines.findIndex(line => line.kind === "affix");
+		for (const [key, text] of Object.entries(expected)) {
+			const index = lines.findIndex(line => line.affixId === key);
+			assert.ok(index >= 0 && index < firstLegendary, key);
+			assert.equal(lines[index].text, text);
+			assert.equal(lines[index].kind, "bonus");
+		}
+		const marked = lines.filter(line => line.rerolled);
+		assert.equal(marked.length, 1);
+		assert.equal(marked[0].affixId, id);
+		const dom = new TooltipNode();
+		exportsObject.appendStructuredTooltipLine(dom, marked[0]);
+		assert.equal(dom.children[0].children[0].children[0].className, "affix-rerolled-icon");
+		assert.equal(dom.textContent, expected[id]);
+	}
+});
+
+test("zero and invalid utility affix values remain hidden", () => {
+	const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
+		category: "other", kill_recovery: "0", potion_conservation: "bad", single_combat_bonus: "-0.04",
+		coin_bonus: "NaN", durability_conservation: "Infinity"
+	}}, false).lines;
+	assert.equal(lines.filter(line => line.affixId).length, 0);
+});
+
 test("all legendary descriptions follow ordinary affixes", () => {
 	const lines = exportsObject.buildStructuredItemTooltip({tooltip_stats: {
 		category: "accessory", steady_hand: "0.1", poison_potency: "0.25",

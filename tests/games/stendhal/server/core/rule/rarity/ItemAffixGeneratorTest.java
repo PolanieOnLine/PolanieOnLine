@@ -48,6 +48,11 @@ public class ItemAffixGeneratorTest {
 		maximums.put("bleed_potency", 0.25);
 		maximums.put("vigilance", 0.12);
 		maximums.put("ammo_conservation", 0.20);
+		maximums.put("kill_recovery", 100.0);
+		maximums.put("potion_conservation", 0.08);
+		maximums.put("single_combat_bonus", 0.05);
+		maximums.put("coin_bonus", 0.06);
+		maximums.put("durability_conservation", 0.20);
 		maximums.put("legendary_relic_power", 7.0);
 		for (StatusType status : StatusType.values()) {
 			maximums.put(EquipmentStatusResistanceService.getResistanceAttribute(status), 0.12);

@@ -51,7 +51,12 @@ public final class ItemAffixRegistry {
 					AdditionalCombatAffixDefinition.POISON_POTENCY,
 					AdditionalCombatAffixDefinition.BLEED_POTENCY,
 					AdditionalCombatAffixDefinition.VIGILANCE,
-					AdditionalCombatAffixDefinition.AMMO_CONSERVATION));
+					AdditionalCombatAffixDefinition.AMMO_CONSERVATION,
+					EquipmentUtilityAffixDefinition.KILL_RECOVERY,
+					EquipmentUtilityAffixDefinition.POTION_CONSERVATION,
+					EquipmentUtilityAffixDefinition.SINGLE_COMBAT,
+					EquipmentUtilityAffixDefinition.COIN_BONUS,
+					EquipmentUtilityAffixDefinition.DURABILITY_CONSERVATION));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;

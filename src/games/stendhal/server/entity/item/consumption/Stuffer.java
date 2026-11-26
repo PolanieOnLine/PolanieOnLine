@@ -14,15 +14,26 @@ package games.stendhal.server.entity.item.consumption;
 
 import games.stendhal.server.core.rule.glyph.GlyphRecoveryService;
 import games.stendhal.server.core.rule.damage.LifeTideService;
+import games.stendhal.server.core.rule.damage.EquipmentUtilityAffixService;
 import games.stendhal.server.entity.item.ConsumableItem;
+import games.stendhal.server.entity.item.Potion;
 import games.stendhal.server.entity.player.Player;
 
 class Stuffer implements Feeder {
 
 	@Override
 	public boolean feed(final ConsumableItem item, final Player player) {
+		if (item instanceof Potion && (item.getQuantity() <= 0 || item.getAmount() <= 0
+				|| player.getHP() <= 0 || player.has("dead"))) {
+			return false;
+		}
+		final ConsumableItem used = EquipmentUtilityAffixService.conserveHealingPotion(player, item)
+				? item : (ConsumableItem) item.splitOff(1);
+		if (used == null) {
+			return false;
+		}
 		LifeTideService.healFromPotion(player, GlyphRecoveryService.boostConsumableHealing(player,
-				((ConsumableItem) item.splitOff(1)).getAmount()));
+				used.getAmount()));
 		return true;
 	}
 

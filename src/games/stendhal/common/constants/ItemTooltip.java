@@ -140,6 +140,11 @@ public final class ItemTooltip {
 	public static final String BLEED_POTENCY = "bleed_potency";
 	public static final String VIGILANCE = "vigilance";
 	public static final String AMMO_CONSERVATION = "ammo_conservation";
+	public static final String KILL_RECOVERY = "kill_recovery";
+	public static final String POTION_CONSERVATION = "potion_conservation";
+	public static final String SINGLE_COMBAT_BONUS = "single_combat_bonus";
+	public static final String COIN_BONUS = "coin_bonus";
+	public static final String DURABILITY_CONSERVATION = "durability_conservation";
 	public static final String LEGENDARY_INEVITABILITY = "legendary_inevitability";
 	public static final String LEGENDARY_IRON_RESOLVE = "legendary_iron_resolve";
 	public static final String LEGENDARY_DEFENSE_CIRCLE = "legendary_defense_circle";

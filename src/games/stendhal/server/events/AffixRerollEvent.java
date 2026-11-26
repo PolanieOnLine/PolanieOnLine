@@ -119,7 +119,7 @@ public final class AffixRerollEvent extends RPEvent {
 		final String effect = FIXED_EFFECTS.get(id);
 		if (effect != null) return text(player, name) + ": " + text(player, effect);
 		final BigDecimal value = new BigDecimal(raw);
-		final boolean flat = id.equals("flat_attack_bonus") || id.equals("flat_defense_bonus") || id.equals("legendary_relic_power") || id.equals("legendary_bastion_bonus");
+		final boolean flat = id.equals("flat_attack_bonus") || id.equals("flat_defense_bonus") || id.equals("legendary_relic_power") || id.equals("legendary_bastion_bonus") || id.equals("kill_recovery");
 		final boolean points = id.equals("accuracy_bonus") || id.equals("critical_chance") || id.equals("lifesteal_effectiveness");
 		final String number = (flat || points ? value : value.multiply(BigDecimal.valueOf(100)))
 				.setScale(1, RoundingMode.HALF_UP).stripTrailingZeros().toPlainString();
@@ -137,6 +137,11 @@ public final class AffixRerollEvent extends RPEvent {
 		case "bleed_potency": return "Zwiększa obrażenia krwawienia nakładanego bronią o {0}%, łącznie maksymalnie o 50%.";
 		case "vigilance": return "Pierwsze trafienie danego przeciwnika zadaje o {0}% mniej obrażeń. Ochrona odnawia się po 10 s bez jego trafienia; łącznie maksymalnie 25%.";
 		case "ammo_conservation": return "{0}% szansy, że strzał nie zużyje amunicji; łącznie maksymalnie 20%. Nie dotyczy zaklęć ani broni miotanej.";
+		case "kill_recovery": return "Po zabiciu potwora odzyskujesz {0} PZ; łącznie maksymalnie 200 PZ.";
+		case "potion_conservation": return "{0}% szansy, że użycie eliksiru leczącego go nie zużyje; łącznie maksymalnie 20%.";
+		case "single_combat_bonus": return "Podczas walki z dokładnie jednym potworem zadajesz o {0}% więcej obrażeń; łącznie maksymalnie 10%.";
+		case "coin_bonus": return "Zyskujesz o {0}% więcej pieniędzy z pokonanych potworów; łącznie maksymalnie 15%.";
+		case "durability_conservation": return "{0}% szansy na uniknięcie zużycia wytrzymałości broni.";
 		case "armor_crushing": return "{number:0}% więcej obrażeń opancerzeniu przeciwnika; łącznie maksymalnie 30%.";
 		case "critical_hardening": return "{number:0}% redukcji dodatkowej części otrzymywanych obrażeń krytycznych; łącznie maksymalnie 30%.";
 		case "spiked_plating": return "odbija {0}% obrażeń z otrzymanych ciosów wręcz; łącznie maksymalnie 50%.";
@@ -169,6 +174,7 @@ public final class AffixRerollEvent extends RPEvent {
 			{"bleed_on_hit", "Krwawienie"}, {"poison_on_hit", "Zatrucie"}, {"execute_damage", "Dobijanie"}, {"distance_damage", "Obrażenia z dystansu"}, {"armor_penetration", "Przebicie pancerza"},
 			{"resist_poisoned", "Odporność na zatrucie"}, {"resist_bleeding", "Odporność na krwawienie"}, {"resist_shocked", "Odporność na szok"}, {"resist_confused", "Odporność na dezorientację"}, {"resist_heavy", "Odporność na ociężałość"}, {"resist_stunned", "Odporność na ogłuszenie"},
 			{"steady_hand", "Pewna ręka"}, {"poison_potency", "Zjadliwość"}, {"bleed_potency", "Rozdarcie"}, {"vigilance", "Czujność"}, {"ammo_conservation", "Oszczędny strzał"},
+			{"kill_recovery", "Zawziętość"}, {"potion_conservation", "Przezorność"}, {"single_combat_bonus", "Przewaga"}, {"coin_bonus", "Łupieżca"}, {"durability_conservation", "Dbałość"},
 			{"legendary_cleave", "Rozmach"}, {"legendary_tenacity", "Zaciętość"}, {"legendary_breach", "Przełamanie"}, {"legendary_quick_recovery", "Szybkie otrząśnięcie"}, {"legendary_deep_wounds", "Głębokie Rany"}, {"legendary_armor_breaker", "Łamacz Pancerzy"}, {"legendary_longshot", "Dalekosiężność"}, {"legendary_executioner", "Egzekutor"}, {"legendary_duel_master", "Mistrz Pojedynku"}, {"legendary_crushing_blow", "Miażdżący Cios"}, {"legendary_stunning_force", "Ogłuszająca Siła"}, {"legendary_binding_strike", "Pętający Cios"}, {"legendary_merciless_reach", "Bezlitosny Zasięg"}, {"legendary_falcon_eye", "Sokole Oko"}, {"legendary_first_salvo", "Pierwsza Salwa"}, {"legendary_power_overload", "Przeciążenie Mocy"}, {"legendary_arcane_focus", "Skupienie Arkanów"},
 			{"legendary_bastion_bonus", "Bastion"}, {"legendary_wall_of_gord", "Wał grodu"}, {"legendary_life_tide", "Przypływ życia"}, {"legendary_iron_will", "Żelazna Wola"}, {"legendary_unyielding_protection", "Nieugięta Ochrona"}, {"legendary_relic_power", "Relikt Mocy"}, {"legendary_hero_eye", "Oko Bohatera"}, {"legendary_guardian_seal", "Pieczęć Strażnika"},
 			{"legendary_defense_circle", "Krąg obrony"}, {"legendary_hunters_pace", "Hart łowcy"}, {"legendary_last_stand", "Ostatni zryw"}, {"legendary_inevitability", "Nieuchronność"}, {"legendary_iron_resolve", "Żelazny upór"}

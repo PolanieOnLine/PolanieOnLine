@@ -72,9 +72,12 @@ public final class RetiredSlowAffixMigration {
 			final Set<String> excluded, final Random random) {
 		final Item stripped = copy(original);
 		ItemAffixRerollService.remove(stripped, retired);
-		final List<ItemAffixDefinition> pool = new ArrayList<>(BINDING.equals(retired)
+		List<ItemAffixDefinition> pool = new ArrayList<>(BINDING.equals(retired)
 				? LegendaryItemAffixRegistry.getInstance().getDefinitions() : ItemAffixRegistry.getInstance().getDefinitions());
-		Collections.shuffle(pool, random);
+		pool.removeIf(definition -> excluded.contains(definition.getId()) || ItemAffixState.has(stripped, definition.getId())
+				|| !definition.isEligible(stripped));
+		if (BINDING.equals(retired)) Collections.shuffle(pool, random);
+		else pool = OrdinaryAffixSelection.order(pool, random);
 		for (final ItemAffixDefinition definition : pool) {
 			if (excluded.contains(definition.getId()) || ItemAffixState.has(stripped, definition.getId())
 					|| !definition.isEligible(stripped)) continue;

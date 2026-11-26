@@ -16,6 +16,7 @@ import java.util.Map;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.core.rule.damage.EquipmentUtilityAffixService;
 import games.stendhal.server.entity.RPEntity;
 
 /**
@@ -90,7 +91,9 @@ public class BreakableWeapon extends Weapon {
 	 */
 	@Override
 	public void deteriorate() {
-		setUses(getUses() + 1);
+		if (!EquipmentUtilityAffixService.conserveDurability(this)) {
+			setUses(getUses() + 1);
+		}
 	}
 
 	private void setUses(final int uses) {

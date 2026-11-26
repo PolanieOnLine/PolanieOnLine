@@ -52,6 +52,11 @@
 * Dodano afiks Rozdarcie na broni i rękawicach. Zwiększa obrażenia nakładanego krwawienia o 15-25%, łącznie maksymalnie o 50%
 * Dodano afiks Czujność na hełmach i płaszczach. Zmniejsza obrażenia pierwszego trafienia danego przeciwnika o 8-12%. Ochrona odnawia się po 10 sekundach bez trafienia od niego
 * Dodano afiks Oszczędny strzał na broni strzeleckiej. Daje 10-20% szansy, że strzał nie zużyje amunicji
+* Dodano afiks Zawziętość na rękawicach i pasach. Przywraca 50-100 PZ po zabiciu potwora, łącznie maksymalnie 200 PZ
+* Dodano afiks Przezorność na wyposażeniu poza bronią. Daje 5-8% szansy na użycie eliksiru leczącego bez jego zużycia, łącznie maksymalnie 20%
+* Dodano afiks Przewaga na zbrojach, tarczach, hełmach, nogawicach i butach. Zwiększa obrażenia o 3-5% podczas walki z jednym potworem, łącznie maksymalnie o 10%
+* Dodano afiks Łupieżca na płaszczach, pasach i biżuterii. Zwiększa ilość pieniędzy z pokonanych potworów o 3-6%, łącznie maksymalnie o 15%
+* Dodano afiks Dbałość na broni z wytrzymałością. Daje 10-20% szansy na uniknięcie jej zużycia
 * Dodano legendarny afiks Nieuchronność na broni. Po dwóch kolejnych chybieniach następny atak nie chybi, a przez 4 sekundy obrażenia rosną o 20%
 * Dodano legendarny afiks Żelazny upór na zbrojach i pasach. Raz na 120 sekund śmiertelne trafienie pozostawia 1 PZ. Nie chroni przed trucizną i krwawieniem
 * Dodano legendarny afiks Krąg obrony na zbrojach i tarczach. Przy walce z kilkoma potworami każdy dodatkowy przeciwnik zmniejsza obrażenia ich trafień o 3%, maksymalnie o 12%
@@ -105,6 +110,7 @@
 * Poprawiono kolejność akcji na liście znajomych w webkliencie i dodano zapraszanie do grupy
 * Poprawiono działanie wyszukiwania znajomych i dostępność przycisku Menu w webkliencie na komputerze
 * Webklient dopasowuje mapę, otwarte okna i położenie joysticka po obróceniu telefonu, bez odświeżania strony
+* Jedno stuknięcie przedmiotu na telefonie nie powoduje już jego podwójnego użycia
 * Poprawiono wydajność klienta Java przy wysokich limitach FPS
 * Uzupełniono angielskie i hiszpańskie tłumaczenia opisów przedmiotów, odporności, wariantów potworów, komunikatów walki, produkcji, osiągnięć i wybranych rozmów z NPC. Poprawiono też polskie opisy osiągnięć
 * Poprawiono sortowanie zadań i bestiariusza według nazw w wybranym języku oraz tłumaczenia nazw regionów i podziemi

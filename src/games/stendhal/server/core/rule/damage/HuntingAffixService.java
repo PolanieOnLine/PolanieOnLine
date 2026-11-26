@@ -28,12 +28,17 @@ public final class HuntingAffixService {
 	private HuntingAffixService() { }
 
 	public static int outgoingDamage(final Player player, final int damage) {
+		return outgoingDamage(player, player.getAttackTarget(), damage);
+	}
+
+	public static int outgoingDamage(final Player player, final RPEntity defender, final int damage) {
+		final int boosted = EquipmentUtilityAffixService.outgoingDamage(player, defender, damage);
 		if (damage <= 0 || player.getHP() <= 0 || player.getBaseHP() <= 0
 				|| (long) player.getHP() * 10 >= (long) player.getBaseHP() * 3
 				|| !equipped(player, AdditionalCombatAffixDefinition.LAST_STAND)) {
-			return damage;
+			return boosted;
 		}
-		return (int) Math.min(Integer.MAX_VALUE, Math.round(damage * 1.20));
+		return (int) Math.min(Integer.MAX_VALUE, Math.round(boosted * 1.20));
 	}
 
 	public static int reduceCreatureHit(final Player player, final RPEntity attacker, final int damage) {
@@ -115,6 +120,10 @@ public final class HuntingAffixService {
 		} else if (killer instanceof BleedingStatus) {
 			source = ((BleedingStatus) killer).getSource();
 		}
+		if (victim instanceof Creature) {
+			EquipmentUtilityAffixService.prepareCreatureLoot((Creature) victim,
+					source instanceof Player ? (Player) source : null);
+		}
 		if (source instanceof Player && victim instanceof Creature) {
 			onKill((Player) source, (Creature) victim, System.currentTimeMillis());
 		}
@@ -127,6 +136,7 @@ public final class HuntingAffixService {
 				|| player.getZone() != victim.getZone()) {
 			return;
 		}
+		EquipmentUtilityAffixService.onCreatureKilled(player, victim);
 		final Item boots = player.getBoots();
 		if (AdditionalCombatAffixDefinition.HUNTERS_RESOLVE.value(boots) <= 0.0) {
 			return;

@@ -37,6 +37,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.damage.EquipmentUtilityAffixService;
 import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
@@ -766,6 +767,7 @@ public class Creature extends NPC {
 
 	@Override
 	protected void dropItemsOn(final Corpse corpse) {
+		final double coinBonus = EquipmentUtilityAffixService.takeCreatureLootBonus(this);
 		for (final Item item : dropItemInstances) {
 			item.setFromCorpse(true);
 			corpse.add(item);
@@ -775,6 +777,7 @@ public class Creature extends NPC {
 		}
 
 		for (final Item item : createDroppedItems(SingletonRepository.getEntityManager())) {
+			EquipmentUtilityAffixService.boostGeneratedMoney(item, coinBonus);
 			// Keep all normal loot; the event item may use one of the spare corpse slots.
 			if (!corpse.isFull(isBoss()) || (MINE_TOWN_PUMPKIN_NAME.equals(item.getName())
 					&& !corpse.isFull(true))) {
