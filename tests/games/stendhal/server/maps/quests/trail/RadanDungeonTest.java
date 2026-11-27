@@ -252,6 +252,22 @@ public class RadanDungeonTest {
 	}
 
 	@Test
+	public void securedEntranceReminderDoesNotRequestMoreWood() {
+		accept();
+		player.setPosition(RadanDungeonSite.ENTRANCE_X - 1, RadanDungeonSite.ENTRANCE_Y - 1);
+		assertEquals(0, player.getTotalNumberOf("polano"));
+		assertTrue(prop(false).onUsed(player));
+		assertEquals("brace", player.getQuest(Step.RADAN_PASSAGE.slot));
+		assertTrue(TrailQuestLine.objective(player, Step.RADAN_PASSAGE.slot)
+				.contains("Belka jest już zabezpieczona"));
+		final String reminder = say(leader(), "chodnik");
+		assertFalse(reminder, reminder.contains("polana"));
+		assertTrue(reminder, reminder.contains("zabezpieczona"));
+		enter();
+		assertTrue(player.isQuestCompleted(Step.RADAN_PASSAGE.slot));
+	}
+
+	@Test
 	public void fullExpeditionOpensGatesAndRewardsOnlyOnce() {
 		start();
 		StendhalRPZone zone = player.getZone();

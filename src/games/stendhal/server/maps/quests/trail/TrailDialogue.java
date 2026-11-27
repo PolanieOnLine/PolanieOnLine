@@ -81,7 +81,7 @@ final class TrailDialogue {
 			return "Skrzynia czeka na zewnątrz, po prawej stronie wejścia. Olek też tam jest. Pamiętaj, oczekuje umówionego hasła.";
 		case RADAN_PASSAGE:
 			if ("brace".equals(stage))
-				return "Bez podparcia ta belka nie wytrzyma. Weź dwa polana i wzmocnij wejście, zanim spróbujesz przejść.";
+				return "Belka jest już zabezpieczona znalezionym klinem. Możesz wejść do bocznego chodnika obok porzuconych narzędzi.";
 			return "Wejście jest w bocznym chodniku, na zachód od schodów do podziemi Semos. Uważaj na belki. Radan nie dbał o to, żeby było tam bezpiecznie.";
 		case RADAN_RESCUE:
 			return "Jeśli trzymają tam kogoś wbrew jego woli, nie możemy zostawić go ludziom Radana. Najpierw trzeba go uwolnić.";

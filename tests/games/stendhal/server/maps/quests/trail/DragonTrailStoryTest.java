@@ -316,6 +316,40 @@ public class DragonTrailStoryTest {
 	}
 
 	@Test
+	public void privateGuideStopsFearingTheCaptorBeforeReportingHisRescue() {
+		before(Step.EMBER_GUIDE);
+		accept("Racirad", "pojmany przewodnik");
+		move(zones.get(DragonTrailProgress.NORTH));
+		refreshScene();
+		SpeakerNPC guide = (SpeakerNPC) player.getZone().getNPCList().stream()
+				.filter(npc -> PlayerPrivateScene.isOwnedBy(npc, player)
+						&& DragonTrailProgress.GUIDE.equals(TrailSceneRegistry.speakerName(npc)))
+				.findFirst().get();
+		player.setPosition(guide.getX(), guide.getY() + 1);
+		assertTrue(guide.getEngine().step(player, "hi"));
+		assertTrue(getReply(guide).contains("Jeśli strażnik usłyszy"));
+		guide.getEngine().setCurrentState(ConversationStates.IDLE);
+
+		kill(Encounter.CAPTOR);
+		assertEquals("guide", player.getQuest(Step.EMBER_GUIDE.slot));
+		player.setPosition(guide.getX(), guide.getY() + 1);
+		assertTrue(guide.getEngine().step(player, "hi"));
+		String freedGreeting = getReply(guide);
+		assertFalse(freedGreeting, freedGreeting.contains("Jeśli strażnik usłyszy"));
+		assertTrue(freedGreeting, freedGreeting.contains("możemy porozmawiać"));
+		assertTrue(guide.getEngine().step(player, "pojmany przewodnik"));
+		assertTrue(player.isQuestCompleted(Step.EMBER_GUIDE.slot));
+
+		guide.getEngine().setCurrentState(ConversationStates.IDLE);
+		assertTrue(guide.getEngine().step(player, "hi"));
+		assertTrue(getReply(guide).contains("Nie zostawimy ich handlarzom"));
+		player.setQuest(Step.EMBER_RETURN.slot, "done");
+		guide.getEngine().setCurrentState(ConversationStates.IDLE);
+		assertTrue(guide.getEngine().step(player, "hi"));
+		assertTrue(getReply(guide).contains("Racirad dotrzymał słowa"));
+	}
+
+	@Test
 	public void guideAndReturnCannotSkipFightsOrCleaningAndContinueAfterRebirth() {
 		before(Step.EMBER_GUIDE);
 		accept("Racirad", "pojmany przewodnik");

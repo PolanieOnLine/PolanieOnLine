@@ -195,8 +195,9 @@ public final class DragonTrailSites implements ZoneConfigurator {
 						(p, s, n) -> n.say(
 								p.isQuestCompleted(Step.EMBER_RETURN.slot)
 										? "Dobrze cię widzieć. Racirad dotrzymał słowa. Tym razem nikt nie pójdzie palić gniazd."
-										: guide ? (p.isQuestCompleted(
-												Step.EMBER_GUIDE.slot)
+										: guide ? (p.isQuestInState(Step.EMBER_GUIDE.slot, "guide")
+												? "Strażnik już nam nie zagrozi. Dziękuję. Teraz możemy porozmawiać."
+												: p.isQuestCompleted(Step.EMBER_GUIDE.slot)
 														? "Wciąż myślę o tych jajach. Nie zostawimy ich handlarzom, prawda?"
 														: "Ciszej. Jeśli strażnik usłyszy, że rozmawiamy, oboje będziemy mieli kłopoty.")
 												: "Udało mi się odczołgać od ognia. Resztę widzisz. Jeśli Racirad cię przysłał, powiem, co pamiętam."));

@@ -24,7 +24,7 @@ public final class TrailQuestInvitations {
 		case SEMOS_LETTER:
 			return "Wieści od Drilenuna: Wojtek wspominał o twojej pomocy. Pokaż mi list znaleziony w składzie. Czekam w koszarach w Ados.";
 		case SEMOS_SIGN:
-			return "Wieści od Dagoberta: Znalazłem jeszcze jeden wpis z tymi trzema kółkami. Wpadnij do banku w Semos, pokażę ci.";
+			return "Wieści od Dagoberta: Chcę wyjaśnić znaczenie znaku z kwitu. Wstąp do banku w Semos i zapytaj o trzy kółka.";
 		case SEMOS_PICKUP:
 			return "Wieści od Margaret: Ktoś ma odebrać skrzynię spod gospody. Przyjdź do mnie w Semos, zanim się tu zjawi. Może dowiemy się, dla kogo pracuje.";
 		case RADAN_PASSAGE:

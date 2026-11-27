@@ -298,6 +298,61 @@ public class OathTrailStoryTest {
 	}
 
 	@Test
+	public void wszeborKeepsHisVoluntaryWatchAfterReleaseAndRelog() {
+		banner();
+		accept("Wagabundus", "wspólny pochówek");
+		assertTrue(use(Kind.GRAVE));
+		assertTrue(use(Kind.MOUND));
+		assertTrue(use(Kind.MEMORIAL));
+		move(north);
+		refreshScene();
+		SpeakerNPC witness = privateSentry();
+		assertNotNull("Wszebor must be present to release his companions", witness);
+		player.setPosition(witness.getX(), witness.getY() + 1);
+		assertTrue(witness.getEngine().step(player, "hi"));
+		assertTrue(witness.getEngine().step(player, "dotrzymane słowo"));
+		assertEquals("ready", player.getQuest(Step.OATH_BURIAL.slot));
+		refreshScene();
+		assertSame("Wszebor promised to remain at the grave", witness, privateSentry());
+		witness.getEngine().setCurrentState(ConversationStates.IDLE);
+		assertTrue(witness.getEngine().step(player, "hi"));
+		assertTrue(getReply(witness).contains("mogiły"));
+		assertTrue(witness.getEngine().step(player, "dowódca"));
+		assertTrue(getReply(witness).contains("spoczywa"));
+
+		visit("Wagabundus");
+		say("Wagabundus", "wspólny pochówek");
+		assertTrue(player.isQuestCompleted(Step.OATH_BURIAL.slot));
+		move(north);
+		refreshScene();
+		assertNotNull("Completing the chapter must preserve the voluntary watch", privateSentry());
+		Player restored = new Player(player);
+		north.remove(player);
+		north.add(restored);
+		player = restored;
+		refreshScene();
+		SpeakerNPC returned = privateSentry();
+		assertNotNull("Wszebor must return with the saved player", returned);
+		assertNotSame(witness, returned);
+		assertTrue(returned.getEngine().step(player, "hi"));
+		assertTrue(getReply(returned).contains("mogiły"));
+		for (StendhalRPZone zone : new StendhalRPZone[] { north, west }) {
+			move(zone);
+			refreshScene();
+			for (Entity guard : zone.getEntitiesOfClass(OathTrailGuard.class))
+				assertFalse("Released guards must not return", PlayerPrivateScene.isOwnedBy(guard, player));
+		}
+	}
+
+	private SpeakerNPC privateSentry() {
+		for (Entity entity : north.getEntitiesOfClass(SpeakerNPC.class))
+			if (PlayerPrivateScene.isOwnedBy(entity, player)
+					&& OathTrailProgress.SENTRY.equals(TrailSceneRegistry.speakerName(entity)))
+				return (SpeakerNPC) entity;
+		return null;
+	}
+
+	@Test
 	public void cluesArePersonalRangeCheckedAndKeepTheirHistoryAfterRelog() {
 		assertFalse(use(Kind.NAMES));
 		watch();
