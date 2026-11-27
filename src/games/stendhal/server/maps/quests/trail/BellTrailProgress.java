@@ -128,13 +128,15 @@ final class BellTrailProgress {
 		case BELL_VOICE:
 			return "report".equals(state)
 					? "Pokaż Borzęcie zapiski i opowiedz o pustym dzwonie. Czeka przy skrzyniach w obozie na północno-wschodniej wyspie Kikareukin. Powiedz: głos z mgły."
-					: "Sprawdź skrzynię z zapiskami na zachód od obozu. Następnie obejrzyj kamień z napisem i stary dzwon na południowy wschód od rannych.";
+					: "Sprawdź skrzynię z zapiskami na zachodnim skraju wyspy, kamień z napisem na północy "
+							+ "oraz stary dzwon na południowy wschód od obozu rannych.";
 		case BELL_GUARD:
 			if ("wards".equals(state)) {
-				return "Rozłącz dwa kamienie ze znakami przy dzwonie. Jeden leży na zachód od niego, drugi nieco na północ. Dzwon stoi na południowy wschód od obozu.";
+				return "Rozłącz dwa kamienie wiążące dzwon. Jeden leży przy południowym brzegu wyspy, na zachód od dzwonu, "
+						+ "a drugi na północno-wschodnim skraju wyspy.";
 			}
 			if ("fight".equals(state)) {
-				return "Pokonaj strażnika milczącego dzwonu, między kamieniami ze znakami a obozem rannych.";
+				return "Pokonaj strażnika milczącego dzwonu na południe od obozu rannych, przy podejściu do dzwonu.";
 			}
 			return "silence".equals(state)
 					? "Poluzuj mocowanie starego dzwonu na południowy wschód od obozu rannych."

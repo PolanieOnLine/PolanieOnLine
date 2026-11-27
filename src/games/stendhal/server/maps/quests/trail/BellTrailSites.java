@@ -18,8 +18,8 @@ import games.stendhal.server.maps.quests.trail.TrailQuestLine.Step;
 
 public final class BellTrailSites implements ZoneConfigurator {
 	enum Kind {
-		LOG("skrzynia z zapiskami", 104, 24, "item/pot/crate_small", 1, 2, 1),
-		INSCRIPTION("kamień z napisem", 112, 30, "object/trail_investigation_props", 1, 3, 2),
+		LOG("skrzynia z zapiskami", 79, 25, "item/pot/crate_small", 1, 2, 1),
+		INSCRIPTION("kamień z napisem", 100, 12, "object/trail_investigation_props", 1, 3, 2),
 		BELL_TOP(
 				"stary dzwon",
 				117,
@@ -38,16 +38,16 @@ public final class BellTrailSites implements ZoneConfigurator {
 				4),
 		WEST_WARD(
 				"kamień wiążący dzwon",
-				108,
-				32,
+				94,
+				34,
 				"object/trail_investigation_props",
 				0,
 				3,
 				1),
 		EAST_WARD(
 				"kamień wiążący dzwon",
-				116,
-				30,
+				120,
+				18,
 				"object/trail_investigation_props",
 				0,
 				3,
@@ -129,12 +129,9 @@ public final class BellTrailSites implements ZoneConfigurator {
 						&& !player.isQuestCompleted(Step.BELL_ESCAPE.slot)
 						&& !player.isQuestInState(Step.BELL_ESCAPE.slot, "return");
 			}
-			if (BellTrailProgress.SCHOLAR.equals(name)) {
-				return BellTrailProgress.active(player, Step.BELL_WOUNDED)
-						|| Step.BELL_VOICE.availableOrStarted(player)
-								&& !player.isQuestCompleted(Step.BELL_VOICE.slot);
-			}
-			return BellTrailProgress.active(player, Step.BELL_WOUNDED);
+			return (BellTrailProgress.active(player, Step.BELL_WOUNDED)
+					|| player.isQuestCompleted(Step.BELL_WOUNDED.slot))
+					&& !player.hasQuest(Step.BELL_ESCAPE.slot);
 		});
 	}
 
@@ -235,7 +232,9 @@ public final class BellTrailSites implements ZoneConfigurator {
 			case EAST_WARD:
 				changed = BellTrailProgress.mark(player, Step.BELL_GUARD,
 						"wards", kind.bit, 3, "fight");
-				text = "Podważasz kamień i odgarniasz ziemię ze znaku. Głos urywa się w połowie słowa. Przy dzwonie porusza się skrzydlata postać.";
+				text = player.isQuestInState(Step.BELL_GUARD.slot, "fight")
+						? "Drugi znak gaśnie. Głos urywa się w połowie słowa. Od strony dzwonu dobiega szelest skrzydeł."
+						: "Podważasz kamień i odgarniasz ziemię ze znaku. Głos słabnie, lecz drugi kamień nadal go podtrzymuje.";
 				break;
 			case ASSEMBLY:
 				return BellTrailEscort.start(player);

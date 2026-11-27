@@ -398,6 +398,79 @@ public class BellTrailStoryTest {
 	}
 
 	@Test
+	public void woundedStayAtCampUntilTheyJoinTheConvoy() {
+		before(Step.BELL_VOICE);
+		move(islands);
+		refreshScene();
+		assertWoundedAtCamp(true);
+
+		player.setQuest(Step.BELL_VOICE.slot, "done");
+		player.setQuest(Step.BELL_GUARD.slot, "wards;0");
+		refreshScene();
+		assertWoundedAtCamp(true);
+		move(cave);
+		move(islands);
+		refreshScene();
+		assertWoundedAtCamp(true);
+
+		player.setQuest(Step.BELL_GUARD.slot, "done");
+		refreshScene();
+		assertWoundedAtCamp(true);
+		accept("Witosław", "powrót wyprawy");
+		refreshScene();
+		assertWoundedAtCamp(false);
+		assertEquals(2, BellTrailEscort.group(player).size());
+
+		player.setQuest(Step.BELL_ESCAPE.slot, "return");
+		refreshScene();
+		assertWoundedAtCamp(false);
+		for (BellTrailEscort escort : new ArrayList<>(BellTrailEscort.group(player))) {
+			escort.logic();
+		}
+		assertTrue(BellTrailEscort.group(player).isEmpty());
+	}
+
+	private void assertWoundedAtCamp(boolean present) {
+		for (String name : new String[] { "Borzęta", "Milan" }) {
+			boolean visible = islands.getEntitiesOfClass(SpeakerNPC.class).stream()
+					.anyMatch(npc -> PlayerPrivateScene.isOwnedBy(npc, player)
+							&& name.equals(TrailSceneRegistry.speakerName(npc)));
+			assertEquals(name + " must stay until the convoy departs", present, visible);
+		}
+	}
+
+	@Test
+	public void investigationAndBindingStonesAreSpreadAcrossTheIsland() {
+		assertTrue("The expedition left its notes away from the current camp",
+				Math.abs(Kind.LOG.x - Kind.ASSEMBLY.x) >= 24);
+		assertTrue("The inscription must require a separate northern search",
+				Kind.INSCRIPTION.y <= Kind.ASSEMBLY.y - 12);
+		assertTrue("The binding stones must guard separate parts of the island",
+				Math.abs(Kind.WEST_WARD.x - Kind.EAST_WARD.x) >= 20);
+
+		before(Step.BELL_VOICE);
+		move(islands);
+		player.setQuest(Step.BELL_VOICE.slot, "clues;0");
+		refreshScene();
+		List<NavigationGoal> goals = TrailNavigationTargets.targets(player);
+		assertEquals(3, goals.size());
+		for (Kind kind : new Kind[] { Kind.LOG, Kind.INSCRIPTION, Kind.BELL }) {
+			assertTrue(kind.name + " must match the compass destination",
+					goals.stream().anyMatch(goal -> goal.x == kind.x && goal.y == kind.y));
+			assertTrue(kind.name + " must exist in the owner's scene",
+					islands.getEntitiesOfClass(BellTrailSites.Evidence.class).stream()
+							.anyMatch(prop -> PlayerPrivateScene.isOwnedBy(prop, player)
+									&& ((BellTrailSites.Evidence) prop).kind == kind
+									&& prop.getX() == kind.x && prop.getY() == kind.y));
+		}
+		assertTrue(use(Kind.LOG));
+		refreshScene();
+		assertEquals(2, TrailNavigationTargets.targets(player).size());
+		assertFalse(TrailNavigationTargets.targets(player).stream()
+				.anyMatch(goal -> goal.x == Kind.LOG.x && goal.y == Kind.LOG.y));
+	}
+
+	@Test
 	public void nativeMapsHaveReachablePropsAndTheConvoyActuallyWalks()
 			throws Exception {
 		StendhalMapStructure map = TMXLoader.load(

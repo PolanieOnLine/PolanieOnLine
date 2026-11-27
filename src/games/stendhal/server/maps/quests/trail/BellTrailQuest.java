@@ -79,18 +79,20 @@ public final class BellTrailQuest extends TrailQuest {
 			}, "ranni", "rannych");
 			break;
 		case BELL_VOICE:
-			offer("Zapiski zostały w skrzyni na zachód od naszego obozu. Przy dzwonie jest kamień z zatartym napisem. "
-					+ "Obejrzyj też sam dzwon. Potem porozmawiajmy o #'głosie z mgły'. I proszę, nie odpowiadaj, gdy cię zawoła.");
+			offer("Skrzynię z zapiskami zostawiliśmy na zachodnim skraju tej wyspy. Kamienia z zatartym napisem szukaj na północy. "
+					+ "Sam dzwon stoi na południowy wschód od naszego obozu. Obejrzyj go, a potem porozmawiajmy o #'głosie z mgły'. "
+					+ "I proszę, nie odpowiadaj, gdy cię zawoła.");
 			reply(step.npc, (p, s, n) -> {
 				if (!report(p, n)) {
 					request(p, n,
 							"Nie przekonamy Witosława samymi słowami. Ma przy sobie obrączkę brata i ściska ją, ilekroć tamten go woła. "
-									+ "Potrzebujemy czegoś, czego nie da się pomylić z głosem. Sprawdzisz nasze zapiski i kamienie przy dzwonie?");
+									+ "Potrzebujemy czegoś, czego nie da się pomylić z głosem. Sprawdzisz nasze zapiski, stary napis i sam dzwon?");
 				}
 			}, "głos z mgły", "glos z mgly", "głosie z mgły", "glosie z mgly");
 			break;
 		case BELL_GUARD:
-			offer("Przy dzwonie leżą dwa kamienie ze znakami. Rozłącz je, zanim podejdziesz do strażnika. "
+			offer("Dzwon wiążą dwa kamienie ze znakami. Jeden leży na południowym brzegu wyspy, na zachód od dzwonu. "
+					+ "Drugi jest na północno-wschodnim skraju wyspy. Rozłącz je, zanim podejdziesz do strażnika. "
 					+ "Potem opuść dzwon z mocowania. Ja zostanę z rannymi. Wróć do mnie, gdy zrobi się cicho.");
 			reply(step.npc, (p, s, n) -> {
 				if (!report(p, n)) {
@@ -184,11 +186,13 @@ public final class BellTrailQuest extends TrailQuest {
 				break;
 			case BELL_VOICE:
 				speaker.say(
-						"Zapiski zostały w skrzyni, a napis jest na kamieniu przy dzwonie. Zajrzyj też do jego wnętrza. Chcę wiedzieć, co naprawdę wydaje ten dźwięk.");
+						"Skrzynię z zapiskami zostawiliśmy na zachodnim skraju wyspy. Napis jest na kamieniu na północy, "
+								+ "a dzwon stoi na południowy wschód od obozu. Zajrzyj też do jego wnętrza. Chcę wiedzieć, co naprawdę wydaje ten dźwięk.");
 				break;
 			case BELL_GUARD:
 				speaker.say(
-						"Rozłącz kamienie ze znakami, pokonaj strażnika i opuść dzwon. Dopiero wtedy uwierzę, że ten głos już nie wróci.");
+						"Jeden kamień leży przy południowym brzegu, na zachód od dzwonu, a drugi na północno-wschodnim skraju wyspy. "
+								+ "Rozłącz je, pokonaj strażnika i opuść dzwon. Dopiero wtedy uwierzę, że ten głos już nie wróci.");
 				break;
 			case BELL_ESCAPE:
 				speaker.say(player.isQuestInState(step.slot, "return")
